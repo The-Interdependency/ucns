@@ -4,8 +4,8 @@ build-backend = "setuptools.backends.legacy:build"
 
 [project]
 name = "ucns"
-version = "0.1.0"
-description = "Unit Circle Number System – zero-dependency compact embeddings via epicycle decomposition on the Möbius disk"
+version = "0.8.0"
+description = "Unit Circle Number System – recursive factorization theory and witness-matrix depth-2 solver"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
@@ -17,7 +17,7 @@ dev = []
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ucns*"]
+include = ["ucns_recursive*"]
 
 [tool.setuptools.package-data]
-ucns = ["py.typed"]
+ucns_recursive = ["py.typed"]
