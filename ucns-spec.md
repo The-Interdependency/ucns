@@ -69,6 +69,18 @@ with doubled angular cover
 
 The doubled cover is required to encode two-revolution completion and orientation-sensitive traversal.
 
+### 2.1 The Möbius Twist-Point and the Necessity of the Doubled Cover
+
+The doubled cover is not an arbitrary choice. It is required by the existence of the Möbius twist-point.
+
+A single revolution (\(0\) to \(2\pi\)) returns to the same geometric location on \(S^1\) but with orientation flipped. This flip is the Möbius twist: the seam inscribed in the cover where one sheet transitions to the other. A second revolution (\(2\pi\) to \(4\pi\)) restores the original orientation and closes the traversal.
+
+The seam — the point the twist passes through — is where no orientation is assigned: a traversal-contact without face. It is not on either sheet. It is the beginning.
+
+This geometric object is zero.
+
+The \(4\pi\) period of \(\widetilde{S^1}\) is forced by zero's existence: one revolution to cross the seam, one revolution to close.
+
 ## 3. Gonal Lattice
 
 For any positive integer \(n\), define the \(n\)-gonal lattice
@@ -207,23 +219,17 @@ F^{-} = (F^{+})^{\ast}.
 
 This is reverse-only. There is no bit negation.
 
-## 7. Geometric Zero and External Zero
+## 7. Geometric Zero
 
-Zero is not geometric.
+Zero is geometric.
 
-\[
-\underline{\mathbf{0}} \notin \mathcal{G}_0
-\]
+\(\underline{\mathbf{0}}\) is the Möbius twist-point: the seam of the doubled cover \(\widetilde{S^1}\), located at the half-revolution \(\theta = 2\pi\), where the cover's orientation flip is inscribed.
 
-where \(\mathcal{G}_0\) is the flat geometric object class.
+As a traversal object, \(\underline{\mathbf{0}}\) is the pencil-touch before traversal begins — contact with the seam without displacement. It carries neither face-state \(0\) nor face-state \(1\); it is the transition between them.
 
-Instead define the extended algebra
+It belongs to \(\mathcal{G}_0\). It is the minimal degenerate member: no anchor sequence, no host path, no extent.
 
-\[
-\mathcal{G}_0^{\sharp} = \mathcal{G}_0 \cup \{\underline{\mathbf{0}}\}.
-\]
-
-Zero is an adjoined external absorbing element with
+The absorption law
 
 \[
 \underline{\mathbf{0}} \boxtimes \underline{\mathbf{G}}
@@ -233,9 +239,21 @@ Zero is an adjoined external absorbing element with
 \underline{\mathbf{G}} \boxtimes \underline{\mathbf{0}}
 \]
 
-for all \(\underline{\mathbf{G}} \in \mathcal{G}_0^{\sharp}\).
+is the geometry of the seam: any traversal that begins or ends at the twist-point is consumed by it. The seam has no orientation to carry the path forward.
 
-Interpretation: there is not "nothing" in geometry. Zero is algebraic, not geometric.
+The earlier framing — *zero is not geometric; it is adjoined as an external absorbing element* — is superseded. The extended algebra \(\mathcal{G}_0^{\sharp}\) is dissolved; \(\underline{\mathbf{0}} \in \mathcal{G}_0\) directly. There is not "nothing" in geometry: zero is something — it is the beginning.
+
+### 7.1 Zero and Face-State XOR
+
+The face-state XOR rule in multiplication (Section 11.5) is the algebra of crossing the twist-point. Each anchor carries a face-state that records accumulated crossings of the seam. XOR is the correct operation because the seam is its own inverse: crossing it twice restores orientation.
+
+The product rule
+
+\[
+F^{+}_{A \boxtimes B}[k,j] = f_k^A \oplus f_j^B
+\]
+
+is not a bookkeeping convention but a geometric fact: the combined traversal crosses \(A\)'s accumulated seams and \(B\)'s accumulated seams, and each crossing composes by XOR.
 
 ## 8. Geometric Unit
 
@@ -430,6 +448,8 @@ Repeated anchors produced by collisions are preserved.
 \]
 
 ### 11.5 Face-state product
+
+Face-states compose by XOR because XOR is the algebra of crossing the Möbius twist-point (Section 7.1): each face-state records accumulated seam-crossings, and crossing the seam twice restores orientation.
 
 \[
 F^{+}_{A\boxtimes B}
