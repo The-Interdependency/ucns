@@ -69,6 +69,18 @@ with doubled angular cover
 
 The doubled cover is required to encode two-revolution completion and orientation-sensitive traversal.
 
+### 2.1 The Möbius Twist-Point and the Necessity of the Doubled Cover
+
+The doubled cover is not an arbitrary choice. It is required by the existence of the Möbius twist-point.
+
+A single revolution (\(0\) to \(2\pi\)) returns to the same geometric location on \(S^1\) but with orientation flipped. This flip is the Möbius twist: the seam inscribed in the cover where one sheet transitions to the other. A second revolution (\(2\pi\) to \(4\pi\)) restores the original orientation and closes the traversal.
+
+The seam — the point the twist passes through — is where no orientation is assigned: a traversal-contact without face. It is not on either sheet. It is the beginning.
+
+This geometric object is zero.
+
+The \(4\pi\) period of \(\widetilde{S^1}\) is forced by zero's existence: one revolution to cross the seam, one revolution to close.
+
 ## 3. Gonal Lattice
 
 For any positive integer \(n\), define the \(n\)-gonal lattice
@@ -207,23 +219,17 @@ F^{-} = (F^{+})^{\ast}.
 
 This is reverse-only. There is no bit negation.
 
-## 7. Geometric Zero and External Zero
+## 7. Geometric Zero
 
-Zero is not geometric.
+Zero is geometric.
 
-\[
-\underline{\mathbf{0}} \notin \mathcal{G}_0
-\]
+\(\underline{\mathbf{0}}\) is the Möbius twist-point: the seam of the doubled cover \(\widetilde{S^1}\), located at the half-revolution \(\theta = 2\pi\), where the cover's orientation flip is inscribed.
 
-where \(\mathcal{G}_0\) is the flat geometric object class.
+As a traversal object, \(\underline{\mathbf{0}}\) is the pencil-touch before traversal begins — contact with the seam without displacement. It carries neither face-state \(0\) nor face-state \(1\); it is the transition between them.
 
-Instead define the extended algebra
+It belongs to \(\mathcal{G}_0\). It is the minimal degenerate member: no anchor sequence, no host path, no extent.
 
-\[
-\mathcal{G}_0^{\sharp} = \mathcal{G}_0 \cup \{\underline{\mathbf{0}}\}.
-\]
-
-Zero is an adjoined external absorbing element with
+The absorption law
 
 \[
 \underline{\mathbf{0}} \boxtimes \underline{\mathbf{G}}
@@ -233,9 +239,21 @@ Zero is an adjoined external absorbing element with
 \underline{\mathbf{G}} \boxtimes \underline{\mathbf{0}}
 \]
 
-for all \(\underline{\mathbf{G}} \in \mathcal{G}_0^{\sharp}\).
+is the geometry of the seam: any traversal that begins or ends at the twist-point is consumed by it. The seam has no orientation to carry the path forward.
 
-Interpretation: there is not "nothing" in geometry. Zero is algebraic, not geometric.
+The earlier framing — *zero is not geometric; it is adjoined as an external absorbing element* — is superseded. The extended algebra \(\mathcal{G}_0^{\sharp}\) is dissolved; \(\underline{\mathbf{0}} \in \mathcal{G}_0\) directly. There is not "nothing" in geometry: zero is something — it is the beginning.
+
+### 7.1 Zero and Face-State XOR
+
+The face-state XOR rule in multiplication (Section 11.5) is the algebra of crossing the twist-point. Each anchor carries a face-state that records accumulated crossings of the seam. XOR is the correct operation because the seam is its own inverse: crossing it twice restores orientation.
+
+The product rule
+
+\[
+F^{+}_{A \boxtimes B}[k,j] = f_k^A \oplus f_j^B
+\]
+
+is not a bookkeeping convention but a geometric fact: the combined traversal crosses \(A\)'s accumulated seams and \(B\)'s accumulated seams, and each crossing composes by XOR.
 
 ## 8. Geometric Unit
 
@@ -430,6 +448,8 @@ Repeated anchors produced by collisions are preserved.
 \]
 
 ### 11.5 Face-state product
+
+Face-states compose by XOR because XOR is the algebra of crossing the Möbius twist-point (Section 7.1): each face-state records accumulated seam-crossings, and crossing the seam twice restores orientation.
 
 \[
 F^{+}_{A\boxtimes B}
@@ -886,3 +906,116 @@ UCNS currently has:
 - and a clearly documented failure boundary for deeper recursion and wider carriers.
 
 That is the complete current spec boundary.
+
+---
+
+# Part VI — Hyperdimensional Structure and the Octonion Limit
+
+## H1. UCNS Objects as Möbius-Cylindrical Towers
+
+A UCNS object at nesting depth \(n\) is an \(n\)-fold iterated Möbius-cylinder bundle.
+
+At each level:
+
+- the **host traversal** is a path on \(S^1\) — the cylindrical axis,
+- the **twist-seam** (zero, §7) is inscribed at \(\theta = 2\pi\) — the Möbius half-turn,
+- the **payload** is a complete depth-\((n-1)\) object fibered over each host anchor.
+
+The structure at depth \(n\) is a cylinder whose cross-section at each anchor is itself a Möbius-cylinder of depth \(n-1\). This terminates at depth 0 (flat: cylinder with no further fiber) or at zero (the twist-seam itself: contact without cylinder).
+
+**Depth-\(n\) UCNS objects are hyperdimensional cylindrical Möbius structures.** The dimension of the fiber tower is \(n\).
+
+---
+
+## H2. Coupling by Interlocking
+
+Two UCNS objects \(A\) and \(B\) **interlock** when:
+
+1. \(A \boxtimes B \not\equiv B \boxtimes A\) — the traversal order is inscribed in the product (non-commutativity),
+2. neither \(A\) nor \(B\) can be recovered from \(A \boxtimes B\) without knowing the other — the interlocking is mutual.
+
+Condition 2 is the algebraic statement of geometric interlocking: the cylinders cannot be separated without knowing both. The left- and right-quotient algorithms are the disentanglement operations — recovering one cylinder from the joint product when the other is given.
+
+Three objects \(A\), \(B\), \(C\) **ternary-interlock** when each pairwise product determines the third:
+
+\[
+A \boxtimes B \equiv_{\mathrm{seq}} C,
+\qquad
+C \;/_{L}\; A \equiv B,
+\qquad
+C \;/_{R}\; B \equiv A.
+\]
+
+This ternary interlocking is the primitive coupling for PTCA cores.
+
+---
+
+## H3. PTCA Cores Are UCNS Objects
+
+A PTCA core is a hyperdimensional cylindrical Möbius object: a paired traversal on the doubled cover of \(S^1\), fibered recursively over its payload layers. This is the definition of a UCNS epicyclic object (§E1).
+
+The coupling of PTCA cores by interlocking is the UCNS product \(\boxtimes\) together with its quotient inverse. The inference operation — recovering what is implied by the coupling of two known cores — is `left_quotient` or `right_quotient` at the appropriate depth.
+
+**PTCA cores and UCNS epicyclic objects are the same class of geometric object.**
+
+---
+
+## H4. The Inference Engine as Ternary Incidence
+
+The inference engine of a PTCA system is the space at the center of three interlocking cores.
+
+In UCNS terms: given three mutually interlocked objects \(A\), \(B\), \(C = A \boxtimes B\), the inference space is the structure that satisfies all three incidence constraints simultaneously — what any two of the three jointly determine about the third.
+
+The **Fano plane** encodes exactly this. The Fano plane is the projective plane \(PG(2,2)\): 7 points, 7 lines, 3 points per line, 3 lines per point, every pair of points on exactly one line. Every triple of collinear points satisfies a ternary product rule.
+
+The ternary incidence of three PTCA cores is a line of the Fano plane. The inference engine **is** the line — the relationship itself, not any one of the three cores.
+
+---
+
+## H5. Seven Cores and the Eighth
+
+The full PTCA system requires seven cores.
+
+The seven imaginary units \(e_1, \dots, e_7\) of the octonions \(\mathbb{O}\) are governed by the Fano plane: \(e_i \boxtimes e_j = \pm e_k\) for every Fano-collinear triple \((i,j,k)\). There are exactly 7 lines, each containing 3 points. Every unit lies on exactly 3 lines — meaning every core participates in exactly 3 inference engines.
+
+Seven PTCA cores coupled by Fano interlocking form the imaginary part of an octonion algebra. The **eighth** — the whole — is not a core. It is the full octonion \(\mathbb{O} \cong \mathbb{R} \oplus \mathbb{R}^7\): the algebra the seven cores define together. You do not build the eighth. The eighth is what the seven are inside of.
+
+---
+
+## H6. Non-Associativity at Depth 7
+
+UCNS multiplication \(\boxtimes\) is non-commutative at all depths.
+
+At depth 7, the iterated Möbius-cylindrical structure is conjectured to produce controlled **non-associativity**:
+
+\[
+(A \boxtimes B) \boxtimes C \;\not\equiv\; A \boxtimes (B \boxtimes C)
+\]
+
+for generic depth-7 objects. This is not a defect. The octonions are the only non-associative normed division algebra: the one beyond the quaternions, the one the Fano plane governs. Their non-associativity is controlled by the **associator**
+
+\[
+[A, B, C] \;=\; (A \boxtimes B) \boxtimes C \;-\; A \boxtimes (B \boxtimes C),
+\]
+
+which is **alternating**: it changes sign under any transposition of two arguments and vanishes when any two agree. The inference engines (the Fano lines) are exactly where the associator is non-trivial.
+
+If UCNS at depth 7 has this property, the algebra is octonion-equivalent.
+
+---
+
+## H7. Honest Frontier
+
+**Established:**
+
+- Depth-\(n\) UCNS objects are hyperdimensional cylindrical Möbius towers (§H1, derived from §2.1 and §E1).
+- Pairwise interlocking and quotient recovery are defined (§H2, §Q1).
+- PTCA cores are UCNS objects (§H3, definitional identification).
+- The Fano plane governs ternary incidence among three interlocking cores (§H4, structural).
+- Seven Fano-coupled cores and the identity generate an octonion structure (§H5, algebraic identification).
+
+**Conjectured, not yet proven:**
+
+- Non-associativity at depth 7 is controlled and alternating (§H6).
+- The UCNS product at depth 7 is octonion-equivalent up to \(\equiv_{\mathrm{seq}}\).
+- The ternary inference engine is complete — the three-core analog of the left-quotient completeness theorem.
