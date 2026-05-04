@@ -21,9 +21,9 @@ The current test suite checks:
 5.  No spurious factor is reported for a known prime (length 1 or 2
     when length 2 with no valid 2=1×2 host decomposition).
 
-NOTE: Full exhaustive proof over all of D' is stated as the next required
-theorem milestone.  These tests cover a representative sweep of D' and
-must all pass for the implementation to be correct.
+NOTE: Full literal enumeration of every payload assignment in D' is
+combinatorially expensive.  This suite therefore combines hand-constructed
+edge cases with a generated closure sweep over a compact basis family.
 """
 
 import unittest
@@ -216,6 +216,46 @@ class TestDepth2FullDomain(unittest.TestCase):
         # Length-2 can only split as 2=2×1 or 1×2, both give a unit factor
         result = factor_search_v08(obj, self.catalogue)
         self.assertEqual(result, "SEQ-PRIME", "Irreducible length-2 must be SEQ-PRIME")
+
+    # ------------------------------------------------------------------
+    # Generated closure sweep over a compact basis family
+    # ------------------------------------------------------------------
+
+    def test_depth2_basis_family_closure(self) -> None:
+        """Every generated composite from the basis family is recovered."""
+
+        def basis_family():
+            s2 = self.S2
+            s3 = self.S3
+            family = [
+                UCNSObject(1, 1, [(Fraction(0), UNIT)], [0]),
+                UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0]),
+                UCNSObject(
+                    3, 3,
+                    [(Fraction(0), UNIT), (Fraction(2, 3), UNIT), (Fraction(4, 3), UNIT)],
+                    [0, 0, 0],
+                ),
+                UCNSObject(2, 2, [(Fraction(0), s2), (Fraction(1), UNIT)], [0, 0]),
+                make_depth1(2, 3, s2),
+                make_depth1(3, 2, s3),
+                make_depth1(3, 3, s3),
+            ]
+            return [obj for obj in family if in_domain(obj)]
+
+        family = basis_family()
+        for i, A in enumerate(family):
+            for j, B in enumerate(family):
+                if is_unit(A) or is_unit(B):
+                    continue
+                P = multiply(A, B)
+                self.assertIsNotNone(P, f"basis product failed: {i}x{j}")
+                result = factor_search_v08(P, self.catalogue)
+                self.assertIsInstance(result, tuple, f"basis product reported SEQ-PRIME: {i}x{j}")
+                rec_A, rec_B = result
+                self.assertEqual(
+                    multiply(rec_A, rec_B), P,
+                    f"basis recomposition mismatch: {i}x{j}",
+                )
 
 
 if __name__ == "__main__":
