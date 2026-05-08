@@ -6,6 +6,21 @@ This repository contains the UCNS (Unit Circle Number System) sequence theory an
 
 ---
 
+## Collaboration wanted
+
+We are currently looking for mathematics collaborators to help formalize UCNS.
+
+Start here:
+
+- Collaboration issue: https://github.com/The-Interdependency/ucns/issues/7
+- Starter task: define one UCNS term in standard mathematical language, with notation, example, non-example, and relationship to existing concepts.
+
+The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples.
+
+GPT generated; context, prompt Erin Spencer.
+
+---
+
 ## Status: Current Theorem Frontier
 
 | Layer | Status |
