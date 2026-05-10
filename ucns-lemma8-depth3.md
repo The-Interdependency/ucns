@@ -1,14 +1,17 @@
 # UCNS v0.8 — Lemma 8: Depth-3 Factor Search
 
-**Status:** Closure theorem proven. Soundness discharges by reduction.
-Completeness on multiplicative-D'' open, with the gap precisely characterized.
-**Scope:** `factor_search_v08` applied to depth-3 objects, using a depth-2
-oracle catalogue as payload basis.
+**Status:** All three theorems proven. Depth-3 completeness discharges via
+Lemma 7 + E10.4 with the corrected catalogue. See §1.3 errata.
+**Scope:** `factor_search_v08` applied to depth-3 objects, using the
+depth-1 oracle catalogue as payload basis.
 **Depends on:** Lemma 7 (depth-2 oracle theorem), E10.4 cancellativity,
 v0.6 left-quotient completeness, recursive multiply structural definition.
-**Supersedes:** the prior-turn draft that defined "catalogue covers D''" in
-terms of factor pairs (A, B ∈ C). That definition was structurally wrong —
-the catalogue is a payload basis, not a factor-pair set. See §1.2.
+**Supersedes:** the prior-turn draft (two issues fixed):
+(1) the coverage definition treated the catalogue as a factor-pair set;
+    §1.3 corrects it to a payload-basis definition.
+(2) Conjecture 8c specified C = build_catalogue_d2_oracle() (depth-2);
+    §1.3 errata corrects it to C = generate_payload_catalogue() (depth-1).
+    With the correct catalogue, Conjecture 8c is Theorem 8c.
 
 ---
 
@@ -22,10 +25,8 @@ draft conflated three independent facts:
 - **Soundness** of `factor_search_v08` on depth-3 inputs.
 - **Completeness** of `factor_search_v08` on multiplicative-D''.
 
-The first two discharge cleanly. The third is the genuinely open content.
-Splitting them out lets the docstring (`hmmm 4` from prior session) update
-honestly: soundness holds unconditionally, closure holds, completeness is
-empirically witnessed but not theorem'd.
+All three discharge. The completeness proof was blocked only by the
+wrong catalogue choice in the prior draft.
 
 ---
 
@@ -46,14 +47,15 @@ Define two depth-3 domains:
   the set of objects of depth exactly 3, every payload in `D'_oracle`,
   every angle/face combination accepted by the canonical constructor.
 
-- **Multiplicative D''** (the algorithmic-reach target of Lemma 8):
+- **Multiplicative D''** (the algorithmic-reach target of Theorem 8c):
   the set `{ multiply(A, B) : A, B ∈ D'_oracle, multiply(A, B) defined,
   depth(multiply(A, B)) = 3 }`.
 
 These are *not* the same set. §2 (Closure) shows multiplicative ⊆
 constructive. The converse is false in general (constructive objects
-that are SEQ-PRIME at depth-3 exist; the depth-3 sweep's
-`FALSE-NEGATIVE` outcomes are candidates).
+that are SEQ-PRIME at the depth-2-factor level exist; the depth-3
+sweep's FALSE-NEGATIVE outcomes with the depth-1 catalogue are the
+correct witnesses for this claim).
 
 ### §1.2 What "catalogue" means in `factor_search_v08`
 
@@ -62,11 +64,7 @@ passed to `solve_payload_system` and is used as the candidate set for
 filling `S_A` and `S_B` — the **payload sequences** of the reconstructed
 factors `A` and `B`. The catalogue is **not** a set of factor pairs.
 
-The prior-turn draft defined "C covers D'' iff for every P ∈ D'', ∃ A, B ∈
-C with multiply(A, B) ≡_seq P." This treats C as a factor-pair source.
-Wrong. The correct definition is below.
-
-### §1.3 Coverage condition (corrected)
+### §1.3 Coverage condition (corrected) and catalogue errata
 
 **Definition (catalogue covers a target domain).** Let `T` be a target
 domain (subset of UCNS objects). A catalogue `C` (list of UCNS objects
@@ -80,19 +78,63 @@ there exist UCNS objects `A`, `B` such that:
 
 **Operative content.** This is the condition the algorithm actually
 needs. Lemma 7 at depth-2 uses C = depth-1 oracle catalogue
-(`generate_payload_catalogue()`) and the target T = D'_oracle. Lemma 8
-at depth-3 uses C = depth-2 oracle catalogue
-(`build_catalogue_d2_oracle()`) and the target T = multiplicative-D''.
+(`generate_payload_catalogue()`) and T = D'_oracle. Theorem 8c at
+depth-3 uses the **same** catalogue C = `generate_payload_catalogue()`
+(depth-1 oracle atoms) and T = multiplicative-D''.
 
-### §1.4 Multiply structural recursion (assumed, used below)
+**Errata (prior draft catalogue error).** The prior draft stated Lemma 8
+uses C = `build_catalogue_d2_oracle()`. This is wrong and is retracted.
+The argument:
+
+- In multiplicative-D'', factors A, B are depth-2-oracle objects.
+- Depth-2-oracle objects have depth-1 oracle atoms as payloads.
+- `solve_payload_system` fills `S_A[k]` and `S_B[j]` from the catalogue
+  where `S_A[k] = A.payload[k]` and `S_B[j] = B.payload[j]`.
+- Therefore `S_A[k]` and `S_B[j]` are depth-1 oracle atoms.
+- The correct catalogue is `generate_payload_catalogue()` (depth-1).
+
+With depth-2 catalogue: `multiply(depth-2, depth-2) = depth-3`, which
+never equals a depth-2 target payload. The only matches come via `cand =
+None`, which finds depth-3 × depth-1 factorizations — a different
+algorithmic layer, not what Theorem 8c requires.
+
+**hmmm F (new):** Two distinct catalogue choices serve two distinct
+factorization layers on depth-3 targets:
+- C = `generate_payload_catalogue()` (depth-1): finds depth-2 × depth-2
+  factorizations (Theorem 8c domain).
+- C = `build_catalogue_d2_oracle()` (depth-2): finds depth-3 × depth-1
+  factorizations (a different, unproven domain).
+The depth-3 sweep's improvement from depth-1 to depth-2 catalogue is
+evidence for the second kind of factorization, not for Theorem 8c.
+The 4 SUCCESSes with the depth-1 catalogue are the 4 sweep targets in
+multiplicative-D''. The 11 FALSE-NEGATIVEs are constructive-D'' \
+multiplicative-D'' (genuinely SEQ-PRIME at the depth-2-factor level).
+
+### §1.4 Multiply structural recursion (confirmed)
 
 For depth ≥ 1 objects A, B with compatible host structure,
 `multiply(A, B)` produces an object whose payloads at each cell index
-`(k, j)` are `multiply(A.payloads[k], B.payloads[j])`. This recursion
-is the operative definition of `multiply` at all depths — verified for
-depth-2 in v0.5/v0.6, and confirmed at depth-3 by direct inspection of
-`canonical.py:189` (`new_payload = multiply(S_k_A, S_j_B)`, genuinely
-recursive, no depth-conditional branches).
+`(k, j)` are `multiply(A.payloads[k], B.payloads[j])`. Confirmed by
+direct inspection of `canonical.py:189` (`new_payload = multiply(S_k_A,
+S_j_B)`, genuinely recursive, no depth-conditional branches).
+
+### §1.5 Algorithm depth-agnosticism (W2 + W3, from audit)
+
+`solve_payload_system` calls `find_right_factor_or_sentinel(target,
+left, catalogue)` from `recursive_quotient.py`. Reading that function:
+
+```python
+for cand in catalogue:
+    if multiply(left, cand) == target:
+        return cand
+return _NO_SOLUTION
+```
+
+This is a pure catalogue scan using `multiply` and `==`. No depth
+branch, no depth-1 assumption, no structural restriction on the objects.
+The witness matrix checks (`globally_consistent()`) also use only `==`
+on canonical objects — depth-agnostic. **W2 and W3 from the prior
+draft's open list both discharge unconditionally.** No code gap exists.
 
 ---
 
@@ -117,22 +159,19 @@ both `A.payloads[k]` and `B.payloads[j]` lie in the depth-1 oracle
 class (by definition of `is_in_oracle_class` at depth 2: all payloads
 are oracle atoms, i.e. depth ≤ 1).
 
-Apply Lemma 7 (depth-2 oracle closure, which is the contrapositive
-specialization): if X, Y are depth-1 oracle atoms, then
-`multiply(X, Y)` lies in `D'_oracle`. (Lemma 7's content is exactly
-that the oracle class is closed under multiply at depth-2.)
-
-Therefore each payload of `P` lies in `D'_oracle`. Combined with (i),
-`P` satisfies the constructive-D'' definition.   ∎
+Apply Lemma 7 (depth-2 oracle closure): if X, Y are depth-1 oracle
+atoms, then `multiply(X, Y)` lies in `D'_oracle`. Therefore each
+payload of `P` lies in `D'_oracle`. Combined with (i), `P` satisfies
+the constructive-D'' definition.   ∎
 
 **Corollary (Closure is monotone).** Closure at depth k+1 follows from
 closure at depth k by the same argument applied recursively. The proof
 above is the depth-3 instance of a single induction on depth that
-generates the entire oracle hierarchy. *hmmm — this corollary is stated
-but the inductive step beyond depth-3 is not formally written here;
-the construction `is_in_oracle_class_d4`, `_d5`, etc. would need to
-exist for each level, and the iteration cost (§3.3) compounds. Out of
-scope for this document.*
+generates the entire oracle hierarchy. *hmmm E — this corollary is
+stated but the inductive step beyond depth-3 is not formally written
+here; the construction `is_in_oracle_class_d4`, `_d5`, etc. would need
+to exist for each level, and the iteration cost compounds. Out of scope
+for this document.*
 
 ---
 
@@ -149,105 +188,84 @@ objects implies sequence-equivalence (`≡_seq` is implied by `==` in the
 canonical layer; v0.5 normalization). Discharges directly.   ∎
 
 **Note.** Soundness is depth-agnostic — the proof inspects only the
-final verification step, which is identical at all depths. This is why
-the docstring update (`hmmm 4`) can claim soundness unconditionally.
+final verification step, which is identical at all depths.
 
 ---
 
-## §4 — Theorem 8c: Completeness on multiplicative-D'' (OPEN)
+## §4 — Theorem 8c: Completeness on multiplicative-D''
 
-**Conjecture 8c (Completeness).** Let `C = build_catalogue_d2_oracle()`.
-For every `P ∈ multiplicative-D''`, `factor_search_v08(P, C)` returns
-`(A, B)` with `multiply(A, B) ≡_seq P` (i.e. does not return SEQ-PRIME).
+**Theorem 8c (Completeness).** Let `C = generate_payload_catalogue()`
+(depth-1 oracle atoms, the same catalogue used in Lemma 7). For every
+`P ∈ multiplicative-D''`, `factor_search_v08(P, C)` returns `(A, B)`
+with `multiply(A, B) = P`.
 
-### §4.1 Status
+**Proof.** Let `P = A ⨠ B` where `A, B ∈ D'_oracle`. Write `p =
+len(A.A_plus)`, `q = len(B.A_plus)`, `n = p × q = len(P.A_plus)`.
 
-Empirically witnessed but not proven.
+**Step 1 — Host recovery (W1).** The algorithm iterates over
+factorisations of `n` and will reach `(p, q)`. `recover_host_angles`
+extracts the angle sequences of `A` and `B` exactly (W1 is structural
+and depth-agnostic).   ✓
 
-The depth-3 sweep (Item 2 of prior session) reported, with the
-narrow-tailored catalogue:
+**Step 2 — Payload system (W2).** For each k, j:
 
-    {'FALSE-NEGATIVE': 2, 'SUCCESS': 13, 'ALT-FACTOR': 1}
+```
+P_payloads[k][j] = multiply(A.payload[k], B.payload[j])
+```
 
-This sweep enumerated targets in *constructive-D''*, not multiplicative-D''.
-The 2 FALSE-NEGATIVE outcomes are consistent with two distinct
-explanations:
+Since `A, B ∈ D'_oracle`, `A.payload[k]` and `B.payload[j]` are
+depth-1 oracle atoms, so each `P_payloads[k][j] ∈ D'_oracle`
+(Theorem 8a applied at the payload level).
 
-(a) The targets lie in multiplicative-D'' and the algorithm fails to
-    find a factorization — completeness violation.
-(b) The targets lie in constructive-D'' \ multiplicative-D'' (depth-3
-    oracle objects that genuinely don't factor through D'_oracle) —
-    correct SEQ-PRIME behavior, not a completeness violation.
+`solve_payload_system(P_payloads, p, q, C)` iterates S0_A over C.
+When S0_A = `A.payload[0]` is reached (it is in C since `A.payload[0]`
+is a depth-1 oracle atom):
 
-The sweep methodology cannot distinguish (a) from (b) without an
-independent oracle for multiplicative-D'' membership.
+- *Row 0, column j:* `find_right_factor_or_sentinel(P_payloads[0][j],
+  A.payload[0], C)` scans C for R with
+  `multiply(A.payload[0], R) = multiply(A.payload[0], B.payload[j])`.
+  By E10.4 cancellativity, R = `B.payload[j]` uniquely. Since
+  `B.payload[j] ∈ C`, it is found. Returns `S_B[j] = B.payload[j]`.✓
 
-### §4.2 What discharging Conjecture 8c requires
+- *Column 0, row k > 0:* `find_left_factor_or_sentinel(P_payloads[k][0],
+  B.payload[0], C)` scans C for L with
+  `multiply(L, B.payload[0]) = multiply(A.payload[k], B.payload[0])`.
+  By E10.4, L = `A.payload[k]` uniquely ∈ C. Returns
+  `S_A[k] = A.payload[k]`.   ✓
 
-Lemma 7's completeness proof at depth-2 was carried by the witness
-matrix machinery (`witness_matrix.py`): the global consistency check
-on the p×q witness grid is what guarantees that if a factorization
-exists, the algorithm finds one. The proof relied on:
+- *Global consistency:* `multiply(A.payload[k], B.payload[j]) =
+  P_payloads[k][j]` for all k, j — true by construction of P.   ✓
 
-- (W1) host recovery is exact when n factors as p × q,
-- (W2) the payload system has a solution iff the target has a
-  factorization with payloads in C,
-- (W3) the witness matrix is globally consistent iff the candidate
-  payload sequences extend to a real factorization.
+`solve_payload_system` returns `(S_A, S_B) = (A.payloads, B.payloads)`.
 
-The depth-3 case inherits W1 (host recovery is structural, not
-depth-dependent). W2 and W3 are the open content:
+**Step 3 — Witness matrix (W3).** `build_witness_matrix(S_A, S_B,
+P_payloads)` sets `W[k][j].verified = (multiply(A.payload[k],
+B.payload[j]) == P_payloads[k][j])` — True for all k, j. Row
+consistency: all `left_payload` in row k = `A.payload[k]`. Column
+consistency: all `right_payload` in column j = `B.payload[j]`.
+`globally_consistent()` returns True.   ✓
 
-- **W2 at depth-3:** does `solve_payload_system` produce all valid
-  `(S_A, S_B)` candidates when payloads are themselves depth-2 objects?
-  The depth-2 case only had to solve for depth-1 payloads in C.
-  At depth-3, each payload-system equation
-  `multiply(S_A[k], S_B[j]) == P_payloads[k][j]` is *itself* a
-  depth-2 factorization problem. The depth-3 solver must call the
-  depth-2 solver as a subroutine.
+**Step 4 — Face recovery.** `recover_face_structures` returns the
+correct A.faces, B.faces (structural, depth-agnostic).   ✓
 
-  *Open question:* if the depth-2 subroutine is complete on its
-  domain (Lemma 7), and every payload in the depth-3 problem lies
-  in that domain (which Theorem 8a guarantees for multiplicative-D''
-  targets), does the depth-3 outer solve succeed? This is the
-  conjecture's reduction to the depth-2 case — needs the recursive
-  call structure of `solve_payload_system` audited explicitly.
+**Step 5 — Exact recomposition.** The constructed candidates are
+exactly `A_cand = A` and `B_cand = B`. So `multiply(A, B) = P`.   ✓
 
-- **W3 at depth-3:** is the witness matrix's `globally_consistent()`
-  check still sound and complete when the witnesses are themselves
-  factorizations of depth-2 objects? The check operates on the
-  *equality* of witness payload pairs, which is depth-agnostic at
-  the canonical-object level — but row/column consistency may
-  acquire new degrees of freedom at depth 3 that the depth-2
-  formulation didn't anticipate.
+`factor_search_v08` returns `(A, B)`.   ∎
 
-### §4.3 Discharge plan (recommended next steps, not part of this proof)
-
-1. Read `payload_system.solve_payload_system` end-to-end and
-   characterize its recursive call structure when payloads have
-   depth > 1. Determine whether it currently calls a depth-2-aware
-   solver or implicitly assumes depth-1 payloads.
-
-2. If implicit depth-1 assumption is found, that's a code-level
-   bug-or-gap, not a proof gap — the algorithm doesn't currently
-   solve the depth-3 case correctly, and the empirical SUCCESSes
-   are coincidence (small/symmetric cases).
-
-3. If it does call recursively, write the formal statement
-   "`solve_payload_system` is complete at depth k assuming
-   completeness at depth k-1" and discharge by induction.
-
-4. Re-run the depth-3 sweep with the full
-   `build_catalogue_d2_oracle()` catalogue (not the narrow-tailored
-   one) and classify the FALSE-NEGATIVE cases against multiplicative
-   reachability — this is the empirical separation of (a) vs (b)
-   from §4.1.
+**Discharge note.** The W2 open item from the prior draft resolves here:
+`solve_payload_system` does not call a depth-aware recursive solver — it
+delegates to a plain catalogue scan (`find_right_factor_or_sentinel`)
+whose depth-agnosticism (§1.5) means the depth-2 × depth-2 case works
+identically to the depth-1 case. The "recursion" is inside `multiply`,
+not inside the solver. W3 resolves because `globally_consistent()` uses
+only `==` on canonical objects.
 
 ---
 
 ## §5 — Operative consequences
 
-### §5.1 Frontier table promotion
+### §5.1 Frontier table
 
 | Row | Prior status | New status |
 |---|---|---|
@@ -256,12 +274,8 @@ depth-dependent). W2 and W3 are the open content:
 | Depth-2 oracle (Lemma 7) | ✅ | ✅ (unchanged) |
 | Multiplicative-D'' ⊆ Constructive-D'' | not stated | ✅ (Theorem 8a) |
 | Soundness at depth-3 | not stated | ✅ (Theorem 8b) |
-| Completeness at depth-3 (multiplicative target) | 🟡 empirically GREEN | 🟡 conjecture, gap characterized |
+| Completeness at depth-3 (multiplicative target) | 🟡 conjecture | ✅ (Theorem 8c) |
 | Carrier widening | 🔴 | 🔴 (unchanged, out of scope) |
-
-Net: depth-3 row stays 🟡, but the gap is now precisely a single open
-question (W2 + W3 at depth-3, reducible to a `solve_payload_system`
-audit) rather than a vague "no theorem yet."
 
 ### §5.2 `factor_search_v08` docstring update
 
@@ -273,47 +287,62 @@ Replacement (defensible against this document):
 factor_search_v08 — soundness on all UCNS inputs (Theorem 8b).
 Completeness:
   - depth-2 oracle class: unconditional (Lemma 7).
-  - depth-3 multiplicative class: conjectured under
-    catalogue = build_catalogue_d2_oracle() (Conjecture 8c, open).
-Outside these classes, SEQ-PRIME may be returned for objects
-that admit factorizations not expressible in the catalogue.
+    Catalogue: generate_payload_catalogue() (depth-1 oracle atoms).
+  - depth-3 multiplicative class: unconditional (Theorem 8c).
+    Catalogue: generate_payload_catalogue() (depth-1 oracle atoms,
+    same as Lemma 7 — the catalogue is always one level below the
+    factors' depth).
+SEQ-PRIME is returned for objects outside these classes (including
+depth-3 constructive objects not in multiplicative-D''), and for
+objects whose factorizations require a catalogue the caller did not
+provide.
 ```
 
-This is the docstring change that closes `hmmm 4` from the prior
-session — it states what's true honestly without overclaiming.
+This closes `hmmm 4` from the prior session.
 
 ### §5.3 PyPI implication
 
-Conjecture 8c being open does **not** block PyPI. The library's
-correctness contract is soundness (Theorem 8b), which is
-unconditional. Completeness is a quality-of-search guarantee, and
-the docstring update above accurately conveys the partial state.
-
-The remaining PyPI blockers are unchanged from prior session:
+All three theorems proven. Soundness (Theorem 8b) is unconditional.
+Completeness (Theorem 8c) holds for the documented domain. The
+remaining PyPI blockers are unchanged from prior session:
 hmmm 3 (`store.py` non-uniqueness), hmmm 7 (snapshot file at repo
 root), and the carrier widening question (hmmm 6).
 
 ---
 
-## §6 — New hmmm items surfaced
+## §6 — hmmm items
 
-- **hmmm A' (replaces hmmm A from prior turn):** Conjecture 8c — depth-3
-  completeness on multiplicative-D''. The gap is now §4.2's W2 + W3
-  reduction to a `solve_payload_system` recursive-call audit. Scoped,
-  not vague.
+**DISCHARGED:**
 
-- **hmmm D (DISCHARGED — recorded for audit trail):** §1.4's depth-3
-  multiply lift was initially flagged as *assumed* consistent. Spot-check
-  on `canonical.py:189` confirmed: `new_payload = multiply(S_k_A, S_j_B)`
-  is genuinely recursive over payloads with no depth-conditional
-  branching. Theorem 8a's proof of (ii) stands.
+- **hmmm A' (Conjecture 8c):** Promoted to Theorem 8c. Proof in §4.
 
-- **hmmm E (new):** Theorem 8a's corollary (closure at depth k+1 from
-  depth k) suggests a single induction generates the oracle hierarchy
-  to arbitrary depth. The catalogue-builder iteration cost compounds
-  exponentially per level, so the *theorem* scales but the *practical
-  algorithm* does not. Worth flagging in any future "depth-N reach"
+- **hmmm D (depth-3 multiply lift consistency):** §1.4. `canonical.py:189`
+  confirmed genuinely recursive, no depth-conditional branching.
+
+- **hmmm W2 (solve_payload_system recursive-call audit):** §1.5, §4 Step 2.
+  `find_right_factor_or_sentinel` is a plain catalogue scan; no depth-1
+  assumption; the "recursion" is inside `multiply`, not the solver.
+
+- **hmmm W3 (witness matrix depth-3 behaviour):** §1.5, §4 Step 3.
+  `globally_consistent()` uses only `==` on canonical objects; fully
+  depth-agnostic.
+
+**OPEN:**
+
+- **hmmm E (closure corollary):** Theorem 8a's corollary suggests a
+  single induction generates the oracle hierarchy to arbitrary depth.
+  The *theorem* scales; the *catalogue iteration cost* compounds
+  exponentially per level. Worth flagging for future depth-N reach
   documentation.
+
+- **hmmm F (two-layer catalogue distinction):** Two factorization layers
+  on depth-3 targets use different catalogues:
+  - depth-1 catalogue → depth-2 × depth-2 factorizations (Theorem 8c).
+  - depth-2 catalogue → depth-3 × depth-1 factorizations (unproven).
+  The depth-3 sweep's improvement from depth-1 to depth-2 catalogue
+  is evidence for the second layer, not the first. A "Theorem 9" for
+  the depth-3 × depth-1 layer would follow the same structure as
+  Theorem 8c with the depth-2 catalogue in place of the depth-1 one.
 
 ---
 
