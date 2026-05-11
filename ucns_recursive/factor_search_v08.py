@@ -28,8 +28,7 @@ For each non-trivial factorisation  n = p × q  of  n = len(P.A_plus):
         multiply(A_candidate, B_candidate) == P
 
     Factorizations where either A or B is the unit (``is_unit`` returns
-    True) are skipped; the loop covers p=1 and p=n-1 so that non-unit
-    single-cell factors are reachable.
+    True) are skipped.
 
 Loop ordering
 -------------
@@ -41,17 +40,28 @@ first it would preempt the intended p≥2 factorisation for objects
 whose left factor has length ≥ 2.  For n=2 (only valid split is 1×2)
 range(2,2) is empty so p=1 is the sole candidate.
 
-Completeness
-------------
-    factor_search_v08 — soundness on all UCNS inputs (Theorem 8b).
-    Completeness:
-      - depth-2 oracle class: unconditional (Lemma 7).
-        Catalogue: generate_payload_catalogue() (depth-1 oracle atoms).
-      - depth-n multiplicative class (∀n ≥ 2): unconditional (Theorem N).
-        Catalogue: the depth-(n-2) oracle catalogue.
-    SEQ-PRIME is returned for objects outside these classes, and for
-    objects whose factorizations require a catalogue the caller did
-    not provide.
+Soundness
+---------
+    Unconditional (Theorem 8b): `factor_search_v08` returns `(A, B)` only
+    when `multiply(A, B) == P`. Verified at step 5.
+
+Completeness (Theorem N)
+------------------------
+    If the catalogue C contains every payload appearing recursively in
+    some valid (A, B) with multiply(A, B) = P, then factor_search_v08(P, C)
+    returns valid factors.
+
+    In practice:
+      - depth-2 targets: C = generate_payload_catalogue() (Lemma 7;
+        depth-1 oracle atoms cover all payloads of depth-2 factors).
+      - depth-3 asymmetric (depth-3 × depth-≤2): extend C with the
+        depth-2 payloads of the depth-3 factor (Theorem 9; 6/6 empirical
+        SUCCESS in milliseconds with minimal catalogues).
+      - depth-k targets: extend C to include depth-(k-1) payloads of the
+        factors. No depth-conditional algorithm changes needed.
+
+    SEQ-PRIME is returned when no non-trivial factorization exists whose
+    payloads are all in C.
 """
 
 from __future__ import annotations
@@ -85,6 +95,9 @@ def factor_search_v08(
     catalogue:
         Payload candidates to use.  If ``None`` the frozen-domain
         catalogue from ``domains.generate_payload_catalogue`` is used.
+        For depth-3+ targets, extend this catalogue with the depth-2+
+        payloads of the expected factors (see Theorem N in
+        ``ucns-theorem-n.md``).
 
     Returns
     -------

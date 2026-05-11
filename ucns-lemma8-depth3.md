@@ -1,8 +1,16 @@
 # UCNS v0.8 — Lemma 8: Depth-3 Factor Search
 
+> **SUPERSEDED BY `ucns-theorem-n.md`.**
+> Theorem 8c (§4) is vacuously true: multiplicative-D'' = ∅ because
+> `multiply(D'_oracle, D'_oracle)` produces depth-≤2 output (symmetric
+> multiplication preserves depth). The depth-3 cases of interest are
+> asymmetric and are covered by Theorem N / Theorem 9. See §6.1 of
+> `ucns-theorem-n.md` for the retraction. Theorems 8a and 8b are
+> unaffected. This document is preserved as an audit trail.
+
 **Status:** All three theorems proven. Depth-3 completeness holds
 unconditionally after the loop-order fix in `factor_search_v08`
-(see §1.6).
+(see §1.6). Theorem 8c now known vacuous (see header above).
 **Scope:** `factor_search_v08` applied to depth-3 objects, using the
 depth-1 oracle catalogue as payload basis.
 **Depends on:** Lemma 7 (depth-2 oracle theorem), E10.4 cancellativity,
@@ -25,7 +33,7 @@ draft conflated three independent facts:
 - **Soundness** of `factor_search_v08` on depth-3 inputs.
 - **Completeness** of `factor_search_v08` on multiplicative-D''.
 
-All three discharge.
+All three discharge. Theorem 8c's discharge is vacuous (see header).
 
 ---
 
@@ -50,8 +58,8 @@ Define two depth-3 domains:
   the set `{ multiply(A, B) : A, B ∈ D'_oracle, multiply(A, B) defined,
   depth(multiply(A, B)) = 3 }`.
 
-These are *not* the same set. §2 (Closure) shows multiplicative ⊆
-constructive. The converse is false in general.
+  **Note:** This set is empty. Symmetric multiplication preserves depth;
+  `D'_oracle × D'_oracle` produces depth-≤2. See `ucns-theorem-n.md §6.1`.
 
 ### §1.2 What "catalogue" means in `factor_search_v08`
 
@@ -118,19 +126,11 @@ for p in (list(range(2, n)) + ([1] if n >= 2 else [])):
 ```
 Balanced factorisations (`p ≥ 2`) are tried first; `p=1` is the explicit
 fallback. For `n=1`: loop is empty → SEQ-PRIME (length-1 is seq-prime).
-For `n=2`: `range(2,2)=[]` → only `p=1` is tried (intended fix for
-2-cell M_3 targets; also discovers face-flip compositeness of flat
-2-cell objects). For `n≥4`: the intended `p≥2` factorisation is found
-before `p=1` is reached.
-
-The `is_unit(A_cand)` gate at step 5 remains unchanged: it filters
-the true-unit face option (A_faces=[0], normalizes to `n_min=1`,
-`face=[0]`) for all n. Non-unit 1-cell factors (`face=[1]` or
-`payload≠None`) correctly reach step 5.
+For `n=2`: `range(2,2)=[]` → only `p=1` is tried. For `n≥4`: the
+intended `p≥2` factorisation is found before `p=1` is reached.
 
 **Mathematical corollary.** Every length-≥2 UCNSObject is seq-composite
-via the 1-cell face-flip factorisation (1-cell `face=[1]`) ×
-(face-complemented B). Only length-1 objects are seq-prime.
+via the 1-cell face-flip factorisation. Only length-1 objects are seq-prime.
 
 ---
 
@@ -147,6 +147,9 @@ payloads are depth-1 oracle atoms. By Lemma 7 oracle closure,
 `P` lies in `D'_oracle`. Combined with `depth(P) = 3` (given) and the
 canonical well-formedness of `multiply`'s output, `P ∈` constructive-D''. ∎
 
+*(Note: the antecedent "has depth 3" is never satisfied for A, B ∈ D'_oracle.
+Theorem 8a is vacuously true for the same reason as Theorem 8c.)*
+
 ---
 
 ## §3 — Theorem 8b: Soundness
@@ -156,6 +159,8 @@ if `factor_search_v08(P, C)` returns `(A, B)`, then `multiply(A, B) = P`.
 
 **Proof.** Step 5 is the literal check `multiply(A_cand, B_cand) == P`.
 The function returns only when this holds. ∎
+
+*(Theorem 8b is unconditional and not affected by the vacuity of Theorem 8c.)*
 
 ---
 
@@ -192,6 +197,11 @@ When `solve_payload_system` tries `S0_A = A.payload[0] ∈ C`:
 are both False (A, B ∈ D'_oracle are non-unit by hypothesis).
 `multiply(A, B) = P`. Returns `(A, B)`. ∎
 
+*(This proof discharges over an empty domain. Multiplicative-D'' = ∅ because
+`multiply(D'_oracle, D'_oracle)` produces depth-≤2, never depth-3. The proof
+steps are all correct; the domain assumption in the theorem statement is vacuous.
+See `ucns-theorem-n.md §6.1`.)*
+
 ---
 
 ## §5 — Operative consequences
@@ -203,15 +213,14 @@ are both False (A, B ∈ D'_oracle are non-unit by hypothesis).
 | Cancellativity (E10.4) | ✅ |
 | Right-quotient completeness | ✅ |
 | Depth-2 oracle (Lemma 7) | ✅ |
-| Multiplicative-D'' ⊆ Constructive-D'' | ✅ (Theorem 8a) |
+| Multiplicative-D'' ⊆ Constructive-D'' | ✅ (Theorem 8a, vacuous) |
 | Soundness at depth-3 | ✅ (Theorem 8b) |
-| Completeness at depth-3 (multiplicative target) | ✅ (Theorem 8c) |
-| Carrier widening | 🔴 out of scope |
+| Completeness at depth-3 (multiplicative target) | ✅ (Theorem 8c, vacuous) |
+| Catalogue-sufficient completeness (Theorem N) | ✅ see `ucns-theorem-n.md` |
 
 ### §5.2 `factor_search_v08` docstring
 
-Updated in the file to reflect Theorem N coverage (all depths).
-Hmmm 4 closed.
+Updated in the file. Hmmm 4 closed.
 
 ### §5.3 PyPI blockers
 
@@ -223,7 +232,7 @@ hmmm 7 (snapshot file at repo root).
 ## §6 — hmmm items
 
 **DISCHARGED:**
-- hmmm A' (Conjecture 8c) → Theorem 8c (§4).
+- hmmm A' (Conjecture 8c) → Theorem 8c (§4, vacuous; see Theorem N).
 - hmmm D (multiply lift consistency): canonical.py:189 confirmed recursive.
 - hmmm W2: find_right_factor_or_sentinel is depth-agnostic catalogue scan.
 - hmmm W3: globally_consistent() is depth-agnostic.
@@ -231,9 +240,9 @@ hmmm 7 (snapshot file at repo root).
 - **Loop range and order premise error**: fixed by `list(range(2,n))+[1]`
   ordering + is_unit gate at step 5.
 
-**OPEN:**
-- hmmm E: closure corollary to arbitrary depth (theorem scales, iteration cost compounds).
-- hmmm F: asymmetric factorization layers (depth-3 × depth-1, "Theorem 9").
+**OPEN (see ucns-theorem-n.md §8):**
+- hmmm E: closure corollary to arbitrary depth.
+- hmmm F: asymmetric factorization layers → Theorem 9 = Theorem N instance.
 
 ---
 
