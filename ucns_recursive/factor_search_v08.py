@@ -103,6 +103,13 @@ def factor_search_v08(
     -------
     ``(A, B)`` if a non-trivial factorisation is found, otherwise the
     string sentinel ``"SEQ-PRIME"``.
+
+    **Non-uniqueness:** the returned pair is the *first* valid
+    factorisation found under the current loop ordering (balanced
+    splits p ≥ 2 first, p = 1 last).  Multiple valid factorisations
+    may exist for the same ``P``; no canonical choice is made.
+    Use ``store.factor_decompose`` with an explicit catalogue to
+    enumerate all catalogue-bounded factorisations.
     """
     if catalogue is None:
         catalogue = generate_payload_catalogue()

@@ -299,6 +299,13 @@ class UCNSStore:
         an "ordinary catalogue-coverage question, not an algebraic
         one."
 
+        **Non-uniqueness:** factorization is generally not unique —
+        the same ``P`` may admit multiple valid ``(A, B)`` pairs.
+        This method returns *all* pairs found for the given catalogue,
+        making non-uniqueness explicit in the result.  The caller is
+        responsible for choosing among them; no canonical ordering is
+        defined.
+
         Building a covering catalogue is the responsibility of the
         caller; ``ucns_recursive.catalogue`` provides enumeration
         helpers for the depth-1 verified domain.

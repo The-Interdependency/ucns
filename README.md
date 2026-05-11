@@ -82,6 +82,8 @@ result = factor_search_v08(P)
 # Returns (A_recovered, B_recovered)  or  "SEQ-PRIME"
 ```
 
+Returns **a** valid factorisation — the first one found under the loop ordering (balanced p ≥ 2 splits first, p = 1 last). Factorisation is not generally unique; other valid pairs may exist. Use `store.factor_decompose` with an explicit catalogue to enumerate all catalogue-bounded factorisations.
+
 The solver implements the full witness-matrix pipeline:
 
 1. **Host recovery** — extract candidate A/B angle sequences from P
