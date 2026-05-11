@@ -4,8 +4,10 @@
 **Status:** Proven. Closes the ∀n generalization of Theorem 8c.
 **Depends on:** Theorem 8c (depth-3 completeness), E10.4 (cancellativity),
 Theorem 8b (soundness, unconditional).
-**Code dependency:** requires `factor_search_v08` loop `range(1, n)` (fixed;
-prior `range(2, n)` excluded non-unit 1-cell factors).
+**Code dependency:** requires `factor_search_v08` loop order
+`list(range(2,n)) + [1]` (fixed; prior `range(2,n)` excluded non-unit
+1-cell factors, and naive `range(1,n)` had wrong ordering — see
+`ucns-lemma8-depth3.md §1.6`).
 
 ---
 
@@ -56,8 +58,11 @@ $C_{k-1}$; in particular $A.\text{payload}[0] \in C_{k-1}$.
 `factor_search_v08(P, C_{k-1})` proceeds as in Theorem 8c with the
 catalogue index shifted:
 
-1. **Candidate scan.** The loop `range(1, n)` reaches $p = |A.A\_plus|$
-   (since $1 \le p < n$; non-unit filtering is by `is_unit` at step 5).
+1. **Candidate scan.** The loop `list(range(2,n)) + [1]` reaches
+   $p = |A.A\_plus|$. If $p \ge 2$, it appears in `range(2,n)`
+   (since $p < n$). If $p = 1$, it is the explicit final element.
+   In both cases $p$ is reached before SEQ-PRIME is returned.
+   Non-unit filtering is by `is_unit` at step 5.
    Because $A.\text{payload}[0] \in C_{k-1}$, the inner loop reaches
    the true value.
 

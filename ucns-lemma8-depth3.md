@@ -1,16 +1,17 @@
 # UCNS v0.8 — Lemma 8: Depth-3 Factor Search
 
 **Status:** All three theorems proven. Depth-3 completeness holds
-unconditionally after the `range(2,n)` → `range(1,n)` code fix
+unconditionally after the loop-order fix in `factor_search_v08`
 (see §1.6).
 **Scope:** `factor_search_v08` applied to depth-3 objects, using the
 depth-1 oracle catalogue as payload basis.
 **Depends on:** Lemma 7 (depth-2 oracle theorem), E10.4 cancellativity,
 v0.6 left-quotient completeness, recursive multiply structural definition.
-**Supersedes:** prior drafts with two issues fixed:
+**Supersedes:** prior drafts with three issues fixed:
 (1) coverage definition treated catalogue as factor-pair set (§1.3).
 (2) Conjecture 8c specified wrong catalogue (depth-2 instead of depth-1) (§1.3).
-(3) algorithm loop `range(2,n)` excluded non-unit 1-cell factors (§1.6, now fixed).
+(3) algorithm loop `range(2,n)` excluded non-unit 1-cell factors; ordering
+fix prevents the face-flip fallback from preempting intended p≥2 paths (§1.6).
 
 ---
 
@@ -85,10 +86,10 @@ catalogue scan using `multiply` and `==`. No depth branch. The witness
 matrix checks use only `==` on canonical objects. Both W2 and W3
 discharge unconditionally.
 
-### §1.6 Loop range fix (premise error corrected)
+### §1.6 Loop order and range fix (premise error corrected)
 
 The prior algorithm had `for p in range(2, n)`. This excluded `p = 1`,
-making factorizations where one factor has exactly 1 cell unreachable.
+making factorizations where the left factor has exactly 1 cell unreachable.
 
 `is_unit` in `canonical.py` returns True only for the specific 1-cell
 object with `angle=0, payload=None, face=[0], n_min=1`. Non-unit 1-cell
@@ -102,9 +103,34 @@ loop `range(2,2)` is empty and the algorithm returns SEQ-PRIME for every
 (verified by reading the arithmetic: A_angles = [0], B_angles =
 P's full angle sequence; face assignment is consistent).
 
-**Fix:** `factor_search_v08.py` loop changed to `range(1, n)`. The
-existing `is_unit(A_cand)` check at step 5 correctly filters the true
-unit; non-unit 1-cell factors are now reachable.
+**Critical ordering requirement.** For `p=1` with `S_A=[None]`,
+`solve_payload_system` always succeeds (returns `S_B = P`'s payload
+row). The face-flip non-unit (`face=[1]`, normalizes to `n_min=1`)
+passes `is_unit()` (returns False) and satisfies
+`multiply(A_flip, B_flip) == P`. If `p=1` were tried first, it would
+preempt the intended `p≥2` factorisation for objects with `|A|≥2`,
+returning a `|P|`-cell B outside D' (violating `|A⁺| ≤ 3` for
+large products).
+
+**Fix:** the loop is now:
+```python
+for p in (list(range(2, n)) + ([1] if n >= 2 else [])):
+```
+Balanced factorisations (`p ≥ 2`) are tried first; `p=1` is the explicit
+fallback. For `n=1`: loop is empty → SEQ-PRIME (length-1 is seq-prime).
+For `n=2`: `range(2,2)=[]` → only `p=1` is tried (intended fix for
+2-cell M_3 targets; also discovers face-flip compositeness of flat
+2-cell objects). For `n≥4`: the intended `p≥2` factorisation is found
+before `p=1` is reached.
+
+The `is_unit(A_cand)` gate at step 5 remains unchanged: it filters
+the true-unit face option (A_faces=[0], normalizes to `n_min=1`,
+`face=[0]`) for all n. Non-unit 1-cell factors (`face=[1]` or
+`payload≠None`) correctly reach step 5.
+
+**Mathematical corollary.** Every length-≥2 UCNSObject is seq-composite
+via the 1-cell face-flip factorisation (1-cell `face=[1]`) ×
+(face-complemented B). Only length-1 objects are seq-prime.
 
 ---
 
@@ -142,10 +168,12 @@ For every `P ∈ multiplicative-D''`, `factor_search_v08(P, C)` returns
 **Proof.** Let `P = A ⨠ B` where `A, B ∈ D'_oracle`, `p = |A.A_plus|`,
 `q = |B.A_plus|`, `n = pq`.
 
-**Step 1.** The loop `range(1, n)` reaches `p` (since `1 ≤ p < n`
-because `q ≥ 1` and non-triviality is enforced by the `is_unit` check,
-not by the loop bound). Host recovery extracts `A.angles`, `B.angles`
-exactly (W1, structural, depth-agnostic). ✓
+**Step 1.** The loop `list(range(2,n)) + [1]` reaches `p`. If `p ≥ 2`,
+`p` is in `range(2,n)` (since `p < n` because `q ≥ 1`). If `p = 1`,
+`p` is the explicit final element. In both cases `p` is reached before
+the SEQ-PRIME return. Non-triviality of both factors is enforced by
+`is_unit` at step 5, not by the loop bound. Host recovery extracts
+`A.angles`, `B.angles` exactly (W1, structural, depth-agnostic). ✓
 
 **Step 2.** `P_payloads[k][j] = multiply(A.payload[k], B.payload[j])`.
 When `solve_payload_system` tries `S0_A = A.payload[0] ∈ C`:
@@ -200,7 +228,8 @@ hmmm 7 (snapshot file at repo root).
 - hmmm W2: find_right_factor_or_sentinel is depth-agnostic catalogue scan.
 - hmmm W3: globally_consistent() is depth-agnostic.
 - hmmm 4 (factor_search_v08 docstring): updated in file.
-- **Loop range premise error**: fixed by range(1,n) + is_unit gate.
+- **Loop range and order premise error**: fixed by `list(range(2,n))+[1]`
+  ordering + is_unit gate at step 5.
 
 **OPEN:**
 - hmmm E: closure corollary to arbitrary depth (theorem scales, iteration cost compounds).

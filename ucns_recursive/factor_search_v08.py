@@ -31,6 +31,16 @@ For each non-trivial factorisation  n = p × q  of  n = len(P.A_plus):
     True) are skipped; the loop covers p=1 and p=n-1 so that non-unit
     single-cell factors are reachable.
 
+Loop ordering
+-------------
+Balanced factorisations (p ≥ 2) are tried first; p=1 is the explicit
+fallback appended at the end.  This ordering matters: for p=1 with
+S_A=[None], solve_payload_system always finds a consistent solution
+(S_B = P's payload row) via the face-flip path.  If p=1 were tried
+first it would preempt the intended p≥2 factorisation for objects
+whose left factor has length ≥ 2.  For n=2 (only valid split is 1×2)
+range(2,2) is empty so p=1 is the sole candidate.
+
 Completeness
 ------------
     factor_search_v08 — soundness on all UCNS inputs (Theorem 8b).
@@ -86,10 +96,10 @@ def factor_search_v08(
 
     n = len(P.A_plus)
 
-    # Try all factorisations p*q = n, including p=1 (single-cell factor A).
-    # Non-unit filtering is handled by the is_unit check at step 5;
-    # starting at p=1 ensures non-unit single-cell objects are reachable.
-    for p in range(1, n):
+    # Try balanced factorisations first (p ≥ 2), then the single-cell
+    # left factor (p = 1) as an explicit fallback.  See module docstring
+    # ("Loop ordering") for why the order matters.
+    for p in (list(range(2, n)) + ([1] if n >= 2 else [])):
         if n % p != 0:
             continue
         q = n // p
