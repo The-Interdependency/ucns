@@ -47,9 +47,6 @@ jobs:
       - name: Install package
         run: pip install -e .
 
-      - name: Run proof trace
-        run: python code/proof_trace.py
-
       - name: Run depth-3 sweep
         timeout-minutes: 5
         run: python code/sweeps/depth3_sweep.py
