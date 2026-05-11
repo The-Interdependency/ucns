@@ -16,6 +16,9 @@ from fractions import Fraction
 
 from ucns_recursive.canonical import UCNSObject, multiply
 from ucns_recursive.left_quotient import left_quotient, right_quotient
+from ucns_recursive.recursive_quotient import (
+    left_quotient as left_quotient_via_recursive_quotient,
+)
 from ucns_recursive.recursive_codec import recursive_encode
 
 
@@ -31,6 +34,9 @@ def make_flat(angles_and_faces):
 
 class TestLeftQuotientFlatProof(unittest.TestCase):
     """Lemmas 2, 3 — direct host recovery on flat inputs."""
+
+    def test_recursive_quotient_reexports_left_quotient(self):
+        self.assertIs(left_quotient_via_recursive_quotient, left_quotient)
 
     def test_flat_recovers_b(self):
         A = make_flat([(0, 0), (1, 0)])
