@@ -18,8 +18,8 @@ The current test suite checks:
 2.  Products of depth-1 × depth-1 objects are always composite.
 3.  Recovered factors recompose exactly to P.
 4.  No SEQ-PRIME is reported for a known composite.
-5.  No spurious factor is reported for a known prime (length 1 or 2
-    when length 2 with no valid 2=1×2 host decomposition).
+5.  No spurious factor is reported for a known prime (length 1 only;
+    length-2+ objects are always composite via the 1-cell face-flip).
 
 NOTE: Full literal enumeration of every payload assignment in D' is
 combinatorially expensive.  This suite therefore combines hand-constructed
@@ -201,7 +201,7 @@ class TestDepth2FullDomain(unittest.TestCase):
             self.assertTrue(in_domain(rec_B))
 
     # ------------------------------------------------------------------
-    # Primality: length-1 objects and trivially irreducible objects
+    # Primality: only length-1 objects are seq-prime
     # ------------------------------------------------------------------
 
     def test_length1_object_is_prime(self) -> None:
@@ -210,12 +210,26 @@ class TestDepth2FullDomain(unittest.TestCase):
         result = factor_search_v08(obj, self.catalogue)
         self.assertEqual(result, "SEQ-PRIME", "Length-1 object must be SEQ-PRIME")
 
-    def test_prime_length2_flat(self) -> None:
-        """A flat length-2 object with n_min=2 is seq-prime (no 2=1×2 split)."""
+    def test_length2_flat_is_composite_via_face_flip(self) -> None:
+        """A flat length-2 object is composite via the 1-cell face-flip factor.
+
+        With range(1, n) in factor_search_v08, the p=1 path is explored.
+        recover_face_structures returns two options: A_faces=[0] (unit,
+        skipped) and A_faces=[1].  The 1-cell face-flip object (F_plus=[1])
+        is a valid non-unit: is_unit() requires F_plus=[0].  XOR composition
+        restores the all-zero face sequence: 1⊕1=0 for every cell.  So
+        multiply(1-cell-flip, 2-cell-flip) equals the original flat object.
+
+        Mathematical consequence: every length-≥2 UCNSObject is seq-composite
+        via the face-flip factorization; only length-1 objects are seq-prime.
+        """
         obj = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
-        # Length-2 can only split as 2=2×1 or 1×2, both give a unit factor
         result = factor_search_v08(obj, self.catalogue)
-        self.assertEqual(result, "SEQ-PRIME", "Irreducible length-2 must be SEQ-PRIME")
+        self.assertIsInstance(result, tuple, "Length-2 flat is composite via face-flip")
+        rec_A, rec_B = result
+        self.assertFalse(is_unit(rec_A), "rec_A must be non-unit")
+        self.assertFalse(is_unit(rec_B), "rec_B must be non-unit")
+        self.assertEqual(multiply(rec_A, rec_B), obj, "recomposition must equal obj")
 
     # ------------------------------------------------------------------
     # Generated closure sweep over a compact basis family

@@ -27,15 +27,15 @@ GPT generated; context, prompt Erin Spencer.
 |---|---|
 | Flat kernel algebra | ✅ Defended |
 | Depth-1 restricted completeness | ✅ Defended |
-| Depth-2 oracle (smallest class) | ✅ Defended |
-| Full frozen depth-2 domain | 🔄 Implemented in `factor_search_v08` |
-| Carrier widening | ⏳ After depth-2 closes |
+| Depth-2 oracle (Lemma 7) | ✅ Defended |
+| Depth-3 asymmetric (Theorem 9) | ✅ Empirically verified (6/6) |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **✅ Proven** |
+| Tractable sub-catalogues | 🟡 Open |
+| Carrier widening | ⏳ Out of scope |
 
-The `ucns_recursive` package implements the **witness-matrix recursive quotient solver** (`factor_search_v08`) targeting the frozen depth-2 domain:
+The `ucns_recursive` package implements the **witness-matrix recursive quotient solver** (`factor_search_v08`).
 
-```
-depth ≤ 2,  |A⁺| ≤ 3,  n_min ≤ 4
-```
+See `ucns-theorem-n.md` for the unified completeness theorem. The key insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. One theorem covers all depths; the catalogue is the only depth-sensitive input.
 
 ---
 
@@ -55,11 +55,12 @@ ucns_recursive/          # Main UCNS theory package
     test_depth2_full_domain.py     # Frozen depth-2 domain sweep
     test_failure_boundary_e109.py  # E10.9 regression tests
 
+ucns-theorem-n.md        # Theorem N: catalogue-sufficient completeness (unified)
+ucns-lemma8-depth3.md    # Depth-3 factor search (SUPERSEDED — see theorem-n)
 ucns-code-v065.py        # Stable v0.6.5 snapshot (reference)
 code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
-ucns-spec-frontier-v090.md  # Current completeness frontier spec
-
-archive/ucn-embeddings/  # Archived: UCN embedding library (belongs in a separate repo)
+code/sweeps/             # Empirical verification scripts
+ucns-spec-frontier-v090.md  # Completeness frontier spec
 ```
 
 ---
@@ -96,6 +97,8 @@ result = factor_search_v08(P)
 # Returns (A_recovered, B_recovered)  or  "SEQ-PRIME"
 ```
 
+Returns **a** valid factorisation — the first one found under the loop ordering (balanced p ≥ 2 splits first, p = 1 last). Factorisation is not generally unique; other valid pairs may exist. Use `store.factor_decompose` with an explicit catalogue to enumerate all catalogue-bounded factorisations.
+
 The solver implements the full witness-matrix pipeline:
 
 1. **Host recovery** — extract candidate A/B angle sequences from P
@@ -104,6 +107,27 @@ The solver implements the full witness-matrix pipeline:
 3. **Witness-matrix consistency** — verify one globally consistent payload assignment explains every cell
 4. **Face recovery** — enumerate valid face-bit assignments
 5. **Exact recomposition** — final truth test: `multiply(A_cand, B_cand) == P`
+
+For depth-3+ targets, extend the catalogue with the deep payloads of the expected factors
+(see `ucns-theorem-n.md §4.2–4.3`):
+
+```python
+# Theorem 9 example: depth-3 A × depth-2 B
+from ucns_recursive.domains import depth_of
+
+def catalogue_from(*objs):
+    """Minimal catalogue: recursive payload closure of given objects."""
+    cat = [None]
+    def collect(o):
+        if o is None: return
+        for _, p in o.A_plus:
+            if p is not None and p not in cat:
+                cat.append(p); collect(p)
+    for o in objs: collect(o)
+    return cat
+
+result = factor_search_v08(P, catalogue_from(A, B))
+```
 
 ---
 
@@ -127,7 +151,7 @@ The v0.8.0 failure analysis identified three root causes now corrected in `facto
 
 ## Completeness Frontier
 
-> UCNS currently has a defended flat kernel, a defended depth-1 restricted completeness theorem, and a defended depth-2 oracle theorem. The `factor_search_v08` solver extends this to the full frozen depth-2 domain via the witness-matrix architecture. Carrier widening and general recursive completeness are the next milestones.
+UCNS has a defended flat kernel, a defended depth-1 restricted completeness theorem, and a defended depth-2 oracle theorem (Lemma 7). These are all instances of **Theorem N** (catalogue-sufficient factorization, `ucns-theorem-n.md`): if the catalogue contains every payload of the true factors, `factor_search_v08` finds a factorization. Depth enters only through catalogue selection, not through the algorithm. Theorem 9 (asymmetric depth-3) is verified empirically; see `code/sweeps/t9_minimal_cat.py`.
 
 ---
 

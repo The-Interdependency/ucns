@@ -26,8 +26,14 @@ from __future__ import annotations
 from typing import List, Optional
 
 from .canonical import UCNSObject, multiply
+from .left_quotient import left_quotient, right_quotient
 
-__all__ = ["find_left_factor", "find_right_factor"]
+__all__ = [
+    "find_left_factor",
+    "find_right_factor",
+    "left_quotient",
+    "right_quotient",
+]
 
 
 def find_right_factor(
