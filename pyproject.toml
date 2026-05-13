@@ -1,19 +1,52 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ucns"
-version = "0.8.0"
-description = "Unit Circle Number System – recursive factorization theory and witness-matrix depth-2 solver"
+version = "0.8.1"
+description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
+authors = [
+  { name = "Erin Spencer" }
+]
+keywords = [
+  "unit-circle",
+  "factorization",
+  "recursive-algebra",
+  "sequence-theory",
+  "witness-matrix"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Typing :: Typed"
+]
 # No runtime dependencies – pure Python standard library only
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/The-Interdependency/ucns"
+Repository = "https://github.com/The-Interdependency/ucns"
+Issues = "https://github.com/The-Interdependency/ucns/issues"
+
 [project.optional-dependencies]
-dev = []
+dev = [
+  "build>=1.2",
+  "twine>=5.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
