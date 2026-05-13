@@ -1,8 +1,35 @@
 # ucns — Unit Circle Number System: Recursive Factorization Theory
 
-> **Sequence-theoretic factorization on the unit circle, with a witness-matrix recursive quotient solver.**
+> **Experimental sequence-theoretic factorization on the unit circle, with a witness-matrix recursive quotient solver.**
 
-This repository contains the UCNS (Unit Circle Number System) sequence theory and its implementation.  The focus is **recursive factorization**: given a UCNS product object *P*, recover factors *A* and *B* such that *A ⊠ B = P*.
+This repository contains the UCNS (Unit Circle Number System) sequence theory and its implementation. The focus is **recursive factorization**: given a UCNS product object *P*, recover factors *A* and *B* such that *A ⊠ B = P*.
+
+`ucns` is currently a research-stage Python package. It is suitable for experimentation, integration tests, and collaborator review. Public APIs may still change while the mathematics and implementation are being formalized.
+
+---
+
+## Installation
+
+From PyPI, once released:
+
+```bash
+pip install ucns
+```
+
+From GitHub:
+
+```bash
+pip install git+https://github.com/The-Interdependency/ucns.git
+```
+
+For development:
+
+```bash
+git clone https://github.com/The-Interdependency/ucns.git
+cd ucns
+python -m pip install -e .[dev]
+python -m unittest discover ucns_recursive/tests/ -v
+```
 
 ---
 
@@ -29,13 +56,13 @@ GPT generated; context, prompt Erin Spencer.
 | Depth-1 restricted completeness | ✅ Defended |
 | Depth-2 oracle (Lemma 7) | ✅ Defended |
 | Depth-3 asymmetric (Theorem 9) | ✅ Empirically verified (6/6) |
-| **Catalogue-sufficient completeness — all depths (Theorem N)** | **✅ Proven** |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **✅ Proven / awaiting external formal review** |
 | Tractable sub-catalogues | 🟡 Open |
 | Carrier widening | ⏳ Out of scope |
 
 The `ucns_recursive` package implements the **witness-matrix recursive quotient solver** (`factor_search_v08`).
 
-See `ucns-theorem-n.md` for the unified completeness theorem. The key insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. One theorem covers all depths; the catalogue is the only depth-sensitive input.
+See `ucns-theorem-n.md` for the unified completeness theorem. The key implementation insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. The catalogue is the only depth-sensitive input.
 
 ---
 
@@ -135,6 +162,29 @@ result = factor_search_v08(P, catalogue_from(A, B))
 
 ```bash
 python -m unittest discover ucns_recursive/tests/ -v
+```
+
+---
+
+## Build and release validation
+
+```bash
+python -m pip install -e .[dev]
+python -m build
+python -m twine check dist/*
+python -m unittest discover ucns_recursive/tests/ -v
+```
+
+Clean wheel install smoke test:
+
+```bash
+python -m venv /tmp/ucns-wheel-test
+. /tmp/ucns-wheel-test/bin/activate
+pip install dist/*.whl
+python - <<'PY'
+from ucns_recursive import UCNSObject, multiply, factor_search_v08
+print('ucns import ok')
+PY
 ```
 
 ---
