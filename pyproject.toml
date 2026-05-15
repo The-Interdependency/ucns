@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ucns"
-version = "0.8.1"
+version = "0.8.2"
 description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -50,7 +50,8 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ucns_recursive*"]
+include = ["ucns", "ucns_recursive*"]
 
 [tool.setuptools.package-data]
 ucns_recursive = ["py.typed"]
+ucns = ["py.typed"]
