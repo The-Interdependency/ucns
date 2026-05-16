@@ -16,6 +16,7 @@ factor_search_v08      Top-level factorization engine (witness-matrix solver)
 domain_status          Typed theorem / implementation status metadata
 serialization          Canonical JSON serialization and stable hashing
 factorization_result   A0-facing factorization result envelopes
+object_record          A0-facing object inspection records
 
 Deployable surface (May 2026)
 -----------------------------
@@ -31,6 +32,7 @@ domain dispatch        Oracle-class predicates and the
 domain status          A0-facing typed certainty metadata
 serialization          A0-facing canonical identity bytes + hashes
 factorization result   A0-facing scoped factorization claims
+object record          A0-facing object inspection metadata
 """
 
 from .canonical import UCNSObject, UNIT, multiply, is_unit
@@ -89,6 +91,9 @@ from .factorization_result import (
     factorization_result,
 )
 
+# Object inspection record
+from .object_record import UCNSObjectRecord, object_record
+
 # Retrieval
 from .store import Match, OutOfDomainError, UCNSStore
 
@@ -140,6 +145,9 @@ __all__ = [
     "FactorizationResultKind",
     "FactorizationResult",
     "factorization_result",
+    # object inspection record
+    "UCNSObjectRecord",
+    "object_record",
     # retrieval
     "UCNSStore",
     "Match",
