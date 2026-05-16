@@ -14,6 +14,7 @@ payload_system       Coupled payload equation solver
 witness_matrix       Witness and WitnessMatrix for global consistency
 factor_search_v08    Top-level factorization engine (witness-matrix solver)
 domain_status        Typed theorem / implementation status metadata
+serialization        Canonical JSON serialization and stable hashing
 
 Deployable surface (May 2026)
 -----------------------------
@@ -27,6 +28,7 @@ domain dispatch      Oracle-class predicates and the
                      enforce_verified_domain insert gate
                                                                  (v0.2, item 6)
 domain status        A0-facing typed certainty metadata
+serialization        A0-facing canonical identity bytes + hashes
 """
 
 from .canonical import UCNSObject, UNIT, multiply, is_unit
@@ -65,6 +67,17 @@ from .domain_status import (
     is_verified_domain_label,
     seq_prime_requires_scope,
     status_for_object,
+)
+
+# Canonical serialization / stable identity hashes
+from .serialization import (
+    CANONICAL_SERIALIZATION_VERSION,
+    DEFAULT_HASH_ALGORITHM,
+    canonical_data,
+    canonical_json,
+    canonical_bytes,
+    stable_hash,
+    stable_hash_bytes,
 )
 
 # Retrieval
@@ -106,6 +119,14 @@ __all__ = [
     "status_for_object",
     "is_verified_domain_label",
     "seq_prime_requires_scope",
+    # canonical serialization / stable identity hashes
+    "CANONICAL_SERIALIZATION_VERSION",
+    "DEFAULT_HASH_ALGORITHM",
+    "canonical_data",
+    "canonical_json",
+    "canonical_bytes",
+    "stable_hash",
+    "stable_hash_bytes",
     # retrieval
     "UCNSStore",
     "Match",
