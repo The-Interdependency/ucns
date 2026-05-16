@@ -13,6 +13,7 @@ recursive_quotient   Catalogue-bounded payload factor finders
 payload_system       Coupled payload equation solver
 witness_matrix       Witness and WitnessMatrix for global consistency
 factor_search_v08    Top-level factorization engine (witness-matrix solver)
+domain_status        Typed theorem / implementation status metadata
 
 Deployable surface (May 2026)
 -----------------------------
@@ -25,6 +26,7 @@ catalogue            Catalogue builders for factor_decompose
 domain dispatch      Oracle-class predicates and the
                      enforce_verified_domain insert gate
                                                                  (v0.2, item 6)
+domain status        A0-facing typed certainty metadata
 """
 
 from .canonical import UCNSObject, UNIT, multiply, is_unit
@@ -52,6 +54,17 @@ from .domains import (
     is_oracle_atom,
     is_in_oracle_class,
     verified_domain_status,
+)
+
+# Typed domain-status metadata
+from .domain_status import (
+    DomainProofStatus,
+    DomainStatusMetadata,
+    VERIFIED_DOMAIN_LABELS,
+    domain_status_metadata,
+    is_verified_domain_label,
+    seq_prime_requires_scope,
+    status_for_object,
 )
 
 # Retrieval
@@ -85,6 +98,14 @@ __all__ = [
     "is_oracle_atom",
     "is_in_oracle_class",
     "verified_domain_status",
+    # typed domain-status metadata
+    "DomainProofStatus",
+    "DomainStatusMetadata",
+    "VERIFIED_DOMAIN_LABELS",
+    "domain_status_metadata",
+    "status_for_object",
+    "is_verified_domain_label",
+    "seq_prime_requires_scope",
     # retrieval
     "UCNSStore",
     "Match",
