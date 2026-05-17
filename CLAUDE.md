@@ -6,47 +6,82 @@ This file gives AI assistants context needed to work effectively in this reposit
 
 ## What This Repo Is
 
-`ucns` (pip package: **`ucns`**, v0.8.0) is a zero-dependency pure-Python library implementing **Unit Circle Number System** sequence theory with a focus on recursive factorization. Given a UCNS product object P, the library recovers factors A and B such that A ⊠ B = P.
+`ucns` (pip package: **`ucns`**) is a zero-dependency pure-Python library
+implementing **Unit Circle Number System** sequence theory with a focus
+on recursive factorization. Given a UCNS product object P, the library
+recovers factors A and B such that A ⊠ B = P.
 
 The repo ships two installable Python packages:
-- `ucns/` — stable v0.6.5-lineage modules: embedding, epicycle, Möbius, similarity
-- `ucns_recursive/` — active depth-2 witness-matrix factorization engine + deployable codec/retrieval surface
+- `ucns/` — **v1.0 public Python API.** Re-exports the engine plus the
+  v0.6.5-lineage modules (embedding, epicycle, Möbius, similarity) and
+  the A0-safe inspection facade (`ucns.a0_safe`).
+- `ucns_recursive/` — **DEPRECATED for direct user imports.** The
+  factorization engine implementation currently lives here and is
+  re-exported by `ucns`. New user-facing code should import from `ucns`,
+  not `ucns_recursive`. No runtime DeprecationWarning is emitted yet;
+  the release schedule is controlled locally by the maintainer.
 
-**Python requirement:** ≥ 3.8  
-**External dependencies:** none (fractions, math stdlib only)  
+**Python requirement:** ≥ 3.8 (CI exercises 3.8, 3.10, 3.12)
+**External dependencies:** none (fractions, math stdlib only)
 **License:** Apache 2.0
+
+---
+
+## v1.0 Scope
+
+UCNS v1.0 is a scoped, reproducible research release for
+**catalogue-sufficient recursive factorization** (Theorem N), not a
+claim of total general recursive primality. Carrier widening, tractable
+sub-catalogues, and general recursive primality outside
+defended-complete domains are **out of v1.0 scope**.
+
+See `docs/ucns-spec-status-addendum-2026-05-16.md` for the status
+vocabulary and `ucns-spec.md` §F1–F4 for the reconciled spec.
 
 ---
 
 ## Current Theorem Frontier
 
+Status vocabulary: `DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`,
+`ORACLE-COMPLETE`, `FRONTIER`, `EXPERIMENTAL`.
+
 | Layer | Status |
 |---|---|
-| Flat kernel algebra | Defended |
-| Depth-1 restricted completeness | Defended |
-| Depth-2 oracle (smallest class) | Defended |
-| Full frozen depth-2 domain | Implemented in `factor_search_v08` |
-| Carrier widening | After depth-2 closes |
+| Flat kernel algebra | `DEFENDED` |
+| Depth-1 restricted completeness | `DEFENDED` |
+| Depth-2 oracle (smallest class, Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
+| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED`) |
+| Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
+| Catalogue-sufficient completeness (Theorem N) | `DEFENDED` — proof drafted, awaiting external formal review |
+| Tractable sub-catalogues | `FRONTIER` |
+| Carrier widening | `FRONTIER` / out of v1.0 scope |
 
 Frozen depth-2 domain scope:
 ```
 depth ≤ 2,  |A⁺| ≤ 3,  n_min ≤ 4
 ```
 
+**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete
+domain. Consult `ucns_recursive.domain_status.VERIFIED_DOMAIN_LABELS`
+and `domain_status_metadata`; treat `SEQ-PRIME` outside that set as
+non-absolute.
+
 ---
 
 ## Repository Layout
 
 ```
-ucns/                              # Stable v0.6.5-lineage package
-  __init__.py                      # Public API
-  core.py                          # UCNSObject base, multiply, is_unit
+ucns/                              # v1.0 PUBLIC API (re-exports the engine)
+  __init__.py                      # Re-exports from ucns_recursive
+  a0_safe.py                       # A0-safe inspection facade (v1.0 stable)
+  core.py                          # UCNSObject base, multiply, is_unit (v0.6.5 lineage)
   embedding.py                     # Unit-circle embedding utilities
   epicycle.py                      # Epicycle radial modulation layers
   mobius.py                        # Möbius doubled-surface / spinor states
   similarity.py                    # UCNS object similarity metrics
 
-ucns_recursive/                    # Active factorization engine
+ucns_recursive/                    # DEPRECATED for direct user imports;
+                                   # engine implementation lives here.
   __init__.py                      # Package init — exports full deployable surface
   canonical.py                     # UCNSObject, multiply, is_unit (recursive)
   domains.py                       # Frozen D' domain + payload catalogue
@@ -142,7 +177,7 @@ Content cells: `face=1`.
 - `bytearray` → treated as `bytes`
 
 ```python
-from ucns_recursive import recursive_encode, recursive_decode, EncodingError
+from ucns import recursive_encode, recursive_decode, EncodingError
 
 obj = recursive_encode(b"hello world")
 result = recursive_decode(obj)         # b"hello world"
@@ -163,8 +198,7 @@ Promoted from `ucns-code-v065.py`. Implements the v0.6 completeness theorem:
 > If `A ⊠ B ≡_seq P`, then `left_quotient(P, A)` returns B. Returns `None` iff no such B exists.
 
 ```python
-from ucns_recursive import left_quotient, right_quotient, multiply
-from ucns_recursive import recursive_encode
+from ucns import left_quotient, right_quotient, multiply, recursive_encode
 
 A = recursive_encode(b"hello ")
 B = recursive_encode(b"world")
@@ -184,7 +218,7 @@ recovered_A = right_quotient(P, B)  # equals A
 Keyed corpus of `UCNSObject`s with proof-backed algebraic retrieval.
 
 ```python
-from ucns_recursive import UCNSStore
+from ucns import UCNSStore, recursive_encode
 
 store = UCNSStore()
 store.insert("doc1", b"hello world")
@@ -197,7 +231,6 @@ matches = store.left_factors(b"hello ")  # [(key, remainder), ...]
 store.is_left_factor(b"hello world", "doc1")  # True
 
 # Catalogue-bounded decomposition
-from ucns_recursive import recursive_encode
 catalogue = [recursive_encode(b"hello ")]
 decomps = store.factor_decompose("doc1", catalogue)  # [(A, B), ...]
 ```
@@ -221,7 +254,7 @@ Retrieval cost is O(corpus size) — linear scan, no index.
 ## Core Algebra (Quick Reference)
 
 ```python
-from ucns_recursive import UCNSObject, multiply, is_unit, factor_search_v08
+from ucns import UCNSObject, multiply, is_unit, factor_search_v08
 from fractions import Fraction
 
 UNIT = None
@@ -253,7 +286,7 @@ result = factor_search_v08(P)
 ## Key Conventions
 
 - **No external dependencies** — fractions, math, itertools only. Do not add runtime deps.
-- `ucns_recursive` is the active package for factorization work. `ucns/` is a stable reference baseline.
+- **`ucns` is the v1.0 public API.** New user-facing code should import from `ucns` (and `ucns.a0_safe` for A0-safe inspection). `ucns_recursive` is **deprecated for direct user imports** but is where the engine implementation currently lives and is still the right place to edit engine code.
 - `factor_search_v08` is the authoritative solver — do not bypass it by calling internal stages directly.
 - **Three invariants** in `factor_search_v08` (root-cause fixes from E10.9 analysis):
   1. **No false atomicity** — depth-1 payloads like S2 are recursed into, not treated as atomic
@@ -269,11 +302,12 @@ result = factor_search_v08(P)
 
 ## What Does Not Exist Yet
 
-- No CI/CD pipeline
 - No linting config
 - No `pytest.ini` or pyproject `[tool.pytest.ini_options]` (tests use unittest discover)
-- Carrier widening and general recursive completeness are future milestones
+- Carrier widening and general recursive completeness — explicitly **out of v1.0 scope**
 - Right-quotient completeness proof (currently asserted-by-symmetry)
+- No runtime `DeprecationWarning` on `import ucns_recursive` yet (canon is docs-only for v1.0; release ships from local termux at maintainer cadence)
+- No golden output fixtures or `docs/claims-ledger.md` yet (deferred from canon-only reconciliation pass)
 
 ---
 

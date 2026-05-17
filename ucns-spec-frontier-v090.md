@@ -1,22 +1,32 @@
 # UCNS — Current Completeness Frontier (through v0.9.0)
 
-**Status:** frontier summary of what is currently defended, what is oracle-only, and what currently fails.  
+**Status:** historical frontier summary, partially superseded.  
 **Scope:** compresses the proven/defended milestones across the v0.6.x–v0.9.0 line.  
 **Accreditation:** GPT generated from context provided by Grok, Claude as prompted by Erin Spencer.
+
+> **Reconciliation note (2026-05-17).** This document was written before
+> `ucns-theorem-n.md` (catalogue-sufficient factorization) and before the
+> `factor_search_v08` implementation freeze. Where it says "not solved" for
+> the full frozen depth-2 domain, the current canon is: **IMPLEMENTED +
+> TEST-BACKED, not yet DEFENDED at the spec level** (see
+> `docs/ucns-spec-status-addendum-2026-05-16.md` and `ucns-spec.md`
+> §F2). Carrier widening remains FRONTIER and out of v1.0 scope. Use this
+> file as historical context; current canon lives in `ucns-spec.md` and
+> `ucns-theorem-n.md`.
 
 ---
 
 ## hmm
 
 This document does **not** replace the detailed v0.3/v0.4/v0.5/v0.6 specs.  
-It records the current theorem frontier honestly.
+It records the v0.9.0 theorem frontier honestly.
 
-The current state separates into four layers:
+The v0.9.0 state separated into four layers:
 
-1. depth-1 results that are defended,
-2. a depth-2 oracle result that is defended,
-3. the full frozen depth-2 domain, which is not solved,
-4. carrier widening, which is not solved.
+1. depth-1 results that are DEFENDED,
+2. a depth-2 oracle result that is DEFENDED + ORACLE-COMPLETE,
+3. the full frozen depth-2 domain, which at v0.9.0 was unsolved and is now IMPLEMENTED + TEST-BACKED via `factor_search_v08`,
+4. carrier widening, which remains FRONTIER and out of v1.0 scope.
 
 ---
 
@@ -187,15 +197,21 @@ That redesign should be treated as a fresh branch rather than a minor widening p
 
 # 7. Compression
 
-The present UCNS completeness frontier is:
+The v0.9.0 UCNS completeness frontier (as captured here) was:
 
-- **green:** flat
-- **green:** depth-1 restricted theorem
-- **green:** depth-2 oracle only
-- **red:** full frozen depth-2 domain
-- **red:** carrier widening
+- DEFENDED: flat,
+- DEFENDED: depth-1 restricted theorem,
+- DEFENDED + ORACLE-COMPLETE: depth-2 oracle,
+- not solved: full frozen depth-2 domain,
+- not solved: carrier widening.
 
-That is the current honest frontier.
+Under the reconciled 2026-05-17 canon (`ucns-spec.md`, `ucns-theorem-n.md`):
+
+- DEFENDED: flat, depth-1 restricted theorem, cancellativity / quotient uniqueness,
+- DEFENDED + ORACLE-COMPLETE: depth-2 smallest oracle (Lemma 7 = Theorem N instance),
+- DEFENDED (proof drafted, awaiting external review): Theorem N — catalogue-sufficient factorization at all depths,
+- IMPLEMENTED + TEST-BACKED: full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9),
+- FRONTIER / out of v1.0 scope: carrier widening; tractable sub-catalogues; general primality outside defended-complete domains.
 
 ---
 

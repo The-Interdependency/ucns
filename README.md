@@ -6,6 +6,18 @@ This repository contains the UCNS (Unit Circle Number System) sequence theory an
 
 `ucns` is currently a research-stage Python package. It is suitable for experimentation, integration tests, and collaborator review. Public APIs may still change while the mathematics and implementation are being formalized.
 
+> **v1.0 scope.** UCNS v1.0 is a scoped, reproducible research release for
+> catalogue-sufficient recursive factorization (Theorem N), not a claim of
+> total general recursive primality. Carrier widening and general
+> recursive completeness are explicitly out of v1.0 scope. See
+> `docs/ucns-spec-status-addendum-2026-05-16.md` for the status vocabulary
+> and `ucns-spec.md` for the reconciled spec.
+>
+> **Public API.** `ucns` is the v1.0 public Python API.
+> `ucns.a0_safe` is the A0-safe inspection facade. `ucns_recursive` is
+> retained as a compatibility import path but is **deprecated** for direct
+> user imports.
+
 ---
 
 ## Installation
@@ -50,45 +62,76 @@ GPT generated; context, prompt Erin Spencer.
 
 ## Status: Current Theorem Frontier
 
+Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
+`DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`, `ORACLE-COMPLETE`, `FRONTIER`,
+`EXPERIMENTAL`.
+
 | Layer | Status |
 |---|---|
-| Flat kernel algebra | ✅ Defended |
-| Depth-1 restricted completeness | ✅ Defended |
-| Depth-2 oracle (Lemma 7) | ✅ Defended |
-| Depth-3 asymmetric (Theorem 9) | ✅ Empirically verified (6/6) |
-| **Catalogue-sufficient completeness — all depths (Theorem N)** | **✅ Proven / awaiting external formal review** |
-| Tractable sub-catalogues | 🟡 Open |
-| Carrier widening | ⏳ Out of scope |
+| Flat kernel algebra | `DEFENDED` |
+| Depth-1 restricted completeness | `DEFENDED` |
+| Depth-2 oracle (Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
+| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
+| Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`DEFENDED` — proof drafted, awaiting external formal review** |
+| Tractable sub-catalogues | `FRONTIER` |
+| Carrier widening | `FRONTIER` / out of v1.0 scope |
+| General recursive primality outside defended-complete domains | out of v1.0 scope |
 
-The `ucns_recursive` package implements the **witness-matrix recursive quotient solver** (`factor_search_v08`).
+`factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It currently lives in the `ucns_recursive` package and is re-exported from `ucns` as the v1.0 public surface.
 
 See `ucns-theorem-n.md` for the unified completeness theorem. The key implementation insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. The catalogue is the only depth-sensitive input.
+
+**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete
+domain. A0-facing consumers should consult `domain_status_metadata` and
+treat `SEQ-PRIME` outside `VERIFIED_DOMAIN_LABELS` as non-absolute.
 
 ---
 
 ## Repository Layout
 
 ```
-ucns_recursive/          # Main UCNS theory package
+ucns/                    # v1.0 public Python API (re-exports the engine)
+  __init__.py            # from ucns import UCNSObject, multiply, factor_search_v08, ...
+  a0_safe.py             # A0-safe inspection facade: identity, describe, canonical, factor
+  core.py, embedding.py, epicycle.py, mobius.py, similarity.py
+                         # v0.6.5-lineage modules (stable reference)
+
+ucns_recursive/          # DEPRECATED for direct user imports; v1.0 engine implementation
   canonical.py           # UCNSObject, multiply, is_unit
   domains.py             # Frozen D' domain + payload catalogue
+  domain_status.py       # Typed status vocabulary (DEFENDED, IMPLEMENTED, ...)
   host_recovery.py       # Recover host angle/face structure from P
   recursive_quotient.py  # find_left_factor, find_right_factor
   payload_system.py      # Coupled payload equation solver
   witness_matrix.py      # Witness, WitnessMatrix (global consistency)
   factor_search_v08.py   # Top-level factorization engine
+  factorization_result.py  # A0-facing scoped factorization envelope
+  object_record.py       # A0-facing object inspection record
+  serialization.py       # Canonical JSON + stable hash
   tests/
-    test_depth2_oracle.py          # Depth-2 oracle theorem (GREEN)
-    test_depth2_full_domain.py     # Frozen depth-2 domain sweep
+    test_depth2_oracle.py          # Depth-2 oracle theorem (DEFENDED)
+    test_depth2_full_domain.py     # Frozen depth-2 domain compact sweep
     test_failure_boundary_e109.py  # E10.9 regression tests
 
+ucns-spec.md             # Reconciled core UCNS spec (canonical)
 ucns-theorem-n.md        # Theorem N: catalogue-sufficient completeness (unified)
 ucns-lemma8-depth3.md    # Depth-3 factor search (SUPERSEDED — see theorem-n)
-ucns-code-v065.py        # Stable v0.6.5 snapshot (reference)
+ucns-spec-frontier-v090.md  # v0.9.0 frontier (partially superseded)
+docs/
+  ucns-spec-status-addendum-2026-05-16.md  # Status vocabulary + A0 rule
+  pure-ucns-number-system.md
+  coherence-primes-scarcity.md
+ucns-code-v065.py        # Stable v0.6.5 snapshot (read-only reference)
 code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
 code/sweeps/             # Empirical verification scripts
-ucns-spec-frontier-v090.md  # Completeness frontier spec
 ```
+
+> `ucns_recursive` is **deprecated for direct user imports** as of v1.0
+> canon reconciliation. New code should import from `ucns` and
+> `ucns.a0_safe`. `ucns_recursive` remains a supported compatibility
+> import path (no runtime warning yet); it is also where the engine
+> implementation currently lives.
 
 ---
 
@@ -97,7 +140,7 @@ ucns-spec-frontier-v090.md  # Completeness frontier spec
 Every UCNS object is a sequence of (angle, payload) pairs with a face-flip sequence:
 
 ```python
-from ucns_recursive import UCNSObject, multiply, is_unit
+from ucns import UCNSObject, multiply, is_unit
 from fractions import Fraction
 
 UNIT = None
@@ -118,7 +161,7 @@ P = multiply(A, B)
 ## Factorization: `factor_search_v08`
 
 ```python
-from ucns_recursive import factor_search_v08
+from ucns import factor_search_v08
 
 result = factor_search_v08(P)
 # Returns (A_recovered, B_recovered)  or  "SEQ-PRIME"
@@ -140,7 +183,7 @@ For depth-3+ targets, extend the catalogue with the deep payloads of the expecte
 
 ```python
 # Theorem 9 example: depth-3 A × depth-2 B
-from ucns_recursive.domains import depth_of
+from ucns import depth_of
 
 def catalogue_from(*objs):
     """Minimal catalogue: recursive payload closure of given objects."""
@@ -182,7 +225,7 @@ python -m venv /tmp/ucns-wheel-test
 . /tmp/ucns-wheel-test/bin/activate
 pip install dist/*.whl
 python - <<'PY'
-from ucns_recursive import UCNSObject, multiply, factor_search_v08
+from ucns import UCNSObject, multiply, factor_search_v08
 print('ucns import ok')
 PY
 ```
@@ -201,7 +244,19 @@ The v0.8.0 failure analysis identified three root causes now corrected in `facto
 
 ## Completeness Frontier
 
-UCNS has a defended flat kernel, a defended depth-1 restricted completeness theorem, and a defended depth-2 oracle theorem (Lemma 7). These are all instances of **Theorem N** (catalogue-sufficient factorization, `ucns-theorem-n.md`): if the catalogue contains every payload of the true factors, `factor_search_v08` finds a factorization. Depth enters only through catalogue selection, not through the algorithm. Theorem 9 (asymmetric depth-3) is verified empirically; see `code/sweeps/t9_minimal_cat.py`.
+UCNS has a `DEFENDED` flat kernel, a `DEFENDED` depth-1 restricted
+completeness theorem, and a `DEFENDED` + `ORACLE-COMPLETE` depth-2
+oracle theorem (Lemma 7). These are instances of **Theorem N**
+(catalogue-sufficient factorization, `ucns-theorem-n.md`): if the
+catalogue contains every payload of the true factors,
+`factor_search_v08` finds a factorization. Depth enters only through
+catalogue selection, not through the algorithm.
+
+The full frozen depth-2 domain is `IMPLEMENTED` + `TEST-BACKED` in
+`factor_search_v08` but not yet `DEFENDED` at the spec level. Theorem 9
+(asymmetric depth-3) is `TEST-BACKED` empirically; see
+`code/sweeps/t9_minimal_cat.py`. Carrier widening remains `FRONTIER`
+and out of v1.0 scope.
 
 ---
 

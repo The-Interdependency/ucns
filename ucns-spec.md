@@ -1,10 +1,31 @@
 # UCNS — Consolidated Spec and Current Frontier
 
-**Status snapshot**
+**Status snapshot (reconciled 2026-05-17 per `docs/ucns-spec-status-addendum-2026-05-16.md`).**
 
-- **Proved / defended:** flat kernel (v0.3), epicyclic first freeze (v0.4), recursive sequence and multiset primality notions (v0.5), cancellativity + quotient uniqueness boundary (v0.5.1), quotient existence conditions and restricted completeness on a bounded depth-1 domain (v0.6.1–v0.6.5).
-- **Oracle-complete only:** depth-2 smallest oracle theorem (v0.8.1).
-- **Not solved:** full frozen depth-2 domain and carrier widening beyond current proven bounds.
+This spec uses the status vocabulary from the 2026-05-16 addendum so that implementation, test, and proof status are no longer collapsed:
+
+```
+DEFENDED          written proof or proof-defended theorem layer
+IMPLEMENTED       code exists and is intended as authoritative implementation
+TEST-BACKED       tests cover the claimed behavior in the declared domain
+ORACLE-COMPLETE   complete only under oracle/catalogue assumptions
+FRONTIER          plausible or partially working, not complete
+EXPERIMENTAL      exploration layer, not canon
+```
+
+Status of UCNS layers under this vocabulary:
+
+- **DEFENDED.** Flat kernel (v0.3); epicyclic first freeze (v0.4); recursive sequence and multiset primality notions (v0.5); cancellativity and quotient uniqueness boundary (v0.5.1); quotient existence conditions and restricted completeness on a bounded depth-1 domain (v0.6.1–v0.6.5).
+- **DEFENDED + ORACLE-COMPLETE.** Depth-2 smallest oracle theorem (v0.8.1, Lemma 7). Complete only under the declared oracle/catalogue assumptions.
+- **DEFENDED — proof drafted, awaiting external formal review.** Theorem N (catalogue-sufficient factorization at all depths). See `ucns-theorem-n.md`. The only hypothesis is that the catalogue contains every recursive payload of the true factors; no depth condition is imposed on the algorithm.
+- **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical in `code/sweeps/t9_minimal_cat.py`).
+- **FRONTIER / out of v1.0 scope.** Carrier widening; tractable sub-catalogues; general recursive primality outside defended-complete domains; recursive disk-flip content symmetry as a depth-n theorem; depth-7 Fano/octonion conjecture.
+
+**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete domain (`VERIFIED_DOMAIN_LABELS` in `ucns_recursive.domain_status`). A0-facing consumers must consult `domain_status_metadata` and treat `SEQ-PRIME` as non-absolute outside that set.
+
+**v1.0 scope.** v1.0 is a scoped, reproducible research release for catalogue-sufficient recursive factorization. It is not a claim of total general recursive primality. Carrier widening and general recursive completeness are explicitly out of scope.
+
+**Public API.** The v1.0 public Python API is the `ucns` package (and `ucns.a0_safe` for A0-safe inspection). The legacy `ucns_recursive` package remains importable as a compatibility surface but is deprecated for direct user imports.
 
 ---
 
@@ -853,9 +874,9 @@ This restricted depth-1 theorem is the last fully defended completeness theorem.
 
 # Part V — Current Frontier
 
-## F1. Depth-2 Oracle Theorem (v0.8.1)
+## F1. Depth-2 Oracle Theorem (v0.8.1) — DEFENDED + ORACLE-COMPLETE
 
-The smallest depth-2 oracle is green.
+The smallest depth-2 oracle theorem is DEFENDED and ORACLE-COMPLETE.
 
 For that oracle-only class,
 
@@ -865,31 +886,47 @@ For that oracle-only class,
 P \text{ is seq-composite in the oracle class.}
 \]
 
-This theorem is frozen.
+Completeness holds only under the declared oracle/catalogue assumptions. Lemma 7 is now also recognized as an instance of Theorem N (see `ucns-theorem-n.md §4.1`).
 
-## F2. Full Frozen Depth-2 Domain
+## F2. Full Frozen Depth-2 Domain — IMPLEMENTED + TEST-BACKED
 
-The full frozen depth-2 domain \(D'\) is **not solved**. Later pushes (v0.8.2) still fail on the tested cases. The main bottleneck is the recursive payload layer and witness-matrix consistency across depth-2 quotient recovery.
+The full frozen depth-2 domain \(D'\) is **IMPLEMENTED + TEST-BACKED** in `factor_search_v08` and exercised by the `ucns_recursive/tests` suite. It is **not yet DEFENDED** as a stand-alone spec-level theorem.
 
-## F3. Carrier Widening
+The reconciliation rule from the 2026-05-16 addendum applies:
 
-Carrier widening beyond the defended depth-1 bounds is **not solved**. The depth-2 oracle remains green under those tests, but widened-carrier cases still fail in general.
+```
+implementation status: IMPLEMENTED in factor_search_v08
+test status:           TEST-BACKED to the extent covered by ucns_recursive/tests
+proof status:          not yet DEFENDED in the formal spec
+```
+
+A0-facing consumers must treat objects outside `VERIFIED_DOMAIN_LABELS` (currently `depth-0`, `depth-1`, `depth-2-oracle`) as non-absolute when they receive `SEQ-PRIME`.
+
+## F3. Carrier Widening — FRONTIER (out of v1.0 scope)
+
+Carrier widening beyond the defended depth-1 bounds is **FRONTIER** and explicitly out of v1.0 scope. The depth-2 oracle remains DEFENDED under those tests, but widened-carrier cases are not yet solved as a class.
 
 ## F4. Honest Frontier Summary
 
-### Defended
+### DEFENDED
 - flat kernel v0.3,
 - epicyclic first freeze v0.4,
 - recursive sequence / multiset primality notions v0.5,
 - cancellativity and quotient uniqueness boundary v0.5.1,
 - quotient existence conditions and restricted completeness on a bounded depth-1 domain,
-- depth-2 oracle theorem only.
+- depth-2 smallest oracle theorem (ORACLE-COMPLETE),
+- Theorem N catalogue-sufficient factorization (proof drafted, awaiting external formal review).
 
-### Not Defended
-- full depth-2 domain,
+### IMPLEMENTED + TEST-BACKED (not yet DEFENDED at the spec level)
+- full frozen depth-2 domain via `factor_search_v08`,
+- depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical).
+
+### FRONTIER / out of v1.0 scope
 - carrier widening beyond current proven bounds,
-- recursive disk-flip content symmetry as a theorem at all depths,
-- full recursive factor search completeness beyond the current quotient domain.
+- tractable sub-catalogues,
+- recursive disk-flip content symmetry as a depth-n theorem,
+- general recursive primality outside defended-complete domains,
+- depth-7 Fano / octonion conjecture (§H6).
 
 ---
 
