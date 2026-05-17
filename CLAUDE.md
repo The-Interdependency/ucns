@@ -97,7 +97,7 @@ ucns_recursive/                    # DEPRECATED for direct user imports;
   store.py                         # UCNSStore — keyed corpus + algebraic retrieval
 
   tests/
-    test_depth2_oracle.py          # Depth-2 oracle theorem (GREEN)
+    test_depth2_oracle.py          # Depth-2 oracle theorem (DEFENDED + ORACLE-COMPLETE)
     test_depth2_full_domain.py     # Frozen depth-2 domain sweep
     test_failure_boundary_e109.py  # E10.9 regression tests
     test_recursive_codec.py        # Round-trip codec tests (v0.1)

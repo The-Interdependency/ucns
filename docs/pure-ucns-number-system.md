@@ -213,25 +213,29 @@ The codec layer may encode Python values into UCNS objects, but Python value sem
 
 ## 9. Domains and Theorem Frontier
 
-Current repository context contains a canon drift that must be resolved.
+The canon drift between `CLAUDE.md` ("full frozen depth-2 implemented")
+and the older `ucns-spec.md` status snapshot ("not solved") has been
+reconciled on 2026-05-17 (branch
+`claude/ucns-v1-canon-reconciliation-ELOzV`).
 
-The assistant context file describes the full frozen depth-2 domain as implemented in `factor_search_v08`.
-
-The older `ucns-spec.md` status snapshot still says full frozen depth-2 is not solved.
-
-This document does not erase that contradiction. It marks it as the next canon repair target.
-
-Recommended domain taxonomy:
+Canonical status vocabulary (also codified as
+`ucns_recursive.domain_status.DomainProofStatus`):
 
 ```text
 DEFENDED          proven or proof-defended in written spec
 IMPLEMENTED       implemented and test-backed, proof may lag
+TEST-BACKED       tests cover the claimed behavior in the declared domain
 ORACLE-COMPLETE   complete only with oracle/catalogue assumptions
 FRONTIER          plausible but not proven complete
 EXPERIMENTAL      useful for exploration, not canonical
 ```
 
-The next spec repair should update `ucns-spec.md` so that depth-2 status distinguishes implementation/test status from proof status.
+Under this vocabulary the full frozen depth-2 domain is `IMPLEMENTED` +
+`TEST-BACKED` in `factor_search_v08`, not yet `DEFENDED` at the spec
+level. See `ucns-spec.md` §F2 and
+`docs/ucns-spec-status-addendum-2026-05-16.md` for the canonical
+statement. Carrier widening and general primality outside
+defended-complete domains are `FRONTIER` and out of v1.0 scope.
 
 ## hmmm
 

@@ -86,18 +86,26 @@ multiply(A_candidate, B_candidate) == P
 
 No factorization should be accepted without exact recomposition.
 
-## 1.5 Current defended theorem frontier
+## 1.5 Current defended theorem frontier (reconciled 2026-05-17)
 
-The currently defensible frontier remains:
+The currently defensible frontier, in the status vocabulary from
+`docs/ucns-spec-status-addendum-2026-05-16.md`:
 
-- flat kernel: defended,
-- depth-1 restricted completeness: defended within stated bounded domain,
-- depth-2 oracle: defended for the oracle class,
-- full frozen depth-2 domain: not fully proved as a general theorem,
-- carrier widening: not solved,
-- arbitrary finite-depth recursive completeness: not solved.
+- flat kernel: `DEFENDED`,
+- depth-1 restricted completeness: `DEFENDED` within stated bounded domain,
+- depth-2 oracle: `DEFENDED` + `ORACLE-COMPLETE`,
+- Theorem N (catalogue-sufficient factorization, `ucns-theorem-n.md`):
+  `DEFENDED` (proof drafted, awaiting external formal review),
+- full frozen depth-2 domain: `IMPLEMENTED` + `TEST-BACKED`, not yet
+  `DEFENDED` at the spec level,
+- carrier widening: `FRONTIER`, out of v1.0 scope,
+- arbitrary finite-depth **unconditional** recursive completeness:
+  `FRONTIER`, out of v1.0 scope (the catalogue-sufficient form is
+  Theorem N).
 
-This remains true even after the depth-7 framing.
+This remains true even after the depth-7 framing; the depth-7
+Fano/octonion content of this document remains conjectural and out of
+v1.0 scope.
 
 ---
 

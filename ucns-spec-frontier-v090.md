@@ -55,7 +55,8 @@ That is the strongest general completeness result currently established.
 
 ## 1.3 Depth-2 oracle defended
 
-The smallest frozen depth-2 oracle is GREEN.
+The smallest frozen depth-2 oracle is `DEFENDED` + `ORACLE-COMPLETE`
+(originally written here as "GREEN").
 
 There is a frozen theorem for that oracle class:
 
@@ -72,20 +73,26 @@ This is a **restricted theorem**. It does not extend to the full frozen depth-2 
 
 # 2. Current Failure Boundary
 
-## 2.1 Full frozen depth-2 domain is not solved
+## 2.1 Full frozen depth-2 domain — v0.9.0 status
 
-After the final push on the frozen depth-2 domain, the tested depth-2 cases still fail as a class.
+**Historical (v0.9.0).** At v0.9.0 the tested depth-2 cases still failed
+as a class.
 
-The depth-2 oracle remains GREEN, but the full domain does not.
+**Reconciled 2026-05-17 canon.** The full frozen depth-2 domain is now
+`IMPLEMENTED` + `TEST-BACKED` in `factor_search_v08`, **not yet
+`DEFENDED`** at the spec level. The depth-2 oracle theorem (Lemma 7)
+remains `DEFENDED` + `ORACLE-COMPLETE` and is now recognized as an
+instance of Theorem N (`ucns-theorem-n.md §4.1`).
 
 So the current honest statement is:
 
-- depth-2 oracle theorem: holds,
-- full frozen depth-2 domain: not yet complete.
+- depth-2 oracle theorem: `DEFENDED` + `ORACLE-COMPLETE`,
+- full frozen depth-2 domain: `IMPLEMENTED` + `TEST-BACKED`, awaiting spec-level proof.
 
-## 2.2 Carrier widening is not solved
+## 2.2 Carrier widening — FRONTIER
 
-Carrier widening beyond the defended small-carrier domain also fails on tested widened cases.
+Carrier widening beyond the defended small-carrier domain is `FRONTIER`
+and out of v1.0 scope. Tested widened cases still fail as a class.
 
 So the honest state is:
 
@@ -138,37 +145,51 @@ Restricted completeness holds on the defended depth-1 domain.
 ### C. Depth-2 oracle frontier
 Restricted completeness holds on the frozen smallest depth-2 oracle class.
 
-## 4.2 What is **not** currently justified
+## 4.2 What is **not** yet `DEFENDED` at the spec level
 
-The following stronger claims are **not** currently justified:
+The following stronger claims are **not yet `DEFENDED`** at the spec
+level (some are `IMPLEMENTED` + `TEST-BACKED`; some remain `FRONTIER`):
 
-### A. Full depth-2 completeness
+### A. Full depth-2 completeness — `IMPLEMENTED` + `TEST-BACKED`, not yet `DEFENDED`
 \[
 \texttt{factor\_search}
 \text{ is complete on the whole frozen depth-2 domain}
 \]
 
-### B. Widened-carrier completeness
+### B. Widened-carrier completeness — `FRONTIER` / out of v1.0 scope
 \[
 \texttt{factor\_search}
 \text{ is complete after widening } n_{\min}
 \]
 
-### C. General recursive completeness
+### C. General recursive completeness — `FRONTIER` / out of v1.0 scope
 \[
 \texttt{factor\_search}
 \text{ is complete for arbitrary finite depth}
 \]
 
-None of these should be claimed at the current frontier.
+Theorem N (`ucns-theorem-n.md`) addresses the **catalogue-sufficient**
+form of these claims and is `DEFENDED` (proof drafted, awaiting external
+formal review): if the catalogue contains every recursive payload of the
+true factors, `factor_search_v08` finds a factorization. The depth and
+carrier conditions above are not in v1.0 scope as **unconditional**
+completeness statements.
 
 ---
 
-# 5. Recommended Boundary Statement
+# 5. Recommended Boundary Statement (reconciled 2026-05-17)
 
 The clean present-tense statement is:
 
-> UCNS currently has a defended flat kernel, a defended depth-1 restricted completeness theorem, and a defended depth-2 oracle theorem. The full frozen depth-2 domain and carrier-widened recursive domain remain unsolved. The active bottleneck is the recursive payload / witness-matrix layer.
+> UCNS has a `DEFENDED` flat kernel, a `DEFENDED` depth-1 restricted
+> completeness theorem, and a `DEFENDED` + `ORACLE-COMPLETE` depth-2
+> oracle theorem. **Theorem N (`ucns-theorem-n.md`,
+> catalogue-sufficient factorization at all depths) is `DEFENDED`
+> (proof drafted, awaiting external formal review).** The full frozen
+> depth-2 domain is `IMPLEMENTED` + `TEST-BACKED` in `factor_search_v08`,
+> not yet `DEFENDED` at the spec level. Carrier widening and general
+> primality outside defended-complete domains are `FRONTIER` and out
+> of v1.0 scope.
 
 ---
 
