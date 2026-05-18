@@ -50,6 +50,22 @@ A0 may consume depth-2 factorization outputs only with explicit domain-status me
 
 ## Next Canon Repair
 
-Next commit should update `ucns-spec.md` directly once the full file can be patched safely. The edit should replace binary solved/not-solved language with the multi-status vocabulary above.
+**Status: completed 2026-05-17** on branch
+`claude/ucns-v1-canon-reconciliation-ELOzV`.
+
+`ucns-spec.md` has been patched to replace binary solved/not-solved
+language with the status vocabulary in this addendum.
+`ucns-spec-frontier-v090.md` has been marked partially superseded and
+cross-references the reconciled canon. `README.md`, `CLAUDE.md`, and
+`CHANGELOG.md` have been updated to match.
+
+The reconciled v1.0 canon also:
+
+- declares `ucns` the v1.0 public Python API,
+- declares `ucns_recursive` deprecated for direct user imports but
+  retained as a compatibility surface (no runtime warning yet — the
+  release ships from a local termux build at the maintainer's cadence),
+- declares carrier widening, tractable sub-catalogues, and general
+  primality outside defended-complete domains **out of v1.0 scope**.
 
 ## hmmm

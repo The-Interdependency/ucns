@@ -1,17 +1,25 @@
 """
 test_depth2_full_domain
 ========================
-Exhaustive test over the frozen depth-2 domain D':
+Compact closure sweep over the frozen depth-2 domain D':
 
     depth ≤ 2,  |A⁺| ≤ 3,  n_min ≤ 4
 
-GOAL: Depth-2 Frozen Domain Completeness Theorem
--------------------------------------------------
-For every P in frozen D':
+Status (v1.0 canon): the full frozen depth-2 domain is IMPLEMENTED +
+TEST-BACKED in ``factor_search_v08``. It is **not** yet DEFENDED at the
+formal-spec level, and this suite is **not** a literal exhaustive
+enumeration of every payload assignment in D' (which is combinatorially
+expensive). The suite combines hand-constructed edge cases with a
+generated closure sweep over a compact basis family. It is the standing
+TEST-BACKED witness for the depth-2 IMPLEMENTED claim, not a proof
+substitute. See ``docs/ucns-spec-status-addendum-2026-05-16.md`` and
+``ucns-spec.md`` §F2.
+
+Target shape (for the closure-sweep cases):
 
     factor_search_v08(P) returns a factor pair
     iff
-    P is sequence-composite in D'.
+    P is sequence-composite in the swept slice of D'.
 
 The current test suite checks:
 1.  Every explicitly constructed composite P is recovered.
@@ -20,10 +28,6 @@ The current test suite checks:
 4.  No SEQ-PRIME is reported for a known composite.
 5.  No spurious factor is reported for a known prime (length 1 only;
     length-2+ objects are always composite via the 1-cell face-flip).
-
-NOTE: Full literal enumeration of every payload assignment in D' is
-combinatorially expensive.  This suite therefore combines hand-constructed
-edge cases with a generated closure sweep over a compact basis family.
 """
 
 import unittest
