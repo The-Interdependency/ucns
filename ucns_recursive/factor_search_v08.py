@@ -27,8 +27,13 @@ For each non-trivial factorisation  n = p × q  of  n = len(P.A_plus):
 5.  **Exact recomposition verification** – the final truth test:
         multiply(A_candidate, B_candidate) == P
 
-    Factorizations where either A or B is the unit (``is_unit`` returns
-    True) are skipped.
+    Factorizations where either A or B is in the multiplicative unit
+    group (``is_multiplicative_unit`` returns True) are skipped. The
+    unit group is broader than the identity: a length-1 object with
+    UNIT payload and face bit f=1 is self-inverse, so admitting it as
+    a factor would mark every length-≥2 product as composite via a
+    trivial sign flip. Filtering the full unit group is what makes
+    SEQ-PRIME a meaningful predicate.
 
 Loop ordering
 -------------
@@ -68,7 +73,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Tuple, Union
 
-from .canonical import UCNSObject, multiply, is_unit
+from .canonical import UCNSObject, multiply, is_multiplicative_unit
 from .domains import generate_payload_catalogue
 from .host_recovery import recover_host_angles, recover_face_structures
 from .payload_system import solve_payload_system
@@ -159,7 +164,7 @@ def factor_search_v08(
                 list(zip(B_angles, S_B)),
                 B_faces,
             )
-            if is_unit(A_cand) or is_unit(B_cand):
+            if is_multiplicative_unit(A_cand) or is_multiplicative_unit(B_cand):
                 continue
             if multiply(A_cand, B_cand) == P:
                 return A_cand, B_cand

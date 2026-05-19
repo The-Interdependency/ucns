@@ -26,15 +26,24 @@ The current test suite checks:
 2.  Products of depth-1 × depth-1 objects are always composite.
 3.  Recovered factors recompose exactly to P.
 4.  No SEQ-PRIME is reported for a known composite.
-5.  No spurious factor is reported for a known prime (length 1 only;
-    length-2+ objects are always composite via the 1-cell face-flip).
+5.  No spurious factor is reported for a known prime. A length-≥2
+    flat object (e.g. (0, UNIT)(1, UNIT) F=[0, 0]) is seq-prime: the
+    only candidate factorization uses a 1-cell face-flip element from
+    the multiplicative unit group, which the engine filters via
+    ``is_multiplicative_unit``. Identifying the full unit group (not
+    just the identity) is what makes SEQ-PRIME a meaningful predicate.
 """
 
 import unittest
 from fractions import Fraction
 from typing import Optional
 
-from ucns_recursive.canonical import UCNSObject, multiply, is_unit
+from ucns_recursive.canonical import (
+    UCNSObject,
+    is_multiplicative_unit,
+    is_unit,
+    multiply,
+)
 from ucns_recursive.domains import generate_payload_catalogue, in_domain
 from ucns_recursive.factor_search_v08 import factor_search_v08
 
@@ -214,26 +223,28 @@ class TestDepth2FullDomain(unittest.TestCase):
         result = factor_search_v08(obj, self.catalogue)
         self.assertEqual(result, "SEQ-PRIME", "Length-1 object must be SEQ-PRIME")
 
-    def test_length2_flat_is_composite_via_face_flip(self) -> None:
-        """A flat length-2 object is composite via the 1-cell face-flip factor.
+    def test_length2_flat_is_seq_prime(self) -> None:
+        """A flat length-2 object with no payload is seq-prime.
 
-        With range(1, n) in factor_search_v08, the p=1 path is explored.
-        recover_face_structures returns two options: A_faces=[0] (unit,
-        skipped) and A_faces=[1].  The 1-cell face-flip object (F_plus=[1])
-        is a valid non-unit: is_unit() requires F_plus=[0].  XOR composition
-        restores the all-zero face sequence: 1⊕1=0 for every cell.  So
-        multiply(1-cell-flip, 2-cell-flip) equals the original flat object.
+        The only candidate factorization at p=1 uses a 1-cell face-flip
+        element of the multiplicative unit group as one factor, with the
+        XOR cancellation absorbed into the other factor. The engine's
+        ``is_multiplicative_unit`` filter rejects this trivial split,
+        leaving no non-degenerate (A, B) with A ⊠ B = obj. The object is
+        therefore seq-prime.
 
-        Mathematical consequence: every length-≥2 UCNSObject is seq-composite
-        via the face-flip factorization; only length-1 objects are seq-prime.
+        This is the primality boundary in the depth-1 verified domain:
+        face-flip elements u = (0, UNIT) F=[1] satisfy u ⊠ u = identity
+        and form the unit group together with the identity. Admitting
+        them as factors would make every length-≥2 object composite,
+        which would collapse SEQ-PRIME to a useless predicate.
         """
         obj = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
         result = factor_search_v08(obj, self.catalogue)
-        self.assertIsInstance(result, tuple, "Length-2 flat is composite via face-flip")
-        rec_A, rec_B = result
-        self.assertFalse(is_unit(rec_A), "rec_A must be non-unit")
-        self.assertFalse(is_unit(rec_B), "rec_B must be non-unit")
-        self.assertEqual(multiply(rec_A, rec_B), obj, "recomposition must equal obj")
+        self.assertEqual(
+            result, "SEQ-PRIME",
+            "flat length-2 object must be seq-prime once the unit group is filtered",
+        )
 
     # ------------------------------------------------------------------
     # Generated closure sweep over a compact basis family
@@ -263,7 +274,7 @@ class TestDepth2FullDomain(unittest.TestCase):
         family = basis_family()
         for i, A in enumerate(family):
             for j, B in enumerate(family):
-                if is_unit(A) or is_unit(B):
+                if is_multiplicative_unit(A) or is_multiplicative_unit(B):
                     continue
                 P = multiply(A, B)
                 self.assertIsNotNone(P, f"basis product failed: {i}x{j}")
