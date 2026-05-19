@@ -31,8 +31,15 @@ class TestFactorizationResultEnvelope(unittest.TestCase):
         rec_A, rec_B = result.factors
         self.assertEqual(multiply(rec_A, rec_B), P)
 
-    def test_seq_prime_in_verified_domain_is_absolute_with_scope(self):
-        P = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+    def test_seq_prime_length1_in_verified_domain_is_absolute_with_scope(self):
+        """Length-1 is the defended seq-prime example.
+
+        Length-2 flat objects are now composite via the one-cell face-flip
+        factorization path; see test_depth2_full_domain for the standing
+        regression. This envelope test therefore uses the length-1 object
+        when it needs an absolute SEQ-PRIME result.
+        """
+        P = UCNSObject(1, 1, [(Fraction(0), UNIT)], [0])
 
         result = factorization_result(P)
 
@@ -41,6 +48,20 @@ class TestFactorizationResultEnvelope(unittest.TestCase):
         self.assertEqual(result.product_domain_label, "depth-1")
         self.assertTrue(result.seq_prime_is_absolute)
         self.assertFalse(result.requires_scope)
+        self.assertEqual(result.claim_scope, "defended-domain-relative")
+
+    def test_length2_flat_is_composite_not_seq_prime(self):
+        """A flat length-2 object should not be treated as seq-prime."""
+        P = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+
+        result = factorization_result(P)
+
+        self.assertEqual(result.result_kind, FactorizationResultKind.FACTORS)
+        self.assertTrue(result.has_factors)
+        rec_A, rec_B = result.factors
+        self.assertEqual(multiply(rec_A, rec_B), P)
+        self.assertFalse(result.seq_prime_is_absolute)
+        self.assertEqual(result.claim_scope, "composite-found")
 
     def test_seq_prime_in_frontier_domain_is_non_absolute(self):
         depth2_payload = UCNSObject(
