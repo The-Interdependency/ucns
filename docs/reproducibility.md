@@ -51,14 +51,14 @@ The reproducible examples live in:
 examples/depth_examples/
 ```
 
-The example set should include:
+The example set includes:
 
 - depth-1 minimal seq-prime case
 - depth-2 oracle composite case
 - depth-3 catalogue-sufficient case
-- insufficient-catalogue scoped failure case
+- catalogue-boundary scoped result case
 
-Each example should print deterministic status lines and assert either exact recomposition or explicitly scoped failure behavior.
+Each example should print deterministic status lines and assert either exact recomposition or explicitly scoped behavior.
 
 ---
 
