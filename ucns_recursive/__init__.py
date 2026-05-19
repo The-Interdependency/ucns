@@ -5,7 +5,8 @@ UCNS recursive factorization engine — frozen depth-2 domain.
 
 Modules
 -------
-canonical              UCNSObject definition, multiply, is_unit
+canonical              UCNSObject definition, multiply, is_unit,
+                       is_multiplicative_unit
 domains                Frozen domain D' parameters, oracle predicates,
                        verified-domain status taxonomy
 host_recovery          Recover host angle/face structures from a product
@@ -35,7 +36,13 @@ factorization result   A0-facing scoped factorization claims
 object record          A0-facing object inspection metadata
 """
 
-from .canonical import UCNSObject, UNIT, multiply, is_unit
+from .canonical import (
+    UCNSObject,
+    UNIT,
+    multiply,
+    is_unit,
+    is_multiplicative_unit,
+)
 from .factor_search_v08 import factor_search_v08
 
 # Codec
@@ -106,6 +113,7 @@ __all__ = [
     "UNIT",
     "multiply",
     "is_unit",
+    "is_multiplicative_unit",
     "factor_search_v08",
     # codec
     "recursive_encode",
