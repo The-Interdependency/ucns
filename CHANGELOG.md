@@ -17,6 +17,7 @@
 - README, `CLAUDE.md`, and example snippets switched to `from ucns import ...`; status table aligned with the vocabulary.
 - A0 rule on `SEQ-PRIME` outside `VERIFIED_DOMAIN_LABELS` documented at the README, spec, and `CLAUDE.md` level.
 - Added `docs/claims-ledger.md`, `docs/mathematical-glossary.md`, `docs/reproducibility.md`, and `RELEASE.md` for reviewer-facing v1.0 preparation.
+- Glossary now records the multiplicative-unit boundary: unit-group factors are filtered before `SEQ-PRIME` is interpreted.
 
 ### Examples
 - Added minimal reviewer examples under `examples/depth_examples/` covering depth-1, depth-2 oracle, depth-3 catalogue-sufficient, and catalogue-boundary behavior.
@@ -24,7 +25,7 @@
 ### Tests / metadata
 - Tightened `test_depth2_full_domain.py` docstring; no longer claims exhaustive enumeration over the frozen domain.
 - Aligned `pyproject.toml` Python classifiers with the CI matrix.
-- Updated the factorization envelope tests so the defended seq-prime example is the length-1 object and the length-2 flat object is asserted composite via face-flip.
+- Retained the factorization envelope test canon from the multiplicative-unit fix: the flat length-2 object is a defended-domain `SEQ-PRIME` example after unit-group factors are filtered.
 
 ## v0.8.1 — PyPI Release Candidate
 
