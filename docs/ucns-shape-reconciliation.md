@@ -119,6 +119,38 @@ Per firewall rule: Theorem N remains scoped to UCNS-A factorization/search claim
 
 ---
 
+## Reconciliation action plan (proceeding from this verdict)
+
+Because the verdict is **PARALLEL**, the recommended next step is a constrained bridge program that can either prove a concrete map or formally preserve separation.
+
+### A1) Add an explicit boundary section to canonical spec
+
+- Add a dedicated subsection in `ucns-spec.md` stating that Theorem N scope applies to UCNS-A algebra/factorization only, and does not imply metric claims (DRIFT/DVG, `(r,θ,z)` geometry).
+- Mirror this boundary in `docs/pure-ucns-number-system.md` so public-facing “number system” language cannot be read as endorsing UCNS-G metrics.
+
+### A2) Create a bridge-spec draft (no theorem transfer)
+
+Create a new draft doc (suggested: `docs/ucns-a-to-ucns-g-bridge-draft.md`) with three mandatory sections:
+
+1. **Forward projection candidates**: candidate functions from `UCNSObject` invariants to geometry observables, with explicit domain limits.
+2. **Non-recoverability claims**: what cannot be recovered from UCNS-A state without extra structure (currently `r`, `z`, DRIFT, DVG).
+3. **Status labels**: each candidate marked `EXPERIMENTAL` unless it is encoded in canonical code/spec.
+
+### A3) Add regression guardrails in tests/docs checks
+
+- Add doc/assertion checks that prevent accidental wording drift claiming UCNS-G is theorem-proven by Theorem N.
+- Add explicit tests only when bridge APIs exist; until then, add policy assertions in docs/lint checks rather than pseudo-math unit tests.
+
+### A4) Decision gate for rename vs unification
+
+After A1–A3, choose one gate:
+
+- **Gate U (Unify):** only if source-backed functions exist for `(r,θ,z)` + DRIFT/DVG from canonical objects.
+- **Gate R (Rename/Scope):** if not, keep UCNS-A and UCNS-G names separated in public surfaces and release notes.
+
+This action sequence is intentionally implementation-light and status-heavy: it reduces claim-risk immediately while preserving a path to later unification.
+
+
 ## hmmm
 
 - I did not find a canonical source function establishing a bijection (or even total map) between `UCNSObject` and `(r, θ, z)` with DRIFT/DVG extraction.
