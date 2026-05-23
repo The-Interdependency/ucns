@@ -127,6 +127,21 @@ code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
 code/sweeps/             # Empirical verification scripts
 ```
 
+### What belongs in this repo (and what does not)
+
+This repository is primarily for UCNS mathematics, Python implementation,
+tests, and reproducible research artifacts. Standalone front-end demos
+(for example a single-file HTML/JS/SVG visualization app) are typically
+out of scope **unless** they are directly wired into project docs or
+reproducibility assets.
+
+If you want to keep an interactive visualization, prefer one of these:
+
+- publish it as a separate GitHub Pages micro-app and link it from docs;
+- place it under a clearly labeled `examples/visualization/` path with a
+  README that explains its direct connection to a UCNS theorem, test, or
+  reproducibility workflow.
+
 > `ucns_recursive` is **deprecated for direct user imports** as of v1.0
 > canon reconciliation. New code should import from `ucns` and
 > `ucns.a0_safe`. `ucns_recursive` remains a supported compatibility
