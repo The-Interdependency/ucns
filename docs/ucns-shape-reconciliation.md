@@ -128,13 +128,18 @@ Because the verdict is **PARALLEL**, the recommended next step is a constrained 
 - Add a dedicated subsection in `ucns-spec.md` stating that Theorem N scope applies to UCNS-A algebra/factorization only, and does not imply metric claims (DRIFT/DVG, `(r,θ,z)` geometry).
 - Mirror this boundary in `docs/pure-ucns-number-system.md` so public-facing “number system” language cannot be read as endorsing UCNS-G metrics.
 
-### A2) Create a bridge-spec draft (no theorem transfer)
+### A2) Use the bridge checklist as the canonical planning gate (no theorem transfer)
 
-Create a new draft doc (suggested: `docs/ucns-a-to-ucns-g-bridge-draft.md`) with three mandatory sections:
+Bridge planning is now tracked in:
 
-1. **Forward projection candidates**: candidate functions from `UCNSObject` invariants to geometry observables, with explicit domain limits.
-2. **Non-recoverability claims**: what cannot be recovered from UCNS-A state without extra structure (currently `r`, `z`, DRIFT, DVG).
-3. **Status labels**: each candidate marked `EXPERIMENTAL` unless it is encoded in canonical code/spec.
+- `docs/edcm-edcmbone-bridge-checklist.md`
+
+That checklist pins mandatory artifacts before any theorem transfer claim, including:
+
+1. **Forward projection function (source-backed)** from explicit UCNS-A objects to UCNS-G outputs.
+2. **Non-recoverability/recoverability limits** (currently including `r`, `z`, DRIFT, DVG limits).
+3. **Per-output status labels** for bridge outputs.
+4. **Comparative tests** against known UCNS-A objects.
 
 ### A3) Add regression guardrails in tests/docs checks
 

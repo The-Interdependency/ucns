@@ -90,6 +90,8 @@ the two constructions remain parallel.
 * `docs/ucns-shape-reconciliation.md` — the existing PARALLEL verdict
   and source-verified UCNS-A inventory (this supplement does not
   modify it).
+* `docs/edcm-edcmbone-bridge-checklist.md` — checklist of required
+  artifacts before any UCNS-A theorem/proof transfer to UCNS-G/EDCM claims.
 * `edcmbone:docs/handoffs/2026-05-22-ucns-g-prime-cylinder-v3.md` —
   the canonical UCNS-G v3 pin.
 * `erinepshovel-code` (EDCM / UnitCircle):
