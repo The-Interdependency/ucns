@@ -125,6 +125,9 @@ docs/
 ucns-code-v065.py        # Stable v0.6.5 snapshot (read-only reference)
 code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
 code/sweeps/             # Empirical verification scripts
+examples/visualization/  # Human-facing visualization boundary tests
+  seed53.html            # 53-residue skip-star + heptagram + unwrap demo
+  README.md              # claim linkage, non-proof boundary, open constraints
 ```
 
 ### What belongs in this repo (and how to place visual demos)
