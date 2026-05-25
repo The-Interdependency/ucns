@@ -4,7 +4,10 @@ from pathlib import Path
 
 DOC_FILES = [
     Path('README.md'),
-    *Path('docs').glob('*.md'),
+    # Exclude the bridge checklist itself: it lists forbidden phrases as
+    # quoted examples of what must NOT appear elsewhere.
+    *[p for p in Path('docs').glob('*.md')
+      if p.name != 'edcm-edcmbone-bridge-checklist.md'],
 ]
 
 # Explicit overclaim patterns that should never appear in documentation copy.
