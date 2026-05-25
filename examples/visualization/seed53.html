@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>53-Seed | Skip-Star | Heptagram | Torus Unwrap</title>
+<style>
+  :root { --bg:#0b0d10; --fg:#e8eef7; --muted:#9fb3c8; --accent:#7bdff2; --accent2:#b892ff; --accent3:#f7a072; }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.3 system-ui,Segoe UI,Roboto,Arial;}
+  #app{display:flex;flex-direction:column;height:100%}
+  header,footer{padding:8px 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  header{border-bottom:1px solid #1b1f26}
+  footer{border-top:1px solid #1b1f26;justify-content:space-between}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  label{opacity:.9}
+  input[type="range"]{width:140px}
+  button{background:#1a2130;color:var(--fg);border:1px solid #2a3140;border-radius:8px;padding:8px 10px;cursor:pointer}
+  button:active{transform:translateY(1px)}
+  .wrap{flex:1;display:grid;grid-template-columns:1fr;grid-template-rows:1fr 1fr;min-height:0}
+  .panel{position:relative;min-height:0;border-bottom:1px solid #1b1f26}
+  .panel:last-child{border-bottom:none}
+  svg{width:100%;height:100%;touch-action:none;background:linear-gradient(#0b0d10,#0b0d10) padding-box, radial-gradient(1200px 600px at 20% -10%, #0b0d10 10%, #0e1116 40%, #0b0d10 70%) border-box;}
+  .hint{position:absolute;left:10px;bottom:10px;opacity:.75;font-size:12px}
+  .badge{padding:2px 6px;border:1px solid #2a3140;border-radius:999px;background:#131823;color:var(--muted)}
+  .pill{padding:2px 6px;border-radius:999px;background:#10151f;border:1px solid #202636}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="row">
+      <span class="badge">N = 53</span>
+      <label>Skip <input id="skip" type="range" min="1" max="26" step="1" value="7"></label>
+      <span id="skipVal" class="pill">k = 7</span>
+      <label>Radius<input id="radius" type="range" min="60" max="260" step="1" value="180"></label>
+      <span id="rVal" class="pill">R = 180</span>
+      <label><input id="showHepta" type="checkbox" checked> heptagram {7/2}+{7/3}</label>
+      <label><input id="showChords" type="checkbox" checked> star chords</label>
+      <label><input id="showHull" type="checkbox"> ring hull</label>
+      <label><input id="wrapMode" type="checkbox"> torus unwrap</label>
+    </div>
+    <div class="row">
+      <button id="exportSvg">Export SVG</button>
+      <button id="randomize">Shuffle colors</button>
+      <span id="seedInfo" class="pill">tip: tap a seed</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <svg id="ring" viewBox="-320 -320 640 640" aria-label="53-seed ring"></svg>
+      <div class="hint">Ring view - tap seeds; drag background to rotate (two-finger on touch).</div>
+    </div>
+    <div class="panel">
+      <svg id="unwrap" viewBox="0 0 640 280" aria-label="Torus unwrap"></svg>
+      <div class="hint">Torus unwrap - columns are residue classes mod N; lines follow skip-k modulo 53.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="row">
+      <span class="badge">Human-facing boundary test</span>
+      <span class="pill">visual aid for residues/orbits; not a proof object</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const N = 53;
+  const TWO_PI = Math.PI*2;
+
+  const state = {
+    k: 7,
+    R: 180,
+    rotation: 0,
+    colors: {
+      seed: '#e8eef7',
+      seedActive: '#7bdff2',
+      chord: 'rgba(184,146,255,0.7)',
+      chordAlt: 'rgba(247,160,114,0.65)',
+      hull: 'rgba(127,127,127,0.25)',
+      heptaA: 'rgba(123,223,242,0.9)',
+      heptaB: 'rgba(247,160,114,0.9)'
+    },
+    show: { hepta:true, chords:true, hull:false, unwrap:false },
+    selected: null
+  };
+
+  const ring = document.getElementById('ring');
+  const unwrap = document.getElementById('unwrap');
+  const skip = document.getElementById('skip');
+  const skipVal = document.getElementById('skipVal');
+  const radius = document.getElementById('radius');
+  const rVal = document.getElementById('rVal');
+  const showHepta = document.getElementById('showHepta');
+  const showChords = document.getElementById('showChords');
+  const showHull = document.getElementById('showHull');
+  const wrapMode = document.getElementById('wrapMode');
+  const seedInfo = document.getElementById('seedInfo');
+  const btnExport = document.getElementById('exportSvg');
+  const btnRandomize = document.getElementById('randomize');
+
+  const mod = (a,m)=>((a%m)+m)%m;
+  const deg = r=>r*180/Math.PI;
+
+  function seedAngle(i){ return state.rotation + TWO_PI * (i/N); }
+  function seedPos(i, R=state.R){ const a=seedAngle(i); return {x: R*Math.cos(a), y: R*Math.sin(a)}; }
+
+  function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+
+  function el(tag, attrs={}, children=[]){
+    const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for(const [k,v] of Object.entries(attrs)){
+      if(v==null) continue;
+      e.setAttribute(k, v);
+    }
+    for(const c of children) e.appendChild(c);
+    return e;
+  }
+
+  function heptagramPaths(R){
+    const pts = [];
+    for(let i=0;i<7;i++){
+      const a = -Math.PI/2 + TWO_PI*(i/7);
+      pts.push([R*Math.cos(a), R*Math.sin(a)]);
+    }
+    const pathOf = step => {
+      let d = '';
+      for(let i=0;i<7;i++){
+        const [x,y] = pts[(i*step)%7];
+        d += (i===0?'M':'L')+x.toFixed(3)+','+y.toFixed(3);
+      }
+      d += 'Z';
+      return d;
+    };
+    return { d72: pathOf(2), d73: pathOf(3) };
+  }
+
+  function drawRing(){
+    clear(ring);
+    const g = el('g', {}, []);
+
+    if(state.show.hull){
+      const R = state.R+10;
+      g.appendChild(el('circle', {cx:0, cy:0, r:R, fill:'none', stroke:state.colors.hull, 'stroke-width':8}));
+      g.appendChild(el('circle', {cx:0, cy:0, r:R-20, fill:'none', stroke:state.colors.hull, 'stroke-width':1.2, 'stroke-dasharray':'4 6'}));
+    }
+
+    if(state.show.hepta){
+      const hR = state.R*0.78;
+      const {d72,d73} = heptagramPaths(hR);
+      g.appendChild(el('path', {d:d72, fill:'none', stroke:state.colors.heptaA, 'stroke-width':1.4}));
+      g.appendChild(el('path', {d:d73, fill:'none', stroke:state.colors.heptaB, 'stroke-width':1.4}));
+      g.appendChild(el('circle', {cx:0, cy:0, r:2.6, fill:state.colors.heptaA}));
+    }
+
+    if(state.show.chords){
+      const chordG = el('g', {'stroke-linecap':'round', 'stroke-linejoin':'round'});
+      for(let i=0;i<N;i++){
+        const a = seedPos(i);
+        const b = seedPos((i+state.k)%N);
+        const color = (i%2? state.colors.chord : state.colors.chordAlt);
+        chordG.appendChild(el('line', {x1:a.x, y1:a.y, x2:b.x, y2:b.y, stroke:color, 'stroke-width': i===state.selected||((i+state.k)%N)===state.selected ? 2.2 : 1.1}));
+      }
+      g.appendChild(chordG);
+    }
+
+    const seedG = el('g', {});
+    for(let i=0;i<N;i++){
+      const p = seedPos(i);
+      const isSel = (i===state.selected);
+      const r = isSel? 6.5 : 4.2;
+      const fill = isSel? state.colors.seedActive : state.colors.seed;
+      const c = el('circle', {cx:p.x, cy:p.y, r, fill, 'data-i':i, style:'cursor:pointer'});
+      if(isSel){
+        const t = el('text', {x:p.x+8, y:p.y-8, 'font-size':'10', fill:state.colors.seedActive});
+        t.textContent = `#${i}`;
+        seedG.appendChild(t);
+      }
+      seedG.appendChild(c);
+    }
+
+    g.appendChild(seedG);
+    ring.appendChild(g);
+  }
+
+  function drawUnwrap(){
+    clear(unwrap);
+    const W = 640, H = 280, pad = 20;
+    const cols = N;
+    const colW = (W - 2*pad)/cols;
+    const rowH = (H - 2*pad)/2;
+
+    unwrap.appendChild(el('rect', {x:0,y:0,width:W,height:H, fill:'none', stroke:'#161b24'}));
+    for(let c=0;c<cols;c++){
+      const x = pad + colW*(c+0.5);
+      unwrap.appendChild(el('line', {x1:x,y1:pad, x2:x, y2:H-pad, stroke:'#19202b', 'stroke-width': c%5===0? 1.1:0.6, 'stroke-opacity': 0.8}));
+    }
+
+    const dotG = el('g', {});
+    const y = pad + rowH*0.5;
+    for(let i=0;i<N;i++){
+      const x = pad + colW*(i+0.5);
+      const isSel = (i===state.selected);
+      dotG.appendChild(el('circle', {cx:x, cy:y, r: isSel? 6:4, fill: isSel? state.colors.seedActive: state.colors.seed, 'data-i':i, style:'cursor:pointer'}));
+    }
+    unwrap.appendChild(dotG);
+
+    const y2 = pad + rowH*1.5;
+    const lineG = el('g', {'stroke-linecap':'round'});
+    for(let i=0;i<N;i++){
+      const j = (i+state.k)%N;
+      const x1 = pad + colW*(i+0.5);
+      const x2 = pad + colW*(j+0.5);
+      const color = (i%2? state.colors.chord : state.colors.chordAlt);
+      lineG.appendChild(el('line', {x1, y1:y, x2, y2:y2, stroke:color, 'stroke-width': (i===state.selected||j===state.selected)? 2.2:1}));
+    }
+    unwrap.appendChild(lineG);
+
+    const dotG2 = el('g', {});
+    for(let j=0;j<N;j++){
+      const x = pad + colW*(j+0.5);
+      const src = mod(j-state.k, N);
+      const isSel = (j===state.selected || src===state.selected);
+      dotG2.appendChild(el('circle', {cx:x, cy:y2, r: isSel? 6:4, fill: isSel? state.colors.seedActive: state.colors.seed, 'data-i':j, style:'cursor:pointer'}));
+    }
+    unwrap.appendChild(dotG2);
+
+    const lbl = el('text', {x:pad, y:14, fill:'#8aa0b7', 'font-size':12}); lbl.textContent = `columnar unwrap - N=${N}, k=${state.k}`;
+    unwrap.appendChild(lbl);
+  }
+
+  function seedFromTarget(t){
+    if(!(t instanceof SVGElement)) return null;
+    const i = t.getAttribute('data-i');
+    return i==null? null : parseInt(i,10);
+  }
+
+  let drag = null;
+  ring.addEventListener('pointerdown', (e)=>{
+    if(e.target.closest('[data-i]')) return;
+    const bb = ring.viewBox.baseVal;
+    const cx = bb.x + bb.width/2, cy = bb.y + bb.height/2;
+    const x = (e.offsetX / ring.clientWidth) * bb.width + bb.x;
+    const y = (e.offsetY / ring.clientHeight) * bb.height + bb.y;
+    drag = { startA: Math.atan2(y - cy, x - cx), startRot: state.rotation };
+    ring.setPointerCapture(e.pointerId);
+  });
+  ring.addEventListener('pointermove', (e)=>{
+    if(!drag) return;
+    const bb = ring.viewBox.baseVal;
+    const cx = bb.x + bb.width/2, cy = bb.y + bb.height/2;
+    const x = (e.offsetX / ring.clientWidth) * bb.width + bb.x;
+    const y = (e.offsetY / ring.clientHeight) * bb.height + bb.y;
+    const a = Math.atan2(y - cy, x - cx);
+    state.rotation = drag.startRot + (a - drag.startA);
+    render();
+  });
+  ring.addEventListener('pointerup', ()=> drag=null);
+  ring.addEventListener('pointercancel', ()=> drag=null);
+
+  for(const svg of [ring, unwrap]){
+    svg.addEventListener('click', (e)=>{
+      const i = seedFromTarget(e.target);
+      if(i==null) return;
+      state.selected = (state.selected===i? null : i);
+      const next = (i+state.k)%N, prev = mod(i-state.k, N);
+      seedInfo.textContent = `seed #${i} -> skip(+k): #${next}, skip(-k): #${prev}, angle: ${deg(seedAngle(i)).toFixed(2)}deg`;
+      render();
+    }, {passive:true});
+  }
+
+  skip.addEventListener('input', ()=>{
+    state.k = parseInt(skip.value,10);
+    skipVal.textContent = `k = ${state.k}`;
+    render();
+  });
+  radius.addEventListener('input', ()=>{
+    state.R = parseInt(radius.value,10);
+    rVal.textContent = `R = ${state.R}`;
+    render();
+  });
+  showHepta.addEventListener('change', ()=>{ state.show.hepta = showHepta.checked; render(); });
+  showChords.addEventListener('change', ()=>{ state.show.chords = showChords.checked; render(); });
+  showHull.addEventListener('change', ()=>{ state.show.hull = showHull.checked; render(); });
+  wrapMode.addEventListener('change', ()=>{ state.show.unwrap = wrapMode.checked; document.querySelectorAll('.panel')[1].style.display = state.show.unwrap? 'block':'none'; render(); });
+
+  btnRandomize.addEventListener('click', ()=>{
+    const hues = Array.from({length:5},()=>Math.floor(Math.random()*360));
+    state.colors.seed = `hsl(${hues[0]}deg 70% 92%)`;
+    state.colors.seedActive = `hsl(${hues[1]}deg 90% 70%)`;
+    state.colors.chord = `hsla(${hues[2]}deg 80% 65% / .75)`;
+    state.colors.chordAlt = `hsla(${hues[3]}deg 80% 65% / .65)`;
+    state.colors.heptaA = `hsla(${hues[4]}deg 90% 70% / .95)`;
+    state.colors.heptaB = `hsla(${(hues[4]+180)%360}deg 90% 70% / .95)`;
+    render();
+  });
+
+  btnExport.addEventListener('click', ()=>{
+    const clone = ring.cloneNode(true);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    svg.setAttribute('viewBox', ring.getAttribute('viewBox'));
+    svg.setAttribute('width','1024'); svg.setAttribute('height','1024');
+    svg.appendChild(el('rect',{x:-320,y:-320,width:640,height:640,fill:'#0b0d10'}));
+    while(clone.firstChild) svg.appendChild(clone.firstChild);
+    const data = new XMLSerializer().serializeToString(svg);
+    const blob = new Blob([data], {type:'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const name = `seed53_k${state.k}.svg`;
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 500);
+  });
+
+  function render(){
+    drawRing();
+    if(state.show.unwrap){ drawUnwrap(); } else { clear(unwrap); }
+  }
+  document.querySelectorAll('.panel')[1].style.display = 'none';
+  render();
+})();
+</script>
+</body>
+</html>
