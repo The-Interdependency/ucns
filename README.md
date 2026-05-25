@@ -127,7 +127,33 @@ docs/
 ucns-code-v065.py        # Stable v0.6.5 snapshot (read-only reference)
 code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
 code/sweeps/             # Empirical verification scripts
+examples/visualization/  # Human-facing visualization boundary tests
+  seed53.html            # 53-residue skip-star + heptagram + unwrap demo
+  README.md              # claim linkage, non-proof boundary, open constraints
 ```
+
+### What belongs in this repo (and how to place visual demos)
+
+This repository is primarily for UCNS mathematics, Python implementation,
+tests, and reproducible research artifacts.
+
+Interactive front-end demos (including single-file HTML/JS/SVG sketches)
+**can** belong here when they function as research support artifacts: they
+must clarify a theorem/mechanism, document a failure boundary, or support a
+reproducibility workflow.
+
+If you add one, place it under `examples/visualization/` and include a short
+README that states:
+
+- the exact UCNS claim/theorem/domain status it illustrates;
+- what the demo does **not** prove (honest boundary of inference);
+- how it acts as a boundary object for unresolved constraints (what remains
+  open, and what transition it marks between delivered artifact and ongoing
+  research).
+
+If the artifact is primarily outreach/showcase and not directly tied to UCNS
+verification or documentation, publish it as a separate GitHub Pages micro-app
+and link it from docs.
 
 > `ucns_recursive` is **deprecated for direct user imports** as of v1.0
 > canon reconciliation. New code should import from `ucns` and
