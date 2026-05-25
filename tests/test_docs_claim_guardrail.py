@@ -2,12 +2,15 @@ import re
 import unittest
 from pathlib import Path
 
+# Files excluded from the scan because they define (not violate) the boundary.
+# The bridge checklist quotes forbidden phrases as illustrative examples.
+EXCLUDED_DOC_FILES = {
+    'edcm-edcmbone-bridge-checklist.md',
+}
+
 DOC_FILES = [
     Path('README.md'),
-    # Exclude the bridge checklist itself: it lists forbidden phrases as
-    # quoted examples of what must NOT appear elsewhere.
-    *[p for p in Path('docs').glob('*.md')
-      if p.name != 'edcm-edcmbone-bridge-checklist.md'],
+    *[p for p in Path('docs').glob('*.md') if p.name not in EXCLUDED_DOC_FILES],
 ]
 
 # Explicit overclaim patterns that should never appear in documentation copy.
