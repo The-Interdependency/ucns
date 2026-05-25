@@ -29,6 +29,23 @@ quotient    := recovered complement under a known factor
 
 ---
 
+## 0.1 Scope firewall (UCNS-A vs UCNS-G/EDCM)
+
+This document is scoped to **UCNS-A** (pure recursive number-system algebra).
+It does **not** claim that UCNS-A theorem status proves UCNS-G, EDCM, or
+edcmbone metric geometry outputs.
+
+Until the bridge checklist artifacts are implemented and verified, theorem
+transfer is forbidden:
+
+- `docs/edcm-edcmbone-bridge-checklist.md`
+- `docs/ucns-shape-reconciliation.md`
+- `docs/ucns-g-prime-cylinder-supplement.md`
+
+## hmmm
+
+---
+
 ## 1. Primitive Object
 
 A UCNS number is a recursively composable traversal object over the unit circle.

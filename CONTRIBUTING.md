@@ -43,6 +43,16 @@ python -m pip install -e .[dev]
 python -m unittest discover ucns_recursive/tests/ -v
 ```
 
+## Documentation claim-boundary guardrail
+
+Run the claim-boundary guardrail test before opening a PR with docs/spec edits:
+
+```bash
+python -m unittest tests/test_docs_claim_guardrail.py -v
+```
+
+This enforces the UCNS-A ↔ UCNS-G/EDCM non-transfer wording boundary.
+
 ## Packaging checks
 
 ```bash
