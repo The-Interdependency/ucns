@@ -82,6 +82,8 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 
 See `ucns-theorem-n.md` for the unified completeness theorem. The key implementation insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. The catalogue is the only depth-sensitive input.
 
+**Prime quartet discontinuity.** Cross-repo interoperability (`ucns`, `edcmbone`, `a0`, `interdependent-lib`) is not theorem continuity by default. See `docs/prime-quartet-discontinuity.md` and `docs/edcm-edcmbone-bridge-checklist.md`.
+
 **A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete
 domain. A0-facing consumers should consult `domain_status_metadata` and
 treat `SEQ-PRIME` outside `VERIFIED_DOMAIN_LABELS` as non-absolute.

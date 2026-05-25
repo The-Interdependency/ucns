@@ -27,6 +27,8 @@ Status of UCNS layers under this vocabulary:
 
 **Public API.** The v1.0 public Python API is the `ucns` package (and `ucns.a0_safe` for A0-safe inspection). The legacy `ucns_recursive` package remains importable as a compatibility surface but is deprecated for direct user imports.
 
+**UCNS-A/UCNS-G theorem boundary.** In this repository, UCNS-A denotes the recursive factorization algebra specified here (and implemented by `UCNSObject`/`multiply`/`factor_search_v08`). UCNS-G/EDCM/edcmbone metric geometry claims are parallel scope unless bridged by explicit source-backed artifacts. No theorem/proof status from Theorem N transfers to UCNS-G, EDCM, or edcmbone metric claims by default. See `docs/ucns-shape-reconciliation.md`, `docs/ucns-g-prime-cylinder-supplement.md`, and `docs/edcm-edcmbone-bridge-checklist.md`.
+
 ---
 
 ## hmm
