@@ -1,0 +1,45 @@
+name: python-package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install build tooling
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Verify package metadata
+      run: python -m twine check dist/*
+
+    - name: Install package artifact
+      run: |
+        pip install dist/*.whl
+        python - <<'PY'
+        from ucns_recursive import UCNSObject, multiply, factor_search_v08
+        print('ucns import ok')
+        PY
+
+    - name: Run tests
+      run: python -m unittest discover ucns_recursive/tests/ -v

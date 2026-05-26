@@ -1,23 +1,59 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ucns"
-version = "0.8.0"
-description = "Unit Circle Number System – recursive factorization theory and witness-matrix depth-2 solver"
+version = "0.8.2"
+description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = { text = "AGPL-3.0-or-later" }
 requires-python = ">=3.8"
+authors = [
+  { name = "Erin Spencer" }
+]
+keywords = [
+  "unit-circle",
+  "factorization",
+  "recursive-algebra",
+  "sequence-theory",
+  "witness-matrix"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  # Python classifiers match the union of the CI matrices in
+  # .github/workflows/ci.yml (3.8, 3.10, 3.12) and
+  # .github/workflows/python-package.yml (3.10, 3.11, 3.12).
+  # Untested versions (3.9, 3.13) are not advertised.
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Typing :: Typed"
+]
 # No runtime dependencies – pure Python standard library only
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/The-Interdependency/ucns"
+Repository = "https://github.com/The-Interdependency/ucns"
+Issues = "https://github.com/The-Interdependency/ucns/issues"
+
 [project.optional-dependencies]
-dev = []
+dev = [
+  "build>=1.2",
+  "twine>=5.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ucns_recursive*"]
+include = ["ucns*"]
+exclude = ["ucns_recursive*"]
 
 [tool.setuptools.package-data]
-ucns_recursive = ["py.typed"]
+ucns = ["py.typed"]
