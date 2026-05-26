@@ -2,6 +2,15 @@ import re
 import unittest
 from pathlib import Path
 
+# Files excluded from the scan because they define (not violate) the boundary.
+# The bridge checklist quotes forbidden phrases as illustrative examples.
+EXCLUDED_DOC_FILES = {
+    'edcm-edcmbone-bridge-checklist.md',
+}
+
+DOC_FILES = [
+    Path('README.md'),
+    *[p for p in Path('docs').glob('*.md') if p.name not in EXCLUDED_DOC_FILES],
 DOC_FILES = [
     *sorted(Path('.').glob('*.md')),
     *sorted(Path('docs').glob('*.md')),
