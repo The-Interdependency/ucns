@@ -324,7 +324,8 @@ result = factor_search_v08(P)
 ## Git Workflow
 
 - Main branch: `main`
-- Feature branches: `feat/<description>`, `fix/<description>`
+- Feature branches: `feat/<description>`, `fix/<description>`, `docs/<description>`, `chore/<description>`
+- Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, etc.)
 - Author: Erin Patrick Spencer (wayseer@interdependentway.org)
 - License: Apache 2.0
 

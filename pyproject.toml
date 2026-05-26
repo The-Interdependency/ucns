@@ -7,7 +7,7 @@ name = "ucns"
 version = "0.8.2"
 description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = { text = "AGPL-3.0-or-later" }
 requires-python = ">=3.8"
 authors = [
   { name = "Erin Spencer" }
@@ -22,7 +22,7 @@ keywords = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   # Python classifiers match the union of the CI matrices in
