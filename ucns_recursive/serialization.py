@@ -50,6 +50,12 @@ def canonical_data(obj: Optional[UCNSObject]) -> Dict[str, Any]:
             "kind": "unit",
         }
 
+    if len(obj.A_plus) != len(obj.F_plus):
+        raise ValueError(
+            "Invalid UCNSObject: A_plus and F_plus must have the same length "
+            f"(got {len(obj.A_plus)} and {len(obj.F_plus)})."
+        )
+
     cells: List[Dict[str, Any]] = []
     for index, ((angle, payload), face) in enumerate(zip(obj.A_plus, obj.F_plus)):
         cells.append(

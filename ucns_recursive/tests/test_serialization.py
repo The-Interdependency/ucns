@@ -84,6 +84,40 @@ class TestCanonicalSerialization(unittest.TestCase):
         with self.assertRaises(ValueError):
             stable_hash(S2, algorithm="not-a-real-hash")
 
+    def test_mismatched_angle_and_face_lengths_raise(self):
+        obj = UCNSObject(
+            4,
+            2,
+            [(Fraction(0), UNIT), (Fraction(1), UNIT)],
+            [0],
+        )
+        with self.assertRaises(ValueError):
+            canonical_data(obj)
+
+    def test_mismatched_lengths_error_mentions_observed_sizes(self):
+        obj = UCNSObject(
+            4,
+            2,
+            [(Fraction(0), UNIT), (Fraction(1), UNIT), (Fraction(2), UNIT)],
+            [0],
+        )
+        with self.assertRaisesRegex(ValueError, r"got 3 and 1"):
+            canonical_data(obj)
+
+    def test_mismatched_lengths_raise_across_serialization_entrypoints(self):
+        obj = UCNSObject(
+            4,
+            2,
+            [(Fraction(0), UNIT), (Fraction(1), UNIT)],
+            [0],
+        )
+        with self.assertRaises(ValueError):
+            canonical_json(obj)
+        with self.assertRaises(ValueError):
+            canonical_bytes(obj)
+        with self.assertRaises(ValueError):
+            stable_hash(obj)
+
 
 if __name__ == "__main__":
     unittest.main()
