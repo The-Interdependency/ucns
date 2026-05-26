@@ -209,12 +209,12 @@ in place. Public docs (READMEs, CLAUDE.md, spec docs, release notes,
 issue templates, PR descriptions, web copy) must not contain phrasings
 equivalent to:
 
-- "UCNS proves EDCM."
-- "Theorem N proves EDCM metrics."
-- "UCNS-G is proven."
-- "EDCM is a UCNS-A factorization output."
-- "SEQ-PRIME applies to EDCM transcripts."
-- "edcmbone implements UCNS-A."
+- `UCNS <proves> EDCM`
+- `Theorem N <proves> EDCM metrics`
+- `UCNS-G <is proven>`
+- `EDCM <is a UCNS-A factorization output>`
+- `SEQ-PRIME <applies to EDCM transcripts>`
+- `edcmbone <implements UCNS-A>`
 
 If such phrasing already exists in any repo, it should be patched in a
 **claim-audit PR** (separate from any bridge construction PR) that
@@ -243,3 +243,17 @@ to this checklist + `docs/ucns-shape-reconciliation.md`.
 
 Default initial status for the bridge is `EXPERIMENTAL`. Promotion to
 any other label requires its own PR.
+
+## 9. Prime quartet discontinuity note
+
+Cross-repo inclusion across `ucns`, `edcmbone`, `a0`, and
+`interdependent-lib` does not constitute theorem continuity or theorem
+transfer. See `docs/prime-quartet-discontinuity.md`.
+
+## 10. Boundary-object role (`hmmm`)
+
+This checklist is the current boundary object for unresolved
+UCNS-A ↔ UCNS-G bridge constraints: it preserves honest incompletion,
+records the gate between delivered artifacts and future bridge work, and
+marks the transition between today's non-transfer rule and any later
+source-backed construction.
