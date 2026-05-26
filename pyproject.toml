@@ -52,8 +52,8 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ucns", "ucns_recursive*"]
+include = ["ucns*"]
+exclude = ["ucns_recursive*"]
 
 [tool.setuptools.package-data]
-ucns_recursive = ["py.typed"]
 ucns = ["py.typed"]
