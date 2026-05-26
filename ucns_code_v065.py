@@ -29,6 +29,19 @@ for _name in dir(_module):
         continue
     globals()[_name] = getattr(_module, _name)
 
+
+
+def _rebind_snapshot_function(_func):
+    """Clone a snapshot function so it resolves globals from this shim."""
+    return FunctionType(
+        _func.__code__,
+        globals(),
+        name=_func.__name__,
+        argdefs=_func.__defaults__,
+        closure=_func.__closure__,
+    )
+
+
 # Prefer the canonical ucns_recursive algebra types for compatibility with
 # scripts that combine snapshot helpers with the active implementation.
 from functools import reduce  # noqa: E402
@@ -62,6 +75,14 @@ def UCNSObject(  # type: ignore[misc]
     widened_n_dec = _lcm(n_dec, inferred_n_min)
     return _CanonicalUCNSObject(widened_n_dec, widened_n_dec, A_plus, F_plus)
 
+# Rebind imported snapshot helpers to this shim's globals so they resolve
+# canonical UCNSObject/multiply instead of snapshot-local definitions.
+for _name in dir(_module):
+    if _name.startswith("_"):
+        continue
+    _obj = globals().get(_name)
+    if isinstance(_obj, FunctionType):
+        globals()[_name] = _rebind_snapshot_function(_obj)
 
 def _rebind_helper(fn):
     """Rebind helper globals to this shim's canonical symbols."""
