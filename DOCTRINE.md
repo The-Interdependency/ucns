@@ -47,6 +47,8 @@ The goal is not forced agreement. The goal is survivable transfer.
 
 hmmm
 
+`hmmm` is the mandatory boundary object that records unresolved constraint, preserves honest incompletion, and marks the transition between delivered output and living continuation.
+
 Additional doctrine fragments are expected and should remain modular rather than prematurely collapsed into a single immutable manifesto.
 
 GPT generated; context, prompt Erin Spencer.

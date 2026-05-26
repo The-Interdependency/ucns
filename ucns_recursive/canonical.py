@@ -3,9 +3,13 @@ ucns_recursive.canonical
 ========================
 Core UCNS algebraic objects.
 
-UCNSObject    The fundamental recursive sequence object.
-multiply      Ordered-concatenation product  A ⊠ B.
-is_unit       True iff obj is the sequence-unit (length-1, angle 0, no payload).
+UCNSObject               The fundamental recursive sequence object.
+multiply                 Ordered-concatenation product  A ⊠ B.
+is_unit                  True iff obj is the sequence identity (length-1,
+                         angle 0, no payload, F=[0]).
+is_multiplicative_unit   True iff obj is in the multiplicative unit group
+                         (length-1, no payload, any face bit). These elements
+                         are self-inverse: u ⊠ u = identity.
 
 This module is the stable algebraic foundation; it does not contain any
 factorization or quotient logic.
@@ -19,7 +23,14 @@ from functools import reduce
 from math import gcd
 from typing import List, Optional, Tuple
 
-__all__ = ["UCNSObject", "multiply", "is_unit", "lcm", "UNIT"]
+__all__ = [
+    "UCNSObject",
+    "multiply",
+    "is_unit",
+    "is_multiplicative_unit",
+    "lcm",
+    "UNIT",
+]
 
 # Sentinel for the unit / empty payload
 UNIT = None
@@ -202,7 +213,13 @@ def multiply(
 # ------------------------------------------------------------------
 
 def is_unit(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is the sequence unit (length-1, angle 0, no payload)."""
+    """Return True iff *obj* is the sequence identity (length-1, angle 0,
+    no payload, F=[0]).
+
+    This is the narrow predicate: it identifies only the identity element
+    of the multiplicative monoid. For the full unit group (the set of
+    invertible elements), use :func:`is_multiplicative_unit`.
+    """
     if obj is None:
         return True
     if not isinstance(obj, UCNSObject):
@@ -215,3 +232,26 @@ def is_unit(obj: Optional[UCNSObject]) -> bool:
     if obj.F_plus != [0] or obj.n_min != 1:
         return False
     return True
+
+
+def is_multiplicative_unit(obj: Optional[UCNSObject]) -> bool:
+    """Return True iff *obj* is in the multiplicative unit group.
+
+    The unit group of (UCNSObject, ⊠) consists of length-1 objects with
+    UNIT payload and any face bit f ∈ {0, 1}. These elements are
+    self-inverse: u ⊠ u equals the identity because XOR of any bit with
+    itself is 0 and angles collapse to 0 in the length-1 product.
+
+    Factorizations where one factor is in the unit group are degenerate
+    (they only re-sign the other factor) and should be filtered out by
+    primality predicates. :func:`is_unit` is the stricter "is the
+    identity" predicate; this is the broader "is invertible" predicate.
+    """
+    if obj is None:
+        return True
+    if not isinstance(obj, UCNSObject):
+        return False
+    if len(obj.A_plus) != 1:
+        return False
+    _, payload = obj.A_plus[0]
+    return payload is None
