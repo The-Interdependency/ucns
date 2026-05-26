@@ -141,11 +141,11 @@ for c in cases:
 
     c.res_d1 = categorize(c.P, cat_d1, c.A, c.B)
     c.res_d2 = categorize(c.P, cat_d2, c.A, c.B)
-    c.res_broad = "skip"
+    c.res_broad = categorize(c.P, broad, c.A, c.B)
 
     print(f"{c.name[:3]:<4}{c.name[3:]:<28}{c.A_depth:<3}{c.B_depth:<3}{c.P_depth:<3}{c.P_len:<5}"
           f"{c.A_payload_max_depth:<3}{c.B_payload_max_depth:<3}"
-          f"{c.res_d1:<11}{c.res_d2:<11}")
+          f"{c.res_d1:<11}{c.res_d2:<11}{c.res_broad:<11}")
     sys.stdout.flush()
 
 print()
