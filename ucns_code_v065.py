@@ -84,4 +84,37 @@ for _name in dir(_module):
     if isinstance(_obj, FunctionType):
         globals()[_name] = _rebind_snapshot_function(_obj)
 
+def _rebind_helper(fn):
+    """Rebind helper globals to this shim's canonical symbols."""
+    rebound = FunctionType(
+        fn.__code__,
+        globals(),
+        name=fn.__name__,
+        argdefs=fn.__defaults__,
+        closure=fn.__closure__,
+    )
+    rebound.__kwdefaults__ = getattr(fn, "__kwdefaults__", None)
+    rebound.__annotations__ = getattr(fn, "__annotations__", {})
+    rebound.__doc__ = fn.__doc__
+    return rebound
+
+
+for _helper in (
+    "is_unit",
+    "left_quotient",
+    "left_quotient_payload",
+    "right_quotient",
+    "factor_search_v062",
+    "create_S2",
+    "generate_small_catalogue",
+    "run_cancellativity_regression",
+    "test_class_iii",
+    "run_quotient_regression",
+    "run_completeness_benchmark_v063",
+    "run_frozen_v063_benchmark",
+    "improved_factor_search_v062",
+):
+    if _helper in globals() and isinstance(globals()[_helper], FunctionType):
+        globals()[_helper] = _rebind_helper(globals()[_helper])
+
 __all__ = [name for name in globals() if not name.startswith("_")]
