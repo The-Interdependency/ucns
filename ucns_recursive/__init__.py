@@ -5,6 +5,30 @@ UCNS recursive factorization engine — frozen depth-2 domain.
 
 Modules
 -------
+canonical            UCNSObject definition, multiply, is_unit
+domains              Frozen domain D' parameters, oracle predicates,
+                     verified-domain status taxonomy
+host_recovery        Recover host angle/face structures from a product
+recursive_quotient   Catalogue-bounded payload factor finders
+payload_system       Coupled payload equation solver
+witness_matrix       Witness and WitnessMatrix for global consistency
+factor_search_v08    Top-level factorization engine (witness-matrix solver)
+domain_status        Typed theorem / implementation status metadata
+serialization        Canonical JSON serialization and stable hashing
+
+Deployable surface (May 2026)
+-----------------------------
+recursive_codec      Python ↔ UCNSObject encoder/decoder        (v0.1, item 2+4)
+left_quotient        Constructive left/right quotient            (v0.1, item 3)
+store                UCNSStore — keyed corpus + algebraic retrieval
+                                                                 (v0.1, item 5)
+catalogue            Catalogue builders for factor_decompose
+                                                                 (v0.1+v0.2)
+domain dispatch      Oracle-class predicates and the
+                     enforce_verified_domain insert gate
+                                                                 (v0.2, item 6)
+domain status        A0-facing typed certainty metadata
+serialization        A0-facing canonical identity bytes + hashes
 canonical              UCNSObject definition, multiply, is_unit,
                        is_multiplicative_unit
 domains                Frozen domain D' parameters, oracle predicates,
