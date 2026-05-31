@@ -130,6 +130,14 @@ from .store import Match, OutOfDomainError, UCNSStore
 
 # Catalogue helpers
 from . import catalogue
+from .geometry_bridge import (
+    GeometricPoint,
+    HomomorphismResult,
+    check_injectivity,
+    compose,
+    homomorphism_check,
+    ucns_a_to_g,
+)
 
 __all__ = [
     # algebraic core
@@ -186,4 +194,11 @@ __all__ = [
     "OutOfDomainError",
     # catalogue helpers
     "catalogue",
+    # geometry bridge: homomorphism proof UCNS-A ↔ UCNS-G
+    "GeometricPoint",
+    "ucns_a_to_g",
+    "compose",
+    "homomorphism_check",
+    "HomomorphismResult",
+    "check_injectivity",
 ]
