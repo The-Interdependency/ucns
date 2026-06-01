@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ucns"
-version = "0.8.2"
+version = "0.8.3"
 description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
 license = { file = "LICENSE" }
