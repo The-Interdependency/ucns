@@ -55,6 +55,27 @@ writing it — these are the new hmmm items):
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_catalogue_d3
+#   module_name: catalogue_d3
+#   module_kind: engine
+#   summary: DRAFT depth-3 oracle-class predicate and bounded catalogue enumerator (build_catalogue_d3_oracle) carrying a coverage attestation against Lemma 8.
+#   owner: Erin Spencer
+#   public_surface: is_in_oracle_class_d3, D3CatalogueResult, build_catalogue_d3_oracle
+#   internal_surface: _recursive_obj_key
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_catalogue_d3
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domains, ucns_catalogue
+#   since: 2026-06-02
+#   unresolved: DRAFT - depth-3 constructive-vs-multiplicative D'' coverage equivalence, payload_basis/chirality interaction, and size-budget exhaustion gating are all unproven (hmmm A/B/C in module docstring)
+# === END MODULE_BUILD ===
+
 import itertools
 from dataclasses import dataclass
 from fractions import Fraction

@@ -18,6 +18,27 @@ normalised so alpha_0 = beta_0 = 0).
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_host_recovery
+#   module_name: host_recovery
+#   module_kind: engine
+#   summary: Recovers the candidate A/B host angle sequences and enumerates consistent face-bit assignments from a normalised product object P.
+#   owner: Erin Spencer
+#   public_surface: recover_host_angles, recover_face_structures
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: hmmm
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from fractions import Fraction
 from typing import List, Optional, Tuple
 

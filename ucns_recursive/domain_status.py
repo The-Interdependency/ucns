@@ -11,6 +11,27 @@ frontier claims without inferring certainty from a bare string.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_domain_status
+#   module_name: domain_status
+#   module_kind: engine
+#   summary: Typed status metadata wrapping legacy UCNS domain labels so callers can distinguish implementation/test/proof/oracle/frontier claims and scope SEQ-PRIME results.
+#   owner: Erin Spencer
+#   public_surface: DomainProofStatus, DomainStatusMetadata, VERIFIED_DOMAIN_LABELS, domain_status_metadata, status_for_object, is_verified_domain_label, seq_prime_requires_scope
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_domain_status
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Tuple

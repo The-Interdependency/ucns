@@ -40,6 +40,27 @@ Supported input types
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_embedding
+#   module_name: embedding
+#   module_kind: engine
+#   summary: High-level UCNS embedding API that encodes data to unit-circle phase vectors via epicycle/FFT decomposition and compares them.
+#   owner: Erin Spencer
+#   public_surface: UCNEmbedding
+#   internal_surface: _to_signal
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_embedding
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_epicycle
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import math
 import struct
 from typing import Union

@@ -28,6 +28,27 @@ Algorithm
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_payload_system
+#   module_name: payload_system
+#   module_kind: engine
+#   summary: Solves the p×q coupled payload equation system, recovering (S_A, S_B) such that multiply(S_A[k], S_B[j]) matches every product payload cell.
+#   owner: Erin Spencer
+#   public_surface: solve_payload_system
+#   internal_surface: _globally_consistent
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: hmmm
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_recursive_quotient
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from typing import List, Optional, Tuple
 
 from .canonical import UCNSObject, multiply

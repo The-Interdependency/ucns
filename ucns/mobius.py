@@ -34,6 +34,27 @@ References
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_mobius
+#   module_name: mobius
+#   module_kind: engine
+#   summary: Mobius (bilinear) transformations of the Poincare unit disk plus hyperbolic-distance and disk/circle projection helpers.
+#   owner: Erin Spencer
+#   public_surface: MobiusTransform, poincare_distance, disk_to_circle, circle_to_disk
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_mobius
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: none
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import cmath
 import math
 

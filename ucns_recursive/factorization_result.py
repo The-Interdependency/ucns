@@ -11,6 +11,27 @@ so callers do not mistake frontier-domain results for absolute primality.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_factorization_result
+#   module_name: factorization_result
+#   module_kind: engine
+#   summary: A0-facing factorization-result envelope wrapping the raw solver output with canonical product identity and typed domain-status so SEQ-PRIME is correctly scoped.
+#   owner: Erin Spencer
+#   public_surface: FactorizationResultKind, FactorizationResult, factorization_result
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_factorization_result
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domain_status, ucns_factor_search_v08, ucns_serialization
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional, Tuple
