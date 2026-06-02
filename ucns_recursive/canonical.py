@@ -17,6 +17,27 @@ factorization or quotient logic.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_canonical
+#   module_name: canonical
+#   module_kind: engine
+#   summary: Core UCNS algebraic objects and operations - UCNSObject, the ordered-concatenation product, and unit predicates.
+#   owner: Erin Spencer
+#   public_surface: UCNSObject, multiply, is_unit, is_multiplicative_unit, lcm, UNIT
+#   internal_surface: normalize, _compute_n_min, _star, _disk_flip
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: hmmm
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: none
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import copy
 from fractions import Fraction
 from functools import reduce

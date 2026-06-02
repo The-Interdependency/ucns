@@ -31,6 +31,27 @@ Inputs whose length is not a power of two are zero-padded automatically.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_epicycle
+#   module_name: epicycle
+#   module_kind: engine
+#   summary: Pure-Python radix-2 FFT plus EpicycleDecomposition, representing signals as weighted unit-circle rotations for phase fingerprints.
+#   owner: Erin Spencer
+#   public_surface: fft, ifft, EpicycleDecomposition
+#   internal_surface: _next_pow2, _fft_inplace
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_epicycle
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: none
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import cmath
 import math
 import struct

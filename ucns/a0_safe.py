@@ -2,6 +2,27 @@
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_a0_safe
+#   module_name: a0_safe
+#   module_kind: adapter
+#   summary: A0-safe public facade for inspecting, identifying, canonicalizing, and factoring UCNS objects via scoped envelopes.
+#   owner: Erin Spencer
+#   public_surface: identity, describe, canonical, factor, UCNSObjectRecord, FactorizationResult
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_a0_safe
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_object_record, ucns_factorization_result, ucns_serialization, ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from typing import List, Optional, Union
 
 from ucns_recursive.canonical import UCNSObject

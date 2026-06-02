@@ -20,6 +20,27 @@ Key properties
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_core
+#   module_name: core
+#   module_kind: engine
+#   summary: Defines UCN, the fundamental angle-on-unit-circle numeric primitive with group arithmetic, similarity, and compact serialization.
+#   owner: Erin Spencer
+#   public_surface: UCN, TAU
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_core
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: none
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import math
 import cmath
 import struct

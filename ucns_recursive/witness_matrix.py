@@ -20,6 +20,27 @@ candidate is only returned if its witness matrix passes this check.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_witness_matrix
+#   module_name: witness_matrix
+#   module_kind: engine
+#   summary: Witness and WitnessMatrix types plus build_witness_matrix; verifies per-cell factor products and row/column global consistency for a host factorisation candidate.
+#   owner: Erin Spencer
+#   public_surface: Witness, WitnessMatrix, build_witness_matrix
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_failure_boundary_e109
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from dataclasses import dataclass, field
 from typing import List, Optional
 

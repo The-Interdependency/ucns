@@ -28,6 +28,27 @@ passing directly to :meth:`UCNSStore.factor_decompose` as the
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_catalogue
+#   module_name: catalogue
+#   module_kind: engine
+#   summary: Catalogue builders enumerating depth-1 and depth-2 oracle-class UCNSObjects for use as factor_decompose payload catalogues.
+#   owner: Erin Spencer
+#   public_surface: build_catalogue_d1, build_catalogue_d2_oracle
+#   internal_surface: _obj_key
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: hmmm
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domains
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import itertools
 from fractions import Fraction
 from typing import List, Optional, Tuple

@@ -36,6 +36,27 @@ This is exactly the set produced by ``generate_payload_catalogue()``.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_domains
+#   module_name: domains
+#   module_kind: engine
+#   summary: Defines the frozen depth-2 domain D', oracle-atom payload catalogue, and oracle-class / verified-domain predicates used to scope completeness claims.
+#   owner: Erin Spencer
+#   public_surface: DEPTH_MAX, A_PLUS_MAX, N_MIN_MAX, S2, ORACLE_ATOM_PAYLOADS, generate_payload_catalogue, in_domain, depth_of, is_oracle_atom, is_in_oracle_class, verified_domain_status
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: hmmm
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from fractions import Fraction
 from typing import List, Optional
 
