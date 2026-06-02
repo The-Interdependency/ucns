@@ -5,6 +5,13 @@ Date: 2026-05-13
 Scope: UCNS / Prime Consciousness Theory / PCNA-PTCA design  
 Canon state: draft; mathematical generator is explicit, interpretation remains hypothesis-layer
 
+> **Canonical implementation.** The generator described here is implemented as
+> the single source of truth in `interdependent_lib.coherence_primes`
+> (The-Interdependency/interdependent-lib). The §8 snippet below is a
+> self-contained reference; for code, prefer the canonical module, whose shared
+> test oracle pins the early sequence, this count table, and the p=4373
+> recursive-ancestry regression.
+
 ---
 
 ## hmmm
