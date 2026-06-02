@@ -6,34 +6,57 @@ This file gives AI assistants context needed to work effectively in this reposit
 
 ## What This Repo Is
 
-`ucns` (pip package: **`ucns`**) is a zero-dependency pure-Python library
-implementing **Unit Circle Number System** sequence theory with a focus
-on recursive factorization. Given a UCNS product object P, the library
-recovers factors A and B such that A ⊠ B = P.
+`ucns` (pip package: **`ucns`**) is a zero-dependency, pure-Python research
+library implementing **Unit Circle Number System** sequence theory with a
+focus on **recursive factorization**. Given a UCNS product object P, the
+engine recovers factors A and B such that `A ⊠ B = P` via a witness-matrix
+recursive quotient solver (`factor_search_v08`). The repo also carries the
+mathematical specs, completeness proofs, a Lean 4 proof scaffold, and a set
+of empirical probe/sweep scripts.
 
-The repo ships two installable Python packages:
-- `ucns/` — **v1.0 public Python API.** Re-exports the engine plus the
-  v0.6.5-lineage modules (embedding, epicycle, Möbius, similarity) and
-  the A0-safe inspection facade (`ucns.a0_safe`).
-- `ucns_recursive/` — **DEPRECATED for direct user imports.** The
-  factorization engine implementation currently lives here and is
-  re-exported by `ucns`. New user-facing code should import from `ucns`,
-  not `ucns_recursive`. No runtime DeprecationWarning is emitted yet;
-  the release schedule is controlled locally by the maintainer.
+| Fact | Value |
+|---|---|
+| Package name | `ucns` |
+| Version (`pyproject.toml`) | `0.8.2` (Development Status: 3 - Alpha) |
+| Python requirement | `>=3.8` |
+| Runtime dependencies | **none** (stdlib only: `fractions`, `math`, `cmath`, `itertools`, `struct`, …) |
+| License | **AGPL-3.0-or-later** (commercial terms in `LICENSE-COMMERCIAL.md`) |
+| Build backend | setuptools (`>=61`) + wheel |
+| Author | Erin Patrick Spencer (wayseer@interdependentway.org) |
+| Remote | `github.com/The-Interdependency/ucns` |
 
-**Python requirement:** ≥ 3.8 (CI exercises 3.8, 3.10, 3.12)
-**External dependencies:** none (fractions, math stdlib only)
-**License:** Apache 2.0
+The repo ships **two** importable Python packages plus a separate set of
+single-file lineage modules:
+
+- `ucns/` — **v1.0 public Python API.**
+  - `ucns/__init__.py` re-exports the entire engine surface from
+    `ucns_recursive` (`from ucns_recursive import *`).
+  - `ucns.a0_safe` is the A0-safe inspection facade (stable).
+  - `ucns/core.py`, `embedding.py`, `epicycle.py`, `mobius.py`,
+    `similarity.py` are the **v0.6.5-lineage embedding modules**. They live
+    inside the `ucns/` package but are **not** imported by
+    `ucns/__init__.py`; import them by submodule path
+    (`from ucns import core` / `from ucns.core import UCN`).
+- `ucns_recursive/` — **DEPRECATED for direct user imports**, but where the
+  factorization engine implementation actually lives and the right place to
+  edit engine code. No runtime `DeprecationWarning` is emitted; the
+  deprecation is docs-only and release timing is controlled locally by the
+  maintainer.
+
+Only the `ucns*` package is included in the built distribution
+(`pyproject.toml` `include = ["ucns*"]`, `exclude = ["ucns_recursive*"]`),
+so `ucns_recursive` ships as a sub-path of the `ucns` import namespace, not
+as a separately advertised top-level package.
 
 ---
 
 ## v1.0 Scope
 
 UCNS v1.0 is a scoped, reproducible research release for
-**catalogue-sufficient recursive factorization** (Theorem N), not a
-claim of total general recursive primality. Carrier widening, tractable
-sub-catalogues, and general recursive primality outside
-defended-complete domains are **out of v1.0 scope**.
+**catalogue-sufficient recursive factorization** (Theorem N), not a claim
+of total general recursive primality. Carrier widening, tractable
+sub-catalogues, and general recursive primality outside defended-complete
+domains are **out of v1.0 scope**.
 
 See `docs/ucns-spec-status-addendum-2026-05-16.md` for the status
 vocabulary and `ucns-spec.md` §F1–F4 for the reconciled spec.
@@ -50,116 +73,176 @@ Status vocabulary: `DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`,
 | Flat kernel algebra | `DEFENDED` |
 | Depth-1 restricted completeness | `DEFENDED` |
 | Depth-2 oracle (smallest class, Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
-| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED`) |
+| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| Catalogue-sufficient completeness (Theorem N) | `DEFENDED` — proof drafted, awaiting external formal review |
+| Catalogue-sufficient completeness — all depths (Theorem N) | `DEFENDED` — proof drafted, awaiting external formal review |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
+| General recursive primality outside defended-complete domains | out of v1.0 scope |
 
 Frozen depth-2 domain scope:
 ```
 depth ≤ 2,  |A⁺| ≤ 3,  n_min ≤ 4
 ```
 
-**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete
-domain. Consult `ucns_recursive.domain_status.VERIFIED_DOMAIN_LABELS`
-and `domain_status_metadata`; treat `SEQ-PRIME` outside that set as
-non-absolute.
+`factor_search_v08` is depth-agnostic: every step operates on `==` and plain
+catalogue scans. Depth enters only through catalogue selection. See
+`ucns-theorem-n.md` for the unified completeness theorem.
+
+**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete domain.
+Consult `ucns_recursive.domain_status.VERIFIED_DOMAIN_LABELS` and
+`domain_status_metadata`; treat `SEQ-PRIME` outside that set as
+non-absolute. Unit-group factors are filtered before `SEQ-PRIME` is
+interpreted (multiplicative-unit boundary; see `docs/mathematical-glossary.md`).
+
+**Formal proof non-transfer.** `formal/` is a Lean 4 scaffold whose theorem
+statements are all `sorry`-stubbed and prove nothing yet. A `sorry`-backed
+statement confers **no** `DEFENDED` status to any consumer; results graduate
+from FRONTIER only when every `sorry` is discharged and externally reviewed.
+
+**Cross-repo non-continuity.** Interoperability with `edcmbone`, `a0`,
+`interdependent-lib` is not theorem continuity. See
+`docs/prime-quartet-discontinuity.md` and
+`docs/edcm-edcmbone-bridge-checklist.md`.
 
 ---
 
 ## Repository Layout
 
 ```
-ucns/                              # v1.0 PUBLIC API (re-exports the engine)
-  __init__.py                      # Re-exports from ucns_recursive
-  a0_safe.py                       # A0-safe inspection facade (v1.0 stable)
-  core.py                          # UCNSObject base, multiply, is_unit (v0.6.5 lineage)
-  embedding.py                     # Unit-circle embedding utilities
-  epicycle.py                      # Epicycle radial modulation layers
-  mobius.py                        # Möbius doubled-surface / spinor states
-  similarity.py                    # UCNS object similarity metrics
+ucns/                              # v1.0 PUBLIC API
+  __init__.py                      # from ucns_recursive import *  (engine re-export)
+  a0_safe.py                       # A0-safe facade: identity, describe, canonical, factor
+  core.py                          # UCN angular primitive (v0.6.5 lineage; not re-exported)
+  embedding.py                     # Unit-circle embedding utilities (lineage)
+  epicycle.py                      # Epicycle radial modulation (lineage)
+  mobius.py                        # Möbius doubled-surface / spinor states (lineage)
+  similarity.py                    # UCNS object similarity metrics (lineage)
+  py.typed
 
 ucns_recursive/                    # DEPRECATED for direct user imports;
                                    # engine implementation lives here.
-  __init__.py                      # Package init — exports full deployable surface
-  canonical.py                     # UCNSObject, multiply, is_unit (recursive)
-  domains.py                       # Frozen D' domain + payload catalogue
+  __init__.py                      # Exports the full deployable surface (see __all__)
+  canonical.py                     # UCNSObject, UNIT, multiply, is_unit, is_multiplicative_unit
+  domains.py                       # Frozen D' domain params, oracle predicates, S2
+  domain_status.py                 # Typed status taxonomy + VERIFIED_DOMAIN_LABELS
   host_recovery.py                 # Recover host angle/face structure from P
-  recursive_quotient.py            # find_left_factor, find_right_factor
+  recursive_quotient.py            # Catalogue-bounded payload factor finders
   payload_system.py                # Coupled payload equation solver
   witness_matrix.py                # Witness, WitnessMatrix (global consistency)
   factor_search_v08.py             # Top-level factorization engine (main entry point)
-
-  # --- v0.1 deployable surface (May 2026) ---
   recursive_codec.py               # Python ↔ UCNSObject encoder/decoder
   left_quotient.py                 # Constructive left/right quotient primitives
   store.py                         # UCNSStore — keyed corpus + algebraic retrieval
-
-  tests/
+  catalogue.py / catalogue_d3.py   # Catalogue builders for factor_decompose
+  serialization.py                 # Canonical JSON + stable hashing
+  factorization_result.py          # A0-facing scoped factorization envelope
+  object_record.py                 # A0-facing object inspection record
+  geometry_bridge.py               # UCNS-A ↔ UCNS-G homomorphism check
+  tests/                           # ENGINE test suite (run by CI)
     test_depth2_oracle.py          # Depth-2 oracle theorem (DEFENDED + ORACLE-COMPLETE)
-    test_depth2_full_domain.py     # Frozen depth-2 domain sweep
+    test_depth2_full_domain.py     # Frozen depth-2 domain compact sweep
     test_failure_boundary_e109.py  # E10.9 regression tests
-    test_recursive_codec.py        # Round-trip codec tests (v0.1)
-    test_left_quotient.py          # Left/right quotient completeness tests (v0.1)
-    test_store.py                  # UCNSStore insert/retrieval/decompose (v0.1)
+    test_recursive_codec.py        # Round-trip codec tests
+    test_left_quotient.py          # Left/right quotient completeness tests
+    test_store.py                  # UCNSStore insert/retrieval/decompose
+    test_catalogue_d3.py, test_domain_status.py, test_serialization.py,
+    test_factorization_result.py, test_object_record.py, test_a0_safe.py,
+    test_geometry_bridge.py, test_visualization_boundary.py
 
-ucns-code-v065.py                  # Stable v0.6.5 snapshot (read-only reference)
-ucns-depth2-staged-engine.py       # Depth-2 staged engine (historical)
-code/                              # Exploratory versioned artifacts (read-only)
-  v080-coupled-witness-solver.py
-  v080-recursive-factorization-refactor-plan.py
-  v081-depth2-oracle-theorem.py
-  v082-depth2-final-push.py
-  v090-carrier-widening.py
-  e109-depth2-failure-boundary.py
-archive/                           # Archived UCN embedding library (read-only)
+tests/                             # v1.0 API-package test suite (NOT run by CI; see gotchas)
+  test_core.py, test_embedding.py, test_epicycle.py,
+  test_mobius.py, test_similarity.py   # lineage-module tests
+  test_docs_claim_guardrail.py     # doc overclaim guardrail (CURRENTLY HAS A SYNTAX ERROR)
 
-ucns-spec-frontier-v090.md         # Current completeness frontier spec
-ucns-spec.md                       # Core UCNS specification
-ucns-v06-completeness-proof.md     # Depth-6 completeness proof
-ucns-v06-left-quotient-completeness.md
-depth7-frontier.md                 # Depth-7 frontier notes
-MANIFEST.md                        # Repository file manifest
-REVIEW_PACKET.md                   # Review packet
-pyproject.toml
-LICENSE
-README.md
+formal/                            # Lean 4 proof scaffold (FRONTIER, all `sorry`)
+  lean-toolchain                   # leanprover/lean4:v4.7.0
+  lakefile.lean                    # Lake package `Ucns`
+  Ucns/TheoremN.lean               # stubbed statements (depth-1, Lemma 7, Theorem N)
+
+code/                              # Exploratory versioned artifacts (read-only reference)
+  v080-*.py, v081-*.py, v082-*.py, v090-*.py, e109-*.py, proof_trace.py
+  sweeps/                          # Empirical verification scripts (e.g. t9_minimal_cat.py)
+
+examples/
+  depth_examples/                  # Minimal reviewer examples (depth1/2/3, catalogue boundary)
+  visualization/                   # Human-facing demos (e.g. seed53.html) + claim-linkage README
+
+docs/                              # Specs, status, glossary, reproducibility, claims ledger
+  ucns-spec-status-addendum-2026-05-16.md   # status vocabulary + A0 rule
+  claims-ledger.md, mathematical-glossary.md, reproducibility.md
+  prime-quartet-discontinuity.md, edcm-edcmbone-bridge-checklist.md
+  (and other supplements)
+
+# Root-level docs / specs
+ucns-spec.md                       # Reconciled core UCNS spec (canonical)
+ucns-theorem-n.md                  # Theorem N: catalogue-sufficient completeness (unified)
+ucns-spec-frontier-v090.md         # v0.9.0 frontier (partially superseded)
+ucns-lemma8-depth3.md              # Depth-3 factor search (SUPERSEDED by theorem-n)
+ucns-v06-completeness-proof.md, ucns-v06-left-quotient-completeness.md
+depth7-frontier.md, MANIFEST.md, REVIEW_PACKET.md, RELEASE.md, CHANGELOG.md
+README.md, DOCTRINE.md, CONTRIBUTING.md, accreditation.md
+LICENSE, LICENSE-COMMERCIAL.md, MANIFEST.in
+
+# Root-level reference snapshot + probe scripts (read-only research artifacts)
+ucns-code-v065.py                  # Stable v0.6.5 snapshot (dashed name; not importable)
+ucns_code_v065.py                  # Import shim so proof scripts can load the snapshot
+operational_widening_probe.py, ternary_widening_probe.py,
+prime5_widening_probe.py, prime_carpet_probe.py,
+phi_compose_probe.py, phi_compose_probe_v2.py, phi_compose_probe_v3.py
+                                   # Carrier-widening / Phi-composition empirical probes (FRONTIER)
 ```
 
 ---
 
-## Development Workflow
+## Development Workflow (verified commands)
 
 ```bash
-# Install editable
-pip install -e .
+# Editable install (with dev extras: build, twine)
+python -m pip install -e .[dev]
 
-# Run all tests (unittest discover on ucns_recursive)
+# Run the ENGINE test suite (this is what CI runs)
 python -m unittest discover ucns_recursive/tests/ -v
 
-# Run a specific test file
+# Run a specific engine test module
 python -m unittest ucns_recursive.tests.test_depth2_oracle -v
 python -m unittest ucns_recursive.tests.test_recursive_codec -v
 python -m unittest ucns_recursive.tests.test_store -v
-
-# Run depth-2 domain sweep
 python -m unittest ucns_recursive.tests.test_depth2_full_domain -v
+
+# Build + validate distribution (matches python-package.yml)
+python -m build
+python -m twine check dist/*
 ```
 
-No pytest configured. Use `python -m unittest` for all testing.
+No pytest is configured (no `pytest.ini`, no `[tool.pytest.ini_options]`).
+Use `python -m unittest` for all testing. No linter/formatter config is
+present (`.ruff_cache`/`.mypy_cache` are gitignored but no config files
+exist), so there is no lint command to run.
+
+### CI
+
+Two GitHub Actions workflows under `.github/workflows/`:
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; `python -m unittest discover ucns_recursive/tests/ -v` |
+| `python-package.yml` | push/PR to `main` | matrix 3.10/3.11/3.12; `python -m build`; `twine check`; wheel install smoke test; `unittest discover ucns_recursive/tests/` |
+
+**Both workflows test only `ucns_recursive/tests/`.** The top-level `tests/`
+directory is **not** exercised by CI.
 
 ---
 
-## Deployable Surface (v0.1 — May 2026)
+## Deployable Surface (engine API)
 
-Three modules form the embedding-side interface between Python values and the algebraic layer.
+All of the following import cleanly from `ucns` (re-exported from
+`ucns_recursive`). See `ucns_recursive/__init__.py` `__all__` for the full list.
 
 ### `recursive_codec` — Python ↔ UCNSObject
 
-Encodes Python values as `UCNSObject`s and decodes them back.
-
-**Encoding shape (option c — type from leading sentinel count):**
+Encodes Python values as `UCNSObject`s and decodes them back. Type is
+inferred from the leading-sentinel count:
 
 | Leading sentinels | Decoded type |
 |---|---|
@@ -167,147 +250,141 @@ Encodes Python values as `UCNSObject`s and decodes them back.
 | 2 | `list` |
 | 3 | `dict` (insertion order preserved) |
 
-A sentinel cell: `angle=Fraction(0)`, `payload=None`, `face=0`.  
-Content cells: `face=1`.
-
-**Leaf coercions** (all round-trip as `bytes`):
-- `str` → UTF-8 encode
-- `int` / `float` → `str().encode()` / `repr().encode()`
-- `bool` → `b"1"` / `b"0"`
-- `bytearray` → treated as `bytes`
+A sentinel cell: `angle=Fraction(0)`, `payload=None`, `face=0`. Content
+cells use `face=1`. Leaf coercions (all round-trip as `bytes`): `str`→UTF-8,
+`int`/`float`→`str()`/`repr()` encoded, `bool`→`b"1"`/`b"0"`,
+`bytearray`→`bytes`. Unsupported types raise `EncodingError`.
 
 ```python
 from ucns import recursive_encode, recursive_decode, EncodingError
-
-obj = recursive_encode(b"hello world")
-result = recursive_decode(obj)         # b"hello world"
-
-obj2 = recursive_encode([b"a", b"b"])
-result2 = recursive_decode(obj2)       # [b"a", b"b"]
-
-obj3 = recursive_encode({b"k": b"v"})
-result3 = recursive_decode(obj3)       # {b"k": b"v"}
+recursive_decode(recursive_encode(b"hi"))      # b"hi"
+recursive_decode(recursive_encode([b"a"]))     # [b"a"]
+recursive_decode(recursive_encode({b"k": b"v"}))  # {b"k": b"v"}
 ```
 
-Unsupported types (e.g. `set`, arbitrary objects) raise `EncodingError`.
+### `left_quotient` / `right_quotient` — Constructive Quotient
 
-### `left_quotient` — Constructive Quotient
-
-Promoted from `ucns-code-v065.py`. Implements the v0.6 completeness theorem:
-
-> If `A ⊠ B ≡_seq P`, then `left_quotient(P, A)` returns B. Returns `None` iff no such B exists.
+> If `A ⊠ B ≡_seq P`, then `left_quotient(P, A)` returns B; returns `None`
+> iff no such B exists.
 
 ```python
 from ucns import left_quotient, right_quotient, multiply, recursive_encode
-
-A = recursive_encode(b"hello ")
-B = recursive_encode(b"world")
+A, B = recursive_encode(b"hello "), recursive_encode(b"world")
 P = multiply(A, B)
-
-recovered_B = left_quotient(P, A)   # equals B
-recovered_A = right_quotient(P, B)  # equals A
+left_quotient(P, A)   # == B
+right_quotient(P, B)  # == A
 ```
 
-**Three internal phases:** host recovery (Lemmas 2–3), payload descent (Lemmas 4–8), verification (`multiply(A, B_cand) == P`).  
-`right_quotient` is the symmetric dual (asserted-by-symmetry; dual proof not yet written out).
-
-**`None` is ambiguous:** `left_quotient` returns `None` both when no factorization exists *and* when B is the unit. Callers that need to distinguish these two cases should pre-check `A == P`.
+`right_quotient` is the symmetric dual (asserted-by-symmetry; dual proof not
+yet written out). **`None` is ambiguous:** it means either "no factorization"
+or "B is the unit". Pre-check `A == P` to distinguish.
 
 ### `store` — UCNSStore
 
-Keyed corpus of `UCNSObject`s with proof-backed algebraic retrieval.
+Keyed corpus of `UCNSObject`s with proof-backed algebraic retrieval (linear
+O(corpus) scan, no index).
 
 ```python
 from ucns import UCNSStore, recursive_encode
-
 store = UCNSStore()
 store.insert("doc1", b"hello world")
-store.insert("doc2", b"hello there")
-
-# Left-factor retrieval: every doc for which query is a left factor
-matches = store.left_factors(b"hello ")  # [(key, remainder), ...]
-
-# Exact-match check
+store.left_factors(b"hello ")          # [(key, remainder), ...]
 store.is_left_factor(b"hello world", "doc1")  # True
+store.factor_decompose("doc1", [recursive_encode(b"hello ")])  # [(A, B), ...]
 
-# Catalogue-bounded decomposition
-catalogue = [recursive_encode(b"hello ")]
-decomps = store.factor_decompose("doc1", catalogue)  # [(A, B), ...]
+# Verified domain (completeness guaranteed): {"depth-0","depth-1","depth-2-oracle"}
+strict = UCNSStore(enforce_verified_domain=True)  # raises OutOfDomainError out-of-domain
+store.domain_status_of("doc1")
 ```
 
-**Verified domain** (completeness guaranteed): `{"depth-0", "depth-1", "depth-2-oracle"}`.  
-Outside the domain, soundness holds but completeness is not proven.
+### `a0_safe` — A0-safe inspection facade (preferred for A0-facing claims)
 
 ```python
-# Enforce at insert time
-strict_store = UCNSStore(enforce_verified_domain=True)
-# Raises OutOfDomainError for depth-2-non-oracle or depth-3+ inputs
-
-# Audit per-key status
-store.domain_status_of("doc1")  # "depth-1", "depth-2-oracle", etc.
+from ucns import a0_safe
+a0_safe.describe(obj)    # UCNSObjectRecord, no factorization run
+a0_safe.identity(obj)    # stable canonical hash
+a0_safe.canonical(obj)   # canonical JSON (or bytes=True)
+a0_safe.factor(obj)      # scoped FactorizationResult envelope
 ```
 
-Retrieval cost is O(corpus size) — linear scan, no index.
+Do not surface raw factorization sentinels (`SEQ-PRIME`) for A0-facing
+claims when a scoped envelope exists.
 
 ---
 
-## Core Algebra (Quick Reference)
+## Core Algebra & Factorization
 
 ```python
 from ucns import UCNSObject, multiply, is_unit, factor_search_v08
 from fractions import Fraction
-
 UNIT = None
 
-# Depth-0 (S2)
-S2 = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+S2 = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])   # depth-0
+A  = UCNSObject(2, 2, [(Fraction(0), S2),   (Fraction(1), UNIT)], [0, 0])   # depth-1
+P  = multiply(A, A)
 
-# Depth-1 object
-A = UCNSObject(2, 2, [(Fraction(0), S2), (Fraction(1), UNIT)], [0, 0])
-P = multiply(A, A)
-
-# Factorize
-result = factor_search_v08(P)
-# Returns (A_recovered, B_recovered) or "SEQ-PRIME"
+result = factor_search_v08(P)   # -> (A_recovered, B_recovered) or "SEQ-PRIME"
 ```
 
+`factor_search_v08` returns **one** valid factorization (first under the loop
+ordering: balanced `p ≥ 2` splits first, `p = 1` last); factorization is not
+generally unique. Use `store.factor_decompose` with an explicit catalogue to
+enumerate all catalogue-bounded factorizations. For depth-3+ targets, extend
+the catalogue with the deep payloads of the expected factors
+(`ucns-theorem-n.md §4.2–4.3`).
+
+**Pipeline:** host recovery → payload system construction (p×q coupled
+equations) → witness-matrix global consistency → face recovery → exact
+recomposition (`multiply(A_cand, B_cand) == P`).
+
 ---
 
-## Factorization Pipeline (`factor_search_v08`)
+## Key Conventions & Gotchas
 
-1. **Host recovery** — extract candidate A/B angle sequences from P
-2. **Payload system construction** — build the p×q coupled equations
-3. **Witness-matrix consistency** — verify one globally consistent payload assignment
-4. **Face recovery** — enumerate valid face-bit assignments
-5. **Exact recomposition** — final truth test: `multiply(A_cand, B_cand) == P`
-
----
-
-## Key Conventions
-
-- **No external dependencies** — fractions, math, itertools only. Do not add runtime deps.
-- **`ucns` is the v1.0 public API.** New user-facing code should import from `ucns` (and `ucns.a0_safe` for A0-safe inspection). `ucns_recursive` is **deprecated for direct user imports** but is where the engine implementation currently lives and is still the right place to edit engine code.
-- `factor_search_v08` is the authoritative solver — do not bypass it by calling internal stages directly.
-- **Three invariants** in `factor_search_v08` (root-cause fixes from E10.9 analysis):
-  1. **No false atomicity** — depth-1 payloads like S2 are recursed into, not treated as atomic
-  2. **Global witness consistency** — one assignment must explain every payload cell simultaneously
-  3. **Staged reconstruction** — host recovery → payload system → witness verification → face recovery → exact recomposition
-- **`None` return from `left_quotient` is ambiguous** — it means either "no solution" or "B is the unit". Always pre-check `A == P` if you need to distinguish.
-- **Insertion order is semantic** in dicts — `{b"a": b"1", b"b": b"2"}` and `{b"b": b"2", b"a": b"1"}` encode to different `UCNSObject`s by design.
-- **Read-only files**: `ucns-code-v065.py`, `ucns-depth2-staged-engine.py`, everything in `code/` and `archive/`. Do not modify these.
-- When adding a new solver stage: add it to `factor_search_v08.py` and add corresponding tests in `ucns_recursive/tests/`.
-- When adding codec or retrieval features: add them to `recursive_codec.py`, `left_quotient.py`, or `store.py` and update `__init__.py` exports.
+- **No external dependencies.** stdlib only. Do not add runtime deps.
+- **`ucns` is the v1.0 public API.** New user-facing code imports from `ucns`
+  (and `ucns.a0_safe`). `ucns_recursive` is deprecated for direct user
+  imports but is still the correct place to **edit engine code**.
+- **Lineage modules are not auto-exported.** `core`, `embedding`, `epicycle`,
+  `mobius`, `similarity` live in `ucns/` but are not in `ucns/__init__.py`;
+  import them by submodule path.
+- **CI ignores `tests/`.** Only `ucns_recursive/tests/` runs in CI. If you
+  add tests for the `ucns/` API package they live in `tests/` and you must
+  run them locally — they will not be caught by CI.
+- **`tests/test_docs_claim_guardrail.py` is currently broken** (a duplicated,
+  unclosed `DOC_FILES = [` block → `SyntaxError`), so `unittest discover
+  tests/` fails to collect that module. Do not assume the `tests/` suite is
+  green; the engine suite (`ucns_recursive/tests/`, 175 tests) does pass.
+- `factor_search_v08` is the authoritative solver — do not bypass it by
+  calling internal stages directly.
+- **Three E10.9 invariants** in `factor_search_v08`: (1) no false atomicity
+  (descend into depth-1 payloads like S2); (2) global witness consistency
+  (one assignment explains every cell); (3) staged reconstruction.
+- **`left_quotient` `None` is ambiguous** — pre-check `A == P`.
+- **Insertion order is semantic** in encoded dicts.
+- **Read-only research artifacts** — do not modify: `ucns-code-v065.py`,
+  `ucns_code_v065.py`, everything in `code/`, and the root probe scripts
+  (`*_probe*.py`, `prime_carpet_probe.py`).
+- **`formal/` proves nothing yet** — all `sorry`; never cite it as
+  formal verification.
+- When adding a solver stage: edit `factor_search_v08.py` and add tests in
+  `ucns_recursive/tests/`. When adding codec/retrieval features: edit
+  `recursive_codec.py` / `left_quotient.py` / `store.py` and update
+  `ucns_recursive/__init__.py` `__all__`.
+- **Visualization/demo artifacts** go under `examples/visualization/` with a
+  README stating the exact claim illustrated and the non-proof boundary
+  (see README "What belongs in this repo").
 
 ---
 
 ## What Does Not Exist Yet
 
-- No linting config
-- No `pytest.ini` or pyproject `[tool.pytest.ini_options]` (tests use unittest discover)
-- Carrier widening and general recursive completeness — explicitly **out of v1.0 scope**
-- Right-quotient completeness proof (currently asserted-by-symmetry)
-- No runtime `DeprecationWarning` on `import ucns_recursive` yet (canon is docs-only for v1.0; release ships from local termux at maintainer cadence)
-- No golden output fixtures or `docs/claims-ledger.md` yet (deferred from canon-only reconciliation pass)
+- No linting/formatting config and no lint command.
+- No `pytest.ini` / pyproject pytest config (unittest only).
+- No runtime `DeprecationWarning` on `import ucns_recursive` (docs-only).
+- Right-quotient completeness proof (asserted-by-symmetry).
+- Discharged Lean proofs — `formal/` is all `sorry`.
+- Carrier widening / general recursive completeness — out of v1.0 scope.
 
 ---
 
@@ -316,7 +393,7 @@ result = factor_search_v08(P)
 | Repo | Role |
 |------|------|
 | The-Interdependency/interdependent-lib | Meta-package bundling ucns + other libs |
-| erinepshovel-code/UnitCircle | Visualization and EML experiment scripts for prime distribution |
+| erinepshovel-code/UnitCircle | Visualization / EML prime-distribution experiments |
 | The-Interdependency/a0 | Agent platform that uses UCNS-derived encoding |
 
 ---
@@ -324,17 +401,16 @@ result = factor_search_v08(P)
 ## Git Workflow
 
 - Main branch: `main`
-- Feature branches: `feat/<description>`, `fix/<description>`, `docs/<description>`, `chore/<description>`
-- Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, etc.)
-- Author: Erin Patrick Spencer (wayseer@interdependentway.org)
-- License: Apache 2.0
+- Feature branches: `feat/<desc>`, `fix/<desc>`, `docs/<desc>`, `chore/<desc>`
+- Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, …)
+- License: AGPL-3.0-or-later
 
 ## Agent module-build doctrine
 
 Before adding a new module, route, service, adapter, schema, worker, engine,
 UI panel, migration, or experiment, read:
 
-`./.agents/skills/meta-module-build/SKILL.md`
-
-New module work should start with a `MODULE_BUILD` block. Unknown fields must
-be marked `hmmm`, not guessed.
+`./.agents/skills/meta-module-build/SKILL.md` (built on `msdmd`; see also
+`test-build`). Start new module work with a `MODULE_BUILD` block; mark
+unknown fields `hmmm`, do not guess. When a module touches UCNS identity or
+factorization, prefer the `ucns.a0_safe` boundary over raw sentinels.
