@@ -17,11 +17,22 @@ of empirical probe/sweep scripts.
 <!-- BEGIN GENERATED:manifest -->
 <!-- Generated from pyproject + repo tree by .agents/skills/manifest/generate.py — DO NOT EDIT BY HAND. Refresh with `python .agents/skills/manifest/generate.py --write`. -->
 
-**Package:** `ucns` &nbsp;·&nbsp; **Version:** `0.8.2` &nbsp;·&nbsp; **Python:** `>=3.8` &nbsp;·&nbsp; **License:** AGPL-3.0-or-later
-
-**Runtime dependencies:** none (stdlib only)
-
-**Top-level directories:** `code/` · `docs/` · `examples/` · `formal/` · `tests/` · `ucns/` · `ucns_recursive/`
+| Field | Value |
+|---|---|
+| Package | `ucns` |
+| Version | `0.8.2` |
+| Description | Unit Circle Number System recursive factorization engine |
+| Status | 3 - Alpha |
+| Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
+| License | AGPL-3.0-or-later |
+| Build backend | `setuptools.build_meta` |
+| Author(s) | Erin Spencer |
+| Repository | https://github.com/The-Interdependency/ucns |
+| Runtime dependencies | none (stdlib only) |
+| Optional extras | `dev` |
+| Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
+| CI workflows | `ci.yml`, `manifest-check.yml`, `python-package.yml` |
+| Top-level directories | `code/` · `docs/` · `examples/` · `formal/` · `tests/` · `ucns/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
 <!-- END GENERATED:manifest -->
@@ -35,12 +46,8 @@ of empirical probe/sweep scripts.
 
 | Fact | Value |
 |---|---|
-| Development status | 3 - Alpha |
 | Stdlib modules used | `fractions`, `math`, `cmath`, `itertools`, `struct`, … |
 | Commercial license | see `LICENSE-COMMERCIAL.md` |
-| Build backend | setuptools (`>=61`) + wheel |
-| Author | Erin Patrick Spencer (wayseer@interdependentway.org) |
-| Remote | `github.com/The-Interdependency/ucns` |
 
 The repo ships **two** importable Python packages plus a separate set of
 single-file lineage modules:
