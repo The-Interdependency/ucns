@@ -18,6 +18,27 @@ content addressing, and A0-facing identity checks.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_serialization
+#   module_name: serialization
+#   module_kind: engine
+#   summary: Canonical deterministic JSON serialization and stable SHA-256 hashing for UCNS recursive objects, mirroring UCNSObject equality policy for content addressing and identity.
+#   owner: Erin Spencer
+#   public_surface: CANONICAL_SERIALIZATION_VERSION, DEFAULT_HASH_ALGORITHM, canonical_data, canonical_json, canonical_bytes, stable_hash, stable_hash_bytes
+#   internal_surface: _fraction_to_data
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_serialization
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import hashlib
 import json
 from fractions import Fraction

@@ -71,6 +71,27 @@ Completeness (Theorem N)
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_factor_search_v08
+#   module_name: factor_search_v08
+#   module_kind: engine
+#   summary: Top-level witness-matrix recursive quotient solver; factor_search_v08(P) returns recovered factors (A, B) or the SEQ-PRIME sentinel.
+#   owner: Erin Spencer
+#   public_surface: factor_search_v08
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_depth2_oracle
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domains, ucns_host_recovery, ucns_payload_system, ucns_witness_matrix
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from typing import List, Optional, Tuple, Union
 
 from .canonical import UCNSObject, multiply, is_multiplicative_unit

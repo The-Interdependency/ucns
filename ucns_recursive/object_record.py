@@ -11,6 +11,27 @@ or reason over it.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_object_record
+#   module_name: object_record
+#   module_kind: engine
+#   summary: Builds a self-describing inspection record (canonical identity, domain-status metadata, structural facts) for any UCNS object without invoking factorization.
+#   owner: Erin Spencer
+#   public_surface: UCNSObjectRecord, object_record
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_object_record
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domain_status, ucns_domains, ucns_serialization
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from dataclasses import dataclass
 from typing import Optional
 

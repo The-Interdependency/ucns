@@ -23,6 +23,27 @@ themselves non-unit UCNSObjects, the product is computed via the full
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_recursive_quotient
+#   module_name: recursive_quotient
+#   module_kind: engine
+#   summary: Payload-level single-equation factor finders (find_left_factor / find_right_factor) that enumerate a candidate catalogue, plus re-exports of the left/right quotient primitives.
+#   owner: Erin Spencer
+#   public_surface: find_left_factor, find_right_factor, left_quotient, right_quotient
+#   internal_surface: find_right_factor_or_sentinel, find_left_factor_or_sentinel
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_left_quotient
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_left_quotient
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from typing import List, Optional
 
 from .canonical import UCNSObject, multiply

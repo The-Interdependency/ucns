@@ -75,6 +75,27 @@ References
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_store
+#   module_name: store
+#   module_kind: engine
+#   summary: UCNSStore - an in-memory keyed corpus of UCNSObjects with proof-backed algebraic retrieval (left_factors, is_left_factor, factor_decompose) and optional verified-domain enforcement.
+#   owner: Erin Spencer
+#   public_surface: UCNSStore, Match, OutOfDomainError
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_store
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical, ucns_domains, ucns_left_quotient, ucns_recursive_codec
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from .canonical import UCNSObject, multiply

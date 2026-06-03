@@ -70,6 +70,27 @@ References
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_recursive_codec
+#   module_name: recursive_codec
+#   module_kind: engine
+#   summary: Recursive encoder/decoder between Python values (bytes/list/tuple/dict and coercible leaves) and UCNSObject, with type recovered from leading-sentinel count.
+#   owner: Erin Spencer
+#   public_surface: recursive_encode, recursive_decode, EncodingError
+#   internal_surface: _byte_to_angle, _angle_to_byte, _safe_n_dec, _make_sentinel_cells, _encode_bytes, _encode_list, _encode_dict, _count_leading_sentinels
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_recursive_codec
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 from fractions import Fraction
 from typing import Any, List, Optional, Tuple
 

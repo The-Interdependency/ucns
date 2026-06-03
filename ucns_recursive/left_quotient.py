@@ -41,6 +41,27 @@ the snapshot transfers directly here.
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_left_quotient
+#   module_name: left_quotient
+#   module_kind: engine
+#   summary: Constructive left/right quotient primitives implementing the v0.6 left-quotient completeness theorem; recovers B (or A) from a product, else None.
+#   owner: Erin Spencer
+#   public_surface: left_quotient, right_quotient
+#   internal_surface: _left_quotient_payload
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: ucns_recursive.tests.test_left_quotient
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: ucns_canonical
+#   since: 2026-06-02
+#   unresolved: right_quotient dual proof asserted-by-symmetry, not yet written out
+# === END MODULE_BUILD ===
+
 from typing import List, Optional
 
 from .canonical import UCNSObject, is_unit, multiply

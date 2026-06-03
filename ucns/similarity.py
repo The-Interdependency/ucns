@@ -28,6 +28,27 @@ Metric catalogue
 
 from __future__ import annotations
 
+# === MODULE_BUILD ===
+# id: ucns_similarity
+#   module_name: similarity
+#   module_kind: engine
+#   summary: Similarity and distance metrics (phase-cosine, arc, hyperbolic, top-k overlap) over UCNS angle-list embeddings.
+#   owner: Erin Spencer
+#   public_surface: phase_cosine, arc_distance, hyperbolic_cosine, top_k_overlap
+#   internal_surface: _check_same_length
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_similarity
+#   rollout: default_enabled
+#   rollback: remove module and its re-exports
+#   requires: none
+#   since: 2026-06-02
+#   unresolved: none
+# === END MODULE_BUILD ===
+
 import math
 import cmath
 from typing import Sequence
