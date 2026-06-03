@@ -36,7 +36,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: hmmm
+#   tests: ucns_recursive.tests.test_left_quotient
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_left_quotient
