@@ -43,10 +43,22 @@ single-file lineage modules:
   deprecation is docs-only and release timing is controlled locally by the
   maintainer.
 
-Only the `ucns*` package is included in the built distribution
-(`pyproject.toml` `include = ["ucns*"]`, `exclude = ["ucns_recursive*"]`),
-so `ucns_recursive` ships as a sub-path of the `ucns` import namespace, not
-as a separately advertised top-level package.
+**Packaging caveat (real contradiction).** `pyproject.toml`
+`[tool.setuptools.packages.find]` sets `include = ["ucns*"]` and
+`exclude = ["ucns_recursive*"]`, so the **wheel** contains only the `ucns/`
+package (verified: `top_level.txt` is just `ucns`; the wheel ships zero
+`ucns_recursive` files). But `ucns/__init__.py` does
+`from ucns_recursive import *` at import time. Consequently a **wheel-only**
+install fails on `import ucns` with
+`ModuleNotFoundError: No module named 'ucns_recursive'`. The package only
+works today because (a) editable installs (`pip install -e .`, what CI's
+`ci.yml` uses) keep `ucns_recursive` importable from the source tree, and
+(b) the **sdist** still bundles the `ucns_recursive` sources via
+`MANIFEST.in` (`recursive-include ucns_recursive *.py`), so an sdist-based
+install also resolves the import. The `python-package.yml` wheel smoke test
+imports `from ucns_recursive import …` directly, which likewise only passes
+because the build step leaves `ucns_recursive` on the path. This exclude/
+re-export mismatch is a packaging bug to be aware of, not intended behavior.
 
 ---
 
@@ -303,7 +315,7 @@ store.domain_status_of("doc1")
 from ucns import a0_safe
 a0_safe.describe(obj)    # UCNSObjectRecord, no factorization run
 a0_safe.identity(obj)    # stable canonical hash
-a0_safe.canonical(obj)   # canonical JSON (or bytes=True)
+a0_safe.canonical(obj)   # canonical JSON (or as_bytes=True for bytes)
 a0_safe.factor(obj)      # scoped FactorizationResult envelope
 ```
 
