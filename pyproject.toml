@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "AGPL-3.0-or-later" }
 requires-python = ">=3.8"
 authors = [
-  { name = "Erin Spencer" }
+  { name = "Erin Patrick Spencer", email = "wayseer@interdependentway.org" }
 ]
 keywords = [
   "unit-circle",

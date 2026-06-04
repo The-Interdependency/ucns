@@ -26,7 +26,7 @@ of empirical probe/sweep scripts.
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
 | License | AGPL-3.0-or-later |
 | Build backend | `setuptools.build_meta` |
-| Author(s) | Erin Spencer |
+| Author(s) | Erin Patrick Spencer <wayseer@interdependentway.org> |
 | Repository | https://github.com/The-Interdependency/ucns |
 | Runtime dependencies | none (stdlib only) |
 | Optional extras | `dev` |
