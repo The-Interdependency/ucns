@@ -33,3 +33,6 @@ jobs:
 
       - name: Run ucns_recursive unittest suite
         run: python -m unittest discover ucns_recursive/tests/ -v
+
+      - name: Run top-level tests/ suite (ucns v1.0 API + doc guardrail)
+        run: python -m unittest discover -s tests -v
