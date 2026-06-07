@@ -186,10 +186,10 @@ ucns_recursive/                    # DEPRECATED for direct user imports;
     test_factorization_result.py, test_object_record.py, test_a0_safe.py,
     test_geometry_bridge.py, test_visualization_boundary.py
 
-tests/                             # v1.0 API-package test suite (NOT run by CI; see gotchas)
+tests/                             # v1.0 API-package test suite (now run by ci.yml)
   test_core.py, test_embedding.py, test_epicycle.py,
   test_mobius.py, test_similarity.py   # lineage-module tests
-  test_docs_claim_guardrail.py     # doc overclaim guardrail (CURRENTLY HAS A SYNTAX ERROR)
+  test_docs_claim_guardrail.py     # doc overclaim guardrail (fixed; 141 tests pass)
 
 formal/                            # Lean 4 proof scaffold (FRONTIER, all `sorry`)
   lean-toolchain                   # leanprover/lean4:v4.7.0
@@ -262,11 +262,12 @@ Two GitHub Actions workflows under `.github/workflows/`:
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; `python -m unittest discover ucns_recursive/tests/ -v` |
+| `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; runs **both** `ucns_recursive/tests/` and the top-level `tests/` suite |
 | `python-package.yml` | push/PR to `main` | matrix 3.10/3.11/3.12; `python -m build`; `twine check`; wheel install smoke test; `unittest discover ucns_recursive/tests/` |
 
-**Both workflows test only `ucns_recursive/tests/`.** The top-level `tests/`
-directory is **not** exercised by CI.
+**`ci.yml` now exercises the top-level `tests/`** suite as well as
+`ucns_recursive/tests/`; `python-package.yml` still tests only
+`ucns_recursive/tests/`.
 
 ---
 
@@ -384,13 +385,13 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - **Lineage modules are not auto-exported.** `core`, `embedding`, `epicycle`,
   `mobius`, `similarity` live in `ucns/` but are not in `ucns/__init__.py`;
   import them by submodule path.
-- **CI ignores `tests/`.** Only `ucns_recursive/tests/` runs in CI. If you
-  add tests for the `ucns/` API package they live in `tests/` and you must
-  run them locally — they will not be caught by CI.
-- **`tests/test_docs_claim_guardrail.py` is currently broken** (a duplicated,
-  unclosed `DOC_FILES = [` block → `SyntaxError`), so `unittest discover
-  tests/` fails to collect that module. Do not assume the `tests/` suite is
-  green; the engine suite (`ucns_recursive/tests/`, 175 tests) does pass.
+- **`ci.yml` now runs `tests/`** (the v1.0 API package suite) in addition to
+  `ucns_recursive/tests/`. Tests for the `ucns/` API package live in `tests/`;
+  note `python-package.yml` still runs only `ucns_recursive/tests/`.
+- **`tests/test_docs_claim_guardrail.py` was a merge-conflict `SyntaxError`
+  (duplicated, unclosed `DOC_FILES = [`) — now fixed.** The top-level `tests/`
+  suite passes (141 tests); the engine suite (`ucns_recursive/tests/`) also
+  passes.
 - `factor_search_v08` is the authoritative solver — do not bypass it by
   calling internal stages directly.
 - **Three E10.9 invariants** in `factor_search_v08`: (1) no false atomicity
