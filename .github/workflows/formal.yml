@@ -1,0 +1,48 @@
+name: formal (Lean)
+
+# Type-checks the Lean formalization in formal/.
+# NOTE: `sorry`-backed statements build with warnings, not errors —
+# a green run here means the DEFINITIONS type-check, not that any
+# theorem is proved (see formal/README.md, non-transfer discipline).
+# The sorry-count step below makes the discharge state visible per run.
+
+on:
+  push:
+    paths:
+      - 'formal/**'
+      - '.github/workflows/formal.yml'
+  pull_request:
+    paths:
+      - 'formal/**'
+      - '.github/workflows/formal.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: formal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install elan (pinned toolchain from formal/lean-toolchain)
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain "$(cat lean-toolchain)"
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Cache lake packages and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            formal/.lake
+          key: lake-${{ hashFiles('formal/lean-toolchain', 'formal/lakefile.lean', 'formal/lake-manifest.json') }}
+
+      - name: lake build
+        run: lake build
+
+      - name: Report sorry count (discharge state, informational)
+        run: |
+          echo "Open sorries by file:"
+          grep -rn "sorry" Ucns/ --include="*.lean" | grep -v "^.*--" | wc -l
+          grep -rcn "sorry" Ucns/*.lean || true

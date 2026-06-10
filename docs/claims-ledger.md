@@ -78,12 +78,12 @@ EXPERIMENTAL      exploration layer, not canon
 
 | Item | Status | v1.0 decision |
 |---|---|---|
-| Carrier widening beyond frozen bounds | `FRONTIER` | Explicitly out of v1.0 scope. |
-| Tractable sub-catalogues | `FRONTIER` | Open performance/cataloque-design problem. |
+| Carrier widening beyond frozen bounds | `FRONTIER` (analytic side only) | Explicitly out of v1.0 scope. The Carrier-LCM Law (`docs/carrier-support-pruning.md`, `DEFENDED` + `TEST-BACKED` on this substrate) closes the operational side exactly; cross-prime *factoring* remains open. |
+| Tractable sub-catalogues | `FRONTIER`, narrowed | Carrier-support pruning (`ucns_recursive.catalogue_pruning`, `DEFENDED` + `TEST-BACKED`) gives a sound opt-in pre-filter; catalogue *design* beyond support-pruning remains open. |
 | General recursive primality outside defended-complete domains | Out of v1.0 scope | `SEQ-PRIME` remains scoped by `domain_status_metadata`. |
 | Recursive disk-flip content symmetry as a depth-n theorem | `FRONTIER` | Not required for v1.0. |
 | Canonical factor choice among multiple valid decompositions | `FRONTIER` | Theorem N returns a valid factorization, not a canonical one. |
-| Performance scaling for large catalogues | `FRONTIER` | Theorem N is correctness under catalogue sufficiency, not efficient search in large catalogues. |
+| Performance scaling for large catalogues | `FRONTIER`, narrowed | Sound support-pruning is `DEFENDED`; efficient search *within* the pruned lattice remains open. |
 | External formal review | Open | Theorem N should receive mathematical pressure before stronger publication language. |
 
 ---
