@@ -47,6 +47,7 @@ of empirical probe/sweep scripts.
 | Fact | Value |
 |---|---|
 | Stdlib modules used | `fractions`, `math`, `cmath`, `itertools`, `struct`, … |
+| Commercial license | see `LICENSE-COMMERCIAL.md` |
 
 The repo ships **two** importable Python packages plus a separate set of
 single-file lineage modules:
