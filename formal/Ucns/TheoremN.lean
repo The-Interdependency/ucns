@@ -20,37 +20,39 @@
   are themselves part of what external formal review must check.
 -/
 
+import Ucns.Core
+
 namespace Ucns
 
-/-- A UCNS object. Placeholder carrier; the real structure is the recursive
-    `(angle, payload)` sequence object of `ucns-spec.md` / `ucns-theorem-n.md`
-    §1.1. Opaque here so the Theorem N statements can be stated. -/
-opaque UCNSObject : Type
+open UCNSObject
 
-/-- The recursive product `multiply(A, B)` of `ucns-theorem-n.md` §1.1.
-    Placeholder. -/
-opaque multiply : UCNSObject → UCNSObject → UCNSObject
+/-! The placeholder `opaque UCNSObject` of the original scaffold is replaced
+    by the faithful definitions in `Ucns/Core.lean`. `multiply` and `depth`
+    below are the real (fuel-indexed) operations; `width`,
+    `ContainsPayloads`, and `FindsFactorization` remain modelling
+    predicates pending the formalization of the search procedure itself —
+    they are now definitions/opaques over the REAL object type. -/
 
-/-- The recursion depth of a UCNS object (depth-1 = atomic payloads, etc.),
-    as used throughout `ucns-theorem-n.md`. Placeholder. -/
-opaque depth : UCNSObject → Nat
+/-- The depth-agnostic product, at fuel sufficient for both operands. -/
+def multiply (A B : UCNSObject) : UCNSObject :=
+  multiplyFuel (Nat.max (depth A) (depth B)) A B
 
 /-- Number of top-level `A_plus` cells of an object (`|A.A_plus|`). -/
-opaque width : UCNSObject → Nat
+def width (x : UCNSObject) : Nat := x.cells.length
 
-/-- A catalogue `C`: a candidate set of payloads (`UCNSObject | None`), modelled
-    here as a list of objects. See §1.2. Placeholder. -/
+/-- A catalogue `C`: a candidate set of payloads (`UCNSObject | None`),
+    modelled as a list of objects (the unit payload is implicit). -/
 abbrev Catalogue : Type := List UCNSObject
 
 /-- `ContainsPayloads C X` holds when the catalogue `C` contains every payload
-    appearing recursively in `X` (including the identity). This is the single
-    hypothesis of Theorem N ("the catalogue contains the necessary payloads").
-    Placeholder predicate. -/
+    appearing recursively in `X` (including the identity). Single hypothesis
+    of Theorem N. Still a modelling predicate over the real type. -/
 opaque ContainsPayloads : Catalogue → UCNSObject → Prop
 
-/-- `FindsFactorization P C` holds when `factor_search_v08(P, C)` returns a pair
-    `(A', B')` with `multiply A' B' = P`. Models the success of the depth-agnostic
-    search procedure of §1.3. Placeholder predicate. -/
+/-- `FindsFactorization P C` holds when `factor_search_v08(P, C)` returns a
+    pair `(A', B')` with `multiply A' B' = P`. Models the success of the
+    depth-agnostic search procedure; the procedure itself is not yet
+    formalized. -/
 opaque FindsFactorization : UCNSObject → Catalogue → Prop
 
 /--

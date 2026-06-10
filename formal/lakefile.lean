@@ -2,10 +2,12 @@ import Lake
 open Lake DSL
 
 package «Ucns» where
-  -- Minimal Lake package for the UCNS Theorem N formalization scaffold.
-  -- See README.md: every statement here is currently `sorry`-backed and
-  -- proves nothing. This package exists so the stubs type-check.
+  -- Lake package for the UCNS formalization.
+  -- Statements not yet discharged are `sorry`-backed and prove nothing
+  -- (see README.md: proof-status non-transfer discipline).
+
+require std from git "https://github.com/leanprover/std4" @ "v4.7.0"
 
 @[default_target]
 lean_lib «Ucns» where
-  -- Library root: Ucns/TheoremN.lean
+  -- Library root: Ucns.lean -> Ucns/Core.lean, Ucns/TheoremN.lean

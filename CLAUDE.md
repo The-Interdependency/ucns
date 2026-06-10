@@ -31,7 +31,7 @@ of empirical probe/sweep scripts.
 | Runtime dependencies | none (stdlib only) |
 | Optional extras | `dev` |
 | Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
-| CI workflows | `ci.yml`, `manifest-check.yml`, `python-package.yml` |
+| CI workflows | `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml` |
 | Top-level directories | `code/` · `docs/` · `examples/` · `formal/` · `tests/` · `ucns/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
