@@ -130,6 +130,11 @@ from .store import Match, OutOfDomainError, UCNSStore
 
 # Catalogue helpers
 from . import catalogue
+from .canonical_factorization import (
+    enumerate_factorizations,
+    canonical_factorization,
+    canonical_key,
+)
 from .catalogue_pruning import (
     prime_support,
     carrier_lcm,
@@ -199,6 +204,10 @@ __all__ = [
     "OutOfDomainError",
     # catalogue helpers
     "catalogue",
+    # canonical factor selection
+    "enumerate_factorizations",
+    "canonical_factorization",
+    "canonical_key",
     # carrier-LCM law / carrier-support pruning
     "prime_support",
     "carrier_lcm",
