@@ -24,7 +24,7 @@ of empirical probe/sweep scripts.
 | Description | Unit Circle Number System recursive factorization engine |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
-| License | AGPL-3.0-or-later |
+| License | MIT |
 | Build backend | `setuptools.build_meta` |
 | Author(s) | Erin Patrick Spencer <wayseer@interdependentway.org> |
 | Repository | https://github.com/The-Interdependency/ucns |
@@ -47,7 +47,6 @@ of empirical probe/sweep scripts.
 | Fact | Value |
 |---|---|
 | Stdlib modules used | `fractions`, `math`, `cmath`, `itertools`, `struct`, … |
-| Commercial license | see `LICENSE-COMMERCIAL.md` |
 
 The repo ships **two** importable Python packages plus a separate set of
 single-file lineage modules:
@@ -218,7 +217,7 @@ ucns-lemma8-depth3.md              # Depth-3 factor search (SUPERSEDED by theore
 ucns-v06-completeness-proof.md, ucns-v06-left-quotient-completeness.md
 depth7-frontier.md, MANIFEST.md, REVIEW_PACKET.md, RELEASE.md, CHANGELOG.md
 README.md, DOCTRINE.md, CONTRIBUTING.md, accreditation.md
-LICENSE, LICENSE-COMMERCIAL.md, MANIFEST.in
+LICENSE, MANIFEST.in
 
 # Root-level reference snapshot + probe scripts (read-only research artifacts)
 ucns-code-v065.py                  # Stable v0.6.5 snapshot (dashed name; not importable)
@@ -440,7 +439,7 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - Main branch: `main`
 - Feature branches: `feat/<desc>`, `fix/<desc>`, `docs/<desc>`, `chore/<desc>`
 - Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, …)
-- License: AGPL-3.0-or-later
+- License: MIT
 
 ## Agent module-build doctrine
 
