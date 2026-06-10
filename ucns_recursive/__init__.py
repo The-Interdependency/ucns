@@ -130,6 +130,11 @@ from .store import Match, OutOfDomainError, UCNSStore
 
 # Catalogue helpers
 from . import catalogue
+from .catalogue_pruning import (
+    prime_support,
+    carrier_lcm,
+    prune_catalogue,
+)
 from .geometry_bridge import (
     GeometricPoint,
     HomomorphismResult,
@@ -194,6 +199,10 @@ __all__ = [
     "OutOfDomainError",
     # catalogue helpers
     "catalogue",
+    # carrier-LCM law / carrier-support pruning
+    "prime_support",
+    "carrier_lcm",
+    "prune_catalogue",
     # geometry bridge: homomorphism proof UCNS-A ↔ UCNS-G
     "GeometricPoint",
     "ucns_a_to_g",

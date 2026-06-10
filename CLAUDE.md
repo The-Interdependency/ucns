@@ -24,14 +24,14 @@ of empirical probe/sweep scripts.
 | Description | Unit Circle Number System recursive factorization engine |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
-| License | AGPL-3.0-or-later |
+| License | MIT |
 | Build backend | `setuptools.build_meta` |
-| Author(s) | Erin Spencer |
+| Author(s) | Erin Patrick Spencer <wayseer@interdependentway.org> |
 | Repository | https://github.com/The-Interdependency/ucns |
 | Runtime dependencies | none (stdlib only) |
 | Optional extras | `dev` |
 | Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
-| CI workflows | `ci.yml`, `manifest-check.yml`, `python-package.yml` |
+| CI workflows | `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml` |
 | Top-level directories | `code/` · `docs/` · `examples/` · `formal/` · `tests/` · `ucns/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
@@ -67,22 +67,22 @@ single-file lineage modules:
   deprecation is docs-only and release timing is controlled locally by the
   maintainer.
 
-**Packaging caveat (real contradiction).** `pyproject.toml`
-`[tool.setuptools.packages.find]` sets `include = ["ucns*"]` and
-`exclude = ["ucns_recursive*"]`, so the **wheel** contains only the `ucns/`
-package (verified: `top_level.txt` is just `ucns`; the wheel ships zero
-`ucns_recursive` files). But `ucns/__init__.py` does
-`from ucns_recursive import *` at import time. Consequently a **wheel-only**
-install fails on `import ucns` with
-`ModuleNotFoundError: No module named 'ucns_recursive'`. The package only
-works today because (a) editable installs (`pip install -e .`, what CI's
-`ci.yml` uses) keep `ucns_recursive` importable from the source tree, and
-(b) the **sdist** still bundles the `ucns_recursive` sources via
-`MANIFEST.in` (`recursive-include ucns_recursive *.py`), so an sdist-based
-install also resolves the import. The `python-package.yml` wheel smoke test
-imports `from ucns_recursive import …` directly, which likewise only passes
-because the build step leaves `ucns_recursive` on the path. This exclude/
-re-export mismatch is a packaging bug to be aware of, not intended behavior.
+**Packaging note.** `pyproject.toml` `[tool.setuptools.packages.find]` sets
+`include = ["ucns*"]` (no `exclude`), so the **wheel** bundles **both** the
+`ucns/` package and the `ucns_recursive/` engine (verified: `top_level.txt`
+is `ucns` and `ucns_recursive`). This matters because `ucns/__init__.py` does
+`from ucns_recursive import *` at import time; shipping `ucns_recursive` in
+the wheel is what lets a **wheel-only** install succeed on `import ucns`. The
+**sdist** likewise bundles the engine via `MANIFEST.in`
+(`recursive-include ucns_recursive *.py`), so editable, sdist, and wheel
+installs all resolve the import consistently.
+
+> History: earlier releases set `exclude = ["ucns_recursive*"]`, which dropped
+> the engine from the wheel and made wheel-only `import ucns` fail with
+> `ModuleNotFoundError: No module named 'ucns_recursive'` (masked only by
+> editable/sdist installs). Removing that exclude fixed it; the `include`
+> glob already matches `ucns_recursive`. The wheel also carries the tiny
+> `ucns_recursive/tests` subpackage, matching the sdist.
 
 ---
 
@@ -186,10 +186,10 @@ ucns_recursive/                    # DEPRECATED for direct user imports;
     test_factorization_result.py, test_object_record.py, test_a0_safe.py,
     test_geometry_bridge.py, test_visualization_boundary.py
 
-tests/                             # v1.0 API-package test suite (NOT run by CI; see gotchas)
+tests/                             # v1.0 API-package test suite (now run by ci.yml)
   test_core.py, test_embedding.py, test_epicycle.py,
   test_mobius.py, test_similarity.py   # lineage-module tests
-  test_docs_claim_guardrail.py     # doc overclaim guardrail (CURRENTLY HAS A SYNTAX ERROR)
+  test_docs_claim_guardrail.py     # doc overclaim guardrail (fixed; 141 tests pass)
 
 formal/                            # Lean 4 proof scaffold (FRONTIER, all `sorry`)
   lean-toolchain                   # leanprover/lean4:v4.7.0
@@ -218,7 +218,7 @@ ucns-lemma8-depth3.md              # Depth-3 factor search (SUPERSEDED by theore
 ucns-v06-completeness-proof.md, ucns-v06-left-quotient-completeness.md
 depth7-frontier.md, MANIFEST.md, REVIEW_PACKET.md, RELEASE.md, CHANGELOG.md
 README.md, DOCTRINE.md, CONTRIBUTING.md, accreditation.md
-LICENSE, LICENSE-COMMERCIAL.md, MANIFEST.in
+LICENSE, MANIFEST.in
 
 # Root-level reference snapshot + probe scripts (read-only research artifacts)
 ucns-code-v065.py                  # Stable v0.6.5 snapshot (dashed name; not importable)
@@ -262,11 +262,12 @@ Two GitHub Actions workflows under `.github/workflows/`:
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; `python -m unittest discover ucns_recursive/tests/ -v` |
+| `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; runs **both** `ucns_recursive/tests/` and the top-level `tests/` suite |
 | `python-package.yml` | push/PR to `main` | matrix 3.10/3.11/3.12; `python -m build`; `twine check`; wheel install smoke test; `unittest discover ucns_recursive/tests/` |
 
-**Both workflows test only `ucns_recursive/tests/`.** The top-level `tests/`
-directory is **not** exercised by CI.
+**`ci.yml` now exercises the top-level `tests/`** suite as well as
+`ucns_recursive/tests/`; `python-package.yml` still tests only
+`ucns_recursive/tests/`.
 
 ---
 
@@ -384,13 +385,13 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - **Lineage modules are not auto-exported.** `core`, `embedding`, `epicycle`,
   `mobius`, `similarity` live in `ucns/` but are not in `ucns/__init__.py`;
   import them by submodule path.
-- **CI ignores `tests/`.** Only `ucns_recursive/tests/` runs in CI. If you
-  add tests for the `ucns/` API package they live in `tests/` and you must
-  run them locally — they will not be caught by CI.
-- **`tests/test_docs_claim_guardrail.py` is currently broken** (a duplicated,
-  unclosed `DOC_FILES = [` block → `SyntaxError`), so `unittest discover
-  tests/` fails to collect that module. Do not assume the `tests/` suite is
-  green; the engine suite (`ucns_recursive/tests/`, 175 tests) does pass.
+- **`ci.yml` now runs `tests/`** (the v1.0 API package suite) in addition to
+  `ucns_recursive/tests/`. Tests for the `ucns/` API package live in `tests/`;
+  note `python-package.yml` still runs only `ucns_recursive/tests/`.
+- **`tests/test_docs_claim_guardrail.py` was a merge-conflict `SyntaxError`
+  (duplicated, unclosed `DOC_FILES = [`) — now fixed.** The top-level `tests/`
+  suite passes (141 tests); the engine suite (`ucns_recursive/tests/`) also
+  passes.
 - `factor_search_v08` is the authoritative solver — do not bypass it by
   calling internal stages directly.
 - **Three E10.9 invariants** in `factor_search_v08`: (1) no false atomicity
@@ -439,7 +440,7 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - Main branch: `main`
 - Feature branches: `feat/<desc>`, `fix/<desc>`, `docs/<desc>`, `chore/<desc>`
 - Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, …)
-- License: AGPL-3.0-or-later
+- License: MIT
 
 ## Agent module-build doctrine
 

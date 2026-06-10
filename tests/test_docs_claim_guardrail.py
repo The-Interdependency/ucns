@@ -9,11 +9,8 @@ EXCLUDED_DOC_FILES = {
 }
 
 DOC_FILES = [
-    Path('README.md'),
-    *[p for p in Path('docs').glob('*.md') if p.name not in EXCLUDED_DOC_FILES],
-DOC_FILES = [
-    *sorted(Path('.').glob('*.md')),
-    *sorted(Path('docs').glob('*.md')),
+    *sorted(p for p in Path('.').glob('*.md') if p.name not in EXCLUDED_DOC_FILES),
+    *sorted(p for p in Path('docs').glob('*.md') if p.name not in EXCLUDED_DOC_FILES),
 ]
 
 # Explicit overclaim patterns that should never appear in documentation copy.
@@ -51,10 +48,6 @@ class TestDocsClaimGuardrail(unittest.TestCase):
         )
 
 
-if __name__ == '__main__':
-    unittest.main()
-
-
 class TestBridgeChecklistLinkage(unittest.TestCase):
     def test_bridge_checklist_is_linked_from_core_docs(self) -> None:
         required_refs = {
@@ -72,3 +65,7 @@ class TestBridgeChecklistLinkage(unittest.TestCase):
                 missing.append(f"{path} missing reference to {needle}")
 
         self.assertEqual(missing, [], "\n".join(missing))
+
+
+if __name__ == "__main__":
+    unittest.main()
