@@ -1,5 +1,7 @@
 # ucns — Unit Circle Number System: Recursive Factorization Theory
 
+<p align="center"><img src="docs/media/ucns-emblem.jpg" alt="UCNS emblem: a Möbius-banded sphere on the unit circle" width="640"></p>
+
 > **Experimental sequence-theoretic factorization on the unit circle, with a witness-matrix recursive quotient solver.**
 
 This repository contains the UCNS (Unit Circle Number System) sequence theory and its implementation. The focus is **recursive factorization**: given a UCNS product object *P*, recover factors *A* and *B* such that *A ⊠ B = P*.

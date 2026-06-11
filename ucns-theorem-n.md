@@ -1,5 +1,9 @@
 # UCNS — Theorem N: Catalogue-Sufficient Factorization
 
+<p align="center"><img src="docs/media/theorem-n-factorization.jpg" alt="Illustration: factors A and B composing into product P via factor_search_v08" width="640"></p>
+
+*Illustration: decorative class (AI-generated; see `docs/media/README.md`).*
+
 **Status:** Proven. Supersedes Lemma 7, Theorem 8c, and the prior ∀n-induction plan
 (commit 2de89626).
 **Authors:** Theorem statement and unification — Claude.ai mobile session, Erin Spencer
