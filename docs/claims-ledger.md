@@ -82,7 +82,7 @@ EXPERIMENTAL      exploration layer, not canon
 | Tractable sub-catalogues | `FRONTIER`, narrowed | Carrier-support pruning (`ucns_recursive.catalogue_pruning`, `DEFENDED` + `TEST-BACKED`) gives a sound opt-in pre-filter; catalogue *design* beyond support-pruning remains open. |
 | General recursive primality outside defended-complete domains | Out of v1.0 scope | `SEQ-PRIME` remains scoped by `domain_status_metadata`. |
 | Recursive disk-flip content symmetry as a depth-n theorem | `FRONTIER` | Not required for v1.0. |
-| Canonical factor choice among multiple valid decompositions | `FRONTIER` | Theorem N returns a valid factorization, not a canonical one. |
+| Canonical factor choice among multiple valid decompositions | `FRONTIER`, narrowed | Deterministic selector over the v0.6-complete left-factor enumeration is `DEFENDED` + `TEST-BACKED` (`ucns_recursive.canonical_factorization`, `docs/canonical-factor-selection.md`). Canonical choice under `factor_search_v08` payload-catalogue semantics remains open. |
 | Performance scaling for large catalogues | `FRONTIER`, narrowed | Sound support-pruning is `DEFENDED`; efficient search *within* the pruned lattice remains open. |
 | External formal review | Open | Theorem N should receive mathematical pressure before stronger publication language. |
 

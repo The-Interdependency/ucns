@@ -24,3 +24,9 @@ See full details in:
 - `erinepshovel-code/EDCM/docs/handoffs/2026-05-22-ucns-g-prime-cylinder-v3.md`
 
 This supplement updates the UCNS-G description without altering UCNS-A factorization algebra scope.
+## Cross-substrate discipline
+
+Claims in this supplement that touch edcmbone-witnessed results are subject
+to the non-transfer rule in `docs/edcm-edcmbone-bridge-checklist.md`:
+witnesses on one substrate confer no status on another without a bridge
+test on the target substrate.
