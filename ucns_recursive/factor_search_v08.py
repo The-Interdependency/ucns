@@ -94,6 +94,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Tuple, Union
 
+from .catalogue_pruning import prune_payload_catalogue
 from .canonical import UCNSObject, multiply, is_multiplicative_unit
 from .domains import generate_payload_catalogue
 from .host_recovery import recover_host_angles, recover_face_structures
@@ -111,6 +112,7 @@ SEQ_PRIME = "SEQ-PRIME"
 def factor_search_v08(
     P: UCNSObject,
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
+    prune: bool = True,
 ) -> FactorResult:
     """Search for a non-trivial factorisation  P = A ⨠ B.
 
@@ -124,6 +126,14 @@ def factor_search_v08(
         For depth-3+ targets, extend this catalogue with the depth-2+
         payloads of the expected factors (see Theorem N in
         ``ucns-theorem-n.md``).
+    prune:
+        When True (default), apply Carrier-LCM-Law payload pruning
+        (``catalogue_pruning.prune_payload_catalogue``, Corollary 2 in
+        ``docs/carrier-support-pruning.md``): candidates whose carrier
+        prime support escapes the union of P's payload-carrier supports
+        cannot serve as factor payloads and are dropped before search.
+        Sound — completeness is unchanged.  Pass ``prune=False`` to
+        search the catalogue verbatim.
 
     Returns
     -------
@@ -139,6 +149,8 @@ def factor_search_v08(
     """
     if catalogue is None:
         catalogue = generate_payload_catalogue()
+    if prune:
+        catalogue = prune_payload_catalogue(P, catalogue)
 
     n = len(P.A_plus)
 
