@@ -17,6 +17,12 @@ Erin Spencer; proof verified against the implementation in
 
 ---
 
+<p align="center"><img src="media/law-skeleton-figure.png" alt="Lean 4 discharge state of the Carrier-LCM Law" width="600"></p>
+
+*Figure: claim-bearing (deterministic; see `media/README.md`). Reflects
+the discharge state at the date shown; stale if the sorry inventory in
+`formal/Ucns/CarrierLcm.lean` has since changed.*
+
 ## 1. Definitions
 
 For a normalized `UCNSObject` `X`, write:
@@ -84,6 +90,12 @@ Both divisibilities give equality. ∎
 3. The Per-Sublattice Finiteness corollary follows immediately: carriers
    drawn from the multiplicative lattice `⟨S⟩` of a prime set `S` are
    closed under `multiply`, since lcm preserves prime support.
+
+<p align="center"><img src="media/slice-embedding-schematic.jpg" alt="Schematic: pure slices embed both factors unchanged; cancellation only in mixed cells" width="600"></p>
+
+*Schematic: decorative class (AI-generated; see `media/README.md`). The
+embedded caption states the proof's key step correctly; the grid cell
+values are illustrative texture, not data.*
 
 ## 3. Corollary: Carrier-Support Pruning
 
