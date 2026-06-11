@@ -124,3 +124,38 @@ remains FRONTIER.
 - Whether pruning should become a default inside `factor_search_v08`
   rather than an opt-in pre-filter — a decision for the user, not this
   document.
+
+## 4. Corollary 2: Payload-catalogue pruning (the sound `factor_search` rule)
+
+The host-carrier rule of §3 applies to LEFT-FACTOR catalogues and is
+**unsound for payload catalogues**: `n_min` is host-level, so a factor's
+payload may carry primes invisible in `n_min(P)`.
+
+The sound payload-level rule:
+
+> **Corollary 2.** Let `P = multiply(A, B)`. Every payload `S` of `A`
+> (or `B`) satisfies `supp(n_min(S)) ⊆ U(P)` where
+> `U(P) = ⋃ { supp(n_min(p)) : p a non-unit cell payload of P }`.
+
+**Proof.** Fix a payload `S = S_k_A` of `A`. In `multiply`, the cell
+`(k, j)` of `P` receives payload `multiply(S_k_A, S_j_B)` if `S_j_B` is
+non-unit, or `S_k_A` itself if `S_j_B` is the unit. In the pass-through
+case, `supp(n_min(S))` appears verbatim in `U(P)`. In the product case,
+the Law (§2) applied one level down gives
+`n_min(multiply(S_k_A, S_j_B)) = lcm(n_min(S_k_A), n_min(S_j_B))`, so
+`n_min(S) | n_min(that cell payload of P)` and support containment
+follows. Symmetrically for payloads of `B`. ∎
+
+**Consequence.** A payload candidate whose carrier support escapes
+`U(P)` can never serve as a factor payload; removing it preserves
+completeness. Implemented as
+`catalogue_pruning.prune_payload_catalogue`, wired **default-on** into
+`factor_search_v08` with a `prune=False` escape hatch. The full test
+suite (including all search-equivalence subtests) runs through the
+pruned path.
+
+**Edge discipline.** If all of P's payloads are unit, `U(P) = ∅` and
+only carrier-1 candidates (and the unit) survive — sound, since an
+all-unit-payload product forces all factor payloads to be unit
+(`multiply` produces a non-unit payload whenever either operand payload
+is non-unit).

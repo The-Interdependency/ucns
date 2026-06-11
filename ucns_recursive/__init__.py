@@ -139,6 +139,8 @@ from .catalogue_pruning import (
     prime_support,
     carrier_lcm,
     prune_catalogue,
+    payload_support,
+    prune_payload_catalogue,
 )
 from .geometry_bridge import (
     GeometricPoint,
@@ -212,6 +214,8 @@ __all__ = [
     "prime_support",
     "carrier_lcm",
     "prune_catalogue",
+    "payload_support",
+    "prune_payload_catalogue",
     # geometry bridge: homomorphism proof UCNS-A ↔ UCNS-G
     "GeometricPoint",
     "ucns_a_to_g",

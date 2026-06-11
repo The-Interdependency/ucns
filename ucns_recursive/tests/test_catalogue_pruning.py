@@ -172,3 +172,71 @@ class TestSearchEquivalence(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestPayloadPruning(unittest.TestCase):
+    """Corollary 2: payload-catalogue pruning soundness + default-on
+    equivalence in factor_search_v08."""
+
+    def test_factor_payloads_survive(self):
+        from ucns_recursive.catalogue_pruning import prune_payload_catalogue
+        rng = random.Random(37)
+        for i in range(300):
+            A = _rand_obj(rng, 1)
+            B = _rand_obj(rng, 1)
+            P = multiply(A, B)
+            payloads = [pl for _, pl in A.A_plus if pl is not None]
+            payloads += [pl for _, pl in B.A_plus if pl is not None]
+            kept = prune_payload_catalogue(P, [None] + payloads)
+            with self.subTest(trial=i):
+                self.assertIn(None, kept)
+                for pl in payloads:
+                    self.assertTrue(any(c is pl for c in kept))
+
+    def test_host_rule_would_be_unsound_here(self):
+        # Witness for the §4 warning: host n_min misses payload primes.
+        from ucns_recursive.catalogue_pruning import (
+            payload_support,
+            prime_support,
+        )
+        inner = UCNSObject(
+            10, 5, [(Fraction(0), None), (Fraction(2, 5), None)], [0, 0]
+        )
+        host = UCNSObject(
+            6, 3,
+            [(Fraction(0), inner), (Fraction(2, 3), None)],
+            [0, 0],
+        )
+        self.assertNotIn(5, prime_support(host.n_min))
+        self.assertIn(5, payload_support(host))
+
+    def test_search_equivalence_prune_on_off(self):
+        full = generate_payload_catalogue()
+        atoms = [c for c in full if c is not None]
+        rng = random.Random(41)
+        for i in range(40):
+            P = multiply(rng.choice(atoms), rng.choice(atoms))
+            r_on = factor_search_v08(P, catalogue=full, prune=True)
+            r_off = factor_search_v08(P, catalogue=full, prune=False)
+            with self.subTest(trial=i):
+                if r_on is SEQ_PRIME or r_off is SEQ_PRIME:
+                    self.assertIs(r_on, SEQ_PRIME)
+                    self.assertIs(r_off, SEQ_PRIME)
+                else:
+                    self.assertEqual(multiply(*r_on), P)
+                    self.assertEqual(multiply(*r_off), P)
+
+    def test_all_unit_payload_edge(self):
+        from ucns_recursive.catalogue_pruning import prune_payload_catalogue
+        P = UCNSObject(
+            4, 2, [(Fraction(0), None), (Fraction(1), None)], [0, 1]
+        )
+        full = generate_payload_catalogue()
+        kept = prune_payload_catalogue(P, full)
+        self.assertIn(None, kept)
+        for c in kept:
+            if c is not None:
+                self.assertEqual(c.n_min, 1)
+        r = factor_search_v08(P, catalogue=full)
+        if r is not SEQ_PRIME:
+            self.assertEqual(multiply(*r), P)

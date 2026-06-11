@@ -19,7 +19,7 @@ be removed from the search catalogue without affecting completeness.
 #   module_kind: service
 #   summary: Sound catalogue pre-filter removing factor candidates whose carrier prime support escapes the product carrier's prime support, justified by the Carrier-LCM Law.
 #   owner: Erin Spencer
-#   public_surface: prime_support, carrier_lcm, prune_catalogue
+#   public_surface: prime_support, carrier_lcm, prune_catalogue, payload_support, prune_payload_catalogue
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -27,8 +27,8 @@ be removed from the search catalogue without affecting completeness.
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: ucns_recursive.tests.test_catalogue_pruning
-#   rollout: opt-in (callers pass the pruned catalogue to factor_search_v08; default behavior unchanged)
-#   rollback: remove module and its re-exports; factor_search_v08 is untouched
+#   rollout: prune_catalogue opt-in for left-factor catalogues; prune_payload_catalogue default-on inside factor_search_v08 (prune=False escape hatch)
+#   rollback: pass prune=False to factor_search_v08, or remove the module and the prune kwarg
 #   requires: none
 #   since: 2026-06-09
 #   unresolved: none
@@ -39,7 +39,13 @@ from typing import Iterable, List, Optional, Set
 
 from .canonical import UCNSObject
 
-__all__ = ["prime_support", "carrier_lcm", "prune_catalogue"]
+__all__ = [
+    "prime_support",
+    "carrier_lcm",
+    "prune_catalogue",
+    "payload_support",
+    "prune_payload_catalogue",
+]
 
 
 def prime_support(n: int) -> Set[int]:
@@ -87,5 +93,44 @@ def prune_catalogue(
             kept.append(cand)
             continue
         if prime_support(cand.n_min) <= p_support:
+            kept.append(cand)
+    return kept
+
+
+def payload_support(P: UCNSObject) -> Set[int]:
+    """Union of prime supports of the carriers of P's immediate cell
+    payloads (``None`` payloads contribute nothing)."""
+    support: Set[int] = set()
+    for _, pl in P.A_plus:
+        if pl is not None:
+            support |= prime_support(pl.n_min)
+    return support
+
+
+def prune_payload_catalogue(
+    P: UCNSObject,
+    catalogue: Iterable[Optional[UCNSObject]],
+) -> List[Optional[UCNSObject]]:
+    """Corollary 2 pruning for PAYLOAD catalogues (the
+    ``factor_search_v08`` catalogue semantics).
+
+    Sound rule (docs/carrier-support-pruning.md §4): a factor payload
+    appears in P either passed through unchanged or multiplied with the
+    other factor's payload; by the Carrier-LCM Law applied at payload
+    level, its carrier support is contained in ``payload_support(P)``.
+    Candidates escaping that union can never serve as factor payloads.
+    The unit payload (``None``) always survives.
+
+    NOTE: this is deliberately NOT ``prune_catalogue`` — host-carrier
+    pruning is sound only for left-factor catalogues and would be
+    unsound applied to payload catalogues.
+    """
+    u = payload_support(P)
+    kept: List[Optional[UCNSObject]] = []
+    for cand in catalogue:
+        if cand is None:
+            kept.append(cand)
+            continue
+        if prime_support(cand.n_min) <= u:
             kept.append(cand)
     return kept
