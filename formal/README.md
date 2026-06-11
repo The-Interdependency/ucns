@@ -53,3 +53,21 @@ lake build
 
 A successful `lake build` here means only that the *statements* type-check
 with their `sorry` placeholders — it does **not** mean the theorems are proven.
+
+## Discharge state (2026-06-10)
+
+`Ucns/CarrierLcm.lean` decomposes the Carrier-LCM Law
+(prose: `../docs/carrier-support-pruning.md`) into a machine-checked
+composition over five isolated leaf obligations.
+
+Sorry-free, audited via `#print axioms` (depend on `propext` only):
+
+- `dvd_foldl_lcm_acc`, `dvd_foldl_lcm`, `foldl_lcm_dvd` — the lcm fold
+  engine both proof directions run on
+- `nMin_dvd_of_denoms_subset` — denominator-set containment ⇒ carrier
+  divisibility
+
+Open leaves (`sorry`, inherit no status): `den_amod_dvd`,
+`den_add_dvd_lcm`, `slice_embedding_left/right`,
+`carrier_lcm_law_upper`. `carrier_lcm_law'` composes the bounds by
+`Nat.dvd_antisymm`; its trust level equals the leaves'.
