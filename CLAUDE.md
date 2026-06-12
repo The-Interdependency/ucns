@@ -24,7 +24,7 @@ of empirical probe/sweep scripts.
 | Description | Unit Circle Number System recursive factorization engine |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
-| License | MIT |
+| License | MPL-2.0 |
 | Build backend | `setuptools.build_meta` |
 | Author(s) | Erin Patrick Spencer <wayseer@interdependentway.org> |
 | Repository | https://github.com/The-Interdependency/ucns |
@@ -32,7 +32,7 @@ of empirical probe/sweep scripts.
 | Optional extras | `dev` |
 | Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
 | CI workflows | `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml` |
-| Top-level directories | `code/` · `docs/` · `examples/` · `formal/` · `tests/` · `ucns/` · `ucns_recursive/` |
+| Top-level directories | `code/` · `docs/` · `examples/` · `formal/` · `pcea-ucns/` · `tests/` · `ucns/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
 <!-- END GENERATED:manifest -->
@@ -47,7 +47,7 @@ of empirical probe/sweep scripts.
 | Fact | Value |
 |---|---|
 | Stdlib modules used | `fractions`, `math`, `cmath`, `itertools`, `struct`, … |
-| Commercial license | see `LICENSE-COMMERCIAL.md` |
+| License | MPL-2.0 (weak copyleft — embed anywhere, but changes to these files must be published; relicensed from MIT) |
 
 The repo ships **two** importable Python packages plus a separate set of
 single-file lineage modules:
@@ -440,7 +440,7 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - Main branch: `main`
 - Feature branches: `feat/<desc>`, `fix/<desc>`, `docs/<desc>`, `chore/<desc>`
 - Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, …)
-- License: MIT
+- License: MPL-2.0 (weak copyleft — embed anywhere, but changes to these files must be published; relicensed from MIT)
 
 ## Agent module-build doctrine
 
