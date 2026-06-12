@@ -7,7 +7,7 @@ name = "ucns"
 version = "0.8.2"
 description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "MPL-2.0" }
 requires-python = ">=3.8"
 authors = [
   { name = "Erin Patrick Spencer", email = "wayseer@interdependentway.org" }
@@ -22,7 +22,7 @@ keywords = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   # Python classifiers match the union of the CI matrices in
