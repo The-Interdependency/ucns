@@ -1,0 +1,21 @@
+{
+  "title": "UCNS — Unit Circle Number System",
+  "description": "Unit Circle Number System: a recursive factorization engine over epicyclic objects on the doubled cover of the unit circle. Includes Theorem N (catalogue-sufficient factorization) and the Carrier-LCM Law (DEFENDED + TEST-BACKED via the carrier-support-pruning substrate, 324 tests / 2564 subtests), plus a Lean 4 core formalization whose theorems are explicitly sorry-stubbed and confer no defended status.",
+  "creators": [
+    { "name": "Spencer, Erin Patrick", "affiliation": "The Interdependency LLC" }
+  ],
+  "license": "MPL-2.0",
+  "upload_type": "software",
+  "access_right": "open",
+  "version": "0.9.1",
+  "keywords": [
+    "recursive factorization",
+    "unit circle number system",
+    "epicyclic composition",
+    "formal verification",
+    "Lean 4"
+  ],
+  "related_identifiers": [
+    { "relation": "isSupplementTo", "identifier": "https://github.com/The-Interdependency/ucns", "scheme": "url", "resource_type": "software" }
+  ]
+}
