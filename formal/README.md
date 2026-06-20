@@ -19,6 +19,26 @@ That document is the source of truth for the *claims*; this directory is an
 attempt to restate those claims in a form a proof assistant could eventually
 check.
 
+## Mathlib / dependency discipline
+
+This formalization intentionally starts small: Lean core plus the pinned `std4`
+dependency in `lakefile.lean`. It does **not** currently depend on Mathlib.
+
+That is a discipline, not a promise of permanent zero dependencies. If a
+Mathlib-free proof path becomes unobtainable, the correct move is to say so
+explicitly and add the minimum required dependency rather than leaving a
+`sorry` in place while claiming formal discharge. Dependency-minimal is good;
+proof-discharge is the controlling requirement.
+
+Rules:
+
+- Do not claim "Mathlib-free" as a theorem-status property.
+- Do not block proof discharge merely to preserve a zero-dependency aesthetic.
+- If Mathlib becomes necessary, document exactly which imported theorem or
+  module is doing load-bearing work.
+- A dependency-free stub with `sorry` proves less than a dependency-backed,
+  sorry-free proof.
+
 ## Proof-status non-transfer discipline
 
 **A `sorry`-backed statement confers no `DEFENDED` status to any consumer
@@ -38,7 +58,8 @@ Until then, treat everything here as a specification draft, not a guarantee.
 ## Layout
 
 - `lean-toolchain` — pins the Lean 4 toolchain version.
-- `lakefile.lean` — minimal Lake package definition (`Ucns`).
+- `lakefile.lean` — minimal Lake package definition (`Ucns`), currently with
+  `std4` and no Mathlib dependency.
 - `Ucns/TheoremN.lean` — stub statements (all `sorry`) for:
   - depth-1 restricted completeness,
   - the depth-2 oracle result (Lemma 7),
@@ -64,7 +85,7 @@ Sorry-free, audited via `#print axioms` (depend on `propext` only):
 
 - `dvd_foldl_lcm_acc`, `dvd_foldl_lcm`, `foldl_lcm_dvd` — the lcm fold
   engine both proof directions run on
-- `nMin_dvd_of_denoms_subset` — denominator-set containment ⇒ carrier
+- `nMin_dvd_of_denoms_subset` — denominator-set containment implies carrier
   divisibility
 
 Open leaves (`sorry`, inherit no status): `den_amod_dvd`,
