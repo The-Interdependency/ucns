@@ -1,247 +1,171 @@
-# UCNS — Theorem N: Catalogue-Sufficient Factorization
+# UCNS - Theorem N: Catalogue-Sufficient Factorization
 
 <p align="center"><img src="docs/media/theorem-n-factorization.jpg" alt="Illustration: factors A and B composing into product P via factor_search_v08" width="640"></p>
 
 *Illustration: decorative class (AI-generated; see `docs/media/README.md`).*
 
-**Status:** Proven. Supersedes Lemma 7, Theorem 8c, and the prior ∀n-induction plan
-(commit 2de89626).
-**Authors:** Theorem statement and unification — Claude.ai mobile session, Erin Spencer
-(May 2026). Empirical pre-work (6/6 Theorem 9 verification) — same session.
-Prior depth-indexed proofs (Lemma 7, Theorems 8a/8b/8c, ∀n draft) — this Code session.
-**Key finding:** `factor_search_v08` is depth-agnostic. One theorem covers all depths;
-the depth-indexed hierarchy was presentational scaffolding, not structural content.
-**Retracts:** Theorem 8c (vacuous — multiplicative-D'' = ∅) and the induction scaffold
-in the prior `ucns-theorem-n.md`.
+**Status:** Implementation-backed theorem statement with repaired boundary hypotheses. Supersedes Lemma 7, Theorem 8c, and the prior forall-n induction plan. The theorem is not a Lean proof; the Lean stubs in this repository remain non-proving scaffold until all `sorry` placeholders are discharged.
+
+**Authors:** Theorem statement and unification - Claude.ai mobile session, Erin Spencer (May 2026). Empirical pre-work (6/6 Theorem 9 verification) - same session. Prior depth-indexed proofs (Lemma 7, Theorems 8a/8b/8c, forall-n draft) - this Code session. Boundary repair - June 2026 repo audit.
+
+**Key finding:** `factor_search_v08` is depth-agnostic. One theorem covers all depths; the depth-indexed hierarchy was presentational scaffolding, not structural content.
+
+**Boundary repair:** The proof requires the search loop to include the right-singleton split `p = n, q = 1`, not only interior `2 <= p < n` plus `p = 1`. The implementation now enumerates `p = 2..n` and then appends `p = 1`. The theorem also speaks in terms of `is_multiplicative_unit`, matching the implementation; this is broader than merely excluding the identity unit.
 
 ---
 
-## §1 — Setup
+## 1. Setup
 
-### §1.1 Objects and multiplication
+### 1.1 Objects and multiplication
 
-`UCNSObject(n_dec, n_min, A_plus, F_plus)` where `A_plus` is a sequence of
-`(angle, payload)` pairs, payloads are `UCNSObject | None`, and `None` is the
-identity element.
+`UCNSObject(n_dec, n_min, A_plus, F_plus)` where `A_plus` is a sequence of `(angle, payload)` pairs, payloads are `UCNSObject | None`, and `None` is the identity element.
 
-`multiply(A, B)` builds a `|A|×|B|`-cell product; cell `(k,j)` has angle
-`alpha_k + beta_j − beta_0` and payload `multiply(A.payload[k], B.payload[j])`.
-Fully recursive; no depth conditionals. **Key depth fact:**
+`multiply(A, B)` builds a `|A| x |B|`-cell product; cell `(k,j)` has angle `alpha_k + beta_j - beta_0` and payload `multiply(A.payload[k], B.payload[j])`. This is fully recursive and has no depth conditionals.
 
-> `multiply(depth-k, depth-k)` produces **depth-k**.
+Key depth fact:
 
-Depth lifts only when one factor already carries payloads deeper than the other.
-This means: `D'_oracle × D'_oracle` (both depth-≤2) produces depth-≤2 output.
+> `multiply(depth-k, depth-k)` produces depth-k.
 
-### §1.2 Catalogue
+Depth lifts only when one factor already carries payloads deeper than the other. This means `D'_oracle x D'_oracle`, where both factors have depth at most 2, produces depth-at-most-2 output.
 
-A **catalogue** `C` is a list of `UCNSObject | None` objects. `factor_search_v08`
-uses `C` as the candidate set for reconstructed factor *payloads* — not as a set
-of factor pairs.
+### 1.2 Catalogue
 
-### §1.3 Algorithm
+A catalogue `C` is a list of `UCNSObject | None` objects. `factor_search_v08` uses `C` as the candidate set for reconstructed factor payloads, not as a set of factor pairs.
 
-`factor_search_v08(P, C)` runs five depth-agnostic steps for each factorisation
-`n = p × q` of `n = |P.A_plus|` (balanced factorizations first, p=1 last — see
-`factor_search_v08.py` module docstring for ordering rationale):
-1. Host recovery (structural angle extraction)
-2. Payload system construction + solve (catalogue scan via E10.4 cancellativity)
-3. Witness-matrix global consistency check
-4. Face recovery
-5. Exact recomposition: `multiply(A_cand, B_cand) == P`
+### 1.3 Algorithm
+
+`factor_search_v08(P, C)` runs five depth-agnostic steps for each factorisation `n = p x q` of `n = |P.A_plus|`:
+
+1. Host recovery: structural angle extraction.
+2. Payload system construction and solve: catalogue scan via E10.4 cancellativity.
+3. Witness-matrix global consistency check.
+4. Face recovery.
+5. Exact recomposition: `multiply(A_cand, B_cand) == P`.
+
+Loop ordering is now explicit: `p = 2..n` first, then `p = 1` last. This includes the right-singleton edge `p = n, q = 1` while preserving the original p=1 fallback rationale.
 
 ---
 
-## §2 — Theorem N
+## 2. Theorem N
 
-**Theorem N (catalogue-sufficient factorization).** Let `A`, `B` be UCNS objects
-with `|A.A_plus|, |B.A_plus| ≥ 1`, and let `C` be a catalogue containing every
-payload appearing recursively in `A` or `B` (including `None`). Define
-`P = multiply(A, B)`. Then `factor_search_v08(P, C)` returns `(A', B')` with
-`multiply(A', B') = P`.
+**Theorem N (catalogue-sufficient factorization).** Let `A`, `B` be UCNS objects with `|A.A_plus|, |B.A_plus| >= 1`, and let `C` be a catalogue containing every payload appearing recursively in `A` or `B`, including `None`. Assume `A` and `B` are not multiplicative units under `is_multiplicative_unit`. Define `P = multiply(A, B)`. Then `factor_search_v08(P, C)` returns `(A', B')` with `multiply(A', B') = P`.
 
-**No depth parameter. No oracle-class predicate.** The only hypothesis is
-"the catalogue contains the necessary payloads."
+**No depth parameter. No oracle-class predicate.** The only catalogue hypothesis is: the catalogue contains the necessary payloads. The only non-triviality hypothesis is: the true factors are not in the multiplicative unit group that the implementation filters.
 
 ---
 
-## §3 — Proof
+## 3. Proof sketch
 
-Let `p = |A.A_plus|`, `q = |B.A_plus|`, `n = pq`.
+Let `p = |A.A_plus|`, `q = |B.A_plus|`, and `n = p*q`.
 
-**Step 1 (Host recovery).** The loop `list(range(2,n)) + ([1] if n≥2 else [])`
-reaches `p`: if `p ≥ 2` via `range(2,n)` (since `p < n`), if `p = 1` as the
-explicit final element. `recover_host_angles(P, p, q)` returns the angle sequences
-of `A` and `B` exactly. Structural; no depth. ✓
+**Step 1 (Host recovery).** The implementation loop reaches `p`:
 
-**Step 2 (Payload system).** For each `(k, j)`,
-`P.A_plus[k*q+j][1] = multiply(A.payload[k], B.payload[j])`.
-`solve_payload_system` iterates `S0_A` over `C`; when it reaches
-`S0_A = A.payload[0]` (in `C` by hypothesis):
-- Row 0: `find_right_factor_or_sentinel(P.payload[j], A.payload[0], C)` scans `C`
-  for `R` with `multiply(A.payload[0], R) = P.payload[j]`. By E10.4 cancellativity,
-  `R = B.payload[j]` uniquely. `B.payload[j] ∈ C` by hypothesis. ✓
-- Column k > 0: symmetric, recovers `A.payload[k] ∈ C`. ✓
-- Global consistency: `multiply(A.payload[k], B.payload[j]) = P.payload[k*q+j]`
-  by construction of `P`. ✓
+- if `p >= 2`, then `p` is in `range(2, n + 1)`, including the boundary case `p = n, q = 1`;
+- if `p = 1`, then `p` is the explicit final fallback when `n >= 2`.
 
-**Step 3 (Witness matrix).** `globally_consistent()` uses `==` on canonical objects.
-Depth-agnostic. ✓
+For `n = 1`, there is no non-trivial split between two non-multiplicative-unit length-positive factors in this search domain. `recover_host_angles(P, p, q)` returns the angle sequences of `A` and `B` exactly. This is structural and depth-free.
 
-**Step 4 (Face recovery).** `recover_face_structures(P, p, q)` is structural.
-Returns correct `A.faces`, `B.faces`. ✓
+**Step 2 (Payload system).** For each `(k, j)`, `P.A_plus[k*q+j][1] = multiply(A.payload[k], B.payload[j])`. `solve_payload_system` iterates `S0_A` over `C`; when it reaches `S0_A = A.payload[0]`, which is in `C` by hypothesis:
 
-**Step 5 (Recomposition).** `A_cand = A`, `B_cand = B`. `is_unit(A)` and
-`is_unit(B)` are both False (non-trivial A, B). `multiply(A_cand, B_cand) = P`.
-Returns `(A, B)`. ∎
+- Row 0: `find_right_factor_or_sentinel(P.payload[j], A.payload[0], C)` scans `C` for `R` with `multiply(A.payload[0], R) = P.payload[j]`. By E10.4 cancellativity, `R = B.payload[j]` uniquely. `B.payload[j]` is in `C` by hypothesis.
+- Column `k > 0`: symmetric recovery gives `A.payload[k]` in `C`.
+- Global consistency follows from construction of `P`.
+
+**Step 3 (Witness matrix).** `globally_consistent()` uses equality on canonical objects. This is depth-agnostic.
+
+**Step 4 (Face recovery).** `recover_face_structures(P, p, q)` is structural and returns the correct `A.faces` and `B.faces` among its options.
+
+**Step 5 (Recomposition and non-triviality).** The candidate pair reconstructs a pair equivalent to `A`, `B`; exact recomposition verifies `multiply(A_cand, B_cand) = P`. The implementation rejects candidates for which either factor satisfies `is_multiplicative_unit`. Since the theorem hypothesis excludes such factors, the valid pair is not filtered out. Therefore `factor_search_v08(P, C)` returns valid factors.
 
 ---
 
-## §4 — Instances
+## 4. Instances
 
-### §4.1 Lemma 7 (depth-2 oracle completeness)
+### 4.1 Lemma 7: depth-2 oracle completeness
 
-`A, B ∈ D'_oracle` (depth ≤ 2). Every payload of `A` and `B` is a depth-1 oracle
-atom, all of which are in `C = generate_payload_catalogue()`. Hypothesis of
-Theorem N satisfied. Completeness follows. ∎
+`A, B in D'_oracle` with depth at most 2. Every payload of `A` and `B` is a depth-1 oracle atom, all of which are in `C = generate_payload_catalogue()`. Theorem N applies when the factors are not multiplicative units.
 
-### §4.2 Theorem 9 (asymmetric depth-3)
+### 4.2 Theorem 9: asymmetric depth-3
 
-`A` is depth-3 (payloads are depth-2 objects), `B` is depth-≤2. `C` must contain
-every payload of `A` (including the depth-2 ones) and every payload of `B`.
+`A` is depth-3, so its payloads are depth-2 objects; `B` is depth-at-most-2. `C` must contain every payload of `A`, including depth-2 payloads, and every payload of `B`.
 
-**Empirical verification (`t9_minimal_cat.py`, May 2026).** Six asymmetric depth-3
-cases, each with a minimal catalogue built from recursive payloads of the true factors:
+Empirical verification (`t9_minimal_cat.py`, May 2026): six asymmetric depth-3 cases, each with a minimal catalogue built from recursive payloads of the true factors, succeeded in milliseconds.
 
-```
-name                         |cat|  result     time   depths in C
-04-d3-times-d1               3      SUCCESS     0.01s  [1, 2]
-10-d3-times-d2               3      SUCCESS     0.01s  [1, 2]
-11-d3-both-cells-d2          5      SUCCESS     0.01s  [1, 2]
-12-len3-d3-times-d1          3      SUCCESS     0.01s  [1, 2]
-14-d3-with-d2c-leading       3      SUCCESS     0.01s  [1, 2]
-16-adversarial-non-leading   5      SUCCESS     0.03s  [1, 2]
-```
+### 4.3 General depth-k
 
-6/6 SUCCESS in milliseconds. Algorithm correct at asymmetric depth-3
-with the right catalogue. Earlier d2-catalogue TIMEOUTs in the broader
-sweep (`depth3_sweep_t9_prework.py`) were performance-driven — catalogue
-size 325–964 — not algorithmic gaps.
-
-See `code/sweeps/t9_minimal_cat.py` and `code/sweeps/depth3_sweep_t9_prework.py`.
-
-### §4.3 General depth-k
-
-For any `P = multiply(A, B)` with A, B of depth ≤ k: build `C` = the recursive
-payload closure of `A` and `B`. This contains only objects of depth ≤ k−1
-(by the depth-of formula for `multiply`). Theorem N gives completeness for the
-catalogue scan with `C`. No depth-conditional changes to the algorithm.
+For any `P = multiply(A, B)` with `A`, `B` of depth at most `k`, build `C` as the recursive payload closure of `A` and `B`. This contains only objects of depth at most `k-1`, by the depth-of formula for `multiply`. Theorem N gives completeness for the catalogue scan with `C`; no depth-conditional algorithm changes are needed.
 
 ---
 
-## §5 — Expressibility vs completeness
+## 5. Expressibility vs completeness
 
-The depth-indexed oracle hierarchy (D'_oracle, D''_oracle, ...) addresses
-**expressibility**: for which `P` does there exist a factorization
-`P = multiply(A, B)` with payloads in a fixed depth-bounded catalogue?
-This is a set-theoretic question.
+The depth-indexed oracle hierarchy addresses expressibility: for which `P` does there exist a factorization `P = multiply(A, B)` with payloads in a fixed depth-bounded catalogue?
 
-Theorem N addresses **algorithmic completeness**: given that such a
-factorization exists, does `factor_search_v08` find it? Answer: yes,
-if the catalogue contains the necessary payloads.
+Theorem N addresses algorithmic completeness: given that such a factorization exists, does `factor_search_v08` find it? Answer: yes, if the catalogue contains the necessary payloads and the true factors are not multiplicative units.
 
-The depth-indexed framing collapsed these two questions. Separated:
+Separated:
 
-> **Expressibility** (oracle-class hierarchy) + **Theorem N** (algorithmic
-> completeness)
-> ⟹ "P in the depth-k oracle class, and C = depth-(k−1) oracle catalogue"
-> ⟹ `factor_search_v08(P, C)` returns a factorization.
+> Expressibility (oracle-class hierarchy) + Theorem N (algorithmic completeness)
+> implies: if `P` is in the depth-k oracle class and `C` is the depth-(k-1) oracle catalogue, then `factor_search_v08(P, C)` returns a factorization, provided the target factors are not multiplicative units.
 
-The catalogue-construction utility `catalogue_from_objects(*objs)` — taking
-UCNS objects and returning the minimal catalogue from their recursive payloads
-— is the practical interface for Theorem N application.
+The catalogue-construction utility `catalogue_from_objects(*objs)`, taking UCNS objects and returning the minimal catalogue from their recursive payloads, is the practical interface for Theorem N application.
 
 ---
 
-## §6 — Retractions
+## 6. Retractions
 
-### §6.1 Theorem 8c was vacuously true
+### 6.1 Theorem 8c was vacuously true
 
-`ucns-lemma8-depth3.md §4` proved completeness on:
+`ucns-lemma8-depth3.md` proved completeness on:
 
-```
-Multiplicative D'' = { multiply(A, B) : A, B ∈ D'_oracle,
+```text
+Multiplicative D'' = { multiply(A, B) : A, B in D'_oracle,
                        depth(multiply(A, B)) = 3 }
 ```
 
-`D'_oracle` caps depth at 2. Symmetric multiplication preserves depth: for all
-`A, B ∈ D'_oracle`, every cell payload `multiply(A.payload[k], B.payload[j])`
-has depth ≤ 1 (both inputs depth ≤ 1), so `depth(multiply(A, B)) ≤ 2`. The
-"depth = 3" condition is never satisfied. **Multiplicative-D'' = ∅.**
+`D'_oracle` caps depth at 2. Symmetric multiplication preserves depth, so the depth-3 condition is never satisfied. Thus `Multiplicative-D''` is empty.
 
-Theorem 8c's five-step proof in §4 is logically valid — it correctly discharges
-a universal statement over an empty domain, making it vacuously true and
-practically empty. Theorem 8a (closure) and Theorem 8b (soundness) are
-unaffected: 8a is still true, 8b is unconditional.
+Theorem 8a (closure) and Theorem 8b (soundness) are unaffected: 8a remains true, and 8b is unconditional.
 
-The depth-3 cases the sweep was testing are **asymmetric** (at least one factor
-is depth-3, outside D'_oracle). Those are §4.2 (Theorem 9 = Theorem N instance).
+### 6.2 The prior forall-n induction plan
 
-### §6.2 The prior ∀n-induction plan
-
-The previous `ucns-theorem-n.md` (commit 2de89626, superseded by this file)
-proved "∀n ≥ 2, `factor_search_v08(P, C_{n−2})` complete for M_n" by induction.
-That proof was logically correct given the loop-order fix (commit 10d94e97),
-but the induction was unnecessary scaffolding. Theorem N subsumes it:
-the inductive step simply notes that payloads of depth-(k+1) factors are depth-k
-objects, so C_k satisfies Theorem N's hypothesis by construction.
+The previous theorem-N framing proved a depth-indexed induction. That proof was unnecessary scaffolding. Theorem N subsumes it: the inductive step simply notes that payloads of depth-(k+1) factors are depth-k objects, so `C_k` satisfies Theorem N's catalogue hypothesis by construction.
 
 ---
 
-## §7 — Operative consequences
+## 7. Operative consequences
 
-### §7.1 Frontier table
+### 7.1 Frontier table
 
 | Row | Status |
 |---|---|
-| Cancellativity (E10.4) | ✅ |
-| Right-quotient completeness | ✅ |
-| Depth-2 oracle (Lemma 7 = Theorem N instance) | ✅ |
-| Closure: multiplicative-D'' ⊆ constructive (Theorem 8a) | ✅ (still true; domain now known empty) |
-| Soundness at all depths (Theorem 8b) | ✅ |
-| Completeness: depth-3 symmetric (Theorem 8c) | ✅ (vacuously, domain = ∅) |
-| Completeness: depth-3 asymmetric (Theorem 9 = Theorem N) | ✅ (empirically verified, 6/6) |
-| **Catalogue-sufficient completeness at all depths (Theorem N)** | **✅ proven** |
-| Tractable sub-catalogues | 🟡 open |
-| Carrier widening | 🔴 out of scope |
+| Cancellativity (E10.4) | implemented / cited |
+| Right-quotient completeness | implemented / cited |
+| Depth-2 oracle (Lemma 7 = Theorem N instance) | test-backed |
+| Closure: multiplicative-D'' subset constructive (Theorem 8a) | still true; domain now known empty |
+| Soundness at all depths (Theorem 8b) | implementation-backed by recomposition gate |
+| Completeness: depth-3 symmetric (Theorem 8c) | vacuous; domain empty |
+| Completeness: depth-3 asymmetric (Theorem 9 = Theorem N) | empirically verified, 6/6 |
+| Catalogue-sufficient completeness at all depths (Theorem N) | proof sketch repaired; implementation boundary patched |
+| Tractable sub-catalogues | open |
+| Carrier widening | out of scope |
+| Lean formalization | scaffold only; `sorry` placeholders remain non-proofs |
 
-### §7.2 `factor_search_v08` docstring
+### 7.2 `factor_search_v08` docstring
 
-Updated in the file (Theorem N framing, per-depth practical examples).
+Updated to include the right-singleton boundary and the `is_multiplicative_unit` hypothesis.
 
-### §7.3 PyPI blockers
+### 7.3 PyPI blockers
 
-Unchanged: hmmm 3 (store non-uniqueness), hmmm 6 (carrier widening),
-hmmm 7 (snapshot file at repo root).
+Unchanged: hmmm 3 (store non-uniqueness), hmmm 6 (carrier widening), hmmm 7 (snapshot file at repo root).
 
 ---
 
-## §8 — hmmm preserved
+## 8. hmmm preserved
 
-- **hmmm 3 (store non-uniqueness / ALT-FACTOR).** Theorem N guarantees *a*
-  factorization is found, not the canonical one. Canonical-choice procedure
-  is a separate open question.
+- **hmmm 3 (store non-uniqueness / ALT-FACTOR).** Theorem N guarantees a factorization is found, not the canonical one. Canonical-choice procedure is a separate open question.
 - **hmmm 6 (carrier widening).** Out of scope.
 - **hmmm 7 (snapshot file at repo root).** Out of scope.
-- **Performance scaling.** Theorem N is a correctness guarantee, not a
-  tractability guarantee. Catalogue size dominates runtime. For large depth-3+
-  catalogues, the algorithm times out even on cases it would eventually solve.
-  Minimal-catalogue construction (recursive payload closure of the true factors)
-  is the practical response; `max_objects` in `catalogue_d3.py` is the
-  implementation hook.
-- **Asymmetric layers (hmmm F).** Theorem 9 = Theorem N at asymmetric depth-3.
-  "Theorem 10" for depth-4 asymmetric follows the same pattern. No new proof
-  needed; just extend the catalogue.
-- **Constructive oracle class hierarchy.** Still useful as an expressibility
-  taxonomy (what objects can be built from depth-bounded payloads). Worth
-  preserving in `domains.py` as classification, not as a theorem premise.
+- **Performance scaling.** Theorem N is a correctness guarantee, not a tractability guarantee. Catalogue size dominates runtime. For large depth-3+ catalogues, the algorithm may time out even on cases it would eventually solve.
+- **Asymmetric layers (hmmm F).** Theorem 9 is Theorem N at asymmetric depth-3. A depth-4 asymmetric case follows the same pattern: extend the catalogue.
+- **Constructive oracle class hierarchy.** Still useful as an expressibility taxonomy, not as a theorem premise.
