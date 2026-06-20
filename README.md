@@ -16,9 +16,9 @@ This repository contains the UCNS (Unit Circle Number System) sequence theory an
 > and `ucns-spec.md` for the reconciled spec.
 >
 > **Public API.** `ucns` is the v1.0 public Python API.
-> `ucns.a0_safe` is the A0-safe inspection facade. `ucns_recursive` is
-> retained as a compatibility import path but is **deprecated** for direct
-> user imports.
+> `ucns.a0_safe` is the A0-safe inspection facade. The recursive
+> engine now lives directly under `ucns`; `ucns_recursive` is retained only as a
+> compatibility import path and is **deprecated** for direct user imports.
 
 ---
 
@@ -43,6 +43,7 @@ git clone https://github.com/The-Interdependency/ucns.git
 cd ucns
 python -m pip install -e .[dev]
 python -m unittest discover ucns_recursive/tests/ -v
+python -m unittest discover -s tests -v
 ```
 
 ---
@@ -80,7 +81,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
 
-`factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It currently lives in the `ucns_recursive` package and is re-exported from `ucns` as the v1.0 public surface.
+`factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It now lives directly in the `ucns` package; `ucns_recursive` is a deprecated compatibility shim for legacy imports.
 
 See `ucns-theorem-n.md` for the unified completeness theorem. The key implementation insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. The catalogue is the only depth-sensitive input.
 
@@ -95,13 +96,9 @@ treat `SEQ-PRIME` outside `VERIFIED_DOMAIN_LABELS` as non-absolute.
 ## Repository Layout
 
 ```
-ucns/                    # v1.0 public Python API (re-exports the engine)
+ucns/                    # v1.0 public Python API and engine implementation
   __init__.py            # from ucns import UCNSObject, multiply, factor_search_v08, ...
   a0_safe.py             # A0-safe inspection facade: identity, describe, canonical, factor
-  core.py, embedding.py, epicycle.py, mobius.py, similarity.py
-                         # v0.6.5-lineage modules (stable reference)
-
-ucns_recursive/          # DEPRECATED for direct user imports; v1.0 engine implementation
   canonical.py           # UCNSObject, multiply, is_unit
   domains.py             # Frozen D' domain + payload catalogue
   domain_status.py       # Typed status vocabulary (DEFENDED, IMPLEMENTED, ...)
@@ -113,10 +110,11 @@ ucns_recursive/          # DEPRECATED for direct user imports; v1.0 engine imple
   factorization_result.py  # A0-facing scoped factorization envelope
   object_record.py       # A0-facing object inspection record
   serialization.py       # Canonical JSON + stable hash
-  tests/
-    test_depth2_oracle.py          # Depth-2 oracle theorem (DEFENDED)
-    test_depth2_full_domain.py     # Frozen depth-2 domain compact sweep
-    test_failure_boundary_e109.py  # E10.9 regression tests
+  core.py, embedding.py, epicycle.py, mobius.py, similarity.py
+                         # v0.6.5-lineage modules (stable reference)
+
+ucns_recursive/          # DEPRECATED compatibility wrappers around ucns modules
+  tests/                 # Legacy compatibility and recursive-engine test suite
 
 ucns-spec.md             # Reconciled core UCNS spec (canonical)
 ucns-theorem-n.md        # Theorem N: catalogue-sufficient completeness (unified)
@@ -160,8 +158,8 @@ and link it from docs.
 > `ucns_recursive` is **deprecated for direct user imports** as of v1.0
 > canon reconciliation. New code should import from `ucns` and
 > `ucns.a0_safe`. `ucns_recursive` remains a supported compatibility
-> import path (no runtime warning yet); it is also where the engine
-> implementation currently lives.
+> import path (no runtime warning yet), but the engine implementation now
+> lives directly under `ucns`.
 
 ---
 

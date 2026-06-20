@@ -20,7 +20,7 @@ of empirical probe/sweep scripts.
 | Field | Value |
 |---|---|
 | Package | `ucns` |
-| Version | `0.8.2` |
+| Version | `0.9.1` |
 | Description | Unit Circle Number System recursive factorization engine |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |

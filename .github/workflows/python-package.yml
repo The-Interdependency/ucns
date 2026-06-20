@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,9 +37,12 @@ jobs:
       run: |
         pip install dist/*.whl
         python - <<'PY'
-        from ucns_recursive import UCNSObject, multiply, factor_search_v08
-        print('ucns import ok')
+        from ucns import UCNSObject, multiply, factor_search_v08
+        print('ucns public import ok')
         PY
 
-    - name: Run tests
+    - name: Run recursive compatibility tests
       run: python -m unittest discover ucns_recursive/tests/ -v
+
+    - name: Run public API tests
+      run: python -m unittest discover -s tests -v
