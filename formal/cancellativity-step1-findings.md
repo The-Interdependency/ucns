@@ -125,9 +125,10 @@ reintroduces the depth-mismatch CE.
 ## Recommended statement (Erin rules)
 
 Condition `A`, `B`, `C` on `Complete` **and** require common depth; keep
-`depth B,C ≤ d`. Proposed Lean (PROPOSED — **not** merged into `Core.lean`; the
-recursive predicates need the same mutual / well-founded treatment as
-`depth`/`depthCells`/`depthCell`):
+`depth B,C ≤ d`. Lean (RATIFIED 2026-06-21 and applied to `Core.lean` as the conditioned
+statement, `sorry`-backed; the recursive predicates mirror the `depth`
+mutual pattern. Not machine-checked in the authoring environment — compile +
+proof are Step-2):
 
 ```lean
 def Nonempty (x : UCNSObject) : Prop :=
