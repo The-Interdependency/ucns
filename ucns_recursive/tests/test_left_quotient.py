@@ -17,6 +17,8 @@ from fractions import Fraction
 from ucns_recursive.canonical import UCNSObject, multiply
 from ucns_recursive.left_quotient import left_quotient, right_quotient
 from ucns_recursive.recursive_quotient import (
+    find_left_factor,
+    find_right_factor,
     left_quotient as left_quotient_via_recursive_quotient,
 )
 from ucns_recursive.recursive_codec import recursive_encode
@@ -101,6 +103,22 @@ class TestRightQuotient(unittest.TestCase):
         P = multiply(A, B)
         recovered = right_quotient(P, B)
         self.assertEqual(recovered, A)
+
+
+class TestRecursiveQuotientFactorFinders(unittest.TestCase):
+    def test_find_right_factor_tries_unit_first(self):
+        left = make_flat([(0, 0), (1, 0)])
+        target = left
+        noisy = make_flat([(0, 0), (2, 0)])
+        result = find_right_factor(target, left, [noisy])
+        self.assertIsNone(result)
+
+    def test_find_left_factor_tries_unit_first(self):
+        right = make_flat([(0, 0), (1, 0)])
+        target = right
+        noisy = make_flat([(0, 0), (2, 0)])
+        result = find_left_factor(target, right, [noisy])
+        self.assertIsNone(result)
 
 
 class TestQuotientOnEncodedObjects(unittest.TestCase):

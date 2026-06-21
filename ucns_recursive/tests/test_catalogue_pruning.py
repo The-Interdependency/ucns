@@ -19,9 +19,8 @@ Three layers:
 import random
 import unittest
 from fractions import Fraction
-from math import lcm
 
-from ucns_recursive.canonical import UCNSObject, multiply
+from ucns_recursive.canonical import UCNSObject, lcm, multiply
 from ucns_recursive.catalogue_pruning import (
     carrier_lcm,
     prime_support,

@@ -34,10 +34,9 @@ be removed from the search catalogue without affecting completeness.
 #   unresolved: none
 # === END MODULE_BUILD ===
 
-from math import lcm
 from typing import Iterable, List, Optional, Set
 
-from .canonical import UCNSObject
+from .canonical import UCNSObject, lcm
 
 __all__ = [
     "prime_support",
