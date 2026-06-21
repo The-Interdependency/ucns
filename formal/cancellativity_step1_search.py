@@ -148,5 +148,27 @@ def main():
         Svar += [(1, cs), (2, cs)]
     n, k, _ = ce(2, Svar); print("  drop canonical carrier (vary nd),    |S|=%d: CE=%d  (condition is necessary)" % (k, n))
 
+    # --- common depth (AlignedComplete): per-object Complete is NOT enough ACROSS operands.
+    # A shallower B against a deeper A re-fires some,none (the depth-mismatch CE). Pool
+    # complete objects of depth 2 AND 3; require depth A = depth B = depth C to fix it.
+    leaf = (1, ((F(0), False, None),))
+    pool = []
+    for f in (False, True):
+        pool.append((1, ((F(0), f, leaf),)))                          # depth 2
+        pool.append((1, ((F(0), f, (1, ((F(0), False, leaf),))),)))   # depth 3
+    pool = [o for o in pool if complete(o)]
+    def ce_aligned(dn, S, common):
+        m = 0
+        for A in S:
+            for B in S:
+                if common and depth(A) != depth(B): continue
+                p = mul(dn, A, B)
+                for C in S:
+                    if common and depth(A) != depth(C): continue
+                    if B != C and mul(dn, A, C) == p: m += 1
+        return m
+    print("  d=3 mixed-depth Complete pool |S|=%d: Complete-only CE=%d ; +common-depth CE=%d"
+          % (len(pool), ce_aligned(3, pool, False), ce_aligned(3, pool, True)))
+
 if __name__ == "__main__":
     main()
