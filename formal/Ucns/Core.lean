@@ -32,7 +32,7 @@
 --   module_kind: schema
 --   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity.
 --   owner: Erin Spencer
---   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, CarrierLcmLaw (statement)
+--   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), carrier_lcm_law + multiply_left_cancellative (statements)
 --   internal_surface: angleDenoms
 --   auth_boundary: none
 --   storage_boundary: none
@@ -44,7 +44,7 @@
 --   rollback: remove file and its import from TheoremN.lean
 --   requires: none
 --   since: 2026-06-09
---   unresolved: discharge order — cancellativity, then carrier_lcm_law, then depth1 completeness
+--   unresolved: AlignedComplete cancellativity statement ratified 2026-06-21 + applied (sorry; not machine-checked here — proof + Mathlib pin pending). Discharge order — cancellativity, then carrier_lcm_law, then depth1 completeness
 -- === END MODULE_BUILD ===
 
 import Std.Data.Rat.Basic
