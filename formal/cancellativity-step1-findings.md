@@ -89,9 +89,10 @@ Each survives recursive `HostNormalized` + naive `AllPayloadsPresent` +
    `B.nd=1`, `C.nd=2`, identical cells → both carriers `lcm(2,·)=2`, products
    equal, `B≠C`. ⇒ needs **canonical carrier** (`nd = nMin`), so `nd` is not a
    free distinguishing field.
-3. **Empty left operand (P2).** `A.cells = []` ⇒ `csA.bind … = []` erases every
-   right cell; all `B` collide. Vacuously satisfies the predicates. ⇒ needs
-   **nonempty `A`**.
+3. **Empty left operand (P2).** `A.cells = []` ⇒ `csA.bind … = []`, so the
+   product is `mk (Nat.lcm nd_A nd_B) []` regardless of `B`'s cells; any two
+   right operands of equal carrier then collide. Vacuously satisfies the
+   (pre-`Nonempty`) hypotheses. ⇒ needs **nonempty `A`**.
 4. **Empty payload as atom (P2).** `IsAtom []` is vacuously true, so an empty
    payload counts as an atom and collapses like (3) one level down. ⇒ atoms /
    objects must be **nonempty recursively**.
