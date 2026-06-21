@@ -26,7 +26,7 @@ Important interpretation: `test_depth2_full_domain.py` is a compact closure swee
 
 ## 3. Public API smoke surface
 
-For v1.0, new code should import from `ucns` and `ucns.a0_safe`. The `ucns_recursive` package remains importable as a compatibility/internal implementation surface.
+For v1.0, new code should import from `ucns` and `ucns.a0_safe`. The `ucns_recursive` package remains importable as a compatibility shim.
 
 A reviewer should confirm that these public surfaces import successfully:
 

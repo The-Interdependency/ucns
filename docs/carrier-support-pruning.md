@@ -5,7 +5,7 @@
 random trials, depths 0–2, plus search-equivalence tests on the frozen
 depth-2 oracle catalogue).
 **Scope:** the canonical recursive engine in this repository
-(`ucns_recursive.canonical`): normalized `UCNSObject`s under `multiply`.
+(`ucns.canonical`): normalized `UCNSObject`s under `multiply`.
 **Relation to prior work:** `docs/ucns_operational_widening.md` stated the
 Per-Sublattice Finiteness Law and witnessed it on the edcmbone `ucns_v04`
 substrate. This document proves the underlying carrier identity *exactly*
@@ -13,7 +13,7 @@ substrate. This document proves the underlying carrier identity *exactly*
 the catalogue-pruning rule that `factor_search_v08` callers may apply.
 **Accreditation:** Claude generated from repository context as prompted by
 Erin Spencer; proof verified against the implementation in
-`ucns_recursive/canonical.py` at the commit introducing this file.
+`ucns/canonical.py` at the commit introducing this file.
 
 ---
 
@@ -114,7 +114,7 @@ and payload carriers are bounded by their host's domain constraints; in
 all cases a candidate whose top-level carrier already escapes
 `supp(n_min(P))` cannot appear as a top-level factor. ∎
 
-**Implementation.** `ucns_recursive.catalogue_pruning.prune_catalogue(P,
+**Implementation.** `ucns.catalogue_pruning.prune_catalogue(P,
 catalogue)` applies exactly this filter (unit payload always survives —
 carrier 1, empty support). It is **opt-in**: callers pass the pruned
 catalogue to `factor_search_v08`; the engine itself is untouched, so

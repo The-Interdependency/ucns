@@ -7,7 +7,7 @@ This repository currently contains:
 - `ucns-theorem-n.md` — **Theorem N: catalogue-sufficient completeness (unified statement)**
 - `docs/ucns-spec-status-addendum-2026-05-16.md` — status vocabulary + A0 `SEQ-PRIME` rule
 - `ucns/` — v1.0 public Python API (re-exports the engine and the A0-safe facade)
-- `ucns_recursive/` — engine implementation; **deprecated for direct user imports**
+- `ucns_recursive/` — compatibility wrappers; **deprecated for direct user imports**
 
 ## Historical / supporting artifacts
 - `ucns-spec-frontier-v090.md` — completeness frontier through v0.9.0 (partially superseded; cross-references the reconciled canon)

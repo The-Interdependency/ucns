@@ -95,7 +95,7 @@ edcmbone must include **all** of the following:
 
 A documented function `π: UCNS-A → UCNS-G`, with:
 
-- explicit input domain (cited against `ucns_recursive.canonical.UCNSObject`),
+- explicit input domain (cited against `ucns.canonical.UCNSObject`),
 - explicit output codomain (cited against `edcmbone.ucns_g.MetricDiskState`
   and `GrainTensor`),
 - worked examples for at least every `DEFENDED` / `ORACLE-COMPLETE`

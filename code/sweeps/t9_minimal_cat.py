@@ -23,9 +23,9 @@ from contextlib import contextmanager
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from ucns_recursive.canonical import UCNSObject, multiply
-from ucns_recursive.factor_search_v08 import factor_search_v08, SEQ_PRIME
-from ucns_recursive.domains import depth_of
+from ucns.canonical import UCNSObject, multiply
+from ucns.factor_search_v08 import factor_search_v08, SEQ_PRIME
+from ucns.domains import depth_of
 
 TIMEOUT_S = 60
 
