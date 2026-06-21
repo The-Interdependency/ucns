@@ -1,127 +1,144 @@
 #!/usr/bin/env python3
 # Cancellativity Step-1 counterexample search (formalization track).
 #
-# Faithful port of `multiplyFuel`, `amod4`, `depth`, `HostNormalized` from
-# formal/Ucns/Core.lean. Read-only research artifact: it neither imports nor
-# modifies the engine. Decides whether `multiply_left_cancellative` holds as
-# stated and, if not, which added hypotheses restore it.
+# Faithful stdlib port of amod/amod4/circleFrac/nMin/multiplyFuel/depth/
+# HostNormalized from formal/Ucns/Core.lean. Read-only research artifact:
+# neither imports nor modifies the engine. Decides whether
+# `multiply_left_cancellative` holds as stated and which hypotheses restore it.
 #
-# Run:  python3 formal/cancellativity_step1_search.py
+# Run:  python3 formal/cancellativity_step1_search.py   (Python >= 3.9: uses math.lcm)
 #
 # Object model:  o = (nd:int, cells: tuple of (angle:Fraction, face:bool, payload:o|None))
-import math
+import math, itertools
 from fractions import Fraction as F
 
 # --- exact ports of the Lean definitions -----------------------------------
-def amod4(x):                       # amod a 4 = a - 4*floor(a/4)
-    return x - 4 * math.floor(x / 4)
-
-def mul(d, a, b):                   # multiplyFuel : fuel 0 -> LEFT arg
-    if d == 0:
+def amod(a, n):  return a - n * math.floor(a / n)
+def amod4(a):    return amod(a, 4)
+def circleFrac(a): return amod(a, 2) / 2
+def nMin(cells):                      # canonical carrier: lcm of nonzero circle-fraction denoms
+    d = 1
+    for (a, _, _) in cells:
+        q = circleFrac(a)
+        if q != 0:
+            d = math.lcm(d, q.denominator)
+    return d
+def mul(dn, a, b):                     # multiplyFuel : fuel 0 -> LEFT arg
+    if dn == 0:
         return a
-    nda, csA = a
-    ndb, csB = b
-    b0 = csB[0][0] if csB else F(0)         # β0 = right operand's first-cell angle
+    nda, csA = a; ndb, csB = b
+    b0 = csB[0][0] if csB else F(0)    # β0 = right operand's first-cell angle
     nc = []
     for (aa, af, ap) in csA:
         for (ba, bf, bp) in csB:
-            ang = amod4(aa + (ba - b0))
-            fc = af ^ bf
-            if   ap is not None and bp is not None: pay = mul(d - 1, ap, bp)   # some,some
-            elif ap is not None:                    pay = ap                   # some,none
-            elif bp is not None:                    pay = bp                   # none,some
-            else:                                   pay = None                # none,none
+            ang = amod4(aa + (ba - b0)); fc = af ^ bf
+            if   ap is not None and bp is not None: pay = mul(dn - 1, ap, bp)
+            elif ap is not None:                    pay = ap
+            elif bp is not None:                    pay = bp
+            else:                                   pay = None
             nc.append((ang, fc, pay))
     return (math.lcm(nda, ndb), tuple(nc))
-
-def depth(o):                       # Lean depth = 1 + max payload depth  (FLAT OBJECT = 1)
-    _, cs = o
-    m = 0
-    for (_, _, p) in cs:
-        m = max(m, 0 if p is None else depth(p))
+def depth(o):                          # Lean depth = 1 + max payload depth (FLAT OBJECT = 1)
+    _, cs = o; m = 0
+    for (_, _, p) in cs: m = max(m, 0 if p is None else depth(p))
     return 1 + m
 
 # --- candidate hypotheses ---------------------------------------------------
-def hn_top(o):                      # Core.lean HostNormalized: ONLY the head cell angle == 0
+def hn_top(o):                         # Core.lean HostNormalized: head cell angle == 0 only
+    _, cs = o; return (not cs) or cs[0][0] == F(0)
+def hn_rec(o):                         # recursive HostNormalized
     _, cs = o
-    return (not cs) or cs[0][0] == F(0)
-
-def hn_rec(o):                      # recursive HostNormalized: every object + all payloads
-    _, cs = o
-    if cs and cs[0][0] != F(0):
-        return False
+    if cs and cs[0][0] != F(0): return False
     return all(p is None or hn_rec(p) for (_, _, p) in cs)
-
-def all_present(o):                 # AllPayloadsPresent: no `none` at any multiplied cell;
-    _, cs = o                       # recursion bottoms at atoms (leaves whose cells are all none)
-    for (_, _, p) in cs:
-        if p is None:
-            return False
-        _, pcs = p
-        if any(pp is not None for (_, _, pp) in pcs) and not all_present(p):
-            return False
-    return True
+def nonempty_rec(o):                   # no empty cell-list anywhere
+    _, cs = o
+    return bool(cs) and all(p is None or nonempty_rec(p) for (_, _, p) in cs)
+def canonical(o):                      # nd == nMin(cells), recursively (carrier is canonical)
+    nd, cs = o
+    return nd == nMin(cs) and all(p is None or canonical(p) for (_, _, p) in cs)
+def uniform_depth(o):                  # complete tree: all root->leaf paths equal length
+    _, cs = o
+    if not cs: return False
+    ds = {0 if p is None else depth(p) for (_, _, p) in cs}
+    return len(ds) == 1 and all(p is None or uniform_depth(p) for (_, _, p) in cs)
+def complete(o):                       # candidate sufficient domain (the conjunction)
+    return nonempty_rec(o) and hn_rec(o) and uniform_depth(o) and canonical(o)
 
 def rep(o):
-    _, cs = o
-    return "[%s]" % ",".join("(%s,%s,%s)" % (c[0], 'T' if c[1] else 'F',
-                             '.' if c[2] is None else rep(c[2])) for c in cs)
+    nd, cs = o
+    return "mk%d[%s]" % (nd, ",".join("(%s,%s,%s)" % (c[0], 'T' if c[1] else 'F',
+                         '.' if c[2] is None else rep(c[2])) for c in cs))
 
-def first_ce(d, objs, pred):
-    S = [o for o in objs if pred(o) and depth(o) <= d]
-    n = 0; witness = None
+def ce(dn, S):
+    n = 0; w = None
     for A in S:
         for B in S:
-            p = mul(d, A, B)
+            p = mul(dn, A, B)
             for C in S:
-                if B != C and mul(d, A, C) == p:
-                    n += 1
-                    if witness is None: witness = (A, B, C)
-    return n, witness, len(S)
+                if B != C and mul(dn, A, C) == p:
+                    n += 1; w = w or (A, B, C)
+    return n, len(S), w
 
-# --- universes --------------------------------------------------------------
-LEAVES = [(1, ((a, f, None),)) for a in (F(0), F(1)) for f in (False, True)]
-FLAT   = LEAVES[:]                                          # depth-1 objects
-NESTED = [(1, ((a, f, p),)) for a in (F(0), F(1)) for f in (False, True) for p in LEAVES]  # depth-2
-
+# ===========================================================================
 def main():
-    print("=== Cancellativity Step 1: counterexample search (Core.lean port) ===\n")
+    print("=== Cancellativity Step 1 (Core.lean port) ===\n")
 
-    # (1) bare theorem
-    n, w, _ = first_ce(1, FLAT, lambda o: True)
-    print("[1] BARE theorem, d=1 (only depth B,C <= d):  FALSE" if n else "[1] bare: no CE")
-    if w:
-        A, B, C = w
-        print("    witness  A=%s  B=%s  C=%s" % (rep(A), rep(B), rep(C)))
-        print("    mul(1,A,B)=%s == mul(1,A,C)=%s ,  B!=C" % (rep(mul(1, A, B)), rep(mul(1, A, C))))
-        print("    cause: β0 = right operand's head angle is subtracted -> host angle gauge collapses.\n")
+    # (1) bare theorem — M1 host-angle (β0) collapse
+    flat = [(1, ((a, f, None),)) for a in (F(0), F(1)) for f in (False, True)]
+    n, _, w = ce(1, flat)
+    A, B, C = w
+    print("[M1] bare theorem, d=1: FALSE (β0 host-angle gauge).  witness B=%s C=%s -> %s"
+          % (rep(B), rep(C), rep(mul(1, A, B))))
 
-    # (2) top-only HostNormalized (as in Core.lean) + AllPayloadsPresent  -> INSUFFICIENT
-    for d in (2, 3):
-        n, w, k = first_ce(d, NESTED, lambda o: hn_top(o) and all_present(o))
-        print("[2] d=%d  top-only HostNormalized + AllPayloadsPresent (|S|=%d):  CE=%d" % (d, k, n))
-        if w:
-            A, B, C = w
-            print("    witness  A=%s  B=%s  C=%s  (payload head angles differ; payload-level β0 collapse)" %
-                  (rep(A), rep(B), rep(C)))
+    # (1') top-only vs recursive HostNormalized (+ payloads present)
+    nested = [(1, ((a, f, p),)) for a in (F(0), F(1)) for f in (False, True) for p in flat]
+    pres = lambda o: all(p is not None for (_, _, p) in o[1])
+    n, _, _ = ce(2, [o for o in nested if hn_top(o) and pres(o)])
+    print("[M1'] top-only HostNormalized + payloads-present, d=2: CE=%d (payload-level β0)" % n)
+    n, _, _ = ce(2, [o for o in nested if hn_rec(o) and pres(o)])
+    print("      recursive HostNormalized + payloads-present, d=2: CE=%d" % n)
 
-    # (3) recursive HostNormalized + AllPayloadsPresent  -> no CE
-    for d in (2, 3):
-        n, _, k = first_ce(d, NESTED, lambda o: hn_rec(o) and all_present(o))
-        print("[3] d=%d  RECURSIVE HostNormalized + AllPayloadsPresent (|S|=%d):  CE=%d" % (d, k, n))
+    # (2) Codex regression witnesses — four CONFIRMED counterexamples that
+    #     survive (recursive HostNormalized + naive AllPayloadsPresent + depth<=d)
+    print("\n[CODEX] confirmed counterexamples to the earlier 'corrected' statement:")
+    leaf = (1, ((F(0), False, None),))
+    d2 = (1, ((F(0), False, leaf),)); d3 = (1, ((F(0), False, d2),))
+    E = (1, ())
+    cases = [
+        ("depth-mismatch atom", 3, d3, d2, d3),                         # B bottoms out before A
+        ("carrier nDec/lcm",    2, (2, ((F(0), False, leaf),)),
+                                    (1, ((F(0), False, leaf),)),
+                                    (2, ((F(0), False, leaf),))),         # lcm not cancellative
+        ("empty left operand",  2, E, (1, ((F(0), False, leaf),)),
+                                       (1, ((F(0), True, leaf),))),        # csA.bind [] erases B
+        ("empty payload atom",  2, (1, ((F(0), False, E),)),
+                                    (1, ((F(0), False, E),)),
+                                    (1, ((F(0), False, leaf),))),          # IsAtom accepts []
+    ]
+    for name, dn, A, B, C in cases:
+        eq = mul(dn, A, B) == mul(dn, A, C)
+        print("  %-20s d=%d: CE=%s  (B!=C:%s)" % (name, dn, "CONFIRMED" if (eq and B != C) else "no", B != C))
 
-    # (4) depth-A unconstrained (deep A) under the recursive hypotheses
-    deepA = (1, ((F(0), False, (1, ((F(0), False, LEAVES[0]), (F(1), True, LEAVES[1])))),))
-    BC = [o for o in NESTED if hn_rec(o) and all_present(o) and depth(o) <= 2]
-    n = 0
-    for B in BC:
-        p = mul(2, deepA, B)
-        for C in BC:
-            if B != C and mul(2, deepA, C) == p:
-                n += 1
-    print("[4] d=2  deep A (depth %d, recursive-HN, all-present), B,C recursive-HN+present, depth<=2:  CE=%d"
-          % (depth(deepA), n))
-    print("    -> no depth-A hypothesis needed; existing depth B,C <= d suffices.")
+    # (3) candidate sufficient domain: complete = nonempty + recursive-HN + uniform-depth + canonical-carrier
+    print("\n[DOMAIN] complete = nonempty(rec) + recursive HostNormalized + uniform-depth + canonical carrier (nd=nMin)")
+    A1 = []
+    for L in (1, 2):
+        for combo in itertools.product([(F(0), False), (F(0), True), (F(1), False), (F(1), True)], repeat=L):
+            if combo[0][0] != F(0): continue
+            cells = tuple((a, f, None) for (a, f) in combo); A1.append((nMin(cells), cells))
+    S1 = [o for o in A1 if complete(o)]
+    n, k, _ = ce(1, S1); print("  d=1 over complete depth-1 (atoms), |S|=%d: CE=%d" % (k, n))
+    A2 = []
+    for combo in itertools.product(list(itertools.product([F(0), F(1)], [False, True], A1[:6])), repeat=1):
+        if combo[0][0] != F(0): continue
+        cells = tuple((a, f, p) for (a, f, p) in combo); A2.append((nMin(cells), cells))
+    S2 = [o for o in A2 if complete(o) and depth(o) == 2]
+    n, k, _ = ce(2, S2); print("  d=2 over complete depth-2,            |S|=%d: CE=%d" % (k, n))
+    # drop the carrier condition -> counterexamples return
+    Svar = []
+    for (_, cs) in [o for o in A2 if nonempty_rec(o) and hn_rec(o) and uniform_depth(o) and depth(o) == 2][:8]:
+        Svar += [(1, cs), (2, cs)]
+    n, k, _ = ce(2, Svar); print("  drop canonical carrier (vary nd),    |S|=%d: CE=%d  (condition is necessary)" % (k, n))
 
 if __name__ == "__main__":
     main()
