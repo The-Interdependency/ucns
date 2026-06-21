@@ -152,6 +152,72 @@ def multiplyFuel : Nat → UCNSObject → UCNSObject → UCNSObject
 def HostNormalized (x : UCNSObject) : Prop :=
   ∀ c, x.cells.head? = some c → c.angle = 0
 
+/-! Ratified Step-1 cancellativity domain (`AlignedComplete`).
+    Erin ratified the domain on 2026-06-21; see
+    `formal/cancellativity-step1-findings.md` for the counterexample search
+    that motivates each conjunct. The recursive predicates mirror the `depth`
+    mutual-recursion pattern above.
+    NOTE: not machine-checked in the authoring environment (no Lean toolchain);
+    compile + the proof discharge remain Step-2 work. `sorry` ⇒ no DEFENDED status. -/
+
+/-- Recursive nonemptiness: no empty cell-list at any level
+    (rules out the empty-left-operand and empty-atom counterexamples). -/
+mutual
+  def NonemptyRec : UCNSObject → Prop
+    | mk _ cs => cs ≠ [] ∧ NonemptyRecCells cs
+  def NonemptyRecCells : List (Cell UCNSObject) → Prop
+    | [] => True
+    | c :: rest => NonemptyRecCell c ∧ NonemptyRecCells rest
+  def NonemptyRecCell : Cell UCNSObject → Prop
+    | ⟨_, _, none⟩ => True
+    | ⟨_, _, some p⟩ => NonemptyRec p
+end
+
+/-- Recursive host-normalization: head angle 0 for the object AND every payload
+    (the head-only `HostNormalized` above is too weak — payload β0 collapses). -/
+mutual
+  def HostNormalizedRec : UCNSObject → Prop
+    | mk _ cs => (∀ c, cs.head? = some c → c.angle = 0) ∧ HostNormalizedRecCells cs
+  def HostNormalizedRecCells : List (Cell UCNSObject) → Prop
+    | [] => True
+    | c :: rest => HostNormalizedRecCell c ∧ HostNormalizedRecCells rest
+  def HostNormalizedRecCell : Cell UCNSObject → Prop
+    | ⟨_, _, none⟩ => True
+    | ⟨_, _, some p⟩ => HostNormalizedRec p
+end
+
+/-- Canonical carrier: `nDec = nMin cells` at every level
+    (`Nat.lcm` is not left-cancellative, so a free `nDec` breaks it). -/
+mutual
+  def CanonicalCarrier : UCNSObject → Prop
+    | mk d cs => d = (angleDenoms cs).foldl Nat.lcm 1 ∧ CanonicalCarrierCells cs
+  def CanonicalCarrierCells : List (Cell UCNSObject) → Prop
+    | [] => True
+    | c :: rest => CanonicalCarrierCell c ∧ CanonicalCarrierCells rest
+  def CanonicalCarrierCell : Cell UCNSObject → Prop
+    | ⟨_, _, none⟩ => True
+    | ⟨_, _, some p⟩ => CanonicalCarrier p
+end
+
+/-- Per-object uniform depth: all cells share one `depthCell`, recursively
+    (a complete tree with no early atom). -/
+mutual
+  def UniformDepth : UCNSObject → Prop
+    | mk _ cs => (∀ c ∈ cs, ∀ c' ∈ cs, depthCell c = depthCell c') ∧ UniformDepthCells cs
+  def UniformDepthCells : List (Cell UCNSObject) → Prop
+    | [] => True
+    | c :: rest => UniformDepthCell c ∧ UniformDepthCells rest
+  def UniformDepthCell : Cell UCNSObject → Prop
+    | ⟨_, _, none⟩ => True
+    | ⟨_, _, some p⟩ => UniformDepth p
+end
+
+/-- Per-object completeness (nonempty + recursive host-normalized + uniform
+    depth + canonical carrier). Cross-operand common depth is added at the
+    theorem (`AlignedComplete` = `Complete A,B,C` + `depth A = depth B = depth C`). -/
+def Complete (x : UCNSObject) : Prop :=
+  NonemptyRec x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
+
 end UCNSObject
 
 open UCNSObject
@@ -175,13 +241,21 @@ theorem carrier_lcm_law
   sorry
 
 /--
-  CANCELLATIVITY (v0.5.1 layer; prose-DEFENDED in the repo).
-  First discharge target after the definitions stabilize.
+  CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
+  Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
+  requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
+  depth + canonical carrier) AND cross-operand common depth
+  (`depth A = depth B = depth C`), with `depth B,C ≤ d`. See
+  `formal/cancellativity-step1-findings.md` for the counterexample search.
 
-  STUB: proves nothing — closed by `sorry`.
+  STUB: proves nothing — closed by `sorry`. A `sorry`-backed statement confers
+  NO DEFENDED status (see README.md). Not machine-checked in the authoring
+  environment; the proof discharge + Mathlib pin are Step-2 work.
 -/
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
+    (hA : Complete A) (hB : Complete B) (hC : Complete C)
+    (hAB : depth A = depth B) (hBC : depth B = depth C)   -- common depth
     (h : multiplyFuel d A B = multiplyFuel d A C)
     (hdB : depth B ≤ d) (hdC : depth C ≤ d) :
     B = C := by
