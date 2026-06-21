@@ -1,5 +1,5 @@
 """
-ucns_recursive.host_recovery
+ucns.host_recovery
 =============================
 Recover the host angle and face structures from a product object P.
 

@@ -32,7 +32,7 @@ This is a **theoretical / catalogue-construction problem**, not an algorithm pro
 
 ## Sweep table
 
-Convention: `depth_of` per `ucns_recursive.domains` (None=0, flat=1, d-leading=1+d). Frozen domain D' caps `depth ≤ 2`. Each result is paired with elapsed wallclock seconds. SUCCESS = recovered the original A,B. ALT-FACTOR = recovered some (A',B') with `multiply(A',B')==P` but `(A',B') != (A,B)` — non-uniqueness on the input. FALSE-NEGATIVE = `SEQ-PRIME` returned when a non-trivial factorization exists.
+Convention: `depth_of` per `ucns.domains` (None=0, flat=1, d-leading=1+d). Frozen domain D' caps `depth ≤ 2`. Each result is paired with elapsed wallclock seconds. SUCCESS = recovered the original A,B. ALT-FACTOR = recovered some (A',B') with `multiply(A',B')==P` but `(A',B') != (A,B)` — non-uniqueness on the input. FALSE-NEGATIVE = `SEQ-PRIME` returned when a non-trivial factorization exists.
 
 ```
 #   name                       P_d  |P+|  default              narrow-tailored      broad-tailored

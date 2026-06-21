@@ -41,6 +41,7 @@ git clone https://github.com/The-Interdependency/ucns.git
 cd ucns
 python -m pip install -e .[dev]
 python -m unittest discover ucns_recursive/tests/ -v
+python -m unittest discover -s tests -v
 ```
 
 ## Documentation claim-boundary guardrail

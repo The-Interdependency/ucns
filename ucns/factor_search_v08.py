@@ -1,5 +1,5 @@
 """
-ucns_recursive.factor_search_v08
+ucns.factor_search_v08
 =================================
 Witness-matrix recursive quotient solver.
 
@@ -85,7 +85,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_depth2_oracle
+#   tests: ucns.tests.test_depth2_oracle
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domains, ucns_host_recovery, ucns_payload_system, ucns_witness_matrix

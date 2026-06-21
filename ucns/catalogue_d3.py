@@ -1,12 +1,12 @@
 """
-ucns_recursive.catalogue — d3 oracle extension (DRAFT)
+ucns.catalogue — d3 oracle extension (DRAFT)
 ======================================================
 Adds ``build_catalogue_d3_oracle`` and supporting predicate
 ``is_in_oracle_class_d3``.
 
 This file is a DRAFT against Lemma 8 (depth-3 factor search soundness +
 completeness, under coverage).  Intended as a patch overlay onto
-``ucns_recursive/catalogue.py`` and ``ucns_recursive/domains.py``.
+``ucns/catalogue.py`` and ``ucns/domains.py``.
 
 Status of guarantees provided by this draft
 -------------------------------------------
@@ -68,7 +68,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_catalogue_d3
+#   tests: ucns.tests.test_catalogue_d3
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domains, ucns_catalogue

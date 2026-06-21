@@ -1,5 +1,5 @@
 """
-ucns_recursive.serialization
+ucns.serialization
 ============================
 Canonical serialization and stable hashing for UCNS recursive objects.
 
@@ -31,7 +31,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_serialization
+#   tests: ucns.tests.test_serialization
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

@@ -153,7 +153,7 @@ It does not claim efficient catalogue discovery, efficient scaling for large cat
 
 ## 19. Public API
 
-For v1.0, `ucns` is the public import namespace. `ucns_recursive` remains a compatibility/internal implementation surface.
+For v1.0, `ucns` is the public import namespace. `ucns_recursive` remains a compatibility shim.
 
 Preferred import:
 

@@ -12,7 +12,7 @@ I treated source code/spec as authoritative and explicitly checked the files lis
 
 ### 1) Core object and fields
 
-UCNS-A is implemented as `UCNSObject(n_dec, n_min, A_plus, F_plus)` in `ucns_recursive/canonical.py`.
+UCNS-A is implemented as `UCNSObject(n_dec, n_min, A_plus, F_plus)` in `ucns/canonical.py`.
 
 - `A_plus` is a list of `(angle, payload)` where `payload` is `UCNSObject | None`.
 - `None` is the unit/sentinel payload (`UNIT = None`).
@@ -55,7 +55,7 @@ This is depth-agnostic recursion exactly as the brief states (no depth-specific 
 - winding count/loop counter `z`,
 - area-percent measure.
 
-Those quantities are not part of the canonical recursive object structure in `ucns_recursive/canonical.py`.
+Those quantities are not part of the canonical recursive object structure in `ucns/canonical.py`.
 
 ### 7) Discrepancies versus the brief’s UCNS-A summary
 
@@ -159,7 +159,7 @@ This action sequence is intentionally implementation-light and status-heavy: it 
 ## hmmm
 
 - I did not find a canonical source function establishing a bijection (or even total map) between `UCNSObject` and `(r, θ, z)` with DRIFT/DVG extraction.
-- There is an internal split between legacy/public `ucns` geometry/embedding modules (mostly `2π` angle APIs plus optional disk radius) and recursive canonical algebra in `ucns_recursive`; naming overlap may be causing semantic bleed.
+- There is an internal split between legacy/public `ucns` geometry/embedding modules (mostly `2π` angle APIs plus optional disk radius) and recursive canonical algebra in `ucns`; naming overlap may be causing semantic bleed.
 - If a unification is desired, it likely requires a new explicit spec bridge defining:
   1) coordinate projection from recursive anchor/payload trees to `(r, θ, z)`,
   2) formal definitions of DRIFT and DVG in terms of canonical UCNS-A invariants,

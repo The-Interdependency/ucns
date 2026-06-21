@@ -1,5 +1,5 @@
 """
-ucns_recursive.domain_status
+ucns.domain_status
 ============================
 Typed status metadata for UCNS theorem / implementation domains.
 
@@ -24,7 +24,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_domain_status
+#   tests: ucns.tests.test_domain_status
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

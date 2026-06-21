@@ -1,5 +1,5 @@
 """
-ucns_recursive.factorization_result
+ucns.factorization_result
 ===================================
 A0-facing factorization result envelopes.
 
@@ -24,7 +24,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_factorization_result
+#   tests: ucns.tests.test_factorization_result
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domain_status, ucns_factor_search_v08, ucns_serialization

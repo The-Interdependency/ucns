@@ -42,13 +42,13 @@ def _rebind_snapshot_function(_func):
     )
 
 
-# Prefer the canonical ucns_recursive algebra types for compatibility with
+# Prefer the canonical ucns algebra types for compatibility with
 # scripts that combine snapshot helpers with the active implementation.
 from functools import reduce  # noqa: E402
 
-from ucns_recursive.canonical import UCNSObject as _CanonicalUCNSObject  # noqa: E402
-from ucns_recursive.canonical import lcm as _lcm  # noqa: E402
-from ucns_recursive.canonical import multiply as multiply  # noqa: E402
+from ucns.canonical import UCNSObject as _CanonicalUCNSObject  # noqa: E402
+from ucns.canonical import lcm as _lcm  # noqa: E402
+from ucns.canonical import multiply as multiply  # noqa: E402
 
 
 def UCNSObject(  # type: ignore[misc]

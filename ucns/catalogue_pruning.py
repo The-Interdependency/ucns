@@ -26,7 +26,7 @@ be removed from the search catalogue without affecting completeness.
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_catalogue_pruning
+#   tests: ucns.tests.test_catalogue_pruning
 #   rollout: prune_catalogue opt-in for left-factor catalogues; prune_payload_catalogue default-on inside factor_search_v08 (prune=False escape hatch)
 #   rollback: pass prune=False to factor_search_v08, or remove the module and the prune kwarg
 #   requires: none
@@ -34,10 +34,9 @@ be removed from the search catalogue without affecting completeness.
 #   unresolved: none
 # === END MODULE_BUILD ===
 
-from math import lcm
 from typing import Iterable, List, Optional, Set
 
-from .canonical import UCNSObject
+from .canonical import UCNSObject, lcm
 
 __all__ = [
     "prime_support",

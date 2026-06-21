@@ -22,7 +22,6 @@ keywords = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   # Python classifiers match the union of the CI matrices in
@@ -56,3 +55,6 @@ include = ["ucns*"]
 
 [tool.setuptools.package-data]
 ucns = ["py.typed"]
+
+[tool.setuptools]
+license-files = []

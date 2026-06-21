@@ -1,5 +1,5 @@
 """
-ucns_recursive.recursive_quotient
+ucns.recursive_quotient
 ==================================
 Payload-level factor finders.
 
@@ -24,7 +24,7 @@ themselves non-unit UCNSObjects, the product is computed via the full
 from __future__ import annotations
 
 # === MODULE_BUILD ===
-# id: ucns_recursive_quotient
+# id: ucns_quotient
 #   module_name: recursive_quotient
 #   module_kind: engine
 #   summary: Payload-level single-equation factor finders (find_left_factor / find_right_factor) that enumerate a candidate catalogue, plus re-exports of the left/right quotient primitives.
@@ -36,7 +36,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_left_quotient
+#   tests: ucns.tests.test_left_quotient
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_left_quotient
@@ -57,6 +57,13 @@ __all__ = [
 ]
 
 
+def _iter_candidates_unit_first(catalogue: List[Optional[UCNSObject]]):
+    yield None
+    for cand in catalogue:
+        if cand is not None:
+            yield cand
+
+
 def find_right_factor(
     target: Optional[UCNSObject],
     left: Optional[UCNSObject],
@@ -69,7 +76,7 @@ def find_right_factor(
     equation (``multiply(left, None) == target``), which is only possible
     when ``left == target``.
     """
-    for cand in catalogue:
+    for cand in _iter_candidates_unit_first(catalogue):
         if multiply(left, cand) == target:
             return cand
     return None  # sentinel: no solution found
@@ -84,7 +91,7 @@ def find_left_factor(
 
     Returns the first matching candidate, or ``None`` if none is found.
     """
-    for cand in catalogue:
+    for cand in _iter_candidates_unit_first(catalogue):
         if multiply(cand, right) == target:
             return cand
     return None
@@ -103,7 +110,7 @@ def find_right_factor_or_sentinel(
     ``None`` when no candidate works.  Use when the caller needs to
     distinguish "unit is the solution" from "unsolvable".
     """
-    for cand in catalogue:
+    for cand in _iter_candidates_unit_first(catalogue):
         if multiply(left, cand) == target:
             return cand
     return _NO_SOLUTION
@@ -115,7 +122,7 @@ def find_left_factor_or_sentinel(
     catalogue: List[Optional[UCNSObject]],
 ) -> object:
     """Like ``find_left_factor`` but returns ``_NO_SOLUTION`` on failure."""
-    for cand in catalogue:
+    for cand in _iter_candidates_unit_first(catalogue):
         if multiply(cand, right) == target:
             return cand
     return _NO_SOLUTION

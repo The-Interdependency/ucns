@@ -1,5 +1,5 @@
 """
-ucns_recursive.domains
+ucns.domains
 ======================
 Frozen domain D' for the depth-2 solver, plus oracle-class predicates
 and the verified-domain status taxonomy.
@@ -49,7 +49,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_depth2_full_domain
+#   tests: ucns.tests.test_depth2_full_domain
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

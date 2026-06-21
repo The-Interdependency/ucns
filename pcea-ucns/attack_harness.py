@@ -26,13 +26,13 @@ from math import lcm
 from typing import List, Optional
 
 try:
-    from ucns_recursive.canonical import UCNSObject, multiply
-    from ucns_recursive.catalogue_pruning import (
+    from ucns.canonical import UCNSObject, multiply
+    from ucns.catalogue_pruning import (
         prime_support,
         prune_payload_catalogue,
     )
-    from ucns_recursive.domains import generate_payload_catalogue
-    from ucns_recursive.factor_search_v08 import SEQ_PRIME, factor_search_v08
+    from ucns.domains import generate_payload_catalogue
+    from ucns.factor_search_v08 import SEQ_PRIME, factor_search_v08
 
     UCNS_AVAILABLE = True
 except ImportError:  # pragma: no cover - exercised only without ucns

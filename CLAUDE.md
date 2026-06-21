@@ -53,36 +53,33 @@ The repo ships **two** importable Python packages plus a separate set of
 single-file lineage modules:
 
 - `ucns/` — **v1.0 public Python API.**
-  - `ucns/__init__.py` re-exports the entire engine surface from
-    `ucns_recursive` (`from ucns_recursive import *`).
+  - `ucns/__init__.py` exports the engine surface from modules that now live
+    directly under `ucns`.
   - `ucns.a0_safe` is the A0-safe inspection facade (stable).
   - `ucns/core.py`, `embedding.py`, `epicycle.py`, `mobius.py`,
     `similarity.py` are the **v0.6.5-lineage embedding modules**. They live
     inside the `ucns/` package but are **not** imported by
     `ucns/__init__.py`; import them by submodule path
     (`from ucns import core` / `from ucns.core import UCN`).
-- `ucns_recursive/` — **DEPRECATED for direct user imports**, but where the
-  factorization engine implementation actually lives and the right place to
-  edit engine code. No runtime `DeprecationWarning` is emitted; the
-  deprecation is docs-only and release timing is controlled locally by the
-  maintainer.
+- `ucns_recursive/` — **DEPRECATED for direct user imports** compatibility
+  wrappers around `ucns.*`. Engine code should be edited under `ucns/`. No
+  runtime `DeprecationWarning` is emitted; the deprecation is docs-only and
+  release timing is controlled locally by the maintainer.
 
 **Packaging note.** `pyproject.toml` `[tool.setuptools.packages.find]` sets
 `include = ["ucns*"]` (no `exclude`), so the **wheel** bundles **both** the
-`ucns/` package and the `ucns_recursive/` engine (verified: `top_level.txt`
-is `ucns` and `ucns_recursive`). This matters because `ucns/__init__.py` does
-`from ucns_recursive import *` at import time; shipping `ucns_recursive` in
-the wheel is what lets a **wheel-only** install succeed on `import ucns`. The
-**sdist** likewise bundles the engine via `MANIFEST.in`
+`ucns/` package and the `ucns_recursive/` compatibility shim (verified:
+`top_level.txt` is `ucns` and `ucns_recursive`). The wheel keeps
+`ucns_recursive` for legacy callers, but `import ucns` no longer depends on it.
+The **sdist** likewise bundles the shim via `MANIFEST.in`
 (`recursive-include ucns_recursive *.py`), so editable, sdist, and wheel
-installs all resolve the import consistently.
+installs all preserve compatibility consistently.
 
 > History: earlier releases set `exclude = ["ucns_recursive*"]`, which dropped
-> the engine from the wheel and made wheel-only `import ucns` fail with
-> `ModuleNotFoundError: No module named 'ucns_recursive'` (masked only by
-> editable/sdist installs). Removing that exclude fixed it; the `include`
-> glob already matches `ucns_recursive`. The wheel also carries the tiny
-> `ucns_recursive/tests` subpackage, matching the sdist.
+> the then-engine package from the wheel and made wheel-only `import ucns` fail
+> with `ModuleNotFoundError: No module named 'ucns_recursive'` (masked only by
+> editable/sdist installs). The engine now lives under `ucns`; the
+> `ucns_recursive` package remains only as a compatibility shim.
 
 ---
 
@@ -147,7 +144,7 @@ from FRONTIER only when every `sorry` is discharged and externally reviewed.
 
 ```
 ucns/                              # v1.0 PUBLIC API
-  __init__.py                      # from ucns_recursive import *  (engine re-export)
+  __init__.py                      # exports engine surface from ucns modules
   a0_safe.py                       # A0-safe facade: identity, describe, canonical, factor
   core.py                          # UCN angular primitive (v0.6.5 lineage; not re-exported)
   embedding.py                     # Unit-circle embedding utilities (lineage)
@@ -156,9 +153,8 @@ ucns/                              # v1.0 PUBLIC API
   similarity.py                    # UCNS object similarity metrics (lineage)
   py.typed
 
-ucns_recursive/                    # DEPRECATED for direct user imports;
-                                   # engine implementation lives here.
-  __init__.py                      # Exports the full deployable surface (see __all__)
+ucns_recursive/                    # DEPRECATED compatibility wrappers
+  __init__.py                      # Re-exports the full deployable surface from ucns
   canonical.py                     # UCNSObject, UNIT, multiply, is_unit, is_multiplicative_unit
   domains.py                       # Frozen D' domain params, oracle predicates, S2
   domain_status.py                 # Typed status taxonomy + VERIFIED_DOMAIN_LABELS
@@ -186,10 +182,11 @@ ucns_recursive/                    # DEPRECATED for direct user imports;
     test_factorization_result.py, test_object_record.py, test_a0_safe.py,
     test_geometry_bridge.py, test_visualization_boundary.py
 
-tests/                             # v1.0 API-package test suite (now run by ci.yml)
+tests/                             # v1.0 API-package test suite (run by CI)
   test_core.py, test_embedding.py, test_epicycle.py,
   test_mobius.py, test_similarity.py   # lineage-module tests
-  test_docs_claim_guardrail.py     # doc overclaim guardrail (fixed; 141 tests pass)
+  test_docs_claim_guardrail.py     # doc overclaim guardrail
+  test_public_import_boundary.py   # verifies ucns does not import compatibility shim
 
 formal/                            # Lean 4 proof scaffold (FRONTIER, all `sorry`)
   lean-toolchain                   # leanprover/lean4:v4.7.0
@@ -263,11 +260,11 @@ Two GitHub Actions workflows under `.github/workflows/`:
 | Workflow | Trigger | What it does |
 |---|---|---|
 | `ci.yml` | push/PR touching `ucns/`, `ucns_recursive/`, `tests/`, `pyproject.toml` | Python 3.11; `pip install -e .[dev]`; runs **both** `ucns_recursive/tests/` and the top-level `tests/` suite |
-| `python-package.yml` | push/PR to `main` | matrix 3.10/3.11/3.12; `python -m build`; `twine check`; wheel install smoke test; `unittest discover ucns_recursive/tests/` |
+| `python-package.yml` | push/PR to `main` | matrix 3.8/3.10/3.11/3.12; `python -m build`; `twine check`; wheel import-boundary smoke test; runs `ucns_recursive/tests/` and top-level `tests/` |
 
-**`ci.yml` now exercises the top-level `tests/`** suite as well as
-`ucns_recursive/tests/`; `python-package.yml` still tests only
-`ucns_recursive/tests/`.
+**Both CI workflows exercise the top-level `tests/`** suite as well as
+`ucns_recursive/tests/`; `python-package.yml` also validates that wheel-only
+`import ucns` does not import the compatibility shim.
 
 ---
 
@@ -381,17 +378,15 @@ recomposition (`multiply(A_cand, B_cand) == P`).
 - **No external dependencies.** stdlib only. Do not add runtime deps.
 - **`ucns` is the v1.0 public API.** New user-facing code imports from `ucns`
   (and `ucns.a0_safe`). `ucns_recursive` is deprecated for direct user
-  imports but is still the correct place to **edit engine code**.
+  imports; edit engine code under `ucns/`.
 - **Lineage modules are not auto-exported.** `core`, `embedding`, `epicycle`,
   `mobius`, `similarity` live in `ucns/` but are not in `ucns/__init__.py`;
   import them by submodule path.
-- **`ci.yml` now runs `tests/`** (the v1.0 API package suite) in addition to
-  `ucns_recursive/tests/`. Tests for the `ucns/` API package live in `tests/`;
-  note `python-package.yml` still runs only `ucns_recursive/tests/`.
-- **`tests/test_docs_claim_guardrail.py` was a merge-conflict `SyntaxError`
-  (duplicated, unclosed `DOC_FILES = [`) — now fixed.** The top-level `tests/`
-  suite passes (141 tests); the engine suite (`ucns_recursive/tests/`) also
-  passes.
+- **CI runs both test suites.** `tests/` covers the v1.0 API package;
+  `ucns_recursive/tests/` covers legacy compatibility. `python-package.yml`
+  also runs a wheel import-boundary check.
+- **`tests/test_public_import_boundary.py` protects the migration boundary.**
+  It fails if importing `ucns` reaches for `ucns_recursive`.
 - `factor_search_v08` is the authoritative solver — do not bypass it by
   calling internal stages directly.
 - **Three E10.9 invariants** in `factor_search_v08`: (1) no false atomicity
@@ -404,10 +399,10 @@ recomposition (`multiply(A_cand, B_cand) == P`).
   (`*_probe*.py`, `prime_carpet_probe.py`).
 - **`formal/` proves nothing yet** — all `sorry`; never cite it as
   formal verification.
-- When adding a solver stage: edit `factor_search_v08.py` and add tests in
-  `ucns_recursive/tests/`. When adding codec/retrieval features: edit
-  `recursive_codec.py` / `left_quotient.py` / `store.py` and update
-  `ucns_recursive/__init__.py` `__all__`.
+- When adding a solver stage: edit `ucns/factor_search_v08.py` and add tests in
+  the relevant public or compatibility suite. When adding codec/retrieval
+  features: edit `ucns/recursive_codec.py` / `ucns/left_quotient.py` /
+  `ucns/store.py` and update `ucns/__init__.py` `__all__`.
 - **Visualization/demo artifacts** go under `examples/visualization/` with a
   README stating the exact claim illustrated and the non-proof boundary
   (see README "What belongs in this repo").

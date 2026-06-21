@@ -19,7 +19,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ucns_recursive.recursive_quotient import left_quotient as _real_lq
+from ucns.recursive_quotient import left_quotient as _real_lq
 from ucns_code_v065 import UCNSObject, multiply  # fallback: adjust import as needed
 
 # --- Monkey-patch left_quotient to log call depth ---

@@ -1,5 +1,5 @@
 """
-ucns_recursive.store
+ucns.store
 ====================
 ``UCNSStore`` — proof-backed retrieval over recursively encoded data.
 
@@ -18,7 +18,7 @@ extends the surface with depth-2 oracle dispatch:
 What this is
 ------------
 A keyed corpus of ``UCNSObject``\\s (produced by
-:func:`ucns_recursive.recursive_codec.recursive_encode`) plus
+:func:`ucns.recursive_codec.recursive_encode`) plus
 algebraic retrieval primitives backed by the v0.6 / v0.8.1
 completeness theorems.
 
@@ -88,10 +88,10 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_store
+#   tests: ucns.tests.test_store
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
-#   requires: ucns_canonical, ucns_domains, ucns_left_quotient, ucns_recursive_codec
+#   requires: ucns_canonical, ucns_domains, ucns_left_quotient, ucns_codec
 #   since: 2026-06-02
 #   unresolved: none
 # === END MODULE_BUILD ===
@@ -235,7 +235,7 @@ class UCNSStore:
     def domain_status_of(self, key: Any) -> str:
         """Return the verified-domain status of the object under *key*.
 
-        See :func:`ucns_recursive.domains.verified_domain_status` for
+        See :func:`ucns.domains.verified_domain_status` for
         the full status taxonomy.  Useful for auditing what a stored
         corpus actually contains relative to the proof's coverage.
         """
@@ -328,7 +328,7 @@ class UCNSStore:
         defined.
 
         Building a covering catalogue is the responsibility of the
-        caller; ``ucns_recursive.catalogue`` provides enumeration
+        caller; ``ucns.catalogue`` provides enumeration
         helpers for the depth-1 verified domain.
         """
         P = self._objects[target_key]

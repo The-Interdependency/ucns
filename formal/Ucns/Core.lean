@@ -1,7 +1,7 @@
 /-
   Ucns/Core.lean — faithful definitions for the UCNS recursive algebra.
 
-  SOURCE OF TRUTH FOR SEMANTICS: ../../ucns_recursive/canonical.py
+  SOURCE OF TRUTH FOR SEMANTICS: ../../ucns/canonical.py
   and ../../ucns-spec.md. This file replaces the `Unit` placeholder
   carrier of the original scaffold with the real recursive
   (angle, face, payload) sequence object.
@@ -97,7 +97,7 @@ def nMin (x : UCNSObject) : Nat :=
 
 /-! Payload-nesting depth: `none → 0`; object depth is
     `1 + max payload depth` (0 for a flat object), matching
-    `ucns_recursive.domains.depth_of` up to the flat-object base case. -/
+    `ucns.domains.depth_of` up to the flat-object base case. -/
 mutual
   def depth : UCNSObject → Nat
     | mk _ cs => 1 + depthCells cs

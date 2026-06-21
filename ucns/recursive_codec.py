@@ -1,5 +1,5 @@
 """
-ucns_recursive.recursive_codec
+ucns.recursive_codec
 ==============================
 Recursive encoder/decoder between Python values and UCNSObject.
 
@@ -71,7 +71,7 @@ References
 from __future__ import annotations
 
 # === MODULE_BUILD ===
-# id: ucns_recursive_codec
+# id: ucns_codec
 #   module_name: recursive_codec
 #   module_kind: engine
 #   summary: Recursive encoder/decoder between Python values (bytes/list/tuple/dict and coercible leaves) and UCNSObject, with type recovered from leading-sentinel count.
@@ -83,7 +83,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_recursive_codec
+#   tests: ucns.tests.test_recursive_codec
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

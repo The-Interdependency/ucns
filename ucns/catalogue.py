@@ -1,5 +1,5 @@
 """
-ucns_recursive.catalogue
+ucns.catalogue
 ========================
 Catalogue builders for :meth:`UCNSStore.factor_decompose`.
 
@@ -88,7 +88,7 @@ def build_catalogue_d2_oracle(
     payload_basis:
         The oracle atoms to place in cell payloads.  If ``None``,
         defaults to the full depth-1 catalogue (the result of
-        :func:`ucns_recursive.domains.generate_payload_catalogue`,
+        :func:`ucns.domains.generate_payload_catalogue`,
         which includes ``None`` as the unit payload).
 
         **Size warning**: enumeration is ``|basis|^length`` per

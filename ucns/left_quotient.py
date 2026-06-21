@@ -1,5 +1,5 @@
 """
-ucns_recursive.left_quotient
+ucns.left_quotient
 ============================
 Constructive left/right quotient primitives.
 
@@ -54,7 +54,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_left_quotient
+#   tests: ucns.tests.test_left_quotient
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

@@ -1,5 +1,5 @@
 """
-ucns_recursive.payload_system
+ucns.payload_system
 ==============================
 Coupled payload equation solver.
 
@@ -44,7 +44,7 @@ from __future__ import annotations
 #   tests: hmmm
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
-#   requires: ucns_canonical, ucns_recursive_quotient
+#   requires: ucns_canonical, ucns_quotient
 #   since: 2026-06-02
 #   unresolved: none
 # === END MODULE_BUILD ===

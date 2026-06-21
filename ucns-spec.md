@@ -21,7 +21,7 @@ Status of UCNS layers under this vocabulary:
 - **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical in `code/sweeps/t9_minimal_cat.py`).
 - **FRONTIER / out of v1.0 scope.** Carrier widening; tractable sub-catalogues; general recursive primality outside defended-complete domains; recursive disk-flip content symmetry as a depth-n theorem; depth-7 Fano/octonion conjecture.
 
-**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete domain (`VERIFIED_DOMAIN_LABELS` in `ucns_recursive.domain_status`). A0-facing consumers must consult `domain_status_metadata` and treat `SEQ-PRIME` as non-absolute outside that set.
+**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete domain (`VERIFIED_DOMAIN_LABELS` in `ucns.domain_status`). A0-facing consumers must consult `domain_status_metadata` and treat `SEQ-PRIME` as non-absolute outside that set.
 
 **v1.0 scope.** v1.0 is a scoped, reproducible research release for catalogue-sufficient recursive factorization. It is not a claim of total general recursive primality. Carrier widening and general recursive completeness are explicitly out of scope.
 

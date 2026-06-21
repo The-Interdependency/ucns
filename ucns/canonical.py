@@ -1,5 +1,5 @@
 """
-ucns_recursive.canonical
+ucns.canonical
 ========================
 Core UCNS algebraic objects.
 
@@ -30,7 +30,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_depth2_full_domain
+#   tests: ucns.tests.test_depth2_full_domain
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: none

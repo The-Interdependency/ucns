@@ -1,6 +1,6 @@
 """Depth-3 empirical sweep for factor_search_v08.
 
-Convention: depth_of() per ucns_recursive.domains, where:
+Convention: depth_of() per ucns.domains, where:
   None        → depth 0
   flat        → depth 1
   d-leading   → 1 + d
@@ -30,9 +30,9 @@ from typing import List, Optional, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from ucns_recursive.canonical import UCNSObject, multiply
-from ucns_recursive.factor_search_v08 import factor_search_v08, SEQ_PRIME
-from ucns_recursive.domains import generate_payload_catalogue, depth_of
+from ucns.canonical import UCNSObject, multiply
+from ucns.factor_search_v08 import factor_search_v08, SEQ_PRIME
+from ucns.domains import generate_payload_catalogue, depth_of
 
 TIMEOUT_S = 20
 

@@ -1,5 +1,5 @@
 """
-ucns_recursive.witness_matrix
+ucns.witness_matrix
 ==============================
 Witness objects and the WitnessMatrix consistency checker.
 
@@ -33,7 +33,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_failure_boundary_e109
+#   tests: ucns.tests.test_failure_boundary_e109
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

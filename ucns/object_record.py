@@ -1,5 +1,5 @@
 """
-ucns_recursive.object_record
+ucns.object_record
 ============================
 General UCNS object records for A0-facing inspection.
 
@@ -24,7 +24,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_object_record
+#   tests: ucns.tests.test_object_record
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domain_status, ucns_domains, ucns_serialization

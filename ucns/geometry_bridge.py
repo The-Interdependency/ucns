@@ -1,5 +1,5 @@
 """
-ucns_recursive.geometry_bridge
+ucns.geometry_bridge
 ================================
 Closes the firewall between UCNS-A (the algebra) and UCNS-G (the geometry).
 
@@ -52,6 +52,8 @@ import math
 from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
 
+from .canonical import multiply as _canonical_multiply
+
 # === MODULE_BUILD ===
 # id: ucns_geometry_bridge
 #   module_name: geometry_bridge
@@ -68,7 +70,7 @@ from typing import Any, List, Optional, Tuple
 #   tests: ucns_recursive.tests.test_geometry_bridge
 #   rollout: default_enabled
 #   rollback: remove export from ucns/__init__.py
-#   requires: ucns_recursive.canonical (UCNSObject, multiply)
+#   requires: ucns.canonical (UCNSObject, multiply)
 #   unresolved: injectivity-proof-analytical, degenerate-theta-canonical-form, depth>1-payload-lifting
 # === END MODULE_BUILD ===
 
@@ -94,7 +96,7 @@ class ThetaDegenerate(Exception):
 # GeometricPoint
 # ---------------------------------------------------------------------------
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class GeometricPoint:
     """Coordinate quadruple in UCNS-G space: (r, theta, z, w).
 
@@ -141,9 +143,7 @@ class GeometricPoint:
         diff = abs(self.theta - other.theta) % _TAU4
         return min(diff, _TAU4 - diff) < _TOL
 
-    def __hash__(self) -> int:
-        t = round(self.theta, 9) if self.theta is not None else None
-        return hash((round(self.r, 9), t, self.z, self.w))
+    __hash__ = None
 
     def __repr__(self) -> str:
         t = f"{self.theta:.6f}" if self.theta is not None else "None(deg)"
@@ -241,7 +241,8 @@ class HomomorphismResult:
 
 def homomorphism_check(a: Any, b: Any, multiply_fn: Any = None) -> HomomorphismResult:
     """Check: ucns_a_to_g(a * b) == compose(ucns_a_to_g(a), ucns_a_to_g(b))."""
-    ab = multiply_fn(a, b) if multiply_fn is not None else a * b
+    mult = multiply_fn if multiply_fn is not None else _canonical_multiply
+    ab = mult(a, b)
 
     lhs = ucns_a_to_g(ab)
     g_a = ucns_a_to_g(a)

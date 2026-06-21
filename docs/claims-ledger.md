@@ -23,11 +23,11 @@ EXPERIMENTAL      exploration layer, not canon
 
 | Claim | Status | Primary surface | Notes |
 |---|---|---|---|
-| A UCNS object is represented as `UCNSObject(n_dec, n_min, A_plus, F_plus)`. | `IMPLEMENTED` | `ucns_recursive.canonical` | `A_plus` is a sequence of `(angle, payload)` pairs; payloads are `UCNSObject | None`. |
-| `None` is the unit payload. | `IMPLEMENTED` | `ucns_recursive.canonical`, `ucns_recursive.domains` | Exported as `UNIT`. |
-| Recursive depth is defined by payload nesting: `None -> 0`; object depth is `1 + max(payload depth)`. | `IMPLEMENTED` | `ucns_recursive.domains.depth_of` | Used by domain-status metadata and tests. |
-| Frozen domain D' is bounded by `depth <= 2`, `|A_plus| <= 3`, `n_min <= 4`. | `IMPLEMENTED` | `ucns_recursive.domains` | Used as the standing depth-2 implementation/test envelope. |
-| Oracle atoms are `None` plus depth-1 objects inside the frozen bounds. | `IMPLEMENTED` | `ucns_recursive.domains.generate_payload_catalogue` | Used as the default payload catalogue for the solver. |
+| A UCNS object is represented as `UCNSObject(n_dec, n_min, A_plus, F_plus)`. | `IMPLEMENTED` | `ucns.canonical` | `A_plus` is a sequence of `(angle, payload)` pairs; payloads are `UCNSObject | None`. |
+| `None` is the unit payload. | `IMPLEMENTED` | `ucns.canonical`, `ucns.domains` | Exported as `UNIT`. |
+| Recursive depth is defined by payload nesting: `None -> 0`; object depth is `1 + max(payload depth)`. | `IMPLEMENTED` | `ucns.domains.depth_of` | Used by domain-status metadata and tests. |
+| Frozen domain D' is bounded by `depth <= 2`, `|A_plus| <= 3`, `n_min <= 4`. | `IMPLEMENTED` | `ucns.domains` | Used as the standing depth-2 implementation/test envelope. |
+| Oracle atoms are `None` plus depth-1 objects inside the frozen bounds. | `IMPLEMENTED` | `ucns.domains.generate_payload_catalogue` | Used as the default payload catalogue for the solver. |
 | `SEQ-PRIME` is a solver sentinel, not an unscoped mathematical absolute. | `DEFENDED` policy rule | `ucns-spec.md`, `domain_status.py`, `factorization_result.py` | Absolute only inside declared complete domains. |
 
 ---
@@ -36,15 +36,15 @@ EXPERIMENTAL      exploration layer, not canon
 
 | Algorithm / API | Status | Surface | v1.0 interpretation |
 |---|---|---|---|
-| `multiply(A, B)` | `IMPLEMENTED` | `ucns_recursive.canonical`, re-exported from `ucns` | Builds a recursive product object cellwise. |
-| `factor_search_v08(P, catalogue=None)` | `IMPLEMENTED` | `ucns_recursive.factor_search_v08`, re-exported from `ucns` | v1.0 factorization engine: witness-matrix recursive quotient solver. |
-| Host recovery | `IMPLEMENTED` | `ucns_recursive.host_recovery` | Structural recovery of candidate factor angle/face hosts. |
-| Payload equation solving | `IMPLEMENTED` | `ucns_recursive.payload_system` | Catalogue-bounded solving of coupled payload equations. |
-| Witness matrix consistency | `IMPLEMENTED` | `ucns_recursive.witness_matrix` | Global row/column consistency gate before recomposition. |
+| `multiply(A, B)` | `IMPLEMENTED` | `ucns.canonical`, re-exported from `ucns` | Builds a recursive product object cellwise. |
+| `factor_search_v08(P, catalogue=None)` | `IMPLEMENTED` | `ucns.factor_search_v08`, re-exported from `ucns` | v1.0 factorization engine: witness-matrix recursive quotient solver. |
+| Host recovery | `IMPLEMENTED` | `ucns.host_recovery` | Structural recovery of candidate factor angle/face hosts. |
+| Payload equation solving | `IMPLEMENTED` | `ucns.payload_system` | Catalogue-bounded solving of coupled payload equations. |
+| Witness matrix consistency | `IMPLEMENTED` | `ucns.witness_matrix` | Global row/column consistency gate before recomposition. |
 | Exact recomposition guard | `IMPLEMENTED` | `factor_search_v08` | Soundness guard: accepted factors must satisfy `multiply(A, B) == P`. |
-| A0-facing result envelope | `IMPLEMENTED` | `ucns_recursive.factorization_result` | Wraps raw factorization output with scoped domain certainty metadata. |
-| Stable identity serialization/hash | `IMPLEMENTED` | `ucns_recursive.serialization` | Canonical data and hash surface for audit logs and object identity. |
-| `ucns` public namespace | `IMPLEMENTED` | `ucns/__init__.py` | v1.0 public import surface; `ucns_recursive` remains compatibility/internal. |
+| A0-facing result envelope | `IMPLEMENTED` | `ucns.factorization_result` | Wraps raw factorization output with scoped domain certainty metadata. |
+| Stable identity serialization/hash | `IMPLEMENTED` | `ucns.serialization` | Canonical data and hash surface for audit logs and object identity. |
+| `ucns` public namespace | `IMPLEMENTED` | `ucns/__init__.py` | v1.0 public import surface; `ucns_recursive` remains a compatibility shim. |
 
 ---
 
@@ -79,10 +79,10 @@ EXPERIMENTAL      exploration layer, not canon
 | Item | Status | v1.0 decision |
 |---|---|---|
 | Carrier widening beyond frozen bounds | `FRONTIER` (analytic side only) | Explicitly out of v1.0 scope. The Carrier-LCM Law (`docs/carrier-support-pruning.md`, `DEFENDED` + `TEST-BACKED` on this substrate) closes the operational side exactly; cross-prime *factoring* remains open. |
-| Tractable sub-catalogues | `FRONTIER`, narrowed | Carrier-support pruning (`ucns_recursive.catalogue_pruning`, `DEFENDED` + `TEST-BACKED`) gives a sound opt-in pre-filter; catalogue *design* beyond support-pruning remains open. |
+| Tractable sub-catalogues | `FRONTIER`, narrowed | Carrier-support pruning (`ucns.catalogue_pruning`, `DEFENDED` + `TEST-BACKED`) gives a sound opt-in pre-filter; catalogue *design* beyond support-pruning remains open. |
 | General recursive primality outside defended-complete domains | Out of v1.0 scope | `SEQ-PRIME` remains scoped by `domain_status_metadata`. |
 | Recursive disk-flip content symmetry as a depth-n theorem | `FRONTIER` | Not required for v1.0. |
-| Canonical factor choice among multiple valid decompositions | `FRONTIER`, narrowed | Deterministic selector over the v0.6-complete left-factor enumeration is `DEFENDED` + `TEST-BACKED` (`ucns_recursive.canonical_factorization`, `docs/canonical-factor-selection.md`). Canonical choice under `factor_search_v08` payload-catalogue semantics remains open. |
+| Canonical factor choice among multiple valid decompositions | `FRONTIER`, narrowed | Deterministic selector over the v0.6-complete left-factor enumeration is `DEFENDED` + `TEST-BACKED` (`ucns.canonical_factorization`, `docs/canonical-factor-selection.md`). Canonical choice under `factor_search_v08` payload-catalogue semantics remains open. |
 | Performance scaling for large catalogues | `FRONTIER`, narrowed | Sound support-pruning is `DEFENDED`; efficient search *within* the pruned lattice remains open. |
 | External formal review | Open | Theorem N should receive mathematical pressure before stronger publication language. |
 
@@ -95,7 +95,7 @@ EXPERIMENTAL      exploration layer, not canon
 | Binary “solved / not solved” depth-2 language | Superseded | Status vocabulary distinguishing implementation, tests, proof, oracle, and frontier. |
 | Theorem 8c as practically meaningful depth-3 symmetric completeness | Superseded / vacuous | Theorem N and asymmetric depth-3 examples. |
 | The prior depth-indexed induction plan for Theorem N | Superseded | Depth-agnostic catalogue-sufficient theorem statement. |
-| Direct user import from `ucns_recursive` as preferred API | Deprecated for direct user imports | Use `ucns` and `ucns.a0_safe`; `ucns_recursive` remains compatibility/internal. |
+| Direct user import from `ucns_recursive` as preferred API | Deprecated for direct user imports | Use `ucns` and `ucns.a0_safe`; `ucns_recursive` remains a compatibility shim. |
 
 ---
 
