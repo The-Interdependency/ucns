@@ -128,12 +128,20 @@ def main():
             cells = tuple((a, f, None) for (a, f) in combo); A1.append((nMin(cells), cells))
     S1 = [o for o in A1 if complete(o)]
     n, k, _ = ce(1, S1); print("  d=1 over complete depth-1 (atoms), |S|=%d: CE=%d" % (k, n))
-    A2 = []
-    for combo in itertools.product(list(itertools.product([F(0), F(1)], [False, True], A1[:6])), repeat=1):
-        if combo[0][0] != F(0): continue
-        cells = tuple((a, f, p) for (a, f, p) in combo); A2.append((nMin(cells), cells))
+    # depth-2 Complete objects, length 1 AND 2 — multi-cell operands exercise the
+    # csA.bind row partition (Obligation 3). Atom set includes a nonzero-carrier atom.
+    atoms3 = [(1, ((F(0), False, None),)), (1, ((F(0), True, None),)),
+              (2, ((F(0), False, None), (F(1), False, None)))]
+    head = [(F(0), f, a) for f in (False, True) for a in atoms3]          # HN head angle 0
+    snd  = [(a, f, p) for a in (F(0), F(1)) for f in (False, True) for p in atoms3]
+    A2 = [(nMin((c,)), (c,)) for c in head]
+    for c1 in head:
+        for c2 in snd:
+            A2.append((nMin((c1, c2)), (c1, c2)))
     S2 = [o for o in A2 if complete(o) and depth(o) == 2]
-    n, k, _ = ce(2, S2); print("  d=2 over complete depth-2,            |S|=%d: CE=%d" % (k, n))
+    multi = any(len(o[1]) == 2 for o in S2)
+    n, k, _ = ce(2, S2)
+    print("  d=2 over complete depth-2 (incl. multi-cell=%s), |S|=%d: CE=%d" % (multi, k, n))
     # drop the carrier condition -> counterexamples return
     Svar = []
     for (_, cs) in [o for o in A2 if nonempty_rec(o) and hn_rec(o) and uniform_depth(o) and depth(o) == 2][:8]:

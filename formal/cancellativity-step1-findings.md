@@ -33,8 +33,13 @@ candidate is:
 | none (bare), d=1 | **FALSE** — β0 host-angle collapse |
 | top-only `HostNormalized` (as in `Core.lean`) + payloads-present, d=2 | **FALSE** — CE 64 |
 | recursive `HostNormalized` + `AllPayloadsPresent` (naive), d=2/3 | **FALSE** — 4 further CEs (below) |
-| **`Complete` on A,B,C**, d=1/2 | **CE 0** |
+| **`Complete` on A,B,C**, d=1/2 (incl. multi-cell depth-2) | **CE 0** |
 | `Complete` minus canonical-carrier (vary `nd`), d=2 | **FALSE** — CE 128 |
+
+These are **finite searches over small universes** (the d=2 row now includes
+multi-cell operands that exercise the `csA.bind` row partition) — strong
+disconfirmation where they fail, supporting evidence where they pass, **not a
+proof** of sufficiency.
 
 So the handoff's Option B (host-normalized + all-payloads-present) is
 **necessary but not sufficient**; cancellativity additionally needs
