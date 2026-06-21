@@ -22,7 +22,13 @@ from __future__ import annotations
 
 import random
 from fractions import Fraction
-from math import lcm
+try:  # math.lcm is Python 3.9+; provide a 3.8-compatible fallback
+    from math import lcm
+except ImportError:  # pragma: no cover - Python 3.8
+    from math import gcd
+
+    def lcm(a: int, b: int) -> int:
+        return abs(a * b) // gcd(a, b) if a and b else 0
 from typing import List, Optional
 
 try:
