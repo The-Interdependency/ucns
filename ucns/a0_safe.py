@@ -15,7 +15,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_a0_safe
+#   tests: ucns.tests.test_a0_safe
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_object_record, ucns_factorization_result, ucns_serialization, ucns_canonical
@@ -25,10 +25,10 @@ from __future__ import annotations
 
 from typing import List, Optional, Union
 
-from ucns_recursive.canonical import UCNSObject
-from ucns_recursive.factorization_result import FactorizationResult, factorization_result
-from ucns_recursive.object_record import UCNSObjectRecord, object_record
-from ucns_recursive.serialization import canonical_bytes, canonical_json, stable_hash
+from .canonical import UCNSObject
+from .factorization_result import FactorizationResult, factorization_result
+from .object_record import UCNSObjectRecord, object_record
+from .serialization import canonical_bytes, canonical_json, stable_hash
 
 
 def identity(obj: Optional[UCNSObject]) -> str:

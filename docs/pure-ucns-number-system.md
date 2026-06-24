@@ -134,13 +134,13 @@ Depth is the maximum recursive nesting depth of payloads.
 
 Recursive closure requires that composition of two valid UCNS numbers produces another valid UCNS number, subject to the declared domain and carrier rules.
 
-The current active package surface treats `ucns_recursive` as the implementation home for recursive factorization. The public `ucns` namespace now re-exports that surface, so public use should prefer:
+The current active package surface treats `ucns` as the implementation home for recursive factorization, so public use should prefer:
 
 ```python
 from ucns import UCNSObject, multiply, factor_search_v08
 ```
 
-while `ucns_recursive` remains a compatibility import path.
+while `ucns_recursive` remains a compatibility import path only.
 
 ## hmmm
 
@@ -236,7 +236,7 @@ reconciled on 2026-05-17 (branch
 `claude/ucns-v1-canon-reconciliation-ELOzV`).
 
 Canonical status vocabulary (also codified as
-`ucns_recursive.domain_status.DomainProofStatus`):
+`ucns.domain_status.DomainProofStatus`):
 
 ```text
 DEFENDED          proven or proof-defended in written spec

@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,9 +37,26 @@ jobs:
       run: |
         pip install dist/*.whl
         python - <<'PY'
-        from ucns_recursive import UCNSObject, multiply, factor_search_v08
-        print('ucns import ok')
+        import builtins
+        import importlib
+
+        original_import = builtins.__import__
+
+        def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+            if name == 'ucns_recursive' or name.startswith('ucns_recursive.'):
+                raise AssertionError(f'ucns imported deprecated compatibility package {name!r}')
+            return original_import(name, globals, locals, fromlist, level)
+
+        builtins.__import__ = guarded_import
+        ucns = importlib.import_module('ucns')
+        assert hasattr(ucns, 'UCNSObject')
+        assert hasattr(ucns, 'multiply')
+        assert hasattr(ucns, 'factor_search_v08')
+        print('ucns public import boundary ok')
         PY
 
-    - name: Run tests
+    - name: Run recursive compatibility tests
       run: python -m unittest discover ucns_recursive/tests/ -v
+
+    - name: Run public API tests
+      run: python -m unittest discover -s tests -v

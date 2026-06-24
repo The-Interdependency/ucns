@@ -23,10 +23,10 @@ from typing import List, Optional, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from ucns_recursive.canonical import UCNSObject, multiply
-from ucns_recursive.factor_search_v08 import factor_search_v08, SEQ_PRIME
-from ucns_recursive.domains import generate_payload_catalogue, depth_of
-from ucns_recursive.catalogue import build_catalogue_d2_oracle
+from ucns.canonical import UCNSObject, multiply
+from ucns.factor_search_v08 import factor_search_v08, SEQ_PRIME
+from ucns.domains import generate_payload_catalogue, depth_of
+from ucns.catalogue import build_catalogue_d2_oracle
 
 TIMEOUT_S = 8
 

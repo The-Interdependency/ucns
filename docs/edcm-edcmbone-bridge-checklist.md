@@ -95,7 +95,7 @@ edcmbone must include **all** of the following:
 
 A documented function `π: UCNS-A → UCNS-G`, with:
 
-- explicit input domain (cited against `ucns_recursive.canonical.UCNSObject`),
+- explicit input domain (cited against `ucns.canonical.UCNSObject`),
 - explicit output codomain (cited against `edcmbone.ucns_g.MetricDiskState`
   and `GrainTensor`),
 - worked examples for at least every `DEFENDED` / `ORACLE-COMPLETE`
@@ -198,7 +198,9 @@ do not require any change to UCNS-A theorem status:
   as it does not claim UCNS-A theorem support.
 - `interdependent-lib` may list `edcmbone` as an optional dependency.
 - Visualizations (e.g. `erinepshovel-code/UnitCircle`) may render UCNS-G
-  metric disks on the unit circle and on Möbius-doubled outer surfaces.
+  metric disks on the unit circle and on Möbius-doubled outer surfaces. See
+  `docs/unitcircle-import-assessment.md` before importing any code from that
+  repository.
 
 None of the above is a bridge.
 
