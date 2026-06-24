@@ -10,7 +10,7 @@ Skipped entirely when ucns is not installed, keeping PCEA's core suite
 dependency-free.
 """
 
-import pytest
+import unittest
 
 import importlib.util, pathlib
 _spec = importlib.util.spec_from_file_location(
@@ -20,30 +20,29 @@ _spec = importlib.util.spec_from_file_location(
 ah = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(ah)
 
-pytestmark = pytest.mark.skipif(
-    not ah.UCNS_AVAILABLE, reason="ucns not installed; attack harness inert"
-)
+@unittest.skipUnless(ah.UCNS_AVAILABLE, "ucns not installed; attack harness inert")
+class TestAttackHarness(unittest.TestCase):
 
+    def test_carrier_law_leaks_factor_support(self):
+        A, B = ah._obj([8]), ah._obj([5])
+        r = ah.carrier_support_leak(A, B)
+        # The public carrier's support is exactly the union of the private
+        # supports — the Law leak, the central design constraint.
+        union = set(r["private_support_A"]) | set(r["private_support_B"])
+        self.assertEqual(set(r["leaked_support"]), union)
 
-def test_carrier_law_leaks_factor_support():
-    A, B = ah._obj([8]), ah._obj([5])
-    r = ah.carrier_support_leak(A, B)
-    # The public carrier's support is exactly the union of the private
-    # supports — the Law leak, the central design constraint.
-    union = set(r["private_support_A"]) | set(r["private_support_B"])
-    assert set(r["leaked_support"]) == union
+    def test_oracle_domain_is_highly_recoverable(self):
+        r = ah.oracle_domain_recovery(trials=60, seed=1)
+        # Empirical justification for forbidding the oracle domain for keys:
+        # the majority of products are recovered by factor_search_v08.
+        self.assertGreater(r["rate"], 0.5)
 
+    def test_pruning_eliminates_substantial_search_space(self):
+        A, B = ah._obj([8]), ah._obj([5])
+        r = ah.pruning_acceleration(A, B)
+        # Pruning is an attacker accelerator: it removes a large fraction of
+        # the candidate key space at no cost.
+        self.assertGreater(r["eliminated_fraction"], 0.25)
 
-def test_oracle_domain_is_highly_recoverable():
-    r = ah.oracle_domain_recovery(trials=60, seed=1)
-    # Empirical justification for forbidding the oracle domain for keys:
-    # the majority of products are recovered by factor_search_v08.
-    assert r["rate"] > 0.5
-
-
-def test_pruning_eliminates_substantial_search_space():
-    A, B = ah._obj([8]), ah._obj([5])
-    r = ah.pruning_acceleration(A, B)
-    # Pruning is an attacker accelerator: it removes a large fraction of
-    # the candidate key space at no cost.
-    assert r["eliminated_fraction"] > 0.25
+if __name__ == "__main__":
+    unittest.main()

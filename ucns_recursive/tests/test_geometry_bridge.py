@@ -78,6 +78,11 @@ class TestGeometricPoint(unittest.TestCase):
         q = GeometricPoint(r=1.0, theta=math.pi + 1e-11, z=0, w=1)
         self.assertEqual(p, q)
 
+    def test_unhashable(self):
+        p = GeometricPoint(r=1.0, theta=math.pi, z=0, w=1)
+        with self.assertRaises(TypeError):
+            hash(p)
+
     def test_inequality_z(self):
         p = GeometricPoint(r=1.0, theta=math.pi, z=0, w=0)
         q = GeometricPoint(r=1.0, theta=math.pi, z=1, w=0)
@@ -208,6 +213,12 @@ class TestHomomorphismCheck(unittest.TestCase):
         a = flat([(0,0),(1,0)])
         b = flat([(0,0),(1,0)])
         result = homomorphism_check(a, b, multiply_fn=multiply)
+        self.assertTrue(result.holds or result.degenerate, msg=repr(result))
+
+    def test_holds_with_default_multiply(self):
+        a = flat([(0, 0), (1, 0)])
+        b = flat([(0, 0), (1, 0)])
+        result = homomorphism_check(a, b)
         self.assertTrue(result.holds or result.degenerate, msg=repr(result))
 
     def test_holds_with_faces(self):

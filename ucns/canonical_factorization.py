@@ -41,10 +41,10 @@ Scope discipline (read before extending):
 
 from typing import Iterable, Iterator, List, Optional, Tuple, Union
 
-from .canonical import UCNSObject, multiply
+from .canonical import UCNSObject, is_multiplicative_unit, multiply
 from .catalogue_pruning import prune_catalogue
-from .factor_search_v08 import SEQ_PRIME, is_multiplicative_unit
-from .recursive_quotient import left_quotient
+from .factor_search_v08 import SEQ_PRIME
+from .left_quotient import left_quotient
 from .serialization import canonical_bytes
 
 __all__ = [
