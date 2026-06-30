@@ -160,7 +160,7 @@ def HostNormalized (x : UCNSObject) : Prop :=
     NOTE: not machine-checked in the authoring environment (no Lean toolchain);
     compile + the proof discharge remain Step-2 work. `sorry` ⇒ no DEFENDED status. -/
 
-/-- Recursive nonemptiness: no empty cell-list at any level
+/- Recursive nonemptiness: no empty cell-list at any level
     (rules out the empty-left-operand and empty-atom counterexamples). -/
 mutual
   def NonemptyRec : UCNSObject → Prop
@@ -173,7 +173,7 @@ mutual
     | ⟨_, _, some p⟩ => NonemptyRec p
 end
 
-/-- Recursive host-normalization: head angle 0 for the object AND every payload
+/- Recursive host-normalization: head angle 0 for the object AND every payload
     (the head-only `HostNormalized` above is too weak — payload β0 collapses). -/
 mutual
   def HostNormalizedRec : UCNSObject → Prop
@@ -186,7 +186,7 @@ mutual
     | ⟨_, _, some p⟩ => HostNormalizedRec p
 end
 
-/-- Canonical carrier: `nDec = nMin cells` at every level
+/- Canonical carrier: `nDec = nMin cells` at every level
     (`Nat.lcm` is not left-cancellative, so a free `nDec` breaks it). -/
 mutual
   def CanonicalCarrier : UCNSObject → Prop
@@ -199,7 +199,7 @@ mutual
     | ⟨_, _, some p⟩ => CanonicalCarrier p
 end
 
-/-- Per-object uniform depth: all cells share one `depthCell`, recursively
+/- Per-object uniform depth: all cells share one `depthCell`, recursively
     (a complete tree with no early atom). -/
 mutual
   def UniformDepth : UCNSObject → Prop
