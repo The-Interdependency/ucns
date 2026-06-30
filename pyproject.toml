@@ -47,6 +47,8 @@ Issues = "https://github.com/The-Interdependency/ucns/issues"
 dev = [
   "build>=1.2",
   "twine>=5.0",
+  # pytest 8.4+ drops Python 3.8; keep dev tooling aligned with classifiers.
+  "pytest>=8.3,<8.4",
 ]
 
 [tool.setuptools.packages.find]
