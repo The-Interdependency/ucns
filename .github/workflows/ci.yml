@@ -5,6 +5,7 @@ on:
     paths:
       - 'ucns/**'
       - 'ucns_recursive/**'
+      - 'ucns_cache/**'
       - 'tests/**'
       - 'pyproject.toml'
       - '.github/workflows/ci.yml'
@@ -12,6 +13,7 @@ on:
     paths:
       - 'ucns/**'
       - 'ucns_recursive/**'
+      - 'ucns_cache/**'
       - 'tests/**'
       - 'pyproject.toml'
       - '.github/workflows/ci.yml'
@@ -31,8 +33,5 @@ jobs:
       - name: Install package (with dev extras)
         run: python -m pip install -e .[dev]
 
-      - name: Run ucns_recursive unittest suite
-        run: python -m unittest discover ucns_recursive/tests/ -v
-
-      - name: Run top-level tests/ suite (ucns v1.0 API + doc guardrail)
-        run: python -m unittest discover -s tests -v
+      - name: Run full pytest suite
+        run: python -m pytest ucns_recursive/tests tests -v
