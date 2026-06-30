@@ -24,10 +24,9 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  # Python classifiers match the union of the CI matrices in
-  # .github/workflows/ci.yml (3.8, 3.10, 3.12) and
-  # .github/workflows/python-package.yml (3.10, 3.11, 3.12).
-  # Untested versions (3.9, 3.13) are not advertised.
+  # Python classifiers match the package-test matrix in
+  # .github/workflows/python-package.yml (3.8, 3.10, 3.11, 3.12).
+  # Untested versions (3.9, 3.13, 3.14+) are not advertised.
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
