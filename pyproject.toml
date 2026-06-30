@@ -51,7 +51,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ucns*"]
+include = ["ucns*", "ucns_cache*"]
 
 [tool.setuptools.package-data]
 ucns = ["py.typed"]
