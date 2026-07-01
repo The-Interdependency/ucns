@@ -14,8 +14,7 @@
     lemmas) are targeted SORRY-FREE.
   - The Rat denominator leaves (`den_add_dvd_lcm`, `den_amod_dvd`) are
     discharged against the installed `Std` Rat API.
-  - The slice-embedding proofs are structurally proposed in this file, but
-    require the pinned Lean/Lake build before being cited as discharged.
+  - The slice-embedding proofs compile under the pinned Lean/Lake build.
   - Remaining `sorry` leaves include the upper-bound threading proof. A
     `sorry`-backed lemma confers NO DEFENDED status (formal/README.md).
 -/
@@ -38,7 +37,7 @@
 --   rollback: remove file and its import from Ucns.lean
 --   requires: ucns_formal_core_definitions
 --   since: 2026-06-10
---   unresolved: slice-embedding leaves, upper-bound bind/map threading leaf
+--   unresolved: upper-bound bind/map threading leaf
 -- === END MODULE_BUILD ===
 
 import Ucns.Core
@@ -128,6 +127,19 @@ theorem head_angle_zero_of_complete (A : UCNSObject) (hA : Complete A)
     {c : Cell UCNSObject} (hc : A.cells.head? = some c) :
     c.angle = 0 :=
   hostNormalized_of_complete A hA c hc
+
+/-- A cell returned by `head?` is a member of the same list.
+
+    Local replacement for newer `List.mem_of_mem_head?` API names that are not
+    present in the pinned Lean 4.7.0/Std version. -/
+theorem mem_of_head?_eq_some {α : Type} {xs : List α} {x : α}
+    (h : xs.head? = some x) : x ∈ xs := by
+  cases xs with
+  | nil =>
+    simp at h
+  | cons y ys =>
+    simp at h
+    simp [h]
 
 /-- `Rat.floor` shifts predictably by an integer.
 
@@ -271,8 +283,8 @@ theorem den_add_dvd_lcm (a b : Rat) :
     Repaired domain: use `Complete` operands so the empty-factor counterexample is
     excluded and host-normalization is supplied by `hostNormalized_of_complete`.
 
-    Candidate discharge: list membership through bind/map + amod4 fixpoint
-    under range normalization. Acceptance requires the pinned Lake build. -/
+    Discharged by list membership through bind/map + amod4 fixpoint under
+    range normalization. -/
 theorem slice_embedding_left
     (A B : UCNSObject) (d : Nat)
     (hA : Complete A) (hB : Complete B) :
@@ -282,7 +294,7 @@ theorem slice_embedding_left
   rcases mem_angleDenoms_iff x A.cells |>.mp hx with ⟨ca, hca, hca_ne, hca_den⟩
   rcases exists_head?_of_complete B hB with ⟨cb, hcb_head⟩
   have hcb_mem : cb ∈ B.cells := by
-    exact List.mem_of_mem_head? hcb_head
+    exact mem_of_head?_eq_some hcb_head
   have hcb_zero : cb.angle = 0 := head_angle_zero_of_complete B hB hcb_head
   refine (mem_angleDenoms_iff x (multiplyFuel (d + 1) A B).cells).mpr ?_
   refine ⟨
@@ -310,7 +322,7 @@ theorem slice_embedding_left
 
     Repaired domain: use `Complete` operands so the empty-factor counterexample is
     excluded and host-normalization is supplied by `hostNormalized_of_complete`.
-    Candidate discharge; acceptance requires the pinned Lake build. -/
+    Discharged by the symmetric list-membership witness construction. -/
 theorem slice_embedding_right
     (A B : UCNSObject) (d : Nat)
     (hA : Complete A) (hB : Complete B) :
@@ -321,7 +333,7 @@ theorem slice_embedding_right
   rcases exists_head?_of_complete A hA with ⟨ca, hca_head⟩
   rcases exists_head?_of_complete B hB with ⟨b0, hb0_head⟩
   have hca_mem : ca ∈ A.cells := by
-    exact List.mem_of_mem_head? hca_head
+    exact mem_of_head?_eq_some hca_head
   have hca_zero : ca.angle = 0 := head_angle_zero_of_complete A hA hca_head
   have hb0_zero : b0.angle = 0 := head_angle_zero_of_complete B hB hb0_head
   refine (mem_angleDenoms_iff x (multiplyFuel (d + 1) A B).cells).mpr ?_
