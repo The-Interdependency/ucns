@@ -14,9 +14,9 @@
     lemmas) are targeted SORRY-FREE.
   - The Rat denominator leaves (`den_add_dvd_lcm`, `den_amod_dvd`) are
     discharged against the installed `Std` Rat API.
-  - Remaining `sorry` leaves are the slice-embedding proofs and the upper-bound
-    threading proof. A `sorry`-backed lemma confers NO DEFENDED status
-    (formal/README.md).
+  - The slice-embedding proofs compile under the pinned Lean/Lake build.
+  - Remaining `sorry` leaves include the upper-bound threading proof. A
+    `sorry`-backed lemma confers NO DEFENDED status (formal/README.md).
 -/
 
 -- === MODULE_BUILD ===
@@ -37,7 +37,7 @@
 --   rollback: remove file and its import from Ucns.lean
 --   requires: ucns_formal_core_definitions
 --   since: 2026-06-10
---   unresolved: slice-embedding leaves, upper-bound bind/map threading leaf
+--   unresolved: upper-bound bind/map threading leaf
 -- === END MODULE_BUILD ===
 
 import Ucns.Core
@@ -128,6 +128,19 @@ theorem head_angle_zero_of_complete (A : UCNSObject) (hA : Complete A)
     c.angle = 0 :=
   hostNormalized_of_complete A hA c hc
 
+/-- A cell returned by `head?` is a member of the same list.
+
+    Local replacement for newer `List.mem_of_mem_head?` API names that are not
+    present in the pinned Lean 4.7.0/Std version. -/
+theorem mem_of_head?_eq_some {α : Type} {xs : List α} {x : α}
+    (h : xs.head? = some x) : x ∈ xs := by
+  cases xs with
+  | nil =>
+    simp at h
+  | cons y ys =>
+    simp at h
+    simp [h]
+
 /-- `Rat.floor` shifts predictably by an integer.
 
     Local bridge from the protected `Rat.floor` used by `amod` to Mathlib's
@@ -162,6 +175,24 @@ theorem circleFrac_amod4 (a : Rat) : circleFrac (amod4 a) = circleFrac a := by
   rw [hfloor]
   rw [Int.cast_sub, Int.cast_mul]
   ring
+
+/-- Membership in `angleDenoms` is exactly a cell whose nonzero circle fraction
+    has the requested denominator. This packages the `map`/`filterMap` shape so
+    slice proofs can focus on constructing product cells. -/
+theorem mem_angleDenoms_iff (x : Nat) (cs : List (Cell UCNSObject)) :
+    x ∈ angleDenoms cs ↔
+      ∃ c, c ∈ cs ∧ circleFrac c.angle ≠ 0 ∧ (circleFrac c.angle).den = x := by
+  unfold angleDenoms
+  simp only [List.mem_filterMap, List.mem_map]
+  constructor
+  · rintro ⟨q, ⟨c, hc, rfl⟩, hq⟩
+    by_cases hz : circleFrac c.angle = 0
+    · simp [hz] at hq
+    · simp [hz] at hq
+      exact ⟨c, hc, hz, hq⟩
+  · rintro ⟨c, hc, hz, hden⟩
+    refine ⟨circleFrac c.angle, ⟨c, hc, rfl⟩, ?_⟩
+    simp [hz, hden]
 
 /-! ## Analytic leaves (sorry-stubbed, precise hypotheses) -/
 
@@ -252,25 +283,80 @@ theorem den_add_dvd_lcm (a b : Rat) :
     Repaired domain: use `Complete` operands so the empty-factor counterexample is
     excluded and host-normalization is supplied by `hostNormalized_of_complete`.
 
-    LEAF: list membership through bind/map + amod4 fixpoint under
+    Discharged by list membership through bind/map + amod4 fixpoint under
     range normalization. -/
 theorem slice_embedding_left
     (A B : UCNSObject) (d : Nat)
     (hA : Complete A) (hB : Complete B) :
     ∀ x ∈ angleDenoms A.cells,
       x ∈ angleDenoms (multiplyFuel (d + 1) A B).cells := by
-  sorry
+  intro x hx
+  rcases mem_angleDenoms_iff x A.cells |>.mp hx with ⟨ca, hca, hca_ne, hca_den⟩
+  rcases exists_head?_of_complete B hB with ⟨cb, hcb_head⟩
+  have hcb_mem : cb ∈ B.cells := by
+    exact mem_of_head?_eq_some hcb_head
+  have hcb_zero : cb.angle = 0 := head_angle_zero_of_complete B hB hcb_head
+  refine (mem_angleDenoms_iff x (multiplyFuel (d + 1) A B).cells).mpr ?_
+  refine ⟨
+    { angle := amod4 (ca.angle + (cb.angle - (match B.cells.head? with
+        | some c => c.angle
+        | none => 0)))
+      face := xor ca.face cb.face
+      payload :=
+        match ca.payload, cb.payload with
+        | some p, some q => some (multiplyFuel d p q)
+        | some p, none   => some p
+        | none,   some q => some q
+        | none,   none   => none },
+    ?_, ?_, ?_⟩
+  · cases A with
+    | mk nda csA =>
+      cases B with
+      | mk ndb csB =>
+        simp only [cells, multiplyFuel]
+        exact List.mem_bind.mpr ⟨ca, hca, List.mem_map.mpr ⟨cb, hcb_mem, rfl⟩⟩
+  · simp [hcb_head, hcb_zero, circleFrac_amod4, hca_ne]
+  · simp [hcb_head, hcb_zero, circleFrac_amod4, hca_den]
 
 /-- Symmetric embedding for B (the k = 0 slice).
 
     Repaired domain: use `Complete` operands so the empty-factor counterexample is
-    excluded and host-normalization is supplied by `hostNormalized_of_complete`. LEAF. -/
+    excluded and host-normalization is supplied by `hostNormalized_of_complete`.
+    Discharged by the symmetric list-membership witness construction. -/
 theorem slice_embedding_right
     (A B : UCNSObject) (d : Nat)
     (hA : Complete A) (hB : Complete B) :
     ∀ x ∈ angleDenoms B.cells,
       x ∈ angleDenoms (multiplyFuel (d + 1) A B).cells := by
-  sorry
+  intro x hx
+  rcases mem_angleDenoms_iff x B.cells |>.mp hx with ⟨cb, hcb, hcb_ne, hcb_den⟩
+  rcases exists_head?_of_complete A hA with ⟨ca, hca_head⟩
+  rcases exists_head?_of_complete B hB with ⟨b0, hb0_head⟩
+  have hca_mem : ca ∈ A.cells := by
+    exact mem_of_head?_eq_some hca_head
+  have hca_zero : ca.angle = 0 := head_angle_zero_of_complete A hA hca_head
+  have hb0_zero : b0.angle = 0 := head_angle_zero_of_complete B hB hb0_head
+  refine (mem_angleDenoms_iff x (multiplyFuel (d + 1) A B).cells).mpr ?_
+  refine ⟨
+    { angle := amod4 (ca.angle + (cb.angle - (match B.cells.head? with
+        | some c => c.angle
+        | none => 0)))
+      face := xor ca.face cb.face
+      payload :=
+        match ca.payload, cb.payload with
+        | some p, some q => some (multiplyFuel d p q)
+        | some p, none   => some p
+        | none,   some q => some q
+        | none,   none   => none },
+    ?_, ?_, ?_⟩
+  · cases A with
+    | mk nda csA =>
+      cases B with
+      | mk ndb csB =>
+        simp only [cells, multiplyFuel]
+        exact List.mem_bind.mpr ⟨ca, hca_mem, List.mem_map.mpr ⟨cb, hcb, rfl⟩⟩
+  · simp [hb0_head, hca_zero, hb0_zero, circleFrac_amod4, hcb_ne]
+  · simp [hb0_head, hca_zero, hb0_zero, circleFrac_amod4, hcb_den]
 
 /-! ## Bound lemmas and composition (sorry-free modulo leaves) -/
 
