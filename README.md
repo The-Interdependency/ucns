@@ -57,7 +57,7 @@ Start here:
 - Collaboration issue: https://github.com/The-Interdependency/ucns/issues/7
 - Starter task: define one UCNS term in standard mathematical language, with notation, example, non-example, and relationship to existing concepts.
 
-The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples.
+The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge. Cancellativity is not claimed globally; the valid target is the restricted `Complete` plus common-depth domain unless the live formalization proves a stronger restricted theorem.
 
 GPT generated; context, prompt Erin Spencer.
 
@@ -76,7 +76,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Depth-2 oracle (Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`DEFENDED` — proof drafted, awaiting external formal review** |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — partially verified in Lean; remaining proof leaves under active discharge** |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
