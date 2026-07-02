@@ -22,10 +22,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install build tooling
+    - name: Install build/test tooling
       run: |
         python -m pip install --upgrade pip
-        pip install build twine
+        python -m pip install build twine "pytest>=8.3,<8.4"
 
     - name: Build package
       run: python -m build
@@ -55,8 +55,5 @@ jobs:
         print('ucns public import boundary ok')
         PY
 
-    - name: Run recursive compatibility tests
-      run: python -m unittest discover ucns_recursive/tests/ -v
-
-    - name: Run public API tests
-      run: python -m unittest discover -s tests -v
+    - name: Run full pytest suite
+      run: python -m pytest ucns_recursive/tests tests -v
