@@ -19,6 +19,8 @@
     denominator bridge compile under the pinned Lean/Lake build.
   - This module is intended to be `sorry`-free; imported frontier files may
     still contain `sorry` leaves with NO DEFENDED status (formal/README.md).
+  - Remaining `sorry` leaves include the upper-bound threading proof. A
+    `sorry`-backed lemma confers NO DEFENDED status (formal/README.md).
 -/
 
 -- === MODULE_BUILD ===
@@ -197,6 +199,27 @@ theorem mem_angleDenoms_iff (x : Nat) (cs : List (Cell UCNSObject)) :
     simp [hz, hden]
 
 /-! ## Analytic leaves (precise hypotheses) -/
+
+/-- The denominator emitted by `Rat.normalize` divides its input denominator. -/
+theorem den_normalize_dvd (num : Int) (den : Nat) (h : den ≠ 0) :
+    (Rat.normalize num den h).den ∣ den := by
+  rcases Rat.normalize_num_den' num den h with ⟨d, _, _, hden⟩
+  exact ⟨d, hden⟩
+
+/-- The product of a natural-number rational and an integer rational is integral,
+    hence has denominator one. -/
+theorem den_mul_nat_int_cast_eq_one (n : Nat) (z : Int) :
+    ((n : Rat) * (z : Rat)).den = 1 := by
+  have hdiv : ((n : Rat) * (z : Rat)).den ∣ 1 := by
+    rw [Rat.mul_def]
+    have hraw :
+        (Rat.normalize ((n : Rat).num * (z : Rat).num)
+          ((n : Rat).den * (z : Rat).den)
+          (Nat.mul_ne_zero (n : Rat).den_nz (z : Rat).den_nz)).den ∣
+          (n : Rat).den * (z : Rat).den :=
+      den_normalize_dvd _ _ _
+    simpa only [Rat.ofNat_den, Rat.intCast_den, Nat.mul_one] using hraw
+  exact Nat.eq_one_of_dvd_one hdiv
 
 /-- The denominator emitted by `Rat.normalize` divides its input denominator. -/
 theorem den_normalize_dvd (num : Int) (den : Nat) (h : den ≠ 0) :
