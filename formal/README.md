@@ -75,15 +75,17 @@ successful `lake build` here means only that the statements type-check with thei
 
 `Ucns/CarrierLcm.lean` decomposes the Carrier-LCM Law
 (prose: `../docs/carrier-support-pruning.md`) into a machine-checked
-composition over five isolated leaf obligations.
+composition over explicit fold, denominator, slice-embedding, and upper-bound
+lemmas.
 
-Sorry-free, audited via `#print axioms` (depend on `propext` only):
+Pinned-build status as of the Carrier-LCM discharge pass:
 
-- `dvd_foldl_lcm_acc`, `dvd_foldl_lcm`, `foldl_lcm_dvd` - the lcm fold engine
-  both proof directions run on
-- `nMin_dvd_of_denoms_subset` - denominator-set containment implies carrier
-  divisibility
-
-Open leaves (`sorry`, inherit no status): `den_amod_dvd`, `den_add_dvd_lcm`,
-`slice_embedding_left/right`, `carrier_lcm_law_upper`. `carrier_lcm_law'`
-composes the bounds by `Nat.dvd_antisymm`; its trust level equals the leaves'.
+- `Ucns/CarrierLcm.lean` is `sorry`-free under `lake build Ucns.CarrierLcm`.
+- The discharged surface includes `dvd_foldl_lcm_acc`, `dvd_foldl_lcm`,
+  `foldl_lcm_dvd`, `nMin_dvd_of_denoms_subset`, `den_amod_dvd`,
+  `den_add_dvd_lcm`, `den_circleFrac_add_dvd_lcm`,
+  `slice_embedding_left/right`, `carrier_lcm_law_upper`, and
+  `carrier_lcm_law'`.
+- This does not graduate the whole formal directory: imported frontier files
+  such as `Ucns/Core.lean` and `Ucns/TheoremN.lean` still contain
+  `sorry`-backed statements that inherit no DEFENDED status.
