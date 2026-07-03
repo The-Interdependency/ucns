@@ -43,13 +43,12 @@ doesn't.
 **Read first:**
 
 - `ucns-v06-completeness-proof.md` — the proof. Eight lemmas, theorem,
-  corollary. Depends on cancellativity (proven by induction sketch in
-  `ucns_v0_5_1_boundary.md`) and on already-frozen v0.3 / v0.4 results.
+  corollary. Depends on a restricted cancellativity target, not global cancellativity; the current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge.
 
 **Reference (read as needed):**
 
 - `ucns-spec.md` — complete consolidated spec defining the objects,
-  the product, sequence equivalence, and the cancellativity sketch the
+  the product, sequence equivalence, and the restricted cancellativity frontier the
   completeness proof depends on.
 
 **Implementation (run if you want to check):**
@@ -80,12 +79,7 @@ The completeness proof takes these as given:
    structurally and by tests.
 2. **v0.4 None-as-unit normalization (Guard 1, E1.5).** Verified in the
    E6 oracle regression.
-3. **E10.4 cancellativity.** Proven by induction sketch in the spec.
-   Empirically verified across 11,016 product pairs at depths 0 and 1
-   (0 violations). The sketch is loose — promoting it to a fully written
-   induction is a known open task and would close the last methodological
-   loop. **If you want to challenge the proof's foundation, this is where
-   I'd look first.**
+3. **E10.4 cancellativity.** Not claimed globally: `multiply_left_cancellative` is false in general. The surviving target is the restricted `Complete` plus common-depth domain unless the live Lean formalization proves a stronger restricted theorem. Empirical counterexample searches inform that domain, but empirical success does not imply proof completion. **If you want to challenge the proof's foundation, this is where I'd look first.**
 
 ---
 
@@ -94,8 +88,8 @@ The completeness proof takes these as given:
 - The eight lemmas reduce to: host-data recovery is direct (Lemmas 2, 3),
   payload work is q independent recursive sub-problems (Lemma 4), recursion
   strictly decreases depth and bottoms out at `S^A_0 = None` (Lemmas 5, 6,
-  7), each sub-call returns the unique correct value by induction +
-  cancellativity (Lemma 8). Theorem composes them.
+  7), each sub-call returns the unique correct value only under the restricted
+  cancellativity hypotheses (Lemma 8). Theorem composes them.
 - Lemma 7's termination bound (`1 + d(A)` stack frames) is verified tight
   by `code/proof_trace.py` — observed depth equals predicted depth at d=1
   and d=2.
@@ -106,13 +100,10 @@ The completeness proof takes these as given:
 
 ## What I think is genuinely weak
 
-- Cancellativity itself is on a sketch + extensive empirical, not on a
-  full written induction. The sketch is straightforward but not yet
-  prose-complete.
+- Cancellativity is not global. The current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge; the valid target is the restricted `Complete` plus common-depth domain unless the live formalization proves more.
 - `right_quotient` completeness is claimed by structural symmetry but the
   dual proof isn't written. Empirically verified on the same 900 cases.
-- Verification beyond depth 2 is one-trace empirical (depth-2 oracle) plus
-  the proof's structural argument. No depth ≥ 3 examples have been run.
+- Verification beyond depth 2 is empirical/frontier evidence plus the proof's structural argument. Empirical tests do not imply proof completion.
 
 If any of these matter to you, that's a real comment to leave.
 

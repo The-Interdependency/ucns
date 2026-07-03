@@ -127,8 +127,7 @@ reintroduces the depth-mismatch CE.
 Condition `A`, `B`, `C` on `Complete` **and** require common depth; keep
 `depth B,C ≤ d`. Lean (RATIFIED 2026-06-21 and applied to `Core.lean` as the conditioned
 statement, `sorry`-backed; the recursive predicates mirror the `depth`
-mutual pattern. Not machine-checked in the authoring environment — compile +
-proof are Step-2):
+mutual pattern. `AlignedComplete` and its projection helpers compile in `Core.lean`; proof is Step-2):
 
 ```lean
 def Nonempty (x : UCNSObject) : Prop :=
@@ -152,18 +151,20 @@ def HostNormalizedRec (x : UCNSObject) : Prop :=
 def Complete (x : UCNSObject) : Prop :=
   Nonempty x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
 
+def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
+  Complete A ∧ Complete B ∧ Complete C ∧
+    depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
+
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
-    (hA : Complete A) (hB : Complete B) (hC : Complete C)
-    (hAB : depth A = depth B) (hBC : depth B = depth C)   -- common depth
-    (h   : multiplyFuel d A B = multiplyFuel d A C)
-    (hdB : depth B ≤ d) (hdC : depth C ≤ d) :
+    (hABC : AlignedComplete A B C d)
+    (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
   sorry
 ```
 
-(`hAB`, `hBC` give `depth A = depth B = depth C`; with `depth B,C ≤ d` this also
-bounds `depth A ≤ d`.) `Complete` + common depth is the **morphology-natural
+(`AlignedComplete` packages `depth A = depth B = depth C`; with `depth B,C ≤ d`
+this also bounds `depth A ≤ d`.) `Complete` + common depth is the **morphology-natural
 domain**: equal-depth word-trees whose cells all carry payloads to a uniform
 nonempty atom layer, with canonical carriers. Remaining ruling/Step-2 work: (i)
 confirm `AlignedComplete` (or a minimal weakening) is the canonical domain, and
