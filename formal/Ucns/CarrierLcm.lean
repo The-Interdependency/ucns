@@ -219,6 +219,27 @@ theorem den_mul_nat_int_cast_eq_one (n : Nat) (z : Int) :
     simpa only [Rat.ofNat_den, Rat.intCast_den, Nat.mul_one] using hraw
   exact Nat.eq_one_of_dvd_one hdiv
 
+/-- The denominator emitted by `Rat.normalize` divides its input denominator. -/
+theorem den_normalize_dvd (num : Int) (den : Nat) (h : den ≠ 0) :
+    (Rat.normalize num den h).den ∣ den := by
+  rcases Rat.normalize_num_den' num den h with ⟨d, _, _, hden⟩
+  exact ⟨d, hden⟩
+
+/-- The product of a natural-number rational and an integer rational is integral,
+    hence has denominator one. -/
+theorem den_mul_nat_int_cast_eq_one (n : Nat) (z : Int) :
+    ((n : Rat) * (z : Rat)).den = 1 := by
+  have hdiv : ((n : Rat) * (z : Rat)).den ∣ 1 := by
+    rw [Rat.mul_def]
+    have hraw :
+        (Rat.normalize ((n : Rat).num * (z : Rat).num)
+          ((n : Rat).den * (z : Rat).den)
+          (Nat.mul_ne_zero (n : Rat).den_nz (z : Rat).den_nz)).den ∣
+          (n : Rat).den * (z : Rat).den :=
+      den_normalize_dvd _ _ _
+    simpa only [Rat.ofNat_den, Rat.intCast_den, Nat.mul_one] using hraw
+  exact Nat.eq_one_of_dvd_one hdiv
+
 /-- amod never enlarges a denominator. LEAF: Rat arithmetic. -/
 theorem den_amod_dvd (a : Rat) (n : Nat) (_hn : 0 < n) :
     (amod a n).den ∣ a.den := by
