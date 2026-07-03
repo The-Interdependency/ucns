@@ -9,14 +9,16 @@
     conclusion:   Nat.dvd_antisymm.
 
   DISCHARGE STATE — read before citing:
-  - The lcm fold engine (`dvd_foldl_lcm`, `foldl_lcm_dvd`, `foldl_lcm_pos`)
+  - The lcm fold engine (`dvd_foldl_lcm_acc`, `dvd_foldl_lcm`, `foldl_lcm_dvd`)
     and the composition layer (`carrier_lcm_law'` from the two bound
     lemmas) are targeted SORRY-FREE.
   - The Rat denominator leaves (`den_add_dvd_lcm`, `den_amod_dvd`) are
     discharged against the installed `Std` Rat API.
   - The slice-embedding proofs compile under the pinned Lean/Lake build.
-  - Remaining `sorry` leaves include the upper-bound threading proof. A
-    `sorry`-backed lemma confers NO DEFENDED status (formal/README.md).
+  - The upper-bound bind/map threading proof and the circle-fraction addition
+    denominator bridge compile under the pinned Lean/Lake build.
+  - This module is intended to be `sorry`-free; imported frontier files may
+    still contain `sorry` leaves with NO DEFENDED status (formal/README.md).
 -/
 
 -- === MODULE_BUILD ===
@@ -37,7 +39,7 @@
 --   rollback: remove file and its import from Ucns.lean
 --   requires: ucns_formal_core_definitions
 --   since: 2026-06-10
---   unresolved: upper-bound bind/map threading leaf
+--   unresolved: none in this module; imported frontier files still contain sorry-backed statements
 -- === END MODULE_BUILD ===
 
 import Ucns.Core
@@ -194,7 +196,28 @@ theorem mem_angleDenoms_iff (x : Nat) (cs : List (Cell UCNSObject)) :
     refine ⟨circleFrac c.angle, ⟨c, hc, rfl⟩, ?_⟩
     simp [hz, hden]
 
-/-! ## Analytic leaves (sorry-stubbed, precise hypotheses) -/
+/-! ## Analytic leaves (precise hypotheses) -/
+
+/-- The denominator emitted by `Rat.normalize` divides its input denominator. -/
+theorem den_normalize_dvd (num : Int) (den : Nat) (h : den ≠ 0) :
+    (Rat.normalize num den h).den ∣ den := by
+  rcases Rat.normalize_num_den' num den h with ⟨d, _, _, hden⟩
+  exact ⟨d, hden⟩
+
+/-- The product of a natural-number rational and an integer rational is integral,
+    hence has denominator one. -/
+theorem den_mul_nat_int_cast_eq_one (n : Nat) (z : Int) :
+    ((n : Rat) * (z : Rat)).den = 1 := by
+  have hdiv : ((n : Rat) * (z : Rat)).den ∣ 1 := by
+    rw [Rat.mul_def]
+    have hraw :
+        (Rat.normalize ((n : Rat).num * (z : Rat).num)
+          ((n : Rat).den * (z : Rat).den)
+          (Nat.mul_ne_zero (n : Rat).den_nz (z : Rat).den_nz)).den ∣
+          (n : Rat).den * (z : Rat).den :=
+      den_normalize_dvd _ _ _
+    simpa only [Rat.ofNat_den, Rat.intCast_den, Nat.mul_one] using hraw
+  exact Nat.eq_one_of_dvd_one hdiv
 
 /-- The denominator emitted by `Rat.normalize` divides its input denominator. -/
 theorem den_normalize_dvd (num : Int) (den : Nat) (h : den ≠ 0) :
@@ -277,6 +300,133 @@ theorem den_add_dvd_lcm (a b : Rat) :
     have hnormden : den / g1 ∣ den := ⟨g1, (Nat.div_mul_cancel hg1den).symm⟩
     exact Nat.dvd_trans hnormden hden_dvd_lcm
 
+/-- Adding angles and then taking the circle fraction is the same as adding
+    circle fractions and reducing modulo one full circle-fraction turn. -/
+theorem circleFrac_add_eq_amod_one (a b : Rat) :
+    circleFrac (a + b) = amod (circleFrac a + circleFrac b) 1 := by
+  unfold circleFrac amod
+  let fa : Int := Rat.floor (a / (2 : Rat))
+  let fb : Int := Rat.floor (b / (2 : Rat))
+  let fab : Int := Rat.floor ((a + b) / (2 : Rat))
+  have hsum :
+      (a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+        (b - (2 : Rat) * (fb : Rat)) / (2 : Rat) =
+        (a + b) / (2 : Rat) - ((fa + fb : Int) : Rat) := by
+    rw [Int.cast_add]
+    ring
+  have hfloor :
+      Rat.floor
+        (((a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+          (b - (2 : Rat) * (fb : Rat)) / (2 : Rat)) / (1 : Rat)) =
+        fab - (fa + fb) := by
+    have hone :
+        ((a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+          (b - (2 : Rat) * (fb : Rat)) / (2 : Rat)) / (1 : Rat) =
+        (a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+          (b - (2 : Rat) * (fb : Rat)) / (2 : Rat) := by
+      ring
+    rw [hone, hsum]
+    dsimp [fab]
+    exact rat_floor_sub_int ((a + b) / (2 : Rat)) (fa + fb)
+  change
+    (a + b - (2 : Rat) * (Rat.floor ((a + b) / (2 : Rat)) : Int)) /
+      (2 : Rat) =
+    (a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+        (b - (2 : Rat) * (fb : Rat)) / (2 : Rat) -
+      (1 : Rat) *
+        (Rat.floor
+          (((a - (2 : Rat) * (fa : Rat)) / (2 : Rat) +
+            (b - (2 : Rat) * (fb : Rat)) / (2 : Rat)) / (1 : Rat)) : Int)
+  rw [hfloor]
+  rw [Int.cast_sub, Int.cast_add]
+  ring
+
+/-- Circle-fraction denominators are submultiplicative under addition.
+
+    This is the remaining arithmetic bridge needed by the Carrier-LCM upper
+    bound: after quotienting angles by full turns, product-angle denominators
+    cannot introduce primes outside the lcm of the operand circle-fraction
+    denominators. -/
+theorem den_circleFrac_add_dvd_lcm (a b : Rat) :
+    (circleFrac (a + b)).den ∣
+      Nat.lcm (circleFrac a).den (circleFrac b).den := by
+  rw [circleFrac_add_eq_amod_one]
+  exact Nat.dvd_trans (den_amod_dvd (circleFrac a + circleFrac b) 1 (by decide))
+    (den_add_dvd_lcm (circleFrac a) (circleFrac b))
+
+/-- The circle-fraction denominator of any listed cell divides that list's
+    host carrier, with the zero circle-fraction case contributing denominator
+    one. -/
+theorem den_circleFrac_dvd_nMin_of_mem
+    (c : Cell UCNSObject) (cs : List (Cell UCNSObject)) (hc : c ∈ cs) :
+    (circleFrac c.angle).den ∣ (angleDenoms cs).foldl Nat.lcm 1 := by
+  by_cases hz : circleFrac c.angle = 0
+  · simp [hz]
+  · exact dvd_foldl_lcm _ _ ((mem_angleDenoms_iff _ cs).mpr
+      ⟨c, hc, hz, rfl⟩) 1
+
+/-- If a product cell has a nonzero emitted denominator, that denominator
+    divides the lcm of the two operand carriers. This theorem contains the
+    bind/map threading for the Carrier-LCM upper bound, after the isolated
+    circle-fraction addition arithmetic lemma above has handled denominators. -/
+theorem product_angleDenom_dvd_lcm
+    (A B : UCNSObject) (d x : Nat)
+    (hB : Complete B)
+    (hx : x ∈ angleDenoms (multiplyFuel (d + 1) A B).cells) :
+    x ∣ Nat.lcm (nMin A) (nMin B) := by
+  rcases (mem_angleDenoms_iff x (multiplyFuel (d + 1) A B).cells).mp hx with
+    ⟨cp, hcp, _hcp_ne, hcp_den⟩
+  rcases exists_head?_of_complete B hB with ⟨b0, hb0_head⟩
+  have hβ0 :
+      (match B.cells.head? with
+        | some c => c.angle
+        | none => 0) = 0 := by
+    simp [hb0_head, head_angle_zero_of_complete B hB hb0_head]
+  cases A with
+  | mk nda csA =>
+    cases B with
+    | mk ndb csB =>
+      have hβ0cs :
+          (match List.head? csB with
+            | some c => c.angle
+            | none => 0) = 0 := by
+        simpa [cells] using hβ0
+      simp only [cells, multiplyFuel] at hcp
+      rcases List.mem_bind.mp hcp with ⟨ca, hca, hca_map⟩
+      rcases List.mem_map.mp hca_map with ⟨cb, hcb, hcp_eq⟩
+      subst hcp_eq
+      simp only [nMin, cells]
+      have hca_den_dvd :
+          (circleFrac ca.angle).den ∣ (angleDenoms csA).foldl Nat.lcm 1 :=
+        den_circleFrac_dvd_nMin_of_mem ca csA hca
+      have hcb_den_dvd :
+          (circleFrac cb.angle).den ∣ (angleDenoms csB).foldl Nat.lcm 1 :=
+        den_circleFrac_dvd_nMin_of_mem cb csB hcb
+      have hsum_den_dvd :
+          (circleFrac (ca.angle + cb.angle)).den ∣
+            Nat.lcm (circleFrac ca.angle).den (circleFrac cb.angle).den :=
+        den_circleFrac_add_dvd_lcm ca.angle cb.angle
+      have hlcm_dvd :
+          Nat.lcm (circleFrac ca.angle).den (circleFrac cb.angle).den ∣
+            Nat.lcm ((angleDenoms csA).foldl Nat.lcm 1)
+              ((angleDenoms csB).foldl Nat.lcm 1) := by
+        exact Nat.lcm_dvd
+          (Nat.dvd_trans hca_den_dvd
+            (Nat.dvd_lcm_left _ _))
+          (Nat.dvd_trans hcb_den_dvd
+            (Nat.dvd_lcm_right _ _))
+      rw [← hcp_den]
+      change
+        (circleFrac
+          (amod4 (ca.angle + (cb.angle -
+            (match List.head? csB with
+              | some c => c.angle
+              | none => 0))))).den ∣
+          Nat.lcm ((angleDenoms csA).foldl Nat.lcm 1)
+            ((angleDenoms csB).foldl Nat.lcm 1)
+      simpa [hβ0cs, circleFrac_amod4] using
+        Nat.dvd_trans hsum_den_dvd hlcm_dvd
+
 /-- Host-normalized objects keep their angle list pointwise inside the
     product's angle list (the j = 0 slice for A).
 
@@ -358,7 +508,7 @@ theorem slice_embedding_right
   · simp [hb0_head, hca_zero, hb0_zero, circleFrac_amod4, hcb_ne]
   · simp [hb0_head, hca_zero, hb0_zero, circleFrac_amod4, hcb_den]
 
-/-! ## Bound lemmas and composition (sorry-free modulo leaves) -/
+/-! ## Bound lemmas and composition -/
 
 theorem carrier_lcm_law_lower_left
     (A B : UCNSObject) (d : Nat)
@@ -375,16 +525,17 @@ theorem carrier_lcm_law_lower_right
   exact nMin_dvd_of_denoms_subset _ _ (slice_embedding_right A B d hA hB)
 
 /-- Upper bound: every product-angle denominator divides
-    L = lcm(nMin A, nMin B). LEAF GROUP: den_add_dvd_lcm + den_amod_dvd
-    threaded through the bind/map structure. -/
+    L = lcm(nMin A, nMin B). -/
 theorem carrier_lcm_law_upper
     (A B : UCNSObject) (d : Nat)
-    (hA : Complete A) (hB : Complete B) :
+    (_hA : Complete A) (hB : Complete B) :
     nMin (multiplyFuel (d + 1) A B) ∣ Nat.lcm (nMin A) (nMin B) := by
-  sorry
+  unfold nMin
+  exact foldl_lcm_dvd _ _ (fun x hx =>
+    product_angleDenom_dvd_lcm A B d x hB hx) 1 (Nat.one_dvd _)
 
-/-- The Law, composed from the bounds by antisymmetry. The composition
-    is machine-checked; status is inherited from the leaves above. -/
+/-- The Law, composed from the bounds by antisymmetry. The Carrier-LCM
+    decomposition in this module is machine-checked and sorry-free. -/
 theorem carrier_lcm_law'
     (A B : UCNSObject) (d : Nat)
     (hA : Complete A) (hB : Complete B) :
@@ -396,4 +547,17 @@ theorem carrier_lcm_law'
       (carrier_lcm_law_lower_right A B d hA hB)
 
 end UCNSObject
+
+/-- Public Carrier-LCM law on the repaired `Complete` domain.
+
+    This replaces the older host-normalized-only Core stub, whose statement was
+    too weak for empty-factor counterexamples. Fuel is written as `d + 1` to
+    expose the one-step product case used by `multiplyFuel`. -/
+theorem carrier_lcm_law
+    (A B : UCNSObject) (d : Nat)
+    (hA : UCNSObject.Complete A) (hB : UCNSObject.Complete B) :
+    UCNSObject.nMin (UCNSObject.multiplyFuel (d + 1) A B) =
+      Nat.lcm (UCNSObject.nMin A) (UCNSObject.nMin B) := by
+  exact UCNSObject.carrier_lcm_law' A B d hA hB
+
 end Ucns
