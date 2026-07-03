@@ -12,6 +12,9 @@ on:
       - 'formal/**'
       - '.github/workflows/carrier-lcm-target.yml'
 
+permissions:
+  contents: read
+
 jobs:
   carrier-lcm:
     runs-on: ubuntu-latest
