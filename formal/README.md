@@ -89,3 +89,7 @@ Pinned-build status as of the Carrier-LCM discharge pass:
 - This does not graduate the whole formal directory: imported frontier files
   such as `Ucns/Core.lean` and `Ucns/TheoremN.lean` still contain
   `sorry`-backed statements that inherit no DEFENDED status.
+- The remaining Core cancellativity statement is packaged under
+  `AlignedComplete` so the ratified nonempty/recursive-normalized/
+  uniform-depth/canonical-carrier/common-depth/fuel hypotheses travel as one
+  proof obligation.

@@ -32,7 +32,7 @@
 --   module_kind: schema
 --   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity.
 --   owner: Erin Spencer
---   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), multiply_left_cancellative (statement)
+--   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete/AlignedComplete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), multiply_left_cancellative (statement)
 --   internal_surface: angleDenoms
 --   auth_boundary: none
 --   storage_boundary: none
@@ -218,6 +218,41 @@ end
 def Complete (x : UCNSObject) : Prop :=
   NonemptyRec x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
 
+/-- Ratified cancellativity domain: each operand is `Complete`, all three
+    operands share one depth, and the right-hand operands fit inside the
+    available multiplication fuel. -/
+def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
+  Complete A ∧ Complete B ∧ Complete C ∧
+    depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
+
+theorem complete_left_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete A := h.1
+
+theorem complete_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete B := h.2.1
+
+theorem complete_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete C := h.2.2.1
+
+theorem common_depth_left_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth A = depth B := h.2.2.2.1
+
+theorem common_depth_right_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B = depth C := h.2.2.2.2.1
+
+theorem depth_right_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B ≤ d := h.2.2.2.2.2.1
+
+theorem depth_cancel_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth C ≤ d := h.2.2.2.2.2.2
+
 end UCNSObject
 
 open UCNSObject
@@ -231,15 +266,14 @@ open UCNSObject
   `formal/cancellativity-step1-findings.md` for the counterexample search.
 
   STUB: proves nothing — closed by `sorry`. A `sorry`-backed statement confers
-  NO DEFENDED status (see README.md). Not machine-checked in the authoring
-  environment; the proof discharge + Mathlib pin are Step-2 work.
+  NO DEFENDED status (see README.md). The statement now takes the domain as a
+  single `AlignedComplete` hypothesis so the remaining proof target cannot
+  accidentally omit one of the counterexample-blocking conjuncts.
 -/
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
-    (hA : Complete A) (hB : Complete B) (hC : Complete C)
-    (hAB : depth A = depth B) (hBC : depth B = depth C)   -- common depth
-    (h : multiplyFuel d A B = multiplyFuel d A C)
-    (hdB : depth B ≤ d) (hdC : depth C ≤ d) :
+    (hABC : AlignedComplete A B C d)
+    (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
   sorry
 
