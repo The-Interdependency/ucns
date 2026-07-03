@@ -32,7 +32,7 @@
 --   module_kind: schema
 --   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity.
 --   owner: Erin Spencer
---   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), carrier_lcm_law + multiply_left_cancellative (statements)
+--   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete/AlignedComplete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), multiply_left_cancellative (statement)
 --   internal_surface: angleDenoms
 --   auth_boundary: none
 --   storage_boundary: none
@@ -44,7 +44,7 @@
 --   rollback: remove file and its import from TheoremN.lean
 --   requires: none
 --   since: 2026-06-09
---   unresolved: AlignedComplete cancellativity statement ratified 2026-06-21 + applied (sorry; not machine-checked here — proof + Mathlib pin pending). Discharge order — cancellativity, then carrier_lcm_law, then depth1 completeness
+--   unresolved: AlignedComplete cancellativity statement ratified 2026-06-21 + applied (sorry; proof pending). Carrier-LCM is discharged in Ucns/CarrierLcm.lean; remaining order — cancellativity, then depth1 completeness
 -- === END MODULE_BUILD ===
 
 import Std.Data.Rat.Basic
@@ -160,7 +160,7 @@ def HostNormalized (x : UCNSObject) : Prop :=
     NOTE: not machine-checked in the authoring environment (no Lean toolchain);
     compile + the proof discharge remain Step-2 work. `sorry` ⇒ no DEFENDED status. -/
 
-/-- Recursive nonemptiness: no empty cell-list at any level
+/- Recursive nonemptiness: no empty cell-list at any level
     (rules out the empty-left-operand and empty-atom counterexamples). -/
 mutual
   def NonemptyRec : UCNSObject → Prop
@@ -173,7 +173,7 @@ mutual
     | ⟨_, _, some p⟩ => NonemptyRec p
 end
 
-/-- Recursive host-normalization: head angle 0 for the object AND every payload
+/- Recursive host-normalization: head angle 0 for the object AND every payload
     (the head-only `HostNormalized` above is too weak — payload β0 collapses). -/
 mutual
   def HostNormalizedRec : UCNSObject → Prop
@@ -186,7 +186,7 @@ mutual
     | ⟨_, _, some p⟩ => HostNormalizedRec p
 end
 
-/-- Canonical carrier: `nDec = nMin cells` at every level
+/- Canonical carrier: `nDec = nMin cells` at every level
     (`Nat.lcm` is not left-cancellative, so a free `nDec` breaks it). -/
 mutual
   def CanonicalCarrier : UCNSObject → Prop
@@ -199,7 +199,7 @@ mutual
     | ⟨_, _, some p⟩ => CanonicalCarrier p
 end
 
-/-- Per-object uniform depth: all cells share one `depthCell`, recursively
+/- Per-object uniform depth: all cells share one `depthCell`, recursively
     (a complete tree with no early atom). -/
 mutual
   def UniformDepth : UCNSObject → Prop
@@ -218,27 +218,78 @@ end
 def Complete (x : UCNSObject) : Prop :=
   NonemptyRec x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
 
+/-- Ratified cancellativity domain: each operand is `Complete`, all three
+    operands share one depth, and the right-hand operands fit inside the
+    available multiplication fuel. -/
+def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
+  Complete A ∧ Complete B ∧ Complete C ∧
+    depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
+
+theorem complete_left_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete A := h.1
+
+theorem complete_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete B := h.2.1
+
+theorem complete_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete C := h.2.2.1
+
+theorem common_depth_left_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth A = depth B := h.2.2.2.1
+
+theorem common_depth_right_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B = depth C := h.2.2.2.2.1
+
+theorem depth_right_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B ≤ d := h.2.2.2.2.2.1
+
+theorem depth_cancel_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth C ≤ d := h.2.2.2.2.2.2
+
+/-- Every UCNS object has positive Lean depth. This is the basic fuel fact
+    used to rule out the `multiplyFuel 0` identity branch under
+    `AlignedComplete`. -/
+theorem depth_pos (A : UCNSObject) : 0 < depth A := by
+  cases A with
+  | mk nd cs =>
+    unfold depth
+    simpa [Nat.succ_eq_add_one, Nat.add_comm] using Nat.succ_pos (depthCells cs)
+
+theorem depth_left_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth A ≤ d := by
+  rw [common_depth_left_right_of_alignedComplete h]
+  exact depth_right_le_fuel_of_alignedComplete h
+
+/-- `AlignedComplete` plus the fuel bound excludes the zero-fuel branch of
+    `multiplyFuel`: the common positive depth must fit inside the fuel. -/
+theorem fuel_pos_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    0 < d :=
+  Nat.lt_of_lt_of_le (depth_pos B) (depth_right_le_fuel_of_alignedComplete h)
+
+/-- A convenience destructor for cancellativity proofs: under
+    `AlignedComplete`, the fuel can always be exposed as `d0 + 1`, so proofs may
+    unfold the product branch rather than the fuel-zero identity branch. -/
+theorem exists_fuel_pred_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    ∃ d0, d = d0 + 1 := by
+  cases d with
+  | zero =>
+    exact absurd (fuel_pos_of_alignedComplete h) (Nat.not_lt_zero 0)
+  | succ d0 =>
+    exact ⟨d0, rfl⟩
+
 end UCNSObject
 
 open UCNSObject
-
-/--
-  CARRIER-LCM LAW (statement; prose proof in
-  docs/carrier-support-pruning.md; TEST-BACKED at 2000 trials in
-  ucns_recursive/tests/test_catalogue_pruning.py).
-
-  For host-normalized A, B and sufficient fuel, the carrier of the
-  product is exactly the lcm of the operand carriers.
-
-  STUB: proves nothing — closed by `sorry`. A `sorry`-backed statement
-  confers no DEFENDED status (see README.md).
--/
-theorem carrier_lcm_law
-    (A B : UCNSObject) (d : Nat)
-    (hA : HostNormalized A) (hB : HostNormalized B)
-    (hd : 1 ≤ d) :
-    nMin (multiplyFuel d A B) = Nat.lcm (nMin A) (nMin B) := by
-  sorry
 
 /--
   CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
@@ -249,15 +300,14 @@ theorem carrier_lcm_law
   `formal/cancellativity-step1-findings.md` for the counterexample search.
 
   STUB: proves nothing — closed by `sorry`. A `sorry`-backed statement confers
-  NO DEFENDED status (see README.md). Not machine-checked in the authoring
-  environment; the proof discharge + Mathlib pin are Step-2 work.
+  NO DEFENDED status (see README.md). The statement now takes the domain as a
+  single `AlignedComplete` hypothesis so the remaining proof target cannot
+  accidentally omit one of the counterexample-blocking conjuncts.
 -/
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
-    (hA : Complete A) (hB : Complete B) (hC : Complete C)
-    (hAB : depth A = depth B) (hBC : depth B = depth C)   -- common depth
-    (h : multiplyFuel d A B = multiplyFuel d A C)
-    (hdB : depth B ≤ d) (hdC : depth C ≤ d) :
+    (hABC : AlignedComplete A B C d)
+    (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
   sorry
 

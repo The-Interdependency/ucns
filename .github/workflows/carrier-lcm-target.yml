@@ -1,0 +1,49 @@
+name: carrier-lcm target (Lean)
+
+# Targeted verifier for the Carrier-LCM proof frontier.
+# This intentionally runs the exact pinned-toolchain command requested for
+# PR acceptance; a green job means the file type-checks under formal/lean-toolchain,
+# while remaining `sorry` leaves still retain their usual no-DEFENDED-status meaning.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'formal/**'
+      - '.github/workflows/carrier-lcm-target.yml'
+
+jobs:
+  carrier-lcm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install elan using formal/lean-toolchain
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat formal/lean-toolchain)"
+
+      - name: Cache Lake packages
+        uses: actions/cache@v4
+        with:
+          path: formal/.lake
+          key: carrier-lcm-lake-${{ hashFiles('formal/lean-toolchain', 'formal/lakefile.lean', 'formal/lake-manifest.json') }}
+
+      - name: Build Ucns.CarrierLcm with pinned toolchain
+        run: |
+          source $HOME/.elan/env
+          cd formal
+          lake build Ucns.CarrierLcm
+
+      - name: Reject admit/axiom in formal Lean files
+        run: |
+          if git grep -n -E '\b(admit|axiom)\b' -- 'formal/Ucns/*.lean'; then
+            echo 'admit/axiom found in formal Lean files'
+            exit 1
+          fi
+
+      - name: Report sorry leaves without certifying them
+        run: |
+          echo 'Open executable sorry leaves:'
+          git grep -n -E '\bsorry\b' -- 'formal/Ucns/*.lean' || true
