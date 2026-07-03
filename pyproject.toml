@@ -7,7 +7,7 @@ name = "ucns"
 version = "0.9.1"
 description = "Unit Circle Number System recursive factorization engine"
 readme = "README.md"
-license = { text = "MPL-2.0" }
+license = { text = "Apache-2.0" }
 requires-python = ">=3.8"
 authors = [
   { name = "Erin Patrick Spencer", email = "wayseer@interdependentway.org" }
@@ -22,12 +22,12 @@ keywords = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  # Python classifiers match the union of the CI matrices in
-  # .github/workflows/ci.yml (3.8, 3.10, 3.12) and
-  # .github/workflows/python-package.yml (3.10, 3.11, 3.12).
-  # Untested versions (3.9, 3.13) are not advertised.
+  # Python classifiers match the package-test matrix in
+  # .github/workflows/python-package.yml (3.8, 3.10, 3.11, 3.12).
+  # Untested versions (3.9, 3.13, 3.14+) are not advertised.
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -47,6 +47,8 @@ Issues = "https://github.com/The-Interdependency/ucns/issues"
 dev = [
   "build>=1.2",
   "twine>=5.0",
+  # pytest 8.4+ drops Python 3.8; keep dev tooling aligned with classifiers.
+  "pytest>=8.3,<8.4",
 ]
 
 [tool.setuptools.packages.find]
@@ -57,4 +59,4 @@ include = ["ucns*", "ucns_cache*"]
 ucns = ["py.typed"]
 
 [tool.setuptools]
-license-files = []
+license-files = ["LICENSE"]
