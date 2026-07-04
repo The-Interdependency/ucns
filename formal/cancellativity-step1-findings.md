@@ -174,7 +174,9 @@ theorem multiply_left_cancellative
 (`AlignedComplete` packages `depth A = depth B = depth C`; with `depth B,C ≤ d`
 this also bounds `depth A ≤ d`. Since every Lean `UCNSObject` has positive
 depth, the packaged fuel hypotheses also imply `0 < d` and expose a predecessor
-`∃ d0, d = d0 + 1`, ruling out the `multiplyFuel 0` identity branch.) `Complete` + common depth is the **morphology-natural
+`∃ d0, d = d0 + 1`, ruling out the `multiplyFuel 0` identity branch. The
+row-major helper `multiplyCells_eq_of_multiplyFuel_succ_eq` now exposes the
+cell-list equality that remains to be inverted.) `Complete` + common depth is the **morphology-natural
 domain**: equal-depth word-trees whose cells all carry payloads to a uniform
 nonempty atom layer, with canonical carriers. Remaining ruling/Step-2 work: (i)
 confirm `AlignedComplete` (or a minimal weakening) is the canonical domain, and
