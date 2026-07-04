@@ -42,8 +42,7 @@ For development:
 git clone https://github.com/The-Interdependency/ucns.git
 cd ucns
 python -m pip install -e .[dev]
-python -m unittest discover ucns_recursive/tests/ -v
-python -m unittest discover -s tests -v
+python -m pytest ucns_recursive/tests tests -v
 ```
 
 ---
@@ -113,8 +112,17 @@ ucns/                    # v1.0 public Python API and engine implementation
   core.py, embedding.py, epicycle.py, mobius.py, similarity.py
                          # v0.6.5-lineage modules (stable reference)
 
+ucns_cache/              # experimental UCNS-native cache prototype
+  keys.py                # canonical/payload/braider key generation + factor reuse
+  primitive_streams.py   # angle / rotation / chirality stream derivation
+  braider.py             # deterministic event braid + lattice hash
+  store.py               # in-memory exact/structural/factor lookup store
+  policy.py, instrumentation.py
+
 ucns_recursive/          # DEPRECATED compatibility wrappers around ucns modules
   tests/                 # Legacy compatibility and recursive-engine test suite
+
+tests/                   # v1.0 API-package tests plus cache prototype tests
 
 ucns-spec.md             # Reconciled core UCNS spec (canonical)
 ucns-theorem-n.md        # Theorem N: catalogue-sufficient completeness (unified)
@@ -122,11 +130,12 @@ ucns-lemma8-depth3.md    # Depth-3 factor search (SUPERSEDED — see theorem-n)
 ucns-spec-frontier-v090.md  # v0.9.0 frontier (partially superseded)
 docs/
   ucns-spec-status-addendum-2026-05-16.md  # Status vocabulary + A0 rule
+  ucns-native-caching.md                   # Cache prototype boundary/limits
   pure-ucns-number-system.md
   coherence-primes-scarcity.md
-ucns-code-v065.py        # Stable v0.6.5 snapshot (read-only reference)
 code/                    # Exploratory artifacts (v0.8.0–v0.9.0)
 code/sweeps/             # Empirical verification scripts
+scripts/bench_ucns_cache.py  # Lightweight cache benchmark harness; no speedup claims
 examples/visualization/  # Human-facing visualization boundary tests
   seed53.html            # 53-residue skip-star + heptagram + unwrap demo
   README.md              # claim linkage, non-proof boundary, open constraints
@@ -232,7 +241,8 @@ result = factor_search_v08(P, catalogue_from(A, B))
 ## Running the Tests
 
 ```bash
-python -m unittest discover ucns_recursive/tests/ -v
+python -m pip install -e .[dev]
+python -m pytest ucns_recursive/tests tests -v
 ```
 
 ---
@@ -243,7 +253,7 @@ python -m unittest discover ucns_recursive/tests/ -v
 python -m pip install -e .[dev]
 python -m build
 python -m twine check dist/*
-python -m unittest discover ucns_recursive/tests/ -v
+python -m pytest ucns_recursive/tests tests -v
 ```
 
 Clean wheel install smoke test:

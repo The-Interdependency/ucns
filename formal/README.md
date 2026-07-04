@@ -101,3 +101,4 @@ Pinned-build status as of the Carrier-LCM discharge pass:
   helper surface also proves rectangular product length and right-cell-count
   equality under a nonempty left factor, then isolates equality of the first
   product row for the same left head cell.
+  proof obligation.

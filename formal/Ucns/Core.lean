@@ -424,9 +424,39 @@ theorem exists_fuel_pred_of_alignedComplete
 
 end UCNSObject
 
+theorem complete_left_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete A := h.1
+
+theorem complete_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete B := h.2.1
+
+theorem complete_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    Complete C := h.2.2.1
+
+theorem common_depth_left_right_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth A = depth B := h.2.2.2.1
+
+theorem common_depth_right_cancel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B = depth C := h.2.2.2.2.1
+
+theorem depth_right_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth B ≤ d := h.2.2.2.2.2.1
+
+theorem depth_cancel_le_fuel_of_alignedComplete
+    {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
+    depth C ≤ d := h.2.2.2.2.2.2
+
+end UCNSObject
+
 open UCNSObject
 
-/-
+/--
   CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
   Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
   requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
