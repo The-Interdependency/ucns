@@ -155,12 +155,20 @@ def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
   Complete A ∧ Complete B ∧ Complete C ∧
     depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
 
+theorem multiply_left_cancellative_succ_obligation
+    (A B C : UCNSObject) (d0 : Nat)
+    (hABC : AlignedComplete A B C (d0 + 1))
+    (h : multiplyFuel (d0 + 1) A B = multiplyFuel (d0 + 1) A C) :
+    B = C := by
+  sorry
+
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
     (hABC : AlignedComplete A B C d)
     (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
-  sorry
+  rcases exists_fuel_pred_of_alignedComplete hABC with ⟨d0, rfl⟩
+  exact multiply_left_cancellative_succ_obligation A B C d0 hABC h
 ```
 
 (`AlignedComplete` packages `depth A = depth B = depth C`; with `depth B,C ≤ d`

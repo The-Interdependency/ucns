@@ -93,4 +93,6 @@ Pinned-build status as of the Carrier-LCM discharge pass:
   `AlignedComplete` so the ratified nonempty/recursive-normalized/
   uniform-depth/canonical-carrier/common-depth/fuel hypotheses travel as one
   proof obligation; helper lemmas also derive `depth A ≤ d`, `0 < d`, and
-  `∃ d0, d = d0 + 1` for unfolding the nonzero `multiplyFuel` branch.
+  `∃ d0, d = d0 + 1` for unfolding the nonzero `multiplyFuel` branch. The
+  remaining executable `sorry` is isolated as
+  `multiply_left_cancellative_succ_obligation`.

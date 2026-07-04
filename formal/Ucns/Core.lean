@@ -291,7 +291,7 @@ end UCNSObject
 
 open UCNSObject
 
-/--
+/-
   CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
   Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
   requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
@@ -304,11 +304,24 @@ open UCNSObject
   single `AlignedComplete` hypothesis so the remaining proof target cannot
   accidentally omit one of the counterexample-blocking conjuncts.
 -/
+/-- The remaining cancellativity proof obligation after `AlignedComplete` has
+    ruled out zero fuel. This is the real recursive-product case: the proof may
+    unfold `multiplyFuel (d0 + 1)` and reason about the row-major product cells.
+
+    Still `sorry`-backed: this theorem marks the exact argument frontier. -/
+theorem multiply_left_cancellative_succ_obligation
+    (A B C : UCNSObject) (d0 : Nat)
+    (hABC : AlignedComplete A B C (d0 + 1))
+    (h : multiplyFuel (d0 + 1) A B = multiplyFuel (d0 + 1) A C) :
+    B = C := by
+  sorry
+
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
     (hABC : AlignedComplete A B C d)
     (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
-  sorry
+  rcases exists_fuel_pred_of_alignedComplete hABC with ⟨d0, rfl⟩
+  exact multiply_left_cancellative_succ_obligation A B C d0 hABC h
 
 end Ucns
