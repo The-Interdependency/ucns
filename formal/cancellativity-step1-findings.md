@@ -155,16 +155,35 @@ def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
   Complete A ∧ Complete B ∧ Complete C ∧
     depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
 
+theorem multiply_left_cancellative_succ_obligation
+    (A B C : UCNSObject) (d0 : Nat)
+    (hABC : AlignedComplete A B C (d0 + 1))
+    (h : multiplyFuel (d0 + 1) A B = multiplyFuel (d0 + 1) A C) :
+    B = C := by
+  sorry
+
 theorem multiply_left_cancellative
     (A B C : UCNSObject) (d : Nat)
     (hABC : AlignedComplete A B C d)
     (h : multiplyFuel d A B = multiplyFuel d A C) :
     B = C := by
-  sorry
+  rcases exists_fuel_pred_of_alignedComplete hABC with ⟨d0, rfl⟩
+  exact multiply_left_cancellative_succ_obligation A B C d0 hABC h
 ```
 
 (`AlignedComplete` packages `depth A = depth B = depth C`; with `depth B,C ≤ d`
-this also bounds `depth A ≤ d`.) `Complete` + common depth is the **morphology-natural
+this also bounds `depth A ≤ d`. Since every Lean `UCNSObject` has positive
+depth, the packaged fuel hypotheses also imply `0 < d` and expose a predecessor
+`∃ d0, d = d0 + 1`, ruling out the `multiplyFuel 0` identity branch. The
+helpers `multiplyCells_eq_of_multiplyFuel_succ_eq` and
+`productCarrier_eq_of_multiplyFuel_succ_eq` expose the product equality's two
+observable components: cell-list equality and carrier equality. The
+`multiplyCells_length` and `right_cells_length_eq_of_multiplyFuel_succ_eq`
+helpers further show that row-major shape already forces equal right-hand
+top-level cell counts when the left factor is nonempty. The
+`first_row_eq_of_multiplyFuel_succ_eq` helper then peels off equality of the
+first product row for a shared left head cell; full row-content inversion is
+still open.) `Complete` + common depth is the **morphology-natural
 domain**: equal-depth word-trees whose cells all carry payloads to a uniform
 nonempty atom layer, with canonical carriers. Remaining ruling/Step-2 work: (i)
 confirm `AlignedComplete` (or a minimal weakening) is the canonical domain, and
