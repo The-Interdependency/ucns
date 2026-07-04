@@ -95,6 +95,8 @@ Pinned-build status as of the Carrier-LCM discharge pass:
   proof obligation; helper lemmas also derive `depth A ≤ d`, `0 < d`, and
   `∃ d0, d = d0 + 1` for unfolding the nonzero `multiplyFuel` branch. The
   remaining executable `sorry` is isolated as
-  `multiply_left_cancellative_succ_obligation`. The first row-major product
-  helper now exposes equality of `multiplyCells` from equality of successor-fuel
-  products.
+  `multiply_left_cancellative_succ_obligation`. Product equality helpers now
+  expose both the row-major `multiplyCells` equality and the product-carrier
+  `Nat.lcm` equality from equality of successor-fuel products; the row-major
+  helper surface also proves rectangular product length and right-cell-count
+  equality under a nonempty left factor.
