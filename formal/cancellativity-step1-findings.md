@@ -180,8 +180,10 @@ helpers `multiplyCells_eq_of_multiplyFuel_succ_eq` and
 observable components: cell-list equality and carrier equality. The
 `multiplyCells_length` and `right_cells_length_eq_of_multiplyFuel_succ_eq`
 helpers further show that row-major shape already forces equal right-hand
-top-level cell counts when the left factor is nonempty; full cell-content
-inversion is still open.) `Complete` + common depth is the **morphology-natural
+top-level cell counts when the left factor is nonempty. The
+`first_row_eq_of_multiplyFuel_succ_eq` helper then peels off equality of the
+first product row for a shared left head cell; full row-content inversion is
+still open.) `Complete` + common depth is the **morphology-natural
 domain**: equal-depth word-trees whose cells all carry payloads to a uniform
 nonempty atom layer, with canonical carriers. Remaining ruling/Step-2 work: (i)
 confirm `AlignedComplete` (or a minimal weakening) is the canonical domain, and

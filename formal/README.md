@@ -99,4 +99,5 @@ Pinned-build status as of the Carrier-LCM discharge pass:
   expose both the row-major `multiplyCells` equality and the product-carrier
   `Nat.lcm` equality from equality of successor-fuel products; the row-major
   helper surface also proves rectangular product length and right-cell-count
-  equality under a nonempty left factor.
+  equality under a nonempty left factor, then isolates equality of the first
+  product row for the same left head cell.

@@ -49,6 +49,7 @@
 
 import Std.Data.Rat.Basic
 import Std.Data.Nat.Gcd
+import Std.Data.List.Lemmas
 
 namespace Ucns
 
@@ -208,6 +209,19 @@ theorem right_cells_length_eq_of_multiplyCells_eq
     | cons _ _ => simp
   exact Nat.mul_left_cancel hpos hlen
 
+theorem first_row_eq_of_multiplyCells_eq
+    (d : Nat) (ca : Cell UCNSObject)
+    (rest csB csC : List (Cell UCNSObject))
+    (hlen : csB.length = csC.length)
+    (h : multiplyCells d (ca :: rest) csB =
+      multiplyCells d (ca :: rest) csC) :
+    multiplyRow d csB ca = multiplyRow d csC ca := by
+  simp [multiplyCells] at h
+  have ht := congrArg (fun xs => xs.take (multiplyRow d csB ca).length) h
+  have hrowLen : (multiplyRow d csC ca).length = (multiplyRow d csB ca).length := by
+    simp [multiplyRow_length, hlen.symm]
+  simpa [List.take_left, List.take_left' hrowLen] using ht
+
 theorem multiplyFuel_succ_eq_mk
     (d nda ndb : Nat) (csA csB : List (Cell UCNSObject)) :
     multiplyFuel (d + 1) (UCNSObject.mk nda csA) (UCNSObject.mk ndb csB) =
@@ -252,6 +266,21 @@ theorem right_cells_length_eq_of_multiplyFuel_succ_eq
     csB.length = csC.length := by
   exact right_cells_length_eq_of_multiplyCells_eq d csA csB csC hA
     (multiplyCells_eq_of_multiplyFuel_succ_eq d nda ndb ndc csA csB csC h)
+
+theorem first_row_eq_of_multiplyFuel_succ_eq
+    (d nda ndb ndc : Nat) (ca : Cell UCNSObject)
+    (rest csB csC : List (Cell UCNSObject))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb csB) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc csC)) :
+    multiplyRow d csB ca = multiplyRow d csC ca := by
+  have hcells :
+      multiplyCells d (ca :: rest) csB = multiplyCells d (ca :: rest) csC :=
+    multiplyCells_eq_of_multiplyFuel_succ_eq d nda ndb ndc (ca :: rest) csB csC h
+  have hlen : csB.length = csC.length :=
+    right_cells_length_eq_of_multiplyCells_eq d (ca :: rest) csB csC
+      (by simp) hcells
+  exact first_row_eq_of_multiplyCells_eq d ca rest csB csC hlen hcells
 
 /-- An object is normalized (at the host level) when its first angle
     is zero — the property (N1) used by the Carrier-LCM Law proof. -/
