@@ -33,6 +33,12 @@ jobs:
           path: formal/.lake
           key: carrier-lcm-lake-${{ hashFiles('formal/lean-toolchain', 'formal/lakefile.lean', 'formal/lake-manifest.json') }}
 
+      - name: Hydrate Mathlib cache
+        run: |
+          source $HOME/.elan/env
+          cd formal
+          lake exe cache get
+
       - name: Build Ucns.CarrierLcm with pinned toolchain
         run: |
           source $HOME/.elan/env
@@ -46,7 +52,14 @@ jobs:
             exit 1
           fi
 
-      - name: Report sorry leaves without certifying them
+      - name: Reject CarrierLcm sorry regressions
         run: |
-          echo 'Open executable sorry leaves:'
-          git grep -n -E '\bsorry\b' -- 'formal/Ucns/*.lean' || true
+          if git grep -n -E '\bsorry\b' -- 'formal/Ucns/CarrierLcm.lean'; then
+            echo 'CarrierLcm sorry regression found'
+            exit 1
+          fi
+
+      - name: Report frontier sorry leaves without certifying them
+        run: |
+          echo 'Open executable sorry leaves outside CarrierLcm:'
+          git grep -n -E '\bsorry\b' -- 'formal/Ucns/*.lean' ':!formal/Ucns/CarrierLcm.lean' || true
