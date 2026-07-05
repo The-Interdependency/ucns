@@ -282,6 +282,66 @@ theorem first_row_eq_of_multiplyFuel_succ_eq
       (by simp) hcells
   exact first_row_eq_of_multiplyCells_eq d ca rest csB csC hlen hcells
 
+
+/-- Boolean xor is cancellative in its right argument. This is the tiny face-bit
+    algebra needed when a product row exposes `xor left.face right.face` on both
+    sides. -/
+theorem bool_xor_left_cancel {a b c : Bool} (h : xor a b = xor a c) : b = c := by
+  cases a <;> cases b <;> cases c <;> simp at h ⊢
+
+/-- Equality of first product rows exposes equality of the product head cells
+    when both right operands have selected head cells. -/
+theorem head_product_cell_eq_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    ({ angle := amod4 (ca.angle + (b.angle - b.angle))
+       face := xor ca.face b.face
+       payload :=
+         match ca.payload, b.payload with
+         | some p, some q => some (multiplyFuel d p q)
+         | some p, none   => some p
+         | none,   some q => some q
+         | none,   none   => none } : Cell UCNSObject) =
+    ({ angle := amod4 (ca.angle + (c.angle - c.angle))
+       face := xor ca.face c.face
+       payload :=
+         match ca.payload, c.payload with
+         | some p, some q => some (multiplyFuel d p q)
+         | some p, none   => some p
+         | none,   some q => some q
+         | none,   none   => none } : Cell UCNSObject) := by
+  have hhead := congrArg List.head? hrow
+  simpa [multiplyRow] using hhead
+
+/-- Face-bit head inversion for the first row: once row equality has selected
+    the head product cell, xor cancellation recovers equality of the right-head
+    face bits. -/
+theorem right_head_face_eq_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    b.face = c.face := by
+  have hcell := head_product_cell_eq_of_first_row_eq d ca b c bs cs hrow
+  have hface : xor ca.face b.face = xor ca.face c.face := by
+    exact congrArg Cell.face hcell
+  exact bool_xor_left_cancel hface
+
+/-- A small bundling lemma for later row-content inversion steps: cell equality
+    follows from equality of the three observable fields. -/
+theorem cell_eq_of_fields_eq
+    {b c : Cell UCNSObject}
+    (hangle : b.angle = c.angle)
+    (hface : b.face = c.face)
+    (hpayload : b.payload = c.payload) :
+    b = c := by
+  cases b
+  cases c
+  cases hangle
+  cases hface
+  cases hpayload
+  rfl
+
 /-- An object is normalized (at the host level) when its first angle
     is zero — the property (N1) used by the Carrier-LCM Law proof. -/
 def HostNormalized (x : UCNSObject) : Prop :=
@@ -424,6 +484,8 @@ theorem exists_fuel_pred_of_alignedComplete
 
 end UCNSObject
 
+open UCNSObject
+
 theorem complete_left_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     Complete A := h.1
@@ -452,11 +514,8 @@ theorem depth_cancel_le_fuel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     depth C ≤ d := h.2.2.2.2.2.2
 
-end UCNSObject
 
-open UCNSObject
-
-/--
+/-
   CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
   Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
   requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
