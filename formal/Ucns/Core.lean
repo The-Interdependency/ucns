@@ -482,6 +482,49 @@ theorem right_head_payload_relation_of_multiplyFuel_succ_eq
     first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
   exact right_head_payload_relation_of_first_row_eq d ca b c bs cs hrow
 
+
+/-- In the recursive-left/recursive-right payload branch, the single-door payload
+    relation opens to exactly the recursive product equality needed by the
+    cancellativity induction. -/
+theorem recursive_payload_eq_of_rightHeadPayloadRelation_some_some
+    (d : Nat) (ca b c : Cell UCNSObject) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (hrel : rightHeadPayloadRelation d ca b c) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  simpa [rightHeadPayloadRelation, hca, hb, hc] using hrel
+
+/-- First-row equality, with selected recursive payloads on all three head
+    cells, exposes the recursive product equality for those payloads. -/
+theorem recursive_payload_eq_of_first_row_eq_some_some
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject)) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  exact recursive_payload_eq_of_rightHeadPayloadRelation_some_some d ca b c p q r
+    hca hb hc (right_head_payload_relation_of_first_row_eq d ca b c bs cs hrow)
+
+/-- Successor-product equality, with selected recursive payloads on all three
+    head cells, exposes the recursive product equality for those payloads. This
+    is the direct induction handoff for the `some/some` payload branch. -/
+theorem recursive_payload_eq_of_multiplyFuel_succ_eq_some_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  exact recursive_payload_eq_of_rightHeadPayloadRelation_some_some d ca b c p q r
+    hca hb hc
+    (right_head_payload_relation_of_multiplyFuel_succ_eq d nda ndb ndc ca b c rest bs cs h)
+
 /-- A small bundling lemma for later row-content inversion steps: cell equality
     follows from equality of the three observable fields. -/
 theorem cell_eq_of_fields_eq
