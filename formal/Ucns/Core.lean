@@ -282,6 +282,264 @@ theorem first_row_eq_of_multiplyFuel_succ_eq
       (by simp) hcells
   exact first_row_eq_of_multiplyCells_eq d ca rest csB csC hlen hcells
 
+
+/-- Boolean xor is cancellative in its right argument. This is the tiny face-bit
+    algebra needed when a product row exposes `xor left.face right.face` on both
+    sides. -/
+theorem bool_xor_left_cancel {a b c : Bool} (h : xor a b = xor a c) : b = c := by
+  cases a <;> cases b <;> cases c <;> simp at h ⊢
+
+/-- Equality of first product rows exposes equality of the product head cells
+    when both right operands have selected head cells. -/
+theorem head_product_cell_eq_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    ({ angle := amod4 (ca.angle + (b.angle - b.angle))
+       face := xor ca.face b.face
+       payload :=
+         match ca.payload, b.payload with
+         | some p, some q => some (multiplyFuel d p q)
+         | some p, none   => some p
+         | none,   some q => some q
+         | none,   none   => none } : Cell UCNSObject) =
+    ({ angle := amod4 (ca.angle + (c.angle - c.angle))
+       face := xor ca.face c.face
+       payload :=
+         match ca.payload, c.payload with
+         | some p, some q => some (multiplyFuel d p q)
+         | some p, none   => some p
+         | none,   some q => some q
+         | none,   none   => none } : Cell UCNSObject) := by
+  have hhead := congrArg List.head? hrow
+  simpa [multiplyRow] using hhead
+
+/-- Face-bit head inversion for the first row: once row equality has selected
+    the head product cell, xor cancellation recovers equality of the right-head
+    face bits. -/
+theorem right_head_face_eq_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    b.face = c.face := by
+  have hcell := head_product_cell_eq_of_first_row_eq d ca b c bs cs hrow
+  have hface : xor ca.face b.face = xor ca.face c.face := by
+    exact congrArg Cell.face hcell
+  exact bool_xor_left_cancel hface
+
+
+/-- The payload relation exposed by a selected product-row head. If the selected
+    left head is the payload unit, this is direct right-payload equality; if the
+    selected left head carries payload `p`, this is equality of the transformed
+    recursive payload expressions. -/
+def rightHeadPayloadRelation (d : Nat)
+    (ca b c : Cell UCNSObject) : Prop :=
+  match ca.payload with
+  | none => b.payload = c.payload
+  | some p =>
+      (match b.payload with
+        | some q => some (multiplyFuel d p q)
+        | none => some p) =
+      (match c.payload with
+        | some r => some (multiplyFuel d p r)
+        | none => some p)
+
+/-- Payload head inversion for the unit-left-payload row case: when the selected
+    left head has no payload, the product head payload is exactly the selected
+    right-head payload, so first-row equality recovers right-head payload
+    equality. -/
+theorem right_head_payload_eq_of_first_row_eq_left_payload_none
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hca : ca.payload = none)
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    b.payload = c.payload := by
+  have hcell := head_product_cell_eq_of_first_row_eq d ca b c bs cs hrow
+  have hpayload := congrArg Cell.payload hcell
+  cases ca with
+  | mk caAngle caFace caPayload =>
+      cases caPayload with
+      | none =>
+          cases b with
+          | mk bAngle bFace bPayload =>
+              cases c with
+              | mk cAngle cFace cPayload =>
+                  cases bPayload <;> cases cPayload <;>
+                    simp at hpayload ⊢ <;> assumption
+      | some p =>
+          simp at hca
+
+/-- Payload-head bridge for the recursive-left-payload row case: when the
+    selected left head has payload `some p`, first-row equality exposes equality
+    of the transformed right-head payload expressions. Full right-payload
+    cancellation is deliberately not claimed here; the `some/some` branch still
+    needs the recursive cancellativity induction. -/
+theorem right_head_product_payload_eq_of_first_row_eq_left_payload_some
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hca : ca.payload = some p)
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    (match b.payload with
+      | some q => some (multiplyFuel d p q)
+      | none => some p) =
+    (match c.payload with
+      | some r => some (multiplyFuel d p r)
+      | none => some p) := by
+  have hcell := head_product_cell_eq_of_first_row_eq d ca b c bs cs hrow
+  have hpayload := congrArg Cell.payload hcell
+  cases ca with
+  | mk caAngle caFace caPayload =>
+      cases caPayload with
+      | none =>
+          simp at hca
+      | some p' =>
+          cases hca
+          cases b with
+          | mk bAngle bFace bPayload =>
+              cases c with
+              | mk cAngle cFace cPayload =>
+                  cases bPayload <;> cases cPayload <;>
+                    simp at hpayload ⊢ <;> assumption
+
+
+/-- Single-door payload inversion for first-row equality. This packages the
+    `none` and `some p` left-head payload cases into the exact relation exposed
+    by the product head, avoiding callers having to split immediately. -/
+theorem right_head_payload_relation_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    rightHeadPayloadRelation d ca b c := by
+  cases hca : ca.payload with
+  | none =>
+      simpa [rightHeadPayloadRelation, hca] using
+        right_head_payload_eq_of_first_row_eq_left_payload_none d ca b c bs cs hca hrow
+  | some p =>
+      simpa [rightHeadPayloadRelation, hca] using
+        right_head_product_payload_eq_of_first_row_eq_left_payload_some d ca b c bs cs p hca hrow
+
+/-- Successor-product head-face inversion: product equality exposes first-row
+    equality, and first-row equality recovers equality of selected right-head
+    face bits. -/
+theorem right_head_face_eq_of_multiplyFuel_succ_eq
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    b.face = c.face := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact right_head_face_eq_of_first_row_eq d ca b c bs cs hrow
+
+/-- Successor-product head-payload inversion in the unit-left-payload case:
+    when the selected left head has no payload, product equality recovers
+    equality of selected right-head payloads. -/
+theorem right_head_payload_eq_of_multiplyFuel_succ_eq_left_payload_none
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (hca : ca.payload = none)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    b.payload = c.payload := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact right_head_payload_eq_of_first_row_eq_left_payload_none d ca b c bs cs hca hrow
+
+/-- Successor-product payload bridge in the recursive-left-payload case. This
+    lifts the row-level transformed-payload equality to the unfolded
+    `multiplyFuel (d + 1)` product. -/
+theorem right_head_product_payload_eq_of_multiplyFuel_succ_eq_left_payload_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hca : ca.payload = some p)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    (match b.payload with
+      | some q => some (multiplyFuel d p q)
+      | none => some p) =
+    (match c.payload with
+      | some r => some (multiplyFuel d p r)
+      | none => some p) := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact right_head_product_payload_eq_of_first_row_eq_left_payload_some d ca b c bs cs p hca hrow
+
+
+/-- Single-door payload inversion for successor-product equality. This exposes
+    the payload relation determined by the selected left head without requiring
+    callers to choose the `none` or `some p` branch up front. -/
+theorem right_head_payload_relation_of_multiplyFuel_succ_eq
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    rightHeadPayloadRelation d ca b c := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact right_head_payload_relation_of_first_row_eq d ca b c bs cs hrow
+
+
+/-- In the recursive-left/recursive-right payload branch, the single-door payload
+    relation opens to exactly the recursive product equality needed by the
+    cancellativity induction. -/
+theorem recursive_payload_eq_of_rightHeadPayloadRelation_some_some
+    (d : Nat) (ca b c : Cell UCNSObject) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (hrel : rightHeadPayloadRelation d ca b c) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  simpa [rightHeadPayloadRelation, hca, hb, hc] using hrel
+
+/-- First-row equality, with selected recursive payloads on all three head
+    cells, exposes the recursive product equality for those payloads. -/
+theorem recursive_payload_eq_of_first_row_eq_some_some
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject)) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  exact recursive_payload_eq_of_rightHeadPayloadRelation_some_some d ca b c p q r
+    hca hb hc (right_head_payload_relation_of_first_row_eq d ca b c bs cs hrow)
+
+/-- Successor-product equality, with selected recursive payloads on all three
+    head cells, exposes the recursive product equality for those payloads. This
+    is the direct induction handoff for the `some/some` payload branch. -/
+theorem recursive_payload_eq_of_multiplyFuel_succ_eq_some_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p q r : UCNSObject)
+    (hca : ca.payload = some p)
+    (hb : b.payload = some q)
+    (hc : c.payload = some r)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    multiplyFuel d p q = multiplyFuel d p r := by
+  exact recursive_payload_eq_of_rightHeadPayloadRelation_some_some d ca b c p q r
+    hca hb hc
+    (right_head_payload_relation_of_multiplyFuel_succ_eq d nda ndb ndc ca b c rest bs cs h)
+
+/-- A small bundling lemma for later row-content inversion steps: cell equality
+    follows from equality of the three observable fields. -/
+theorem cell_eq_of_fields_eq
+    {b c : Cell UCNSObject}
+    (hangle : b.angle = c.angle)
+    (hface : b.face = c.face)
+    (hpayload : b.payload = c.payload) :
+    b = c := by
+  cases b
+  cases c
+  cases hangle
+  cases hface
+  cases hpayload
+  rfl
+
 /-- An object is normalized (at the host level) when its first angle
     is zero — the property (N1) used by the Carrier-LCM Law proof. -/
 def HostNormalized (x : UCNSObject) : Prop :=
@@ -353,6 +611,56 @@ end
 def Complete (x : UCNSObject) : Prop :=
   NonemptyRec x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
 
+
+/-- If every cell in a list has zero payload depth, then the list-level maximum
+    payload depth is zero. -/
+theorem depthCells_eq_zero_of_forall_depthCell_zero
+    (cs : List (Cell UCNSObject))
+    (h : ∀ c ∈ cs, depthCell c = 0) :
+    depthCells cs = 0 := by
+  induction cs with
+  | nil =>
+      rfl
+  | cons c rest ih =>
+      simp [depthCells, h c (by simp), ih (by
+        intro c' hc'
+        exact h c' (by simp [hc']))]
+
+/-- In a uniform-depth object whose selected head has no payload, every top-level
+    cell has payload depth zero, so the object itself has depth one. -/
+theorem depth_eq_one_of_uniformDepth_mk_cons_head_payload_none
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (hu : UniformDepth (UCNSObject.mk nd (c :: cs)))
+    (hc : c.payload = none) :
+    depth (UCNSObject.mk nd (c :: cs)) = 1 := by
+  have huObj :
+      (∀ c' ∈ c :: cs, ∀ c'' ∈ c :: cs, depthCell c' = depthCell c'') ∧
+        UniformDepthCells (c :: cs) := by
+    simpa [UniformDepth] using hu
+  have hzero : ∀ c' ∈ c :: cs, depthCell c' = 0 := by
+    intro c' hc'
+    have hsame := huObj.1 c' hc' c (by simp)
+    rw [hsame]
+    cases c with
+    | mk angle face payload =>
+        cases payload <;> simp [depthCell] at hc ⊢
+  simp [depth, depthCells_eq_zero_of_forall_depthCell_zero (c :: cs) hzero]
+
+/-- A complete non-flat object cannot have a payload-unit selected head: under
+    uniform depth, a head payload of `none` would force object depth one. -/
+theorem exists_head_payload_of_complete_mk_cons_depth_gt_one
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (h : Complete (UCNSObject.mk nd (c :: cs)))
+    (hd : 1 < depth (UCNSObject.mk nd (c :: cs))) :
+    ∃ p, c.payload = some p := by
+  cases hc : c.payload with
+  | none =>
+      have hdepth := depth_eq_one_of_uniformDepth_mk_cons_head_payload_none nd c cs h.2.2.1 hc
+      rw [hdepth] at hd
+      exact False.elim (by exact Nat.lt_irrefl 1 hd)
+  | some p =>
+      exact ⟨p, rfl⟩
+
 /-- Ratified cancellativity domain: each operand is `Complete`, all three
     operands share one depth, and the right-hand operands fit inside the
     available multiplication fuel. -/
@@ -371,6 +679,68 @@ theorem complete_right_of_alignedComplete
 theorem complete_cancel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     Complete C := h.2.2.1
+
+
+/-- A complete object with a selected head cell has normalized head angle. -/
+theorem head_angle_eq_zero_of_complete_mk_cons
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (h : Complete (UCNSObject.mk nd (c :: cs))) :
+    c.angle = 0 := by
+  have hnorm : HostNormalizedRec (UCNSObject.mk nd (c :: cs)) := h.2.1
+  unfold HostNormalizedRec at hnorm
+  exact hnorm.1 c rfl
+
+/-- Head-angle equality for selected right heads follows from completeness alone:
+    both right operands are recursively host-normalized, so both selected head
+    angles are zero. -/
+theorem right_head_angle_eq_of_complete_heads
+    (ndb ndc : Nat) (b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hB : Complete (UCNSObject.mk ndb (b :: bs)))
+    (hC : Complete (UCNSObject.mk ndc (c :: cs))) :
+    b.angle = c.angle := by
+  exact (head_angle_eq_zero_of_complete_mk_cons ndb b bs hB).trans
+    (head_angle_eq_zero_of_complete_mk_cons ndc c cs hC).symm
+
+/-- Under `AlignedComplete`, selected right-head angles are equal. This is the
+    angle component needed by the row-content inversion bundle; unlike face and
+    payload, it comes from the normalized-domain hypothesis rather than from xor
+    or recursive payload cancellation. -/
+theorem right_head_angle_eq_of_alignedComplete_heads
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) d) :
+    b.angle = c.angle := by
+  exact right_head_angle_eq_of_complete_heads ndb ndc b c bs cs
+    (complete_right_of_alignedComplete hABC)
+    (complete_cancel_of_alignedComplete hABC)
+
+
+/-- In the unit-left-payload case, successor-product equality plus
+    `AlignedComplete` already identifies the selected right-head cells: angles
+    come from recursive host-normalization, faces from xor inversion, and
+    payloads from the unit-left-payload row inversion. -/
+theorem right_head_cell_eq_of_multiplyFuel_succ_eq_left_payload_none
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) (d + 1))
+    (hca : ca.payload = none)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    b = c := by
+  have hangle := right_head_angle_eq_of_alignedComplete_heads (d + 1) nda ndb ndc ca b c rest bs cs hABC
+  have hface := right_head_face_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca b c rest bs cs h
+  have hpayload :=
+    right_head_payload_eq_of_multiplyFuel_succ_eq_left_payload_none d nda ndb ndc ca b c rest bs cs hca h
+  exact cell_eq_of_fields_eq hangle hface hpayload
+
 
 theorem common_depth_left_right_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
@@ -396,6 +766,68 @@ theorem depth_pos (A : UCNSObject) : 0 < depth A := by
   | mk nd cs =>
     unfold depth
     simpa [Nat.succ_eq_add_one, Nat.add_comm] using Nat.succ_pos (depthCells cs)
+
+/-- A selected recursive head payload makes the enclosing object non-flat. -/
+theorem depth_gt_one_of_mk_cons_head_payload_some
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (p : UCNSObject)
+    (hc : c.payload = some p) :
+    1 < depth (UCNSObject.mk nd (c :: cs)) := by
+  cases c with
+  | mk angle face payload =>
+      cases payload with
+      | none =>
+          simp at hc
+      | some p' =>
+          simp [depth, depthCells, depthCell]
+          exact Nat.succ_lt_succ (Nat.lt_of_lt_of_le (depth_pos p') (Nat.le_max_left _ _))
+
+/-- Under common depth, a recursive payload at a selected left head forces a
+    selected right head to carry a recursive payload as well. This rules out the
+    recursive-left/unit-right mismatch before invoking recursive cancellation. -/
+theorem exists_right_head_payload_of_alignedComplete_left_head_payload_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) d)
+    (hca : ca.payload = some p) :
+    (∃ q, b.payload = some q) ∧ (∃ r, c.payload = some r) := by
+  have hAgt : 1 < depth (UCNSObject.mk nda (ca :: rest)) :=
+    depth_gt_one_of_mk_cons_head_payload_some nda ca rest p hca
+  have hBgt : 1 < depth (UCNSObject.mk ndb (b :: bs)) := by
+    rwa [common_depth_left_right_of_alignedComplete hABC] at hAgt
+  have hCgt : 1 < depth (UCNSObject.mk ndc (c :: cs)) := by
+    rwa [common_depth_right_cancel_of_alignedComplete hABC] at hBgt
+  exact
+    ⟨exists_head_payload_of_complete_mk_cons_depth_gt_one ndb b bs
+        (complete_right_of_alignedComplete hABC) hBgt,
+      exists_head_payload_of_complete_mk_cons_depth_gt_one ndc c cs
+        (complete_cancel_of_alignedComplete hABC) hCgt⟩
+
+/-- Successor-product equality in the recursive-head case supplies the exact
+    recursive equality needed by induction, with the matching right-head payload
+    witnesses obtained from `AlignedComplete` rather than passed by the caller. -/
+theorem recursive_payload_eq_of_multiplyFuel_succ_eq_left_payload_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) (d + 1))
+    (hca : ca.payload = some p)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    ∃ q r, b.payload = some q ∧ c.payload = some r ∧
+      multiplyFuel d p q = multiplyFuel d p r := by
+  rcases exists_right_head_payload_of_alignedComplete_left_head_payload_some
+      (d + 1) nda ndb ndc ca b c rest bs cs p hABC hca with
+    ⟨⟨q, hb⟩, ⟨r, hc⟩⟩
+  exact ⟨q, r, hb, hc,
+    recursive_payload_eq_of_multiplyFuel_succ_eq_some_some
+      d nda ndb ndc ca b c rest bs cs p q r hca hb hc h⟩
 
 theorem depth_left_le_fuel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
@@ -424,6 +856,8 @@ theorem exists_fuel_pred_of_alignedComplete
 
 end UCNSObject
 
+open UCNSObject
+
 theorem complete_left_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     Complete A := h.1
@@ -452,11 +886,8 @@ theorem depth_cancel_le_fuel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     depth C ≤ d := h.2.2.2.2.2.2
 
-end UCNSObject
 
-open UCNSObject
-
-/--
+/-
   CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
   Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
   requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
