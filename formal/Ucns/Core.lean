@@ -611,6 +611,56 @@ end
 def Complete (x : UCNSObject) : Prop :=
   NonemptyRec x ∧ HostNormalizedRec x ∧ UniformDepth x ∧ CanonicalCarrier x
 
+
+/-- If every cell in a list has zero payload depth, then the list-level maximum
+    payload depth is zero. -/
+theorem depthCells_eq_zero_of_forall_depthCell_zero
+    (cs : List (Cell UCNSObject))
+    (h : ∀ c ∈ cs, depthCell c = 0) :
+    depthCells cs = 0 := by
+  induction cs with
+  | nil =>
+      rfl
+  | cons c rest ih =>
+      simp [depthCells, h c (by simp), ih (by
+        intro c' hc'
+        exact h c' (by simp [hc']))]
+
+/-- In a uniform-depth object whose selected head has no payload, every top-level
+    cell has payload depth zero, so the object itself has depth one. -/
+theorem depth_eq_one_of_uniformDepth_mk_cons_head_payload_none
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (hu : UniformDepth (UCNSObject.mk nd (c :: cs)))
+    (hc : c.payload = none) :
+    depth (UCNSObject.mk nd (c :: cs)) = 1 := by
+  have huObj :
+      (∀ c' ∈ c :: cs, ∀ c'' ∈ c :: cs, depthCell c' = depthCell c'') ∧
+        UniformDepthCells (c :: cs) := by
+    simpa [UniformDepth] using hu
+  have hzero : ∀ c' ∈ c :: cs, depthCell c' = 0 := by
+    intro c' hc'
+    have hsame := huObj.1 c' hc' c (by simp)
+    rw [hsame]
+    cases c with
+    | mk angle face payload =>
+        cases payload <;> simp [depthCell] at hc ⊢
+  simp [depth, depthCells_eq_zero_of_forall_depthCell_zero (c :: cs) hzero]
+
+/-- A complete non-flat object cannot have a payload-unit selected head: under
+    uniform depth, a head payload of `none` would force object depth one. -/
+theorem exists_head_payload_of_complete_mk_cons_depth_gt_one
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (h : Complete (UCNSObject.mk nd (c :: cs)))
+    (hd : 1 < depth (UCNSObject.mk nd (c :: cs))) :
+    ∃ p, c.payload = some p := by
+  cases hc : c.payload with
+  | none =>
+      have hdepth := depth_eq_one_of_uniformDepth_mk_cons_head_payload_none nd c cs h.2.2.1 hc
+      rw [hdepth] at hd
+      exact False.elim (by exact Nat.lt_irrefl 1 hd)
+  | some p =>
+      exact ⟨p, rfl⟩
+
 /-- Ratified cancellativity domain: each operand is `Complete`, all three
     operands share one depth, and the right-hand operands fit inside the
     available multiplication fuel. -/
@@ -668,6 +718,7 @@ theorem right_head_angle_eq_of_alignedComplete_heads
     (complete_right_of_alignedComplete hABC)
     (complete_cancel_of_alignedComplete hABC)
 
+
 /-- In the unit-left-payload case, successor-product equality plus
     `AlignedComplete` already identifies the selected right-head cells: angles
     come from recursive host-normalization, faces from xor inversion, and
@@ -715,6 +766,68 @@ theorem depth_pos (A : UCNSObject) : 0 < depth A := by
   | mk nd cs =>
     unfold depth
     simpa [Nat.succ_eq_add_one, Nat.add_comm] using Nat.succ_pos (depthCells cs)
+
+/-- A selected recursive head payload makes the enclosing object non-flat. -/
+theorem depth_gt_one_of_mk_cons_head_payload_some
+    (nd : Nat) (c : Cell UCNSObject) (cs : List (Cell UCNSObject))
+    (p : UCNSObject)
+    (hc : c.payload = some p) :
+    1 < depth (UCNSObject.mk nd (c :: cs)) := by
+  cases c with
+  | mk angle face payload =>
+      cases payload with
+      | none =>
+          simp at hc
+      | some p' =>
+          simp [depth, depthCells, depthCell]
+          exact Nat.succ_lt_succ (Nat.lt_of_lt_of_le (depth_pos p') (Nat.le_max_left _ _))
+
+/-- Under common depth, a recursive payload at a selected left head forces a
+    selected right head to carry a recursive payload as well. This rules out the
+    recursive-left/unit-right mismatch before invoking recursive cancellation. -/
+theorem exists_right_head_payload_of_alignedComplete_left_head_payload_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) d)
+    (hca : ca.payload = some p) :
+    (∃ q, b.payload = some q) ∧ (∃ r, c.payload = some r) := by
+  have hAgt : 1 < depth (UCNSObject.mk nda (ca :: rest)) :=
+    depth_gt_one_of_mk_cons_head_payload_some nda ca rest p hca
+  have hBgt : 1 < depth (UCNSObject.mk ndb (b :: bs)) := by
+    rwa [common_depth_left_right_of_alignedComplete hABC] at hAgt
+  have hCgt : 1 < depth (UCNSObject.mk ndc (c :: cs)) := by
+    rwa [common_depth_right_cancel_of_alignedComplete hABC] at hBgt
+  exact
+    ⟨exists_head_payload_of_complete_mk_cons_depth_gt_one ndb b bs
+        (complete_right_of_alignedComplete hABC) hBgt,
+      exists_head_payload_of_complete_mk_cons_depth_gt_one ndc c cs
+        (complete_cancel_of_alignedComplete hABC) hCgt⟩
+
+/-- Successor-product equality in the recursive-head case supplies the exact
+    recursive equality needed by induction, with the matching right-head payload
+    witnesses obtained from `AlignedComplete` rather than passed by the caller. -/
+theorem recursive_payload_eq_of_multiplyFuel_succ_eq_left_payload_some
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject)) (p : UCNSObject)
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) (d + 1))
+    (hca : ca.payload = some p)
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    ∃ q r, b.payload = some q ∧ c.payload = some r ∧
+      multiplyFuel d p q = multiplyFuel d p r := by
+  rcases exists_right_head_payload_of_alignedComplete_left_head_payload_some
+      (d + 1) nda ndb ndc ca b c rest bs cs p hABC hca with
+    ⟨⟨q, hb⟩, ⟨r, hc⟩⟩
+  exact ⟨q, r, hb, hc,
+    recursive_payload_eq_of_multiplyFuel_succ_eq_some_some
+      d nda ndb ndc ca b c rest bs cs p q r hca hb hc h⟩
 
 theorem depth_left_le_fuel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
