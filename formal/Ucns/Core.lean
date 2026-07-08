@@ -374,6 +374,37 @@ theorem tail_product_cells_eq_of_first_row_eq_head_angle_eq
   rw [← hangle] at htail
   exact htail
 
+/-- Successor-product equality exposes equality of the first product row tails,
+    after the selected right-head product cell is removed. This is the
+    product-level wrapper around `tail_product_cells_eq_of_first_row_eq`. -/
+theorem tail_product_cells_eq_of_multiplyFuel_succ_eq
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    List.map (fun (cb : Cell UCNSObject) =>
+      Cell.mk
+        (amod4 (ca.angle + (cb.angle - b.angle)))
+        (xor ca.face cb.face)
+        (match ca.payload, cb.payload with
+          | some p, some q => some (multiplyFuel d p q)
+          | some p, none   => some p
+          | none,   some q => some q
+          | none,   none   => none)) bs =
+    List.map (fun (cc : Cell UCNSObject) =>
+      Cell.mk
+        (amod4 (ca.angle + (cc.angle - c.angle)))
+        (xor ca.face cc.face)
+        (match ca.payload, cc.payload with
+          | some p, some r => some (multiplyFuel d p r)
+          | some p, none   => some p
+          | none,   some r => some r
+          | none,   none   => none)) cs := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact tail_product_cells_eq_of_first_row_eq d ca b c bs cs hrow
+
 /-- Face-bit head inversion for the first row: once row equality has selected
     the head product cell, xor cancellation recovers equality of the right-head
     face bits. -/
@@ -880,6 +911,44 @@ theorem right_head_angle_eq_of_alignedComplete_heads
     (complete_right_of_alignedComplete hABC)
     (complete_cancel_of_alignedComplete hABC)
 
+
+/-- Under `AlignedComplete`, successor-product equality exposes equality of the
+    first product row tails with a shared right-head base angle. Head-angle
+    equality comes from recursive host-normalization; the remaining tail cells
+    still require non-head field inversion. -/
+theorem tail_product_cells_eq_of_multiplyFuel_succ_eq_alignedComplete
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) (d + 1))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    List.map (fun (cb : Cell UCNSObject) =>
+      Cell.mk
+        (amod4 (ca.angle + (cb.angle - b.angle)))
+        (xor ca.face cb.face)
+        (match ca.payload, cb.payload with
+          | some p, some q => some (multiplyFuel d p q)
+          | some p, none   => some p
+          | none,   some q => some q
+          | none,   none   => none)) bs =
+    List.map (fun (cc : Cell UCNSObject) =>
+      Cell.mk
+        (amod4 (ca.angle + (cc.angle - b.angle)))
+        (xor ca.face cc.face)
+        (match ca.payload, cc.payload with
+          | some p, some r => some (multiplyFuel d p r)
+          | some p, none   => some p
+          | none,   some r => some r
+          | none,   none   => none)) cs := by
+  have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
+    first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
+  exact tail_product_cells_eq_of_first_row_eq_head_angle_eq d ca b c bs cs
+    (right_head_angle_eq_of_alignedComplete_heads (d + 1) nda ndb ndc ca b c rest bs cs hABC)
+    hrow
 
 /-- In the unit-left-payload case, successor-product equality plus
     `AlignedComplete` already identifies the selected right-head cells: angles
