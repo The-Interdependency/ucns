@@ -282,6 +282,34 @@ theorem first_row_eq_of_multiplyFuel_succ_eq
       (by simp) hcells
   exact first_row_eq_of_multiplyCells_eq d ca rest csB csC hlen hcells
 
+/-- First-row equality also preserves the unselected tail of the transformed
+    right-row cells. This is the list-induction handhold after the selected
+    right head has been inverted: it peels the head product cell and leaves the
+    mapped tail products as an equality to be consumed by the next tail step. -/
+theorem tail_product_cells_eq_of_first_row_eq
+    (d : Nat) (ca b c : Cell UCNSObject)
+    (bs cs : List (Cell UCNSObject))
+    (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
+    (multiplyRow d (b :: bs) ca).tail =
+      (multiplyRow d (c :: cs) ca).tail := by
+  exact congrArg List.tail hrow
+
+/-- Raw successor-product version of `tail_product_cells_eq_of_first_row_eq`:
+    equality of full products exposes first-row equality, then peeling the
+    selected right-head product cell yields equality of the first-row tails. -/
+theorem tail_product_cells_eq_of_multiplyFuel_succ_eq
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    (multiplyRow d (b :: bs) ca).tail =
+      (multiplyRow d (c :: cs) ca).tail := by
+  exact tail_product_cells_eq_of_first_row_eq d ca b c bs cs
+    (first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h)
+
+
+
 
 /-- Boolean xor is cancellative in its right argument. This is the tiny face-bit
     algebra needed when a product row exposes `xor left.face right.face` on both
@@ -679,6 +707,24 @@ theorem complete_right_of_alignedComplete
 theorem complete_cancel_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     Complete C := h.2.2.1
+
+/-- `AlignedComplete` wrapper for the first-row tail equality. The domain
+    hypothesis is not needed for the raw list fact, but carrying it here keeps
+    later cancellativity code on the same canonical/normalized proof path as
+    the head-inversion lemmas. -/
+theorem tail_product_cells_eq_of_multiplyFuel_succ_eq_alignedComplete
+    (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
+    (rest bs cs : List (Cell UCNSObject))
+    (_hABC : AlignedComplete
+      (UCNSObject.mk nda (ca :: rest))
+      (UCNSObject.mk ndb (b :: bs))
+      (UCNSObject.mk ndc (c :: cs)) (d + 1))
+    (h :
+      multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
+        multiplyFuel (d + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
+    (multiplyRow d (b :: bs) ca).tail =
+      (multiplyRow d (c :: cs) ca).tail := by
+  exact tail_product_cells_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca b c rest bs cs h
 
 
 /-- A complete object with a selected head cell has normalized head angle. -/
