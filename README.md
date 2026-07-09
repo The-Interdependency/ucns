@@ -82,7 +82,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 
 `factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It now lives directly in the `ucns` package; `ucns_recursive` is a deprecated compatibility shim for legacy imports.
 
-See `ucns-theorem-n.md` for the unified completeness theorem. The key implementation insight: `factor_search_v08` is depth-agnostic — every step operates on `==` and plain catalogue scans. The catalogue is the only depth-sensitive input.
+See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input.
 
 **Prime quartet discontinuity.** Cross-repo interoperability (`ucns`, `edcmbone`, `a0`, `interdependent-lib`) is not theorem continuity by default. See `docs/prime-quartet-discontinuity.md` and `docs/edcm-edcmbone-bridge-checklist.md`.
 
@@ -125,7 +125,7 @@ ucns_recursive/          # DEPRECATED compatibility wrappers around ucns modules
 tests/                   # v1.0 API-package tests plus cache prototype tests
 
 ucns-spec.md             # Reconciled core UCNS spec (canonical)
-ucns-theorem-n.md        # Theorem N: catalogue-sufficient completeness (unified)
+ucns-theorem-n.md        # Theorem N: catalogue-sufficient frontier statement
 ucns-lemma8-depth3.md    # Depth-3 factor search (SUPERSEDED — see theorem-n)
 ucns-spec-frontier-v090.md  # v0.9.0 frontier (partially superseded)
 docs/
@@ -284,11 +284,12 @@ The v0.8.0 failure analysis identified three root causes now corrected in `facto
 
 UCNS has a `DEFENDED` flat kernel, a `DEFENDED` depth-1 restricted
 completeness theorem, and a `DEFENDED` + `ORACLE-COMPLETE` depth-2
-oracle theorem (Lemma 7). These are instances of **Theorem N**
-(catalogue-sufficient factorization, `ucns-theorem-n.md`): if the
-catalogue contains every payload of the true factors,
-`factor_search_v08` finds a factorization. Depth enters only through
-catalogue selection, not through the algorithm.
+oracle theorem (Lemma 7). Theorem N is the current catalogue-sufficient
+frontier statement: if the catalogue contains every recursive payload of
+true non-multiplicative-unit factors, `factor_search_v08` is expected to
+find a recomposing factorization. Its Lean statements still contain
+`sorry` leaves and require external formal review before any stronger
+public theorem status.
 
 The full frozen depth-2 domain is `IMPLEMENTED` + `TEST-BACKED` in
 `factor_search_v08` but not yet `DEFENDED` at the spec level. Theorem 9
