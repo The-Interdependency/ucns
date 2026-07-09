@@ -16,7 +16,7 @@ from typing import Callable, Mapping, Optional
 #   summary: derives the English base-vernacular gonol set from OEWN relational position over the imported public glyph codebook so specialized strata can attach to a floor
 #   owner: Erin Spencer (build agent: Codex)
 #   public_surface: load_floor, FloorGonol, floor_manifest
-#   internal_surface: oewn_ingest, relation_graph, angular_assignment, codebook_import, a0_public_gonol
+#   internal_surface: oewn_ingest, relation_graph, angular_assignment, codebook_import, a0_public_gonol, glyph_axes
 #   auth_boundary: none
 #   storage_boundary: write
 #   network_boundary: external

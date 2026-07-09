@@ -16,6 +16,7 @@ from ucns.vernacular_floor.a0_public_gonol import A0PublicGonolConstruction, imp
 from ucns.vernacular_floor.assignment import FloorGonol, assign_from_relations, compose_sentence, identity_holds, origin
 from ucns.vernacular_floor.codebook_import import EXPECTED_PUBLIC_GLYPH_COUNT, codebook_from_construction, is_prime, validate_codebook
 from ucns.vernacular_floor.floor_artifact import load_floor, write_floor
+from ucns.vernacular_floor.glyph_axes import glyph_axes_from_codebook, glyph_gonols_from_codebook
 from ucns.vernacular_floor.manifest import floor_manifest, unresolved_membership_rule
 from ucns.vernacular_floor.transformation_assembly import OperatorName, emit, recognize, round_trip
 
@@ -76,6 +77,20 @@ class VernacularFloorTests(unittest.TestCase):
     def test_static_membership_path_has_no_literal_count(self) -> None:
         source = inspect.getsource(unresolved_membership_rule)
         self.assertNotIn("157", source)
+
+    def test_glyph_axes_place_space_at_origin(self) -> None:
+        glyphs = (" ",) + tuple(chr(0x2800 + i) for i in range(1, 157))
+        axes = glyph_axes_from_codebook(glyphs)
+        gonols = glyph_gonols_from_codebook(glyphs)
+        self.assertEqual(axes[0].glyph, " ")
+        self.assertEqual(axes[0].theta, 0.0)
+        self.assertEqual(gonols[" "], origin())
+        self.assertEqual(len(axes), 157)
+
+    def test_glyph_axes_reject_missing_origin_space(self) -> None:
+        glyphs = tuple(chr(0x2900 + i) for i in range(157))
+        with self.assertRaises(ValueError):
+            glyph_axes_from_codebook(glyphs)
 
     def test_origin_identity_and_closure(self) -> None:
         run = assign_from_relations("run", {"hypernym": ["move"], "antonym": ["stop"]})
