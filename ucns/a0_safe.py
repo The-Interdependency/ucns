@@ -15,7 +15,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns.tests.test_a0_safe
+#   tests: ucns_recursive/tests/test_a0_safe.py
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_object_record, ucns_factorization_result, ucns_serialization, ucns_canonical
