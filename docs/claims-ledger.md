@@ -55,10 +55,10 @@ EXPERIMENTAL      exploration layer, not canon
 | Flat kernel algebra | `DEFENDED` | v0.3 layer | Preserved in `ucns-spec.md`. |
 | Epicyclic first freeze | `DEFENDED` | v0.4 layer | Preserved in `ucns-spec.md`. |
 | Recursive sequence / multiset primality notions | `DEFENDED` | v0.5 layer | Preserved with later scoping warnings. |
-| Cancellativity and quotient uniqueness boundary | `DEFENDED` | v0.5.1 layer | Used by the recursive quotient argument. |
+| Cancellativity and quotient uniqueness boundary | `DEFENDED` in prose/spec; Lean discharge still active | v0.5.1 layer | Used by the recursive quotient argument; current Lean work continues under the formal frontier. |
 | Restricted completeness on bounded depth-1 domain | `DEFENDED` + `TEST-BACKED` | v0.6.1-v0.6.5 | The older defended completeness layer. |
 | Depth-2 smallest oracle theorem / Lemma 7 | `DEFENDED` + `ORACLE-COMPLETE` | Depth-2 under oracle/catalogue assumptions | Complete only under the declared oracle surface. |
-| Theorem N: catalogue-sufficient factorization | `DEFENDED` in canon; proof drafted, awaiting external formal review | All depths, assuming catalogue contains every recursive payload of true factors | This is the central v1.0 theorem claim. It is a correctness/completeness theorem under catalogue sufficiency, not a tractability theorem. |
+| Theorem N: catalogue-sufficient factorization | `FRONTIER`; implementation-backed proof sketch, Lean proof pending, awaiting external formal review | All depths, assuming catalogue contains every recursive payload of true factors | Central v1.0 proof target. It is a correctness/completeness target under catalogue sufficiency, not a tractability theorem and not yet a DEFENDED theorem. |
 
 ---
 
@@ -93,8 +93,8 @@ EXPERIMENTAL      exploration layer, not canon
 | Claim | Status | Replacement |
 |---|---|---|
 | Binary “solved / not solved” depth-2 language | Superseded | Status vocabulary distinguishing implementation, tests, proof, oracle, and frontier. |
-| Theorem 8c as practically meaningful depth-3 symmetric completeness | Superseded / vacuous | Theorem N and asymmetric depth-3 examples. |
-| The prior depth-indexed induction plan for Theorem N | Superseded | Depth-agnostic catalogue-sufficient theorem statement. |
+| Theorem 8c as practically meaningful depth-3 symmetric completeness | Superseded / vacuous | Theorem N-style catalogue-sufficient frontier and asymmetric depth-3 examples. |
+| The prior depth-indexed induction plan for Theorem N | Superseded | Depth-agnostic catalogue-sufficient theorem statement as a proof target. |
 | Direct user import from `ucns_recursive` as preferred API | Deprecated for direct user imports | Use `ucns` and `ucns.a0_safe`; `ucns_recursive` remains a compatibility shim. |
 
 ---
@@ -104,7 +104,7 @@ EXPERIMENTAL      exploration layer, not canon
 The recommended v1.0 wording is:
 
 ```text
-UCNS v1.0.0 is a scoped, reproducible research release for catalogue-sufficient recursive factorization using the witness-matrix recursive quotient solver. It does not claim total general recursive primality, carrier widening, tractable catalogue discovery, or a canonical factor-choice procedure.
+UCNS v1.0.0 is a scoped, reproducible research release for catalogue-sufficient recursive factorization using the witness-matrix recursive quotient solver. It does not claim total general recursive primality, carrier widening, tractable catalogue discovery, a canonical factor-choice procedure, or a fully discharged Lean proof of Theorem N.
 ```
 
 ## hmmm
