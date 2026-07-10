@@ -1,5 +1,40 @@
 # Changelog
 
+## Unreleased — base geometry completion
+
+### Base geometry (operation algebra of ⊠)
+- Landed the structure theorem: `(nonempty normalized objects, multiply, e)`
+  is a **length-graded, non-commutative, non-cancellative monoid** with unit
+  group ≅ ℤ/2 and center exactly the unit towers (`docs/base-geometry.md`).
+- **Associativity proven** (O3): the object carries its full angle sequence;
+  the circular-mean collapse exists only in the `geometry_bridge`
+  projection. First triples-level test coverage (prior evidence was
+  pairs-only).
+- Identity proven two-sided (O2); commutativity ruling landed (O4): the
+  geometric projection always commutes, the commutator lives in sequence
+  ordering — not chirality — and the center is the unit towers.
+- **Division theory** (O5): forced-host lemma, solvability criterion,
+  finite-fiber multiplicity theorem (`T_d ⊠ x = T_d` has exactly `d`
+  solutions), the cancellativity dichotomy (a divisor cancels iff some
+  top-level payload is the unit; flat divisors are the special case), and
+  complete left/right quotient solution-set enumerators in
+  `ucns/division_theory.py` (exhaustively cross-checked on a closed
+  78-object universe).
+- **Scope correction:** the v0.6 Left-Quotient Completeness theorem is false
+  as written (its E10.4 cancellativity premise fails at depth ≥ 2);
+  `left_quotient` is sound always and complete for flat divisors;
+  `right_quotient` additionally used the left payload helper and misses
+  more. Banners added to both v0.6 proof documents; claims ledger updated;
+  permanent counterexample regression added.
+- Addition boundary ruled (O7): ⊠ is the sole primitive; derived top-level
+  concatenation is associative and right-distributive over ⊠ but fails left
+  distributivity, so it earns no primitive status.
+- New `contracts/` suite: one CONTRACTS witness per obligation (declared in
+  `ucns/canonical.py` / `ucns/division_theory.py`), each with a
+  mutation-catch check; `audit/obligation_ledger.md` + `audit/reconcile.py`
+  reconcile obligations ↔ witnesses ↔ RepoLOTO state without imports;
+  CI runs the aggregates via `tests/test_base_geometry_contracts.py`.
+
 ## Unreleased — v1.0 canon reconciliation
 
 ### Canon

@@ -1,6 +1,15 @@
 # UCNS v0.6 — Completeness of `left_quotient`
 
-**Status:** Proof.
+> **SCOPE CORRECTION (2026-07-10).** The completeness statement below is
+> **false as written**: it depends on E10.4 cancellativity, which fails for
+> divisors of depth ≥ 2 (payload absorption, `S ⊗ None = S`). Counterexample
+> and corrected scope: `docs/base-geometry.md` §5; permanent regression:
+> `contracts/test_quotient_solvability.py`. The algorithm remains **sound**
+> unconditionally and **complete for flat (depth-1) divisors**; complete
+> solution-set enumeration lives in `ucns/division_theory.py`. The body
+> below is preserved unchanged as the historical proof artifact.
+
+**Status:** Proof — superseded in scope by the correction above.
 **Scope:** The constructive `left_quotient` primitive defined in
 `ucns-code-v065.py`, on objects of finite nesting depth.
 **Depends on:** v0.3 flat kernel (frozen), v0.4 epicyclic extension (frozen),

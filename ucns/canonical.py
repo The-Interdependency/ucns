@@ -38,6 +38,65 @@ from __future__ import annotations
 #   unresolved: none
 # === END MODULE_BUILD ===
 
+# === CONTRACTS ===
+# id: multiply_well_defined
+#   given: normalized nonempty UCNSObjects at mixed depths, plus gauge-shifted
+#          and n_dec-varied raw representations of the same objects
+#   then:  multiply is total, its output is normalized with n_dec a multiple of
+#          n_min, len multiplies, and the product depends only on the
+#          equality class of each operand (representation independence)
+#   class: correctness
+#   call:  contracts.test_multiply_canonical.contract_multiply_well_defined
+#
+# id: multiply_identity
+#   given: the theta=0 origin e = UCNSObject(1, 1, [(0, None)], [0]) and
+#          arbitrary normalized objects a
+#   then:  multiply(e, a) == a and multiply(a, e) == a (two-sided, checked
+#          separately); the None sentinel behaves identically; the face-1
+#          unit u1 is NOT an identity but is self-inverse
+#   class: correctness
+#   call:  contracts.test_identity_two_sided.contract_multiply_identity
+#
+# id: multiply_associativity
+#   given: TRIPLES of normalized objects at mixed depths, including
+#          adversarial mixed-None payloads, towers, and degenerate-theta
+#          objects
+#   then:  multiply(multiply(a, b), c) == multiply(a, multiply(b, c));
+#          the object carries its full angle sequence, so the circular-mean
+#          collapse feared in the O3 manifest lives only in the
+#          geometry_bridge projection, never in the algebra
+#   class: correctness
+#   call:  contracts.test_associativity_triples.contract_multiply_associativity
+#
+# id: multiply_commutativity_ruling
+#   given: normalized objects; the separating witnesses B1 = [0,1] and
+#          B2 = [0,2]
+#   then:  multiply is non-commutative in general; the (r, theta, z, w)
+#          projection always commutes (the commutator lives in sequence
+#          ordering, not chirality); the center is exactly the unit towers
+#   class: correctness
+#   call:  contracts.test_commutator.contract_multiply_commutativity_ruling
+#
+# id: structure_naming
+#   given: obligations O1-O5 discharged (well-definedness, identity,
+#          associativity, commutativity ruling, division theory)
+#   then:  (nonempty normalized objects, multiply, e) is a non-commutative,
+#          non-cancellative monoid graded by length (r = log len additive),
+#          with unit group of order 2 and center the unit towers
+#   class: correctness
+#   call:  contracts.test_structure_axioms.contract_structure_naming
+#
+# id: addition_boundary
+#   given: the derived candidate addition (top-level sequence concatenation)
+#          and the r valuation
+#   then:  no second primitive operation exists in the base geometry; r is
+#          additive under multiply alone; derived concatenation is
+#          associative and right-distributive over multiply but left
+#          distributivity fails, so it earns no primitive status
+#   class: correctness
+#   call:  contracts.test_addition_boundary.contract_addition_boundary
+# === END CONTRACTS ===
+
 import copy
 from fractions import Fraction
 from functools import reduce

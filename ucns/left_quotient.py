@@ -7,27 +7,47 @@ Promoted from the v0.6.5 reference snapshot (``ucns-code-v065.py``)
 into the canonical package so that callers can query encoded objects
 (see ``recursive_codec``) without importing from the snapshot file.
 
-Theorem reference
------------------
-``ucns-v06-completeness-proof.md`` (and the byte-identical
-``ucns-v06-left-quotient-completeness.md``) establish:
+Theorem reference — SCOPE-CORRECTED 2026-07-10
+----------------------------------------------
+``ucns-v06-completeness-proof.md`` (and its near-identical twin
+``ucns-v06-left-quotient-completeness.md``) state:
 
     Theorem (Left-Quotient Completeness).  Let P, A be normalized
     UCNS objects of finite nesting depth.  If there exists B with
     ``A ⊠ B ≡_seq P``, then ``left_quotient(P, A, catalogue=None)``
     returns an object equivalent to B.
 
-    Corollary (Decision).  ``left_quotient(P, A, catalogue=None)``
-    returns ``None`` iff no such B exists.
+**That statement is false as written.**  It depends on E10.4
+cancellativity, which fails for divisors of depth >= 2 (payload
+absorption: ``S ⊗ None = S``).  Counterexample (permanent regression in
+``contracts/test_quotient_solvability.py``)::
 
-Eight lemmas underwrite the result; Lemma 7 bounds the recursion at
-``1 + d(A)`` stack frames where ``d`` is nesting depth.
+    T = UCNSObject(1, 1, [(0, None)], [0])
+    A = UCNSObject(4, 1, [(0, T), (2, None)], [0, 0])
+    B = UCNSObject(1, 1, [(0, T)], [0])
+    left_quotient(multiply(A, B), A)   # None — misses B
+
+Corrected scope (proofs in ``docs/base-geometry.md`` §5):
+
+- ``left_quotient`` is **sound** unconditionally (phase-3 verification)
+  and **complete for flat (depth-1) divisors** — flat-divisor
+  cancellativity makes the greedy recovery forced.
+- On deeper divisors quotients may be non-unique and the greedy row-0
+  payload recovery can pick a candidate that fails global verification.
+  Complete solution-set enumeration lives in
+  ``ucns.division_theory.left_quotients`` / ``right_quotients``.
+
+Eight lemmas underwrite the original result; Lemma 7 bounds the
+recursion at ``1 + d(A)`` stack frames where ``d`` is nesting depth.
 
 Caveats
 -------
-- ``right_quotient`` is the symmetric dual.  The README and frontier
-  docs note that the dual proof is structurally identical but not yet
-  written out.  Empirically verified on the same domain.
+- ``right_quotient`` is the symmetric dual.  The dual proof was
+  asserted-by-symmetry and never written out; in addition to the scope
+  correction above, the implementation recovers payloads with the
+  *left*-quotient helper where the dual equation needs a right
+  quotient, so it misses further solvable instances (observed
+  empirically 2026-07-10).  It remains sound.
 
 - ``catalogue`` is optional.  When ``None``, the recursion handles
   finite-depth objects by itself (the proof's claim).  Catalogue
@@ -59,7 +79,7 @@ from __future__ import annotations
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical
 #   since: 2026-06-02
-#   unresolved: right_quotient dual proof asserted-by-symmetry, not yet written out
+#   unresolved: v0.6 completeness scope-corrected 2026-07-10 (counterexample; complete on flat divisors only; full enumeration in ucns.division_theory); right_quotient dual additionally uses the left payload helper and misses more
 # === END MODULE_BUILD ===
 
 from typing import List, Optional
