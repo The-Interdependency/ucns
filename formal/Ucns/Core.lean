@@ -50,6 +50,7 @@
 import Std.Data.Rat.Basic
 import Std.Data.Nat.Gcd
 import Std.Data.List.Lemmas
+import Mathlib.Tactic
 
 namespace Ucns
 
@@ -90,7 +91,10 @@ theorem amod4_eq_self_of_floor_div_four_eq_zero
     (a : Rat) (h : (a / (4 : Rat)).floor = 0) :
     amod4 a = a := by
   unfold amod4 amod
-  simp [h]
+  have h' : Rat.floor (a / ↑(4 : Nat)) = 0 := by
+    simpa using h
+  rw [h']
+  norm_num
 
 /-- Circle fraction `(a mod 2) / 2`, as in `_compute_n_min`. -/
 def circleFrac (a : Rat) : Rat := amod a 2 / 2
@@ -401,7 +405,7 @@ theorem head_product_cell_eq_of_first_row_eq
     angles visible: tail angle inversion is exactly where later proof work must
     use normalized/canonical angle facts rather than pretending `amod4` is
     globally injective. -/
-theorem tail_product_cells_eq_of_first_row_eq
+theorem tail_product_cells_map_eq_of_first_row_eq
     (d : Nat) (ca b c : Cell UCNSObject)
     (bs cs : List (Cell UCNSObject))
     (hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca) :
@@ -452,14 +456,14 @@ theorem tail_product_cells_eq_of_first_row_eq_head_angle_eq
           | some p, none   => some p
           | none,   some r => some r
           | none,   none   => none)) cs := by
-  have htail := tail_product_cells_eq_of_first_row_eq d ca b c bs cs hrow
+  have htail := tail_product_cells_map_eq_of_first_row_eq d ca b c bs cs hrow
   rw [← hangle] at htail
   exact htail
 
 /-- Successor-product equality exposes equality of the first product row tails,
     after the selected right-head product cell is removed. This is the
     product-level wrapper around `tail_product_cells_eq_of_first_row_eq`. -/
-theorem tail_product_cells_eq_of_multiplyFuel_succ_eq
+theorem tail_product_cells_map_eq_of_multiplyFuel_succ_eq
     (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
     (rest bs cs : List (Cell UCNSObject))
     (h :
@@ -485,7 +489,7 @@ theorem tail_product_cells_eq_of_multiplyFuel_succ_eq
           | none,   none   => none)) cs := by
   have hrow : multiplyRow d (b :: bs) ca = multiplyRow d (c :: cs) ca :=
     first_row_eq_of_multiplyFuel_succ_eq d nda ndb ndc ca rest (b :: bs) (c :: cs) h
-  exact tail_product_cells_eq_of_first_row_eq d ca b c bs cs hrow
+  exact tail_product_cells_map_eq_of_first_row_eq d ca b c bs cs hrow
 
 /-- Face-bit head inversion for the first row: once row equality has selected
     the head product cell, xor cancellation recovers equality of the right-head
@@ -656,9 +660,7 @@ theorem right_tail_head_angle_eq_of_commonBase_tail_eq_of_amod4_fixed
         ca.angle + (c.angle - β0) := by
     simpa [hb, hc] using
       right_tail_head_transformed_angle_eq_of_commonBase_tail_eq d β0 ca b c bs cs hrow
-  have hsub : b.angle - β0 = c.angle - β0 := add_left_cancel hraw
-  have hplus := congrArg (fun x => x + β0) hsub
-  simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hplus
+  linarith
 
 /-- Raw non-head angle inversion from a common-baseline tail equality, with the
     `amod4` fixed-point facts supplied as concrete floor-zero obligations. -/
@@ -1681,7 +1683,7 @@ theorem right_tail_head_cell_eq_of_multiplyFuel_succ_eq_alignedComplete_left_pay
     first product row tails with a shared right-head base angle. Head-angle
     equality comes from recursive host-normalization; the remaining tail cells
     still require non-head field inversion. -/
-theorem tail_product_cells_eq_of_multiplyFuel_succ_eq_alignedComplete
+theorem tail_product_cells_map_eq_of_multiplyFuel_succ_eq_alignedComplete
     (d nda ndb ndc : Nat) (ca b c : Cell UCNSObject)
     (rest bs cs : List (Cell UCNSObject))
     (hABC : AlignedComplete
