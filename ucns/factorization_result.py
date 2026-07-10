@@ -24,7 +24,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns.tests.test_factorization_result
+#   tests: ucns_recursive/tests/test_factorization_result.py
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domain_status, ucns_factor_search_v08, ucns_serialization

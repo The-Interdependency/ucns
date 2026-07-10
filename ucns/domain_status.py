@@ -24,7 +24,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns.tests.test_domain_status
+#   tests: ucns_recursive/tests/test_domain_status.py
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical

@@ -84,33 +84,33 @@ class TestCanonicalSerialization(unittest.TestCase):
         with self.assertRaises(ValueError):
             stable_hash(S2, algorithm="not-a-real-hash")
 
-    def test_mismatched_angle_and_face_lengths_raise(self):
-        obj = UCNSObject(
-            4,
-            2,
-            [(Fraction(0), UNIT), (Fraction(1), UNIT)],
-            [0],
-        )
-        with self.assertRaises(ValueError):
-            canonical_data(obj)
+    def test_constructor_rejects_mismatched_angle_and_face_lengths(self):
+        with self.assertRaisesRegex(ValueError, "A_plus and F_plus must have the same length"):
+            UCNSObject(
+                4,
+                2,
+                [(Fraction(0), UNIT), (Fraction(1), UNIT)],
+                [0],
+            )
 
-    def test_mismatched_lengths_error_mentions_observed_sizes(self):
-        obj = UCNSObject(
-            4,
-            2,
-            [(Fraction(0), UNIT), (Fraction(1), UNIT), (Fraction(2), UNIT)],
-            [0],
-        )
+    def test_constructor_mismatched_lengths_error_mentions_observed_sizes(self):
         with self.assertRaisesRegex(ValueError, r"got 3 and 1"):
-            canonical_data(obj)
+            UCNSObject(
+                4,
+                2,
+                [(Fraction(0), UNIT), (Fraction(1), UNIT), (Fraction(2), UNIT)],
+                [0],
+            )
 
-    def test_mismatched_lengths_raise_across_serialization_entrypoints(self):
+    def test_serialization_still_rejects_mutated_mismatched_lengths(self):
         obj = UCNSObject(
             4,
             2,
             [(Fraction(0), UNIT), (Fraction(1), UNIT)],
-            [0],
+            [0, 0],
         )
+        obj.F_plus = [0]
+
         with self.assertRaises(ValueError):
             canonical_json(obj)
         with self.assertRaises(ValueError):
