@@ -195,16 +195,20 @@ def test_cancellativity_dichotomy():
 
 
 def test_v06_scope_correction():
-    """Permanent regression: the v0.6 completeness claim fails on this
-    instance (greedy left_quotient returns None though a non-unit
-    solution exists); the enumerator recovers it."""
+    """Permanent regression for the v0.6 greedy-era counterexample.
+
+    The pre-v1.0 greedy ``left_quotient`` returned None on this
+    solvable instance (its E10.4 cancellativity premise is false).
+    Since codex-handoff/04 the singular function is a selector over the
+    complete solution set, so it must now RECOVER the missed solution —
+    and the plural API must contain it."""
     a = UCNSObject(4, 1, [(Fraction(0), E), (Fraction(2), None)], [0, 0])
     b = UCNSObject(1, 1, [(Fraction(0), E)], [0])
     p = multiply(a, b)
     assert p != a, "counterexample degenerated"
-    assert left_quotient(p, a) is None, (
-        "greedy left_quotient now solves the counterexample; "
-        "update the v0.6 scope correction in docs/base-geometry.md"
+    recovered = left_quotient(p, a)
+    assert recovered is not None and multiply(a, recovered) == p, (
+        "compatibility selector regressed to the greedy miss"
     )
     solutions = left_quotients(p, a)
     assert any(g is not None and g == b for g in solutions), (
