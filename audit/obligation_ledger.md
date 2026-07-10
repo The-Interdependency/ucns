@@ -111,7 +111,12 @@ remaining lanes were re-run post-merge-request:
   (missing witness, bad call target, stray/duplicate locks, malformed
   block all exit 1); determinism and non-vacuity of every conditional
   test loop probed at their exact seeds.
-- **Core-algebra lane**: pending (`hmmm`) — in-run evidence stands
-  (400-triple + adversarial-grid associativity, center/two-witness
-  separation checks, unit-group probe, dichotomy verified both
-  directions).
+- **Core-algebra lane**: complete — NO DEFECTS FOUND under hostile
+  attack: ~4,000 associativity triples (depth ≤ 5, adversarial grids,
+  all payload None-patterns); center two-witness separation over 3,041
+  random length-≥2 objects plus engineered evaders with cores buried at
+  nesting 4–7 (one false alarm traced to the attacker's witness pool,
+  resolved by the theorem's own recursive lift recipe); unit-group
+  search over 30,976 ordered pairs found exactly {e, u₁}; dichotomy
+  held both directions including engineered identical-absorption rows.
+  All three review lanes are closed; no open review follow-up remains.
