@@ -12,8 +12,11 @@ This repository contains the UCNS (Unit Circle Number System) sequence theory an
 > catalogue-sufficient recursive factorization (Theorem N), not a claim of
 > total general recursive primality. Carrier widening and general
 > recursive completeness are explicitly out of v1.0 scope. See
-> `docs/ucns-spec-status-addendum-2026-05-16.md` for the status vocabulary
-> and `ucns-spec.md` for the reconciled spec.
+> `docs/ucns-spec-status-addendum-2026-05-16.md` for the status vocabulary,
+> `docs/claims-ledger.md` for current release-status claims, and
+> `ucns-spec.md` for the consolidated specification. The status snapshot at
+> the top of `ucns-spec.md` is dated 2026-05-17 and is historical wherever it
+> differs from this README and the claims ledger.
 >
 > **Public API.** `ucns` is the v1.0 public Python API.
 > `ucns.a0_safe` is the A0-safe inspection facade. The recursive
@@ -80,6 +83,10 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
 
+This section together with `docs/claims-ledger.md` is authoritative for current
+release-status claims. The status snapshot at the top of `ucns-spec.md` is dated
+2026-05-17 and is historical wherever it differs.
+
 `factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It now lives directly in the `ucns` package; `ucns_recursive` is a deprecated compatibility shim for legacy imports.
 
 See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input.
@@ -124,11 +131,12 @@ ucns_recursive/          # DEPRECATED compatibility wrappers around ucns modules
 
 tests/                   # v1.0 API-package tests plus cache prototype tests
 
-ucns-spec.md             # Reconciled core UCNS spec (canonical)
+ucns-spec.md             # Consolidated spec; status snapshot dated 2026-05-17
 ucns-theorem-n.md        # Theorem N: catalogue-sufficient frontier statement
 ucns-lemma8-depth3.md    # Depth-3 factor search (SUPERSEDED — see theorem-n)
 ucns-spec-frontier-v090.md  # v0.9.0 frontier (partially superseded)
 docs/
+  claims-ledger.md                          # Current release-status claims
   ucns-spec-status-addendum-2026-05-16.md  # Status vocabulary + A0 rule
   ucns-native-caching.md                   # Cache prototype boundary/limits
   pure-ucns-number-system.md
