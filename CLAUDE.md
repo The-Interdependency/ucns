@@ -83,10 +83,15 @@ Status vocabulary: `DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`,
 | Depth-2 oracle (smallest class, Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| Catalogue-sufficient completeness — all depths (Theorem N) | `DEFENDED` — proof drafted, awaiting external formal review |
+| Catalogue-sufficient completeness — all depths (Theorem N) | `FRONTIER` — partially verified in Lean; remaining proof leaves under active discharge |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
+
+Current release-status authority is `README.md` together with
+`docs/claims-ledger.md`. The status snapshot at the top of `ucns-spec.md` is
+dated 2026-05-17 and is historical wherever it differs from those current
+release documents.
 
 Frozen depth-2 domain scope:
 
