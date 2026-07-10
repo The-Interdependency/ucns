@@ -30,9 +30,9 @@
 -- id: ucns_formal_core_definitions
 --   module_name: Ucns.Core
 --   module_kind: schema
---   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity.
+--   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity counterexample/status.
 --   owner: Erin Spencer
---   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete/AlignedComplete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), multiply_left_cancellative (statement)
+--   public_surface: UCNSObject, Cell, amod4, circleFrac, nMin, depth, normalizeFuel, multiplyFuel, HostNormalized, Complete/AlignedComplete (with NonemptyRec/HostNormalizedRec/UniformDepth/CanonicalCarrier), not_multiply_left_cancellative_on_alignedComplete (guardrail counterexample)
 --   internal_surface: angleDenoms
 --   auth_boundary: none
 --   storage_boundary: none
@@ -44,7 +44,7 @@
 --   rollback: remove file and its import from TheoremN.lean
 --   requires: none
 --   since: 2026-06-09
---   unresolved: AlignedComplete cancellativity statement ratified 2026-06-21 + applied (sorry; proof pending). Carrier-LCM is discharged in Ucns/CarrierLcm.lean; remaining order — cancellativity, then depth1 completeness
+--   unresolved: AlignedComplete cancellativity as previously stated is refuted by a concrete mod-4 tail-angle counterexample; next true theorem needs canonical angle-range/floor-zero evidence. Carrier-LCM is discharged in Ucns/CarrierLcm.lean; remaining order — repair cancellativity domain, then depth1 completeness
 -- === END MODULE_BUILD ===
 
 import Std.Data.Rat.Basic
@@ -1106,6 +1106,73 @@ def AlignedComplete (A B C : UCNSObject) (d : Nat) : Prop :=
   Complete A ∧ Complete B ∧ Complete C ∧
     depth A = depth B ∧ depth B = depth C ∧ depth B ≤ d ∧ depth C ≤ d
 
+/-! A concrete guardrail for the current cancellativity frontier.
+
+    `AlignedComplete` does not currently constrain non-head host angles to a
+    chosen representative interval. Consequently, tail angles that differ by a
+    multiple of four collapse under `amod4`, while the right operands remain
+    syntactically different. This is the exact missing domain piton behind the
+    later floor-zero witness obligations. -/
+
+abbrev cancellativityCounterLeft : UCNSObject :=
+  UCNSObject.mk 1 [{ angle := 0, face := false, payload := none }]
+
+abbrev cancellativityCounterRightB : UCNSObject :=
+  UCNSObject.mk 1
+    [{ angle := 0, face := false, payload := none },
+      { angle := 4, face := false, payload := none }]
+
+abbrev cancellativityCounterRightC : UCNSObject :=
+  UCNSObject.mk 1
+    [{ angle := 0, face := false, payload := none },
+      { angle := 0, face := false, payload := none }]
+
+theorem alignedComplete_cancellativityCounter :
+    AlignedComplete cancellativityCounterLeft cancellativityCounterRightB
+      cancellativityCounterRightC 1 := by
+  have hAden :
+      angleDenoms [{ angle := (0 : Rat), face := false, payload := none }] = [] := by
+    native_decide
+  have hBden :
+      angleDenoms
+        [{ angle := (0 : Rat), face := false, payload := none },
+          { angle := 4, face := false, payload := none }] = [] := by
+    native_decide
+  have hCden :
+      angleDenoms
+        [{ angle := (0 : Rat), face := false, payload := none },
+          { angle := 0, face := false, payload := none }] = [] := by
+    native_decide
+  simp [AlignedComplete, Complete, cancellativityCounterLeft,
+    cancellativityCounterRightB, cancellativityCounterRightC, NonemptyRec,
+    NonemptyRecCells, NonemptyRecCell, HostNormalizedRec,
+    HostNormalizedRecCells, HostNormalizedRecCell, UniformDepth,
+    UniformDepthCells, UniformDepthCell, CanonicalCarrier,
+    CanonicalCarrierCells, CanonicalCarrierCell, depth, depthCells,
+    depthCell, hAden, hBden, hCden]
+
+theorem multiplyFuel_cancellativityCounter_eq :
+    multiplyFuel 1 cancellativityCounterLeft cancellativityCounterRightB =
+      multiplyFuel 1 cancellativityCounterLeft cancellativityCounterRightC := by
+  rfl
+
+theorem cancellativityCounter_right_ne :
+    cancellativityCounterRightB ≠ cancellativityCounterRightC := by
+  intro h
+  injection h with _ hc
+  simp [cancellativityCounterRightB, cancellativityCounterRightC] at hc
+
+theorem not_multiply_left_cancellative_on_alignedComplete :
+    ¬ (∀ A B C d,
+      AlignedComplete A B C d →
+      multiplyFuel d A B = multiplyFuel d A C →
+      B = C) := by
+  intro hcancel
+  exact cancellativityCounter_right_ne
+    (hcancel cancellativityCounterLeft cancellativityCounterRightB
+      cancellativityCounterRightC 1 alignedComplete_cancellativityCounter
+      multiplyFuel_cancellativityCounter_eq)
+
 theorem complete_left_of_alignedComplete
     {A B C : UCNSObject} {d : Nat} (h : AlignedComplete A B C d) :
     Complete A := h.1
@@ -2039,83 +2106,20 @@ theorem depth_cancel_le_fuel_of_alignedComplete
 
 
 /-
-  CANCELLATIVITY on the ratified `AlignedComplete` domain (Step-1 result;
-  Erin ratified 2026-06-21). The bare statement is FALSE; left-cancellativity
-  requires `Complete A,B,C` (nonempty + recursive host-normalized + uniform
-  depth + canonical carrier) AND cross-operand common depth
-  (`depth A = depth B = depth C`), with `depth B,C ≤ d`. See
-  `formal/cancellativity-step1-findings.md` for the counterexample search.
+  CANCELLATIVITY STATUS (2026-07-10)
 
-  STUB: proves nothing — closed by `sorry`. A `sorry`-backed statement confers
-  NO DEFENDED status (see README.md). The statement now takes the domain as a
-  single `AlignedComplete` hypothesis so the remaining proof target cannot
-  accidentally omit one of the counterexample-blocking conjuncts.
+  The formerly stated `multiply_left_cancellative` theorem over
+  `AlignedComplete` is not merely unfinished: the concrete guardrail
+  `not_multiply_left_cancellative_on_alignedComplete` above proves that the
+  current domain is too weak. Non-head host angles may differ by multiples of
+  four, collapse under `amod4` during multiplication, and still satisfy the
+  current `Complete`/`AlignedComplete` predicates.
+
+  Therefore the old `sorry`-backed theorem has been removed rather than
+  discharged dishonestly. The next true theorem must strengthen the domain with
+  canonical angle-range/floor-zero evidence (or normalize operands before the
+  equality claim) and then rebuild the cancellativity proof against that sharper
+  statement.
 -/
-/-- The remaining cancellativity proof obligation after the three operands have
-    been exposed as nonempty `mk ... (head :: tail)` objects. This is the
-    isolated row/list induction frontier: selected-head inversion is available,
-    but the proof still has to propagate equality through the full right cell
-    lists, including non-head angle inversion.
-
-    Still `sorry`-backed: this theorem marks the smaller named argument frontier. -/
-theorem multiply_left_cancellative_succ_mk_cons_obligation
-    (d0 nda ndb ndc : Nat)
-    (ca b c : Cell UCNSObject)
-    (rest bs cs : List (Cell UCNSObject))
-    (hABC : AlignedComplete
-      (UCNSObject.mk nda (ca :: rest))
-      (UCNSObject.mk ndb (b :: bs))
-      (UCNSObject.mk ndc (c :: cs)) (d0 + 1))
-    (h :
-      multiplyFuel (d0 + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndb (b :: bs)) =
-        multiplyFuel (d0 + 1) (UCNSObject.mk nda (ca :: rest)) (UCNSObject.mk ndc (c :: cs))) :
-    UCNSObject.mk ndb (b :: bs) = UCNSObject.mk ndc (c :: cs) := by
-  sorry
-
-/-- The successor cancellativity obligation now performs only structural domain
-    peeling: `AlignedComplete` supplies nonemptiness for all three operands, so
-    the real proof frontier is the explicit nonempty `mk_cons` obligation above. -/
-theorem multiply_left_cancellative_succ_obligation
-    (A B C : UCNSObject) (d0 : Nat)
-    (hABC : AlignedComplete A B C (d0 + 1))
-    (h : multiplyFuel (d0 + 1) A B = multiplyFuel (d0 + 1) A C) :
-    B = C := by
-  cases A with
-  | mk nda csA =>
-      cases B with
-      | mk ndb csB =>
-          cases C with
-          | mk ndc csC =>
-              have hneA : csA ≠ [] := by
-                have hN : csA ≠ [] ∧ NonemptyRecCells csA := by
-                  simpa [NonemptyRec] using (complete_left_of_alignedComplete hABC).1
-                exact hN.1
-              have hneB : csB ≠ [] := by
-                have hN : csB ≠ [] ∧ NonemptyRecCells csB := by
-                  simpa [NonemptyRec] using (complete_right_of_alignedComplete hABC).1
-                exact hN.1
-              have hneC : csC ≠ [] := by
-                have hN : csC ≠ [] ∧ NonemptyRecCells csC := by
-                  simpa [NonemptyRec] using (complete_cancel_of_alignedComplete hABC).1
-                exact hN.1
-              cases csA with
-              | nil => exact False.elim (hneA rfl)
-              | cons ca rest =>
-                  cases csB with
-                  | nil => exact False.elim (hneB rfl)
-                  | cons b bs =>
-                      cases csC with
-                      | nil => exact False.elim (hneC rfl)
-                      | cons c cs =>
-                          exact multiply_left_cancellative_succ_mk_cons_obligation
-                            d0 nda ndb ndc ca b c rest bs cs hABC h
-
-theorem multiply_left_cancellative
-    (A B C : UCNSObject) (d : Nat)
-    (hABC : AlignedComplete A B C d)
-    (h : multiplyFuel d A B = multiplyFuel d A C) :
-    B = C := by
-  rcases exists_fuel_pred_of_alignedComplete hABC with ⟨d0, rfl⟩
-  exact multiply_left_cancellative_succ_obligation A B C d0 hABC h
 
 end Ucns
