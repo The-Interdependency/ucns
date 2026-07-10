@@ -42,6 +42,7 @@ import copy
 from fractions import Fraction
 from functools import reduce
 from math import gcd
+from numbers import Integral
 from typing import List, Optional, Tuple
 
 __all__ = [
@@ -95,7 +96,11 @@ class UCNSObject:
                 "Invalid object: A_plus and F_plus must have the same length "
                 f"(got {len(A_plus)} and {len(F_plus)})."
             )
-        invalid_faces = [f for f in F_plus if f not in (0, 1)]
+        invalid_faces = [
+            f
+            for f in F_plus
+            if not isinstance(f, Integral) or int(f) not in (0, 1)
+        ]
         if invalid_faces:
             raise ValueError(
                 "Invalid object: F_plus entries must be face bits 0 or 1 "
@@ -107,7 +112,7 @@ class UCNSObject:
         self.A_plus: List[Tuple[FractionType, Optional[UCNSObject]]] = [
             (a, copy.deepcopy(p) if p is not None else None) for a, p in A_plus
         ]
-        self.F_plus: List[int] = F_plus[:]
+        self.F_plus: List[int] = [int(f) for f in F_plus]
         self.A_minus: Optional[List] = None
         self.F_minus: Optional[List] = None
         self.normalize()
