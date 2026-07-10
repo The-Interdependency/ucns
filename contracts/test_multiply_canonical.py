@@ -1,4 +1,4 @@
-# ratios: loc_comments=69:35 imports_exports=2:5 calls_definitions=41:5
+# ratios: loc_comments=88:40 imports_exports=2:5 calls_definitions=46:6
 """O1 — multiply_well_defined: ⊠ total + representation-independent.
 
 Witness for the CONTRACTS entry ``multiply_well_defined`` in
@@ -27,15 +27,7 @@ Witness for the CONTRACTS entry ``multiply_well_defined`` in
 
 from ucns.canonical import UCNSObject, multiply
 
-from contracts._harness import (
-    E,
-    canonical_gauge,
-    make_rng,
-    mutant_canonical_no_mod,
-    rand_angle,
-    rand_obj,
-    raw_of,
-)
+from contracts._harness import E, make_rng, rand_angle, rand_obj, raw_of
 
 
 def test_totality_and_grading():
@@ -92,23 +84,57 @@ def test_empty_carrier_boundary():
 
 
 def test_mutation_caught():
-    """[mutation-verified]: a canonicalizer that forgets the mod-4
-    reduction maps gauge-equivalent raw representations apart, and the
+    """[mutation-verified], against the real code path: the actual
+    canonicalizer (UCNSObject.normalize) is replaced by a mutant that
+    forgets the mod-4 reduction; gauge-equivalent raw representations
+    then stop colliding (or totality breaks), and the
     representation-independence witness detects it."""
     rng = make_rng(3)
+    original_normalize = UCNSObject.normalize
+
+    def mutant_normalize(self):
+        if not self.A_plus:
+            return self
+        theta0 = self.A_plus[0][0]
+        shifted = []
+        for theta, payload in self.A_plus:
+            new_theta = theta - theta0  # mutant: no % 4 reduction
+            new_payload = payload.normalize() if payload is not None else None
+            shifted.append((new_theta, new_payload))
+        self.A_plus = shifted
+        angles = [x for x, _ in self.A_plus]
+        self.n_min = self._compute_n_min(angles)
+        self.A_minus, self.F_minus = self._star()
+        if self.n_dec % self.n_min != 0:
+            raise ValueError("mutant carrier violation")
+        return self
+
     caught = False
-    for _ in range(200):
-        a = rand_obj(rng, 1, 3)
-        angles = [x for x, _ in a.A_plus]
-        delta = rand_angle(rng)
-        shifted = [(x + delta) % 4 for x in angles]
-        assert canonical_gauge(angles) == canonical_gauge(shifted), (
-            "reference canonicalizer must be gauge-invariant"
-        )
-        if mutant_canonical_no_mod(angles) != mutant_canonical_no_mod(shifted):
-            caught = True
-            break
-    assert caught, "mutant canonicalizer was not caught"
+    UCNSObject.normalize = mutant_normalize
+    try:
+        for _ in range(50):
+            a = rand_obj(rng, 1, 3)
+            if len(a.A_plus) < 2:
+                continue
+            angles = [x for x, _ in a.A_plus]
+            payloads = [payload for _, payload in a.A_plus]
+            delta = rand_angle(rng)
+            try:
+                a_rep = UCNSObject(
+                    48, 1,
+                    [((x + delta) % 4, payload)
+                     for x, payload in zip(angles, payloads)],
+                    list(a.F_plus),
+                )
+            except ValueError:
+                caught = True  # totality broke under the mutant
+                break
+            if a_rep != a:
+                caught = True  # representation independence broke
+                break
+    finally:
+        UCNSObject.normalize = original_normalize
+    assert caught, "real-canonicalizer mutant was not caught"
 
 
 def contract_multiply_well_defined():
@@ -117,4 +143,4 @@ def contract_multiply_well_defined():
     test_representation_independence()
     test_empty_carrier_boundary()
     test_mutation_caught()
-# ratios: loc_comments=69:35 imports_exports=2:5 calls_definitions=41:5
+# ratios: loc_comments=88:40 imports_exports=2:5 calls_definitions=46:6

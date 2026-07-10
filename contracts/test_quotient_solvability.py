@@ -1,4 +1,4 @@
-# ratios: loc_comments=168:62 imports_exports=6:10 calls_definitions=120:11
+# ratios: loc_comments=200:67 imports_exports=8:10 calls_definitions=141:12
 """O5 — division_theory: left/right quotient existence + multiplicity.
 
 Witness for the CONTRACTS entry ``division_theory`` in
@@ -174,11 +174,13 @@ def test_cancellativity_dichotomy():
         a = rand_obj(rng, 2, 3)
         b = rand_obj(rng, rng.randint(1, 2), 2)
         if any(p is None for _, p in a.A_plus):
-            assert len(left_quotients(multiply(a, b), a)) <= 1, (
-                "unit-payload divisor produced a multivalued left fiber"
+            left_fiber = left_quotients(multiply(a, b), a)
+            assert len(left_fiber) == 1 and left_fiber[0] == b, (
+                "unit-payload divisor left fiber is not the singleton {b}"
             )
-            assert len(right_quotients(multiply(b, a), a)) <= 1, (
-                "unit-payload divisor produced a multivalued right fiber"
+            right_fiber = right_quotients(multiply(b, a), a)
+            assert len(right_fiber) == 1 and right_fiber[0] == b, (
+                "unit-payload divisor right fiber is not the singleton {b}"
             )
             checked_none += 1
         else:
@@ -223,9 +225,49 @@ def test_greedy_left_quotient_still_sound():
 
 
 def test_mutation_caught():
-    """[mutation-verified]: skipping the final verification (the mutant)
-    returns an unsound candidate on a host-inconsistent input; the
-    soundness witness catches it.  The real solver rejects the input."""
+    """[mutation-verified], against the witnessed module itself: an
+    enumerator mutant that recovers payloads from row 0 only — skipping
+    the cross-row intersection of Theorem 5.2 — emits an unsound
+    candidate on the absorption witness, and the soundness law catches
+    it.  (The final in-module verification is a guard expected never to
+    fire; the intersection is the load-bearing step, so that is what
+    the mutant removes.)  The greedy primitive's phase-3 dependence is
+    pinned separately on a host-inconsistent input."""
+    from itertools import product as iproduct
+
+    from ucns.division_theory import _left_payload_solutions
+
+    def mutant_left_quotients_row0(target_p, divisor):
+        rows, total = len(divisor.A_plus), len(target_p.A_plus)
+        assert rows and total % rows == 0
+        q = total // rows
+        x_angles = [angle for angle, _ in target_p.A_plus[:q]]
+        x_faces = [f ^ divisor.F_plus[0] for f in target_p.F_plus[:q]]
+        columns = [
+            _left_payload_solutions(
+                divisor.A_plus[0][1], target_p.A_plus[j][1], 1000
+            )
+            for j in range(q)
+        ]
+        return [
+            UCNSObject(target_p.n_dec, 1,
+                       list(zip(x_angles, list(choice))), x_faces)
+            for choice in iproduct(*columns)
+        ]
+
+    a = UCNSObject(4, 1, [(Fraction(0), E), (Fraction(2), None)], [0, 0])
+    b = UCNSObject(1, 1, [(Fraction(0), E)], [0])
+    p = multiply(a, b)
+    mutant_solutions = mutant_left_quotients_row0(p, a)
+    assert any(multiply(a, g) != p for g in mutant_solutions), (
+        "row-0-only enumerator mutant was not caught by the soundness law"
+    )
+    real = left_quotients(p, a)
+    assert real and all(multiply(a, g) == p for g in real), (
+        "real enumerator must return exactly the sound set on this input"
+    )
+
+    # greedy primitive: phase-3 verification is load-bearing there
     p_bad = UCNSObject(
         24, 1,
         [(Fraction(0), None), (Fraction(1), None),
@@ -235,7 +277,6 @@ def test_mutation_caught():
     a_bad = UCNSObject(24, 1, [(Fraction(0), None), (Fraction(1), None)], [0, 0])
     assert left_quotient(p_bad, a_bad) is None, "real solver must reject"
     assert left_quotients(p_bad, a_bad) == [], "enumerator must reject"
-    # mutant: phase 1-2 candidate without phase-3 verification
     q = 2
     mutant_candidate = UCNSObject(
         p_bad.n_dec, 1,
@@ -243,7 +284,7 @@ def test_mutation_caught():
         [f ^ a_bad.F_plus[0] for f in p_bad.F_plus[:q]],
     )
     assert multiply(a_bad, mutant_candidate) != p_bad, (
-        "verification-skipping mutant was not caught"
+        "verification-skipping greedy mutant was not caught"
     )
 
 
@@ -258,4 +299,4 @@ def contract_division_theory():
     test_v06_scope_correction()
     test_greedy_left_quotient_still_sound()
     test_mutation_caught()
-# ratios: loc_comments=168:62 imports_exports=6:10 calls_definitions=120:11
+# ratios: loc_comments=200:67 imports_exports=8:10 calls_definitions=141:12

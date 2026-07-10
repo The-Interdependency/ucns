@@ -93,8 +93,25 @@ is missing for an OPEN row.
 Adversarial-review note: a multi-agent refutation pass was run before
 commit; the division-theory refuter surfaced two statement-precision
 defects (the cancellativity boundary over-claim, fixed by Theorem 5.5;
-the `SolutionLimitExceeded` docstring over-claim, reworded).  The other
-review lanes (core algebra, code, compliance) terminated early on an
-external quota and were compensated by the in-run exhaustive checks
-(6,084-pair universe cross-check, 400-triple associativity, full suite
-green); re-running those lanes is a cheap follow-up (`hmmm`).
+the `SolutionLimitExceeded` docstring over-claim, reworded).  The
+remaining lanes were re-run post-merge-request:
+
+- **Compliance lane**: one violation — the CI shim lacked ratios
+  bookends — fixed; RepoLOTO lifecycle, CONTRACTS doctrine, MODULE_BUILD
+  schema, claims honesty, and packaging verified compliant.
+- **Code lane**: four findings, all fixed — (D1) O5's mutation check
+  mutated the greedy primitive rather than the witnessed enumerators
+  (the enumerators' final verification is a never-firing guard; the
+  cross-row intersection is load-bearing) → replaced with a row-0-only
+  enumerator mutant caught by the soundness law; (D2) O1's mutation
+  check used a toy canonicalizer → now monkeypatches the real
+  `UCNSObject.normalize`; (D3) the CONTRACTS then-clause now carries the
+  identity-convention carve-out; (D4) dichotomy fibers strengthened from
+  `<= 1` to exact singleton `{b}`.  Reconciler negative paths verified
+  (missing witness, bad call target, stray/duplicate locks, malformed
+  block all exit 1); determinism and non-vacuity of every conditional
+  test loop probed at their exact seeds.
+- **Core-algebra lane**: pending (`hmmm`) — in-run evidence stands
+  (400-triple + adversarial-grid associativity, center/two-witness
+  separation checks, unit-group probe, dichotomy verified both
+  directions).

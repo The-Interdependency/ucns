@@ -1,4 +1,4 @@
-# ratios: loc_comments=138:122 imports_exports=5:3 calls_definitions=58:6
+# ratios: loc_comments=138:124 imports_exports=5:3 calls_definitions=58:6
 """
 ucns.division_theory
 ====================
@@ -79,8 +79,10 @@ from __future__ import annotations
 # === CONTRACTS ===
 # id: division_theory
 #   given: normalized nonempty A, P (left) or B, P (right) of finite depth
-#   then:  left_quotients/right_quotients return exactly the set of X with
-#          multiply(A, X) == P (resp. multiply(X, B) == P); sound, complete
+#   then:  left_quotients/right_quotients return exactly the set of X over
+#          the monoid carrier with multiply(A, X) == P (resp.
+#          multiply(X, B) == P) — the identity appears once as the canonical
+#          identity object, never as the None sentinel alias; sound, complete
 #          (cross-checked on a closed 78-object universe; full 6,084-pair
 #          sweep via UCNS_EXHAUSTIVE=1, deterministic stride sample in CI),
 #          multiplicity equals the product of per-slot solution counts, and
@@ -302,4 +304,4 @@ def right_quotients(
         if multiply(x, B) == P:
             results.append(x)
     return results
-# ratios: loc_comments=138:122 imports_exports=5:3 calls_definitions=58:6
+# ratios: loc_comments=138:124 imports_exports=5:3 calls_definitions=58:6

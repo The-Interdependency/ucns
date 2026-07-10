@@ -1,4 +1,4 @@
-# ratios: loc_comments=122:31 imports_exports=5:15 calls_definitions=65:18
+# ratios: loc_comments=116:28 imports_exports=5:13 calls_definitions=63:16
 """Shared deterministic generators, fixtures, and mutants.
 
 Mutant implementations deliberately falsify one law each; the contract
@@ -167,19 +167,6 @@ def mutant_multiply_dedup(A, B):
     return UCNSObject(product.n_dec, 1, new_a, new_f)
 
 
-def mutant_canonical_no_mod(angles):
-    """O1 mutant canonicalizer: gauge-shifts without reducing mod 4,
-    so gauge-equivalent raw representations stop colliding."""
-    off = angles[0]
-    return tuple(a - off for a in angles)
-
-
-def canonical_gauge(angles):
-    """Reference canonicalizer for raw top-level angle lists."""
-    off = angles[0]
-    return tuple((a - off) % 4 for a in angles)
-
-
 def mutant_concat_gauge_drift(A, B):
     """O7 mutant addition: splices B in at A's trailing gauge instead of
     the shared canonical gauge, breaking right-distributivity."""
@@ -194,4 +181,4 @@ def concat(A: UCNSObject, B: UCNSObject) -> UCNSObject:
     new_a = list(A.A_plus) + list(B.A_plus)
     new_f = list(A.F_plus) + list(B.F_plus)
     return UCNSObject(lcm(A.n_dec, B.n_dec), 1, new_a, new_f)
-# ratios: loc_comments=122:31 imports_exports=5:15 calls_definitions=65:18
+# ratios: loc_comments=116:28 imports_exports=5:13 calls_definitions=63:16
