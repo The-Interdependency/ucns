@@ -14,13 +14,13 @@ command string.
 
 | id | law | rung on arrival | rung landed | witness (CONTRACTS id → evidence) | proof | loto |
 |---|---|---|---|---|---|---|
-| `multiply_well_defined` | ⊠ total + representation-independent at all depths | `[test-backed]` | `[mutation-verified]` | `multiply_well_defined` → `contracts/test_multiply_canonical.py` | `docs/base-geometry.md` §1 | OPEN |
-| `multiply_identity` | θ=0 origin is a two-sided identity | `hmmm` | proven two-sided + `[mutation-verified]` | `multiply_identity` → `contracts/test_identity_two_sided.py` | `docs/base-geometry.md` §2 | OPEN |
-| `multiply_associativity` | (a⊠b)⊠c = a⊠(b⊠c) | `hmmm` — never tested | **proven** + `[mutation-verified]` | `multiply_associativity` → `contracts/test_associativity_triples.py` | `docs/base-geometry.md` §3 | OPEN |
-| `multiply_commutativity_ruling` | non-commutative in general; commuting subclass characterized | partial | proven ruling + `[mutation-verified]` | `multiply_commutativity_ruling` → `contracts/test_commutator.py` | `docs/base-geometry.md` §4 | OPEN |
-| `division_theory` | left/right quotients: existence + multiplicity | `hmmm` | solvability theorem + `[mutation-verified]` | `division_theory` → `contracts/test_quotient_solvability.py` | `docs/base-geometry.md` §5 | OPEN |
-| `structure_naming` | name the algebraic object | pending O1–O5 | structure theorem: length-graded non-cancellative monoid | `structure_naming` → `contracts/test_structure_axioms.py` | `docs/base-geometry.md` §6 | OPEN |
-| `addition_boundary` | primitive addition, or only derived? | `hmmm` | ruled: no second primitive; ⊕ derived, right-distributive only | `addition_boundary` → `contracts/test_addition_boundary.py` | `docs/base-geometry.md` §7 | OPEN |
+| `multiply_well_defined` | ⊠ total + representation-independent at all depths | `[test-backed]` | `[mutation-verified]` | `multiply_well_defined` → `contracts/test_multiply_canonical.py` | `docs/base-geometry.md` §1 | CLOSED |
+| `multiply_identity` | θ=0 origin is a two-sided identity | `hmmm` | proven two-sided + `[mutation-verified]` | `multiply_identity` → `contracts/test_identity_two_sided.py` | `docs/base-geometry.md` §2 | CLOSED |
+| `multiply_associativity` | (a⊠b)⊠c = a⊠(b⊠c) | `hmmm` — never tested | **proven** + `[mutation-verified]` | `multiply_associativity` → `contracts/test_associativity_triples.py` | `docs/base-geometry.md` §3 | CLOSED |
+| `multiply_commutativity_ruling` | non-commutative in general; commuting subclass characterized | partial | proven ruling + `[mutation-verified]` | `multiply_commutativity_ruling` → `contracts/test_commutator.py` | `docs/base-geometry.md` §4 | CLOSED |
+| `division_theory` | left/right quotients: existence + multiplicity | `hmmm` | solvability theorem + `[mutation-verified]` | `division_theory` → `contracts/test_quotient_solvability.py` | `docs/base-geometry.md` §5 | CLOSED |
+| `structure_naming` | name the algebraic object | pending O1–O5 | structure theorem: length-graded non-cancellative monoid | `structure_naming` → `contracts/test_structure_axioms.py` | `docs/base-geometry.md` §6 | CLOSED |
+| `addition_boundary` | primitive addition, or only derived? | `hmmm` | ruled: no second primitive; ⊕ derived, right-distributive only | `addition_boundary` → `contracts/test_addition_boundary.py` | `docs/base-geometry.md` §7 | CLOSED |
 
 `loto = CLOSED` means the corresponding `.loto/<id>` lock has been deleted
 at target rung per RepoLOTO; `.loto/` empty of lock files = base geometry

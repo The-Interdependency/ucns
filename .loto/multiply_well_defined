@@ -1,8 +1,0 @@
-RepoLOTO lock
-id: multiply_well_defined
-obligation: O1
-opened: 2026-07-10
-opened_by: Fable 5 base-geometry completion run
-rung_on_arrival: [test-backed]
-rung_target: [mutation-verified]
-rule: delete this lock only at target rung ([mutation-verified] or the stated proof rung)
