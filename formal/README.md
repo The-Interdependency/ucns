@@ -86,19 +86,13 @@ Pinned-build status as of the Carrier-LCM discharge pass:
   `den_add_dvd_lcm`, `den_circleFrac_add_dvd_lcm`,
   `slice_embedding_left/right`, `carrier_lcm_law_upper`,
   `carrier_lcm_law'`, and the public repaired-domain `Ucns.carrier_lcm_law`.
-- This does not graduate the whole formal directory: imported frontier files
-  such as `Ucns/Core.lean` and `Ucns/TheoremN.lean` still contain
-  `sorry`-backed statements that inherit no DEFENDED status.
-- The remaining Core cancellativity statement is packaged under
-  `AlignedComplete` so the ratified nonempty/recursive-normalized/
-  uniform-depth/canonical-carrier/common-depth/fuel hypotheses travel as one
-  proof obligation; helper lemmas also derive `depth A ≤ d`, `0 < d`, and
-  `∃ d0, d = d0 + 1` for unfolding the nonzero `multiplyFuel` branch. The
-  remaining executable `sorry` is isolated as
-  `multiply_left_cancellative_succ_obligation`. Product equality helpers now
-  expose both the row-major `multiplyCells` equality and the product-carrier
-  `Nat.lcm` equality from equality of successor-fuel products; the row-major
-  helper surface also proves rectangular product length and right-cell-count
-  equality under a nonempty left factor, then isolates equality of the first
-  product row for the same left head cell.
-  proof obligation.
+- This does not graduate the whole formal directory: `Ucns/TheoremN.lean` still
+  contains `sorry`-backed statement stubs that inherit no DEFENDED status.
+- The former Core cancellativity statement over `AlignedComplete` has been
+  retired rather than left as a `sorry`: `Ucns/Core.lean` now contains
+  `not_multiply_left_cancellative_on_alignedComplete`, a concrete mod-4
+  tail-angle counterexample showing that the current domain is too weak.
+  Product equality helpers still expose both the row-major `multiplyCells`
+  equality and the product-carrier `Nat.lcm` equality from equality of
+  successor-fuel products; the next true cancellativity theorem must add
+  canonical angle-range/floor-zero evidence before reusing those helpers.
