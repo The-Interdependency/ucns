@@ -41,7 +41,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: hmmm
+#   tests: tests.test_catalogue
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domains

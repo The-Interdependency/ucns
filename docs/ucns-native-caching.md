@@ -32,14 +32,14 @@ Factorization-informed reuse uses scoped UCNS factorization metadata. A non-abso
 
 - The `a0-betatest` checkout was not present in this workspace, so inference integration behind `A0_UCNS_CACHE=1` remains a downstream hook.
 - The Braider is a deterministic software model, not hardware evidence.
-- Structural-hit tests need a stable fixture with shared braid identity and distinct canonical identity.
+- Structural-hit tests have a stable fixture with shared braid identity and distinct canonical identity; the benchmark harness also exercises structural hits over a small frozen-domain catalogue workload.
 - edcmbone fidelity comparison is not wired because the sibling checkout was unavailable.
 
 ## Phase plan
 
 1. Establish deterministic UCNS keys, streams, braider hashes, and an observable in-memory store.
 2. Add A0 read-through/write-through integration behind `A0_UCNS_CACHE=1` in the a0-betatest inference path.
-3. Add measured benchmarks before making performance claims.
+3. Replace the smoke workload with measured benchmarks before making performance claims.
 4. Add optional edcmbone guards when that package is installed.
 
-hmmm: the cache can hum in pure Python, but the absent sibling engine means it has not yet learned where A0 keeps the expensive spoons.
+hmmm: the cache can hum against its own catalogue now; the absent sibling engine still knows where A0 keeps the expensive spoons.

@@ -218,8 +218,8 @@ consistency → face recovery → exact recomposition.
   fails if importing `ucns` reaches for `ucns_recursive`.
 - `ucns_cache` is experimental: no speedup claim, no hardware claim, no theorem
   transfer claim.
-- `test_structural_hit_path` may xfail until there is a stable fixture with
-  shared braid identity and distinct canonical identity.
+- `test_structural_hit_path` uses a stable shared-braid/distinct-identity
+  fixture and should pass as part of the cache prototype suite.
 - Read-only research artifacts: `ucns-code-v065.py`, `ucns_code_v065.py`,
   `code/`, and root `*_probe*.py` scripts.
 - `formal/` proves nothing yet while `sorry` remains.
@@ -232,7 +232,6 @@ consistency → face recovery → exact recomposition.
 
 - No linting/formatting config and no lint command.
 - No runtime `DeprecationWarning` on `import ucns_recursive`.
-- No stable structural-cache fixture for the shared-braid/distinct-identity path.
 - Right-quotient completeness proof remains asserted-by-symmetry.
 - Discharged Lean proofs remain incomplete; `formal/` still has `sorry` leaves.
 - Carrier widening / general recursive completeness remain out of v1.0 scope.
