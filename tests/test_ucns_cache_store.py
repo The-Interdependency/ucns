@@ -18,15 +18,27 @@ def test_store_exact_hit():
     assert result.entry.value == "value"
 
 
-def test_structural_hit_path():
-    store = UCNSCacheStore()
-    first = obj(0)
-    second = obj(1)
+def structural_pair():
+    return (
+        UCNSObject(2, 1, [(Fraction(0), None), (Fraction(2), None), (Fraction(0), None)], [0, 0, 0]),
+        UCNSObject(6, 3, [(Fraction(0), None), (Fraction(2, 3), None), (Fraction(4, 3), None)], [0, 0, 0]),
+    )
+
+
+def test_structural_fixture_has_shared_braid_and_distinct_identity():
+    first, second = structural_pair()
     first_key = make_ucns_cache_key(first)
     second_key = make_ucns_cache_key(second)
-    if first_key.braider_hash != second_key.braider_hash or first_key.canonical_hash == second_key.canonical_hash:
-        import pytest
-        pytest.xfail("awaiting stable UCNS fixture for shared braid / distinct identity")
+    assert first_key.braider_hash == second_key.braider_hash
+    assert first_key.canonical_hash != second_key.canonical_hash
+
+
+def test_structural_hit_path():
+    store = UCNSCacheStore()
+    first, second = structural_pair()
     store.put_by_object(first, "value")
     result = store.get_by_object(second)
+    assert result.hit
     assert result.structural_hit
+    assert not result.exact_hit
+    assert result.entry.value == "value"

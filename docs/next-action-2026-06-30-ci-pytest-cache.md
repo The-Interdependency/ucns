@@ -14,9 +14,9 @@ Date: 2026-06-30
 
 The repository still advertises and tests Python 3.8. Pytest 8.4 dropped Python 3.8 support, so dev tooling must stay on `pytest>=8.3,<8.4` until the project intentionally raises its Python floor.
 
-## Remaining visible frontier
+## Completed follow-up — structural cache witness
 
-`tests/test_ucns_cache_store.py::test_structural_hit_path` remains an intentional xfail until there is a stable UCNS fixture with:
+`tests/test_ucns_cache_store.py::test_structural_hit_path` now uses an executable stable UCNS fixture with:
 
 ```text
 shared braider identity
@@ -24,10 +24,10 @@ and
 distinct canonical identity
 ```
 
-That fixture determines whether the structural cache path has an executable witness, or whether the store semantics need to be narrowed.
+The witness pair is depth-1, face-zero, length-3 structure over carriers `n_min=1` and `n_min=3`. Under the current primitive-stream derivation, both objects braid to the same structural lattice hash while retaining distinct canonical identities. This closes the prior xfail handoff and keeps the structural cache claim executable rather than aspirational.
 
 ## Next atomic action
 
-Create or find the smallest valid UCNS object pair that shares `braider_hash` while differing in `canonical_hash`; if impossible under current primitive-stream derivation, document that impossibility and change the structural-hit claim accordingly.
+The structural-hit path is now exercised against the frozen-domain catalogue smoke workload in `scripts/bench_ucns_cache.py`; next, wire A0 read-through/write-through behind `A0_UCNS_CACHE=1` when the downstream checkout is available, still without assigning a performance or reuse-quality claim.
 
-hmmm: the gate is awake now; the remaining unknown is whether the braid has a lawful twin or only a poetic cousin.
+hmmm: the braid got a small catalogue job; the big spoon remains in the sibling kitchen.
