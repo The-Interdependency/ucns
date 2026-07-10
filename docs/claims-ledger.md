@@ -17,6 +17,8 @@ FRONTIER          plausible or partially working, not complete
 EXPERIMENTAL      exploration layer, not canon
 ```
 
+**Release-status precedence.** This ledger together with `README.md` supersedes every status classification anywhere in `ucns-spec.md`, not only the dated status snapshot at its beginning. That scope explicitly includes §F4 and any historical statement that labels Theorem N `DEFENDED`. Until the remaining Lean proof leaves are discharged and external formal review is complete, the current release status of Theorem N is `FRONTIER`.
+
 ---
 
 ## 1. Definitions / ontology claims
