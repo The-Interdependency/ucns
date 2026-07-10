@@ -78,7 +78,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Depth-2 oracle (Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — partially verified in Lean; remaining proof leaves under active discharge** |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — Lean statements type-check with `sorry` leaves under active discharge; a green Lean build is not proof transfer** |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
@@ -93,9 +93,15 @@ See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement a
 
 **Prime quartet discontinuity.** Cross-repo interoperability (`ucns`, `edcmbone`, `a0`, `interdependent-lib`) is not theorem continuity by default. See `docs/prime-quartet-discontinuity.md` and `docs/edcm-edcmbone-bridge-checklist.md`.
 
-**A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete
-domain. A0-facing consumers should consult `domain_status_metadata` and
-treat `SEQ-PRIME` outside `VERIFIED_DOMAIN_LABELS` as non-absolute.
+**A0 rule.** `SEQ-PRIME` is catalogue-relative. It is *certified*
+("absolute" in the legacy alias) only when the machine-checked
+conditions of `ucns.factorization_result` all hold: a declared
+complete/oracle domain, demonstrated search exhaustion, and exact
+catalogue coverage verified by `ucns.catalogue_certificate` — never
+from a domain label alone, and never from a caller assertion.
+Custom catalogues are uncertified by default. A0-facing consumers
+should consult `negative_result_certified` / `uncertified_reasons`
+on the result envelope and treat everything else as non-absolute.
 
 ---
 

@@ -13,7 +13,7 @@ Source:
 Licensing/provenance note: this import follows the maintainer instruction that
 UnitCircle will inherit UCNS licensing because both repositories are owned by
 the same maintainer. The local artifact is therefore treated as part of this
-repo's MPL-2.0 distribution.
+repo's Apache-2.0 distribution.
 
 ## What it illustrates
 
