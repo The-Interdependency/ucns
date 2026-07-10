@@ -32,13 +32,19 @@ from __future__ import annotations
 #   unresolved: none
 # === END MODULE_BUILD ===
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional, Tuple
 
-from .canonical import UCNSObject, multiply
+from .canonical import UCNSObject, is_multiplicative_unit, multiply
+from .catalogue_certificate import (
+    COVERAGE_UNCERTIFIED,
+    CatalogueCertificate,
+    check_catalogue_coverage,
+)
 from .domain_status import DomainStatusMetadata, status_for_object
-from .factor_search_v08 import SEQ_PRIME, factor_search_v08
+from .domains import generate_payload_catalogue
+from .factor_search_v08 import FactorSearchReport, factor_search_report
 from .serialization import stable_hash
 
 
@@ -53,10 +59,22 @@ class FactorizationResultKind(str, Enum):
 class FactorizationResult:
     """Self-describing factorization output for A0-facing consumers.
 
-    ``seq_prime_is_absolute`` is True only when the product's declared domain
-    has a completeness guarantee and the raw solver returned ``SEQ-PRIME``.
-    In frontier / experimental domains, the same sentinel is non-absolute and
-    must be scoped accordingly.
+    ``negative_result_certified`` is True only when ALL of the
+    certification conditions hold (codex-handoff/02): the raw result is
+    ``SEQ-PRIME``; the target's domain permits a completeness claim and
+    is not the unit domain; the search demonstrably exhausted its
+    declared boundary; the exact input catalogue has machine-checked
+    coverage for the domain (canonical-exact or a structurally verified
+    superset); and any pruning applied is the named, versioned,
+    coverage-preserving built-in rule.  ``uncertified_reasons`` records
+    every failed condition.
+
+    ``seq_prime_is_absolute`` is retained for compatibility as an exact
+    alias of ``negative_result_certified``.  "Absolute" means *certified
+    within the declared UCNS domain* — never universal mathematical
+    primality.  No caller-supplied assertion can set it: coverage is
+    recomputed from the exact catalogue by
+    ``ucns.catalogue_certificate``.
     """
 
     product_hash: str
@@ -67,6 +85,19 @@ class FactorizationResult:
     seq_prime_is_absolute: bool
     claim_scope: str
     note: str
+    # Certification metadata (codex-handoff/02).  Defaults keep older
+    # positional construction working; ``factorization_result`` always
+    # fills them explicitly.
+    negative_result_certified: bool = False
+    search_exhausted: bool = False
+    catalogue_coverage_status: str = COVERAGE_UNCERTIFIED
+    catalogue_fingerprint: str = ""
+    catalogue_rule_version: str = ""
+    catalogue_source: str = ""
+    pruning_applied: bool = False
+    pruning_rule: str = ""
+    pruning_preserves_coverage: bool = True
+    uncertified_reasons: Tuple[str, ...] = field(default=())
 
     @property
     def has_factors(self) -> bool:
@@ -79,21 +110,59 @@ class FactorizationResult:
         return not self.seq_prime_is_absolute
 
 
+def _certification(
+    P: UCNSObject,
+    metadata: DomainStatusMetadata,
+    report: FactorSearchReport,
+    coverage: CatalogueCertificate,
+) -> Tuple[bool, Tuple[str, ...]]:
+    """Evaluate every certification condition; returns (certified, reasons)."""
+    reasons: List[str] = []
+    if not metadata.completeness_guaranteed:
+        reasons.append(
+            f"domain-not-complete:{metadata.label}"
+        )
+    if metadata.label == "depth-0" or is_multiplicative_unit(P):
+        reasons.append("unit-domain-primality-inapplicable")
+    if not report.search_exhausted:
+        reasons.append("search-not-exhausted")
+    if not coverage.certifies_coverage:
+        reasons.append(f"catalogue-coverage-uncertified:{coverage.reason}")
+    if report.pruning_applied and not report.pruning_preserves_coverage:
+        reasons.append(f"pruning-not-coverage-preserving:{report.pruning_rule}")
+    return (not reasons, tuple(reasons))
+
+
 def factorization_result(
     P: UCNSObject,
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
 ) -> FactorizationResult:
-    """Run ``factor_search_v08`` and return a self-describing envelope."""
-    metadata = status_for_object(P)
-    raw = factor_search_v08(P, catalogue=catalogue)
-    product_hash = stable_hash(P)
+    """Run the exhaustive search and return a certified envelope.
 
-    if isinstance(raw, tuple):
-        A, B = raw
+    Certification is machine-derived: the coverage certificate is
+    recomputed from the exact catalogue (the canonical default when
+    ``catalogue is None``), and search exhaustion comes from the
+    search report.  There is no parameter by which a caller can assert
+    completeness.  Any search exception propagates; it is never
+    converted into a negative result.
+    """
+    metadata = status_for_object(P)
+    product_hash = stable_hash(P)
+    supplied: List[Optional[UCNSObject]] = (
+        generate_payload_catalogue() if catalogue is None else list(catalogue)
+    )
+    report = factor_search_report(P, catalogue=supplied, prune=True)
+    coverage = check_catalogue_coverage(supplied, metadata.label)
+    catalogue_source = (
+        "default-canonical" if catalogue is None else "caller"
+    )
+
+    if report.factors is not None:
+        A, B = report.factors
         note = "Recovered factors recompose to product."
         if multiply(A, B) != P:
-            # This should never happen if factor_search_v08 preserves its
-            # soundness contract.  Keep the guard here for envelope callers.
+            # This should never happen if the solver preserves its
+            # soundness contract.  Keep the guard for envelope callers.
             note = "Recovered factors failed recomposition guard. Treat as invalid."
         return FactorizationResult(
             product_hash=product_hash,
@@ -104,25 +173,44 @@ def factorization_result(
             seq_prime_is_absolute=False,
             claim_scope="composite-found",
             note=note,
+            negative_result_certified=False,
+            search_exhausted=report.search_exhausted,
+            catalogue_coverage_status=coverage.coverage_status,
+            catalogue_fingerprint=report.supplied_catalogue_fingerprint,
+            catalogue_rule_version=coverage.rule_version,
+            catalogue_source=catalogue_source,
+            pruning_applied=report.pruning_applied,
+            pruning_rule=report.pruning_rule,
+            pruning_preserves_coverage=report.pruning_preserves_coverage,
+            uncertified_reasons=("factors-found",),
         )
 
-    if raw != SEQ_PRIME:
-        raise ValueError(f"Unknown factor_search_v08 result: {raw!r}")
-
-    absolute = metadata.completeness_guaranteed
+    certified, reasons = _certification(P, metadata, report, coverage)
     return FactorizationResult(
         product_hash=product_hash,
         product_domain_label=metadata.label,
         product_domain_metadata=metadata,
         result_kind=FactorizationResultKind.SEQ_PRIME,
         factors=None,
-        seq_prime_is_absolute=absolute,
+        seq_prime_is_absolute=certified,
         claim_scope=metadata.seq_prime_claim_scope,
         note=(
-            "SEQ-PRIME within a declared complete domain."
-            if absolute
-            else "SEQ-PRIME is non-absolute outside a declared complete domain."
+            "SEQ-PRIME certified within the declared domain: exhaustive "
+            "search over a machine-checked covering catalogue."
+            if certified
+            else "SEQ-PRIME is catalogue-relative and NOT certified: "
+            + "; ".join(reasons)
         ),
+        negative_result_certified=certified,
+        search_exhausted=report.search_exhausted,
+        catalogue_coverage_status=coverage.coverage_status,
+        catalogue_fingerprint=report.supplied_catalogue_fingerprint,
+        catalogue_rule_version=coverage.rule_version,
+        catalogue_source=catalogue_source,
+        pruning_applied=report.pruning_applied,
+        pruning_rule=report.pruning_rule,
+        pruning_preserves_coverage=report.pruning_preserves_coverage,
+        uncertified_reasons=reasons,
     )
 
 
