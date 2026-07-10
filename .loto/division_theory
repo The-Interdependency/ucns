@@ -1,0 +1,8 @@
+RepoLOTO lock
+id: division_theory
+obligation: O5
+opened: 2026-07-10
+opened_by: Fable 5 base-geometry completion run
+rung_on_arrival: hmmm (left-factors non-unique)
+rung_target: solvability theorem
+rule: delete this lock only at target rung ([mutation-verified] or the stated proof rung)
