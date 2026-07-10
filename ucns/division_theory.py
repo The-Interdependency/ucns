@@ -1,4 +1,4 @@
-# ratios: loc_comments=139:114 imports_exports=5:3 calls_definitions=57:6
+# ratios: loc_comments=138:122 imports_exports=5:3 calls_definitions=58:6
 """
 ucns.division_theory
 ====================
@@ -81,7 +81,8 @@ from __future__ import annotations
 #   given: normalized nonempty A, P (left) or B, P (right) of finite depth
 #   then:  left_quotients/right_quotients return exactly the set of X with
 #          multiply(A, X) == P (resp. multiply(X, B) == P); sound, complete
-#          (exhaustively cross-checked on a closed 78-object universe),
+#          (cross-checked on a closed 78-object universe; full 6,084-pair
+#          sweep via UCNS_EXHAUSTIVE=1, deterministic stride sample in CI),
 #          multiplicity equals the product of per-slot solution counts, and
 #          the v0.6 greedy-miss counterexample is recovered
 #   class: correctness
@@ -162,11 +163,17 @@ def left_quotients(
     A: Optional[UCNSObject],
     limit: int = _DEFAULT_LIMIT,
 ) -> List[Optional[UCNSObject]]:
-    """Every X with ``multiply(A, X) == P``.
+    """Every X with ``multiply(A, X) == P``, over the monoid carrier.
 
     Complete and sound on normalized nonempty finite-depth objects;
     raises :class:`SolutionLimitExceeded` if more than ``limit``
     candidate assemblies would be enumerated.
+
+    Identity convention: the identity solution appears once, as the
+    canonical length-1 identity object — the ``None`` sentinel spelling
+    (``multiply(A, None) == A``) is an API alias for the same monoid
+    element and is deliberately not repeated, so the returned length
+    equals the multiplicity theorem's count exactly.
     """
     if P is None:
         return [None] if A is None else []
@@ -234,10 +241,11 @@ def right_quotients(
     B: Optional[UCNSObject],
     limit: int = _DEFAULT_LIMIT,
 ) -> List[Optional[UCNSObject]]:
-    """Every X with ``multiply(X, B) == P``.
+    """Every X with ``multiply(X, B) == P``, over the monoid carrier.
 
-    Exact dual of :func:`left_quotients`: hosts are forced by the
-    block-leading positions ``k*q`` and payload systems run over rows.
+    Exact dual of :func:`left_quotients` (same identity convention):
+    hosts are forced by the block-leading positions ``k*q`` and payload
+    systems run over rows.
     """
     if P is None:
         return [None] if B is None else []
@@ -294,4 +302,4 @@ def right_quotients(
         if multiply(x, B) == P:
             results.append(x)
     return results
-# ratios: loc_comments=139:114 imports_exports=5:3 calls_definitions=57:6
+# ratios: loc_comments=138:122 imports_exports=5:3 calls_definitions=58:6

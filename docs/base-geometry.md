@@ -248,7 +248,10 @@ enumerates everything.  Finiteness follows by induction.  ∎
 Implementation: `ucns/division_theory.py` (`left_quotients` /
 `right_quotients`) — sound and complete; exhaustively cross-checked on a
 closed 78-object universe (6,084 ordered pairs, zero misses, zero unsound
-returns).
+returns; full sweep re-runnable via `UCNS_EXHAUSTIVE=1`, CI runs a
+deterministic stride sample of the same universe).  Solutions are monoid
+elements: the identity appears once, as the canonical identity object,
+never additionally as the `None` sentinel alias.
 
 **Theorem 5.3 (flat-divisor cancellativity).**  If `A` is flat (depth 1,
 all payloads `None`) then `A ⊠ X = A ⊠ Y ⇒ X = Y`, and dually

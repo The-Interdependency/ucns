@@ -88,6 +88,7 @@ is missing for an OPEN row.
 |---|---|---|
 | `python -m pytest ucns_recursive/tests tests -v` | 2026-07-10 | see PR CI |
 | `python audit/reconcile.py` | 2026-07-10 | reconciled |
+| `UCNS_EXHAUSTIVE=1 python -m pytest contracts/test_quotient_solvability.py` | 2026-07-10 | 10 passed (full 6,084-pair sweep; CI default is a stride sample per PR #96 review) |
 
 Adversarial-review note: a multi-agent refutation pass was run before
 commit; the division-theory refuter surfaced two statement-precision
