@@ -1,3 +1,4 @@
+# ratios: loc_comments=23:10 imports_exports=9:7 calls_definitions=11:7
 """CI shim: run every base-geometry contract aggregate under pytest.
 
 The contract implementations live in ``contracts/`` (test-build / msdmd
@@ -49,3 +50,4 @@ def test_o6_structure_naming():
 
 def test_o7_addition_boundary():
     contract_addition_boundary()
+# ratios: loc_comments=23:10 imports_exports=9:7 calls_definitions=11:7
