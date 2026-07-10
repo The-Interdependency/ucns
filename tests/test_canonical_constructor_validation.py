@@ -45,7 +45,7 @@ class TestPublicUCNSObjectConstructorValidation(unittest.TestCase):
             [(Fraction(0), UNIT), (Fraction(1), UNIT)],
             [1, 0],
         )
-        self.assertEqual(obj.F_plus, [1, 0])
+        self.assertEqual(obj.F_plus, (1, 0))  # canonical tuples (immutable value model)
 
 
 if __name__ == "__main__":
