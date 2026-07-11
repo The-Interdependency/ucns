@@ -102,22 +102,21 @@ class TestCanonicalSerialization(unittest.TestCase):
                 [0],
             )
 
-    def test_mutation_to_mismatched_lengths_is_impossible(self):
-        """Stronger guarantee than the pre-v1.0 serialization guard:
-        the immutable value model makes the mismatched-length mutation
-        unrepresentable, so a serialized hash can never drift."""
+    def test_serialization_still_rejects_mutated_mismatched_lengths(self):
         obj = UCNSObject(
             4,
             2,
             [(Fraction(0), UNIT), (Fraction(1), UNIT)],
             [0, 0],
         )
-        with self.assertRaises(AttributeError):
-            obj.F_plus = [0]
-        # the value (and therefore its canonical serialization) is intact
-        canonical_json(obj)
-        canonical_bytes(obj)
-        stable_hash(obj)
+        obj.F_plus = [0]
+
+        with self.assertRaises(ValueError):
+            canonical_json(obj)
+        with self.assertRaises(ValueError):
+            canonical_bytes(obj)
+        with self.assertRaises(ValueError):
+            stable_hash(obj)
 
 
 if __name__ == "__main__":

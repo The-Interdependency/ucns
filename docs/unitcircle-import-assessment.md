@@ -26,7 +26,7 @@ Reasons:
 1. **License/provenance is maintainer-approved for this repo.** The source
    repository root did not contain a `LICENSE` file in the inspected commit,
    but the maintainer clarified that both repositories are theirs and the
-   imported artifact will inherit this repo's UCNS/Apache-2.0 licensing.
+   imported artifact will inherit this repo's UCNS/MPL-2.0 licensing.
 2. **Scope is mostly visualization/experiment support.** Active scripts build
    prime datasets, train a toy EML tree, construct a gonal-Möbius embedding,
    and provide a self-contained UCNS v0.3 flat kernel. These are useful

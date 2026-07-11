@@ -67,43 +67,50 @@ def test_representation_independence():
 
 
 def test_empty_carrier_boundary():
-    """The carrier of the base geometry is NONEMPTY objects.  Since the
-    v1.0 completion (codex-handoff/05) the boundary is enforced at
-    construction: an empty object cannot be manufactured through the
-    public API, so ⊠ is total on everything constructible.  (Pre-v1.0
-    the empty object was constructible and asymmetric under ⊠ —
-    left-absorbing, right-undefined; see docs/base-geometry.md §0.)"""
+    """The carrier of the base geometry is NONEMPTY objects: an empty
+    left operand absorbs, an empty right operand is undefined.  This
+    pins the boundary rather than papering over it."""
+    empty = UCNSObject(1, 1, [], [])
+    absorbed = multiply(empty, E)
+    assert len(absorbed.A_plus) == 0, "empty left operand must absorb"
     try:
-        UCNSObject(1, 1, [], [])
-    except ValueError:
+        multiply(E, empty)
+    except IndexError:
         pass
     else:
         raise AssertionError(
-            "empty UCNSObject construction must raise; carrier boundary moved"
+            "multiply(E, empty) unexpectedly succeeded; carrier boundary moved"
         )
 
 
 def test_mutation_caught():
     """[mutation-verified], against the real code path: the actual
-    construction-time canonicalizer (ucns.canonical._gauge_cells) is
-    replaced by a mutant that forgets the mod-4 reduction;
-    gauge-equivalent raw representations then stop colliding (or
-    totality breaks), and the representation-independence witness
-    detects it."""
-    import ucns.canonical as canonical_module
-
+    canonicalizer (UCNSObject.normalize) is replaced by a mutant that
+    forgets the mod-4 reduction; gauge-equivalent raw representations
+    then stop colliding (or totality breaks), and the
+    representation-independence witness detects it."""
     rng = make_rng(3)
-    original_gauge = canonical_module._gauge_cells
+    original_normalize = UCNSObject.normalize
 
-    def mutant_gauge(cells):
-        theta0 = cells[0][0]
-        # mutant: no % 4 reduction after the gauge shift
-        return tuple(
-            (theta - theta0, payload) for theta, payload in cells
-        )
+    def mutant_normalize(self):
+        if not self.A_plus:
+            return self
+        theta0 = self.A_plus[0][0]
+        shifted = []
+        for theta, payload in self.A_plus:
+            new_theta = theta - theta0  # mutant: no % 4 reduction
+            new_payload = payload.normalize() if payload is not None else None
+            shifted.append((new_theta, new_payload))
+        self.A_plus = shifted
+        angles = [x for x, _ in self.A_plus]
+        self.n_min = self._compute_n_min(angles)
+        self.A_minus, self.F_minus = self._star()
+        if self.n_dec % self.n_min != 0:
+            raise ValueError("mutant carrier violation")
+        return self
 
     caught = False
-    canonical_module._gauge_cells = mutant_gauge
+    UCNSObject.normalize = mutant_normalize
     try:
         for _ in range(50):
             a = rand_obj(rng, 1, 3)
@@ -126,7 +133,7 @@ def test_mutation_caught():
                 caught = True  # representation independence broke
                 break
     finally:
-        canonical_module._gauge_cells = original_gauge
+        UCNSObject.normalize = original_normalize
     assert caught, "real-canonicalizer mutant was not caught"
 
 

@@ -50,16 +50,7 @@ def factor(
     obj: UCNSObject,
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
 ) -> FactorizationResult:
-    """Return a scoped, certified factorization result envelope.
-
-    The envelope carries the machine-derived certification metadata
-    (``negative_result_certified``, ``search_exhausted``,
-    ``catalogue_coverage_status``, ``catalogue_fingerprint``,
-    ``uncertified_reasons``, …).  There is deliberately no parameter by
-    which a caller can assert catalogue completeness: coverage is
-    recomputed from the exact catalogue by
-    ``ucns.catalogue_certificate``.
-    """
+    """Return a scoped factorization result envelope for *obj*."""
     return factorization_result(obj, catalogue=catalogue)
 
 

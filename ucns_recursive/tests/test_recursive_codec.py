@@ -107,14 +107,11 @@ class TestDictRoundTrip(unittest.TestCase):
         obj = recursive_encode(original)
         self.assertEqual(recursive_decode(obj), original)
 
-    def test_dict_string_keys_roundtrip_as_strings(self):
-        # Deliberate contract change (codex-handoff/06): dictionary KEYS
-        # carry a versioned type tag and round-trip with exact type
-        # identity; VALUES keep the historical bytes coercion.
+    def test_dict_string_keys_coerce_to_bytes(self):
         obj = recursive_encode({"name": "Erin", "role": "architect"})
         self.assertEqual(
             recursive_decode(obj),
-            {"name": b"Erin", "role": b"architect"},
+            {b"name": b"Erin", b"role": b"architect"},
         )
 
     def test_empty_dict(self):
@@ -169,19 +166,19 @@ class TestFaceBitPresence(unittest.TestCase):
     def test_leaf_sentinel_then_content(self):
         obj = recursive_encode(b"abc")
         # 1 sentinel face=0, 3 byte cells face=1
-        self.assertEqual(obj.F_plus, (0, 1, 1, 1))
+        self.assertEqual(obj.F_plus, [0, 1, 1, 1])
 
     def test_empty_leaf_one_sentinel(self):
         obj = recursive_encode(b"")
-        self.assertEqual(obj.F_plus, (0,))
+        self.assertEqual(obj.F_plus, [0])
 
     def test_list_two_sentinels(self):
         obj = recursive_encode([b"x", b"y"])
-        self.assertEqual(obj.F_plus, (0, 0, 1, 1))
+        self.assertEqual(obj.F_plus, [0, 0, 1, 1])
 
     def test_dict_three_sentinels(self):
         obj = recursive_encode({b"k": b"v"})
-        self.assertEqual(obj.F_plus, (0, 0, 0, 1, 1))
+        self.assertEqual(obj.F_plus, [0, 0, 0, 1, 1])
 
 
 class TestStructuralSanity(unittest.TestCase):

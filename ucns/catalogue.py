@@ -65,13 +65,11 @@ __all__ = ["build_catalogue_d1", "build_catalogue_d2_oracle"]
 
 
 def build_catalogue_d1() -> List[UCNSObject]:
-    """Return the canonical oracle atoms (excluding the unit).
+    """Return all depth-1 UCNSObjects in the frozen domain D'.
 
-    These are the structural members of
-    ``domains.generate_payload_catalogue()`` — the carrier-grid depth-1
-    family, which is deliberately narrower than "every depth-1 object
-    within the geometric bounds" (codex-handoff/03).  ``None`` itself
-    (the unit) is excluded.
+    These are the oracle atoms: objects with ``|A⁺| ≤ A_PLUS_MAX``,
+    ``n_min ≤ N_MIN_MAX``, and all cell payloads ``None``.  ``None``
+    itself (the unit) is excluded.
 
     Suitable as the catalogue for factorizations whose left factor is
     known to be depth-1 (covered by the v0.6 left-quotient completeness
