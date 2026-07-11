@@ -10,28 +10,28 @@ Domain parameters
 
 Verified domain
 ---------------
-The completeness theorems cover three strata:
+The completeness surfaces distinguish three strata:
 
     depth-0          the unit (None)
-    depth-1          any flat object (all payloads None): v0.6 theorem
-    depth-2-oracle   depth-2 objects whose cell payloads are all oracle
-                     atoms: v0.8.1 oracle theorem
+    depth-1          any flat object (all payloads None)
+    depth-2-oracle   depth-2 objects whose cell payloads are all members
+                     of the canonical oracle catalogue
 
 Outside the verified domain (depth-2-non-oracle, depth ≥ 3), soundness
 is preserved but completeness is not proven.
 
 Oracle atoms
 ------------
-An oracle atom is any object that is either:
-- ``None`` (the unit), or
-- a depth-1 object within the frozen-domain bounds
-  (``|A⁺| ≤ 3``, ``n_min ≤ 4``).
+An oracle atom is ``None`` or a structural member of the canonical
+catalogue produced by :func:`generate_payload_catalogue`.  The catalogue
+is the deterministic carrier-grid family with raw angles
+``2*k/n_min`` for ``n_min <= 4`` and lengths ``1..3``, across every face
+assignment.
 
-This is exactly the set produced by ``generate_payload_catalogue()``.
-``ORACLE_ATOM_PAYLOADS`` is that list, precomputed at import time.
-
-``S2`` is the canonical smallest oracle atom:
-    UCNSObject(2, 2, [(0, None), (1, None)], [0, 0])
+This is deliberately narrower than every geometrically bounded flat
+object.  ``in_domain`` answers the geometric question; ``is_oracle_atom``
+answers catalogue membership.  Keeping those predicates separate makes
+future catalogue-coverage checks machine-verifiable.
 """
 
 from __future__ import annotations
@@ -40,25 +40,26 @@ from __future__ import annotations
 # id: ucns_domains
 #   module_name: domains
 #   module_kind: engine
-#   summary: Defines the frozen depth-2 domain D', oracle-atom payload catalogue, and oracle-class / verified-domain predicates used to scope completeness claims.
+#   summary: Defines the frozen depth-2 geometry, canonical oracle catalogue, and exact catalogue-membership predicates used to scope oracle claims.
 #   owner: Erin Spencer
-#   public_surface: DEPTH_MAX, A_PLUS_MAX, N_MIN_MAX, S2, ORACLE_ATOM_PAYLOADS, generate_payload_catalogue, in_domain, depth_of, is_oracle_atom, is_in_oracle_class, verified_domain_status
-#   internal_surface: none
+#   public_surface: DEPTH_MAX, A_PLUS_MAX, N_MIN_MAX, S2, ORACLE_ATOM_PAYLOADS, ORACLE_CATALOGUE_RULE_VERSION, generate_payload_catalogue, in_domain, depth_of, is_oracle_atom, is_in_oracle_class, verified_domain_status
+#   internal_surface: _generate_canonical_catalogue, _oracle_atom_key, _CANONICAL_ORACLE_KEYS
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns.tests.test_depth2_full_domain
+#   tests: tests/test_oracle_catalogue_equivalence.py, ucns_recursive/tests/test_depth2_full_domain.py
 #   rollout: default_enabled
-#   rollback: remove module and its re-exports
+#   rollback: restore geometric-bounds oracle classification (reintroduces catalogue mismatch)
 #   requires: ucns_canonical
 #   since: 2026-06-02
 #   unresolved: none
 # === END MODULE_BUILD ===
 
+import copy
 from fractions import Fraction
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from .canonical import UCNSObject, UNIT
 
@@ -68,6 +69,7 @@ __all__ = [
     "N_MIN_MAX",
     "S2",
     "ORACLE_ATOM_PAYLOADS",
+    "ORACLE_CATALOGUE_RULE_VERSION",
     "generate_payload_catalogue",
     "in_domain",
     "depth_of",
@@ -85,21 +87,27 @@ DEPTH_MAX: int = 2
 A_PLUS_MAX: int = 3
 N_MIN_MAX: int = 4
 
+# Bump whenever the canonical catalogue generation family, bounds,
+# ordering, or structural deduplication policy changes.
+ORACLE_CATALOGUE_RULE_VERSION: str = "oracle-atoms-carrier-grid-v1"
+
 
 # ------------------------------------------------------------------
 # Canonical oracle atom
 # ------------------------------------------------------------------
 
 S2: UCNSObject = UCNSObject(
-    2, 2,
+    2,
+    2,
     [(Fraction(0), UNIT), (Fraction(1), UNIT)],
     [0, 0],
 )
 
 
 # ------------------------------------------------------------------
-# Depth
+# Depth and geometric domain membership
 # ------------------------------------------------------------------
+
 
 def depth_of(obj: Optional[UCNSObject]) -> int:
     """Return the nesting depth of *obj* (None → 0)."""
@@ -109,12 +117,12 @@ def depth_of(obj: Optional[UCNSObject]) -> int:
     return 1 + max_payload_depth
 
 
-# ------------------------------------------------------------------
-# Domain membership
-# ------------------------------------------------------------------
 
 def in_domain(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is within the frozen domain D'."""
+    """Return True iff *obj* is within the frozen geometric domain D'.
+
+    This predicate does not imply oracle-catalogue membership.
+    """
     if obj is None:
         return True
     return (
@@ -125,17 +133,30 @@ def in_domain(obj: Optional[UCNSObject]) -> bool:
 
 
 # ------------------------------------------------------------------
-# Payload catalogue generation
+# Canonical payload catalogue
 # ------------------------------------------------------------------
 
-def generate_payload_catalogue() -> List[Optional[UCNSObject]]:
-    """Return all depth-1 UCNSObjects with |A⁺| ≤ 3 and n_min ≤ 4.
 
-    These are the oracle atoms that can appear as cell payloads inside
-    depth-2 objects from D'.  ``None`` (unit payload) is included first.
+def _oracle_atom_key(obj: UCNSObject) -> tuple:
+    """Return the immutable structural key used for oracle membership."""
+    return (
+        obj.n_min,
+        tuple(obj.F_plus),
+        tuple(angle for angle, payload in obj.A_plus if payload is None),
+        len(obj.A_plus),
+    )
+
+
+
+def _generate_canonical_catalogue() -> Tuple[Optional[UCNSObject], ...]:
+    """Generate the deterministic oracle catalogue.
+
+    Order is unit first, then ``(n_min, length, face_bits)`` generation
+    order.  Structurally equal objects are deduplicated while retaining
+    the first occurrence.
     """
     objects: List[Optional[UCNSObject]] = [UNIT]
-    seen: set = set()
+    seen = set()
 
     for n_min in range(1, N_MIN_MAX + 1):
         for length in range(1, A_PLUS_MAX + 1):
@@ -146,87 +167,91 @@ def generate_payload_catalogue() -> List[Optional[UCNSObject]]:
                     obj = UCNSObject(
                         n_dec=n_min * 2,
                         n_min=n_min,
-                        A_plus=[(a, None) for a in angles],
+                        A_plus=[(angle, None) for angle in angles],
                         F_plus=faces,
                     )
                 except ValueError:
                     continue
-                key = (obj.n_min, tuple(obj.F_plus),
-                       tuple(a for a, _ in obj.A_plus))
-                if key not in seen:
-                    seen.add(key)
-                    objects.append(obj)
+                key = _oracle_atom_key(obj)
+                if key in seen:
+                    continue
+                seen.add(key)
+                objects.append(obj)
 
-    return objects
+    return tuple(objects)
+
+
+# Private canonical objects and immutable keys define truth. Public values are
+# detached copies because UCNSObject remains mutable until the object-model PR.
+_CANONICAL_ORACLE_CATALOGUE = _generate_canonical_catalogue()
+_CANONICAL_ORACLE_KEYS = frozenset(
+    _oracle_atom_key(obj)
+    for obj in _CANONICAL_ORACLE_CATALOGUE
+    if obj is not None
+)
+
+ORACLE_ATOM_PAYLOADS: Tuple[Optional[UCNSObject], ...] = tuple(
+    copy.deepcopy(obj) if obj is not None else None
+    for obj in _CANONICAL_ORACLE_CATALOGUE
+)
+
+
+
+def generate_payload_catalogue() -> List[Optional[UCNSObject]]:
+    """Return detached copies of the canonical oracle catalogue.
+
+    Caller mutation cannot change future catalogue generation or oracle
+    membership.  The family is deterministic, structurally deduplicated,
+    unit-first, and identified by
+    :data:`ORACLE_CATALOGUE_RULE_VERSION`.
+    """
+    return [
+        copy.deepcopy(obj) if obj is not None else None
+        for obj in _CANONICAL_ORACLE_CATALOGUE
+    ]
 
 
 # ------------------------------------------------------------------
 # Oracle-class predicates
 # ------------------------------------------------------------------
 
-# Precomputed at import time; used by is_oracle_atom and as a public
-# constant for catalogue builders.
-ORACLE_ATOM_PAYLOADS: List[Optional[UCNSObject]] = generate_payload_catalogue()
-
 
 def is_oracle_atom(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is an oracle atom.
-
-    Oracle atoms are None (the unit) and every depth-1 object within
-    the frozen-domain bounds (|A⁺| ≤ 3, n_min ≤ 4).  Equivalently,
-    these are exactly the objects produced by
-    :func:`generate_payload_catalogue`.
-    """
+    """Return True iff *obj* is in the canonical oracle catalogue."""
     if obj is None:
         return True
-    return (
-        depth_of(obj) == 1
-        and len(obj.A_plus) <= A_PLUS_MAX
-        and obj.n_min <= N_MIN_MAX
-    )
+    if not isinstance(obj, UCNSObject) or depth_of(obj) != 1:
+        return False
+    return _oracle_atom_key(obj) in _CANONICAL_ORACLE_KEYS
+
 
 
 def is_in_oracle_class(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is in the depth-2 oracle class.
-
-    An object is in the oracle class when:
-    - its depth is 0 or 1 (trivially covered by existing theorems), or
-    - its depth is exactly 2 AND every cell payload is an oracle atom.
-
-    Objects with depth ≥ 3 are never in the oracle class.
-    """
+    """Return True iff *obj* is in the depth-2 oracle class."""
     if obj is None:
         return True
-    d = depth_of(obj)
-    if d <= 1:
+    depth = depth_of(obj)
+    if depth <= 1:
         return True
-    if d >= 3:
+    if depth >= 3:
         return False
-    # depth == 2: every cell payload must be an oracle atom.
     return all(is_oracle_atom(payload) for _, payload in obj.A_plus)
 
 
+
 def verified_domain_status(obj: Optional[UCNSObject]) -> str:
-    """Return the verified-domain status string for *obj*.
-
-    Returns one of:
-
-    ``"depth-0"``            obj is None (the unit)
-    ``"depth-1"``            flat object, all payloads None
-    ``"depth-2-oracle"``     depth-2 object in the oracle class
-    ``"depth-2-non-oracle"`` depth-2 object outside the oracle class
-    ``"depth-3+"``           depth ≥ 3
-
-    The verified domain (completeness guaranteed) is the union of
-    ``"depth-0"``, ``"depth-1"``, and ``"depth-2-oracle"``.
-    """
+    """Return the verified-domain status string for *obj*."""
     if obj is None:
         return "depth-0"
-    d = depth_of(obj)
-    if d == 0:
+    depth = depth_of(obj)
+    if depth == 0:
         return "depth-0"
-    if d == 1:
+    if depth == 1:
         return "depth-1"
-    if d == 2:
-        return "depth-2-oracle" if is_in_oracle_class(obj) else "depth-2-non-oracle"
+    if depth == 2:
+        return (
+            "depth-2-oracle"
+            if is_in_oracle_class(obj)
+            else "depth-2-non-oracle"
+        )
     return "depth-3+"
