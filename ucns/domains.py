@@ -43,7 +43,7 @@ from __future__ import annotations
 #   summary: Defines the frozen depth-2 geometry, canonical oracle catalogue, and exact catalogue-membership predicates used to scope oracle claims.
 #   owner: Erin Spencer
 #   public_surface: DEPTH_MAX, A_PLUS_MAX, N_MIN_MAX, S2, ORACLE_ATOM_PAYLOADS, ORACLE_CATALOGUE_RULE_VERSION, generate_payload_catalogue, in_domain, depth_of, is_oracle_atom, is_in_oracle_class, verified_domain_status
-#   internal_surface: _generate_canonical_catalogue
+#   internal_surface: _generate_canonical_catalogue, _oracle_atom_key, _CANONICAL_ORACLE_KEYS
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
@@ -57,6 +57,7 @@ from __future__ import annotations
 #   unresolved: none
 # === END MODULE_BUILD ===
 
+import copy
 from fractions import Fraction
 from typing import List, Optional, Tuple
 
@@ -136,8 +137,19 @@ def in_domain(obj: Optional[UCNSObject]) -> bool:
 # ------------------------------------------------------------------
 
 
+def _oracle_atom_key(obj: UCNSObject) -> tuple:
+    """Return the immutable structural key used for oracle membership."""
+    return (
+        obj.n_min,
+        tuple(obj.F_plus),
+        tuple(angle for angle, payload in obj.A_plus if payload is None),
+        len(obj.A_plus),
+    )
+
+
+
 def _generate_canonical_catalogue() -> Tuple[Optional[UCNSObject], ...]:
-    """Generate the deterministic oracle catalogue once.
+    """Generate the deterministic oracle catalogue.
 
     Order is unit first, then ``(n_min, length, face_bits)`` generation
     order.  Structurally equal objects are deduplicated while retaining
@@ -160,11 +172,7 @@ def _generate_canonical_catalogue() -> Tuple[Optional[UCNSObject], ...]:
                     )
                 except ValueError:
                     continue
-                key = (
-                    obj.n_min,
-                    tuple(obj.F_plus),
-                    tuple(angle for angle, _ in obj.A_plus),
-                )
+                key = _oracle_atom_key(obj)
                 if key in seen:
                     continue
                 seen.add(key)
@@ -173,23 +181,34 @@ def _generate_canonical_catalogue() -> Tuple[Optional[UCNSObject], ...]:
     return tuple(objects)
 
 
-# Immutable container and single source of truth. UCNSObject itself remains
-# mutable in the current release, so membership intentionally uses structural
-# equality rather than a hash index until the object-model repair lands.
-ORACLE_ATOM_PAYLOADS: Tuple[Optional[UCNSObject], ...] = (
-    _generate_canonical_catalogue()
+# Private canonical objects and immutable keys define truth. Public values are
+# detached copies because UCNSObject remains mutable until the object-model PR.
+_CANONICAL_ORACLE_CATALOGUE = _generate_canonical_catalogue()
+_CANONICAL_ORACLE_KEYS = frozenset(
+    _oracle_atom_key(obj)
+    for obj in _CANONICAL_ORACLE_CATALOGUE
+    if obj is not None
+)
+
+ORACLE_ATOM_PAYLOADS: Tuple[Optional[UCNSObject], ...] = tuple(
+    copy.deepcopy(obj) if obj is not None else None
+    for obj in _CANONICAL_ORACLE_CATALOGUE
 )
 
 
 
 def generate_payload_catalogue() -> List[Optional[UCNSObject]]:
-    """Return a fresh list containing the canonical oracle catalogue.
+    """Return detached copies of the canonical oracle catalogue.
 
-    The family is deterministic, structurally deduplicated, unit-first,
-    and identified by :data:`ORACLE_CATALOGUE_RULE_VERSION`.  It is not
-    every flat object satisfying the geometric bounds.
+    Caller mutation cannot change future catalogue generation or oracle
+    membership.  The family is deterministic, structurally deduplicated,
+    unit-first, and identified by
+    :data:`ORACLE_CATALOGUE_RULE_VERSION`.
     """
-    return list(ORACLE_ATOM_PAYLOADS)
+    return [
+        copy.deepcopy(obj) if obj is not None else None
+        for obj in _CANONICAL_ORACLE_CATALOGUE
+    ]
 
 
 # ------------------------------------------------------------------
@@ -198,29 +217,17 @@ def generate_payload_catalogue() -> List[Optional[UCNSObject]]:
 
 
 def is_oracle_atom(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is in the canonical oracle catalogue.
-
-    This is extensionally identical to structural membership in
-    :func:`generate_payload_catalogue` by construction.
-    """
+    """Return True iff *obj* is in the canonical oracle catalogue."""
     if obj is None:
         return True
-    if not isinstance(obj, UCNSObject):
+    if not isinstance(obj, UCNSObject) or depth_of(obj) != 1:
         return False
-    return any(
-        candidate is not None and obj == candidate
-        for candidate in ORACLE_ATOM_PAYLOADS
-    )
+    return _oracle_atom_key(obj) in _CANONICAL_ORACLE_KEYS
 
 
 
 def is_in_oracle_class(obj: Optional[UCNSObject]) -> bool:
-    """Return True iff *obj* is in the depth-2 oracle class.
-
-    Depth-zero and depth-one objects remain covered by their own strata.
-    A depth-two object is oracle-class only when every immediate payload
-    is a canonical oracle atom.  Depth three and above are excluded.
-    """
+    """Return True iff *obj* is in the depth-2 oracle class."""
     if obj is None:
         return True
     depth = depth_of(obj)
@@ -233,11 +240,7 @@ def is_in_oracle_class(obj: Optional[UCNSObject]) -> bool:
 
 
 def verified_domain_status(obj: Optional[UCNSObject]) -> str:
-    """Return the verified-domain status string for *obj*.
-
-    Returns one of ``depth-0``, ``depth-1``, ``depth-2-oracle``,
-    ``depth-2-non-oracle``, or ``depth-3+``.
-    """
+    """Return the verified-domain status string for *obj*."""
     if obj is None:
         return "depth-0"
     depth = depth_of(obj)
