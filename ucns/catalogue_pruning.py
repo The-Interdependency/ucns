@@ -19,14 +19,14 @@ be removed from the search catalogue without affecting completeness.
 #   module_kind: service
 #   summary: Sound named and versioned catalogue pre-filter removing factor candidates whose carrier prime support escapes the product carrier's prime support, justified by the Carrier-LCM Law.
 #   owner: Erin Spencer
-#   public_surface: PAYLOAD_PRUNING_RULE_NAME, PAYLOAD_PRUNING_RULE_VERSION, prime_support, carrier_lcm, prune_catalogue, payload_support, prune_payload_catalogue
+#   public_surface: PAYLOAD_PRUNING_RULE_NAME, PAYLOAD_PRUNING_RULE_VERSION, PAYLOAD_PRUNING_PRESERVES_COVERAGE, prime_support, carrier_lcm, prune_catalogue, payload_support, prune_payload_catalogue
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns.tests.test_catalogue_pruning, tests/test_factor_search_provenance.py
+#   tests: ucns.tests.test_catalogue_pruning, tests/test_factor_search_provenance.py, tests/test_certified_negative_results.py
 #   rollout: prune_catalogue opt-in for left-factor catalogues; prune_payload_catalogue default-on inside factor_search_v08 (prune=False escape hatch)
 #   rollback: pass prune=False to factor_search_v08, or remove the module and the prune kwarg
 #   requires: none
@@ -40,10 +40,12 @@ from .canonical import UCNSObject, lcm
 
 PAYLOAD_PRUNING_RULE_NAME = "carrier-lcm-payload-support"
 PAYLOAD_PRUNING_RULE_VERSION = "1"
+PAYLOAD_PRUNING_PRESERVES_COVERAGE = True
 
 __all__ = [
     "PAYLOAD_PRUNING_RULE_NAME",
     "PAYLOAD_PRUNING_RULE_VERSION",
+    "PAYLOAD_PRUNING_PRESERVES_COVERAGE",
     "prime_support",
     "carrier_lcm",
     "prune_catalogue",
