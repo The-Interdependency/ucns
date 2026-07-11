@@ -78,8 +78,8 @@ from __future__ import annotations
 #   module_kind: engine
 #   summary: Top-level witness-matrix recursive quotient solver; factor_search_v08(P) returns recovered factors (A, B) or the SEQ-PRIME sentinel.
 #   owner: Erin Spencer
-#   public_surface: factor_search_v08, factor_search_report, FactorSearchReport
-#   internal_surface: _search_exhaustive
+#   public_surface: factor_search_v08
+#   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
@@ -93,95 +93,21 @@ from __future__ import annotations
 #   unresolved: none
 # === END MODULE_BUILD ===
 
-from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
 
-from .catalogue_pruning import (
-    PRUNING_PRESERVES_COVERAGE,
-    PRUNING_RULE_NAME,
-    PRUNING_RULE_VERSION,
-    prune_payload_catalogue,
-)
+from .catalogue_pruning import prune_payload_catalogue
 from .canonical import UCNSObject, multiply, is_multiplicative_unit
-from .catalogue_certificate import catalogue_fingerprint
 from .domains import generate_payload_catalogue
 from .host_recovery import recover_host_angles, recover_face_structures
-from .payload_system import iter_payload_system_solutions
+from .payload_system import solve_payload_system
 from .witness_matrix import build_witness_matrix
 
-__all__ = ["factor_search_v08", "factor_search_report", "FactorSearchReport"]
+__all__ = ["factor_search_v08"]
 
 # Return type: either a factor pair or the primality sentinel
 FactorResult = Union[Tuple[UCNSObject, UCNSObject], str]
 
 SEQ_PRIME = "SEQ-PRIME"
-
-
-@dataclass(frozen=True)
-class FactorSearchReport:
-    """Raw search outcome plus exhaustion and provenance metadata.
-
-    ``search_exhausted`` is True only when every host split, every
-    catalogue-bounded payload assignment, and every face assignment was
-    tried and rejected — i.e. exactly the ``SEQ-PRIME`` path.  There is
-    no truncation path in the search: any exception propagates and is
-    never converted into a negative result.
-
-    The fingerprints bind to the exact catalogue supplied to the search
-    (``supplied_catalogue_fingerprint``) and to the post-pruning
-    catalogue actually enumerated (``effective_catalogue_fingerprint``).
-    """
-
-    kind: str  # "FACTORS" | "SEQ-PRIME"
-    factors: Optional[Tuple[UCNSObject, UCNSObject]]
-    search_exhausted: bool
-    catalogue_source: str  # "default-canonical" | "caller"
-    supplied_catalogue_fingerprint: str
-    effective_catalogue_fingerprint: str
-    pruning_applied: bool
-    pruning_rule: str
-    pruning_rule_version: str
-    pruning_preserves_coverage: bool
-
-
-def factor_search_report(
-    P: UCNSObject,
-    catalogue: Optional[List[Optional[UCNSObject]]] = None,
-    prune: bool = True,
-) -> FactorSearchReport:
-    """Run the exhaustive search and return a provenance-bearing report.
-
-    Same search as :func:`factor_search_v08` (which is a compatibility
-    wrapper over this function), with the exhaustion and catalogue
-    provenance needed by ``ucns.factorization_result`` for
-    negative-result certification.
-    """
-    source = "default-canonical" if catalogue is None else "caller"
-    supplied: List[Optional[UCNSObject]] = (
-        generate_payload_catalogue() if catalogue is None else list(catalogue)
-    )
-    supplied_fp = catalogue_fingerprint(supplied)
-
-    if prune:
-        effective = prune_payload_catalogue(P, supplied)
-    else:
-        effective = supplied
-    effective_fp = catalogue_fingerprint(effective)
-
-    raw = _search_exhaustive(P, effective)
-
-    return FactorSearchReport(
-        kind="FACTORS" if raw is not None else SEQ_PRIME,
-        factors=raw,
-        search_exhausted=raw is None,
-        catalogue_source=source,
-        supplied_catalogue_fingerprint=supplied_fp,
-        effective_catalogue_fingerprint=effective_fp,
-        pruning_applied=prune,
-        pruning_rule=PRUNING_RULE_NAME if prune else "",
-        pruning_rule_version=PRUNING_RULE_VERSION if prune else "",
-        pruning_preserves_coverage=PRUNING_PRESERVES_COVERAGE if prune else True,
-    )
 
 
 def factor_search_v08(
@@ -217,26 +143,16 @@ def factor_search_v08(
 
     **Non-uniqueness:** the returned pair is the *first* valid
     factorisation found under the current loop ordering (non-left-
-    singleton splits p >= 2 first, p = 1 last; payload assignments in
-    the deterministic order of ``iter_payload_system_solutions``).
-    Multiple valid factorisations may exist for the same ``P``; no
-    canonical choice is made. Use ``store.factor_decompose`` with an
-    explicit catalogue to enumerate all catalogue-bounded
-    factorisations.
+    singleton splits p >= 2 first, p = 1 last). Multiple valid
+    factorisations may exist for the same ``P``; no canonical choice is
+    made. Use ``store.factor_decompose`` with an explicit catalogue to
+    enumerate all catalogue-bounded factorisations.
     """
-    report = factor_search_report(P, catalogue=catalogue, prune=prune)
-    if report.factors is not None:
-        return report.factors
-    return SEQ_PRIME
+    if catalogue is None:
+        catalogue = generate_payload_catalogue()
+    if prune:
+        catalogue = prune_payload_catalogue(P, catalogue)
 
-
-def _search_exhaustive(
-    P: UCNSObject,
-    catalogue: List[Optional[UCNSObject]],
-) -> Optional[Tuple[UCNSObject, UCNSObject]]:
-    """Exhaustive core: every host split × payload assignment × face
-    assignment.  Returns the first valid factor pair, or ``None`` after
-    demonstrable exhaustion."""
     n = len(P.A_plus)
 
     # Try non-left-singleton factorisations first, including the
@@ -255,48 +171,41 @@ def _search_exhaustive(
         # --- 1. Host recovery ---
         A_angles, B_angles = recover_host_angles(P, p, q)
 
-        # --- 4 (hoisted). Face recovery: independent of the payload
-        # assignment, so enumerate once per host split.
-        face_options = recover_face_structures(P, p, q)
-        if not face_options:
-            continue
-
-        # --- 2. Payload system: iterate EVERY catalogue-bounded
-        # assignment.  A rejected candidate (witness inconsistency,
-        # unit factor, failed recomposition, …) must never end the
-        # split early — the next assignment may succeed.
+        # --- 2. Payload system ---
         P_payloads = [
             [P.A_plus[k * q + j][1] for j in range(q)]
             for k in range(p)
         ]
-        for S_A, S_B in iter_payload_system_solutions(
-            P_payloads, p, q, catalogue
-        ):
-            # --- 3. Witness-matrix consistency check ---
-            wm = build_witness_matrix(S_A, S_B, P_payloads)
-            if not wm.globally_consistent():
+        payload_result = solve_payload_system(P_payloads, p, q, catalogue)
+        if payload_result is None:
+            continue
+        S_A, S_B = payload_result
+
+        # --- 3. Witness-matrix consistency check ---
+        wm = build_witness_matrix(S_A, S_B, P_payloads)
+        if not wm.globally_consistent():
+            continue
+
+        # --- 4. Face recovery ---
+        face_options = recover_face_structures(P, p, q)
+        if not face_options:
+            continue
+
+        # --- 5. Exact recomposition verification ---
+        for A_faces, B_faces in face_options:
+            A_cand = UCNSObject(
+                P.n_dec, P.n_min,
+                list(zip(A_angles, S_A)),
+                A_faces,
+            )
+            B_cand = UCNSObject(
+                P.n_dec, P.n_min,
+                list(zip(B_angles, S_B)),
+                B_faces,
+            )
+            if is_multiplicative_unit(A_cand) or is_multiplicative_unit(B_cand):
                 continue
+            if multiply(A_cand, B_cand) == P:
+                return A_cand, B_cand
 
-            # --- 5. Exact recomposition verification, over every
-            # face assignment for this payload assignment.
-            for A_faces, B_faces in face_options:
-                A_cand = UCNSObject(
-                    P.n_dec, P.n_min,
-                    list(zip(A_angles, S_A)),
-                    A_faces,
-                )
-                B_cand = UCNSObject(
-                    P.n_dec, P.n_min,
-                    list(zip(B_angles, S_B)),
-                    B_faces,
-                )
-                if is_multiplicative_unit(A_cand) or is_multiplicative_unit(B_cand):
-                    continue
-                if multiply(A_cand, B_cand) == P:
-                    return A_cand, B_cand
-
-    # Reached only after every host split, every catalogue-bounded
-    # payload assignment, and every face assignment was tried and
-    # rejected: a negative here is demonstrable exhaustion, never
-    # truncation.
-    return None
+    return SEQ_PRIME

@@ -38,20 +38,7 @@ from typing import Iterable, List, Optional, Set
 
 from .canonical import UCNSObject, lcm
 
-
-# Pruning-rule provenance for negative-result certification
-# (codex-handoff/02): the Carrier-LCM-Law payload prune is a named,
-# versioned, coverage-preserving built-in rule (Corollary 2,
-# docs/carrier-support-pruning.md) - dropped candidates provably cannot
-# serve as factor payloads, so completeness is unchanged.
-PRUNING_RULE_NAME = "carrier-lcm-support"
-PRUNING_RULE_VERSION = "v1"
-PRUNING_PRESERVES_COVERAGE = True
-
 __all__ = [
-    "PRUNING_RULE_NAME",
-    "PRUNING_RULE_VERSION",
-    "PRUNING_PRESERVES_COVERAGE",
     "prime_support",
     "carrier_lcm",
     "prune_catalogue",
