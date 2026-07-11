@@ -19,7 +19,12 @@ from .canonical import (
     is_unit,
     is_multiplicative_unit,
 )
-from .factor_search_v08 import factor_search_v08
+from .factor_search_v08 import (
+    FactorSearchReport,
+    factor_search_report,
+    factor_search_v08,
+    payload_catalogue_fingerprint,
+)
 
 # Codec
 from .recursive_codec import (
@@ -111,6 +116,9 @@ __all__ = [
     "is_unit",
     "is_multiplicative_unit",
     "factor_search_v08",
+    "factor_search_report",
+    "FactorSearchReport",
+    "payload_catalogue_fingerprint",
     # codec
     "recursive_encode",
     "recursive_decode",

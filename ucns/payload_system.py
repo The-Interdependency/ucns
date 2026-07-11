@@ -4,11 +4,11 @@ ucns.payload_system
 Exhaustive catalogue-bounded coupled payload equation solver.
 
 Given a p×q grid of target payloads, enumerate every pair S_A, S_B drawn
-from the supplied catalogue such that
+from the normalized payload catalogue such that
 
     multiply(S_A[k], S_B[j]) == P_payloads[k][j]
 
-for every cell.  The legacy solve_payload_system API remains as a
+for every cell. The legacy ``solve_payload_system`` API remains as a
 first-solution compatibility wrapper.
 """
 
@@ -18,16 +18,16 @@ from __future__ import annotations
 # id: ucns_payload_system
 #   module_name: payload_system
 #   module_kind: engine
-#   summary: Exhaustively enumerates every catalogue-bounded payload assignment satisfying the coupled product equations, with a first-solution compatibility wrapper.
+#   summary: Normalizes payload catalogues and exhaustively enumerates every assignment satisfying the coupled product equations, with a first-solution compatibility wrapper.
 #   owner: Erin Spencer
-#   public_surface: iter_payload_system_solutions, solve_payload_system
-#   internal_surface: _normalized_candidates, _globally_consistent
+#   public_surface: normalize_payload_catalogue, iter_payload_system_solutions, solve_payload_system
+#   internal_surface: _globally_consistent
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_exhaustive_factor_search.py, ucns_recursive/tests/test_depth2_full_domain.py
+#   tests: tests/test_exhaustive_factor_search.py, tests/test_factor_search_provenance.py, ucns_recursive/tests/test_depth2_full_domain.py
 #   rollout: default_enabled
 #   rollback: restore the greedy first-quotient solver
 #   requires: ucns_canonical
@@ -40,25 +40,38 @@ from typing import Iterator, List, Optional, Tuple
 
 from .canonical import UCNSObject, multiply
 
-__all__ = ["iter_payload_system_solutions", "solve_payload_system"]
+__all__ = [
+    "normalize_payload_catalogue",
+    "iter_payload_system_solutions",
+    "solve_payload_system",
+]
 
 PayloadAssignment = Tuple[
     List[Optional[UCNSObject]], List[Optional[UCNSObject]]
 ]
 
 
-def _normalized_candidates(
+def normalize_payload_catalogue(
     catalogue: List[Optional[UCNSObject]],
 ) -> List[Optional[UCNSObject]]:
-    """Return deterministic unit-first, structurally deduplicated candidates."""
-    out: List[Optional[UCNSObject]] = [None]
+    """Return the exact deterministic candidate sequence searched.
+
+    The unit payload ``None`` appears exactly once and first. Remaining
+    candidates preserve caller order with structural duplicates removed.
+    The operation is idempotent, so provenance code can fingerprint the
+    returned sequence before passing it to the solver.
+    """
+    normalized: List[Optional[UCNSObject]] = [None]
     for candidate in catalogue:
         if candidate is None:
             continue
-        if any(previous is not None and previous == candidate for previous in out):
+        if any(
+            previous is not None and previous == candidate
+            for previous in normalized
+        ):
             continue
-        out.append(candidate)
-    return out
+        normalized.append(candidate)
+    return normalized
 
 
 def iter_payload_system_solutions(
@@ -67,8 +80,8 @@ def iter_payload_system_solutions(
     q: int,
     catalogue: List[Optional[UCNSObject]],
 ) -> Iterator[PayloadAssignment]:
-    """Yield every catalogue-bounded assignment satisfying the full grid."""
-    candidates = _normalized_candidates(catalogue)
+    """Yield every normalized-catalogue assignment satisfying the grid."""
+    candidates = normalize_payload_catalogue(catalogue)
 
     for s0_a in candidates:
         column_domains: List[List[Optional[UCNSObject]]] = []
@@ -119,7 +132,7 @@ def solve_payload_system(
     q: int,
     catalogue: List[Optional[UCNSObject]],
 ) -> Optional[PayloadAssignment]:
-    """Return the first deterministic solution, or None when none exists."""
+    """Return the first deterministic solution, or ``None`` when absent."""
     for solution in iter_payload_system_solutions(P_payloads, p, q, catalogue):
         return solution
     return None
