@@ -78,14 +78,14 @@ def test_effective_fingerprint_matches_normalized_sequence():
 def test_pruning_provenance_names_rule_and_records_post_prune_search():
     report = factor_search_report(S2, catalogue=[UNIT, E, S3], prune=True)
 
-    # Flat S2 has no non-unit payload support, so E and S3 are pruned; the
-    # exact searched sequence is the normalized unit-only catalogue.
+    # Flat S2 has empty payload support. Carrier-1 E legitimately survives;
+    # carrier-3 S3 is removed. The searched sequence is therefore [unit, E].
     assert report.pruning_applied
     assert report.pruning_rule == "carrier-lcm-payload-support"
     assert report.pruning_rule_version == "1"
     assert report.supplied_catalogue_size == 3
-    assert report.effective_catalogue_size == 1
-    assert report.effective_catalogue_fingerprint == payload_catalogue_fingerprint([UNIT])
+    assert report.effective_catalogue_size == 2
+    assert report.effective_catalogue_fingerprint == payload_catalogue_fingerprint([UNIT, E])
 
 
 def test_factor_report_and_legacy_wrapper_use_same_search():
