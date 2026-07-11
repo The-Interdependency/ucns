@@ -25,12 +25,12 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_exhaustive_factor_search.py, tests/test_factor_search_provenance.py, ucns_recursive/tests/test_depth2_oracle.py
+#   tests: tests/test_exhaustive_factor_search.py, tests/test_factor_search_provenance.py, tests/test_certified_negative_results.py, ucns_recursive/tests/test_depth2_oracle.py
 #   rollout: factor_search_v08 unchanged; factor_search_report additive
 #   rollback: remove report API while retaining factor_search_v08 and _search_exhaustive
 #   requires: ucns_canonical, ucns_domains, ucns_host_recovery, ucns_payload_system, ucns_witness_matrix, ucns_serialization, ucns_carrier_support_pruning
 #   since: 2026-06-02
-#   unresolved: negative-result certification deliberately absent
+#   unresolved: negative-result certification lives only in ucns.factorization_result
 # === END MODULE_BUILD ===
 
 import hashlib
@@ -38,6 +38,7 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
 
 from .catalogue_pruning import (
+    PAYLOAD_PRUNING_PRESERVES_COVERAGE,
     PAYLOAD_PRUNING_RULE_NAME,
     PAYLOAD_PRUNING_RULE_VERSION,
     prune_payload_catalogue,
@@ -118,6 +119,9 @@ class FactorSearchReport:
     pruning_rule: str
     pruning_rule_version: str
     truncation_occurred: bool
+    # Default preserves compatibility for callers constructing the older
+    # provenance record positionally. Reports produced here always fill it.
+    pruning_preserves_coverage: bool = False
 
 
 def _prepare_search_catalogues(
@@ -173,6 +177,9 @@ def factor_search_report(
         pruning_rule=PAYLOAD_PRUNING_RULE_NAME if prune else "",
         pruning_rule_version=PAYLOAD_PRUNING_RULE_VERSION if prune else "",
         truncation_occurred=False,
+        pruning_preserves_coverage=(
+            PAYLOAD_PRUNING_PRESERVES_COVERAGE if prune else True
+        ),
     )
 
 
