@@ -6,7 +6,7 @@ from __future__ import annotations
 # id: ucns_a0_safe
 #   module_name: a0_safe
 #   module_kind: adapter
-#   summary: A0-safe public facade for inspecting, identifying, canonicalizing, and factoring UCNS objects via scoped envelopes.
+#   summary: A0-safe public facade for inspecting, identifying, canonicalizing, and factoring UCNS objects via evidence-bearing scoped envelopes.
 #   owner: Erin Spencer
 #   public_surface: identity, describe, canonical, factor, UCNSObjectRecord, FactorizationResult
 #   internal_surface: none
@@ -15,7 +15,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive/tests/test_a0_safe.py
+#   tests: ucns_recursive/tests/test_a0_safe.py, tests/test_certified_negative_results.py
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_object_record, ucns_factorization_result, ucns_serialization, ucns_canonical
@@ -50,7 +50,14 @@ def factor(
     obj: UCNSObject,
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
 ) -> FactorizationResult:
-    """Return a scoped factorization result envelope for *obj*."""
+    """Return an evidence-bearing factorization envelope for *obj*.
+
+    Raw ``SEQ-PRIME`` is never promoted from a domain label alone.  The returned
+    envelope exposes whether a negative result was certified from validated
+    catalogue coverage, exact search-report binding, exhaustive untruncated
+    search, recognized coverage-preserving pruning, and a non-unit complete
+    domain.  There is no caller completeness override.
+    """
     return factorization_result(obj, catalogue=catalogue)
 
 
