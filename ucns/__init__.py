@@ -25,6 +25,16 @@ from .factor_search_v08 import (
     factor_search_v08,
     payload_catalogue_fingerprint,
 )
+from .catalogue_coverage import (
+    CatalogueCoverage,
+    CATALOGUE_COVERAGE_RULE_VERSION,
+    COVERAGE_CANONICAL_EXACT,
+    COVERAGE_CANONICAL_SUPERSET,
+    COVERAGE_UNCERTIFIED,
+    check_catalogue_coverage,
+    validate_catalogue_coverage,
+    coverage_matches_search_report,
+)
 
 # Codec
 from .recursive_codec import (
@@ -121,6 +131,15 @@ __all__ = [
     "factor_search_report",
     "FactorSearchReport",
     "payload_catalogue_fingerprint",
+    # supplied catalogue coverage evidence
+    "CatalogueCoverage",
+    "CATALOGUE_COVERAGE_RULE_VERSION",
+    "COVERAGE_CANONICAL_EXACT",
+    "COVERAGE_CANONICAL_SUPERSET",
+    "COVERAGE_UNCERTIFIED",
+    "check_catalogue_coverage",
+    "validate_catalogue_coverage",
+    "coverage_matches_search_report",
     # codec
     "recursive_encode",
     "recursive_decode",
