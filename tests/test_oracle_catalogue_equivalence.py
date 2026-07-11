@@ -44,7 +44,28 @@ def test_catalogue_is_deterministic_unit_first_and_copy_on_return():
     assert ORACLE_CATALOGUE_RULE_VERSION == "oracle-atoms-carrier-grid-v1"
 
     first.pop()
-    assert generate_payload_catalogue() == second, "caller mutation changed canon"
+    assert generate_payload_catalogue() == second, "list mutation changed canon"
+
+    mutable_copy = generate_payload_catalogue()
+    original = generate_payload_catalogue()
+    assert mutable_copy[1] is not original[1]
+    mutable_copy[1].F_plus[0] ^= 1
+    assert generate_payload_catalogue() == original, "object mutation changed canon"
+
+
+def test_public_constant_mutation_does_not_change_membership_truth():
+    public_obj = ORACLE_ATOM_PAYLOADS[1]
+    canonical_obj = generate_payload_catalogue()[1]
+    assert public_obj is not canonical_obj
+    assert is_oracle_atom(canonical_obj)
+
+    old_bit = public_obj.F_plus[0]
+    try:
+        public_obj.F_plus[0] ^= 1
+        assert is_oracle_atom(canonical_obj)
+        assert generate_payload_catalogue()[1] == canonical_obj
+    finally:
+        public_obj.F_plus[0] = old_bit
 
 
 def test_catalogue_has_no_structural_duplicates():
@@ -67,12 +88,7 @@ def test_every_catalogue_member_is_an_oracle_atom():
 
 
 def test_predicate_equals_membership_on_adversarial_bounded_universe():
-    """Exercise thousands of flat objects inside the geometric bounds.
-
-    The angle pool includes many normalized structures that the canonical
-    carrier-grid generator does not produce. Predicate truth must still equal
-    structural catalogue membership for every generated object.
-    """
+    """Exercise thousands of flat objects inside the geometric bounds."""
     catalogue = generate_payload_catalogue()
     angle_pool = [Fraction(k, 2) for k in range(8)]
 
