@@ -19,7 +19,7 @@ from __future__ import annotations
 #   summary: Exhaustive catalogue-bounded factorization with a compatibility sentinel API and a provenance-bearing search report that makes no certification claim.
 #   owner: Erin Spencer
 #   public_surface: factor_search_v08, factor_search_report, FactorSearchReport, payload_catalogue_fingerprint
-#   internal_surface: _search_exhaustive
+#   internal_surface: _prepare_search_catalogues, _search_exhaustive
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
@@ -61,6 +61,11 @@ __all__ = [
 
 FactorPair = Tuple[UCNSObject, UCNSObject]
 FactorResult = Union[FactorPair, str]
+PreparedCatalogues = Tuple[
+    str,
+    List[Optional[UCNSObject]],
+    List[Optional[UCNSObject]],
+]
 SEQ_PRIME = "SEQ-PRIME"
 
 
@@ -115,6 +120,27 @@ class FactorSearchReport:
     truncation_occurred: bool
 
 
+def _prepare_search_catalogues(
+    P: UCNSObject,
+    catalogue: Optional[List[Optional[UCNSObject]]],
+    prune: bool,
+) -> PreparedCatalogues:
+    """Return source, raw supplied sequence, and exact searched sequence."""
+    source = "default-canonical" if catalogue is None else "caller"
+    supplied = (
+        generate_payload_catalogue()
+        if catalogue is None
+        else list(catalogue)
+    )
+    pruned = (
+        prune_payload_catalogue(P, supplied)
+        if prune
+        else list(supplied)
+    )
+    effective = normalize_payload_catalogue(pruned)
+    return source, supplied, effective
+
+
 def factor_search_report(
     P: UCNSObject,
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
@@ -128,22 +154,9 @@ def factor_search_report(
     deduplication. This function provides evidence only; it does not label a
     negative result certified or absolute.
     """
-    catalogue_source = "default-canonical" if catalogue is None else "caller"
-    supplied = (
-        generate_payload_catalogue()
-        if catalogue is None
-        else list(catalogue)
+    source, supplied, effective = _prepare_search_catalogues(
+        P, catalogue, prune
     )
-    supplied_fingerprint = payload_catalogue_fingerprint(supplied)
-
-    pruned = (
-        prune_payload_catalogue(P, supplied)
-        if prune
-        else list(supplied)
-    )
-    effective = normalize_payload_catalogue(pruned)
-    effective_fingerprint = payload_catalogue_fingerprint(effective)
-
     factors = _search_exhaustive(P, effective)
     exhausted = factors is None
 
@@ -151,11 +164,11 @@ def factor_search_report(
         result_kind=SEQ_PRIME if exhausted else "FACTORS",
         factors=factors,
         search_exhausted=exhausted,
-        catalogue_source=catalogue_source,
+        catalogue_source=source,
         supplied_catalogue_size=len(supplied),
-        supplied_catalogue_fingerprint=supplied_fingerprint,
+        supplied_catalogue_fingerprint=payload_catalogue_fingerprint(supplied),
         effective_catalogue_size=len(effective),
-        effective_catalogue_fingerprint=effective_fingerprint,
+        effective_catalogue_fingerprint=payload_catalogue_fingerprint(effective),
         pruning_applied=prune,
         pruning_rule=PAYLOAD_PRUNING_RULE_NAME if prune else "",
         pruning_rule_version=PAYLOAD_PRUNING_RULE_VERSION if prune else "",
@@ -170,12 +183,14 @@ def factor_search_v08(
 ) -> FactorResult:
     """Return one exact non-trivial factorization, else ``SEQ-PRIME``.
 
-    The legacy API is a compatibility wrapper over
-    :func:`factor_search_report`. ``SEQ-PRIME`` remains catalogue-relative
-    and carries no certification through this raw surface.
+    The legacy API uses the same prepared effective catalogue as
+    :func:`factor_search_report` but does not compute provenance fingerprints.
+    ``SEQ-PRIME`` remains catalogue-relative and carries no certification
+    through this raw surface.
     """
-    report = factor_search_report(P, catalogue=catalogue, prune=prune)
-    return report.factors if report.factors is not None else SEQ_PRIME
+    _, _, effective = _prepare_search_catalogues(P, catalogue, prune)
+    factors = _search_exhaustive(P, effective)
+    return factors if factors is not None else SEQ_PRIME
 
 
 def _search_exhaustive(
