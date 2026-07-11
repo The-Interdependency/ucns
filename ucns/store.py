@@ -35,26 +35,23 @@ threshold-tuned ranking:
 
 Correctness scope
 -----------------
-Within the verified domain the completeness theorem (see
-``ucns-v06-completeness-proof.md`` and the v0.8.1 oracle theorem)
-guarantees:
+Retrieval consumes the **complete quotient solution sets** from
+``ucns.division_theory`` (codex-handoff/04; theory in
+``docs/base-geometry.md`` §5):
 
     For every stored P and query Q, ``left_factors`` returns
-    ``(key, remainder)`` for every stored object whose factorization
-    includes Q on the left.  No false positives.  No false negatives.
+    ``(key, remainder)`` for **every** valid remainder — multiplicity
+    included.  No false positives (each remainder recomposes exactly);
+    no greedy single-quotient path remains on any completeness-claiming
+    surface.
 
-The verified domain is the union of:
-
-    - depth-0 (UNIT)
-    - depth-1 (any object): v0.6 left-quotient completeness
-    - depth-2 oracle class: v0.8.1 oracle theorem
-
-Outside the verified domain (depth-2 non-oracle, depth ≥ 3),
-soundness is preserved but completeness is not proven.  By default
-the store accepts any input and reports status via
-:meth:`domain_status_of`.  Pass ``enforce_verified_domain=True`` to
-the constructor to make insertion fail loudly for out-of-domain
-inputs.
+The historical verified-domain taxonomy (depth-0 / depth-1 /
+depth-2-oracle from the v0.6 and v0.8.1 packets) is retained for
+insert-time domain *status* reporting and enforcement, not as the
+completeness boundary of retrieval.  By default the store accepts any
+input and reports status via :meth:`domain_status_of`.  Pass
+``enforce_verified_domain=True`` to the constructor to make insertion
+fail loudly for out-of-domain inputs.
 
 Retrieval cost
 --------------
@@ -98,9 +95,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
-from .canonical import UCNSObject, multiply
+from .canonical import UCNSObject, is_unit, multiply
+from .division_theory import left_quotients, right_quotients
 from .domains import is_in_oracle_class, verified_domain_status
-from .left_quotient import left_quotient, right_quotient
 from .recursive_codec import recursive_decode, recursive_encode
 
 __all__ = ["UCNSStore", "Match", "OutOfDomainError"]
@@ -251,55 +248,59 @@ class UCNSStore:
     # ------------------------------------------------------------------
 
     def left_factors(self, query: Any) -> List[Match]:
-        """Return every stored object for which *query* is a left factor.
+        """Return every stored object for which *query* is a left factor,
+        with **every** valid remainder.
 
-        Each match is ``(key, remainder)`` where ``remainder`` is the
+        Each match is ``(key, remainder)`` where ``remainder`` is a
         complementary right factor: ``encode(query) ⊠ remainder ==
-        stored_object``.  ``remainder`` is ``None`` when the query
-        equals the stored object exactly (the unit case).
+        stored_object``.  The complete solution set
+        (``ucns.division_theory.left_quotients``) is consumed, so a
+        stored key with multiple valid remainders appears once **per
+        remainder**, in the enumerators' deterministic order; repeated
+        keys are expected and documented.  The unit remainder is
+        represented as ``None`` (the query equals the stored object).
+
+        ``SolutionLimitExceeded`` propagates; it is never converted
+        into "no match".
         """
         Q = recursive_encode(query)
         matches: List[Match] = []
         for key, P in self._objects.items():
-            B = left_quotient(P, Q)
-            # left_quotient returns None for both "no factorization"
-            # and "B is the unit (Q == P)".  Distinguish:
-            if B is None:
-                if Q == P:
+            for B in left_quotients(P, Q):
+                if B is None or is_unit(B):
                     matches.append((key, None))
-                continue
-            matches.append((key, B))
+                else:
+                    matches.append((key, B))
         return matches
 
     def right_factors(self, query: Any) -> List[Match]:
-        """Return every stored object for which *query* is a right factor.
+        """Return every stored object for which *query* is a right factor,
+        with **every** valid remainder.
 
         Each match is ``(key, remainder)`` where ``remainder ⊠
-        encode(query) == stored_object``.
-
-        Note: ``right_quotient`` is asserted-by-symmetry in the v0.6
-        proof packet but the dual proof is not yet written out.
-        Empirically verified on the same domain as left_quotient.
+        encode(query) == stored_object``.  Complete via
+        ``ucns.division_theory.right_quotients`` (the exact dual of the
+        left enumeration — the historical asserted-by-symmetry greedy
+        path is retired); repeated keys carry the multiplicity, and the
+        unit remainder is represented as ``None``.
         """
         Q = recursive_encode(query)
         matches: List[Match] = []
         for key, P in self._objects.items():
-            A = right_quotient(P, Q)
-            if A is None:
-                if Q == P:
+            for A in right_quotients(P, Q):
+                if A is None or is_unit(A):
                     matches.append((key, None))
-                continue
-            matches.append((key, A))
+                else:
+                    matches.append((key, A))
         return matches
 
     def is_left_factor(self, query: Any, target_key: Any) -> bool:
         """``True`` iff *query* is a left factor of the object stored
-        under *target_key*."""
+        under *target_key* — including the unit case (query equals the
+        stored object).  Decided on the complete solution set."""
         Q = recursive_encode(query)
         P = self._objects[target_key]
-        if Q == P:
-            return True
-        return left_quotient(P, Q) is not None
+        return bool(left_quotients(P, Q))
 
     # ------------------------------------------------------------------
     # Catalogue-driven decomposition (Item 5 / E10.8)
@@ -321,11 +322,14 @@ class UCNSStore:
         one."
 
         **Non-uniqueness:** factorization is generally not unique —
-        the same ``P`` may admit multiple valid ``(A, B)`` pairs.
-        This method returns *all* pairs found for the given catalogue,
-        making non-uniqueness explicit in the result.  The caller is
-        responsible for choosing among them; no canonical ordering is
-        defined.
+        the same ``P`` may admit multiple valid ``(A, B)`` pairs, and a
+        single ``A`` may admit multiple valid ``B``s (⊠ is not
+        cancellative).  This method consumes the complete right-factor
+        solution set per candidate ``A``
+        (``ucns.division_theory.left_quotients``) and returns every
+        catalogue-bounded nontrivial pair, structurally deduplicated,
+        in deterministic order.  The caller is responsible for choosing
+        among them; no canonical choice is defined.
 
         Building a covering catalogue is the responsibility of the
         caller; ``ucns.catalogue`` provides enumeration
@@ -334,8 +338,16 @@ class UCNSStore:
         P = self._objects[target_key]
         decompositions: List[Tuple[UCNSObject, UCNSObject]] = []
         for A in catalogue:
-            B = left_quotient(P, A)
-            if B is not None and multiply(A, B) == P:
+            for B in left_quotients(P, A):
+                if B is None or is_unit(B):
+                    continue  # nontrivial pairs only, as before
+                if multiply(A, B) != P:
+                    continue
+                if any(
+                    A == seen_a and B == seen_b
+                    for seen_a, seen_b in decompositions
+                ):
+                    continue  # structural dedup across catalogue entries
                 decompositions.append((A, B))
         return decompositions
 

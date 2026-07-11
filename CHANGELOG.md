@@ -1,5 +1,60 @@
 # Changelog
 
+## Unreleased — v1.0 completion (codex-handoff workstreams 1–6)
+
+### Solver
+- `payload_system` now enumerates **every** catalogue-bounded payload
+  assignment (`iter_payload_system_solutions`; deterministic, unit-first,
+  structurally deduplicated, brute-force-equal on bounded oracles);
+  `solve_payload_system` remains as a first-solution compatibility wrapper.
+- `factor_search_v08` iterates every payload-system solution and every face
+  option per host split and continues past every rejected candidate;
+  `SEQ-PRIME` is reached only through demonstrable exhaustion. Permanent
+  tower regression pins the greedy-era false negative.
+### Certification
+- New `ucns.catalogue_certificate`: machine-checked catalogue coverage
+  (canonical-exact / canonical-superset / uncertified) bound to the exact
+  catalogue fingerprint and `ORACLE_CATALOGUE_RULE_VERSION`.
+- `factor_search_report` exposes exhaustion + pruning provenance;
+  `factorization_result` certifies a negative only when domain, exhaustion,
+  coverage, and coverage-preserving pruning all check out —
+  `seq_prime_is_absolute` is now an exact alias of
+  `negative_result_certified` and is never set from a domain label alone.
+### Oracle class
+- `is_oracle_atom` is now structural membership in the canonical generated
+  catalogue (conservative v1.0 boundary); the geometric bounds are no longer
+  an oracle certificate. Catalogue is immutable/copy-on-return with a stable
+  rule version.
+### Quotients
+- `left_quotients` / `right_quotients` / `SolutionLimitExceeded` are public
+  (`ucns` + `ucns_recursive`); singular `left_quotient` / `right_quotient`
+  are reimplemented as deterministic selectors over the complete solution
+  sets (retiring the greedy path and the right-quotient direction defect).
+  `UCNSStore.left_factors`/`right_factors` surface every remainder
+  (repeated keys documented), `is_left_factor` decides on the complete set,
+  and `factor_decompose`/`enumerate_factorizations` consume all solutions.
+### Object model
+- `UCNSObject` is a recursively immutable canonical value: nonempty
+  (empty construction rejected — the runtime carrier is the nonempty
+  normalized object set), tuple storage, frozen attributes, strict
+  constructor validation (booleans rejected as faces/carriers/angles,
+  floats rejected as angles), constructor normalization with `normalize()`
+  an idempotent no-op, copy/deepcopy returning `self`, and hash consistent
+  with equality.
+### Codec
+- Versioned typed dictionary-key capsules: keys round-trip with exact type
+  identity (bytes, str, int, bool, finite float, tuples thereof);
+  `{1: …, "1": …, b"1": …}` coexist; unsupported/non-finite keys raise at
+  encode; malformed/unknown capsules raise at decode; duplicate decoded keys
+  raise instead of silently overwriting; legacy dictionaries still decode.
+### Claims / licensing
+- README, claims ledger, and module docstrings reconciled to the exact
+  executable/catalogue/oracle/formal boundaries (exhaustion is evidence,
+  not Lean proof; a green Lean build is type-checking only).
+- All root-package/release metadata now states Apache-2.0 (`.zenodo.json`,
+  `CLAUDE.md`); imported-artifact attribution notes corrected to name this
+  repo's actual license.
+
 ## Unreleased — base geometry completion
 
 ### Base geometry (operation algebra of ⊠)

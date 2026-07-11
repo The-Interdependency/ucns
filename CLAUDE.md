@@ -32,7 +32,7 @@ experimental UCNS-native cache prototype.
 | Optional extras | `dev` |
 | Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
 | CI workflows | `carrier-lcm-target.yml`, `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml` |
-| Top-level directories | `audit/` · `code/` · `contracts/` · `docs/` · `examples/` · `formal/` · `pcea-ucns/` · `scripts/` · `tests/` · `ucns/` · `ucns_cache/` · `ucns_recursive/` |
+| Top-level directories | `audit/` · `code/` · `codex-handoff/` · `contracts/` · `docs/` · `examples/` · `formal/` · `pcea-ucns/` · `scripts/` · `tests/` · `ucns/` · `ucns_cache/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
 <!-- END GENERATED:manifest -->
@@ -253,7 +253,7 @@ consistency → face recovery → exact recomposition.
 - Main branch: `main`
 - Feature branches: `feat/<desc>`, `fix/<desc>`, `docs/<desc>`, `chore/<desc>`
 - Commit style: Conventional Commits (`feat(ucns):`, `fix(factor):`, …)
-- License: MPL-2.0
+- License: Apache-2.0
 
 ## Agent module-build doctrine
 

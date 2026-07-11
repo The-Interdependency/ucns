@@ -19,7 +19,19 @@ from .canonical import (
     is_unit,
     is_multiplicative_unit,
 )
-from .factor_search_v08 import factor_search_v08
+from .factor_search_v08 import (
+    FactorSearchReport,
+    factor_search_report,
+    factor_search_v08,
+)
+
+# Catalogue-coverage certification (negative-result certification)
+from .catalogue_certificate import (
+    CatalogueCertificate,
+    catalogue_fingerprint,
+    check_catalogue_coverage,
+    validate_certificate,
+)
 
 # Codec
 from .recursive_codec import (
@@ -28,8 +40,14 @@ from .recursive_codec import (
     recursive_encode,
 )
 
-# Algebraic primitives
+# Algebraic primitives.  The singular quotients are compatibility
+# selectors; the plural solution-set APIs are the complete surface.
 from .left_quotient import left_quotient, right_quotient
+from .division_theory import (
+    SolutionLimitExceeded,
+    left_quotients,
+    right_quotients,
+)
 
 # Domain / oracle predicates (Item 6)
 from .domains import (
@@ -38,6 +56,8 @@ from .domains import (
     N_MIN_MAX,
     S2,
     ORACLE_ATOM_PAYLOADS,
+    ORACLE_CATALOGUE_RULE_VERSION,
+    generate_payload_catalogue,
     in_domain,
     depth_of,
     is_oracle_atom,
@@ -111,19 +131,32 @@ __all__ = [
     "is_unit",
     "is_multiplicative_unit",
     "factor_search_v08",
+    "factor_search_report",
+    "FactorSearchReport",
+    # catalogue-coverage certification
+    "CatalogueCertificate",
+    "catalogue_fingerprint",
+    "check_catalogue_coverage",
+    "validate_certificate",
     # codec
     "recursive_encode",
     "recursive_decode",
     "EncodingError",
-    # quotient primitives
+    # quotient primitives (singular = compatibility selectors;
+    # plural = complete solution sets)
     "left_quotient",
     "right_quotient",
+    "left_quotients",
+    "right_quotients",
+    "SolutionLimitExceeded",
     # domains / oracle
     "DEPTH_MAX",
     "A_PLUS_MAX",
     "N_MIN_MAX",
     "S2",
     "ORACLE_ATOM_PAYLOADS",
+    "ORACLE_CATALOGUE_RULE_VERSION",
+    "generate_payload_catalogue",
     "in_domain",
     "depth_of",
     "is_oracle_atom",

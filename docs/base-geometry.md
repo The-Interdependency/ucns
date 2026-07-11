@@ -24,13 +24,15 @@ calls `normalize()`, which gauge-shifts the first angle to 0 and recurses
 into payloads), so N is exactly "the objects that exist," minus the empty
 one.
 
-**Why nonempty (boundary O1.b).**  The empty object is constructible and is
-asymmetric under ⊠: as a *left* operand it absorbs (`multiply(∅, B)` = ∅ for
-every B), while as a *right* operand `multiply(A, ∅)` raises `IndexError`
-(`beta0 = B.A_plus[0][0]`).  Totality therefore holds on N × N and fails off
-it; the Lean findings independently flag empty operands (P2/P3 in
-`formal/cancellativity-step1-findings.md`).  The base geometry is the algebra
-on N.
+**Why nonempty (boundary O1.b).**  At the time this theorem set landed, the
+empty object was constructible and asymmetric under ⊠: as a *left* operand it
+absorbed, while as a *right* operand `multiply(A, ∅)` raised `IndexError` —
+so totality held on N × N and failed off it; the Lean findings independently
+flag empty operands (P2/P3 in `formal/cancellativity-step1-findings.md`).
+Since the v1.0 completion (codex-handoff/05) the boundary is enforced at
+construction: `UCNSObject` rejects empty `A_plus`/`F_plus`, so the runtime
+carrier IS the nonempty normalized object set and ⊠ is total on everything
+constructible.  The base geometry is the algebra on N.
 
 Notation: for `A ∈ N` write `p = len(A.A_plus)`, angles `α_0..α_{p-1}`
 (with `α_0 = 0` after normalization), payloads `S^A_k ∈ N ∪ {None}`, faces
