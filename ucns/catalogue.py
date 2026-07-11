@@ -6,24 +6,18 @@ Catalogue builders for :meth:`UCNSStore.factor_decompose`.
 Two builders are provided:
 
 ``build_catalogue_d1``
-    All depth-1 UCNSObjects within the frozen domain D' — i.e. every
-    oracle atom (excluding None).  Exhaustive and bounded (the domain
-    parameters cap the count to a few hundred objects at most).
-    Use this as the catalogue argument when the left factor of a
-    target product is known to be depth-1.
+    The canonical depth-1 oracle atoms (excluding None).  This is the
+    carrier-grid family named by ``ORACLE_CATALOGUE_RULE_VERSION``; it is
+    deliberately narrower than every flat object satisfying the frozen
+    geometric bounds.
 
 ``build_catalogue_d2_oracle``
     Depth-2 oracle-class objects built from a caller-supplied payload
-    basis.  Full enumeration over all payload assignments is
-    ``|basis|^length`` per ``(n_min, length, face_bits)`` combination,
-    so callers must restrict the basis when the full depth-1 catalogue
-    is too large.  The default (full depth-1 catalogue) is correct but
-    may be slow for ``length=3`` — benchmark before use in production
-    corpora.
+    basis. Full enumeration is ``|basis|^length`` per host combination,
+    so callers should restrict the basis when appropriate.
 
-Both functions return plain lists of ``UCNSObject``s suitable for
-passing directly to :meth:`UCNSStore.factor_decompose` as the
-``catalogue`` argument.
+Both functions return plain lists of ``UCNSObject`` values suitable for
+passing to :meth:`UCNSStore.factor_decompose`.
 """
 
 from __future__ import annotations
@@ -32,7 +26,7 @@ from __future__ import annotations
 # id: ucns_catalogue
 #   module_name: catalogue
 #   module_kind: engine
-#   summary: Catalogue builders enumerating depth-1 and depth-2 oracle-class UCNSObjects for use as factor_decompose payload catalogues.
+#   summary: Catalogue builders enumerating canonical depth-1 oracle atoms and depth-2 oracle-class UCNSObjects for factor decomposition.
 #   owner: Erin Spencer
 #   public_surface: build_catalogue_d1, build_catalogue_d2_oracle
 #   internal_surface: _obj_key
@@ -41,7 +35,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_catalogue
+#   tests: tests.test_catalogue, tests.test_oracle_catalogue_equivalence
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical, ucns_domains
@@ -51,9 +45,9 @@ from __future__ import annotations
 
 import itertools
 from fractions import Fraction
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
-from .canonical import UCNSObject, UNIT
+from .canonical import UCNSObject
 from .domains import (
     A_PLUS_MAX,
     N_MIN_MAX,
@@ -64,49 +58,32 @@ from .domains import (
 __all__ = ["build_catalogue_d1", "build_catalogue_d2_oracle"]
 
 
+
 def build_catalogue_d1() -> List[UCNSObject]:
-    """Return all depth-1 UCNSObjects in the frozen domain D'.
+    """Return canonical oracle atoms, excluding the unit payload.
 
-    These are the oracle atoms: objects with ``|A⁺| ≤ A_PLUS_MAX``,
-    ``n_min ≤ N_MIN_MAX``, and all cell payloads ``None``.  ``None``
-    itself (the unit) is excluded.
-
-    Suitable as the catalogue for factorizations whose left factor is
-    known to be depth-1 (covered by the v0.6 left-quotient completeness
-    theorem).
+    Membership is exactly the non-``None`` portion of
+    :func:`ucns.domains.generate_payload_catalogue`.
     """
     return [obj for obj in generate_payload_catalogue() if obj is not None]
+
 
 
 def build_catalogue_d2_oracle(
     payload_basis: Optional[List[Optional[UCNSObject]]] = None,
 ) -> List[UCNSObject]:
-    """Return depth-2 oracle-class UCNSObjects built from *payload_basis*.
+    """Return depth-2 oracle-class objects built from *payload_basis*.
 
-    Parameters
-    ----------
-    payload_basis:
-        The oracle atoms to place in cell payloads.  If ``None``,
-        defaults to the full depth-1 catalogue (the result of
-        :func:`ucns.domains.generate_payload_catalogue`,
-        which includes ``None`` as the unit payload).
-
-        **Size warning**: enumeration is ``|basis|^length`` per
-        ``(n_min, length, face_bits)`` combination.  With the default
-        full basis and ``length=3`` this is large — benchmark before
-        passing the result to a large corpus.
-
-    Returns
-    -------
-    A deduplicated list of ``UCNSObject``s, each satisfying
-    ``is_in_oracle_class(obj) == True`` and having depth exactly 2
-    (at least one non-``None`` payload).
+    If *payload_basis* is ``None``, the canonical oracle catalogue is
+    used.  At least one cell payload must be non-unit so every returned
+    object has depth exactly two.  Candidates outside the exact oracle
+    class are rejected rather than admitted by geometric bounds alone.
     """
     if payload_basis is None:
         payload_basis = generate_payload_catalogue()
 
     objects: List[UCNSObject] = []
-    seen: set = set()
+    seen = set()
 
     for n_min in range(1, N_MIN_MAX + 1):
         for length in range(1, A_PLUS_MAX + 1):
@@ -114,8 +91,7 @@ def build_catalogue_d2_oracle(
             for face_bits in range(2 ** length):
                 faces = [(face_bits >> i) & 1 for i in range(length)]
                 for payloads in itertools.product(payload_basis, repeat=length):
-                    # Need at least one non-None payload to reach depth 2.
-                    if all(p is None for p in payloads):
+                    if all(payload is None for payload in payloads):
                         continue
                     try:
                         obj = UCNSObject(
@@ -129,20 +105,22 @@ def build_catalogue_d2_oracle(
                     if not is_in_oracle_class(obj):
                         continue
                     key = _obj_key(obj)
-                    if key not in seen:
-                        seen.add(key)
-                        objects.append(obj)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    objects.append(obj)
 
     return objects
 
 
+
 def _obj_key(obj: UCNSObject) -> tuple:
-    """Structural deduplication key, recursive to depth-2."""
+    """Structural deduplication key, recursive to depth two."""
     return (
         obj.n_min,
         tuple(obj.F_plus),
         tuple(
-            (a, _obj_key(p) if p is not None else None)
-            for a, p in obj.A_plus
+            (angle, _obj_key(payload) if payload is not None else None)
+            for angle, payload in obj.A_plus
         ),
     )
