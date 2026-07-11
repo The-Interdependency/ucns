@@ -36,13 +36,15 @@ from .recursive_codec import (
 # Algebraic primitives
 from .left_quotient import left_quotient, right_quotient
 
-# Domain / oracle predicates (Item 6)
+# Domain / oracle predicates
 from .domains import (
     DEPTH_MAX,
     A_PLUS_MAX,
     N_MIN_MAX,
     S2,
     ORACLE_ATOM_PAYLOADS,
+    ORACLE_CATALOGUE_RULE_VERSION,
+    generate_payload_catalogue,
     in_domain,
     depth_of,
     is_oracle_atom,
@@ -132,6 +134,8 @@ __all__ = [
     "N_MIN_MAX",
     "S2",
     "ORACLE_ATOM_PAYLOADS",
+    "ORACLE_CATALOGUE_RULE_VERSION",
+    "generate_payload_catalogue",
     "in_domain",
     "depth_of",
     "is_oracle_atom",
