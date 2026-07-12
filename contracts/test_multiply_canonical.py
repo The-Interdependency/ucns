@@ -67,19 +67,19 @@ def test_representation_independence():
 
 
 def test_empty_carrier_boundary():
-    """The carrier of the base geometry is NONEMPTY objects: an empty
-    left operand absorbs, an empty right operand is undefined.  This
-    pins the boundary rather than papering over it."""
-    empty = UCNSObject(1, 1, [], [])
-    absorbed = multiply(empty, E)
-    assert len(absorbed.A_plus) == 0, "empty left operand must absorb"
+    """The carrier of the base geometry is NONEMPTY objects.  The
+    boundary is now enforced at construction: empty objects cannot be
+    built at all, so the old asymmetric multiply behavior (left-empty
+    absorbs, right-empty raises) is unreachable.  This pins the
+    boundary rather than papering over it."""
     try:
-        multiply(E, empty)
-    except IndexError:
+        UCNSObject(1, 1, [], [])
+    except ValueError:
         pass
     else:
         raise AssertionError(
-            "multiply(E, empty) unexpectedly succeeded; carrier boundary moved"
+            "empty UCNSObject construction unexpectedly succeeded; "
+            "carrier boundary moved"
         )
 
 

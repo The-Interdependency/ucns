@@ -47,6 +47,61 @@ class TestPublicUCNSObjectConstructorValidation(unittest.TestCase):
         )
         self.assertEqual(obj.F_plus, [1, 0])
 
+    def test_rejects_empty_object_sequences(self) -> None:
+        with self.assertRaisesRegex(ValueError, "A_plus must be nonempty"):
+            UCNSObject(1, 1, [], [])
+
+    def test_rejects_non_positive_declared_carrier(self) -> None:
+        for n_dec in (0, -1, -4):
+            with self.subTest(n_dec=n_dec):
+                with self.assertRaisesRegex(
+                    ValueError, "n_dec must be a positive integer"
+                ):
+                    UCNSObject(n_dec, 1, [(Fraction(0), UNIT)], [0])
+
+    def test_rejects_non_integral_declared_carrier(self) -> None:
+        for n_dec in (2.0, Fraction(2), "2"):
+            with self.subTest(n_dec=n_dec):
+                with self.assertRaisesRegex(
+                    ValueError, "n_dec must be a positive integer"
+                ):
+                    UCNSObject(n_dec, 1, [(Fraction(0), UNIT)], [0])
+
+    def test_rejects_non_positive_supplied_intrinsic_carrier(self) -> None:
+        for n_min in (0, -2):
+            with self.subTest(n_min=n_min):
+                with self.assertRaisesRegex(
+                    ValueError, "n_min must be a positive integer"
+                ):
+                    UCNSObject(2, n_min, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+
+    def test_supplied_intrinsic_carrier_is_recomputed_not_trusted(self) -> None:
+        # A wrong-but-positive n_min is repaired by normalization.
+        obj = UCNSObject(2, 1, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+        self.assertEqual(obj.n_min, 2)
+
+    def test_rejects_declared_carrier_not_multiple_of_intrinsic(self) -> None:
+        with self.assertRaisesRegex(ValueError, "not multiple of n_min"):
+            UCNSObject(3, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+
+    def test_rejects_non_ucns_recursive_payload_types(self) -> None:
+        for payload in (object(), 7, "S2", [(Fraction(0), None)], {"cells": []}):
+            with self.subTest(payload=payload):
+                with self.assertRaisesRegex(
+                    TypeError, "payloads must be UCNSObject or None"
+                ):
+                    UCNSObject(2, 2, [(Fraction(0), payload), (Fraction(1), UNIT)], [0, 0])
+
+    def test_accepts_recursive_ucns_payloads(self) -> None:
+        inner = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+        obj = UCNSObject(2, 2, [(Fraction(0), inner), (Fraction(1), UNIT)], [0, 0])
+        payload = obj.A_plus[0][1]
+        self.assertIsInstance(payload, UCNSObject)
+        self.assertEqual(payload, inner)
+        # Payloads are deep-copied: the constructed object is isolated
+        # from later mutation of the input payload.
+        self.assertIsNot(payload, inner)
+
 
 if __name__ == "__main__":
     unittest.main()
