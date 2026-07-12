@@ -129,16 +129,28 @@ class UCNSObject:
     Parameters
     ----------
     n_dec:
-        Declared carrier size (must be a multiple of n_min).
+        Declared carrier size: a positive integer that must be a
+        multiple of n_min.
     n_min:
-        Intrinsic carrier size (LCM of angle denominators).
+        Intrinsic carrier size (LCM of angle denominators).  Must be a
+        positive integer at input; normalization recomputes it.
     A_plus:
-        Sequence of (angle, payload) pairs.  ``angle`` is a
+        Nonempty sequence of (angle, payload) pairs.  ``angle`` is a
         ``Fraction`` in ``[0, 4)`` (representing a fraction of a
-        half-turn on the pairing circle); ``payload`` is another
-        ``UCNSObject`` or ``None`` (unit payload).
+        half-turn on the pairing circle; plain ints are accepted and
+        coerced to ``Fraction`` as whole half-turns — floats, strings,
+        and other inexact types raise ``TypeError``); ``payload`` is
+        another ``UCNSObject`` or ``None`` (unit payload).  Payload
+        typing is enforced: anything else raises ``TypeError``.
     F_plus:
         Face-flip sequence parallel to ``A_plus`` (list of 0/1 ints).
+
+    Construction enforces the carrier boundary of the base geometry:
+    empty objects are rejected (the carrier is nonempty normalized
+    objects; ``None``/``UNIT`` is the identity), and non-positive
+    declared or supplied carriers are rejected.  A constructed object
+    is always normalized with ``n_dec`` a multiple of the recomputed
+    ``n_min``.
     """
 
     __slots__ = ("n_dec", "n_min", "A_plus", "F_plus", "A_minus", "F_minus")
@@ -150,6 +162,23 @@ class UCNSObject:
         A_plus: List[Tuple[FractionType, Optional["UCNSObject"]]],
         F_plus: List[int],
     ) -> None:
+        if len(A_plus) == 0:
+            raise ValueError(
+                "Invalid object: A_plus must be nonempty. The UCNS carrier "
+                "is nonempty normalized objects (base-geometry ruling); use "
+                "the UNIT sentinel (None) for the multiplicative identity."
+            )
+        if not isinstance(n_dec, Integral) or int(n_dec) < 1:
+            raise ValueError(
+                "Invalid object: n_dec must be a positive integer "
+                f"(got {n_dec!r})."
+            )
+        if not isinstance(n_min, Integral) or int(n_min) < 1:
+            raise ValueError(
+                "Invalid object: n_min must be a positive integer "
+                f"(got {n_min!r}); normalization recomputes it, but "
+                "non-positive declared carriers are rejected at input."
+            )
         if len(A_plus) != len(F_plus):
             raise ValueError(
                 "Invalid object: A_plus and F_plus must have the same length "
@@ -165,11 +194,41 @@ class UCNSObject:
                 "Invalid object: F_plus entries must be face bits 0 or 1 "
                 f"(got {invalid_faces!r})."
             )
+        invalid_payloads = [
+            p
+            for _, p in A_plus
+            if p is not None and not isinstance(p, UCNSObject)
+        ]
+        if invalid_payloads:
+            raise TypeError(
+                "Invalid object: A_plus payloads must be UCNSObject or None "
+                f"(got {invalid_payloads!r}). Recursive payloads are typed, "
+                "not duck-typed."
+            )
+        invalid_angles = [
+            a
+            for a, _ in A_plus
+            if not isinstance(a, Fraction)
+            and (not isinstance(a, Integral) or isinstance(a, bool))
+        ]
+        if invalid_angles:
+            raise TypeError(
+                "Invalid object: A_plus angles must be Fraction or plain "
+                f"integers (got {invalid_angles!r}). Inexact or string "
+                "angle types are rejected rather than coerced."
+            )
 
-        self.n_dec = n_dec
-        self.n_min = n_min
+        self.n_dec = int(n_dec)
+        self.n_min = int(n_min)
+        # Integer angles are documented as whole half-turns; coerce them
+        # to Fraction so normalization's circle-fraction arithmetic stays
+        # exact instead of producing a denominator-less float.
         self.A_plus: List[Tuple[FractionType, Optional[UCNSObject]]] = [
-            (a, copy.deepcopy(p) if p is not None else None) for a, p in A_plus
+            (
+                a if isinstance(a, Fraction) else Fraction(int(a)),
+                copy.deepcopy(p) if p is not None else None,
+            )
+            for a, p in A_plus
         ]
         self.F_plus: List[int] = [int(f) for f in F_plus]
         self.A_minus: Optional[List] = None

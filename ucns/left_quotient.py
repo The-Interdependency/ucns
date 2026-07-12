@@ -144,7 +144,8 @@ def left_quotient(
             else:
                 B_payloads.append(sub_B)
 
-    # Phase 3 — verification (cancellativity, E10.4).
+    # Phase 3 — verification by exact recomposition (soundness gate;
+    # historically labeled E10.4, but nothing here relies on cancellation).
     B_cand = UCNSObject(P.n_dec, P.n_min, list(zip(B_angles, B_payloads)), B_faces)
     if multiply(A, B_cand) == P:
         if is_unit(B_cand):
