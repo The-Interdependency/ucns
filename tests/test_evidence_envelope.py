@@ -54,7 +54,7 @@ def test_unit_bridge_record_is_typed_and_not_a_prime_claim() -> None:
     assert record.seq_prime_claim_scope == "not-prime-unit-domain"
 
 
-def test_bridge_record_rejects_hash_tamper_and_unknown_fields() -> None:
+def test_bridge_record_rejects_hash_tamper_unknown_fields_and_type_coercion() -> None:
     record = bridge_record(S2)
     tampered = record.to_dict()
     tampered["object_hash"] = "0" * 64
@@ -66,6 +66,16 @@ def test_bridge_record_rejects_hash_tamper_and_unknown_fields() -> None:
     unknown["invented"] = True
     with pytest.raises(ValueError, match="unknown bridge record fields"):
         UCNSBridgeRecord.from_dict(unknown)
+
+    coerced = record.to_dict()
+    coerced["is_unit"] = "false"
+    with pytest.raises(ValueError, match="is_unit must be a boolean"):
+        UCNSBridgeRecord.from_dict(coerced)
+
+    coerced = record.to_dict()
+    coerced["depth"] = "1"
+    with pytest.raises(ValueError, match="depth must be an integer"):
+        UCNSBridgeRecord.from_dict(coerced)
 
 
 def test_flat_prime_serializes_certified_negative_evidence() -> None:
@@ -128,7 +138,7 @@ def test_certified_record_with_broken_policy_invariant_fails_closed() -> None:
     with pytest.raises(ValueError, match="search_exhausted"):
         replace(evidence, search_exhausted=False, evidence_digest="")
 
-    with pytest.raises(ValueError, match="policy_version"):
+    with pytest.raises(ValueError, match="certification_policy_version"):
         replace(
             evidence,
             certification_policy_version="invented-policy",
@@ -136,7 +146,7 @@ def test_certified_record_with_broken_policy_invariant_fails_closed() -> None:
         )
 
 
-def test_factorization_evidence_rejects_digest_tamper_and_unknown_fields() -> None:
+def test_factorization_evidence_rejects_tamper_unknown_fields_and_type_coercion() -> None:
     evidence = factorization_evidence(S2)
     tampered = evidence.to_dict()
     tampered["claim_scope"] = "invented"
@@ -147,3 +157,16 @@ def test_factorization_evidence_rejects_digest_tamper_and_unknown_fields() -> No
     unknown["invented"] = True
     with pytest.raises(ValueError, match="unknown factorization evidence fields"):
         UCNSFactorizationEvidence.from_dict(unknown)
+
+    coerced = evidence.to_dict()
+    coerced["negative_result_certified"] = "true"
+    with pytest.raises(
+        ValueError,
+        match="negative_result_certified must be a boolean",
+    ):
+        UCNSFactorizationEvidence.from_dict(coerced)
+
+    coerced = evidence.to_dict()
+    coerced["supplied_catalogue_size"] = "1"
+    with pytest.raises(ValueError, match="supplied_catalogue_size must be an integer"):
+        UCNSFactorizationEvidence.from_dict(coerced)
