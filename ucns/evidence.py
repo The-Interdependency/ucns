@@ -53,6 +53,10 @@ from typing import Optional, Tuple
 
 from .bridge import BridgeImport
 from .canonical import UCNSObject
+from .catalogue_coverage import (
+    COVERAGE_CANONICAL_EXACT,
+    COVERAGE_CANONICAL_SUPERSET,
+)
 from .domain_status import status_for_object
 from .factorization_result import FactorizationResult
 
@@ -152,6 +156,10 @@ def evidence_from_factorization_result(
     certified = bool(result.negative_result_certified)
     search_ran = bool(result.search_exhausted or result.factors is not None)
     attach_status = search_ran or certified
+    covering_status = result.catalogue_coverage_status in (
+        COVERAGE_CANONICAL_EXACT,
+        COVERAGE_CANONICAL_SUPERSET,
+    )
     return UCNSEvidence(
         source="factorization-result",
         construction_succeeded=True,
@@ -160,6 +168,7 @@ def evidence_from_factorization_result(
         catalogue_coverage_validated=bool(
             result.coverage_record_validated
             and result.coverage_bound_to_search_report
+            and covering_status
         ),
         negative_result_certified=certified,
         certified_domain_label=(
