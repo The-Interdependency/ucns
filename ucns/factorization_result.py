@@ -3,10 +3,11 @@ ucns.factorization_result
 ===================================
 A0-facing factorization result envelopes.
 
-The raw solver remains catalogue-relative.  This module is the only surface
+The raw solver remains catalogue-relative. This module is the only surface
 that may certify a negative result, and it does so only by combining:
 
 * a recomputed domain classification;
+* membership in the frozen geometric domain;
 * a complete, non-unit target domain;
 * exhaustive search provenance from ``factor_search_report``;
 * a fully recomputed positive catalogue-coverage record bound to that report;
@@ -14,8 +15,8 @@ that may certify a negative result, and it does so only by combining:
 * either no pruning or the exact built-in pruning rule/version whose
   coverage-preservation property is recorded by the search report.
 
-No caller boolean, caller-built coverage record, or bare domain label can
-certify ``SEQ-PRIME``.
+The ``None`` unit sentinel is handled before search. No caller boolean,
+caller-built coverage record, or bare domain label can certify ``SEQ-PRIME``.
 """
 
 from __future__ import annotations
@@ -24,7 +25,7 @@ from __future__ import annotations
 # id: ucns_factorization_result
 #   module_name: factorization_result
 #   module_kind: engine
-#   summary: A0-facing factorization envelope that certifies negative results only from validated catalogue coverage, exact search-report binding, exhaustive untruncated search, recognized sound pruning, a complete declared domain, and a non-unit target.
+#   summary: A0-facing factorization envelope that certifies negative results only from frozen-domain membership, validated catalogue coverage, exact search-report binding, exhaustive untruncated search, recognized sound pruning, a complete declared domain, and a non-unit target.
 #   owner: Erin Spencer
 #   public_surface: FactorizationResultKind, FactorizationResult, NEGATIVE_CERTIFICATION_POLICY_VERSION, factorization_result
 #   internal_surface: _pruning_is_recognized, _negative_certification_reasons, _claim_scope
@@ -36,7 +37,7 @@ from __future__ import annotations
 #   tests: tests/test_certified_negative_results.py, ucns_recursive/tests/test_factorization_result.py
 #   rollout: default_enabled for A0-facing envelopes; raw factor_search_v08 remains catalogue-relative
 #   rollback: retain provenance and coverage evidence but set negative_result_certified and seq_prime_is_absolute false
-#   requires: ucns_canonical, ucns_domain_status, ucns_factor_search_v08, ucns_catalogue_coverage, ucns_carrier_support_pruning, ucns_serialization
+#   requires: ucns_canonical, ucns_domain_status, ucns_domains, ucns_factor_search_v08, ucns_catalogue_coverage, ucns_carrier_support_pruning, ucns_serialization
 #   since: 2026-06-02
 #   unresolved: none
 # === END MODULE_BUILD ===
@@ -59,7 +60,7 @@ from .catalogue_pruning import (
     PAYLOAD_PRUNING_RULE_VERSION,
 )
 from .domain_status import DomainStatusMetadata, status_for_object
-from .domains import generate_payload_catalogue
+from .domains import generate_payload_catalogue, in_domain
 from .factor_search_v08 import FactorSearchReport, factor_search_report
 from .serialization import stable_hash
 
@@ -80,12 +81,12 @@ class FactorizationResult:
     ``negative_result_certified`` is true only for a ``SEQ-PRIME`` result that
     satisfies every policy condition documented at module level.
     ``seq_prime_is_absolute`` is retained as a legacy alias and is set to the
-    exact same value by :func:`factorization_result`.  Here "absolute" means
+    exact same value by :func:`factorization_result`. Here "absolute" means
     certified within the declared UCNS domain, not universal mathematical
     primality.
 
     The appended fields have defaults so older positional construction of the
-    original envelope remains possible.  Manually constructed records are data,
+    original envelope remains possible. Manually constructed records are data,
     not certification authority; callers should obtain this type from
     :func:`factorization_result`.
     """
@@ -165,6 +166,8 @@ def _negative_certification_reasons(
         reasons.append("factors-found")
     if not metadata.completeness_guaranteed:
         reasons.append("domain-not-complete:%s" % metadata.label)
+    if not in_domain(product):
+        reasons.append("target-outside-frozen-domain")
     if metadata.label == "depth-0" or is_multiplicative_unit(product):
         reasons.append("unit-domain-primality-inapplicable")
     if not report.search_exhausted:
@@ -231,17 +234,39 @@ def _evidence_fields(
 
 
 def factorization_result(
-    P: UCNSObject,
+    P: Optional[UCNSObject],
     catalogue: Optional[List[Optional[UCNSObject]]] = None,
 ) -> FactorizationResult:
     """Run exhaustive factor search and return a machine-scoped envelope.
 
-    There is intentionally no completeness/certification boolean parameter.
-    Coverage is recomputed from the exact supplied catalogue and bound to the
-    search report.  Search exceptions propagate; they never become a negative
-    result.
+    The ``None`` unit sentinel is returned as an explicitly uncertified,
+    non-prime unit-domain envelope without invoking factor search. For concrete
+    objects there is intentionally no completeness/certification boolean
+    parameter: coverage is recomputed from the exact supplied catalogue and
+    bound to the search report. Search exceptions propagate; they never become
+    negative results.
     """
     metadata = status_for_object(P)
+    product_hash = stable_hash(P)
+
+    if P is None:
+        return FactorizationResult(
+            product_hash=product_hash,
+            product_domain_label=metadata.label,
+            product_domain_metadata=metadata,
+            result_kind=FactorizationResultKind.SEQ_PRIME,
+            factors=None,
+            seq_prime_is_absolute=False,
+            claim_scope="not-prime-unit-domain",
+            note=(
+                "The UNIT sentinel is the multiplicative identity, not a "
+                "primality candidate; no factor search was executed."
+            ),
+            negative_result_certified=False,
+            certification_policy_version=NEGATIVE_CERTIFICATION_POLICY_VERSION,
+            uncertified_reasons=("unit-domain-primality-inapplicable",),
+        )
+
     supplied = (
         generate_payload_catalogue()
         if catalogue is None
@@ -256,7 +281,6 @@ def factorization_result(
     evidence = _evidence_fields(
         report, coverage, coverage_validated, coverage_bound
     )
-    product_hash = stable_hash(P)
 
     if report.factors is not None:
         A, B = report.factors
