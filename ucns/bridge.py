@@ -55,7 +55,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from fractions import Fraction
-from numbers import Integral
+from numbers import Integral, Rational
 from typing import Any, Dict, List, Optional
 
 from .canonical import UCNSObject
@@ -111,11 +111,26 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
     """Serialize an object (or unit payload) into neutral record data."""
     if obj is None:
         return None
+    if not isinstance(obj, UCNSObject):
+        raise BridgeValidationError(
+            "Invalid bridge record: recursive payloads must be UCNSObject or "
+            f"None (got {type(obj).__name__})."
+        )
     if len(obj.A_plus) != len(obj.F_plus):
         raise BridgeValidationError(
             "Invalid bridge record: export requires parallel A_plus and "
             f"F_plus (got {len(obj.A_plus)} and {len(obj.F_plus)}); "
             "refusing to truncate a drifted object."
+        )
+    invalid_angles = [
+        angle
+        for angle, _ in obj.A_plus
+        if isinstance(angle, bool) or not isinstance(angle, Rational)
+    ]
+    if invalid_angles:
+        raise BridgeValidationError(
+            "Invalid bridge record: export requires exact rational angles "
+            f"(got {invalid_angles!r}); refusing to coerce a drifted object."
         )
     invalid_faces = [
         f
@@ -128,6 +143,23 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
         raise BridgeValidationError(
             "Invalid bridge record: export requires face bits 0 or 1 "
             f"(got {invalid_faces!r}); refusing to coerce a drifted object."
+        )
+    try:
+        canonical_snapshot = UCNSObject(
+            obj.n_dec,
+            obj.n_min,
+            list(obj.A_plus),
+            list(obj.F_plus),
+        )
+    except (TypeError, ValueError, ArithmeticError) as exc:
+        raise BridgeValidationError(
+            "Invalid bridge record: export rejected a drifted UCNSObject: "
+            f"{exc}"
+        ) from exc
+    if canonical_snapshot != obj:
+        raise BridgeValidationError(
+            "Invalid bridge record: export requires a normalized UCNSObject; "
+            "the current mutable fields normalize to a different identity."
         )
     cells: List[Dict[str, Any]] = []
     for (angle, payload), face in zip(obj.A_plus, obj.F_plus):
@@ -190,6 +222,12 @@ def _object_from_data(data: Any, path: str) -> UCNSObject:
         )
         _require(int(den) > 0, f"{cell_path}.angle denominator must be positive")
 
+        face = cell["face"]
+        _require(
+            type(face) is int and face in (0, 1),
+            f"{cell_path}.face must be the integer bit 0 or 1",
+        )
+
         payload_data = cell["payload"]
         payload = (
             None
@@ -197,14 +235,24 @@ def _object_from_data(data: Any, path: str) -> UCNSObject:
             else _object_from_data(payload_data, f"{cell_path}.payload")
         )
         a_plus.append((Fraction(int(num), int(den)), payload))
-        f_plus.append(cell["face"])
+        f_plus.append(face)
 
+    supplied_angles = tuple(angle for angle, _ in a_plus)
     try:
         constructed = UCNSObject(int(n_dec), int(n_min), a_plus, f_plus)
     except (TypeError, ValueError) as exc:
         raise BridgeValidationError(
             f"Invalid bridge record: {path} rejected by UCNS construction: {exc}"
         ) from exc
+    # The v1 record promises normalized angles. Construction normalizes, so
+    # compare the supplied sequence against the normalized result to reject
+    # gauge-shifted sibling records instead of silently rewriting them.
+    normalized_angles = tuple(angle for angle, _ in constructed.A_plus)
+    _require(
+        supplied_angles == normalized_angles,
+        f"{path}.cells carry non-normalized angles; expected "
+        f"{normalized_angles!r}, got {supplied_angles!r}",
+    )
     # The v1 record explicitly carries the intrinsic carrier; a mismatch
     # against the recomputed value is fixture/canon drift and fails closed
     # rather than being silently normalized away.
