@@ -3,10 +3,12 @@ ucns.domain_status
 ============================
 Typed status metadata for UCNS theorem / implementation domains.
 
-This module does not replace the legacy string labels returned by
-``verified_domain_status``.  It wraps those labels in explicit metadata so
-A0-facing code can distinguish implementation, test, proof, oracle, and
-frontier claims without inferring certainty from a bare string.
+This module describes domain-level prerequisites only.  A domain label can say
+that a completeness theorem is available, but cannot by itself certify a
+particular ``SEQ-PRIME`` result.  Result-level certification belongs to
+``ucns.factorization_result`` and additionally requires validated catalogue
+coverage, exact search-report binding, exhaustive untruncated search,
+recognized coverage-preserving pruning, and a non-unit target.
 """
 
 from __future__ import annotations
@@ -15,7 +17,7 @@ from __future__ import annotations
 # id: ucns_domain_status
 #   module_name: domain_status
 #   module_kind: engine
-#   summary: Typed status metadata wrapping legacy UCNS domain labels so callers can distinguish implementation/test/proof/oracle/frontier claims and scope SEQ-PRIME results.
+#   summary: Typed domain-level prerequisite metadata; bare labels never certify SEQ-PRIME, and result-level certainty is delegated to ucns.factorization_result.
 #   owner: Erin Spencer
 #   public_surface: DomainProofStatus, DomainStatusMetadata, VERIFIED_DOMAIN_LABELS, domain_status_metadata, status_for_object, is_verified_domain_label, seq_prime_requires_scope
 #   internal_surface: none
@@ -24,7 +26,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive/tests/test_domain_status.py
+#   tests: ucns_recursive/tests/test_domain_status.py, tests/test_certified_negative_results.py
 #   rollout: default_enabled
 #   rollback: remove module and its re-exports
 #   requires: ucns_canonical
@@ -54,20 +56,9 @@ class DomainProofStatus(str, Enum):
 class DomainStatusMetadata:
     """Self-describing metadata for a UCNS domain label.
 
-    Attributes
-    ----------
-    label:
-        Legacy domain label such as ``"depth-1"`` or
-        ``"depth-2-non-oracle"``.
-    statuses:
-        Tuple of typed status flags that describe the current claim.
-    completeness_guaranteed:
-        True only when the current theorem / oracle surface supports treating
-        a failed factorization as complete within that declared domain.
-    seq_prime_claim_scope:
-        Human-readable scope for any ``SEQ-PRIME`` result in this domain.
-    note:
-        Short explanation suitable for audit logs and A0 status displays.
+    ``completeness_guaranteed`` means a domain-level completeness result is
+    available as a prerequisite.  It is necessary but not sufficient for
+    certifying a concrete negative search result.
     """
 
     label: str
@@ -137,7 +128,7 @@ VERIFIED_DOMAIN_LABELS = frozenset(
 
 
 def domain_status_metadata(label: str) -> DomainStatusMetadata:
-    """Return typed metadata for a legacy domain-status label.
+    """Return typed prerequisite metadata for a legacy domain-status label.
 
     Unknown labels are treated as experimental frontier labels rather than
     silently promoted to a verified status.
@@ -155,24 +146,30 @@ def domain_status_metadata(label: str) -> DomainStatusMetadata:
 
 
 def status_for_object(obj: Optional[UCNSObject]) -> DomainStatusMetadata:
-    """Return typed status metadata for *obj*.
-
-    This delegates to the existing ``verified_domain_status`` taxonomy, then
-    wraps the result in typed metadata for A0-facing consumers.
-    """
+    """Return typed domain prerequisite metadata for *obj*."""
     from .domains import verified_domain_status
 
     return domain_status_metadata(verified_domain_status(obj))
 
 
 def is_verified_domain_label(label: str) -> bool:
-    """Return True iff *label* is currently complete in its declared domain."""
+    """Return True iff *label* has a domain-level completeness prerequisite.
+
+    This does not certify a concrete search result.
+    """
     return domain_status_metadata(label).completeness_guaranteed
 
 
 def seq_prime_requires_scope(label: str) -> bool:
-    """Return True iff ``SEQ-PRIME`` must be marked non-absolute for *label*."""
-    return not domain_status_metadata(label).completeness_guaranteed
+    """Return True because a bare domain label never certifies ``SEQ-PRIME``.
+
+    Retained for compatibility.  Callers deciding result-level scope must use
+    ``FactorizationResult.requires_scope`` from ``factorization_result``.
+    The *label* argument is intentionally ignored: domain metadata is only one
+    prerequisite among several required by the result policy.
+    """
+    del label
+    return True
 
 
 __all__ = [

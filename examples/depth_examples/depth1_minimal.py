@@ -1,24 +1,28 @@
 """
-Minimal depth-1 seq-prime example for UCNS v1.0 review.
+Minimal non-unit depth-1 seq-prime example for UCNS v1.0 review.
+
+The one-cell identity object is a multiplicative unit, so primality is not
+applicable to it. This example uses the canonical two-cell flat witness S2.
 
 GPT generated; context, prompt Erin Spencer.
 """
 
-from fractions import Fraction
-
-from ucns import FactorizationResultKind, UCNSObject, UNIT, factorization_result
+from ucns import FactorizationResultKind, S2, factorization_result
 
 
-P = UCNSObject(1, 1, [(Fraction(0), UNIT)], [0])
+P = S2
 result = factorization_result(P)
 
 assert result.result_kind == FactorizationResultKind.SEQ_PRIME
 assert result.product_domain_label == "depth-1"
+assert result.negative_result_certified is True
 assert result.seq_prime_is_absolute is True
 assert result.claim_scope == "defended-domain-relative"
+assert result.uncertified_reasons == ()
 
 print("depth1_minimal: ok")
 print(f"result_kind={result.result_kind.value}")
 print(f"domain={result.product_domain_label}")
+print(f"negative_result_certified={result.negative_result_certified}")
 print(f"seq_prime_is_absolute={result.seq_prime_is_absolute}")
 print(f"claim_scope={result.claim_scope}")

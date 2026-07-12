@@ -88,6 +88,7 @@ from .serialization import (
 from .factorization_result import (
     FactorizationResultKind,
     FactorizationResult,
+    NEGATIVE_CERTIFICATION_POLICY_VERSION,
     factorization_result,
 )
 
@@ -105,6 +106,9 @@ from .canonical_factorization import (
     canonical_key,
 )
 from .catalogue_pruning import (
+    PAYLOAD_PRUNING_RULE_NAME,
+    PAYLOAD_PRUNING_RULE_VERSION,
+    PAYLOAD_PRUNING_PRESERVES_COVERAGE,
     prime_support,
     carrier_lcm,
     prune_catalogue,
@@ -179,6 +183,7 @@ __all__ = [
     # factorization result envelope
     "FactorizationResultKind",
     "FactorizationResult",
+    "NEGATIVE_CERTIFICATION_POLICY_VERSION",
     "factorization_result",
     # object inspection record
     "UCNSObjectRecord",
@@ -194,6 +199,9 @@ __all__ = [
     "canonical_factorization",
     "canonical_key",
     # carrier-LCM law / carrier-support pruning
+    "PAYLOAD_PRUNING_RULE_NAME",
+    "PAYLOAD_PRUNING_RULE_VERSION",
+    "PAYLOAD_PRUNING_PRESERVES_COVERAGE",
     "prime_support",
     "carrier_lcm",
     "prune_catalogue",
