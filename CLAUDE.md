@@ -124,6 +124,8 @@ ucns/                              # v1.0 public API and engine implementation
   domain_status.py                 # status taxonomy + verified-domain labels
   factor_search_v08.py             # witness-matrix recursive quotient solver
   serialization.py                 # canonical JSON + stable hash
+  bridge.py                        # official versioned cross-repo bridge record + adapter
+  evidence.py                      # downstream proof-status evidence envelope
   store.py                         # UCNSStore keyed corpus + algebraic retrieval
   core.py, embedding.py, epicycle.py, mobius.py, similarity.py  # v0.6.5 lineage
 

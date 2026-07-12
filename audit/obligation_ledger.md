@@ -27,6 +27,44 @@ at target rung per RepoLOTO; `.loto/` empty of lock files = base geometry
 closed.  The reconciler fails if a lock exists for a CLOSED row or a lock
 is missing for an OPEN row.
 
+## Formal search-model holes and declared boundaries (Theorem N, 2026-07-12)
+
+This section enumerates every remaining `sorry` and every declared opaque
+or modeling boundary in `formal/Ucns/TheoremN.lean` after the finite-search
+model replaced the opaque `FindsFactorization`/`ContainsPayloads`
+predicates.  It is informational: `audit/reconcile.py` reconciles only the
+seven base-geometry obligations above and does not parse this section.
+
+- theoremN_catalogue_sufficient_completeness — `sorry`; statement now
+  unfolds to "some enumerated candidate survives unit rejection and
+  exactly recomposes"; no proof exists.
+- lemma7_depth2_oracle_completeness — `sorry`; instance statement, no
+  proof exists.
+- depth1_restricted_completeness — `sorry`; base statement, no proof
+  exists.
+- face-superset equivalence — declared boundary: `faceAssignments`
+  enumerates all `2^k` bit lists while `recover_face_structures` derives
+  the at-most-two XOR-consistent options; witness-space equality under the
+  exact-recomposition gate is undischarged in Lean.  Test-backed on the
+  declared fixture domain by `tests/test_formal_conformance.py`.
+- no-renormalization assembly — declared boundary: Lean `assemble` applies
+  no normalization while the Python constructor normalizes; agreement on
+  host-normalized products of normalized factors is undischarged in Lean.
+  Test-backed on the declared fixture domain by the same suite.
+- catalogue-dedup omission — declared boundary: `normalizedCandidates`
+  omits structural deduplication (membership-preserving; size/order only).
+- Lean-side fixture evaluation — undischarged: the shared conformance
+  fixture is currently executed on the Python side only; the authoring
+  environment had no Lean toolchain, so `formal.yml` CI is the type-check
+  authority and no Lean evaluation of the fixture has run.
+- `Ucns/Core.lean` retains the refuted `AlignedComplete` cancellativity
+  counterexample (`not_multiply_left_cancellative_on_alignedComplete`);
+  cancellativity is not a premise of the Theorem N search model.
+
+No opaque success predicate remains in `formal/Ucns/TheoremN.lean`; a green
+`lake build` remains a type-check only and confers no proof status while
+any hole above remains.
+
 ## Findings of record (this run)
 
 1. **Associativity proven** — the handoff's pivot question ("does the θ

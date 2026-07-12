@@ -6,15 +6,37 @@ completeness results, principally the Theorem N family described in
 
 ## Status: FRONTIER / awaiting external formal review
 
-This is exploratory scaffolding. The theorem statements here are stubbed
-with `sorry` and prove nothing yet. Lean will accept the file because a
-`sorry` closes any goal, but each `sorry` is an unverified hole. No proof
-obligation has been discharged by the presence of a stub.
+The completeness theorem statements here are still closed with `sorry` and
+prove nothing yet. Lean will accept the files because a `sorry` closes any
+goal, but each `sorry` is an unverified hole. No proof obligation has been
+discharged by the presence of a stub, and a successful build is never a
+proof while any transitive theorem hole remains.
+
+What is no longer opaque: `Ucns/TheoremN.lean` now DEFINES the finite
+search it quantifies over — catalogue normalization with one unit
+sentinel, host split candidates, structural host-angle recovery,
+exhaustive payload assignments, face assignments, unit-group rejection,
+and an exact-recomposition success relation whose witness carries actual
+factors and the product equality. `FindsFactorization` is a defined
+existential over that enumeration and `ContainsPayloads` is a defined
+recursive-membership predicate; neither is an uninterpreted proposition
+any more. Every remaining hole and declared modeling boundary (the
+face-superset enumeration, the no-renormalization assembly, the omitted
+catalogue dedup, the pending Lean-side fixture evaluation) is enumerated
+in [`../audit/obligation_ledger.md`](../audit/obligation_ledger.md).
+
+The shared Python/Lean conformance fixture for the search model lives in
+[`../tests/test_formal_conformance.py`](../tests/test_formal_conformance.py):
+it re-enumerates the model literally in Python and checks witness-space
+equality against the executable solver on a declared small-domain fixture.
+The Lean-side evaluation of the same fixture remains an open obligation.
 
 The informal, prose-level argument for Theorem N and its instances lives in
 [`../ucns-theorem-n.md`](../ucns-theorem-n.md). That document is the source of
-truth for the claims; this directory is an attempt to restate those claims in
-a form a proof assistant can eventually check.
+truth for the claims; this directory restates those claims, and now the
+search they quantify over, in a form a proof assistant can eventually check.
+The proof shape is exhaustive inclusion: no cancellativity, quotient
+uniqueness, or original-pair recovery premise appears in the statements.
 
 ## Mathlib / dependency discipline
 
@@ -54,7 +76,11 @@ Until then, treat everything here as a specification draft, not a guarantee.
 - `lean-toolchain` - pins the Lean 4 toolchain version.
 - `lakefile.lean` - Lake package definition (`Ucns`) with Mathlib pinned at
   v4.7.0.
-- `Ucns/TheoremN.lean` - stub statements (all `sorry`) for:
+- `Ucns/TheoremN.lean` - the defined finite-search model
+  (`normalizedCandidates`, `splitCandidates`, `recoverHostAngles`,
+  `assignments`, `faceAssignments`, `assemble`, `isMultiplicativeUnit`,
+  `searchCandidates`, `AcceptedWitness`, `FindsFactorization`,
+  `ContainsPayloads`) plus theorem statements (all still `sorry`) for:
   - depth-1 restricted completeness,
   - the depth-2 oracle result (Lemma 7),
   - catalogue-sufficient completeness (Theorem N).

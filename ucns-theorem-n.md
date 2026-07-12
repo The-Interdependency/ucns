@@ -34,50 +34,60 @@ A catalogue `C` is a list of `UCNSObject | None` objects. `factor_search_v08` us
 
 ### 1.3 Algorithm
 
-`factor_search_v08(P, C)` runs five depth-agnostic steps for each factorisation `n = p x q` of `n = |P.A_plus|`:
+`factor_search_v08(P, C)` runs the following depth-agnostic stages for each factorisation `n = p x q` of `n = |P.A_plus|`:
 
-1. Host recovery: structural angle extraction.
-2. Payload system construction and solve: catalogue scan via the intended quotient/cancellativity boundary.
-3. Witness-matrix global consistency check.
-4. Face recovery.
-5. Exact recomposition: `multiply(A_cand, B_cand) == P`.
+1. Split enumeration: `p = 2..n` first, then `p = 1` last (this includes the right-singleton edge `p = n, q = 1` while preserving the original p=1 fallback rationale).
+2. Host recovery: structural angle extraction.
+3. Face recovery: enumeration of the (at most two) consistent face-bit assignments.
+4. Payload assignment enumeration: **exhaustive** enumeration of every pair of payload assignments drawn from the normalized catalogue that satisfies all coupled cell equations (`ucns.payload_system.iter_payload_system_solutions`). There is no quotient shortcut and no cancellation assumption; assignments are checked by direct product equality.
+5. Witness-matrix global consistency check.
+6. Non-multiplicative-unit rejection of candidate factors.
+7. Exact recomposition: `multiply(A_cand, B_cand) == P`.
 
-Loop ordering is now explicit: `p = 2..n` first, then `p = 1` last. This includes the right-singleton edge `p = n, q = 1` while preserving the original p=1 fallback rationale.
+These are exactly the split, host, payload, face, witness, non-unit, and recomposition stages of the Python solver.
 
 ---
 
 ## 2. Theorem N
 
-**Theorem N (catalogue-sufficient factorization; current frontier statement).** Let `A`, `B` be UCNS objects with `|A.A_plus|, |B.A_plus| >= 1`, and let `C` be a catalogue containing every payload appearing recursively in `A` or `B`, including `None`. Assume `A` and `B` are not multiplicative units under `is_multiplicative_unit`. Define `P = multiply(A, B)`. The target claim is that `factor_search_v08(P, C)` returns `(A', B')` with `multiply(A', B') = P`.
+**Theorem N (catalogue-sufficient factorization; current frontier statement).** Let `A`, `B` be UCNS objects with `|A.A_plus|, |B.A_plus| >= 1`, and let `C` be a catalogue containing every payload appearing recursively in `A` or `B`, including `None`. Assume `A` and `B` are not multiplicative units under `is_multiplicative_unit`. Define `P = multiply(A, B)`. The target claim is that `factor_search_v08(P, C)` returns some `(A', B')` with `multiply(A', B') = P`.
 
 **No depth parameter. No oracle-class predicate.** The only catalogue hypothesis is: the catalogue contains the necessary payloads. The only non-triviality hypothesis is: the true factors are not in the multiplicative unit group that the implementation filters.
+
+**Exhaustive inclusion, not cancellation.** Theorem N is an *exhaustive-inclusion completeness target for finding a valid factorization*. The claim is only that the finite enumeration includes at least one accepted witness; it does **not** claim general cancellativity, quotient uniqueness, or recovery of the original factor pair `(A, B)`. Factorization in this monoid is non-unique in general, and cancellativity is refuted outside the divisor dichotomy of `docs/base-geometry.md` §5; neither is needed, because every candidate assignment is validated by direct product equality and exact recomposition rather than by inverting anything.
 
 This is a proof target and implementation-backed proof sketch, not yet a machine-checked theorem.
 
 ---
 
-## 3. Proof sketch
+## 3. Proof sketch (exhaustive inclusion)
 
-Let `p = |A.A_plus|`, `q = |B.A_plus|`, and `n = p*q`.
+Let `p = |A.A_plus|`, `q = |B.A_plus|`, and `n = p*q`. The argument is
+inclusion at every finite stage: each enumeration provably contains the
+true candidate, so the exhaustive scan must encounter an accepted witness.
+No stage inverts a product, so no cancellativity or quotient-uniqueness
+premise appears anywhere.
 
-**Step 1 (Host recovery).** The implementation loop reaches `p`:
+**Step 1 (Split inclusion).** The implementation loop reaches the true split `(p, q)`:
 
 - if `p >= 2`, then `p` is in `range(2, n + 1)`, including the boundary case `p = n, q = 1`;
 - if `p = 1`, then `p` is the explicit final fallback when `n >= 2`.
 
-For `n = 1`, there is no non-trivial split between two non-multiplicative-unit length-positive factors in this search domain. `recover_host_angles(P, p, q)` returns the angle sequences of `A` and `B` exactly. This is structural and depth-free.
+For `n = 1`, there is no non-trivial split between two non-multiplicative-unit length-positive factors in this search domain.
 
-**Step 2 (Payload system).** For each `(k, j)`, `P.A_plus[k*q+j][1] = multiply(A.payload[k], B.payload[j])`. `solve_payload_system` iterates `S0_A` over `C`; when it reaches `S0_A = A.payload[0]`, which is in `C` by hypothesis:
+**Step 2 (Host inclusion).** `recover_host_angles(P, p, q)` returns the angle sequences of `A` and `B` exactly (both normalized to start at 0). This is structural and depth-free, so the true angle hosts are included.
 
-- Row 0: `find_right_factor_or_sentinel(P.payload[j], A.payload[0], C)` scans `C` for `R` with `multiply(A.payload[0], R) = P.payload[j]`. The proof sketch relies on the cancellativity/quotient boundary to recover `R = B.payload[j]`; this remains part of the formal frontier until the Lean obligations are discharged.
-- Column `k > 0`: symmetric recovery gives `A.payload[k]` in `C` under the same frontier obligation.
-- Global consistency follows from construction of `P`.
+**Step 3 (Face inclusion).** `recover_face_structures(P, p, q)` enumerates every face assignment consistent with all `p*q` XOR equations (one free bit, at most two options), so the true face assignment `(A.faces, B.faces)` is among its options.
 
-**Step 3 (Witness matrix).** `globally_consistent()` uses equality on canonical objects. This is depth-agnostic.
+**Step 4 (Catalogue sufficiency).** By hypothesis, every payload appearing recursively in `A` or `B` — in particular every top-level `A.payload[k]` and `B.payload[j]` — is in `C`. So the true payload assignment is a point of the finite assignment space `C^p x C^q`.
 
-**Step 4 (Face recovery).** `recover_face_structures(P, p, q)` is structural and returns the correct `A.faces` and `B.faces` among its options.
+**Step 5 (Exhaustive payload inclusion).** For each `(k, j)`, `P.A_plus[k*q+j][1] = multiply(A.payload[k], B.payload[j])` by construction of `P`. `iter_payload_system_solutions` enumerates **every** assignment in the normalized catalogue space whose coupled cell products all hold, checking each candidate equation by direct product equality (`multiply(s_a, s_b) == target`). Since the true assignment satisfies every equation and lies in the space by Step 4, the enumeration includes it — regardless of how many *other* valid assignments exist. Non-uniqueness costs nothing: any surviving assignment proceeds to the later gates, and the theorem only needs one to survive them.
 
-**Step 5 (Recomposition and non-triviality).** The candidate pair reconstructs a pair equivalent to `A`, `B`; exact recomposition verifies `multiply(A_cand, B_cand) = P`. The implementation rejects candidates for which either factor satisfies `is_multiplicative_unit`. Since the target hypothesis excludes such factors, the valid pair should not be filtered out.
+**Step 6 (Witness consistency).** `globally_consistent()` re-checks every cell equation on canonical objects. The true assignment passes by construction; equality on canonical objects is depth-agnostic.
+
+**Step 7 (Exact recomposition).** For the true split, hosts, faces, and payload assignment, the assembled pair recomposes: `multiply(A_cand, B_cand) = P` holds by the construction of `P`. Recomposition is also the soundness gate for any *other* accepted assignment: nothing is returned that does not exactly recompose.
+
+**Step 8 (Non-unit hypothesis).** The implementation rejects candidates for which either factor satisfies `is_multiplicative_unit`. Since the target hypothesis says `A` and `B` are not multiplicative units, the true pair is not filtered out, so at least one accepted witness survives all gates.
 
 ---
 
@@ -141,8 +151,8 @@ The previous theorem-N framing proved a depth-indexed induction. That proof was 
 
 | Row | Status |
 |---|---|
-| Cancellativity (E10.4) | implemented / cited; remaining Lean obligations active |
-| Right-quotient completeness | implemented / cited; formal review pending |
+| Cancellativity (E10.4) | **REFUTED in general**; `DEFENDED` dichotomy (a divisor cancels iff some top-level payload is the unit, `docs/base-geometry.md` §5); no longer a Theorem N premise — the proof shape is exhaustive inclusion |
+| Left/right-quotient completeness | scope-corrected 2026-07-10: sound always, complete for flat divisors, incomplete in general; complete enumeration lives in `ucns.division_theory`; not a Theorem N premise |
 | Depth-2 oracle (Lemma 7) | `DEFENDED + ORACLE-COMPLETE` under narrow oracle assumptions |
 | Closure: multiplicative-D'' subset constructive (Theorem 8a) | still true; domain now known empty |
 | Soundness at all depths (Theorem 8b) | implementation-backed by recomposition gate |
