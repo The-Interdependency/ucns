@@ -59,7 +59,7 @@ Start here:
 - Collaboration issue: https://github.com/The-Interdependency/ucns/issues/7
 - Starter task: define one UCNS term in standard mathematical language, with notation, example, non-example, and relationship to existing concepts.
 
-The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge. Cancellativity is not claimed globally; the valid target is the restricted `Complete` plus common-depth domain unless the live formalization proves a stronger restricted theorem.
+The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge. Cancellativity is refuted in general and fully characterized by the divisor dichotomy (`docs/base-geometry.md` §5); it is **not** a premise of the current completeness target. Theorem N is an exhaustive-inclusion completeness target — the finite search provably enumerates a space containing the true candidate at every stage — not a cancellation or uniqueness theorem.
 
 GPT generated; context, prompt Erin Spencer.
 
@@ -89,7 +89,7 @@ release-status claims. The status snapshot at the top of `ucns-spec.md` is dated
 
 `factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It now lives directly in the `ucns` package; `ucns_recursive` is a deprecated compatibility shim for legacy imports.
 
-See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input.
+See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input. Theorem N targets finding **a** valid factorization by exhaustive inclusion — it claims no general cancellativity, no quotient uniqueness, and no recovery of the original factor pair. The Lean model in `formal/Ucns/TheoremN.lean` now defines the finite search (splits, hosts, payload and face assignments, unit rejection, exact recomposition) rather than an opaque success predicate; its completeness theorems remain `sorry`-closed `FRONTIER` statements.
 
 **Prime quartet discontinuity.** Cross-repo interoperability (`ucns`, `edcmbone`, `a0`, `interdependent-lib`) is not theorem continuity by default. See `docs/prime-quartet-discontinuity.md` and `docs/edcm-edcmbone-bridge-checklist.md`.
 
@@ -116,6 +116,8 @@ ucns/                    # v1.0 public Python API and engine implementation
   factorization_result.py  # A0-facing scoped factorization envelope
   object_record.py       # A0-facing object inspection record
   serialization.py       # Canonical JSON + stable hash
+  bridge.py              # Official versioned cross-repo bridge record + adapter
+  evidence.py            # Downstream proof-status evidence envelope
   core.py, embedding.py, epicycle.py, mobius.py, similarity.py
                          # v0.6.5-lineage modules (stable reference)
 
@@ -243,6 +245,51 @@ def catalogue_from(*objs):
 
 result = factor_search_v08(P, catalogue_from(A, B))
 ```
+
+---
+
+## Cross-repository bridge and downstream evidence
+
+Sibling repositories (METAPAT adapters, EDCM geometry, `interdependent-lib`)
+interoperate with UCNS through **one official versioned bridge surface**:
+
+```python
+from ucns import export_bridge_record, import_bridge_record
+
+record = export_bridge_record(P, provenance={"source_repo": "metapat"})
+imported = import_bridge_record(record)   # imported.obj is an actual UCNSObject
+```
+
+The bridge record is neutral JSON-compatible data (schema
+`ucns-bridge-record` v1) carrying declared and intrinsic carriers,
+normalized angles, face bits, recursive payload records, and optional
+external provenance/canon-digest tags. Round trips preserve UCNS equality
+and the canonical stable hash; malformed or unsupported records fail
+closed with `BridgeValidationError`. Provenance never participates in
+UCNS equality.
+
+**No theorem-status transfer.** A successful import, export, round trip,
+object hash, or geometry construction carries no proof status, and bridge
+metadata cannot forge catalogue coverage, search provenance, or negative
+certification (regression-tested in
+`tests/test_bridge_certification_boundary.py`). Consumers report what they
+actually hold via the non-boolean evidence envelope:
+
+```python
+from ucns import evidence_from_bridge_import, evidence_from_factorization_result
+from ucns import a0_safe
+
+ev = evidence_from_bridge_import(imported)        # construction only, no proof status
+ev = evidence_from_factorization_result(a0_safe.factor(P))  # relays envelope evidence
+```
+
+`UCNSEvidence` distinguishes construction success, finite-search
+exhaustion, validated catalogue coverage, certified domain-relative
+negative results, theorem-layer status vocabulary, and the explicit
+absence of proof status. The canonical shared fixtures for the
+UCNS/METAPAT/EDCM contract live in
+`tests/fixtures/ucns_stack_contract_fixtures.json` (owned by this repo;
+sibling mirrors need a pinned source commit and a drift check).
 
 ---
 

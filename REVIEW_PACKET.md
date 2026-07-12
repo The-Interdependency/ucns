@@ -1,8 +1,23 @@
 # Review Packet — UCNS Recursive Quotient Completeness
 
-**Claim under review:** A constructive primitive `left_quotient(P, A)` is
-complete on UCNS objects of finite nesting depth — meaning: if there exists
-B such that A ⊠ B = P, the algorithm returns B.
+> **Status banner (2026-07-12).** This packet is retained as the historical
+> review artifact for the v0.6 claim. The claim under review was
+> **scope-corrected on 2026-07-10**: `left_quotient` is sound always and
+> complete for flat divisors, but **incomplete in general** (counterexample
+> pinned in `contracts/test_quotient_solvability.py`). Cancellativity is
+> refuted in general and fully characterized by the divisor dichotomy of
+> `docs/base-geometry.md` §5; the retired `AlignedComplete` Lean target has
+> been replaced by a concrete counterexample in `formal/Ucns/Core.lean`.
+> Complete solution-set enumeration lives in `ucns.division_theory`. The
+> current factorization completeness target is Theorem N
+> (`ucns-theorem-n.md`), whose proof shape is exhaustive inclusion and does
+> not depend on cancellativity or quotient uniqueness. Current status
+> authority: `README.md` + `docs/claims-ledger.md`.
+
+**Claim under review (historical, as originally posed):** A constructive
+primitive `left_quotient(P, A)` is complete on UCNS objects of finite
+nesting depth — meaning: if there exists B such that A ⊠ B = P, the
+algorithm returns B.
 
 **What I'm asking:** read the proof, run the tests, look for a gap. Three
 questions:

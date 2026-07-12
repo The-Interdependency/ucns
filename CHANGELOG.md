@@ -1,5 +1,57 @@
 # Changelog
 
+## Unreleased — stack repair (Theorem N alignment, bridge, evidence)
+
+### Theorem and formal alignment
+- Rewrote the Theorem N documentation (`ucns-theorem-n.md`, README, claims
+  ledger) around **exhaustive inclusion**: the target is finding **a** valid
+  nontrivial factorization via a finite enumeration that provably includes
+  the true candidate at every stage. Removed wording implying general
+  cancellativity, quotient uniqueness, or recovery of the original factor
+  pair. Theorem N remains `FRONTIER`.
+- Replaced the opaque `FindsFactorization` / `ContainsPayloads` predicates
+  in `formal/Ucns/TheoremN.lean` with a defined finite-search model:
+  catalogue normalization with one unit sentinel, split candidates
+  (`p = 2..n` then `1`), structural host-angle recovery, exhaustive payload
+  and face assignments, executable unit-group rejection, and an
+  exact-recomposition success relation whose witness carries actual factors.
+  The completeness theorems remain `sorry`-closed; every remaining hole and
+  declared modeling boundary is enumerated in `audit/obligation_ledger.md`.
+- Added a shared Python/Lean conformance fixture
+  (`tests/test_formal_conformance.py`): the literal Python transcription of
+  the Lean model enumerates exactly the executable solver's accepted
+  witness space on the declared small-domain fixture.
+
+### Constructor invariants
+- `UCNSObject` construction now rejects empty `A_plus`/`F_plus` sequences,
+  non-positive or non-integral `n_dec`, non-positive supplied `n_min`, and
+  non-UCNS payload types (`TypeError`), in addition to the existing
+  parallel-length and face-bit validation. Adversarial constructor tests
+  added to both the public and compatibility suites; the empty-carrier
+  contract now pins construction-time rejection.
+
+### Cross-repository bridge and downstream evidence
+- Added `ucns.bridge`: the official versioned neutral record
+  (`ucns-bridge-record` v1) with fail-closed `import_bridge_record` /
+  `export_bridge_record`. Imports produce actual `UCNSObject`s; round trips
+  preserve UCNS equality and stable hash; external provenance/canon tags
+  survive round trips without entering UCNS equality.
+- Added `ucns.evidence`: a non-boolean `UCNSEvidence` envelope
+  distinguishing construction success, finite-search exhaustion, validated
+  catalogue coverage, certified domain-relative negatives, theorem-layer
+  status vocabulary, and explicit absence of proof status.
+- Added the shared UCNS/METAPAT/EDCM contract suite
+  (`tests/test_stack_contract_suite.py`) with canonical fixtures owned by
+  this repo (`tests/fixtures/ucns_stack_contract_fixtures.json`), covering
+  bridge representation, round-trip identity, provenance preservation,
+  EDCM geometry construction from actual objects, `NA != 0` at the EDCM
+  boundary, no theorem-status transfer into measurement output, fail-closed
+  rejection, and canon-digest visibility.
+- Added regressions proving bridge metadata cannot forge or promote
+  negative certification (`tests/test_bridge_certification_boundary.py`);
+  the raw solver stays catalogue-relative and the evidence-bearing envelope
+  remains the only negative-certification surface.
+
 ## Unreleased — base geometry completion
 
 ### Base geometry (operation algebra of ⊠)
