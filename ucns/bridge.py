@@ -111,6 +111,12 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
     """Serialize an object (or unit payload) into neutral record data."""
     if obj is None:
         return None
+    if len(obj.A_plus) != len(obj.F_plus):
+        raise BridgeValidationError(
+            "Invalid bridge record: export requires parallel A_plus and "
+            f"F_plus (got {len(obj.A_plus)} and {len(obj.F_plus)}); "
+            "refusing to truncate a drifted object."
+        )
     cells: List[Dict[str, Any]] = []
     for (angle, payload), face in zip(obj.A_plus, obj.F_plus):
         frac = angle if isinstance(angle, Fraction) else Fraction(angle)
@@ -182,11 +188,20 @@ def _object_from_data(data: Any, path: str) -> UCNSObject:
         f_plus.append(cell["face"])
 
     try:
-        return UCNSObject(int(n_dec), int(n_min), a_plus, f_plus)
+        constructed = UCNSObject(int(n_dec), int(n_min), a_plus, f_plus)
     except (TypeError, ValueError) as exc:
         raise BridgeValidationError(
             f"Invalid bridge record: {path} rejected by UCNS construction: {exc}"
         ) from exc
+    # The v1 record explicitly carries the intrinsic carrier; a mismatch
+    # against the recomputed value is fixture/canon drift and fails closed
+    # rather than being silently normalized away.
+    _require(
+        constructed.n_min == int(n_min),
+        f"{path}.n_min={int(n_min)} does not match the recomputed "
+        f"intrinsic carrier {constructed.n_min}",
+    )
+    return constructed
 
 
 def export_bridge_record(

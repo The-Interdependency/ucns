@@ -152,6 +152,23 @@ class TestBridgeFailClosed(unittest.TestCase):
         with self.assertRaises(BridgeValidationError):
             import_bridge_record(record)
 
+    def test_rejects_corrupted_intrinsic_carrier(self) -> None:
+        """A positive-but-wrong n_min is canon drift, not normalizable."""
+        record = self._valid_record()
+        record["object"]["n_min"] = 1  # recomputed intrinsic carrier is 2
+        with self.assertRaisesRegex(
+            BridgeValidationError, "does not match the recomputed"
+        ):
+            import_bridge_record(record)
+
+    def test_export_rejects_drifted_parallel_sequences(self) -> None:
+        """A mutated object with mismatched A_plus/F_plus fails closed
+        instead of being silently truncated by zip."""
+        drifted = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
+        drifted.F_plus = [0, 0, 1]
+        with self.assertRaisesRegex(BridgeValidationError, "parallel"):
+            export_bridge_record(drifted)
+
     def test_export_rejects_non_objects(self) -> None:
         for bad in (None, "S2", 4, {"schema": BRIDGE_SCHEMA}):
             with self.subTest(bad=bad):

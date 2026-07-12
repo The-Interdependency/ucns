@@ -144,9 +144,14 @@ def evidence_from_factorization_result(
 
     This is the only constructor that can attach search-exhaustion,
     coverage, certification, or theorem-layer status facts, and it only
-    relays what the envelope itself established.
+    relays what the envelope itself established. Envelopes where no
+    search actually ran (the unit-sentinel short-circuit: no factors, no
+    exhausted boundary, no certification) attach NO proof status —
+    "not a primality candidate" is an absence, not evidence.
     """
     certified = bool(result.negative_result_certified)
+    search_ran = bool(result.search_exhausted or result.factors is not None)
+    attach_status = search_ran or certified
     return UCNSEvidence(
         source="factorization-result",
         construction_succeeded=True,
@@ -161,9 +166,14 @@ def evidence_from_factorization_result(
             result.product_domain_label if certified else ""
         ),
         domain_label=result.product_domain_label,
-        theorem_layer_statuses=tuple(
-            status.value for status in result.product_domain_metadata.statuses
+        theorem_layer_statuses=(
+            tuple(
+                status.value
+                for status in result.product_domain_metadata.statuses
+            )
+            if attach_status
+            else ()
         ),
-        proof_status_attached=True,
+        proof_status_attached=attach_status,
         note=result.note,
     )

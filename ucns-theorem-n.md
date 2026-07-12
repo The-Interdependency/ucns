@@ -71,9 +71,9 @@ premise appears anywhere.
 **Step 1 (Split inclusion).** The implementation loop reaches the true split `(p, q)`:
 
 - if `p >= 2`, then `p` is in `range(2, n + 1)`, including the boundary case `p = n, q = 1`;
-- if `p = 1`, then `p` is the explicit final fallback when `n >= 2`.
+- `p = 1` is the explicit final fallback, always enumerated last.
 
-For `n = 1`, there is no non-trivial split between two non-multiplicative-unit length-positive factors in this search domain.
+For `n = 1`, the only split is `p = q = 1`, reached through that fallback. This case is non-trivial: two width-one objects are both non-multiplicative units when their sole payloads are non-unit (e.g. `[(0, S2)] ⊠ [(0, S2)]` has product width 1), and the search recovers them through the `p = 1, q = 1` payload equations.
 
 **Step 2 (Host inclusion).** `recover_host_angles(P, p, q)` returns the angle sequences of `A` and `B` exactly (both normalized to start at 0). This is structural and depth-free, so the true angle hosts are included.
 
