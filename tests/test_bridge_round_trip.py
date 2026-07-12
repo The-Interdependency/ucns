@@ -89,6 +89,18 @@ class TestBridgeFailClosed(unittest.TestCase):
         ):
             import_bridge_record(record)
 
+    def test_rejects_coerced_schema_version_types(self) -> None:
+        """True and 1.0 compare equal to 1 in Python; the versioned
+        bridge rejects them instead of normalizing into v1."""
+        for version in (True, 1.0, "1", None):
+            record = self._valid_record()
+            record["schema_version"] = version
+            with self.subTest(version=version):
+                with self.assertRaisesRegex(
+                    BridgeValidationError, "unsupported schema_version"
+                ):
+                    import_bridge_record(record)
+
     def test_rejects_unknown_top_level_keys(self) -> None:
         record = self._valid_record()
         record["negative_result_certified"] = True
@@ -168,6 +180,20 @@ class TestBridgeFailClosed(unittest.TestCase):
         drifted.F_plus = [0, 0, 1]
         with self.assertRaisesRegex(BridgeValidationError, "parallel"):
             export_bridge_record(drifted)
+
+    def test_export_rejects_drifted_face_bits(self) -> None:
+        """Same-length but invalid mutated face data fails closed
+        instead of being coerced through int()."""
+        for faces in (["0", 0], [0, 2], [0, None], [True, 0]):
+            drifted = UCNSObject(
+                2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0]
+            )
+            drifted.F_plus = faces
+            with self.subTest(faces=faces):
+                with self.assertRaisesRegex(
+                    BridgeValidationError, "face bits"
+                ):
+                    export_bridge_record(drifted)
 
     def test_export_rejects_non_objects(self) -> None:
         for bad in (None, "S2", 4, {"schema": BRIDGE_SCHEMA}):

@@ -117,6 +117,18 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
             f"F_plus (got {len(obj.A_plus)} and {len(obj.F_plus)}); "
             "refusing to truncate a drifted object."
         )
+    invalid_faces = [
+        f
+        for f in obj.F_plus
+        if not isinstance(f, Integral)
+        or isinstance(f, bool)
+        or int(f) not in (0, 1)
+    ]
+    if invalid_faces:
+        raise BridgeValidationError(
+            "Invalid bridge record: export requires face bits 0 or 1 "
+            f"(got {invalid_faces!r}); refusing to coerce a drifted object."
+        )
     cells: List[Dict[str, Any]] = []
     for (angle, payload), face in zip(obj.A_plus, obj.F_plus):
         frac = angle if isinstance(angle, Fraction) else Fraction(angle)
@@ -258,8 +270,9 @@ def import_bridge_record(record: Any) -> BridgeImport:
     unknown = set(record) - _RECORD_KEYS
     _require(not unknown, f"record has unknown keys {sorted(unknown)!r}")
     _require(record.get("schema") == BRIDGE_SCHEMA, "unsupported schema")
+    version = record.get("schema_version")
     _require(
-        record.get("schema_version") == BRIDGE_SCHEMA_VERSION,
+        type(version) is int and version == BRIDGE_SCHEMA_VERSION,
         "unsupported schema_version",
     )
     _require("object" in record, "record must carry an object")
