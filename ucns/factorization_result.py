@@ -34,7 +34,7 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_certified_negative_results.py, ucns_recursive/tests/test_factorization_result.py
+#   tests: tests/test_certified_negative_results.py, tests/test_one_shot_catalogue.py, ucns_recursive/tests/test_factorization_result.py
 #   rollout: default_enabled for A0-facing envelopes; raw factor_search_v08 remains catalogue-relative
 #   rollback: retain provenance and coverage evidence but set negative_result_certified and seq_prime_is_absolute false
 #   requires: ucns_canonical, ucns_domain_status, ucns_domains, ucns_factor_search_v08, ucns_catalogue_coverage, ucns_carrier_support_pruning, ucns_serialization
@@ -44,7 +44,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple
 
 from .canonical import UCNSObject, is_multiplicative_unit, multiply
 from .catalogue_coverage import (
@@ -235,16 +235,17 @@ def _evidence_fields(
 
 def factorization_result(
     P: Optional[UCNSObject],
-    catalogue: Optional[List[Optional[UCNSObject]]] = None,
+    catalogue: Optional[Iterable[Optional[UCNSObject]]] = None,
 ) -> FactorizationResult:
     """Run exhaustive factor search and return a machine-scoped envelope.
 
     The ``None`` unit sentinel is returned as an explicitly uncertified,
     non-prime unit-domain envelope without invoking factor search. For concrete
     objects there is intentionally no completeness/certification boolean
-    parameter: coverage is recomputed from the exact supplied catalogue and
-    bound to the search report. Search exceptions propagate; they never become
-    negative results.
+    parameter. Caller catalogues are materialized exactly once, then that same
+    sequence is used for both search and coverage, so one-shot iterables cannot
+    create different evidence boundaries. Search exceptions propagate; they
+    never become negative results.
     """
     metadata = status_for_object(P)
     product_hash = stable_hash(P)
@@ -272,7 +273,8 @@ def factorization_result(
         if catalogue is None
         else list(catalogue)
     )
-    report = factor_search_report(P, catalogue=catalogue, prune=True)
+    search_catalogue = None if catalogue is None else supplied
+    report = factor_search_report(P, catalogue=search_catalogue, prune=True)
     coverage = check_catalogue_coverage(supplied, metadata.label)
     coverage_validated = validate_catalogue_coverage(
         coverage, supplied, metadata.label
