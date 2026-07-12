@@ -53,6 +53,7 @@ from __future__ import annotations
 #   unresolved: none
 # === END MODULE_BUILD ===
 
+import json
 from dataclasses import dataclass, field
 from fractions import Fraction
 from numbers import Integral, Rational
@@ -221,6 +222,15 @@ def _object_from_data(data: Any, path: str) -> UCNSObject:
             f"{cell_path}.angle num/den must be integers",
         )
         _require(int(den) > 0, f"{cell_path}.angle denominator must be positive")
+        reduced = Fraction(int(num), int(den))
+        _require(
+            reduced.numerator == int(num)
+            and reduced.denominator == int(den),
+            f"{cell_path}.angle {int(num)}/{int(den)} is not in reduced "
+            f"form (reduced form is "
+            f"{reduced.numerator}/{reduced.denominator}); the v1 record "
+            "carries exact reduced fractions",
+        )
 
         face = cell["face"]
         _require(
@@ -234,7 +244,7 @@ def _object_from_data(data: Any, path: str) -> UCNSObject:
             if payload_data is None
             else _object_from_data(payload_data, f"{cell_path}.payload")
         )
-        a_plus.append((Fraction(int(num), int(den)), payload))
+        a_plus.append((reduced, payload))
         f_plus.append(face)
 
     supplied_angles = tuple(angle for angle, _ in a_plus)
@@ -298,7 +308,25 @@ def export_bridge_record(
         "object": _object_to_data(obj),
     }
     if provenance:
-        record["provenance"] = dict(provenance)
+        tags = dict(provenance)
+        # The record is documented as JSON-compatible: refuse non-JSON
+        # values (sets, NaN, ...) and anything a JSON encoder would
+        # silently rewrite (non-string keys, tuples) instead of emitting
+        # an unserializable or shape-shifting official record.
+        try:
+            encoded = json.dumps(tags, allow_nan=False)
+        except (TypeError, ValueError) as exc:
+            raise BridgeValidationError(
+                "Invalid bridge record: provenance must be "
+                f"JSON-serializable ({exc})"
+            ) from exc
+        if json.loads(encoded) != tags:
+            raise BridgeValidationError(
+                "Invalid bridge record: provenance must survive a JSON "
+                "round trip unchanged (string keys and JSON-native "
+                "values only)"
+            )
+        record["provenance"] = tags
     if canon_digest is not None:
         record["canon_digest"] = canon_digest
     return record

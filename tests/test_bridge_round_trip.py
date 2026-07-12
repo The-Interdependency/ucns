@@ -151,6 +151,20 @@ class TestBridgeFailClosed(unittest.TestCase):
                 with self.assertRaises(BridgeValidationError):
                     import_bridge_record(record)
 
+    def test_rejects_unreduced_angle_fractions(self) -> None:
+        """{num: 2, den: 2} equals 1 but is not the exact v1 shape; the
+        bridge rejects it instead of silently rewriting on re-export."""
+        record = self._valid_record()
+        cell = record["object"]["cells"][1]  # angle 1/1 on DEPTH1
+        cell["angle"] = {
+            "num": cell["angle"]["num"] * 2,
+            "den": cell["angle"]["den"] * 2,
+        }
+        with self.assertRaisesRegex(
+            BridgeValidationError, "not in reduced"
+        ):
+            import_bridge_record(record)
+
     def test_rejects_invalid_recursive_payload_records(self) -> None:
         record = self._valid_record()
         record["object"]["cells"][0]["payload"] = {"cells": []}
@@ -194,6 +208,19 @@ class TestBridgeFailClosed(unittest.TestCase):
                     BridgeValidationError, "face bits"
                 ):
                     export_bridge_record(drifted)
+
+    def test_export_rejects_non_json_provenance(self) -> None:
+        """Provenance that a JSON encoder would fail on or silently
+        rewrite never enters the official record."""
+        for provenance in (
+            {"tags": {"x"}},            # set: not JSON-serializable
+            {1: "x"},                   # non-string key: silently stringified
+            {"pair": (1, 2)},           # tuple: silently rewritten to a list
+            {"nan": float("nan")},      # NaN: not valid JSON
+        ):
+            with self.subTest(provenance=provenance):
+                with self.assertRaises(BridgeValidationError):
+                    export_bridge_record(DEPTH1, provenance=provenance)
 
     def test_export_rejects_non_objects(self) -> None:
         for bad in (None, "S2", 4, {"schema": BRIDGE_SCHEMA}):
