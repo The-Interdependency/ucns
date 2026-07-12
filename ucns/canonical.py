@@ -138,9 +138,10 @@ class UCNSObject:
         Nonempty sequence of (angle, payload) pairs.  ``angle`` is a
         ``Fraction`` in ``[0, 4)`` (representing a fraction of a
         half-turn on the pairing circle; plain ints are accepted and
-        behave as whole half-turns); ``payload`` is another
-        ``UCNSObject`` or ``None`` (unit payload).  Payload typing is
-        enforced: anything else raises ``TypeError``.
+        coerced to ``Fraction`` as whole half-turns — floats, strings,
+        and other inexact types raise ``TypeError``); ``payload`` is
+        another ``UCNSObject`` or ``None`` (unit payload).  Payload
+        typing is enforced: anything else raises ``TypeError``.
     F_plus:
         Face-flip sequence parallel to ``A_plus`` (list of 0/1 ints).
 
@@ -204,11 +205,30 @@ class UCNSObject:
                 f"(got {invalid_payloads!r}). Recursive payloads are typed, "
                 "not duck-typed."
             )
+        invalid_angles = [
+            a
+            for a, _ in A_plus
+            if not isinstance(a, Fraction)
+            and (not isinstance(a, Integral) or isinstance(a, bool))
+        ]
+        if invalid_angles:
+            raise TypeError(
+                "Invalid object: A_plus angles must be Fraction or plain "
+                f"integers (got {invalid_angles!r}). Inexact or string "
+                "angle types are rejected rather than coerced."
+            )
 
         self.n_dec = int(n_dec)
         self.n_min = int(n_min)
+        # Integer angles are documented as whole half-turns; coerce them
+        # to Fraction so normalization's circle-fraction arithmetic stays
+        # exact instead of producing a denominator-less float.
         self.A_plus: List[Tuple[FractionType, Optional[UCNSObject]]] = [
-            (a, copy.deepcopy(p) if p is not None else None) for a, p in A_plus
+            (
+                a if isinstance(a, Fraction) else Fraction(int(a)),
+                copy.deepcopy(p) if p is not None else None,
+            )
+            for a, p in A_plus
         ]
         self.F_plus: List[int] = [int(f) for f in F_plus]
         self.A_minus: Optional[List] = None

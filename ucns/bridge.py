@@ -108,6 +108,27 @@ def _require(condition: bool, message: str) -> None:
         raise BridgeValidationError("Invalid bridge record: " + message)
 
 
+def _validated_provenance(tags: Dict[str, Any]) -> Dict[str, Any]:
+    """Return *tags* if they are stable JSON data; fail closed otherwise.
+
+    The record is documented as JSON-compatible: refuse non-JSON values
+    (sets, NaN, ...) and anything a JSON encoder would silently rewrite
+    (non-string keys, tuples), on export and import alike.
+    """
+    try:
+        encoded = json.dumps(tags, allow_nan=False)
+    except (TypeError, ValueError) as exc:
+        raise BridgeValidationError(
+            f"Invalid bridge record: provenance must be JSON-serializable ({exc})"
+        ) from exc
+    if json.loads(encoded) != tags:
+        raise BridgeValidationError(
+            "Invalid bridge record: provenance must survive a JSON round "
+            "trip unchanged (string keys and JSON-native values only)"
+        )
+    return tags
+
+
 def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
     """Serialize an object (or unit payload) into neutral record data."""
     if obj is None:
@@ -308,25 +329,7 @@ def export_bridge_record(
         "object": _object_to_data(obj),
     }
     if provenance:
-        tags = dict(provenance)
-        # The record is documented as JSON-compatible: refuse non-JSON
-        # values (sets, NaN, ...) and anything a JSON encoder would
-        # silently rewrite (non-string keys, tuples) instead of emitting
-        # an unserializable or shape-shifting official record.
-        try:
-            encoded = json.dumps(tags, allow_nan=False)
-        except (TypeError, ValueError) as exc:
-            raise BridgeValidationError(
-                "Invalid bridge record: provenance must be "
-                f"JSON-serializable ({exc})"
-            ) from exc
-        if json.loads(encoded) != tags:
-            raise BridgeValidationError(
-                "Invalid bridge record: provenance must survive a JSON "
-                "round trip unchanged (string keys and JSON-native "
-                "values only)"
-            )
-        record["provenance"] = tags
+        record["provenance"] = _validated_provenance(dict(provenance))
     if canon_digest is not None:
         record["canon_digest"] = canon_digest
     return record
@@ -358,6 +361,7 @@ def import_bridge_record(record: Any) -> BridgeImport:
         isinstance(provenance, dict),
         "provenance must be a mapping when present",
     )
+    provenance = _validated_provenance(dict(provenance))
     canon_digest = record.get("canon_digest")
     _require(
         canon_digest is None or isinstance(canon_digest, str),
@@ -367,6 +371,6 @@ def import_bridge_record(record: Any) -> BridgeImport:
     obj = _object_from_data(record["object"], "object")
     return BridgeImport(
         obj=obj,
-        provenance=dict(provenance),
+        provenance=provenance,
         canon_digest=canon_digest,
     )

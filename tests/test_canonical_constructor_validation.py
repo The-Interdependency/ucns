@@ -92,6 +92,26 @@ class TestPublicUCNSObjectConstructorValidation(unittest.TestCase):
                 ):
                     UCNSObject(2, 2, [(Fraction(0), payload), (Fraction(1), UNIT)], [0, 0])
 
+    def test_integer_angles_are_coerced_to_exact_fractions(self) -> None:
+        # The documented int-angle contract must actually construct:
+        # normalization's circle-fraction arithmetic needs exact types.
+        from_ints = UCNSObject(2, 2, [(0, UNIT), (1, UNIT)], [0, 0])
+        from_fractions = UCNSObject(
+            2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0]
+        )
+        self.assertEqual(from_ints, from_fractions)
+        self.assertEqual(from_ints.n_min, 2)
+        for angle, _ in from_ints.A_plus:
+            self.assertIsInstance(angle, Fraction)
+
+    def test_rejects_inexact_angle_types(self) -> None:
+        for angle in (0.5, "1", True, None):
+            with self.subTest(angle=angle):
+                with self.assertRaisesRegex(
+                    TypeError, "angles must be Fraction or plain integers"
+                ):
+                    UCNSObject(2, 2, [(Fraction(0), UNIT), (angle, UNIT)], [0, 0])
+
     def test_accepts_recursive_ucns_payloads(self) -> None:
         inner = UCNSObject(2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0])
         obj = UCNSObject(2, 2, [(Fraction(0), inner), (Fraction(1), UNIT)], [0, 0])

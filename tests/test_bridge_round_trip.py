@@ -209,6 +209,21 @@ class TestBridgeFailClosed(unittest.TestCase):
                 ):
                     export_bridge_record(drifted)
 
+    def test_import_rejects_non_json_provenance(self) -> None:
+        """In-memory records from sibling adapters get the same JSON
+        round-trip provenance validation as export."""
+        for provenance in (
+            {"tags": {"x"}},
+            {1: "x"},
+            {"pair": (1, 2)},
+            {"nan": float("nan")},
+        ):
+            record = self._valid_record()
+            record["provenance"] = provenance
+            with self.subTest(provenance=provenance):
+                with self.assertRaises(BridgeValidationError):
+                    import_bridge_record(record)
+
     def test_export_rejects_non_json_provenance(self) -> None:
         """Provenance that a JSON encoder would fail on or silently
         rewrite never enters the official record."""
