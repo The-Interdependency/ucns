@@ -8,8 +8,9 @@ Core recursive modules include ``canonical``, ``domains``, ``host_recovery``,
 ``payload_system``, ``witness_matrix``, ``factor_search_v08``,
 ``domain_status``, ``serialization``, ``factorization_result``,
 ``object_record``, ``recursive_codec``, ``left_quotient``, ``store``,
-``catalogue``, ``canonical_factorization``, ``catalogue_pruning``, and
-``geometry_bridge``.
+``catalogue``, ``canonical_factorization``, ``catalogue_pruning``,
+``geometry_bridge``, ``bridge`` (the official cross-repository record
+adapter), and ``evidence`` (the downstream proof-status envelope).
 """
 
 from .canonical import (
@@ -115,6 +116,24 @@ from .catalogue_pruning import (
     payload_support,
     prune_payload_catalogue,
 )
+# Official cross-repository bridge surface
+from .bridge import (
+    BRIDGE_SCHEMA,
+    BRIDGE_SCHEMA_VERSION,
+    BridgeImport,
+    BridgeValidationError,
+    export_bridge_record,
+    import_bridge_record,
+)
+
+# Downstream proof-status evidence envelope
+from .evidence import (
+    UCNSEvidence,
+    no_proof_status,
+    evidence_from_construction,
+    evidence_from_bridge_import,
+    evidence_from_factorization_result,
+)
 from .geometry_bridge import (
     GeometricPoint,
     HomomorphismResult,
@@ -207,6 +226,19 @@ __all__ = [
     "prune_catalogue",
     "payload_support",
     "prune_payload_catalogue",
+    # official cross-repository bridge surface
+    "BRIDGE_SCHEMA",
+    "BRIDGE_SCHEMA_VERSION",
+    "BridgeImport",
+    "BridgeValidationError",
+    "export_bridge_record",
+    "import_bridge_record",
+    # downstream proof-status evidence envelope
+    "UCNSEvidence",
+    "no_proof_status",
+    "evidence_from_construction",
+    "evidence_from_bridge_import",
+    "evidence_from_factorization_result",
     # geometry bridge: homomorphism proof UCNS-A ↔ UCNS-G
     "GeometricPoint",
     "ucns_a_to_g",

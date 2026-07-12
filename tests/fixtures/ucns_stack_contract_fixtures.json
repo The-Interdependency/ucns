@@ -1,0 +1,196 @@
+{
+  "cases": [
+    {
+      "expected_stable_hash": "a59f7633ec73acb7a59c31c6d584c20170977e53bb5714696c3b0c26b0a2fa2a",
+      "expected_width": 2,
+      "name": "metapat-semantic-module",
+      "record": {
+        "canon_digest": "canon-digest-v1",
+        "object": {
+          "cells": [
+            {
+              "angle": {
+                "den": 1,
+                "num": 0
+              },
+              "face": 0,
+              "payload": {
+                "cells": [
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 0
+                    },
+                    "face": 0,
+                    "payload": {
+                      "cells": [
+                        {
+                          "angle": {
+                            "den": 1,
+                            "num": 0
+                          },
+                          "face": 0,
+                          "payload": null
+                        },
+                        {
+                          "angle": {
+                            "den": 1,
+                            "num": 1
+                          },
+                          "face": 0,
+                          "payload": null
+                        }
+                      ],
+                      "n_dec": 2,
+                      "n_min": 2
+                    }
+                  },
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 1
+                    },
+                    "face": 1,
+                    "payload": null
+                  }
+                ],
+                "n_dec": 2,
+                "n_min": 2
+              }
+            },
+            {
+              "angle": {
+                "den": 2,
+                "num": 1
+              },
+              "face": 0,
+              "payload": {
+                "cells": [
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 0
+                    },
+                    "face": 0,
+                    "payload": null
+                  },
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 1
+                    },
+                    "face": 0,
+                    "payload": null
+                  }
+                ],
+                "n_dec": 2,
+                "n_min": 2
+              }
+            }
+          ],
+          "n_dec": 4,
+          "n_min": 4
+        },
+        "provenance": {
+          "canon": "metapat-canon-2026-07",
+          "module": "semantic-module/coherence-anchor",
+          "source_repo": "The-Interdependency/metapat"
+        },
+        "schema": "ucns-bridge-record",
+        "schema_version": 1
+      }
+    },
+    {
+      "expected_stable_hash": "d459b2a5f70aac87badef8fbb9eae6bdfbb2d1255de981e5f57cb8431c0e3f90",
+      "expected_width": 2,
+      "name": "edcm-geometry-seed",
+      "record": {
+        "canon_digest": "canon-digest-v1",
+        "object": {
+          "cells": [
+            {
+              "angle": {
+                "den": 1,
+                "num": 0
+              },
+              "face": 0,
+              "payload": {
+                "cells": [
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 0
+                    },
+                    "face": 0,
+                    "payload": null
+                  },
+                  {
+                    "angle": {
+                      "den": 1,
+                      "num": 1
+                    },
+                    "face": 0,
+                    "payload": null
+                  }
+                ],
+                "n_dec": 2,
+                "n_min": 2
+              }
+            },
+            {
+              "angle": {
+                "den": 1,
+                "num": 1
+              },
+              "face": 1,
+              "payload": null
+            }
+          ],
+          "n_dec": 2,
+          "n_min": 2
+        },
+        "provenance": {
+          "purpose": "geometry-readout-seed",
+          "source_repo": "The-Interdependency/edcmbone"
+        },
+        "schema": "ucns-bridge-record",
+        "schema_version": 1
+      }
+    },
+    {
+      "expected_stable_hash": "fb1c5ac8fdea972d90ddfeec3d76db3f0b53a10527d0537f44763ff71f6fb331",
+      "expected_width": 2,
+      "name": "flat-s2",
+      "record": {
+        "object": {
+          "cells": [
+            {
+              "angle": {
+                "den": 1,
+                "num": 0
+              },
+              "face": 0,
+              "payload": null
+            },
+            {
+              "angle": {
+                "den": 1,
+                "num": 1
+              },
+              "face": 0,
+              "payload": null
+            }
+          ],
+          "n_dec": 2,
+          "n_min": 2
+        },
+        "schema": "ucns-bridge-record",
+        "schema_version": 1
+      }
+    }
+  ],
+  "fixture_schema": "ucns-stack-contract-fixtures",
+  "fixture_version": 1,
+  "note": "Canonical shared bridge fixtures owned by UCNS. Sibling repositories may mirror this file only with a pinned source commit and a drift check against expected_stable_hash.",
+  "owner": "The-Interdependency/ucns"
+}
