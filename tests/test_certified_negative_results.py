@@ -12,6 +12,8 @@ from dataclasses import replace
 from fractions import Fraction
 
 from ucns import (
+    COVERAGE_CANONICAL_EXACT,
+    COVERAGE_CANONICAL_SUPERSET,
     COVERAGE_UNCERTIFIED,
     FactorSearchReport,
     FactorizationResultKind,
@@ -24,11 +26,38 @@ from ucns import (
     UNIT,
     factor_search_report,
     factorization_result,
+    generate_payload_catalogue,
     multiply,
 )
 
 E = UCNSObject(1, 1, [(Fraction(0), UNIT)], [0])
 T2 = UCNSObject(1, 1, [(Fraction(0), E)], [0])
+
+
+def _depth_two_oracle_prime() -> UCNSObject:
+    """Return the minimal two-cell oracle-class prime witness.
+
+    Its payload row is ``[S2, None]``.  In either possible host split
+    (2 x 1 or 1 x 2), the equation producing the ``None`` payload forces
+    the singleton factor payload to be ``None``.  That singleton is therefore
+    in the multiplicative unit group and cannot witness compositeness.
+    """
+    return UCNSObject(
+        2,
+        2,
+        [(Fraction(0), S2), (Fraction(1), UNIT)],
+        [0, 0],
+    )
+
+
+def _noncanonical_flat_superset_member() -> UCNSObject:
+    """Return a bounded flat object outside the canonical oracle catalogue."""
+    return UCNSObject(
+        4,
+        4,
+        [(Fraction(0), UNIT), (Fraction(3, 2), UNIT)],
+        [0, 0],
+    )
 
 
 def test_no_caller_certification_override_exists():
@@ -48,8 +77,8 @@ def test_flat_prime_is_certified_from_complete_default_search():
     assert result.coverage_record_validated
     assert result.coverage_bound_to_search_report
     assert result.catalogue_coverage_status in (
-        "canonical-exact",
-        "canonical-superset",
+        COVERAGE_CANONICAL_EXACT,
+        COVERAGE_CANONICAL_SUPERSET,
     )
     assert result.pruning_preserves_coverage
     assert result.pruning_rule == PAYLOAD_PRUNING_RULE_NAME
@@ -59,6 +88,69 @@ def test_flat_prime_is_certified_from_complete_default_search():
     assert result.seq_prime_is_absolute == result.negative_result_certified
     assert not result.requires_scope
     assert result.certification_policy_version == NEGATIVE_CERTIFICATION_POLICY_VERSION
+    assert result.uncertified_reasons == ()
+
+
+def test_depth_two_oracle_prime_certifies_with_default_catalogue():
+    product = _depth_two_oracle_prime()
+
+    result = factorization_result(product)
+
+    assert result.product_domain_label == "depth-2-oracle"
+    assert result.result_kind == FactorizationResultKind.SEQ_PRIME
+    assert result.factors is None
+    assert result.search_exhausted
+    assert result.coverage_record_validated
+    assert result.coverage_bound_to_search_report
+    assert result.catalogue_coverage_status == COVERAGE_CANONICAL_EXACT
+    assert result.negative_result_certified
+    assert result.seq_prime_is_absolute
+    assert not result.requires_scope
+    assert result.claim_scope == "oracle-domain-relative"
+    assert result.uncertified_reasons == ()
+
+
+def test_depth_two_oracle_prime_with_missing_required_member_is_uncertified():
+    product = _depth_two_oracle_prime()
+    incomplete = generate_payload_catalogue()
+    removed = incomplete.pop()
+    assert removed is not None
+
+    result = factorization_result(product, catalogue=incomplete)
+
+    assert result.product_domain_label == "depth-2-oracle"
+    assert result.result_kind == FactorizationResultKind.SEQ_PRIME
+    assert result.search_exhausted
+    assert result.coverage_record_validated
+    assert result.coverage_bound_to_search_report
+    assert result.catalogue_coverage_status == COVERAGE_UNCERTIFIED
+    assert not result.negative_result_certified
+    assert not result.seq_prime_is_absolute
+    assert result.requires_scope
+    assert result.claim_scope == "catalogue-relative-uncertified"
+    assert any(
+        reason.startswith("catalogue-coverage-uncertified")
+        for reason in result.uncertified_reasons
+    )
+
+
+def test_depth_two_oracle_prime_with_structural_superset_still_certifies():
+    product = _depth_two_oracle_prime()
+    superset = generate_payload_catalogue() + [
+        _noncanonical_flat_superset_member()
+    ]
+
+    result = factorization_result(product, catalogue=superset)
+
+    assert result.product_domain_label == "depth-2-oracle"
+    assert result.result_kind == FactorizationResultKind.SEQ_PRIME
+    assert result.search_exhausted
+    assert result.coverage_record_validated
+    assert result.coverage_bound_to_search_report
+    assert result.catalogue_coverage_status == COVERAGE_CANONICAL_SUPERSET
+    assert result.negative_result_certified
+    assert result.seq_prime_is_absolute
+    assert not result.requires_scope
     assert result.uncertified_reasons == ()
 
 
