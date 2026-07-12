@@ -37,10 +37,12 @@ T2 = UCNSObject(1, 1, [(Fraction(0), E)], [0])
 def _depth_two_oracle_prime() -> UCNSObject:
     """Return the minimal two-cell oracle-class prime witness.
 
-    Its payload row is ``[S2, None]``.  In either possible host split
-    (2 x 1 or 1 x 2), the equation producing the ``None`` payload forces
-    the singleton factor payload to be ``None``.  That singleton is therefore
-    in the multiplicative unit group and cannot witness compositeness.
+    Its payload row is ``[S2, None]``.  The product has length two, so the only
+    host splits are ``2 x 1`` and ``1 x 2``.  In either split, the payload
+    equation producing the ``None`` cell can equal ``None`` only when both
+    contributing payloads are ``None``.  The singleton factor therefore has
+    unit payload and belongs to the multiplicative unit group.  No nontrivial
+    factorization remains.
     """
     return UCNSObject(
         2,
