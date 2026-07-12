@@ -2,8 +2,9 @@
 
 A negative result is certified only from the conjunction of validated supplied-
 catalogue coverage, exact report binding, exhaustive untruncated search,
-recognized coverage-preserving pruning, a complete declared domain, and a
-non-unit target.  No individual field or caller assertion is authority.
+recognized coverage-preserving pruning, a complete declared domain, frozen
+geometric-domain membership, and a non-unit target. No individual field or
+caller assertion is authority.
 """
 
 import importlib
@@ -27,6 +28,7 @@ from ucns import (
     factor_search_report,
     factorization_result,
     generate_payload_catalogue,
+    in_domain,
     multiply,
 )
 
@@ -37,11 +39,11 @@ T2 = UCNSObject(1, 1, [(Fraction(0), E)], [0])
 def _depth_two_oracle_prime() -> UCNSObject:
     """Return the minimal two-cell oracle-class prime witness.
 
-    Its payload row is ``[S2, None]``.  The product has length two, so the only
-    host splits are ``2 x 1`` and ``1 x 2``.  In either split, the payload
+    Its payload row is ``[S2, None]``. The product has length two, so the only
+    host splits are ``2 x 1`` and ``1 x 2``. In either split, the payload
     equation producing the ``None`` cell can equal ``None`` only when both
-    contributing payloads are ``None``.  The singleton factor therefore has
-    unit payload and belongs to the multiplicative unit group.  No nontrivial
+    contributing payloads are ``None``. The singleton factor therefore has
+    unit payload and belongs to the multiplicative unit group. No nontrivial
     factorization remains.
     """
     return UCNSObject(
@@ -69,6 +71,29 @@ def test_no_caller_certification_override_exists():
     assert "certified" not in params
 
 
+def test_unit_sentinel_short_circuits_factor_search(monkeypatch):
+    module = importlib.import_module("ucns.factorization_result")
+
+    def fail_if_called(*_args, **_kwargs):
+        raise AssertionError("UNIT sentinel reached factor search")
+
+    monkeypatch.setattr(module, "factor_search_report", fail_if_called)
+    result = module.factorization_result(UNIT)
+
+    assert result.result_kind == FactorizationResultKind.SEQ_PRIME
+    assert result.product_domain_label == "depth-0"
+    assert result.factors is None
+    assert not result.search_exhausted
+    assert not result.negative_result_certified
+    assert not result.seq_prime_is_absolute
+    assert result.requires_scope
+    assert result.claim_scope == "not-prime-unit-domain"
+    assert result.uncertified_reasons == (
+        "unit-domain-primality-inapplicable",
+    )
+    assert "no factor search was executed" in result.note
+
+
 def test_flat_prime_is_certified_from_complete_default_search():
     result = factorization_result(S2)
 
@@ -91,6 +116,32 @@ def test_flat_prime_is_certified_from_complete_default_search():
     assert not result.requires_scope
     assert result.certification_policy_version == NEGATIVE_CERTIFICATION_POLICY_VERSION
     assert result.uncertified_reasons == ()
+
+
+def test_out_of_bounds_flat_object_is_not_certified():
+    product = UCNSObject(
+        10,
+        5,
+        [
+            (Fraction(2 * index, 5), UNIT)
+            for index in range(5)
+        ],
+        [0, 0, 0, 0, 0],
+    )
+    assert not in_domain(product)
+
+    result = factorization_result(product, catalogue=[UNIT])
+
+    assert result.product_domain_label == "depth-1"
+    assert result.result_kind == FactorizationResultKind.SEQ_PRIME
+    assert result.search_exhausted
+    assert result.coverage_record_validated
+    assert result.coverage_bound_to_search_report
+    assert not result.negative_result_certified
+    assert not result.seq_prime_is_absolute
+    assert result.requires_scope
+    assert result.claim_scope == "catalogue-relative-uncertified"
+    assert "target-outside-frozen-domain" in result.uncertified_reasons
 
 
 def test_depth_two_oracle_prime_certifies_with_default_catalogue():
