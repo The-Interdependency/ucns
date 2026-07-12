@@ -58,7 +58,6 @@ def test_bridge_record_rejects_hash_tamper_unknown_fields_and_type_coercion() ->
     record = bridge_record(S2)
     tampered = record.to_dict()
     tampered["object_hash"] = "0" * 64
-    tampered["evidence_digest"] = ""
     with pytest.raises(ValueError, match="object_hash does not match"):
         UCNSBridgeRecord.from_dict(tampered)
 
