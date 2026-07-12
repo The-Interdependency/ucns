@@ -7,9 +7,9 @@ a deprecated compatibility shim.
 Core recursive modules include ``canonical``, ``domains``, ``host_recovery``,
 ``payload_system``, ``witness_matrix``, ``factor_search_v08``,
 ``domain_status``, ``serialization``, ``factorization_result``,
-``object_record``, ``recursive_codec``, ``left_quotient``, ``store``,
-``catalogue``, ``canonical_factorization``, ``catalogue_pruning``, and
-``geometry_bridge``.
+``object_record``, ``evidence_envelope``, ``recursive_codec``,
+``left_quotient``, ``store``, ``catalogue``, ``canonical_factorization``,
+``catalogue_pruning``, and ``geometry_bridge``.
 """
 
 from .canonical import (
@@ -94,6 +94,18 @@ from .factorization_result import (
 
 # Object inspection record
 from .object_record import UCNSObjectRecord, object_record
+
+# Versioned serialized evidence envelopes
+from .evidence_envelope import (
+    BRIDGE_RECORD_SCHEMA_ID,
+    BRIDGE_RECORD_SCHEMA_VERSION,
+    FACTORIZATION_EVIDENCE_SCHEMA_ID,
+    FACTORIZATION_EVIDENCE_SCHEMA_VERSION,
+    UCNSBridgeRecord,
+    UCNSFactorizationEvidence,
+    bridge_record,
+    factorization_evidence,
+)
 
 # Retrieval
 from .store import Match, OutOfDomainError, UCNSStore
@@ -188,6 +200,15 @@ __all__ = [
     # object inspection record
     "UCNSObjectRecord",
     "object_record",
+    # versioned serialized evidence envelopes
+    "BRIDGE_RECORD_SCHEMA_ID",
+    "BRIDGE_RECORD_SCHEMA_VERSION",
+    "FACTORIZATION_EVIDENCE_SCHEMA_ID",
+    "FACTORIZATION_EVIDENCE_SCHEMA_VERSION",
+    "UCNSBridgeRecord",
+    "UCNSFactorizationEvidence",
+    "bridge_record",
+    "factorization_evidence",
     # retrieval
     "UCNSStore",
     "Match",
