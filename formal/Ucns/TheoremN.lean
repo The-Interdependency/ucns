@@ -195,7 +195,7 @@ def FindsFactorization (P : UCNSObject) (C : Catalogue) : Prop :=
 
 /-! ## Catalogue sufficiency -/
 
-/-- Recursive payload containment: every payload appearing recursively in
+/-! Recursive payload containment: every payload appearing recursively in
     the object is a member of the catalogue (the unit payload is implicit
     — `normalizedCandidates` always supplies it). Mirrors the Theorem N
     catalogue hypothesis and `catalogue_from_objects`. -/
