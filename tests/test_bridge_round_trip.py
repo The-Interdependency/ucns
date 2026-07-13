@@ -209,6 +209,24 @@ class TestBridgeFailClosed(unittest.TestCase):
                 ):
                     export_bridge_record(drifted)
 
+    def test_export_rejects_nested_payload_drift_as_bridge_error(self) -> None:
+        """Malformed nested payloads stay on the bridge validation path
+        instead of leaking constructor implementation exceptions."""
+        inner = UCNSObject(
+            2, 2, [(Fraction(0), UNIT), (Fraction(1), UNIT)], [0, 0]
+        )
+        outer = UCNSObject(
+            2, 2, [(Fraction(0), inner), (Fraction(1), UNIT)], [0, 0]
+        )
+        nested = outer.A_plus[0][1]
+        self.assertIsInstance(nested, UCNSObject)
+        nested.A_plus[0] = (0.5, UNIT)
+
+        with self.assertRaisesRegex(
+            BridgeValidationError, "exact rational angles"
+        ):
+            export_bridge_record(outer)
+
     def test_import_rejects_non_json_provenance(self) -> None:
         """In-memory records from sibling adapters get the same JSON
         round-trip provenance validation as export."""
