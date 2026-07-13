@@ -6,6 +6,17 @@ GPT generated; context, prompt Erin Spencer.
 
 This checklist defines the minimum gate for a scoped UCNS v1.0.0 research release.
 
+## Current candidate
+
+The repository is preparing `1.0.0rc1`. The release candidate is intentionally
+not the final `1.0.0` tag and must not be represented as a proof promotion.
+Theorem N remains `FRONTIER`; the Lean completeness obligations remain
+`sorry`-closed and external formal review remains pending.
+
+Candidate package, metadata, wheel, import-surface, examples, and test gates
+must pass before merge. TestPyPI validation remains required before any final
+public PyPI publication or `v1.0.0` release decision.
+
 ---
 
 ## v1.0.0 scope statement
@@ -50,3 +61,7 @@ This release is not a claim of total general recursive primality. It is a scoped
 ```
 
 ## hmmm
+
+A green candidate establishes reproducible packaging and the declared scoped
+software surface. It does not discharge mathematical proof obligations by
+version number.
