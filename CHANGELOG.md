@@ -138,3 +138,36 @@ nested inexact-angle drift case.
 `1.0.0rc1` is a release candidate, not a proof promotion. Final `1.0.0`
 remains contingent on the documented publication gate, including TestPyPI
 validation and an honest release body preserving the open frontier.
+
+## v0.8.1 — PyPI Release Candidate
+
+### Packaging
+- Added enriched PyPI metadata and classifiers.
+- Added project URLs and author metadata.
+- Added build + twine validation workflow.
+- Added wheel build dependency.
+
+### CI
+- GitHub Actions workflow now:
+  - builds the package
+  - validates metadata via twine
+  - installs built wheel artifact
+  - runs the UCNS test suite
+
+### Status
+UCNS remains an experimental/research-stage algebraic system.
+The repository currently defends:
+- flat kernel algebra
+- depth-1 restricted completeness
+- depth-2 oracle completeness
+
+Catalogue-sufficient completeness (Theorem N) is the current implementation-backed frontier proof target, not a fully discharged formal theorem.
+
+### Compatibility
+Test target:
+- Python 3.8+
+
+### Notes
+This release is intended first for TestPyPI validation before public PyPI publication.
+
+GPT generated; context, prompt Erin Spencer.
