@@ -166,6 +166,30 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
             "Invalid bridge record: export requires face bits 0 or 1 "
             f"(got {invalid_faces!r}); refusing to coerce a drifted object."
         )
+
+    # Validate and serialize recursive payloads before asking the constructor
+    # for a canonical snapshot. This keeps malformed nested objects on the
+    # bridge's fail-closed path instead of letting deep-copy normalization
+    # leak an implementation exception such as AttributeError.
+    cells: List[Dict[str, Any]] = []
+    try:
+        for (angle, payload), face in zip(obj.A_plus, obj.F_plus):
+            frac = angle if isinstance(angle, Fraction) else Fraction(angle)
+            cells.append(
+                {
+                    "angle": {"num": frac.numerator, "den": frac.denominator},
+                    "face": int(face),
+                    "payload": _object_to_data(payload),
+                }
+            )
+    except BridgeValidationError:
+        raise
+    except (TypeError, ValueError, ArithmeticError, AttributeError) as exc:
+        raise BridgeValidationError(
+            "Invalid bridge record: export rejected a malformed recursive "
+            f"UCNSObject: {exc}"
+        ) from exc
+
     try:
         canonical_snapshot = UCNSObject(
             obj.n_dec,
@@ -173,7 +197,7 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
             list(obj.A_plus),
             list(obj.F_plus),
         )
-    except (TypeError, ValueError, ArithmeticError) as exc:
+    except (TypeError, ValueError, ArithmeticError, AttributeError) as exc:
         raise BridgeValidationError(
             "Invalid bridge record: export rejected a drifted UCNSObject: "
             f"{exc}"
@@ -182,16 +206,6 @@ def _object_to_data(obj: Optional[UCNSObject]) -> Optional[Dict[str, Any]]:
         raise BridgeValidationError(
             "Invalid bridge record: export requires a normalized UCNSObject; "
             "the current mutable fields normalize to a different identity."
-        )
-    cells: List[Dict[str, Any]] = []
-    for (angle, payload), face in zip(obj.A_plus, obj.F_plus):
-        frac = angle if isinstance(angle, Fraction) else Fraction(angle)
-        cells.append(
-            {
-                "angle": {"num": frac.numerator, "den": frac.denominator},
-                "face": int(face),
-                "payload": _object_to_data(payload),
-            }
         )
     return {"n_dec": int(obj.n_dec), "n_min": int(obj.n_min), "cells": cells}
 
