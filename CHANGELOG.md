@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased — stack repair (Theorem N alignment, bridge, evidence)
+## 1.0.0rc1 — 2026-07-12
+
+First scoped v1.0 release candidate. This candidate packages the stack repair,
+base-geometry completion, and canon reconciliation detailed below. It preserves
+Theorem N as `FRONTIER`, does not claim total general recursive primality, and
+must pass TestPyPI validation before any final v1.0.0 publication.
+
+The final pre-candidate bridge review repair recursively validates nested
+payloads before canonical snapshot construction, ensures malformed mutable
+object graphs fail through `BridgeValidationError`, and permanently tests the
+nested inexact-angle drift case.
+
+## 1.0.0rc1 detail — stack repair (Theorem N alignment, bridge, evidence)
 
 ### Theorem and formal alignment
 - Rewrote the Theorem N documentation (`ucns-theorem-n.md`, README, claims
@@ -51,8 +63,11 @@
   negative certification (`tests/test_bridge_certification_boundary.py`);
   the raw solver stays catalogue-relative and the evidence-bearing envelope
   remains the only negative-certification surface.
+- Closed the final bridge review escape: recursive payload drift is validated
+  before snapshot normalization and cannot leak implementation exceptions
+  outside the documented `BridgeValidationError` boundary.
 
-## Unreleased — base geometry completion
+## 1.0.0rc1 detail — base geometry completion
 
 ### Base geometry (operation algebra of ⊠)
 - Landed the structure theorem: `(nonempty normalized objects, multiply, e)`
@@ -87,7 +102,7 @@
   reconcile obligations ↔ witnesses ↔ RepoLOTO state without imports;
   CI runs the aggregates via `tests/test_base_geometry_contracts.py`.
 
-## Unreleased — v1.0 canon reconciliation
+## 1.0.0rc1 detail — v1.0 canon reconciliation
 
 ### Canon
 - Reconciled `ucns-spec.md` to use the status vocabulary (`DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`, `ORACLE-COMPLETE`, `FRONTIER`, `EXPERIMENTAL`) from the 2026-05-16 addendum.
@@ -118,35 +133,8 @@
 - Retained the factorization envelope test canon from the multiplicative-unit fix: the flat length-2 object is a defended-domain `SEQ-PRIME` example after unit-group factors are filtered.
 - Began replacing stale `MODULE_BUILD tests:` paths with real test files used by the current pytest surface.
 
-## v0.8.1 — PyPI Release Candidate
+## hmmm
 
-### Packaging
-- Added enriched PyPI metadata and classifiers.
-- Added project URLs and author metadata.
-- Added build + twine validation workflow.
-- Added wheel build dependency.
-
-### CI
-- GitHub Actions workflow now:
-  - builds the package
-  - validates metadata via twine
-  - installs built wheel artifact
-  - runs the UCNS test suite
-
-### Status
-UCNS remains an experimental/research-stage algebraic system.
-The repository currently defends:
-- flat kernel algebra
-- depth-1 restricted completeness
-- depth-2 oracle completeness
-
-Catalogue-sufficient completeness (Theorem N) is the current implementation-backed frontier proof target, not a fully discharged formal theorem.
-
-### Compatibility
-Test target:
-- Python 3.8+
-
-### Notes
-This release is intended first for TestPyPI validation before public PyPI publication.
-
-GPT generated; context, prompt Erin Spencer.
+`1.0.0rc1` is a release candidate, not a proof promotion. Final `1.0.0`
+remains contingent on the documented publication gate, including TestPyPI
+validation and an honest release body preserving the open frontier.
