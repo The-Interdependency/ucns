@@ -20,7 +20,7 @@ experimental UCNS-native cache prototype.
 | Field | Value |
 |---|---|
 | Package | `ucns` |
-| Version | `0.9.1` |
+| Version | `1.0.0rc1` |
 | Description | Unit Circle Number System recursive factorization engine |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
@@ -83,7 +83,7 @@ Status vocabulary: `DEFENDED`, `IMPLEMENTED`, `TEST-BACKED`,
 | Depth-2 oracle (smallest class, Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| Catalogue-sufficient completeness — all depths (Theorem N) | `FRONTIER` — partially verified in Lean; remaining proof leaves under active discharge |
+| Catalogue-sufficient completeness — all depths (Theorem N) | `FRONTIER` — finite search model type-checks; completeness proofs remain `sorry`-closed; external formal review pending |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |

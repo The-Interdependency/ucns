@@ -59,7 +59,7 @@ Start here:
 - Collaboration issue: https://github.com/The-Interdependency/ucns/issues/7
 - Starter task: define one UCNS term in standard mathematical language, with notation, example, non-example, and relationship to existing concepts.
 
-The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The current formal frontier is partially verified in Lean, with remaining proof leaves under active discharge. Cancellativity is refuted in general and fully characterized by the divisor dichotomy (`docs/base-geometry.md` §5); it is **not** a premise of the current completeness target. Theorem N is an exhaustive-inclusion completeness target — the finite search provably enumerates a space containing the true candidate at every stage — not a cancellation or uniqueness theorem.
+The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The Lean finite-search model now type-checks, while the completeness theorems remain `sorry`-closed and require external formal review. Cancellativity is refuted in general and fully characterized by the divisor dichotomy (`docs/base-geometry.md` §5); it is **not** a premise of the current completeness target. Theorem N is an exhaustive-inclusion completeness target — the finite search provably enumerates a space containing the true candidate at every stage — not a cancellation or uniqueness theorem.
 
 GPT generated; context, prompt Erin Spencer.
 
@@ -78,7 +78,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Depth-2 oracle (Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
 | Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — partially verified in Lean; remaining proof leaves under active discharge** |
+| **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — finite search model type-checks; completeness proofs remain `sorry`-closed; external formal review pending** |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
 | General recursive primality outside defended-complete domains | out of v1.0 scope |
