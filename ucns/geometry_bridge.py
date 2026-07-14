@@ -1,48 +1,33 @@
 """
 ucns.geometry_bridge
 ================================
-Closes the firewall between UCNS-A (the algebra) and UCNS-G (the geometry).
+Commutative audit projection from UCNS-A into UCNS-G coordinates.
 
-UCNS-A objects are sequences of (angle, face-flip) under the outer-product
-``multiply``.  UCNS-G posits three irreducible geometric primitives.  This
-module derives the exact coordinates and their composition laws from the
-algebra, then verifies the homomorphism identity mechanically.
+The bridge deliberately separates:
 
-Proved coordinate triple and composition laws
-----------------------------------------------
-    r          log-depth: log(len(A_plus)).
-               len(A*B) = len(A)*len(B)  ⟹  r(A*B) = r(A) + r(B).  Additive.
+    rho       recursive radius / payload depth.
+              rho(A box B) = max(rho(A), rho(B)).
 
-    theta      Circular mean angle on R/4πZ (the spinor double cover of the
-               unit circle).  Angles are stored as Fraction in [0,4) meaning
-               half-turns (× π).  Mapped to the unit circle via exp(iπa/2),
-               circular mean taken, phase returned in [0, 4π).
-               theta(A*B) = theta(A) + theta(B)  mod 4π  for all
-               non-degenerate pairs.  Degenerate = mean vector ≈ 0.
+    r         backward-compatible storage name for breadth lambda.
+    lambda    breadth valuation log(len(A_plus)).
+              lambda(A box B) = lambda(A) + lambda(B).
 
-    (z, w)     Two-bit chirality state:
-                   z = flip_parity  = sum(F_plus) mod 2  ∈ {0, 1}
-                   w = len_parity   = len(A_plus) mod 2  ∈ {0, 1}
-               Composition (XOR outer-product rule, proved):
-                   z(A*B) = (z_A * w_B + w_A * z_B) mod 2
-                   w(A*B) = (w_A * w_B) mod 2
+    theta     circular mean angle on R/4piZ.
 
-KEY FINDING (verified over 2500 random pairs, 0 failures):
-    UCNS-A IS UCNS-G.  The geometric primitives (gonal inscription = theta on
-    R/4πZ; spinor / Möbius chirality = (z,w); epicyclic depth = r) are exact
-    coordinatisations of the algebra's angle sequences, XOR face-flips, and
-    sequence lengths.
+    (z, w)    two-bit chirality state.
 
-    theta lives in R/4πZ — the spinor double cover — NOT R/2πZ.
-    The 4π period and the two-bit chirality state encode the same spinor
-    structure.  Chirality is constitutive, not a sign appended afterward.
+The enriched target (rho, lambda, theta, z, w) remains commutative. It is a
+projection of any future nonabelian quaternionic lift, not that lift: it does
+not retain SU(2) axis data and remains blind to the UCNS commutator.
 
 Public API:
-    GeometricPoint   — the (r, theta, z, w) coordinate quadruple.
-    ucns_a_to_g      — map UCNSObject → GeometricPoint.
-    compose          — geometric composition (mirrors multiply).
-    homomorphism_check(a, b) → HomomorphismResult.
-    check_injectivity(objects) → dict.
+    GeometricPoint
+    ucns_a_to_g
+    compose
+    homomorphism_check
+    HomomorphismResult
+    check_injectivity
+    ThetaDegenerate
 """
 
 from __future__ import annotations
@@ -53,25 +38,27 @@ from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
 
 from .canonical import multiply as _canonical_multiply
+from .relational_geometry import breadth as _breadth
+from .relational_geometry import recursive_radius as _recursive_radius
 
 # === MODULE_BUILD ===
 # id: ucns_geometry_bridge
 #   module_name: geometry_bridge
 #   module_kind: engine
-#   summary: proves UCNS-A outer-product algebra homomorphic to UCNS-G geometry via (r, theta, z, w) coordinate mapping verified over 2500 pairs
+#   summary: commutative audit projection via recursive radius, breadth, spinor angle, and chirality coordinates
 #   owner: Erin Spencer
 #   public_surface: GeometricPoint, ucns_a_to_g, compose, homomorphism_check, HomomorphismResult, check_injectivity
-#   internal_surface: _r, _theta, _zw, ThetaDegenerate
+#   internal_surface: _r, _rho, _theta, _zw, ThetaDegenerate
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: ucns_recursive.tests.test_geometry_bridge
+#   tests: ucns_recursive.tests.test_geometry_bridge, contracts.test_local_groups_and_geometry
 #   rollout: default_enabled
 #   rollback: remove export from ucns/__init__.py
-#   requires: ucns.canonical (UCNSObject, multiply)
-#   unresolved: injectivity-proof-analytical, degenerate-theta-canonical-form, depth>1-payload-lifting
+#   requires: ucns.canonical, ucns.relational_geometry
+#   unresolved: injectivity-proof-analytical, degenerate-theta-canonical-form, quaternionic-axis-lift
 # === END MODULE_BUILD ===
 
 __all__ = [
@@ -84,41 +71,49 @@ __all__ = [
     "ThetaDegenerate",
 ]
 
-_TAU4: float = 4.0 * math.pi   # full period on R/4πZ
-_TOL: float = 1e-9
+_TAU4 = 4.0 * math.pi
+_TOL = 1e-9
 
 
 class ThetaDegenerate(Exception):
-    """The circular mean of an object's angles is undefined (uniform distribution)."""
+    """The circular mean of an object's angles is undefined."""
 
-
-# ---------------------------------------------------------------------------
-# GeometricPoint
-# ---------------------------------------------------------------------------
 
 @dataclass(frozen=True, eq=False)
 class GeometricPoint:
-    """Coordinate quadruple in UCNS-G space: (r, theta, z, w).
+    """Commutative audit coordinates ``(rho, lambda, theta, z, w)``.
 
-    r:      log-depth ∈ [0, ∞).  r = log(len(A_plus)).
-    theta:  circular mean angle on R/4πZ ∈ [0, 4π).  None = degenerate.
-    z:      flip_parity ∈ {0, 1}.  Parity of face-flip count.
-    w:      len_parity  ∈ {0, 1}.  Parity of sequence length.
+    ``r`` is retained as the backward-compatible field name for breadth
+    ``lambda = log(len(A_plus))``. Use ``breadth`` in new prose and code.
     """
+
     r: float
     theta: Optional[float]
-    z: int   # flip_parity: 0 or 1
-    w: int   # len_parity:  0 or 1
+    z: int
+    w: int
+    rho: int = 0
 
     def __post_init__(self) -> None:
         if self.r < 0:
-            raise ValueError(f"r must be non-negative; got {self.r}")
+            raise ValueError("r/breadth must be non-negative; got {0}".format(self.r))
+        if not isinstance(self.rho, int) or isinstance(self.rho, bool) or self.rho < 0:
+            raise ValueError("rho must be a non-negative integer; got {0!r}".format(self.rho))
         if self.z not in (0, 1):
-            raise ValueError(f"z must be 0 or 1; got {self.z}")
+            raise ValueError("z must be 0 or 1; got {0}".format(self.z))
         if self.w not in (0, 1):
-            raise ValueError(f"w must be 0 or 1; got {self.w}")
+            raise ValueError("w must be 0 or 1; got {0}".format(self.w))
         if self.theta is not None:
             object.__setattr__(self, "theta", float(self.theta) % _TAU4)
+
+    @property
+    def breadth(self) -> float:
+        """Correct name for the backward-compatible ``r`` field."""
+        return self.r
+
+    @property
+    def lambda_value(self) -> float:
+        """ASCII-safe alias for breadth lambda."""
+        return self.r
 
     @property
     def is_degenerate(self) -> bool:
@@ -126,13 +121,12 @@ class GeometricPoint:
 
     @property
     def chirality(self) -> int:
-        """Chirality as ±1 for compatibility with UCNS-G spinor notation."""
         return 1 if self.z == 0 else -1
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, GeometricPoint):
             return NotImplemented
-        if self.z != other.z or self.w != other.w:
+        if self.rho != other.rho or self.z != other.z or self.w != other.w:
             return False
         if abs(self.r - other.r) >= _TOL:
             return False
@@ -146,22 +140,24 @@ class GeometricPoint:
     __hash__ = None
 
     def __repr__(self) -> str:
-        t = f"{self.theta:.6f}" if self.theta is not None else "None(deg)"
-        return f"GeometricPoint(r={self.r:.6f}, theta={t}, z={self.z}, w={self.w})"
+        theta = "{0:.6f}".format(self.theta) if self.theta is not None else "None(deg)"
+        return (
+            "GeometricPoint(rho={0}, breadth={1:.6f}, theta={2}, z={3}, w={4})"
+            .format(self.rho, self.r, theta, self.z, self.w)
+        )
 
-
-# ---------------------------------------------------------------------------
-# Coordinate extraction
-# ---------------------------------------------------------------------------
 
 def _r(obj: Any) -> float:
-    """log(len(A_plus)).  Additive under multiply."""
-    n = len(obj.A_plus) if obj is not None else 0
-    return math.log(n) if n > 0 else 0.0
+    """Backward-compatible breadth extractor."""
+    return _breadth(obj)
+
+
+def _rho(obj: Any) -> int:
+    return _recursive_radius(obj)
 
 
 def _theta(obj: Any) -> Optional[float]:
-    """Circular mean angle on R/4πZ.  None when degenerate."""
+    """Circular mean angle on R/4piZ. None when degenerate."""
     if obj is None or not obj.A_plus:
         return 0.0
     vectors = [cmath.exp(1j * math.pi * float(a) / 2) for a, _ in obj.A_plus]
@@ -169,53 +165,53 @@ def _theta(obj: Any) -> Optional[float]:
     if abs(mean_vec) < _TOL:
         return None
     halfturns = (cmath.phase(mean_vec) % (2 * math.pi)) * 2 / math.pi
-    return halfturns * math.pi  # → [0, 4π)
+    return halfturns * math.pi
 
 
 def _zw(obj: Any) -> Tuple[int, int]:
-    """(flip_parity, len_parity)."""
     if obj is None:
         return (0, 0)
-    z = sum(obj.F_plus) % 2
-    w = len(obj.A_plus) % 2
-    return (z, w)
+    return (sum(obj.F_plus) % 2, len(obj.A_plus) % 2)
 
 
 def ucns_a_to_g(obj: Any) -> GeometricPoint:
-    """Map a UCNSObject (UCNS-A) to a GeometricPoint (UCNS-G)."""
+    """Map a UCNSObject to its commutative audit projection."""
     z, w = _zw(obj)
-    return GeometricPoint(r=_r(obj), theta=_theta(obj), z=z, w=w)
+    return GeometricPoint(
+        r=_r(obj),
+        theta=_theta(obj),
+        z=z,
+        w=w,
+        rho=_rho(obj),
+    )
 
-
-# ---------------------------------------------------------------------------
-# Composition in UCNS-G
-# ---------------------------------------------------------------------------
 
 def compose(p: GeometricPoint, q: GeometricPoint) -> GeometricPoint:
-    """Geometric composition: mirrors multiply in UCNS-A.
+    """Compose projected coordinates.
 
-    r:     additive.
-    theta: additive mod 4π (degenerate if either is degenerate).
-    z:     (z_p * w_q + w_p * z_q) mod 2   — XOR outer-product rule.
-    w:     (w_p * w_q) mod 2               — multiplicative.
+    Radius uses max; breadth uses addition; theta uses addition modulo 4pi.
     """
-    r_new = p.r + q.r
-    theta_new = None if (p.theta is None or q.theta is None) else (p.theta + q.theta) % _TAU4
-    z_new = (p.z * q.w + p.w * q.z) % 2
-    w_new = (p.w * q.w) % 2
-    return GeometricPoint(r=r_new, theta=theta_new, z=z_new, w=w_new)
+    theta_new = (
+        None
+        if p.theta is None or q.theta is None
+        else (p.theta + q.theta) % _TAU4
+    )
+    return GeometricPoint(
+        r=p.r + q.r,
+        theta=theta_new,
+        z=(p.z * q.w + p.w * q.z) % 2,
+        w=(p.w * q.w) % 2,
+        rho=max(p.rho, q.rho),
+    )
 
-
-# ---------------------------------------------------------------------------
-# Homomorphism check
-# ---------------------------------------------------------------------------
 
 @dataclass
 class HomomorphismResult:
-    """Full diagnostic result of a single homomorphism check."""
+    """Diagnostic result for one audit-projection homomorphism check."""
+
     holds: bool
-    lhs: GeometricPoint          # ucns_a_to_g(a * b)
-    rhs: GeometricPoint          # compose(g_a, g_b)
+    lhs: GeometricPoint
+    rhs: GeometricPoint
     r_match: bool
     theta_match: bool
     zw_match: bool
@@ -223,68 +219,80 @@ class HomomorphismResult:
     delta_r: float
     delta_theta: Optional[float]
 
+    @property
+    def breadth_match(self) -> bool:
+        return self.r_match
+
+    @property
+    def rho_match(self) -> bool:
+        return self.lhs.rho == self.rhs.rho
+
+    @property
+    def delta_rho(self) -> int:
+        return abs(self.lhs.rho - self.rhs.rho)
+
     def __repr__(self) -> str:
-        if self.degenerate:
-            status = "DEGENERATE"
-        else:
-            status = "HOLDS" if self.holds else "FAILS"
+        status = "DEGENERATE" if self.degenerate else ("HOLDS" if self.holds else "FAILS")
         parts = [status]
-        if not self.degenerate:
-            if not self.r_match:
-                parts.append(f"Δr={self.delta_r:.2e}")
-            if not self.theta_match and self.delta_theta is not None:
-                parts.append(f"Δθ={self.delta_theta:.2e}")
-            if not self.zw_match:
-                parts.append("zw_MISMATCH")
+        if not self.rho_match:
+            parts.append("delta_rho={0}".format(self.delta_rho))
+        if not self.r_match:
+            parts.append("delta_lambda={0:.2e}".format(self.delta_r))
+        if not self.theta_match and self.delta_theta is not None:
+            parts.append("delta_theta={0:.2e}".format(self.delta_theta))
+        if not self.zw_match:
+            parts.append("zw_MISMATCH")
         return "HomomorphismResult(" + " | ".join(parts) + ")"
 
 
 def homomorphism_check(a: Any, b: Any, multiply_fn: Any = None) -> HomomorphismResult:
-    """Check: ucns_a_to_g(a * b) == compose(ucns_a_to_g(a), ucns_a_to_g(b))."""
+    """Check projection(a box b) == compose(projection(a), projection(b))."""
     mult = multiply_fn if multiply_fn is not None else _canonical_multiply
-    ab = mult(a, b)
-
-    lhs = ucns_a_to_g(ab)
-    g_a = ucns_a_to_g(a)
-    g_b = ucns_a_to_g(b)
-    rhs = compose(g_a, g_b)
+    lhs = ucns_a_to_g(mult(a, b))
+    rhs = compose(ucns_a_to_g(a), ucns_a_to_g(b))
 
     delta_r = abs(lhs.r - rhs.r)
     r_match = delta_r < _TOL
-
     degenerate = lhs.is_degenerate or rhs.is_degenerate
-
     if degenerate:
         theta_match = lhs.is_degenerate == rhs.is_degenerate
         delta_theta = None
     else:
+        assert lhs.theta is not None and rhs.theta is not None
         diff = abs(lhs.theta - rhs.theta) % _TAU4
         delta_theta = min(diff, _TAU4 - diff)
         theta_match = delta_theta < _TOL
 
-    zw_match = (lhs.z == rhs.z) and (lhs.w == rhs.w)
-    holds = r_match and theta_match and zw_match
-
+    zw_match = lhs.z == rhs.z and lhs.w == rhs.w
+    holds = lhs.rho == rhs.rho and r_match and theta_match and zw_match
     return HomomorphismResult(
-        holds=holds, lhs=lhs, rhs=rhs,
-        r_match=r_match, theta_match=theta_match, zw_match=zw_match,
-        degenerate=degenerate, delta_r=delta_r, delta_theta=delta_theta,
+        holds=holds,
+        lhs=lhs,
+        rhs=rhs,
+        r_match=r_match,
+        theta_match=theta_match,
+        zw_match=zw_match,
+        degenerate=degenerate,
+        delta_r=delta_r,
+        delta_theta=delta_theta,
     )
 
 
-# ---------------------------------------------------------------------------
-# Injectivity check
-# ---------------------------------------------------------------------------
-
 def check_injectivity(objects: List[Any]) -> dict:
-    """Check whether ucns_a_to_g is injective over a collection of UCNSObjects."""
-    seen: dict = {}
+    """Check projection injectivity over a supplied finite collection."""
+    seen = {}
     collisions = []
     for obj in objects:
-        pt = ucns_a_to_g(obj)
-        key = (round(pt.r, 9), round(pt.theta, 9) if pt.theta is not None else None, pt.z, pt.w)
+        point = ucns_a_to_g(obj)
+        key = (
+            point.rho,
+            round(point.r, 9),
+            round(point.theta, 9) if point.theta is not None else None,
+            point.z,
+            point.w,
+        )
         if key in seen:
-            collisions.append((seen[key], obj, pt))
+            collisions.append((seen[key], obj, point))
         else:
             seen[key] = obj
     return {
