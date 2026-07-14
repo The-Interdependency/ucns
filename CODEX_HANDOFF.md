@@ -40,8 +40,8 @@ The assignment explicitly excludes METAPAT encoding selection, fiq metering, 600
 ## Published state
 
 - Repository: `The-Interdependency/ucns`
-- Current handoff branch: `agent/local-groups-handoff`
-- Branch base: repository `main` at handoff creation
+- Handoff merged through PR #113
+- Handoff merge commit: `0dfff853d641b7d00e19b8eff68d1fc4cb3e8d7c`
 - Current package type: documentation and Codex assignment only; no UCNS algebra or integration code changed
 
 ## hmmm
