@@ -11,7 +11,7 @@ Installed skills:
 - `test-build/` — test contract metadata blocks
 - `meta-module-build/` — metadata-first module scaffolding
 - `manifest/` — living-spec generator for `CLAUDE.md` (vendored from
-  `The-Interdependency/skill-lib@6f36340`). Generates the mechanical facts
+  `The-Interdependency/skill-lib@05ee7aa`). Generates the mechanical facts
   block in `CLAUDE.md`; the `manifest drift check` workflow runs
   `generate.py --check` in CI. Refresh with
   `python .agents/skills/manifest/generate.py --write`.
