@@ -48,7 +48,8 @@ The assignment explicitly excludes METAPAT encoding selection, fiq metering, 600
 - Repository: `The-Interdependency/ucns`
 - Handoff 08 merged through PR #113
 - Handoff 08 merge commit: `0dfff853d641b7d00e19b8eff68d1fc4cb3e8d7c`
-- Handoff 09 publication branch: `agent/radius-breadth-fork-laws`
+- Handoff 09 merged through PR #114
+- Handoff 09 merge commit: `64367dbb89694d7f69fc17156822bd2bedebbe81`
 - Current package type: documentation and Codex assignments only; no UCNS algebra or integration code changed
 
 ## hmmm
