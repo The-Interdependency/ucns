@@ -17,13 +17,14 @@ The first eight files preserve the original UCNS v1.0 completion handoff:
 
 That package's behavioral outcomes, safety boundaries, tests, and completion conditions remain historical evidence. Do not reopen or reinterpret them merely because a later structural package was added.
 
-## Current follow-on assignment: internal group structure
+## Current follow-on assignment: internal structure and geometric coordinates
 
 9. [`08-idempotents-local-groups-2i-no-go.md`](./codex-handoff/08-idempotents-local-groups-2i-no-go.md)
+10. [`09-radius-breadth-fork-semantics.md`](./codex-handoff/09-radius-breadth-fork-semantics.md)
 
-This is the current structure-only assignment. It must be completed in the UCNS repository before any sphere-integration implementation begins.
+These two files form one ordered structure-only assignment. Complete handoff 08 before using its local-group results in handoff 09. Both must be completed in the UCNS repository before any sphere-integration implementation begins.
 
-Its dependency chain is:
+The dependency chain is:
 
 ```text
 stored-angle unit convention
@@ -32,18 +33,24 @@ stored-angle unit convention
   -> four-equation local-group census
   -> every internal subgroup is abelian
   -> every 2I homomorphism is constant at an idempotent
+  -> recursive radius rho composes by max
+  -> breadth lambda composes by addition
+  -> every internal subgroup lies on the zero-breadth spindle
+  -> fork profile remains a derived nonlinear observable
+  -> Phi policy and integration lint enforce constitutive-simultaneous forks
   -> integration schema uses external rho-action slots, not embedded-group slots
 ```
 
-The assignment explicitly excludes METAPAT encoding selection, fiq metering, 600-cell construction, quaternionic lifts, prime-cylinder projection, EDCM measurement, and full-field experiments.
+The assignment explicitly excludes METAPAT encoding selection, fiq metering, 600-cell construction, quaternionic lifts, prime-cylinder projection, EDCM measurement, full-field experiments, and performance claims against existing embedding methods.
 
 ## Published state
 
 - Repository: `The-Interdependency/ucns`
-- Handoff merged through PR #113
-- Handoff merge commit: `0dfff853d641b7d00e19b8eff68d1fc4cb3e8d7c`
-- Current package type: documentation and Codex assignment only; no UCNS algebra or integration code changed
+- Handoff 08 merged through PR #113
+- Handoff 08 merge commit: `0dfff853d641b7d00e19b8eff68d1fc4cb3e8d7c`
+- Handoff 09 publication branch: `agent/radius-breadth-fork-laws`
+- Current package type: documentation and Codex assignments only; no UCNS algebra or integration code changed
 
 ## hmmm
 
-The current uncertainty belongs in the theorem implementation and review, not in the assignment's scope. If `main` advances after publication, inspect new commits and update source pins rather than guessing about their effect.
+The current uncertainty belongs in theorem implementation and review, not in the assignment's scope. If `main` advances after publication, inspect new commits and update source pins rather than guessing about their effect.
