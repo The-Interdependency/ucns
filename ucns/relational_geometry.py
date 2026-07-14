@@ -2,7 +2,8 @@
 
 This module separates recursive radius from top-level breadth, exposes the
 first-level fork observable, and provides exact constructors/predicates for the
-finite unit-tower local groups proved in ``docs/local-groups.md``.
+finite unit-tower local groups proved in
+``docs/local-groups-and-relational-geometry.md``.
 
 The semantic meaning of a payload fork is intentionally out of scope. UCNS can
 represent and count forks; METAPAT-to-UCNS encoding policy must decide whether
@@ -25,7 +26,7 @@ from __future__ import annotations
 #   admin_only: false
 #   tests: contracts.test_local_groups_and_geometry, tests.test_base_geometry_contracts
 #   rollout: default_enabled
-#   rollback: remove exports and dependent contracts
+#   rollback: remove module and dependent contracts
 #   requires: ucns_canonical
 #   since: 2026-07-14
 #   unresolved: full fork-profile counting convention; METAPAT fork admissibility remains downstream
