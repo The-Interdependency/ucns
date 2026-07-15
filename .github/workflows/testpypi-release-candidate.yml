@@ -1,11 +1,6 @@
 name: TestPyPI release-candidate validation
 
 on:
-  push:
-    branches:
-      - agent/testpypi-release-candidate-gate
-    paths:
-      - .github/workflows/testpypi-release-candidate.yml
   workflow_dispatch:
     inputs:
       operation:
@@ -25,43 +20,7 @@ permissions:
   contents: read
 
 jobs:
-  materialize-manifest:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Check out candidate branch
-        uses: actions/checkout@v4
-        with:
-          ref: agent/testpypi-release-candidate-gate
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Verify vendored manifest generator and refresh generated block
-        run: |
-          (
-            cd .agents/skills/manifest
-            sha256sum -c generate.py.sha256
-          )
-          python .agents/skills/manifest/generate.py --root . --write
-          python .agents/skills/manifest/generate.py --root . --check
-
-      - name: Commit generated manifest if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CLAUDE.md
-          git diff --cached --exit-code && exit 0
-          git commit -m "build(manifest): register TestPyPI candidate workflow"
-          git push origin HEAD:agent/testpypi-release-candidate-gate
-
   build-and-verify:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.package.outputs.version }}
