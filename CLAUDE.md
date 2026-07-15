@@ -31,7 +31,7 @@ experimental UCNS-native cache prototype.
 | Runtime dependencies | none (stdlib only) |
 | Optional extras | `dev` |
 | Keywords | unit-circle, factorization, recursive-algebra, sequence-theory, witness-matrix |
-| CI workflows | `carrier-lcm-target.yml`, `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml` |
+| CI workflows | `carrier-lcm-target.yml`, `ci.yml`, `formal.yml`, `manifest-check.yml`, `python-package.yml`, `testpypi-release-candidate.yml` |
 | Top-level directories | `audit/` · `code/` · `codex-handoff/` · `contracts/` · `docs/` · `examples/` · `formal/` · `pcea-ucns/` · `scripts/` · `tests/` · `ucns/` · `ucns_cache/` · `ucns_recursive/` |
 
 <sub>Derived from `pyproject.toml` + the repo tree. Unknown fields surface as `hmmm` rather than a guess.</sub>
