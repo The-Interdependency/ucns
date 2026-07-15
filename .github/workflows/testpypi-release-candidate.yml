@@ -1,0 +1,242 @@
+name: TestPyPI release-candidate validation
+
+on:
+  push:
+    branches:
+      - agent/testpypi-release-candidate-gate
+    paths:
+      - .github/workflows/testpypi-release-candidate.yml
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Publish the candidate once, or validate an existing TestPyPI candidate
+        required: true
+        type: choice
+        options:
+          - validate-existing
+          - publish-and-validate
+        default: validate-existing
+      confirmation:
+        description: Exact operation-specific confirmation phrase from docs/testpypi-release-candidate.md
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  materialize-manifest:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/testpypi-release-candidate-gate
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify vendored manifest generator and refresh generated block
+        run: |
+          (
+            cd .agents/skills/manifest
+            sha256sum -c generate.py.sha256
+          )
+          python .agents/skills/manifest/generate.py --root . --write
+          python .agents/skills/manifest/generate.py --root . --check
+
+      - name: Commit generated manifest if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE.md
+          git diff --cached --exit-code && exit 0
+          git commit -m "build(manifest): register TestPyPI candidate workflow"
+          git push origin HEAD:agent/testpypi-release-candidate-gate
+
+  build-and-verify:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.package.outputs.version }}
+    steps:
+      - name: Enforce canonical repository, main branch, and confirmation
+        env:
+          OPERATION: ${{ inputs.operation }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "${GITHUB_REPOSITORY}" = "The-Interdependency/ucns"
+          test "${GITHUB_REF}" = "refs/heads/main"
+          case "${OPERATION}" in
+            publish-and-validate)
+              test "${CONFIRMATION}" = "publish-ucns-1.0.0rc1-to-testpypi"
+              ;;
+            validate-existing)
+              test "${CONFIRMATION}" = "validate-ucns-1.0.0rc1-on-testpypi"
+              ;;
+            *)
+              echo "Unsupported operation: ${OPERATION}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Check out canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Verify exact package identity and candidate version
+        id: package
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+          from pathlib import Path
+
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]
+          assert project["name"] == "ucns", project["name"]
+          assert project["version"] == "1.0.0rc1", project["version"]
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"version={project['version']}\n")
+          PY
+
+      - name: Install release tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine "pytest>=8.3,<8.4"
+
+      - name: Run complete Python test suite
+        run: python -m pytest ucns_recursive/tests tests -v
+
+      - name: Build candidate distributions
+        run: |
+          rm -rf build dist
+          python -m build
+          python -m twine check dist/*
+
+      - name: Verify clean-wheel public import boundary
+        run: |
+          python -m venv .candidate-venv
+          .candidate-venv/bin/python -m pip install --upgrade pip
+          .candidate-venv/bin/python -m pip install dist/*.whl
+          .candidate-venv/bin/python - <<'PY'
+          import builtins
+          import importlib
+          from importlib.metadata import version
+
+          original_import = builtins.__import__
+
+          def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+              if name == "ucns_recursive" or name.startswith("ucns_recursive."):
+                  raise AssertionError(f"ucns imported deprecated compatibility package {name!r}")
+              return original_import(name, globals, locals, fromlist, level)
+
+          builtins.__import__ = guarded_import
+          ucns = importlib.import_module("ucns")
+          assert version("ucns") == "1.0.0rc1"
+          assert hasattr(ucns, "UCNSObject")
+          assert hasattr(ucns, "multiply")
+          assert hasattr(ucns, "factor_search_v08")
+          assert hasattr(ucns, "stable_hash")
+          print("clean candidate wheel import boundary ok")
+          PY
+
+      - name: Upload immutable candidate distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucns-1.0.0rc1-distributions
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish-testpypi:
+    if: inputs.operation == 'publish-and-validate'
+    needs: build-and-verify
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/ucns
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download verified candidate distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: ucns-1.0.0rc1-distributions
+          path: dist
+
+      - name: Publish only to TestPyPI through trusted publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+          verbose: true
+
+  validate-testpypi:
+    if: ${{ always() && needs.build-and-verify.result == 'success' && (inputs.operation == 'validate-existing' || needs.publish-testpypi.result == 'success') }}
+    needs:
+      - build-and-verify
+      - publish-testpypi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up clean validation Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact candidate from TestPyPI with bounded propagation retries
+        run: |
+          python -m venv .testpypi-venv
+          .testpypi-venv/bin/python -m pip install --upgrade pip
+          for attempt in $(seq 1 12); do
+            if .testpypi-venv/bin/python -m pip install \
+              --no-cache-dir \
+              --index-url https://test.pypi.org/simple/ \
+              --no-deps \
+              "ucns==1.0.0rc1"; then
+              exit 0
+            fi
+            if [ "${attempt}" -eq 12 ]; then
+              echo "TestPyPI candidate unavailable after bounded retries" >&2
+              exit 1
+            fi
+            sleep 10
+          done
+
+      - name: Verify installed TestPyPI identity and import firewall
+        run: |
+          .testpypi-venv/bin/python - <<'PY'
+          import builtins
+          import importlib
+          from importlib.metadata import version
+
+          original_import = builtins.__import__
+
+          def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+              if name == "ucns_recursive" or name.startswith("ucns_recursive."):
+                  raise AssertionError(f"ucns imported deprecated compatibility package {name!r}")
+              return original_import(name, globals, locals, fromlist, level)
+
+          builtins.__import__ = guarded_import
+          ucns = importlib.import_module("ucns")
+          assert version("ucns") == "1.0.0rc1"
+          assert hasattr(ucns, "UCNSObject")
+          assert hasattr(ucns, "multiply")
+          assert hasattr(ucns, "factor_search_v08")
+          assert hasattr(ucns, "stable_hash")
+          print("TestPyPI ucns 1.0.0rc1 validation passed")
+          PY
