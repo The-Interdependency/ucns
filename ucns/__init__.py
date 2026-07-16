@@ -4,6 +4,10 @@ The recursive factorization engine lives directly under this package. Public
 code should import from ``ucns`` and ``ucns.a0_safe``; ``ucns_recursive`` is only
 a deprecated compatibility shim.
 
+The canonical public gonol promoted from a0-betatest is also exported here.
+Its SPACE/ZERO position zero is the fixed Möbius twist, seam, and origin for
+UCNS; it is not passed through ordinary first-anchor gauge normalization.
+
 Core recursive modules include ``canonical``, ``domains``, ``host_recovery``,
 ``payload_system``, ``witness_matrix``, ``factor_search_v08``,
 ``domain_status``, ``serialization``, ``factorization_result``,
@@ -21,6 +25,46 @@ from .canonical import (
     is_unit,
     is_multiplicative_unit,
 )
+
+# Canonical public gonol: exact A0 arrangement, fixed twist origin, faces,
+# mirror, lifted path, and origin-preserving private transformations.
+from .public_gonol import (
+    PUBLIC_GONOL_SOURCE_REPOSITORY,
+    PUBLIC_GONOL_SOURCE_COMMIT,
+    PUBLIC_GONOL_SOURCE_PATH,
+    PUBLIC_GONOL_SHA256,
+    GonalSpec,
+    build_gonal,
+    validate_gonal,
+    print_gonal,
+    EXAMPLE_157,
+    PUBLIC_GONOL_157,
+    make_example_157,
+    get_default,
+    public_gonol_sha256,
+)
+from .public_gonol_faces import (
+    ARITY,
+    ORIGIN,
+    UPPER_ARC_RANGE,
+    LOWER_ARC_RANGE,
+    face,
+    chirality,
+    n_plus,
+    n_minus,
+)
+from .public_gonol_mirror import mirror_of
+from .public_gonol_lifted_path import (
+    CarrierCharError,
+    vertex_of_char,
+    char_of_vertex,
+    is_seam_event,
+    encode_text_path,
+    decode_text_path,
+    path_vertices,
+)
+from .public_gonol_private import PrivateGonal
+
 from .factor_search_v08 import (
     FactorSearchReport,
     factor_search_report,
@@ -159,6 +203,37 @@ from .geometry_bridge import (
 )
 
 __all__ = [
+    # canonical public gonol
+    "PUBLIC_GONOL_SOURCE_REPOSITORY",
+    "PUBLIC_GONOL_SOURCE_COMMIT",
+    "PUBLIC_GONOL_SOURCE_PATH",
+    "PUBLIC_GONOL_SHA256",
+    "GonalSpec",
+    "build_gonal",
+    "validate_gonal",
+    "print_gonal",
+    "EXAMPLE_157",
+    "PUBLIC_GONOL_157",
+    "make_example_157",
+    "get_default",
+    "public_gonol_sha256",
+    "ARITY",
+    "ORIGIN",
+    "UPPER_ARC_RANGE",
+    "LOWER_ARC_RANGE",
+    "face",
+    "chirality",
+    "n_plus",
+    "n_minus",
+    "mirror_of",
+    "CarrierCharError",
+    "vertex_of_char",
+    "char_of_vertex",
+    "is_seam_event",
+    "encode_text_path",
+    "decode_text_path",
+    "path_vertices",
+    "PrivateGonal",
     # algebraic core
     "UCNSObject",
     "UNIT",
