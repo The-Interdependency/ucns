@@ -18,12 +18,12 @@ Status of UCNS layers under this vocabulary:
 - **DEFENDED.** Flat kernel (v0.3); epicyclic first freeze (v0.4); recursive sequence and multiset primality notions (v0.5); cancellativity and quotient uniqueness boundary (v0.5.1); quotient existence conditions and restricted completeness on a bounded depth-1 domain (v0.6.1–v0.6.5).
 - **DEFENDED + ORACLE-COMPLETE.** Depth-2 smallest oracle theorem (v0.8.1, Lemma 7). Complete only under the declared oracle/catalogue assumptions.
 - **FRONTIER.** Theorem N is the catalogue-sufficient factorization proof target for the normalized factorization subsystem. Its implementation-backed proof sketch and Lean scaffold do not confer `DEFENDED` status; completeness statements remain `sorry`-backed, and no public-gonol bridge is proved.
-- **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical in `code/sweeps/t9_minimal_cat.py`).
+- **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 behavior via `factor_search_v08`; depth-3 asymmetric experiments are evidence only where tied to immutable execution artifacts and do not constitute a proved Theorem N instance.
 - **FRONTIER / out of v1.0 scope.** Carrier widening; tractable sub-catalogues; general recursive primality outside defended-complete domains; recursive disk-flip content symmetry as a depth-n theorem; depth-7 Fano/octonion conjecture.
 
 **A0 rule.** `SEQ-PRIME` is only absolute inside a defended-complete domain (`VERIFIED_DOMAIN_LABELS` in `ucns.domain_status`). A0-facing consumers must consult `domain_status_metadata` and treat `SEQ-PRIME` as non-absolute outside that set.
 
-**v1.0 scope.** v1.0 is a scoped, reproducible research release for catalogue-sufficient recursive factorization. It is not a claim of total general recursive primality. Carrier widening and general recursive completeness are explicitly out of scope.
+**v1.0 scope.** v1.0 packages the fixed-origin public gonol and a scoped catalogue-driven recursive factorization research subsystem. Theorem N remains `FRONTIER`; this is not a claim of catalogue-sufficient completeness or total general recursive primality. Carrier widening and general recursive completeness are explicitly out of scope.
 
 **Public API.** The v1.0 public Python API is the `ucns` package (and `ucns.a0_safe` for A0-safe inspection). The legacy `ucns_recursive` package remains importable as a compatibility surface but is deprecated for direct user imports.
 
@@ -903,7 +903,7 @@ Carrier widening beyond the defended depth-1 bounds is **FRONTIER** and explicit
 
 ### IMPLEMENTED + TEST-BACKED (not yet DEFENDED at the spec level)
 - full frozen depth-2 domain via `factor_search_v08`,
-- depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical).
+- depth-3 asymmetric experiment artifacts, `TEST-BACKED` only where an immutable run is cited; not a proved Theorem N instance.
 
 ### FRONTIER / out of v1.0 scope
 - Theorem N catalogue-sufficient factorization remains `FRONTIER`; its Lean completeness statements are `sorry`-backed and no public-gonol bridge is proved,

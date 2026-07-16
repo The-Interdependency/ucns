@@ -1,15 +1,16 @@
-# ucns — Unit Circle Number System: Recursive Factorization Theory
+# ucns — Fixed-Origin Public Gonol and Scoped Recursive Factorization
 
 <p align="center"><img src="docs/media/ucns-emblem.jpg" alt="UCNS emblem: a Möbius-banded sphere on the unit circle" width="640"></p>
 
-> **Experimental sequence-theoretic factorization on the unit circle, with a witness-matrix recursive quotient solver.**
+> **Canonical 157-position twist-bearing UCNS frame, with a separately scoped experimental recursive factorization subsystem.**
 
-This repository contains the UCNS (Unit Circle Number System) sequence theory and its implementation. The focus is **recursive factorization**: given a UCNS product object *P*, recover factors *A* and *B* such that *A ⊠ B = P*.
+This repository owns the UCNS public gonol: the exact 157-position frame whose fixed position `0` is SPACE/ZERO, the Möbius twist seam and system origin. It also contains a separately scoped normalized recursive factorization subsystem that studies products *P = A ⊠ B*. No bridge between those surfaces is assumed.
 
 `ucns` is currently a research-stage Python package. It is suitable for experimentation, integration tests, and collaborator review. Public APIs may still change while the mathematics and implementation are being formalized.
 
-> **v1.0 scope.** UCNS v1.0 is a scoped, reproducible research release for
-> catalogue-sufficient recursive factorization (Theorem N), not a claim of
+> **v1.0 scope.** UCNS v1.0 packages the fixed-origin public gonol and a
+> scoped catalogue-driven recursive factorization research subsystem. Theorem N
+> remains a `FRONTIER` proof target, not a claim of complete factorization or
 > total general recursive primality. Carrier widening and general
 > recursive completeness are explicitly out of v1.0 scope. See
 > `docs/ucns-spec-status-addendum-2026-05-16.md` for the status vocabulary,
@@ -89,7 +90,7 @@ Start here:
 - Collaboration issue: https://github.com/The-Interdependency/ucns/issues/7
 - Starter task: define one UCNS term in standard mathematical language, with notation, example, non-example, and relationship to existing concepts.
 
-The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The Lean finite-search model now type-checks, while the completeness theorems remain `sorry`-closed and require external formal review. Cancellativity is refuted in general and fully characterized by the divisor dichotomy (`docs/base-geometry.md` §5); it is **not** a premise of the current completeness target. Theorem N is an exhaustive-inclusion completeness target — the finite search provably enumerates a space containing the true candidate at every stage — not a cancellation or uniqueness theorem.
+The ask is bounded: help separate definitions, implemented algorithms, empirical results, proof sketches, conjectures, limitations, and counterexamples. The Lean finite-search model now type-checks, while the completeness theorems remain `sorry`-closed and require external formal review. Cancellativity is refuted in general and fully characterized by the divisor dichotomy (`docs/base-geometry.md` §5); it is **not** a premise of the current completeness target. Theorem N is an exhaustive-inclusion proof target: its sketch argues that the finite search should include a valid witness, but that inclusion is not yet discharged as a complete Lean proof and has no public-gonol scope without the missing bridge.
 
 GPT generated; context, prompt Erin Spencer.
 
@@ -107,7 +108,7 @@ Status vocabulary (from `docs/ucns-spec-status-addendum-2026-05-16.md`):
 | Depth-1 restricted completeness | `DEFENDED` |
 | Depth-2 oracle (Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
 | Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED` at spec level) |
-| Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
+| Depth-3 asymmetric experiment | `TEST-BACKED` only by cited execution artifacts; not proof-defended and not a status promotion for Theorem N |
 | **Catalogue-sufficient completeness — all depths (Theorem N)** | **`FRONTIER` — finite search model type-checks; completeness proofs remain `sorry`-closed; external formal review pending** |
 | Tractable sub-catalogues | `FRONTIER` |
 | Carrier widening | `FRONTIER` / out of v1.0 scope |
@@ -119,7 +120,7 @@ release-status claims. The status snapshot at the top of `ucns-spec.md` is dated
 
 `factor_search_v08` (the **witness-matrix recursive quotient solver**) is the v1.0 factorization engine. It now lives directly in the `ucns` package; `ucns_recursive` is a deprecated compatibility shim for legacy imports.
 
-See `ucns-theorem-n.md` for the unified catalogue-sufficient theorem statement and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input. Theorem N targets finding **a** valid factorization by exhaustive inclusion — it claims no general cancellativity, no quotient uniqueness, and no recovery of the original factor pair. The Lean model in `formal/Ucns/TheoremN.lean` now defines the finite search (splits, hosts, payload and face assignments, unit rejection, exact recomposition) rather than an opaque success predicate; its completeness theorems remain `sorry`-closed `FRONTIER` statements.
+See `ucns-theorem-n.md` for the catalogue-sufficient proof target and its current formal frontier. The key implementation insight is depth-agnostic: every `factor_search_v08` step operates on `==` and plain catalogue scans, while the catalogue remains the depth-sensitive input. Theorem N targets finding **a** valid factorization by exhaustive inclusion — it claims no general cancellativity, no quotient uniqueness, and no recovery of the original factor pair. The Lean model in `formal/Ucns/TheoremN.lean` now defines the finite search (splits, hosts, payload and face assignments, unit rejection, exact recomposition) rather than an opaque success predicate; its completeness theorems remain `sorry`-closed `FRONTIER` statements.
 
 **Prime quartet discontinuity.** Cross-repo interoperability (`ucns`, `edcmbone`, `a0`, `interdependent-lib`) is not theorem continuity by default. See `docs/prime-quartet-discontinuity.md` and `docs/edcm-edcmbone-bridge-checklist.md`.
 
@@ -154,7 +155,7 @@ ucns/                    # v1.0 public Python API and engine implementation
   bridge.py              # Official versioned cross-repo bridge record + adapter
   evidence.py            # Downstream proof-status evidence envelope
   core.py, embedding.py, epicycle.py, mobius.py, similarity.py
-                         # v0.6.5-lineage modules (stable reference)
+                         # compatibility-only local coordinate/disk/embedding utilities; not the public frame
 
 ucns_cache/              # experimental UCNS-native cache prototype
   keys.py                # canonical/payload/braider key generation + factor reuse

@@ -19,28 +19,23 @@ invert carrier arithmetic. This document concerns the *asymmetric* layer
 UCNS must supply, where the hardness assumption is different and not yet
 established. Nothing here upgrades PCEA's current claims.
 
+## Public-frame correction
+
+This planning artifact concerns the normalized recursive factorization subsystem only. The canonical public gonol is the fixed 157-position twist-bearing frame and is not a cryptographic carrier chosen by `n_min`. The Carrier-LCM result cited below is an internal projected-`n_min` identity, not a theorem about the complete public gonol. No cryptographic construction or hardness claim follows from the public frame. Historical attack counts require the immutable run artifact that produced them; source code and prose alone are not execution evidence.
+
+---
+
 ---
 
 ## What today's UCNS results force
 
 Three measured facts shape every answer below.
 
-1. **The Carrier-LCM Law is a leak.** `n_min(A ⊠ B) = lcm(n_min(A),
-   n_min(B))` (DEFENDED + TEST-BACKED in ucns). Measured: private
-   carrier supports {2} and {2,5} produce public carrier 80 with support
-   exactly {2,5}. **A secret encoded in carrier choice is public by
-   construction.** The private key must live where the Law does not
-   project: not in the carrier.
+1. **The internal projected-`n_min` LCM identity leaks projected factorization support.** Within the normalized factorization subsystem, `n_min(A ⊠ B) = lcm(n_min(A), n_min(B))` on its declared domain. This is not a public-gonol carrier theorem. A cryptographic design must therefore not hide secrets in that projected support; this statement does not establish security elsewhere.
 
-2. **The oracle domain is exhaustively breakable.** Measured: 52/60
-   (~87%) of random products on the frozen depth-2 oracle domain are
-   recovered by `factor_search_v08`. This domain is ORACLE-COMPLETE in
-   the ucns ledger. **Categorically forbidden for key material.**
+2. **The oracle domain is unsuitable for key material.** Its declared `ORACLE-COMPLETE` factor-search status means catalogue-bounded negatives and recoveries are not a hardness foundation. Historical recovery rates are not repeated here without their immutable execution artifact.
 
-3. **Pruning is an attacker's accelerator.** Measured: Carrier-LCM-Law
-   payload pruning removes ~71% of the candidate catalogue for free on
-   the {2,5} product. Any domain whose key space is enumerable as a
-   payload catalogue inherits this speedup against it.
+3. **Internal support pruning can accelerate catalogue search.** Any key space enumerable as a normalized-subsystem payload catalogue may inherit that reduction. Exact historical percentages require a cited immutable run artifact and are not a public-gonol claim.
 
 ## The ten questions (PLAN.md Phase 1)
 
@@ -51,12 +46,12 @@ carrier, (b) face-bit configuration, and (c) payload structure at a depth
 beyond any catalogue-complete domain. NOT carrier choice (leaked, fact 1).
 
 **2. What is a UCNS public key?**
-A UCNS object whose carrier and gross shape are publishable, derived from
+A normalized factorization object whose projected `n_min` and gross shape are publishable, derived from
 the private key by a forward operation (composition) such that recovering
 the private structure requires cross-prime factoring (the open frontier).
 
 **3. What is the base carrier or base object?**
-A carrier in the analytic-frontier regime — minimally the **carrier-40,
+An internal projected-`n_min` instance in the analytic-frontier regime — historically the **carrier-40,
 ⟨2,5⟩ cross-prime instance** named in the ucns frontier docs: the
 smallest case where forward composition stays in-lattice but factoring
 must cross prime lines. Real candidates scale the prime set and carrier
@@ -93,7 +88,7 @@ analytic frontier closes constructively, this assumption dies with it.
   to hide behind).
 
 **8. What information is intentionally public?**
-Carrier (leaked anyway, fact 1), object depth, gross cell count, the KEM
+Internal projected `n_min`, object depth, gross cell count, the KEM
 packet, and all algorithm parameters. Security must survive their
 disclosure.
 
@@ -106,7 +101,7 @@ The public-key serializer must be incapable of emitting these
 **10. What public object sizes are acceptable for mobile?**
 Target: public key and KEM packet each serializable in low single-digit
 kilobytes, decapsulation within interactive latency on the reference
-device (Termux / Galaxy A16). Carrier magnitude trades directly against
+device (Termux / Galaxy A16). Internal projected-`n_min` magnitude trades directly against
 both — a Phase-2 measurement, not a guess.
 
 ## Toy domain (for tests)

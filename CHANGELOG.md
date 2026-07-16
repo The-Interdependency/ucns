@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — public-gonol recovery
+
+- Restored the exact A0 public gonol as UCNS canon: position `0` is SPACE/ZERO, the Möbius twist seam and fixed system origin; one 360-degree circuit reverses orientation and complete return requires 720 degrees.
+- Separated the public frame from the normalized recursive factorization subsystem; the public/factorization bridge remains `hmmm`.
+- Removed the application-level `2π` inscription method from the canonical `PrivateGonal` class and quarantined classical Poincaré-disk transforms as compatibility utilities.
+- Re-scoped Carrier-LCM to internal projected `n_min`, retained Theorem N as `FRONTIER`, and removed PTCA/Fano/octonion status overclaims.
+- Added permanent origin, 720-degree return, theorem-status, bridge-obligation, metadata, and non-flattening regressions.
+
 ## 1.0.0rc1 — 2026-07-12
 
 First scoped v1.0 release candidate. This candidate packages the stack repair,

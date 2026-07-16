@@ -21,7 +21,7 @@ experimental UCNS-native cache prototype.
 |---|---|
 | Package | `ucns` |
 | Version | `1.0.0rc1` |
-| Description | Unit Circle Number System recursive factorization engine |
+| Description | Fixed-origin public gonol canon with a scoped recursive factorization research subsystem |
 | Status | 3 - Alpha |
 | Python | >=3.8 (classifiers: 3.8, 3.10, 3.11, 3.12) |
 | License | Apache-2.0 |
