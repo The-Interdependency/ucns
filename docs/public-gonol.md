@@ -2,8 +2,10 @@
 
 **Status:** `IMPLEMENTED` in the Python package; source parity and behavior are
 covered by `tests/test_public_gonol.py`. This promotion adds no factorization,
-Lean, linguistic, embedding-performance, EDCM-measurement, or METAPAT-validity
-claim.
+linguistic, embedding-performance, EDCM-measurement, or METAPAT-validity claim.
+The origin/orientation surface is also represented in
+`formal/Ucns/PublicGonol.lean`; `lake build` is the execution authority for that
+formal file.
 
 ## Authority
 
@@ -39,7 +41,7 @@ SPACE
 ZERO
 Möbius twist point
 the seam
-the origin
+the origin for the entire system
 the only always-known character
 ```
 
@@ -62,6 +64,21 @@ one-glyph-per-line SHA-256 is:
 ```text
 20d6ed51fdff5505ed9696c38d6dcc82f982eba166d9b712bee68c4521b751ac
 ```
+
+## Orientation and complete return
+
+The Möbius twist makes orientation part of the public frame.
+
+```text
+one carrier circuit = 360 degrees
+result after one circuit = same local position, opposite orientation
+complete system return = two circuits = 720 degrees
+```
+
+Therefore a local recurrence after 360 degrees is not the complete UCNS return.
+The full return requires restoration of orientation after 720 degrees. This is a
+load-bearing property of the public gonol, not a convention imported from the
+normalized factorization model.
 
 ## Faces, chirality, mirror, and adjacency
 
@@ -108,14 +125,15 @@ extend that operation into an unratified mathematical interpretation.
 
 `UCNSObject.normalize()` remains unchanged in this promotion. It normalizes the
 recursive factorization object representation by shifting an object's first
-angle. That local representation rule is not applied to the public gonol.
+internal value. That local representation rule is not applied to the public
+gonol.
 
 The public gonol and ordinary `UCNSObject` are therefore distinct public
 surfaces in this patch:
 
 ```text
 public gonol:
-    fixed system origin and twist-bearing carrier canon
+    fixed system origin, twist-bearing carrier, and 720-degree return canon
 
 UCNSObject:
     existing normalized recursive factorization object
