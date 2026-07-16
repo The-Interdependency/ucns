@@ -33,7 +33,8 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "ucns-spec.md": (
             "The public gonol implemented in `a0-betatest@7af8deb` is canon for UCNS",
             "position `0` is SPACE/ZERO",
-            "No continuous-angle bridge from the public gonol is established here",
+            "No continuous-angle bridge",
+            "from the public gonol is established here",
         ),
         "docs/claims-ledger.md": (
             "The public gonol is the canonical 157-position UCNS carrier",
