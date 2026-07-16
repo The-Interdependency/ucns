@@ -24,6 +24,22 @@ def test_package_and_zenodo_identity_name_the_public_frame_first():
     assert "public gonol" in zenodo["keywords"]
 
 
+def test_agent_instructions_cannot_flatten_the_repository_again():
+    agents = _text("AGENTS.md")
+    assert "Public-gonol canon is load-bearing" in agents
+    assert "one 360-degree circuit changes orientation" in agents
+    assert "complete return requires 720 degrees" in agents
+    assert "Do not infer a bridge" in agents
+
+    claude = _text("CLAUDE.md")
+    assert "fixed-origin public gonol" in claude
+    assert "separately scoped normalized recursive factorization subsystem" in claude
+    assert "No bridge between them is assumed" in claude
+    assert "6/6 empirical" not in claude
+    assert "public_gonol.py" in claude
+    assert "public-gonol ↔ normalized-factorization bridge" in claude
+
+
 def test_readme_is_not_flattened_into_factorization_only():
     readme = _text("README.md")
     assert readme.startswith(
@@ -37,7 +53,7 @@ def test_readme_is_not_flattened_into_factorization_only():
     assert "compatibility-only local coordinate/disk/embedding utilities" in readme
 
 
-def test_repository_manifest_and_changelog_record_the_recovery():
+def test_repository_manifest_changelog_and_release_record_the_recovery():
     manifest = _text("MANIFEST.md")
     assert "canonical public 157-gonal and fixed SPACE/ZERO Möbius twist origin" in manifest
     assert "The public-gonol ↔ normalized-factorization bridge remains `hmmm`" in manifest
@@ -47,6 +63,12 @@ def test_repository_manifest_and_changelog_record_the_recovery():
     assert "## Unreleased — public-gonol recovery" in changelog
     assert "complete return requires 720 degrees" in changelog
     assert "removed PTCA/Fano/octonion status overclaims" in changelog
+
+    release = _text("RELEASE.md")
+    assert "UCNS v1.0.0 packages two deliberately separated surfaces" in release
+    assert "complete return requires 720 degrees" in release
+    assert "public-gonol ↔ normalized-factorization bridge" in release
+    assert "PrivateGonal exposes no application-level 2π inscription method" in release
 
 
 def test_crypto_planning_document_cannot_redefine_the_public_carrier():
