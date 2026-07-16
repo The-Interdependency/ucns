@@ -20,13 +20,13 @@ jobs:
           workflow_path = ".github/workflows/apply-public-gonol-formal-scope-out-of-band.yml"
           subprocess.run(
               [
-                  "git", "-C", str(maintenance), "fetch", "--deepen=6", "origin",
+                  "git", "-C", str(maintenance), "fetch", "--deepen=8", "origin",
                   "agent/apply-public-gonol-formal-scope-out-of-band",
               ],
               check=True,
           )
           reviewed = subprocess.check_output(
-              ["git", "-C", str(maintenance), "show", "HEAD~2:" + workflow_path],
+              ["git", "-C", str(maintenance), "show", "HEAD~3:" + workflow_path],
               text=True,
           )
           marker = "          python - <<'PY'\n"
