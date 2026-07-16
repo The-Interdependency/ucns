@@ -58,8 +58,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CLAUDE.md ucns_msdmd.ts README.md CHANGELOG.md ucns-spec.md \
-            pcea-ucns/ucns-crypto-domain-v0.md
+          git add AGENTS.md CLAUDE.md ucns_msdmd.ts README.md CHANGELOG.md \
+            ucns-spec.md pcea-ucns/ucns-crypto-domain-v0.md
           git diff --cached --stat
           git commit -m "docs(canon): root package and planning identity in the public frame"
           git push origin HEAD:agent/remove-2pi-inscription-from-canon
