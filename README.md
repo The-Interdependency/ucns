@@ -22,6 +22,13 @@ This repository contains the UCNS (Unit Circle Number System) sequence theory an
 > `ucns.a0_safe` is the A0-safe inspection facade. The recursive
 > engine now lives directly under `ucns`; `ucns_recursive` is retained only as a
 > compatibility import path and is **deprecated** for direct user imports.
+>
+> **Public gonol canon.** `ucns` owns the exact public 157-gonal promoted from
+> `The-Interdependency/a0-betatest@7af8deb`. Position `0` is SPACE/ZERO: the
+> Möbius twist point, seam, fixed origin for the entire system, and only
+> always-known character. It is never moved by private phase or permutation.
+> No `k/157`, `2k/157`, arbitrary-origin, or removable-gauge interpretation is
+> part of this promotion. See `docs/public-gonol.md`.
 
 ---
 
@@ -47,6 +54,29 @@ cd ucns
 python -m pip install -e .[dev]
 python -m pytest ucns_recursive/tests tests -v
 ```
+
+---
+
+## Canonical public gonol
+
+```python
+from ucns import (
+    PUBLIC_GONOL_157,
+    ORIGIN,
+    encode_text_path,
+    decode_text_path,
+    PrivateGonal,
+)
+
+assert PUBLIC_GONOL_157[ORIGIN] == " "
+assert decode_text_path(encode_text_path("a a")) == "a a"
+assert PrivateGonal.from_seed(b"agent").perm[ORIGIN] == ORIGIN
+```
+
+The public gonol is the fixed UCNS frame. Ordinary `UCNSObject` normalization
+remains a separate recursive-factorization representation and is not applied to
+the public gonol. A bridge between the two remains `hmmm`; this package does not
+invent one.
 
 ---
 
@@ -106,6 +136,11 @@ ucns/                    # v1.0 public Python API and engine implementation
   __init__.py            # from ucns import UCNSObject, multiply, factor_search_v08, ...
   a0_safe.py             # A0-safe inspection facade: identity, describe, canonical, factor
   canonical.py           # UCNSObject, multiply, is_unit
+  public_gonol.py         # exact public 157-gonal and fixed twist origin
+  public_gonol_faces.py   # faces, chirality, adjacency
+  public_gonol_mirror.py  # origin-fixed reflection
+  public_gonol_lifted_path.py  # lossless text traversal
+  public_gonol_private.py # fixed-origin nonzero-ring transforms
   domains.py             # Frozen D' domain + payload catalogue
   domain_status.py       # Typed status vocabulary (DEFENDED, IMPLEMENTED, ...)
   host_recovery.py       # Recover host angle/face structure from P

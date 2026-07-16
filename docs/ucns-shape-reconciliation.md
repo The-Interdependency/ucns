@@ -1,166 +1,210 @@
-# UCNS Shape Reconciliation (UCNS-A ⟷ UCNS-G)
+# UCNS Shape Reconciliation
 
-## Scope and method
+## Canonical public-frame correction
 
-This document resolves whether the repository's recursive algebraic UCNS object (UCNS-A) and the session-defined metric geometry UCNS object (UCNS-G) are the same construction at different layers, or parallel constructions sharing a name.
+The previous two-surface comparison flattened the UCNS public frame into the
+normalized recursive factorization object. That framing is superseded.
 
-I treated source code/spec as authoritative and explicitly checked the files listed in the task brief.
+The exact public gonol from
+`The-Interdependency/a0-betatest@7af8debf6ef3905f01baff02b43d8c3bee16ccbc`
+is canon for all UCNS.
 
----
+Its position `0` is SPACE/ZERO: the Möbius twist point, seam, fixed system
+origin, and only always-known character. One 360-degree circuit returns to the
+same local position with opposite orientation; the complete return requires 720
+degrees.
 
-## Corrected UCNS-A inventory (source-verified)
+The reconciliation therefore has a **three-surface ontology**:
 
-### 1) Core object and fields
+```text
+UCNS-PUBLIC
+    fixed 157-position twist-bearing public gonol
 
-UCNS-A is implemented as `UCNSObject(n_dec, n_min, A_plus, F_plus)` in `ucns/canonical.py`.
+UCNS-A
+    normalized recursive factorization-object algebra
 
-- `A_plus` is a list of `(angle, payload)` where `payload` is `UCNSObject | None`.
-- `None` is the unit/sentinel payload (`UNIT = None`).
-- `F_plus` is a parallel bit list (0/1) per stored anchor/cell.
+UCNS-G / EDCM
+    downstream metric/geometry and measurement surfaces
+```
 
-### 2) Angle domain and representation
-
-Angles are represented as `fractions.Fraction` values (`FractionType = Fraction`) and normalized modulo 4 via `% 4`.
-
-Interpretation from code + docs:
-- internal angle space is a doubled cover with period 4 (equivalent to `4π` in the prose spec),
-- minimal-carrier computation projects through `(a % 2) / 2`, i.e., single-cover lattice membership for `n_min` while retaining doubled-cover angle storage.
-
-### 3) `n_dec` and `n_min`
-
-- `n_min` is intrinsic and recomputed from angles as LCM of denominators from projected circle fractions.
-- `n_dec` is declared/presentation carrier, required to be a multiple of `n_min`; else object construction fails.
-
-### 4) Star/mirror and face behavior
-
-Normalization computes mirror data:
-- `A_minus`: reverse sequence with negated angles modulo 4; payloads are recursively disk-flipped via `_disk_flip`.
-- `F_minus`: reverse of `F_plus` only (no bit negation).
-
-### 5) Multiplication semantics
-
-`multiply(A,B)` builds full `|A|×|B|` cells.
-
-For each `(k,j)`:
-- angle: `(alpha_k + (beta_j - beta0)) % 4`,
-- payload: recursive composition (`multiply`) when both payloads exist, otherwise non-`None` payload is passed through,
-- face bit: XOR (`f_k_A ^ f_j_B`).
-
-This is depth-agnostic recursion exactly as the brief states (no depth-specific branch logic).
-
-### 6) What UCNS-A does **not** natively store in the object
-
-`UCNSObject` itself has no explicit scalar fields for:
-- radius/magnitude `r`,
-- winding count/loop counter `z`,
-- area-percent measure.
-
-Those quantities are not part of the canonical recursive object structure in `ucns/canonical.py`.
-
-### 7) Discrepancies versus the brief’s UCNS-A summary
-
-- The brief asked whether angle might be `Fraction`; source confirms **yes**, angle is `Fraction`-typed.
-- The brief asked whether face-flip is per-cell and what it does; source confirms per-cell bit in product is XOR composition, while mirror/star uses reverse-only for `F_minus`.
-- The brief was uncertain on 360 vs 720-period handling; source indicates doubled-cover arithmetic (`mod 4`) and spec prose explicitly states doubled angular cover (`4π`).
+There is no assumed bridge from UCNS-PUBLIC to UCNS-A, and no theorem-status
+transfer from either UCNS surface into EDCM.
 
 ---
 
-## Candidate correspondence table (resolved)
+## 1. UCNS-PUBLIC: canonical frame
 
-| UCNS-G element | Candidate UCNS-A counterpart | Status | Resolution |
-|---|---|---|---|
-| `θ` (period 720°) | `A_plus` angle field | **MATCH** | UCNS-A angles are stored in doubled-cover coordinates (mod 4, equivalent to mod `4π` in spec prose), which matches the 720° period claim at the angular-cover level. |
-| chirality / 360° sheet-flip | `F_plus` face-flip bit | **PARTIAL** | UCNS-A has explicit face bits and XOR accumulation under multiplication, plus doubled-cover orientation language in spec. But it does **not** expose a standalone “spinor closes at 2” variable; behavior is encoded via angle cover + face-bit algebra. |
-| epicyclic composition / recursion-depth ladder | recursive payload nesting + `multiply` | **PARTIAL** | UCNS-A recursion depth exists and composes recursively. But UCNS-G’s named operational ladder (turn→round→session renormalization semantics) is not explicitly encoded as those labels/policies in UCNS-A core object. |
-| gonal inscription / coordinate chart | (unknown) | **PARTIAL** | UCNS-A defines gonal lattice / carrier semantics and embedding helpers elsewhere (`circle_to_disk(theta, r)`), but there is no canonical UCNS-A object-level coordinate chart mapping of the form `(r, θ, z)` for recursive objects. |
-| `r` (magnitude/radius) | unmatched | **NONE (in UCNS-A object)** | No `r` field exists in `UCNSObject`. Radius appears only as a parameter in auxiliary geometry/similarity helpers (`mobius.circle_to_disk`, `similarity.hyperbolic_cosine`) for embeddings, not as canonical recursive-number state. |
-| `z` (winding) / DVG (loop count) | unmatched | **NONE** | No explicit winding-number/loop-count variable or derived DVG metric appears in UCNS-A canonical object or multiplication semantics. |
-| area-percent / DRIFT | unmatched | **NONE** | No area-percent accounting exists in canonical UCNS-A object, normalization, or multiplication. |
-| UCNS-A multiply/factorization vs UCNS-G coordinates | `multiply` / `factor_search_v08` / catalogue | **NONE (as stated)** | UCNS-A has explicit algebra + factorization theorem scope; UCNS-G statement in task defines a metric coordinate/measurement frame and does not include a source-backed multiplication/factorization structure in `(r,θ,z)` terms. |
+UCNS-PUBLIC owns:
 
----
+- arity `157`;
+- exact public glyph arrangement;
+- SPACE/ZERO at position `0`;
+- Möbius twist, seam, and fixed origin;
+- public faces, chirality, adjacency, and origin-fixed mirror;
+- private phase/permutation rules that fix position zero;
+- lossless lifted traversal;
+- full-revolution repeated-character behavior;
+- spaces as emitted seam events;
+- 720-degree complete return.
 
-## Geometry modules check (`ucns/*`) and whether they unify UCNS-G
-
-Repository geometry/embedding modules do include disk and radius concepts, but at a different layer:
-
-- `ucns/core.py`: unit-circle angle object `UCN` with period `2π` (`TAU`) and circle metrics.
-- `ucns/mobius.py`: Poincaré-disk Möbius transforms with interior complex points and optional radial embedding helper (`circle_to_disk(theta, r)`).
-- `ucns/epicycle.py`: FFT decomposition with amplitude/radius and phase per frequency component.
-- `ucns/embedding.py` + `ucns/similarity.py`: embedding vectors of phases and multiple similarity metrics including hyperbolic cosine with user-chosen `radius`.
-
-These modules establish that the repository contains **a** geometry/embedding layer with radii and disk metrics. But this is not the same as proving the canonical recursive UCNS-A number object equals a single `(r, θ, z)` state with DRIFT/DVG semantics.
-
-No source path found that realizes all of UCNS-G’s required tuple fields and derived metrics (`r`, `θ@720`, `z`, DRIFT area-percent, DVG loop count) as canonical coordinates of `UCNSObject`.
+It does not derive its origin from a continuous coordinate, a first anchor, or a
+normalized factorization object.
 
 ---
 
-## Sharpest divergence point
+## 2. UCNS-A: normalized recursive factorization model
 
-The first decisive divergence is object ontology:
+UCNS-A is implemented as:
 
-- UCNS-A canonical object is a **recursive ordered sequence of anchors with payload trees and face bits**.
-- UCNS-G is defined as a **single-point coordinate triple `(r, θ, z)`** with external metrics (DRIFT, DVG).
+```text
+UCNSObject(n_dec, n_min, A_plus, F_plus)
+```
 
-Without source-backed functions that map `UCNSObject` ↔ `(r, θ, z)` and recover DRIFT/DVG from canonical UCNS-A state, they are not the same object in current repo canon.
+with:
+
+- ordered internal host cells;
+- exact rational internal values;
+- optional recursive payloads;
+- internal face bits;
+- object-relative normalization;
+- recursive multiplication;
+- quotient and factor search;
+- stable serialization and evidence records.
+
+The recursive model is an implemented UCNS subsystem. It is not the public frame.
+
+### Internal value domain
+
+The implementation stores internal values modulo four and computes `n_min` from
+an additional internal projection. Those are facts about UCNS-A as implemented.
+They do not establish a public-gonol vertex-angle map, and they do not locate the
+public twist origin.
+
+### Internal identity
+
+The singleton internal unit may be the multiplication identity of UCNS-A. It is
+not thereby public SPACE/ZERO.
+
+### Multiplication
+
+`multiply(A, B)` composes ordered cells, internal values, face bits, and payloads.
+No current theorem proves that this operation is the complete public-gonol
+composition or preserves the public twist/orientation structure.
 
 ---
 
-## Verdict
+## 3. UCNS-G / EDCM: downstream geometry and measurement
 
-## **PARALLEL**
+UCNS-G and EDCM contain metric axes, projections, geometric visualizations,
+measurement records, and empirical readouts.
 
-UCNS-A and UCNS-G currently appear to be distinct constructions sharing the name “UCNS,” with partial conceptual overlap (doubled-cover angle/orientation language and Möbius/disk vocabulary), but no full source-backed coordinate correspondence.
+They may consume UCNS identities or geometry through explicit adapters, but:
 
-- UCNS-A is a recursive algebra with multiplication/factorization semantics and theorem-scoped completeness conditions.
-- UCNS-G (as stated in the task) is a metric/accounting frame with `(r, θ, z)` and DRIFT/DVG, lacking demonstrated in-repo algebraic realization as UCNS-A canonical state.
-
-Per firewall rule: Theorem N remains scoped to UCNS-A factorization/search claims and does not transfer to UCNS-G metric claims.
+- metric values are not public-gonol coordinates merely because they use UCNS;
+- Theorem N does not validate EDCM measurements;
+- public-gonol canon does not establish empirical semantics;
+- geometry projections do not inherit injectivity or proof status without their
+  own evidence.
 
 ---
 
-## Reconciliation action plan (proceeding from this verdict)
+## 4. Correspondence table
 
-Because the verdict is **PARALLEL**, the recommended next step is a constrained bridge program that can either prove a concrete map or formally preserve separation.
+| Surface | Public-gonol counterpart | Status |
+|---|---|---|
+| Fixed system origin | public position `0`, SPACE/ZERO twist seam | **CANONICAL** |
+| Complete return | two orientation-changing circuits, 720 degrees | **CANONICAL** |
+| Public face/chirality | `face`, `chirality`, `n_plus`, `n_minus`, mirror | **CANONICAL** |
+| Lifted text traversal | absolute path over public carrier | **CANONICAL** |
+| UCNS-A first-cell normalization | none established | **NO BRIDGE** |
+| UCNS-A internal modulo-four values | none established | **NO PUBLIC-VERTEX MAP** |
+| UCNS-A `n_min` | none established as complete public carrier | **INTERNAL PROJECTION** |
+| UCNS-A face XOR | public twist/chirality derivation absent | **BOOLEAN LAW; SYSTEM INTERPRETATION OPEN** |
+| UCNS-A multiplication | public composition correspondence absent | **INTERNAL ALGEBRA** |
+| UCNS-G `(rho, lambda, theta, z, w)` | fixed public-frame recovery absent | **COMPATIBILITY PROJECTION** |
+| EDCM metrics | no public-gonol semantic identity | **DOWNSTREAM MEASUREMENT** |
 
-### A1) Add an explicit boundary section to canonical spec
+---
 
-- Add a dedicated subsection in `ucns-spec.md` stating that Theorem N scope applies to UCNS-A algebra/factorization only, and does not imply metric claims (DRIFT/DVG, `(r,θ,z)` geometry).
-- Mirror this boundary in `docs/pure-ucns-number-system.md` so public-facing “number system” language cannot be read as endorsing UCNS-G metrics.
+## 5. Lemma impact
 
-### A2) Use the bridge checklist as the canonical planning gate (no theorem transfer)
+### Reusable internal lemmas
 
-Bridge planning is now tracked in:
+These remain reusable inside UCNS-A when correctly scoped:
 
-- `docs/edcm-edcmbone-bridge-checklist.md`
+- row-major product shape and list lengths;
+- exact recomposition predicates;
+- generic LCM/divisibility arithmetic;
+- recursive payload radius;
+- breadth and fork counts;
+- Boolean XOR facts;
+- finite catalogue enumeration.
 
-That checklist pins mandatory artifacts before any theorem transfer claim, including:
+### Scope-narrowed theorem families
 
-1. **Forward projection function (source-backed)** from explicit UCNS-A objects to UCNS-G outputs.
-2. **Non-recoverability/recoverability limits** (currently including `r`, `z`, DRIFT, DVG limits).
-3. **Per-output status labels** for bridge outputs.
-4. **Comparative tests** against known UCNS-A objects.
+These are not discarded, but they are internal until a bridge exists:
 
-### A3) Add regression guardrails in tests/docs checks
+- factorization identity;
+- idempotents and local groups;
+- quotient/cancellativity results;
+- Carrier-LCM;
+- Theorem N search/completeness family;
+- the compatibility geometry projection.
 
-- Add doc/assertion checks that prevent accidental wording drift claiming UCNS-G is theorem-proven by Theorem N.
-- Add explicit tests only when bridge APIs exist; until then, add policy assertions in docs/lint checks rather than pseudo-math unit tests.
+### Rejected system-wide interpretations
 
-### A4) Decision gate for rename vs unification
+These must not return:
 
-After A1–A3, choose one gate:
+- public origin chosen by first-cell normalization;
+- public zero located at inferred `θ = 0` or `θ = 2π`;
+- 360 degrees treated as complete return;
+- global public-frame gauge shifting;
+- `k/157` or `2k/157` as defining public coordinates;
+- factorization unit identified with public SPACE/ZERO;
+- Carrier-LCM or Theorem N claimed for the complete public frame without a
+  bridge proof.
 
-- **Gate U (Unify):** only if source-backed functions exist for `(r,θ,z)` + DRIFT/DVG from canonical objects.
-- **Gate R (Rename/Scope):** if not, keep UCNS-A and UCNS-G names separated in public surfaces and release notes.
+---
 
-This action sequence is intentionally implementation-light and status-heavy: it reduces claim-risk immediately while preserving a path to later unification.
+## 6. Bridge obligations
 
+A faithful UCNS-PUBLIC ↔ UCNS-A bridge must be separately specified and prove:
+
+1. fixed origin preservation;
+2. twist and seam preservation;
+3. orientation change after one circuit;
+4. complete 720-degree return;
+5. face and chirality preservation;
+6. lifted-path and seam-crossing treatment;
+7. correspondence of composition;
+8. correspondence, or explicit non-correspondence, of carrier invariants;
+9. information loss and recoverability;
+10. serialization and status boundaries.
+
+No inferred angle convention or normalization rule may substitute for these
+obligations.
+
+---
+
+## 7. Verdict
+
+The old verdict “UCNS-A and UCNS-G are parallel” was incomplete because it
+omitted the canonical public frame.
+
+The corrected verdict is:
+
+```text
+UCNS-PUBLIC is the canonical system frame.
+UCNS-A is an internal normalized factorization algebra.
+UCNS-G/EDCM is a downstream geometry and measurement family.
+Bridges among them are explicit obligations, not assumed identity.
+```
+
+Theorem N remains scoped to UCNS-A and remains `FRONTIER`. No proof status
+transfers to UCNS-G or EDCM.
 
 ## hmmm
 
-- I did not find a canonical source function establishing a bijection (or even total map) between `UCNSObject` and `(r, θ, z)` with DRIFT/DVG extraction.
-- There is an internal split between legacy/public `ucns` geometry/embedding modules (mostly `2π` angle APIs plus optional disk radius) and recursive canonical algebra in `ucns`; naming overlap may be causing semantic bleed.
-- If a unification is desired, it likely requires a new explicit spec bridge defining:
-  1) coordinate projection from recursive anchor/payload trees to `(r, θ, z)`,
-  2) formal definitions of DRIFT and DVG in terms of canonical UCNS-A invariants,
-  3) proof/status boundary labels so theorem scope remains non-transfer by default.
+The public frame is no longer missing from the ontology. The bridge from that
+frame into the internal algebra remains open and must be defined from Erin's
+canon rather than reconstructed from historical implementation choices.

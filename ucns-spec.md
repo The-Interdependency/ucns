@@ -92,17 +92,18 @@ with doubled angular cover
 
 The doubled cover is required to encode two-revolution completion and orientation-sensitive traversal.
 
-### 2.1 The Möbius Twist-Point and the Necessity of the Doubled Cover
+### 2.1 The canonical public-gonol twist origin
 
-The doubled cover is not an arbitrary choice. It is required by the existence of the Möbius twist-point.
+The public gonol implemented in `a0-betatest@7af8deb` is canon for UCNS. Its
+position `0` is SPACE/ZERO: the Möbius twist point, seam, origin for the entire
+system, and only always-known character. Private transformations preserve this
+point and act only on the 156 nonzero positions.
 
-A single revolution (\(0\) to \(2\pi\)) returns to the same geometric location on \(S^1\) but with orientation flipped. This flip is the Möbius twist: the seam inscribed in the cover where one sheet transitions to the other. A second revolution (\(2\pi\) to \(4\pi\)) restores the original orientation and closes the traversal.
-
-The seam — the point the twist passes through — is where no orientation is assigned: a traversal-contact without face. It is not on either sheet. It is the beginning.
-
-This geometric object is zero.
-
-The \(4\pi\) period of \(\widetilde{S^1}\) is forced by zero's existence: one revolution to cross the seam, one revolution to close.
+This fixed origin is not selected by a continuous angle, is not an arbitrary
+first anchor, and is not removable by object-relative normalization. Any
+continuous-cover model used elsewhere in this specification must be rooted in
+this canon and must not relocate the seam. No continuous-angle bridge from the
+public gonol is established here.
 
 ## 3. Gonal Lattice
 
@@ -242,41 +243,21 @@ F^{-} = (F^{+})^{\ast}.
 
 This is reverse-only. There is no bit negation.
 
-## 7. Geometric Zero
+## 7. Public-Gonol Zero
 
-Zero is geometric.
+Zero is the public-gonol position `0`: SPACE/ZERO, the Möbius twist point,
+seam, fixed origin for the entire system, and only always-known character.
+The digit `"0"` is an ordinary nonzero glyph.
 
-\(\underline{\mathbf{0}}\) is the Möbius twist-point: the seam of the doubled cover \(\widetilde{S^1}\), located at the half-revolution \(\theta = 2\pi\), where the cover's orientation flip is inscribed.
+The exact arrangement, faces, chirality, mirror, fixed-origin private
+transformations, and lifted traversal are implemented by the UCNS public-gonol
+surface promoted from `a0-betatest@7af8deb`. Spaces are emitted seam events; a
+repeated character advances by a full 157-step revolution.
 
-As a traversal object, \(\underline{\mathbf{0}}\) is the pencil-touch before traversal begins — contact with the seam without displacement. It carries neither face-state \(0\) nor face-state \(1\); it is the transition between them.
-
-It belongs to \(\mathcal{G}_0\). It is the minimal degenerate member: no anchor sequence, no host path, no extent.
-
-The absorption law
-
-\[
-\underline{\mathbf{0}} \boxtimes \underline{\mathbf{G}}
-=
-\underline{\mathbf{0}}
-=
-\underline{\mathbf{G}} \boxtimes \underline{\mathbf{0}}
-\]
-
-is the geometry of the seam: any traversal that begins or ends at the twist-point is consumed by it. The seam has no orientation to carry the path forward.
-
-The earlier framing — *zero is not geometric; it is adjoined as an external absorbing element* — is superseded. The extended algebra \(\mathcal{G}_0^{\sharp}\) is dissolved; \(\underline{\mathbf{0}} \in \mathcal{G}_0\) directly. There is not "nothing" in geometry: zero is something — it is the beginning.
-
-### 7.1 Zero and Face-State XOR
-
-The face-state XOR rule in multiplication (Section 11.5) is the algebra of crossing the twist-point. Each anchor carries a face-state that records accumulated crossings of the seam. XOR is the correct operation because the seam is its own inverse: crossing it twice restores orientation.
-
-The product rule
-
-\[
-F^{+}_{A \boxtimes B}[k,j] = f_k^A \oplus f_j^B
-\]
-
-is not a bookkeeping convention but a geometric fact: the combined traversal crosses \(A\)'s accumulated seams and \(B\)'s accumulated seams, and each crossing composes by XOR.
+This canon does not by itself assert an absorbing multiplication law, locate
+zero at `2π`, identify the public twist with a normalized factorization unit,
+or prove an interpretation of face XOR. Any such bridge or algebraic extension
+remains `hmmm` until Erin ratifies it.
 
 ## 8. Geometric Unit
 
@@ -472,7 +453,7 @@ Repeated anchors produced by collisions are preserved.
 
 ### 11.5 Face-state product
 
-Face-states compose by XOR because XOR is the algebra of crossing the Möbius twist-point (Section 7.1): each face-state records accumulated seam-crossings, and crossing the seam twice restores orientation.
+For ordinary normalized `UCNSObject` factorization values, face states compose by the implemented XOR rule. This specification does not derive that rule from an unratified continuous account of crossing the public-gonol twist; that bridge remains `hmmm`.
 
 \[
 F^{+}_{A\boxtimes B}
@@ -950,21 +931,16 @@ That is the complete current spec boundary.
 
 # Part VI — Hyperdimensional Structure and the Octonion Limit
 
-## H1. UCNS Objects as Möbius-Cylindrical Towers
+## H1. Recursive payload towers and the public-gonol boundary
 
-A UCNS object at nesting depth \(n\) is an \(n\)-fold iterated Möbius-cylinder bundle.
+`UCNSObject` values carry recursive payload towers. Describing those towers as
+continuous Möbius-cylinder bundles is exploratory, not public-gonol canon.
 
-At each level:
-
-- the **host traversal** is a path on \(S^1\) — the cylindrical axis,
-- the **twist-seam** (zero, §7) is inscribed at \(\theta = 2\pi\) — the Möbius half-turn,
-- the **payload** is a complete depth-\((n-1)\) object fibered over each host anchor.
-
-The structure at depth \(n\) is a cylinder whose cross-section at each anchor is itself a Möbius-cylinder of depth \(n-1\). This terminates at depth 0 (flat: cylinder with no further fiber) or at zero (the twist-seam itself: contact without cylinder).
-
-**Depth-\(n\) UCNS objects are hyperdimensional cylindrical Möbius structures.** The dimension of the fiber tower is \(n\).
-
----
+The public-gonol twist/seam remains fixed at position `0`; it is not inscribed
+at `θ = 2π`, moved by a first-anchor shift, or reconstructed from a normalized
+object. Any geometric bridge between the fixed public frame and recursive
+factorization objects must preserve Erin's canon and remains `hmmm` until
+explicitly specified.
 
 ## H2. Coupling by Interlocking
 

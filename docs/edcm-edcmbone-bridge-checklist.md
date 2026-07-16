@@ -1,261 +1,278 @@
 # EDCM / edcmbone ↔ UCNS Bridge Checklist
 
-**Status:** Checklist for future UCNS-A ↔ UCNS-G (EDCM / edcmbone) bridge
-work. Not a bridge construction. Not a claim that one exists.
-**Date pinned:** 2026-05-22
-**Companion docs:**
-- `docs/ucns-shape-reconciliation.md` — PARALLEL verdict (PR #21).
-- `docs/ucns-g-prime-cylinder-supplement.md` — UCNS-G v3 supplement (PR #22).
-- `The-Interdependency/edcmbone:docs/ucns-boundary.md` — non-transfer rule.
-- `The-Interdependency/edcmbone:docs/handoffs/2026-05-22-ucns-g-prime-cylinder-v3.md` — UCNS-G v3 pin.
+**Status:** mandatory gate for future public-gonol, factorization, geometry, or
+measurement bridges. This document is not a bridge and transfers no theorem or
+measurement status.
 
-## 0. Why this exists
+## 0. Foundational boundary
 
-The `ucns` repo's theorem frontier is fenced. UCNS-A is the recursive
-factorization algebra defined and implemented in this repo.
-**UCNS-G** is the EDCM metric geometry pinned by `edcmbone` (a
-prime-indexed tensor of non-closing Möbius-cylinder metric disks).
+UCNS is rooted in the fixed-origin public gonol promoted from
+`a0-betatest@7af8deb`:
 
-The PARALLEL verdict from `docs/ucns-shape-reconciliation.md` says: no
-source-backed bijection exists between UCNS-A and UCNS-G. This document
-exists so that any future attempt to construct one has to pass a fixed
-checklist before any theorem status is transferred.
+```text
+position 0 = SPACE = ZERO
+position 0 = Möbius twist point = seam = system origin
+one 360-degree circuit flips orientation
+complete return requires 720 degrees
+```
 
-This document does **not** change any UCNS-A code, theorem, or status
-label. It only records the gate.
+UCNS also contains a normalized recursive factorization algebra
+(`UCNSObject`, `multiply`, quotient, factor search) and compatibility geometry
+projections. Those surfaces do not become identical to the public frame by
+naming, normalization, or historical usage.
 
-## 1. What UCNS-A currently proves / implements
+EDCM and edcmbone are downstream measurement systems. Their scalar readouts,
+metric disks, transcript analysis, and empirical claims are not UCNS theorems.
 
-(From `docs/claims-ledger.md` and `CLAUDE.md`. Status vocabulary per
-`docs/ucns-spec-status-addendum-2026-05-16.md`.)
+---
 
-| Claim / surface | Status |
+## 1. Current surface/status inventory
+
+| Claim / surface | Current status |
 |---|---|
-| Flat kernel algebra | `DEFENDED` |
-| Depth-1 restricted completeness | `DEFENDED` |
-| Depth-2 oracle (smallest class, Lemma 7) | `DEFENDED` + `ORACLE-COMPLETE` |
-| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED` (not yet `DEFENDED`) |
-| Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |
-| Catalogue-sufficient completeness (Theorem N) | `DEFENDED` — proof drafted, awaiting external formal review |
-| Tractable sub-catalogues | `FRONTIER` |
-| Carrier widening | `FRONTIER` / out of v1.0 scope |
-| `SEQ-PRIME` as solver sentinel inside defended-complete domains | `DEFENDED` policy rule |
+| Exact public gonol and fixed SPACE/ZERO origin | `IMPLEMENTED` + `TEST-BACKED` after green promotion CI |
+| Public lifted traversal | `IMPLEMENTED` + `TEST-BACKED` after green promotion CI |
+| Public origin and 720-degree formal definition | intended sorry-free; `lake build` is authority |
+| Normalized recursive factorization implementation | `IMPLEMENTED` with domain-specific evidence |
+| Flat kernel algebra | `DEFENDED` in its declared internal scope |
+| Depth-1 restricted completeness | `DEFENDED` in its declared internal scope |
+| Depth-2 oracle class | `DEFENDED` + `ORACLE-COMPLETE` in its declared scope |
+| Full frozen depth-2 domain | `IMPLEMENTED` + `TEST-BACKED`; not generally `DEFENDED` |
+| Catalogue-sufficient completeness (Theorem N) | `FRONTIER`; Lean statements remain `sorry`-backed |
+| Public-gonol ↔ normalized-factorization bridge | `hmmm`; absent |
+| Normalized-factorization ↔ UCNS-G/EDCM bridge | partial adapters; no theorem-status transfer |
+| Public-gonol ↔ EDCM semantic/measurement identity | absent and not implied |
 
-Core implemented surface:
+No numerical historical test count is an execution claim unless tied to an
+immutable artifact.
 
-- `UCNSObject(n_dec, n_min, A_plus, F_plus)` with `(angle, payload)` anchors,
-  modulo-4 doubled-cover angle arithmetic, payload recursion, face bits,
-  XOR face composition.
-- `multiply`, `factor_search_v08`, `left_quotient`, `right_quotient`,
-  `UCNSStore`, `recursive_encode`/`recursive_decode`.
+---
 
-**None of these speak about transcripts, behavioral metrics, scalar
-EDCM vectors, or signed ternary axis states.**
+## 2. Existing systems
 
-## 2. What UCNS-G / EDCM / edcmbone currently measures
+### 2.1 UCNS public frame
 
-(From `edcmbone:docs/handoffs/2026-05-22-ucns-g-prime-cylinder-v3.md`
-and `edcmbone:docs/ucns-boundary.md`.)
+The public frame owns the origin, twist, faces, chirality, adjacency, mirror,
+origin-preserving transformations, lifted traversal, and 720-degree complete
+return.
 
-UCNS-G v3 pins:
+### 2.2 Normalized recursive factorization algebra
 
-- `UCNS-G = prime-indexed tensor of non-closing Möbius-cylinder metric disks.`
-- One disk per metric axis. Primitive axes anchored on primes:
-  `P→2, K→3, Q→5, T→7, S→11, C→13, R→17, D→19, N→23, L→29, O→31,
-  F→37, E→41, I→43`.
-- Signed ternary axis state `s ∈ {-1, 0, +1}` plus magnitude
-  `m ∈ [0, 1]`. `0` is neutral, not absent.
-- Twist is an **ordinal seam**, not an angle value.
-- Canonical state is `(twist_ordinal, phase, face/orientation)`, not
-  `θ mod 360°` or `θ mod 720°`.
-- Möbius face rule: `face_{n+1} = -face_n`.
-- Grain hierarchy: `token → turn → round → session → archive`.
+The internal algebra implements ordered recursive objects, multiplication,
+quotients, catalogue search, stable serialization, and proof-status evidence.
 
-`edcmbone` currently implements:
+Its internal multiplication identity is a factorization-unit object, not public
+SPACE/ZERO. Its first-cell normalization is object-relative, not a system-origin
+operation.
 
-- Scalar EDCM metric vector M_t (C, R, F, E, D, N, I, O, L, P, κ) in
-  `backend/src/edcmbone/metrics/compute.py`.
-- Behavioral metrics pipeline in `core/behavioral/behavioral_metrics.py`,
-  optionally emitting `raw_counts.ucns_hits_by_metric` audit telemetry.
-- UCNS-G v3 schema in `edcmbone/ucns_g/` (Python) and
-  `frontend/src/ucns_g/types.ts` (TypeScript). **Schema only**; no
-  scoring runtime consumes it yet.
-- Local closed-token UCNS encoder in `closed_tokens.py`. This is a
-  **measurement / encoding layer**, not a re-implementation of UCNS-A.
+### 2.3 UCNS compatibility geometry
 
-**None of these inherit proof status from UCNS-A's Theorem N or any
-other `ucns` theorem layer.**
+The current geometry projection emits compatibility coordinates such as radius,
+breadth, a circular-mean internal value, and chirality-derived fields. It is not
+the public frame and has no assumed public-gonol bridge.
 
-## 3. Required bridge artifacts (before any theorem transfer)
+### 2.4 EDCM / edcmbone
 
-Any PR that attempts to transfer status from UCNS-A into UCNS-G / EDCM /
-edcmbone must include **all** of the following:
+EDCM and edcmbone implement source processing, metric readouts, axis states,
+provenance, and empirical result contracts. They may attach UCNS identity or
+status evidence, but they do not inherit UCNS theorem status.
 
-### 3.1 Source-backed projection function
+---
 
-A documented function `π: UCNS-A → UCNS-G`, with:
+## 3. Required bridge layers
 
-- explicit input domain (cited against `ucns.canonical.UCNSObject`),
-- explicit output codomain (cited against `edcmbone.ucns_g.MetricDiskState`
-  and `GrainTensor`),
-- worked examples for at least every `DEFENDED` / `ORACLE-COMPLETE`
-  domain listed in §1 (depth-0, depth-1 restricted, depth-2 oracle),
-- worked examples for at least one `TEST-BACKED` boundary (depth-2 full
-  frozen domain) showing the projection's behavior on cases that are not
-  yet `DEFENDED`.
+A complete cross-stack bridge cannot be one flattened function. It must identify
+which transition it implements.
 
-A pseudocode sketch or English description is **not** sufficient. The
-projection must be implemented and importable.
+### 3.1 Public frame → normalized factorization object
 
-### 3.2 Reverse / recoverability limits
+A bridge `β` must declare and test:
 
-A documented statement of:
+- exact input: public arrangement, lifted path, or other public-gonol value;
+- exact output: normalized `UCNSObject` value;
+- fixed origin preservation;
+- twist and seam preservation;
+- orientation after one and two circuits;
+- 720-degree complete return;
+- face and chirality treatment;
+- lifted order and seam-crossing treatment;
+- composition correspondence;
+- carrier correspondence;
+- recoverability and information loss;
+- stable serialization and versioning.
 
-- whether `π` is injective on the cited input domain,
-- whether `π` admits any partial inverse `π^{-1}: UCNS-G → UCNS-A` and
-  on what domain,
-- the **information loss** at each step (twist collapse, phase rounding,
-  gauge ambiguity, sign quantization),
-- whether known UCNS-A invariants (`n_dec`, `n_min`, face bits, payload
-  recursion depth) are preserved, partially preserved, or destroyed by
-  `π`.
+No angle formula, first-anchor shift, quotient, hash placement, or object-relative
+normalization may stand in for these declarations.
 
-If `π` is lossy, the PR must state: "Theorem N status is **not**
-transferred across this projection because `π` is lossy on [list]."
+### 3.2 Normalized factorization object → compatibility geometry
 
-### 3.3 Status labels per output
+A projection `π` must declare:
 
-Every UCNS-G / EDCM / edcmbone output produced through `π` must carry an
-explicit status label drawn from the existing vocabulary:
+- input domain;
+- output codomain;
+- whether it is total;
+- whether it is injective;
+- degeneracy policy;
+- information loss;
+- whether internal multiplication is preserved;
+- explicit statement that it is not the public frame unless composed with a
+  proved `β`.
 
-```text
-DEFENDED          (only allowed if π is provably status-preserving)
-IMPLEMENTED       code exists and is intended as authoritative implementation
-TEST-BACKED       tests cover the projected behavior in a declared domain
-ORACLE-COMPLETE   complete only under oracle/catalogue assumptions
-FRONTIER          plausible or partially working, not complete
-EXPERIMENTAL      exploration layer, not canon
-```
+### 3.3 UCNS evidence → EDCM / edcmbone
 
-Default label for a first bridge attempt is `EXPERIMENTAL`. Promotion
-to any higher label requires its own PR with the artifacts in §3.1–3.4.
+A consumer adapter must declare:
 
-### 3.4 Tests comparing known UCNS-A objects to UCNS-G outputs
+- exact UCNS record schema/version;
+- source object identity;
+- domain and theorem-status evidence;
+- whether negative certification is authoritative;
+- EDCM policy/measurement epoch identity;
+- proof-status and measurement-validity non-transfer.
 
-A new test file (suggested name:
-`ucns_recursive/tests/test_ucns_g_bridge.py`) that:
+### 3.4 Public gonol → EDCM language/corpus use
 
-- constructs known `UCNSObject`s from the existing depth-0 / depth-1 /
-  depth-2-oracle catalogues,
-- runs `π` on them,
-- asserts the resulting `MetricDiskState` / `GrainTensor` shapes,
-- pins the status label per output,
-- includes at least one **negative** test: an `UCNSObject` from a
-  `FRONTIER` domain that intentionally produces an `EXPERIMENTAL`
-  UCNS-G output, demonstrating that the bridge does **not**
-  silently upgrade status.
+Any word-list, dictionary, morphology, or corpus adapter must consume the UCNS
+public gonol rather than reproduce it. It must not:
 
-The tests must run under the existing `python -m unittest discover
-ucns_recursive/tests/ -v` workflow.
+- derive glyph positions from hashes or dictionary evidence;
+- turn carrier indices into invented fractions;
+- move or normalize away the origin;
+- erase repeated-character revolutions or SPACE seam events;
+- infer linguistic semantics from carrier coordinates alone.
 
-## 4. Non-transfer rule (explicit)
+---
 
-Until **all** of §3.1–§3.4 are merged into `the-interdependency/ucns`
-or `the-interdependency/edcmbone` and cited in a follow-up update to
-`docs/ucns-shape-reconciliation.md`:
+## 4. Status and evidence requirements
+
+Every bridge output must carry a status from the existing vocabulary:
 
 ```text
-Theorem N does NOT validate edcmbone, EDCM, or UCNS-G metric claims.
+DEFENDED
+IMPLEMENTED
+TEST-BACKED
+ORACLE-COMPLETE
+FRONTIER
+EXPERIMENTAL
 ```
 
-This rule applies to:
+A first implementation defaults to `EXPERIMENTAL` unless stronger evidence is
+provided.
 
-- the scalar EDCM metric vector in
-  `edcmbone:backend/src/edcmbone/metrics/compute.py`,
-- the behavioral metrics in
-  `edcmbone:core/behavioral/behavioral_metrics.py`,
-- the v3 schema in `edcmbone:edcmbone/ucns_g/`,
-- the local closed-token encoder in `edcmbone:closed_tokens.py`,
-- any `raw_counts.ucns_hits_by_metric` audit telemetry,
-- any `a0` EDCM runtime that delegates to `edcmbone`,
-- any `interdependent-lib` aggregate that exposes `edcmbone`.
+The bridge PR must include:
 
-PR descriptions touching any of those surfaces should state:
+1. exact source and target identities;
+2. versioned records;
+3. positive fixtures;
+4. negative/tamper fixtures;
+5. round-trip or explicit non-recoverability tests;
+6. composition tests where composition is claimed;
+7. origin/twist/720-degree tests where the public frame is involved;
+8. proof-status non-transfer tests;
+9. generated metadata and package checks;
+10. immutable CI artifacts for execution claims.
 
-> No UCNS-A theorem/proof status is transferred to EDCM, edcmbone, or
-> UCNS-G by this change.
+---
 
-## 5. Allowed now (without §3 artifacts)
+## 5. Mandatory negative tests
 
-Without any bridge in place, the following are explicitly allowed and
-do not require any change to UCNS-A theorem status:
+At minimum, fail closed when:
 
-- `edcmbone` may emit UCNS-shaped audit telemetry (e.g.
-  `raw_counts.ucns_hits_by_metric`) labeled `EXPERIMENTAL`.
-- `edcmbone` may carry the UCNS-G v3 schema as a typed data structure
-  with no scoring runtime attached.
-- `a0` may delegate EDCM measurement primitives to `edcmbone` as long
-  as it does not claim UCNS-A theorem support.
-- `interdependent-lib` may list `edcmbone` as an optional dependency.
-- Visualizations (e.g. `erinepshovel-code/UnitCircle`) may render UCNS-G
-  metric disks on the unit circle and on Möbius-doubled outer surfaces. See
-  `docs/unitcircle-import-assessment.md` before importing any code from that
-  repository.
+- public origin is moved from position zero;
+- SPACE is duplicated or absent;
+- a custom/private carrier is substituted for the public gonol;
+- 360 degrees is treated as complete return;
+- lifted order or revolution count is discarded;
+- digit `"0"` is treated as ZERO;
+- object-relative first-cell normalization is applied to the public frame;
+- a public-gonol bridge is inferred from `k/157`, `2k/157`, or another unratified
+  continuous convention;
+- a geometry projection is labeled injective without evidence;
+- Theorem N is used to validate EDCM metrics;
+- an uncertified factor-search negative is reported as certified;
+- package availability is reported as evidence attachment.
 
-None of the above is a bridge.
+---
 
-## 6. Forbidden now (without §3 artifacts)
+## 6. Non-transfer rule
 
-The following are explicitly **not** allowed without the §3 artifacts
-in place. Public docs (READMEs, CLAUDE.md, spec docs, release notes,
-issue templates, PR descriptions, web copy) must not contain phrasings
-equivalent to:
+Until every relevant bridge layer is implemented and proved/tested at its
+claimed status:
 
-- `UCNS <proves> EDCM`
-- `Theorem N <proves> EDCM metrics`
-- `UCNS-G <is proven>`
-- `EDCM <is a UCNS-A factorization output>`
-- `SEQ-PRIME <applies to EDCM transcripts>`
-- `edcmbone <implements UCNS-A>`
+```text
+The public gonol does not automatically equal a normalized UCNSObject.
+The normalized factorization algebra does not automatically equal UCNS-G.
+Theorem N does not validate EDCM, edcmbone, or UCNS-G metric claims.
+EDCM outputs do not validate UCNS theorem claims.
+```
 
-If such phrasing already exists in any repo, it should be patched in a
-**claim-audit PR** (separate from any bridge construction PR) that
-cites this checklist.
+All cross-repository result contracts must preserve:
 
-## 7. What this checklist does NOT do
+```text
+authority_transfer = false
+proof_status_transfer = false
+measurement_status_transfer = false
+```
 
-- It does not construct the bridge.
-- It does not modify `factor_search_v08`, `multiply`, or any other
-  engine code.
-- It does not change `docs/claims-ledger.md` status labels.
-- It does not modify the PARALLEL verdict in
-  `docs/ucns-shape-reconciliation.md`. That verdict remains the
-  default until §3 artifacts exist and an explicit reconciliation PR
-  updates it.
-- It does not pre-authorize any specific projection design. Section 3
-  is a gate, not a blueprint.
+---
 
-## 8. Hint for the bridge branch (if attempted)
+## 7. Allowed now
 
-A future bridge attempt would naturally live on its own branch in
-`edcmbone` (suggested: `feat/ucns-g-edcmbone-bridge-experimental`), not
-in `ucns`, since the construction depends on `edcmbone.ucns_g`. The
-matching `ucns` work would be the tests in §3.4 and a follow-up update
-to this checklist + `docs/ucns-shape-reconciliation.md`.
+Without a completed bridge, the following remain allowed:
 
-Default initial status for the bridge is `EXPERIMENTAL`. Promotion to
-any other label requires its own PR.
+- UCNS may expose and test the exact public gonol.
+- A0 may consume UCNS public-gonol surfaces for its applications.
+- EDCM may attach canonical UCNS bridge/evidence records under explicit
+  non-transfer rules.
+- EDCM may preserve morphology and dictionary evidence independently of gonol
+  placement.
+- Visualizers may render declared projections as `EXPERIMENTAL` so long as they
+  do not redefine the public origin.
+- Historical objects may be inspected for migration without generating new
+  canon claims.
 
-## 9. Prime quartet discontinuity note
+---
 
-Cross-repo inclusion across `ucns`, `edcmbone`, `a0`, and
-`interdependent-lib` does not constitute theorem continuity or theorem
-transfer. See `docs/prime-quartet-discontinuity.md`.
+## 8. Forbidden now
 
-## 10. Boundary-object role (`hmmm`)
+Without the required artifacts, do not claim:
 
-This checklist is the current boundary object for unresolved
-UCNS-A ↔ UCNS-G bridge constraints: it preserves honest incompletion,
-records the gate between delivered artifacts and future bridge work, and
-marks the transition between today's non-transfer rule and any later
-source-backed construction.
+- normalized `UCNSObject` is the public gonol;
+- internal unit is public SPACE/ZERO;
+- internal first-cell normalization establishes the system origin;
+- Carrier-LCM is the complete public-carrier theorem;
+- Theorem N is completeness for the public gonol;
+- geometry projection recovers the public twist;
+- UCNS proves EDCM metrics;
+- EDCM outputs are factorization theorems;
+- dictionary semantics determine public-gonol coordinates.
+
+---
+
+## 9. Implementation order
+
+1. Promote and validate the exact public gonol in UCNS.
+2. Make A0 consume UCNS rather than maintain a duplicate authority.
+3. Keep EDCM's noncanonical placement retired.
+4. Specify `β`, the public-frame-to-factorization bridge, only from Erin's canon.
+5. Prove/test `β` before widening Carrier-LCM or Theorem N scope.
+6. Build downstream word-list or corpus adapters as consumers, not authorities.
+
+---
+
+## 10. Boundary object
+
+This checklist records the living boundary between:
+
+```text
+fixed public frame
+defined internal algebra
+compatibility geometry
+downstream measurement
+```
+
+It preserves honest incompletion until the missing bridges are real.
+
+## hmmm
+
+The system now has its origin back. What remains is not permission to guess the
+bridge; it is the obligation to construct it without flattening the twist.

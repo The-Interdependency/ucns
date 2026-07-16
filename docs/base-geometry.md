@@ -8,14 +8,21 @@ the base-geometry completion handoff (2026-07-10); the obligation ↔ witness
 reconciliation lives in `audit/obligation_ledger.md` + `audit/reconcile.py`.
 
 Formal non-transfer: nothing here confers Lean-checked status; `formal/`
-remains `sorry`-backed.  Cross-repo non-continuity: the θ=0 origin's role in
-any external glyph codebook is out of this repo's scope.
+remains `sorry`-backed.
+
+**Public-gonol scope.** UCNS owns the canonical public 157-gonal promoted from
+`a0-betatest@7af8deb`. Its position `0` is SPACE/ZERO: the Möbius twist point,
+seam, fixed system origin, and only always-known character. This document proves
+only the operation algebra of ordinary normalized `UCNSObject` factorization
+values. Object-relative first-angle normalization does not act on, move, or
+redefine the public gonol. See `docs/public-gonol.md`.
 
 ---
 
-## 0. The carrier
+## 0. The normalized factorization carrier
 
-Let **N** be the set of *nonempty, recursively host-normalized* `UCNSObject`
+The carrier in this proof surface is not the public gonol. Let **N** be the
+set of *nonempty, recursively host-normalized* `UCNSObject` factorization
 values, taken modulo the implementation's equality (`__eq__` compares
 `n_min`, the `(angle, payload)` sequence, and `F_plus`; it deliberately
 ignores `n_dec`, so the algebra's carrier is objects modulo carrier
@@ -64,7 +71,7 @@ circle-fraction denominator divides `lcm(n_min_A, n_min_B)`, which divides
 the operands' own validity).  Payloads are products of payloads (induction on
 depth) or inherited.  ∎
 
-**Theorem 1.2 (representation independence).**  The product depends only on
+**Theorem 1.2 (object-relative representation independence within N).**  The product depends only on
 the equality classes of the operands: (i) a global gauge shift `δ` applied to
 a raw angle list yields the same canonical object, hence the same product;
 (ii) `n_dec` enters the product only through the product's own `n_dec`,
@@ -74,6 +81,9 @@ which equality ignores.
 = α_k − α_0`.  (ii) By inspection `n_dec` appears in `multiply` only in
 `lcm(A.n_dec, B.n_dec)`; validity is preserved by the divisibility argument
 of 1.1 for any admissible `n_dec` choices.  ∎
+
+This object-relative equivalence is not a license to rotate, gauge-shift, or
+normalize away the public-gonol SPACE/ZERO twist origin.
 
 **Theorem 1.3 (grading).**  `len(A ⊠ B) = len(A) · len(B)`; equivalently the
 degree valuation `r = log(len)` is additive.  *Proof:* the loop emits exactly
@@ -86,9 +96,11 @@ Rung: **[mutation-verified]**.
 
 ---
 
-## 2. O2 — the θ=0 origin is a two-sided identity  (`multiply_identity`)
+## 2. O2 — the normalized factorization identity is two-sided  (`multiply_identity`)
 
-Let `e = UCNSObject(1, 1, [(0, None)], [0])`.
+Let `e = UCNSObject(1, 1, [(0, None)], [0])`. Here `e` is the
+identity of the normalized factorization-object monoid; it is not the public
+gonol's SPACE/ZERO twist origin.
 
 **Theorem 2.1.**  For all `A ∈ N`: `e ⊠ A = A` **and** `A ⊠ e = A`
 (both sides proved separately; non-commutativity means neither implies the
@@ -389,7 +401,7 @@ Rung: **ruled**.
 | id | law | arrival | landed at |
 |---|---|---|---|
 | O1 `multiply_well_defined` | total + representation-independent | `[test-backed]` | `[mutation-verified]`, carrier boundary pinned (nonempty) |
-| O2 `multiply_identity` | θ=0 origin two-sided | `hmmm` | proven two-sided + `[mutation-verified]` |
+| O2 `multiply_identity` | normalized factorization identity two-sided | `hmmm` | proven two-sided + `[mutation-verified]` |
 | O3 `multiply_associativity` | (a⊠b)⊠c = a⊠(b⊠c) | `hmmm` (never tested) | **proven** + `[mutation-verified]` |
 | O4 `multiply_commutativity_ruling` | non-commutative; subclass | partial | proven ruling (commutator = ordering, geometry commutes, center = towers) + `[mutation-verified]` |
 | O5 `division_theory` | quotient existence + multiplicity | `hmmm` | solvability + multiplicity theorems, complete enumerators, v0.6 scope correction + `[mutation-verified]` |
@@ -407,5 +419,6 @@ Open (`hmmm`, preserved):
   documented in `audit/obligation_ledger.md`).
 - Retrofitting `ratios` bookends onto pre-existing engine files is left to
   a dedicated pass.
-- θ=0 origin ↔ external 157-glyph codebook linkage: cross-repo, out of
-  scope here.
+- The bridge between the fixed-origin public gonol and ordinary normalized
+  `UCNSObject` factorization values remains `hmmm`; no angle conversion, gauge
+  quotient, or normalization bridge is inferred.

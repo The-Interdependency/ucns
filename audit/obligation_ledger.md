@@ -15,7 +15,7 @@ command string.
 | id | law | rung on arrival | rung landed | witness (CONTRACTS id → evidence) | proof | loto |
 |---|---|---|---|---|---|---|
 | `multiply_well_defined` | ⊠ total + representation-independent at all depths | `[test-backed]` | `[mutation-verified]` | `multiply_well_defined` → `contracts/test_multiply_canonical.py` | `docs/base-geometry.md` §1 | CLOSED |
-| `multiply_identity` | θ=0 origin is a two-sided identity | `hmmm` | proven two-sided + `[mutation-verified]` | `multiply_identity` → `contracts/test_identity_two_sided.py` | `docs/base-geometry.md` §2 | CLOSED |
+| `multiply_identity` | normalized factorization identity is two-sided | `hmmm` | proven two-sided + `[mutation-verified]` | `multiply_identity` → `contracts/test_identity_two_sided.py` | `docs/base-geometry.md` §2 | CLOSED |
 | `multiply_associativity` | (a⊠b)⊠c = a⊠(b⊠c) | `hmmm` — never tested | **proven** + `[mutation-verified]` | `multiply_associativity` → `contracts/test_associativity_triples.py` | `docs/base-geometry.md` §3 | CLOSED |
 | `multiply_commutativity_ruling` | non-commutative in general; commuting subclass characterized | partial | proven ruling + `[mutation-verified]` | `multiply_commutativity_ruling` → `contracts/test_commutator.py` | `docs/base-geometry.md` §4 | CLOSED |
 | `division_theory` | left/right quotients: existence + multiplicity | `hmmm` | solvability theorem + `[mutation-verified]` | `division_theory` → `contracts/test_quotient_solvability.py` | `docs/base-geometry.md` §5 | CLOSED |

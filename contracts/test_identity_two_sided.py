@@ -1,5 +1,5 @@
 # ratios: loc_comments=37:30 imports_exports=2:6 calls_definitions=32:6
-"""O2 — multiply_identity: the θ=0 origin is a two-sided identity.
+"""O2 — multiply_identity: the normalized factorization identity is two-sided.
 
 Witness for the CONTRACTS entry ``multiply_identity`` in
 ``ucns/canonical.py``.  Proof: ``docs/base-geometry.md`` §2.  Because ⊠
@@ -10,7 +10,7 @@ is non-commutative (O4), the two sides are checked separately.
 # id: multiply_identity
 #   module_name: multiply_identity
 #   module_kind: engine
-#   summary: prove the theta=0 origin (space/zero) is a two-sided identity for multiply
+#   summary: prove the normalized factorization identity is two-sided; do not conflate it with the public-gonol SPACE/ZERO twist origin
 #   owner: Erin Spencer
 #   public_surface: none
 #   internal_surface: contract_multiply_identity, test_left_identity, test_right_identity, test_none_sentinel, test_unit_group_not_identity, test_mutation_caught
@@ -23,7 +23,7 @@ is non-commutative (O4), the two sides are checked separately.
 #   rollout: required for any monoid/group claim in O6
 #   rollback: n/a
 #   since: 2026-07-10
-#   unresolved: linkage of the theta=0 origin to the cross-repo 157-glyph codebook is out of this repo (hmmm)
+#   unresolved: bridge between the fixed-origin public gonol and ordinary normalized factorization objects remains hmmm
 # === END MODULE_BUILD ===
 
 from ucns.canonical import multiply
@@ -66,7 +66,7 @@ def test_unit_group_not_identity():
 
 def test_mutation_caught():
     """[mutation-verified]: a face-law mutant (extra XOR 1) makes the
-    origin fail as identity, and the identity witness detects it."""
+    normalized factorization identity fail, and the identity witness detects it."""
     rng = make_rng(14)
     a = rand_obj(rng, 2)
     assert (

@@ -3,7 +3,7 @@ ucns.canonical
 ========================
 Core UCNS algebraic objects.
 
-UCNSObject               The fundamental recursive sequence object.
+UCNSObject               The normalized recursive factorization object.
 multiply                 Ordered-concatenation product  A ⊠ B.
 is_unit                  True iff obj is the sequence identity (length-1,
                          angle 0, no payload, F=[0]).
@@ -40,8 +40,9 @@ from __future__ import annotations
 
 # === CONTRACTS ===
 # id: multiply_well_defined
-#   given: normalized nonempty UCNSObjects at mixed depths, plus gauge-shifted
-#          and n_dec-varied raw representations of the same objects
+#   given: ordinary normalized nonempty factorization UCNSObjects at mixed
+#          depths, plus object-relative shifted and n_dec-varied raw
+#          representations of the same factorization objects
 #   then:  multiply is total, its output is normalized with n_dec a multiple of
 #          n_min, len multiplies, and the product depends only on the
 #          equality class of each operand (representation independence)
@@ -49,8 +50,9 @@ from __future__ import annotations
 #   call:  contracts.test_multiply_canonical.contract_multiply_well_defined
 #
 # id: multiply_identity
-#   given: the theta=0 origin e = UCNSObject(1, 1, [(0, None)], [0]) and
-#          arbitrary normalized objects a
+#   given: the normalized factorization identity e =
+#          UCNSObject(1, 1, [(0, None)], [0]) and arbitrary normalized
+#          factorization objects a; e is not the public-gonol SPACE/ZERO twist
 #   then:  multiply(e, a) == a and multiply(a, e) == a (two-sided, checked
 #          separately); the None sentinel behaves identically; the face-1
 #          unit u1 is NOT an identity but is self-inverse
