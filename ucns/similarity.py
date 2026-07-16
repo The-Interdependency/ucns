@@ -1,29 +1,9 @@
-"""
-ucns.similarity
-===============
-Similarity and distance metrics for Unit Circle Number embeddings.
+"""Metrics for legacy local 2π phase-vector embeddings.
 
-All functions operate on plain Python lists of angles (floats in [0, τ)) as
-returned by ``UCNEmbedding.encode``.  No external libraries required.
-
-Metric catalogue
-----------------
-``phase_cosine``
-    Mean of cos(θᵢ − φᵢ) – the natural "dot product" on the torus.
-    Range: [−1, 1].  Value 1 means identical embeddings.
-
-``arc_distance``
-    Mean minimum arc length |θᵢ − φᵢ|_circle, normalised to [0, 1].
-    Value 0 means identical; value 1 means diametrically opposite.
-
-``hyperbolic_cosine``
-    Uses the Poincaré disk: maps each angle to an interior point of the
-    unit disk and computes hyperbolic cosine similarity.  Sensitive to
-    hierarchical structure (high-frequency vs low-frequency components).
-
-``top_k_overlap``
-    Jaccard-like overlap of the *k* dominant frequency indices.  Good for
-    sparse or categorical data.
+These functions operate on phase vectors produced by ``UCNEmbedding`` and
+``EpicycleDecomposition``. They are not metrics on the canonical public gonol,
+do not preserve its Möbius orientation state, and do not define a semantic or
+theorem-backed UCNS distance.
 """
 
 from __future__ import annotations
@@ -31,26 +11,26 @@ from __future__ import annotations
 # === MODULE_BUILD ===
 # id: ucns_similarity
 #   module_name: similarity
-#   module_kind: engine
-#   summary: Similarity and distance metrics (phase-cosine, arc, hyperbolic, top-k overlap) over UCNS angle-list embeddings.
+#   module_kind: adapter
+#   summary: similarity and distance helpers for legacy local 2pi phase-vector embeddings; not public-gonol geometry
 #   owner: Erin Spencer
 #   public_surface: phase_cosine, arc_distance, hyperbolic_cosine, top_k_overlap
 #   internal_surface: _check_same_length
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
-#   user_data_boundary: none
+#   user_data_boundary: read
 #   admin_only: false
 #   tests: tests.test_similarity
-#   rollout: default_enabled
-#   rollback: remove module and its re-exports
+#   rollout: compatibility_only
+#   rollback: remove after legacy embedding consumers migrate
 #   requires: none
 #   since: 2026-06-02
-#   unresolved: none
+#   unresolved: no public-gonol or semantic metric bridge is defined
 # === END MODULE_BUILD ===
 
-import math
 import cmath
+import math
 from typing import Sequence
 
 __all__ = [
@@ -72,19 +52,8 @@ def _check_same_length(a: Sequence[float], b: Sequence[float]) -> int:
 
 
 def phase_cosine(a: Sequence[float], b: Sequence[float]) -> float:
-    """Mean angular cosine similarity between two UCNS embeddings.
+    """Mean cosine similarity for equal-length local phase vectors."""
 
-    Parameters
-    ----------
-    a, b:
-        Lists of angles (radians) of equal length.
-
-    Returns
-    -------
-    float
-        Value in ``[−1, 1]``.  A value of 1 indicates identical phase
-        patterns; −1 indicates perfectly anti-phase patterns.
-    """
     n = _check_same_length(a, b)
     if n == 0:
         return 0.0
@@ -92,21 +61,8 @@ def phase_cosine(a: Sequence[float], b: Sequence[float]) -> float:
 
 
 def arc_distance(a: Sequence[float], b: Sequence[float]) -> float:
-    """Mean normalised arc distance between two UCNS embeddings.
+    """Mean normalized shortest-arc distance on a conventional 2π circle."""
 
-    Each per-dimension distance is the shorter arc between the two angles,
-    normalised by π so the result lies in ``[0, 1]``.
-
-    Parameters
-    ----------
-    a, b:
-        Lists of angles (radians) of equal length.
-
-    Returns
-    -------
-    float
-        Value in ``[0, 1]``.  0 means identical; 1 means maximally different.
-    """
     n = _check_same_length(a, b)
     if n == 0:
         return 0.0
@@ -123,29 +79,12 @@ def hyperbolic_cosine(
     *,
     radius: float = 0.5,
 ) -> float:
-    """Similarity via per-dimension hyperbolic cosine in the Poincaré disk.
+    """Poincaré-disk similarity of local phase-vector coordinates.
 
-    Each angle θ is embedded at ``r·e^(iθ)`` inside the unit disk.  The
-    hyperbolic distance between the two disk points is converted to a cosine:
-
-        sim = mean_k( cos( d_hyp(r·e^{iθ_k}, r·e^{iφ_k}) ) )
-
-    This metric is more sensitive to *low-frequency* (large-amplitude)
-    components than ``phase_cosine`` and captures hierarchical relationships.
-
-    Parameters
-    ----------
-    a, b:
-        Lists of angles (radians) of equal length.
-    radius:
-        Radial depth in ``(0, 1)`` for the disk embedding.  Smaller values
-        compress the hyperbolic scale; larger values expand it.
-
-    Returns
-    -------
-    float
-        Value in ``[−1, 1]``.
+    This is an experimental metric for the legacy embedding representation. It
+    does not establish hierarchy, semantics, or public-gonol distance.
     """
+
     if not (0.0 < radius < 1.0):
         raise ValueError("radius must be in (0, 1)")
     n = _check_same_length(a, b)
@@ -157,12 +96,12 @@ def hyperbolic_cosine(
         zb = radius * cmath.exp(1j * bi)
         denom = 1.0 - zb.conjugate() * za
         if abs(denom) < 1e-15:
-            d = 0.0
+            distance = 0.0
         else:
             rho = abs((za - zb) / denom)
             rho = min(rho, 1.0 - 1e-15)
-            d = 2.0 * math.atanh(rho)
-        total += math.cos(d)
+            distance = 2.0 * math.atanh(rho)
+        total += math.cos(distance)
     return total / n
 
 
@@ -172,31 +111,21 @@ def top_k_overlap(
     *,
     k: int = 8,
 ) -> float:
-    """Jaccard-like overlap of the *k* most energetic frequency components.
+    """Jaccard overlap of dominant FFT component indices."""
 
-    Parameters
-    ----------
-    amplitudes_a, amplitudes_b:
-        Amplitude arrays (as from ``EpicycleDecomposition.amplitudes``).
-    k:
-        Number of top components to compare.
-
-    Returns
-    -------
-    float
-        Value in ``[0, 1]``.  1 means the top-*k* frequency sets are
-        identical; 0 means completely disjoint.
-    """
     _check_same_length(amplitudes_a, amplitudes_b)
     k = max(1, min(k, len(amplitudes_a)))
 
-    def top_k_indices(amps: Sequence[float]) -> set:
+    def top_k_indices(amplitudes: Sequence[float]) -> set[int]:
         return set(
-            sorted(range(len(amps)), key=lambda i: amps[i], reverse=True)[:k]
+            sorted(
+                range(len(amplitudes)),
+                key=lambda index: amplitudes[index],
+                reverse=True,
+            )[:k]
         )
 
-    sa = top_k_indices(amplitudes_a)
-    sb = top_k_indices(amplitudes_b)
-    intersection = len(sa & sb)
-    union = len(sa | sb)
-    return intersection / union if union else 0.0
+    left = top_k_indices(amplitudes_a)
+    right = top_k_indices(amplitudes_b)
+    union = len(left | right)
+    return len(left & right) / union if union else 0.0
