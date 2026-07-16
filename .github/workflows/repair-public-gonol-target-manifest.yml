@@ -1,0 +1,41 @@
+name: repair public-gonol target manifest
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/repair-public-gonol-target-manifest.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target canon branch without maintenance workflow
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/promote-public-gonol-canon
+          path: target
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerate target living manifest
+        working-directory: target
+        run: python .agents/skills/manifest/generate.py --write
+
+      - name: Commit exact target manifest
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE.md
+          git diff --cached --stat
+          git commit -m "build(manifest): regenerate public-gonol canon surface"
+          git push origin HEAD:agent/promote-public-gonol-canon
