@@ -1,35 +1,13 @@
-"""
-ucns.mobius
-===========
-Möbius (bilinear) transformations of the unit disk.
+"""Legacy Poincaré-disk and bilinear-transform compatibility utilities.
 
-The **Poincaré disk model** represents the hyperbolic plane as the open unit
-disk  D = {z ∈ ℂ : |z| < 1}.  Its boundary ∂D is the unit circle – the home
-of every UCN.  Conformal automorphisms of D are Möbius transformations of the
-form
+This module implements classical complex-analytic Möbius transformations of an
+ordinary unit disk. The word ``Möbius`` here names the bilinear transformation
+family; it does **not** model the canonical public-gonol Möbius twist, fixed
+SPACE/ZERO origin, orientation state, or 720-degree complete return.
 
-    T_{a,φ}(z) = e^(iφ) · (z − a) / (1 − ā·z),   a ∈ D, φ ∈ ℝ.
-
-These transformations:
-
-* **preserve** the unit circle (boundary maps to boundary),
-* **preserve** the hyperbolic (Poincaré) metric,
-* compose to form the group Aut(D) ≅ PU(1,1).
-
-Geometric intuition
--------------------
-Think of the disk as a "rubber sheet" that can be stretched or compressed while
-keeping the circular boundary fixed.  Embedding data on the interior of the
-disk naturally encodes *hierarchical* relationships: nearby points are close in
-hyperbolic distance; points near the boundary are conceptually "far out" (low
-frequency, coarse-grained).  Combining this with the recursive epicycle
-structure (see ``ucns.epicycle``) yields a multi-scale embedding space that
-is simultaneously compact (unit circle) and hierarchical (Möbius disk).
-
-References
-----------
-* Poincaré disk model – Wikipedia
-* "Poincaré Embeddings for Learning Hierarchical Representations" – Nickel & Kiela 2017
+Angles accepted by this module are conventional local ``2π`` coordinates for
+legacy visualization and embedding helpers. They are not public-gonol
+positions, and no bridge from this disk model to the public gonol is defined.
 """
 
 from __future__ import annotations
@@ -37,8 +15,8 @@ from __future__ import annotations
 # === MODULE_BUILD ===
 # id: ucns_mobius
 #   module_name: mobius
-#   module_kind: engine
-#   summary: Mobius (bilinear) transformations of the Poincare unit disk plus hyperbolic-distance and disk/circle projection helpers.
+#   module_kind: adapter
+#   summary: legacy Poincare-disk and bilinear-transform helpers over local 2pi coordinates; explicitly not the public-gonol Mobius twist or UCNS complete-return geometry
 #   owner: Erin Spencer
 #   public_surface: MobiusTransform, poincare_distance, disk_to_circle, circle_to_disk
 #   internal_surface: none
@@ -47,12 +25,12 @@ from __future__ import annotations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_mobius
-#   rollout: default_enabled
-#   rollback: remove module and its re-exports
+#   tests: tests.test_mobius, tests.test_public_gonol_claim_guard
+#   rollout: compatibility_only
+#   rollback: remove after legacy disk/visualization consumers migrate to explicitly named application geometry
 #   requires: none
 #   since: 2026-06-02
-#   unresolved: none
+#   unresolved: no bridge from this local disk geometry to the fixed-origin public gonol is defined
 # === END MODULE_BUILD ===
 
 import cmath
@@ -64,15 +42,16 @@ _TAU = 2.0 * math.pi
 
 
 class MobiusTransform:
-    """A conformal automorphism of the open unit disk.
+    """Classical conformal automorphism of the open unit disk.
 
     Parameters
     ----------
     a:
-        Translation parameter.  Must satisfy ``|a| < 1`` (interior of disk).
-        The transformation maps ``a ↦ 0``.
+        Translation parameter. Must satisfy ``|a| < 1``.
     phi:
-        Rotation angle in radians.  Applied after the translation.
+        Conventional local rotation parameter in radians, reduced modulo
+        ``2π``. This parameter does not represent UCNS public-frame rotation or
+        complete return.
     """
 
     __slots__ = ("a", "phi")
@@ -82,62 +61,40 @@ class MobiusTransform:
             raise ValueError(
                 f"|a| must be strictly less than 1; got |a| = {abs(a):.6f}"
             )
-        self.a: complex = complex(a)
-        self.phi: float = float(phi) % _TAU
-
-    # ------------------------------------------------------------------
-    # Evaluation
-    # ------------------------------------------------------------------
+        self.a = complex(a)
+        self.phi = float(phi) % _TAU
 
     def __call__(self, z: complex) -> complex:
-        """Apply the transform: T(z) = e^(iφ) · (z − a) / (1 − ā·z)."""
+        """Apply the classical disk transform ``T(z)``."""
+
         denom = 1.0 - self.a.conjugate() * z
         if abs(denom) < 1e-15:
             raise ValueError("z is the image of infinity under this transform")
         return cmath.exp(1j * self.phi) * (z - self.a) / denom
 
-    # ------------------------------------------------------------------
-    # Group structure
-    # ------------------------------------------------------------------
-
     def inverse(self) -> "MobiusTransform":
-        """Return T⁻¹ such that T⁻¹(T(z)) = z for all z ∈ D."""
+        """Return the inverse classical disk transform."""
+
         return MobiusTransform(
             -self.a * cmath.exp(1j * self.phi),
             -self.phi,
         )
 
     def compose(self, other: "MobiusTransform") -> "MobiusTransform":
-        """Return the composed transform self ∘ other (apply *other* first)."""
-        # Numerically stable composition via a sample point
-        # We derive the new (a, phi) from where each transform sends 0.
-        # T_composed sends 0 → self(other(0))
+        """Return ``self ∘ other`` within the local disk model."""
+
         a_new = self(other(0j))
-        # Determine rotation by evaluating at a second point
         p = other(0.5 + 0j)
         q = self(p)
-        # q = e^(i*phi_new) * (q_unnorm) → phi_new = arg(q / T_a_new(a_sample))
-        t_check = MobiusTransform(a_new)
-        sample = 0.5 + 0j
         out = q
         raw = (out - a_new) / (1.0 - a_new.conjugate() * out)
         phi_new = cmath.phase(raw) if abs(raw) > 1e-15 else 0.0
         return MobiusTransform(a_new, phi_new)
 
-    # ------------------------------------------------------------------
-    # Hyperbolic geometry
-    # ------------------------------------------------------------------
-
     def hyperbolic_distance(self, z: complex, w: complex) -> float:
-        """Poincaré disk metric  d(z, w) = 2·arctanh(|T_z(w)|).
+        """Return the Poincaré-disk distance in this local model."""
 
-        This is the intrinsic distance in the hyperbolic plane modelled by D.
-        """
         return poincare_distance(z, w)
-
-    # ------------------------------------------------------------------
-    # Dunder
-    # ------------------------------------------------------------------
 
     def __repr__(self) -> str:
         return f"MobiusTransform(a={self.a:.4f}, phi={self.phi:.4f})"
@@ -151,62 +108,44 @@ class MobiusTransform:
         )
 
 
-# ------------------------------------------------------------------
-# Standalone geometric helpers
-# ------------------------------------------------------------------
-
-
 def poincare_distance(z: complex, w: complex) -> float:
-    """Hyperbolic distance between two points in the Poincaré disk.
+    """Hyperbolic distance between two points in the open Poincaré disk.
 
-    Parameters
-    ----------
-    z, w:
-        Points in the open unit disk (``|z|, |w| < 1``).
-
-    Returns
-    -------
-    float
-        ``d(z, w) = 2·arctanh(|(z − w) / (1 − w̄·z)|)`` ≥ 0.
+    This is a classical local-disk metric, not a distance on the public gonol.
     """
-    for name, p in (("z", z), ("w", w)):
-        if abs(p) >= 1.0:
+
+    for name, point in (("z", z), ("w", w)):
+        if abs(point) >= 1.0:
             raise ValueError(
-                f"Point {name} = {p} lies outside or on the unit disk boundary"
+                f"Point {name} = {point} lies outside or on the unit disk boundary"
             )
     denom = 1.0 - w.conjugate() * z
     if abs(denom) < 1e-15:
         return float("inf")
     rho = abs((z - w) / denom)
-    rho = min(rho, 1.0 - 1e-15)  # guard against numerical overshoot
+    rho = min(rho, 1.0 - 1e-15)
     return 2.0 * math.atanh(rho)
 
 
 def disk_to_circle(z: complex) -> float:
-    """Project a point *z* in the unit disk to its angle on ∂D (the unit circle).
+    """Return the local radial-boundary phase of a disk point.
 
-    Uses the Cayley-like radial projection z ↦ z/|z| for z ≠ 0; for z = 0
-    returns 0.  The returned angle θ ∈ [0, τ) gives the UCN associated with
-    the boundary limit of the radial ray through *z*.
+    The result lies in ``[0, 2π)`` and is a compatibility coordinate only. It
+    is not a public-gonol position and does not preserve the 720-degree
+    orientation return.
     """
+
     if abs(z) < 1e-15:
         return 0.0
     return cmath.phase(z) % _TAU
 
 
 def circle_to_disk(theta: float, r: float = 0.5) -> complex:
-    """Embed a unit-circle point (angle) into the interior of the disk at radius *r*.
+    """Place a local 2π phase inside the open disk at radius ``r``.
 
-    This is useful when you want to treat UCN angles as interior hyperbolic
-    points (r < 1 keeps them strictly inside D).
-
-    Parameters
-    ----------
-    theta:
-        Angle on the unit circle (radians).
-    r:
-        Radial depth in (0, 1).  Defaults to 0.5.
+    This helper does not embed or reconstruct the canonical public gonol.
     """
+
     if not (0.0 < r < 1.0):
         raise ValueError("r must be in (0, 1)")
     return r * cmath.exp(1j * theta)
