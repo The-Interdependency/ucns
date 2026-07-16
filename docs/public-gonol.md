@@ -24,7 +24,7 @@ backend/interdependent_lib/gonal/gonal.py             public arrangement
 backend/interdependent_lib/gonal/faces.py             faces / chirality / adjacency
 backend/interdependent_lib/gonal/mirror.py            origin-fixed mirror
 backend/interdependent_lib/gonal/lifted_path.py        lossless text traversal
-backend/interdependent_lib/zfae/gonal_inscription.py   fixed-origin private transform
+backend/interdependent_lib/zfae/gonal_inscription.py   fixed-origin private transform provenance
 ```
 
 UCNS is now the canonical package home. A0 and EDCM remain downstream consumers;
@@ -79,6 +79,25 @@ Therefore a local recurrence after 360 degrees is not the complete UCNS return.
 The full return requires restoration of orientation after 720 degrees. This is a
 load-bearing property of the public gonol, not a convention imported from the
 normalized factorization model.
+
+## No continuous inscription on the canonical frame
+
+`PrivateGonal` owns only the exact fixed-origin private phase/permutation law and
+glyph lookup. It does not expose an `inscribe(angle)` method and does not reduce a
+continuous value modulo `2π`.
+
+A0 previously carried a continuous field-to-glyph application helper on the same
+class. That application projection is downstream behavior, not public-gonol
+canon. Keeping it on the UCNS frame would allow a 360-degree parameter cycle to
+masquerade as complete return. Any downstream projection must be separately
+named and must explicitly preserve this boundary:
+
+```text
+UCNS system return: 720 degrees
+application scalar projection: not a UCNS rotation theorem
+```
+
+No replacement continuous projection is invented here.
 
 ## Faces, chirality, mirror, and adjacency
 
@@ -158,7 +177,9 @@ from ucns import (
 assert PUBLIC_GONOL_157[ORIGIN] == " "
 assert char_of_vertex(vertex_of_char("0")) == "0"
 assert decode_text_path(encode_text_path("aa")) == "aa"
-assert PrivateGonal.from_seed(b"agent").perm[ORIGIN] == ORIGIN
+private = PrivateGonal.from_seed(b"agent")
+assert private.perm[ORIGIN] == ORIGIN
+assert not hasattr(private, "inscribe")
 ```
 
 ## Migration order
