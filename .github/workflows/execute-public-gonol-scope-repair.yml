@@ -1,0 +1,95 @@
+name: execute public-gonol scope repair
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/execute-public-gonol-scope-repair.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target canon branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/promote-public-gonol-canon
+          path: target
+          fetch-depth: 0
+
+      - name: Check out reviewed repair driver
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/trigger-public-gonol-formal-scope-repair-v2
+          path: driver
+
+      - name: Check out pinned canonical skill-lib outside target
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/skill-lib
+          ref: 05ee7aa9b7d906664d976bf1f06ea44522110489
+          path: skill-lib
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Execute reviewed idempotent repair script
+        working-directory: target
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          workflow = Path("../driver/.github/workflows/apply-public-gonol-scope-v4.yml").read_text(encoding="utf-8")
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          script = "\n".join(
+              line[10:] if line.startswith("          ") else line
+              for line in workflow[start:end].splitlines()
+          )
+          exec(compile(script, "<public-gonol-scope-v4>", "exec"), {"__name__": "__main__"})
+          PY
+
+      - name: Regenerate clean living metadata
+        working-directory: target
+        run: |
+          rm -rf .tmp-skill-lib
+          python .agents/skills/manifest/generate.py --write
+          PYTHONPATH=../skill-lib python ../skill-lib/msdmd/collect.py \
+            --root . \
+            --repo The-Interdependency/ucns \
+            --out ucns_msdmd.ts
+          if grep -q '\.tmp-skill-lib' ucns_msdmd.ts; then
+            echo "temporary checkout leaked into collection" >&2
+            exit 1
+          fi
+
+      - name: Validate complete target
+        working-directory: target
+        run: |
+          python -m pip install -e .[dev]
+          python -m pytest -q
+          python audit/reconcile.py
+          cd formal
+          lake exe cache get
+          lake build
+
+      - name: Commit validated target changes
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE.md ucns_msdmd.ts \
+            formal/Ucns/Core.lean formal/Ucns/CarrierLcm.lean formal/Ucns/TheoremN.lean \
+            ucns/geometry_bridge.py ucns-theorem-n.md docs/carrier-support-pruning.md \
+            docs/unitcircle-import-assessment.md audit/obligation_ledger.md
+          git diff --cached --stat
+          git commit -m "fix(canon): scope internal lemmas under the public twist origin"
+          git push origin HEAD:agent/promote-public-gonol-canon
