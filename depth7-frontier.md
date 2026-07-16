@@ -54,17 +54,17 @@ It is ordered host concatenation plus recursive payload multiplication:
 
 This gives UCNS non-commutative behavior before the depth-7 frontier is even reached.
 
-## 1.3 Zero is now geometric
+## 1.3 Public-gonol zero canon correction
 
-The merged spec reframes zero as the Möbius twist-point: the seam at `θ = 2π` where orientation flips on the doubled cover.
+The public gonol is canon for UCNS. Position `0` is SPACE/ZERO: the Möbius
+twist point, seam, fixed origin for the entire system, and only always-known
+character. It is not located by an inferred continuous angle and is not an
+object-relative gauge choice.
 
-Consequences of this framing:
-
-- zero is no longer an externally adjoined absorber,
-- the doubled `4π` cover is motivated by seam crossing and return,
-- face-state XOR is grounded as seam-crossing parity.
-
-This is an ontological change to the spec, not merely a wording change.
+The earlier placement of zero at `θ = 2π`, the derived absorption account, and
+the claim that face-state XOR was proved by that placement are superseded. Any
+bridge from the public gonol into a continuous or normalized factorization
+representation remains `hmmm` until Erin ratifies it.
 
 ## 1.4 Quotient and factor recovery are defined
 

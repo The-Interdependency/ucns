@@ -19,7 +19,7 @@ DENOMS = [1, 2, 3, 4, 6]
 
 # Canonical fixtures ---------------------------------------------------
 
-E = UCNSObject(1, 1, [(Fraction(0), None)], [0])       # theta=0 origin
+E = UCNSObject(1, 1, [(Fraction(0), None)], [0])       # normalized factorization identity; not the public-gonol twist origin
 U1 = UCNSObject(1, 1, [(Fraction(0), None)], [1])      # face-flipped unit
 
 

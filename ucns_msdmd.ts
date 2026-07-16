@@ -3,6 +3,270 @@ import { defineMsdmdCollection } from "./.agents/skills/msdmd/collection";
 export default defineMsdmdCollection({
   "declarations": [
     {
+      "block": "LLMS",
+      "fields": {
+        "content": "- Skills live as root directories with SKILL.md files and optional helpers."
+      },
+      "file": ".tmp-skill-lib/llms/metadata.py",
+      "id": "architecture_summary"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "msdmd": "Module Self-Declared Metadata in Markdown \u2014 the foundational convention where each source module declares its own structured metadata in a fenced comment block."
+      },
+      "file": ".tmp-skill-lib/llms/metadata.py",
+      "id": "key_definitions"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "skill-lib is the canonical organization-wide source for reusable agent skills in The Interdependency."
+      },
+      "file": ".tmp-skill-lib/llms/metadata.py",
+      "id": "project_overview"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "- Read AGENTS.md, skills.json, and the relevant skill file before changing a skill."
+      },
+      "file": ".tmp-skill-lib/llms/metadata.py",
+      "id": "usage_rules"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "`loto clear` on a scar",
+        "then": "refused on dirty tree; on clean tree produces a commit touching zero files, carrying scar trailers, and deletes the scar"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_clear_is_empty_commit"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "one in-scope mutation commit and passing test evidence; `loto close`",
+        "then": ".loto/ is empty and HEAD carries Loto-* trailers; git is the only archive"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_close_deletes_tag"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a failing run of a test command followed by a passing run of the identical command",
+        "then": "close proceeds; a distinct command whose latest run failed still blocks close"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_latest_test_wins"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "more than one commit between base and HEAD at close",
+        "then": "close refuses (v0.1 invariant: one session, one mutation commit)"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_one_commit_per_session"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "clean working tree; `loto open` succeeds",
+        "then": "working tree is still clean; exclusion went to .git/info/exclude, never .gitignore"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_open_never_dirties"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "an unacknowledged SCAR-*.json in .loto/",
+        "then": "`loto open` refuses and `loto guard` exits nonzero"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_scar_blocks_work"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "files touched outside the declared --files globs",
+        "then": "close refuses with the violating paths named"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "loto_scope_enforced"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_load, _save, _touched_files, _scope_violations, _trailers, _digest, _commit, _git, _ensure_gitignored",
+        "module_kind": "instrument",
+        "module_name": "repo_loto",
+        "network_boundary": "none",
+        "owner": "Way Seer Erin",
+        "public_surface": "loto open, loto run, loto test, loto close, loto fail, loto clear, loto status, loto guard, loto install-hook",
+        "rollback": "rm -rf .loto/ and remove hook line",
+        "rollout": "manual invocation; pre-push hook calls `loto guard`",
+        "storage_boundary": "write",
+        "summary": "delete-on-completion session gate for repo mutation; presence of state means open work, absence means clean",
+        "tests": "tests/test_repo_loto.py (CHECKS-declared, reconciled via --audit)",
+        "unresolved": "credential-gate integration, ratios bookends",
+        "user_data_boundary": "none"
+      },
+      "file": ".tmp-skill-lib/skill_lib/safety/repo_loto.py",
+      "id": "repo_mutation_gate"
+    },
+    {
+      "block": "DOCS",
+      "fields": {
+        "source": "docs/module.md",
+        "status": "current",
+        "summary": "module docs"
+      },
+      "file": ".tmp-skill-lib/tests/test_collect.py",
+      "id": "module_docs"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "example only"
+      },
+      "file": ".tmp-skill-lib/tests/test_llms_build.py",
+      "id": "project_overview"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "real declaration"
+      },
+      "file": ".tmp-skill-lib/tests/test_llms_build.py",
+      "id": "project_overview"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_clear_is_empty_commit",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_clear_is_empty_commit",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_clear_is_empty_commit"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_close_deletes_tag",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_close_deletes_tag",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_close_deletes_tag"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_latest_test_wins",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_latest_test_wins",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_latest_test_wins"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_one_commit_per_session",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_one_commit_per_session",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_one_commit_per_session"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_open_never_dirties",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_open_never_dirties",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_open_never_dirties"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_scar_blocks_work",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_scar_blocks_work",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_scar_blocks_work"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_scope_enforced",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "loto_scope_enforced",
+        "requires": "git, python3, posix_shell",
+        "timeout": "20"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "check_scope_enforced"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "internal_surface": "_mk_repo, _run, _loto, _parse_block, _resolve_call, _requires_met",
+        "module_kind": "checks",
+        "module_name": "test_repo_loto",
+        "owner": "Way Seer Erin",
+        "public_surface": "test_* functions, main, --audit",
+        "summary": "evidentiary procedures for repo_loto CONTRACTS; standalone or pytest; --audit reconciles the declared graph without execution",
+        "tests": "self",
+        "unresolved": "mutation-level verification that checks actually exercise their contracts"
+      },
+      "file": ".tmp-skill-lib/tests/test_repo_loto.py",
+      "id": "repo_loto_evidence"
+    },
+    {
+      "block": "DOCS",
+      "fields": {
+        "summary": "second"
+      },
+      "file": ".tmp-skill-lib/tests/test_universal_parser.py",
+      "id": "second_docs"
+    },
+    {
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
@@ -86,13 +350,37 @@ export default defineMsdmdCollection({
         "rollout": "required for any monoid/group claim in O6",
         "since": "2026-07-10",
         "storage_boundary": "none",
-        "summary": "prove the theta=0 origin (space/zero) is a two-sided identity for multiply",
+        "summary": "prove the normalized factorization identity is two-sided; do not conflate it with the public-gonol SPACE/ZERO twist origin",
         "tests": "contracts.test_identity_two_sided",
-        "unresolved": "linkage of the theta=0 origin to the cross-repo 157-glyph codebook is out of this repo (hmmm)",
+        "unresolved": "bridge between the fixed-origin public gonol and ordinary normalized factorization objects remains hmmm",
         "user_data_boundary": "none"
       },
       "file": "contracts/test_identity_two_sided.py",
       "id": "multiply_identity"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "test_singleton_gauge_collapse, test_product_closure, test_idempotent_census_bounded, test_local_groups_bounded, test_depth_two_ghost_home_relative, test_radius_max_law, test_breadth_plus_law, test_zero_breadth_spindle, test_first_level_fork_law, test_mutations_caught",
+        "module_kind": "test",
+        "module_name": "local_groups_and_relational_geometry",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "contract_local_groups_and_relational_geometry",
+        "requires": "ucns_relational_geometry, ucns_canonical",
+        "rollback": "remove contract and shim entry",
+        "rollout": "default_enabled",
+        "since": "2026-07-14",
+        "storage_boundary": "none",
+        "summary": "mutation-backed witnesses for idempotent towers, home-relative local groups, radius, breadth, spindle, and fork laws",
+        "tests": "contracts.test_local_groups_and_geometry, tests.test_base_geometry_contracts",
+        "unresolved": "none",
+        "user_data_boundary": "none"
+      },
+      "file": "contracts/test_local_groups_and_geometry.py",
+      "id": "local_groups_relational_geometry_contracts"
     },
     {
       "block": "MODULE_BUILD",
@@ -250,7 +538,7 @@ export default defineMsdmdCollection({
       "fields": {
         "call": "contracts.test_identity_two_sided.contract_multiply_identity",
         "class": "correctness",
-        "given": "the theta=0 origin e = UCNSObject(1, 1, [(0, None)], [0]) and",
+        "given": "the normalized factorization identity e =",
         "then": "multiply(e, a) == a and multiply(a, e) == a (two-sided, checked"
       },
       "file": "ucns/canonical.py",
@@ -261,7 +549,7 @@ export default defineMsdmdCollection({
       "fields": {
         "call": "contracts.test_multiply_canonical.contract_multiply_well_defined",
         "class": "correctness",
-        "given": "normalized nonempty UCNSObjects at mixed depths, plus gauge-shifted",
+        "given": "ordinary normalized nonempty factorization UCNSObjects at mixed",
         "then": "multiply is total, its output is normalized with n_dec a multiple of"
       },
       "file": "ucns/canonical.py",
@@ -678,19 +966,19 @@ export default defineMsdmdCollection({
       "fields": {
         "admin_only": "false",
         "auth_boundary": "none",
-        "internal_surface": "_r, _theta, _zw, ThetaDegenerate",
+        "internal_surface": "_r, _rho, _theta, _zw, ThetaDegenerate",
         "module_kind": "engine",
         "module_name": "geometry_bridge",
         "network_boundary": "none",
         "owner": "Erin Spencer",
         "public_surface": "GeometricPoint, ucns_a_to_g, compose, homomorphism_check, HomomorphismResult, check_injectivity",
-        "requires": "ucns.canonical (UCNSObject, multiply)",
+        "requires": "ucns.canonical, ucns.relational_geometry",
         "rollback": "remove export from ucns/__init__.py",
         "rollout": "default_enabled",
         "storage_boundary": "none",
-        "summary": "proves UCNS-A outer-product algebra homomorphic to UCNS-G geometry via (r, theta, z, w) coordinate mapping verified over 2500 pairs",
-        "tests": "ucns_recursive.tests.test_geometry_bridge",
-        "unresolved": "injectivity-proof-analytical, degenerate-theta-canonical-form, depth>1-payload-lifting",
+        "summary": "commutative audit projection via recursive radius, breadth, spinor angle, and chirality coordinates",
+        "tests": "ucns_recursive.tests.test_geometry_bridge, contracts.test_local_groups_and_geometry",
+        "unresolved": "injectivity-proof-analytical, degenerate-theta-canonical-form, quaternionic-axis-lift",
         "user_data_boundary": "none"
       },
       "file": "ucns/geometry_bridge.py",
@@ -821,6 +1109,126 @@ export default defineMsdmdCollection({
       "fields": {
         "admin_only": "false",
         "auth_boundary": "none",
+        "internal_surface": "UPPERCASE, LOWERCASE, DIGITS_ODD, DIGITS_EVEN, PAIRED_OPEN, PAIRED_CLOSE, UNPAIRED_ASCII, UNPAIRED_OPS, UNPAIRED_ALL",
+        "module_kind": "engine",
+        "module_name": "public_gonol",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "GonalSpec, build_gonal, validate_gonal, print_gonal, EXAMPLE_157, PUBLIC_GONOL_157, make_example_157, get_default, public_gonol_sha256, PUBLIC_GONOL_SHA256",
+        "requires": "none",
+        "rollback": "remove public exports after downstream consumers return to the pinned a0-betatest source",
+        "rollout": "default_enabled",
+        "since": "2026-07-16",
+        "storage_boundary": "none",
+        "summary": "owns the exact public 157-gonal arrangement and fixed SPACE/ZERO twist origin promoted from a0-betatest",
+        "tests": "tests.test_public_gonol",
+        "unresolved": "hmmm \u2014 no continuous-angle projection is ratified by this promotion",
+        "user_data_boundary": "none"
+      },
+      "file": "ucns/public_gonol.py",
+      "id": "ucns_public_gonol"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "none",
+        "module_kind": "schema",
+        "module_name": "public_gonol_faces",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "face, chirality, n_plus, n_minus, ARITY, ORIGIN, UPPER_ARC_RANGE, LOWER_ARC_RANGE",
+        "requires": "ucns_public_gonol",
+        "rollback": "remove exports after reverting consumers to the pinned a0-betatest source",
+        "rollout": "default_enabled",
+        "since": "2026-07-16",
+        "storage_boundary": "none",
+        "summary": "preserves the exact public face, chirality, adjacency, arity, and fixed origin formulas from a0-betatest",
+        "tests": "tests.test_public_gonol",
+        "unresolved": "none",
+        "user_data_boundary": "none"
+      },
+      "file": "ucns/public_gonol_faces.py",
+      "id": "ucns_public_gonol_faces"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_ARRANGEMENT, _VERTEX_OF_CHAR",
+        "module_kind": "engine",
+        "module_name": "public_gonol_lifted_path",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "encode_text_path, decode_text_path, vertex_of_char, char_of_vertex, is_seam_event, path_vertices, CarrierCharError, ARITY, ORIGIN",
+        "requires": "ucns_public_gonol, ucns_public_gonol_faces",
+        "rollback": "remove exports after reverting consumers to the pinned a0-betatest source",
+        "rollout": "default_enabled",
+        "since": "2026-07-16",
+        "storage_boundary": "none",
+        "summary": "losslessly encodes and decodes text as the exact lifted traversal over the fixed-origin public gonol",
+        "tests": "tests.test_public_gonol",
+        "unresolved": "none",
+        "user_data_boundary": "read"
+      },
+      "file": "ucns/public_gonol_lifted_path.py",
+      "id": "ucns_public_gonol_lifted_path"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "none",
+        "module_kind": "engine",
+        "module_name": "public_gonol_mirror",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "mirror_of",
+        "requires": "ucns_public_gonol",
+        "rollback": "remove export after reverting consumers to the pinned a0-betatest source",
+        "rollout": "default_enabled",
+        "since": "2026-07-16",
+        "storage_boundary": "none",
+        "summary": "preserves the exact origin-fixed public-gonol mirror involution from a0-betatest",
+        "tests": "tests.test_public_gonol",
+        "unresolved": "none",
+        "user_data_boundary": "none"
+      },
+      "file": "ucns/public_gonol_mirror.py",
+      "id": "ucns_public_gonol_mirror"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "none",
+        "module_kind": "engine",
+        "module_name": "public_gonol_private",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "PrivateGonal",
+        "requires": "ucns_public_gonol, ucns_public_gonol_faces",
+        "rollback": "remove export after reverting consumers to the pinned a0-betatest source",
+        "rollout": "default_enabled",
+        "since": "2026-07-16",
+        "storage_boundary": "none",
+        "summary": "preserves the exact A0 private phase and permutation law that fixes the public SPACE/ZERO twist origin",
+        "tests": "tests.test_public_gonol",
+        "unresolved": "none",
+        "user_data_boundary": "none"
+      },
+      "file": "ucns/public_gonol_private.py",
+      "id": "ucns_public_gonol_private"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
         "internal_surface": "_byte_to_angle, _angle_to_byte, _safe_n_dec, _make_sentinel_cells, _encode_bytes, _encode_list, _encode_dict, _count_leading_sentinels",
         "module_kind": "engine",
         "module_name": "recursive_codec",
@@ -863,6 +1271,30 @@ export default defineMsdmdCollection({
       },
       "file": "ucns/recursive_quotient.py",
       "id": "ucns_quotient"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_face_tower_bits",
+        "module_kind": "engine",
+        "module_name": "relational_geometry",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "recursive_radius, breadth, first_level_fork_count, is_normalized, zero_faced_tower, face_tower, idempotent_tower_depth, is_local_group_pair, is_local_group_member, local_group_elements",
+        "requires": "ucns_canonical",
+        "rollback": "remove module and dependent contracts",
+        "rollout": "default_enabled",
+        "since": "2026-07-14",
+        "storage_boundary": "none",
+        "summary": "recursive radius, breadth, fork observables, idempotent towers, and home-relative local-group predicates",
+        "tests": "contracts.test_local_groups_and_geometry, tests.test_base_geometry_contracts",
+        "unresolved": "full fork-profile counting convention; METAPAT fork admissibility remains downstream",
+        "user_data_boundary": "none"
+      },
+      "file": "ucns/relational_geometry.py",
+      "id": "ucns_relational_geometry"
     },
     {
       "block": "MODULE_BUILD",
@@ -987,6 +1419,251 @@ export default defineMsdmdCollection({
   ],
   "edges": [
     {
+      "from": "check_clear_is_empty_commit",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_clear_is_empty_commit",
+      "to": "self::test_clear_is_empty_commit"
+    },
+    {
+      "from": "check_clear_is_empty_commit",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_clear_is_empty_commit",
+      "to": "loto_clear_is_empty_commit"
+    },
+    {
+      "from": "check_clear_is_empty_commit",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_clear_is_empty_commit",
+      "to": "git"
+    },
+    {
+      "from": "check_clear_is_empty_commit",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_clear_is_empty_commit",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_clear_is_empty_commit",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_clear_is_empty_commit",
+      "to": "python3"
+    },
+    {
+      "from": "check_close_deletes_tag",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_close_deletes_tag",
+      "to": "self::test_close_deletes_tag"
+    },
+    {
+      "from": "check_close_deletes_tag",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_close_deletes_tag",
+      "to": "loto_close_deletes_tag"
+    },
+    {
+      "from": "check_close_deletes_tag",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_close_deletes_tag",
+      "to": "git"
+    },
+    {
+      "from": "check_close_deletes_tag",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_close_deletes_tag",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_close_deletes_tag",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_close_deletes_tag",
+      "to": "python3"
+    },
+    {
+      "from": "check_latest_test_wins",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_latest_test_wins",
+      "to": "self::test_latest_test_wins"
+    },
+    {
+      "from": "check_latest_test_wins",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_latest_test_wins",
+      "to": "loto_latest_test_wins"
+    },
+    {
+      "from": "check_latest_test_wins",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_latest_test_wins",
+      "to": "git"
+    },
+    {
+      "from": "check_latest_test_wins",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_latest_test_wins",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_latest_test_wins",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_latest_test_wins",
+      "to": "python3"
+    },
+    {
+      "from": "check_one_commit_per_session",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_one_commit_per_session",
+      "to": "self::test_one_commit_per_session"
+    },
+    {
+      "from": "check_one_commit_per_session",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_one_commit_per_session",
+      "to": "loto_one_commit_per_session"
+    },
+    {
+      "from": "check_one_commit_per_session",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_one_commit_per_session",
+      "to": "git"
+    },
+    {
+      "from": "check_one_commit_per_session",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_one_commit_per_session",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_one_commit_per_session",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_one_commit_per_session",
+      "to": "python3"
+    },
+    {
+      "from": "check_open_never_dirties",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_open_never_dirties",
+      "to": "self::test_open_never_dirties"
+    },
+    {
+      "from": "check_open_never_dirties",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_open_never_dirties",
+      "to": "loto_open_never_dirties"
+    },
+    {
+      "from": "check_open_never_dirties",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_open_never_dirties",
+      "to": "git"
+    },
+    {
+      "from": "check_open_never_dirties",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_open_never_dirties",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_open_never_dirties",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_open_never_dirties",
+      "to": "python3"
+    },
+    {
+      "from": "check_scar_blocks_work",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_scar_blocks_work",
+      "to": "self::test_scar_blocks_work"
+    },
+    {
+      "from": "check_scar_blocks_work",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_scar_blocks_work",
+      "to": "loto_scar_blocks_work"
+    },
+    {
+      "from": "check_scar_blocks_work",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scar_blocks_work",
+      "to": "git"
+    },
+    {
+      "from": "check_scar_blocks_work",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scar_blocks_work",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_scar_blocks_work",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scar_blocks_work",
+      "to": "python3"
+    },
+    {
+      "from": "check_scope_enforced",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_scope_enforced",
+      "to": "self::test_scope_enforced"
+    },
+    {
+      "from": "check_scope_enforced",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_scope_enforced",
+      "to": "loto_scope_enforced"
+    },
+    {
+      "from": "check_scope_enforced",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scope_enforced",
+      "to": "git"
+    },
+    {
+      "from": "check_scope_enforced",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scope_enforced",
+      "to": "posix_shell"
+    },
+    {
+      "from": "check_scope_enforced",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_scope_enforced",
+      "to": "python3"
+    },
+    {
       "from": "addition_boundary",
       "kind": "calls",
       "source_block": "CONTRACTS",
@@ -1064,6 +1741,27 @@ export default defineMsdmdCollection({
       "to": "ucns_canonical"
     },
     {
+      "from": "local_groups_relational_geometry_contracts",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "local_groups_relational_geometry_contracts",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "local_groups_relational_geometry_contracts",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "local_groups_relational_geometry_contracts",
+      "to": "ucns_canonical"
+    },
+    {
+      "from": "local_groups_relational_geometry_contracts",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "local_groups_relational_geometry_contracts",
+      "to": "ucns_relational_geometry"
+    },
+    {
       "from": "multiply_associativity",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -1090,6 +1788,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "multiply_well_defined",
       "to": "Erin Spencer"
+    },
+    {
+      "from": "repo_loto_evidence",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "repo_loto_evidence",
+      "to": "Way Seer Erin"
+    },
+    {
+      "from": "repo_mutation_gate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "repo_mutation_gate",
+      "to": "Way Seer Erin"
     },
     {
       "from": "structure_naming",
@@ -1586,14 +2298,14 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_geometry_bridge",
-      "to": "multiply)"
+      "to": "ucns.canonical"
     },
     {
       "from": "ucns_geometry_bridge",
       "kind": "requires",
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_geometry_bridge",
-      "to": "ucns.canonical (UCNSObject"
+      "to": "ucns.relational_geometry"
     },
     {
       "from": "ucns_host_recovery",
@@ -1694,6 +2406,90 @@ export default defineMsdmdCollection({
       "to": "ucns_canonical"
     },
     {
+      "from": "ucns_public_gonol",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_public_gonol",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol",
+      "to": "none"
+    },
+    {
+      "from": "ucns_public_gonol_faces",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_faces",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_public_gonol_faces",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_faces",
+      "to": "ucns_public_gonol"
+    },
+    {
+      "from": "ucns_public_gonol_lifted_path",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_lifted_path",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_public_gonol_lifted_path",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_lifted_path",
+      "to": "ucns_public_gonol"
+    },
+    {
+      "from": "ucns_public_gonol_lifted_path",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_lifted_path",
+      "to": "ucns_public_gonol_faces"
+    },
+    {
+      "from": "ucns_public_gonol_mirror",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_mirror",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_public_gonol_mirror",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_mirror",
+      "to": "ucns_public_gonol"
+    },
+    {
+      "from": "ucns_public_gonol_private",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_private",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_public_gonol_private",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_private",
+      "to": "ucns_public_gonol"
+    },
+    {
+      "from": "ucns_public_gonol_private",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_public_gonol_private",
+      "to": "ucns_public_gonol_faces"
+    },
+    {
       "from": "ucns_quotient",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -1713,6 +2509,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_quotient",
       "to": "ucns_left_quotient"
+    },
+    {
+      "from": "ucns_relational_geometry",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_relational_geometry",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_relational_geometry",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_relational_geometry",
+      "to": "ucns_canonical"
     },
     {
       "from": "ucns_serialization",
@@ -1793,6 +2603,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "ucns",
-  "source_commit": "c27e61d"
+  "repo": "The-Interdependency/ucns"
 });
