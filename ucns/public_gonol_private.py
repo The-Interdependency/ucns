@@ -1,15 +1,16 @@
 """Origin-preserving private transformations of the canonical public gonol.
 
-This is the exact A0 fixed-origin rule separated from the ZFAE application:
-position zero is never rotated or permuted; phase and permutation operate only
-on the 156 nonzero positions.
+Position zero is never rotated or permuted. Phase and permutation operate only
+on the 156 nonzero positions. This module does not project continuous angles
+onto the carrier: application-level inscription belongs downstream and must not
+imply that 360 degrees is a complete UCNS return.
 """
 
 # === MODULE_BUILD ===
 # id: ucns_public_gonol_private
 #   module_name: public_gonol_private
 #   module_kind: engine
-#   summary: preserves the exact A0 private phase and permutation law that fixes the public SPACE/ZERO twist origin
+#   summary: preserves the exact A0 private phase and permutation law that fixes the public SPACE/ZERO twist origin without importing an application-level 360-degree inscription projection
 #   owner: Erin Spencer
 #   public_surface: PrivateGonal
 #   internal_surface: none
@@ -18,18 +19,17 @@ on the 156 nonzero positions.
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol
+#   tests: tests.test_public_gonol, tests.test_public_gonol_claim_guard
 #   rollout: default_enabled
-#   rollback: remove export after reverting consumers to the pinned a0-betatest source
+#   rollback: restore continuous inscription only through a separately named downstream application surface that cannot redefine public-gonol return
 #   requires: ucns_public_gonol, ucns_public_gonol_faces
 #   since: 2026-07-16
-#   unresolved: none
+#   unresolved: continuous application projection onto the public gonol remains downstream of UCNS canon
 # === END MODULE_BUILD ===
 
 from __future__ import annotations
 
 import hashlib
-import math
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
@@ -110,23 +110,6 @@ class PrivateGonal:
             phase=new_phase,
             perm=self.perm,
         )
-
-    def inscribe(self, angle: float) -> int:
-        """Apply the exact A0 continuous-inscription application transform.
-
-        This method is an A0 compatibility surface, not the definition of the
-        public-gonol origin or a bridge into normalized ``UCNSObject`` angles.
-        """
-
-        value = float(angle)
-        if not math.isfinite(value):
-            raise ValueError("inscription angle must be finite")
-        frac = (value / (2.0 * math.pi)) % 1.0
-        base = int(frac * ARITY) % ARITY
-        if base == ORIGIN:
-            return self.perm[ORIGIN]
-        rotated = ((base - 1 + self.phase) % (ARITY - 1)) + 1
-        return self.perm[rotated]
 
     def char_at(self, vertex_idx: int) -> str:
         return self.arrangement[vertex_idx % ARITY]
