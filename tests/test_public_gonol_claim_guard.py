@@ -1,3 +1,5 @@
+"""Permanent guardrails for the fixed public-gonol twist/origin canon."""
+
 from __future__ import annotations
 
 from pathlib import Path
