@@ -1,2 +1,2 @@
-trigger=2026-07-16T08:26:00Z
-purpose=apply-idempotent-validated-public-gonol-formal-scope-repair-v3
+trigger=2026-07-16T09:20:00Z
+purpose=run-evidenced-public-gonol-formal-scope-repair-v5
