@@ -45,10 +45,10 @@ jobs:
               ;;
           esac
 
-      - name: Check out canonical main
+      - name: Check out the exact dispatched main commit
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -91,7 +91,11 @@ jobs:
           python -m venv .candidate-venv
           .candidate-venv/bin/python -m pip install --upgrade pip
           .candidate-venv/bin/python -m pip install dist/*.whl
-          .candidate-venv/bin/python - <<'PY'
+          # Run the import smoke from outside the checkout so the repository's
+          # ucns/ source tree cannot shadow the installed wheel on sys.path.
+          SMOKE_DIR="$(mktemp -d)"
+          cd "${SMOKE_DIR}"
+          "${GITHUB_WORKSPACE}/.candidate-venv/bin/python" - <<'PY'
           import builtins
           import importlib
           from importlib.metadata import version
@@ -157,6 +161,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Download this run's verified candidate distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: ucns-1.0.0rc1-distributions
+          path: dist
+
       - name: Install exact candidate from TestPyPI with bounded propagation retries
         run: |
           python -m venv .testpypi-venv
@@ -175,6 +185,58 @@ jobs:
             fi
             sleep 10
           done
+
+      - name: Bind the TestPyPI candidate to this run's build
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip download \
+            --no-cache-dir \
+            --no-deps \
+            --only-binary :all: \
+            --index-url https://test.pypi.org/simple/ \
+            --dest testpypi-dist \
+            "ucns==1.0.0rc1"
+          python - <<'PY'
+          import sys
+          import zipfile
+          from pathlib import Path
+
+          # Compare wheel contents rather than archive bytes: zip entry
+          # timestamps and generator metadata (WHEEL, RECORD) are not
+          # reproducible across runs, but every packaged code and metadata
+          # file must be identical for the TestPyPI candidate to count as
+          # evidence for this run's source.
+          def contents(wheel: Path) -> dict:
+              out = {}
+              with zipfile.ZipFile(wheel) as zf:
+                  for name in zf.namelist():
+                      if name.endswith((".dist-info/WHEEL", ".dist-info/RECORD")):
+                          continue
+                      out[name] = zf.read(name)
+              return out
+
+          local = next(Path("dist").glob("*.whl"))
+          remote = next(Path("testpypi-dist").glob("*.whl"))
+          built, published = contents(local), contents(remote)
+
+          missing = sorted(built.keys() - published.keys())
+          extra = sorted(published.keys() - built.keys())
+          drifted = sorted(
+              name for name in built.keys() & published.keys()
+              if built[name] != published[name]
+          )
+          if missing or extra or drifted:
+              print("TestPyPI candidate does not match this run's build:", file=sys.stderr)
+              for label, names in (("missing", missing), ("extra", extra), ("drifted", drifted)):
+                  for name in names:
+                      print(f"  {label}: {name}", file=sys.stderr)
+              sys.exit(1)
+          print(
+              f"TestPyPI wheel {remote.name} matches this run's build "
+              f"{local.name} (all packaged files identical; WHEEL/RECORD "
+              "generator metadata excluded)"
+          )
+          PY
 
       - name: Verify installed TestPyPI identity and import firewall
         run: |
