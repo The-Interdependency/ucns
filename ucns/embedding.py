@@ -1,41 +1,14 @@
-"""
-ucns.embedding
-==============
-High-level embedding API built on the Unit Circle Number System.
+"""Legacy FFT phase-vector embedding compatibility surface.
 
-**Why UCNS embeddings?**
+``UCNEmbedding`` converts input data into a conventional 2π phase vector through
+an FFT. It is an experimental/local embedding utility, not the canonical public
+gonol, not a lossless public-gonol text encoding, and not a proof-backed UCNS
+semantic embedding.
 
-Traditional neural embeddings (e.g. word2vec, BERT, OpenAI Ada) produce
-*dense float32 vectors* of 384–3072 dimensions.  UCNS embeddings offer three
-concrete advantages:
-
-1. **Compact storage** – angles are quantised to ``uint16`` (2 bytes), giving
-   a 2× space saving over ``float32`` with negligible information loss
-   (≈0.0001 rad angular resolution).
-
-2. **Fast similarity** – the inner product ``cos(θᵢ − φᵢ)`` is computed with
-   a single subtraction and cosine lookup per dimension.  No square root for
-   normalisation is needed because all embeddings already live on the unit
-   torus (‖embedding‖ = 1 by construction).
-
-3. **Zero dependencies** – implemented entirely in the Python standard library
-   (``math``, ``cmath``, ``struct``).
-
-Architecture
-------------
-``UCNEmbedding`` uses ``EpicycleDecomposition`` under the hood:
-
-    input data  →  real-valued signal  →  FFT  →  phases  =  embedding
-
-The embedding dimension is always a power of two (the next power-of-two ≥
-*dim*) because the FFT requires it.  Extra dimensions are zeroed out.
-
-Supported input types
----------------------
-* ``float`` / ``int`` – single-element signal.
-* ``str`` – ordinal encoding of Unicode code points.
-* ``list[float]`` / ``tuple[float]`` – arbitrary real-valued signal.
-* ``bytes`` – unsigned byte values as signal.
+Strings are converted to Unicode ordinal signals; they do not use the canonical
+157-position public arrangement or lifted traversal. Consequently this module
+must not be cited as preserving the fixed SPACE/ZERO twist origin, 720-degree
+return, public faces/chirality, or public-gonol identity.
 """
 
 from __future__ import annotations
@@ -43,22 +16,22 @@ from __future__ import annotations
 # === MODULE_BUILD ===
 # id: ucns_embedding
 #   module_name: embedding
-#   module_kind: engine
-#   summary: High-level UCNS embedding API that encodes data to unit-circle phase vectors via epicycle/FFT decomposition and compares them.
+#   module_kind: adapter
+#   summary: legacy FFT phase-vector embedding over local 2pi coordinates; explicitly not the public-gonol encoder or a semantic/theorem surface
 #   owner: Erin Spencer
 #   public_surface: UCNEmbedding
 #   internal_surface: _to_signal
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
-#   user_data_boundary: none
+#   user_data_boundary: read
 #   admin_only: false
 #   tests: tests.test_embedding
-#   rollout: default_enabled
-#   rollback: remove module and its re-exports
+#   rollout: compatibility_only
+#   rollback: remove after legacy consumers migrate to explicitly named embedding surfaces
 #   requires: ucns_epicycle
 #   since: 2026-06-02
-#   unresolved: none
+#   unresolved: no public-gonol or semantic bridge is defined
 # === END MODULE_BUILD ===
 
 import math
@@ -71,72 +44,51 @@ __all__ = ["UCNEmbedding"]
 
 _TAU = 2.0 * math.pi
 
-# Type accepted by UCNEmbedding.encode
 Encodable = Union[int, float, str, bytes, list, tuple]
 
 
 class UCNEmbedding:
-    """Generate and compare Unit Circle Number System embeddings.
+    """Generate and compare legacy FFT phase-vector embeddings.
+
+    The returned values are local phases in ``[0, 2π)``. They are not
+    public-gonol positions and do not retain the Möbius orientation state.
 
     Parameters
     ----------
     dim:
-        Desired embedding dimension.  The actual dimension used is the next
-        power of two ≥ *dim* (because the FFT requires it).
-
-    Examples
-    --------
-    >>> emb = UCNEmbedding(dim=16)
-    >>> v1 = emb.encode("hello")
-    >>> v2 = emb.encode("hello")
-    >>> emb.similarity(v1, v2)
-    1.0
-    >>> v3 = emb.encode("world")
-    >>> -1.0 <= emb.similarity(v1, v3) <= 1.0
-    True
+        Requested phase-vector dimension. The actual dimension is the next power
+        of two because the implementation uses a radix-2 FFT.
     """
 
     def __init__(self, dim: int = 64) -> None:
         if dim < 1:
             raise ValueError("dim must be at least 1")
-        self._dim_requested: int = dim
-        self._dim: int = _next_pow2(dim)
+        self._dim_requested = dim
+        self._dim = _next_pow2(dim)
 
     @property
     def dim(self) -> int:
-        """Actual embedding dimension (next power of two ≥ the requested dim)."""
+        """Actual FFT dimension."""
+
         return self._dim
 
-    # ------------------------------------------------------------------
-    # Encoding
-    # ------------------------------------------------------------------
-
     def encode(self, data: Encodable) -> list[float]:
-        """Encode *data* as a UCNS embedding vector.
+        """Encode data as deterministic local FFT phases.
 
-        Returns a list of ``dim`` angles in ``[0, τ)``.  Identical data always
-        produces identical embeddings.
-
-        Parameters
-        ----------
-        data:
-            Input to encode.  See module docstring for supported types.
+        For strings, Unicode code points are used as a numeric signal. This is
+        deliberately distinct from ``ucns.encode_text_path``.
         """
+
         signal = self._to_signal(data)
-        # Pad / truncate to self._dim
         if len(signal) < self._dim:
             signal = signal + [0.0] * (self._dim - len(signal))
         else:
             signal = signal[: self._dim]
-        decomp = EpicycleDecomposition(signal)
-        return decomp.phase_vector
+        return EpicycleDecomposition(signal).phase_vector
 
     def encode_packed(self, data: Encodable) -> bytes:
-        """Encode and immediately serialise to compact ``uint16`` bytes.
+        """Encode and quantize local phases to unsigned 16-bit values."""
 
-        Each of the ``dim`` angles is stored as a 16-bit unsigned integer,
-        giving ``2 * dim`` bytes total (vs. ``4 * dim`` for float32).
-        """
         phases = self.encode(data)
         scale = 65535.0 / _TAU
         ints = [min(65535, int(p * scale)) for p in phases]
@@ -144,26 +96,16 @@ class UCNEmbedding:
 
     @staticmethod
     def unpack(data: bytes) -> list[float]:
-        """Unpack ``uint16`` bytes back to a list of float angles."""
+        """Unpack unsigned 16-bit values as local 2π phases."""
+
         n = len(data) // 2
         ints = struct.unpack(f"<{n}H", data)
         scale = _TAU / 65535.0
         return [v * scale for v in ints]
 
-    # ------------------------------------------------------------------
-    # Similarity
-    # ------------------------------------------------------------------
-
     def similarity(self, a: list[float], b: list[float]) -> float:
-        """Mean phase-cosine similarity between two embeddings ∈ [−1, 1].
+        """Mean phase-cosine similarity for this local embedding representation."""
 
-        This is the canonical UCNS inner product:
-
-            sim(a, b) = (1/dim) · Σᵢ cos(aᵢ − bᵢ)
-
-        All embedding vectors have unit "norm" under this metric, so the
-        result is a pure cosine without any length normalisation step.
-        """
         if len(a) != len(b):
             raise ValueError(
                 f"Embeddings must have equal length; got {len(a)} and {len(b)}"
@@ -177,20 +119,8 @@ class UCNEmbedding:
         query: list[float],
         corpus: list[list[float]],
     ) -> tuple[int, float]:
-        """Find the index and score of the most similar embedding in *corpus*.
+        """Return the highest-scoring candidate under local phase similarity."""
 
-        Parameters
-        ----------
-        query:
-            Query embedding (list of angles).
-        corpus:
-            List of candidate embeddings to compare against.
-
-        Returns
-        -------
-        (index, score):
-            Index of the best match and its similarity score in ``[−1, 1]``.
-        """
         if not corpus:
             raise ValueError("corpus is empty")
         best_idx = 0
@@ -202,13 +132,10 @@ class UCNEmbedding:
                 best_idx = i
         return best_idx, best_score
 
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
     @staticmethod
     def _to_signal(data: Encodable) -> list[float]:
-        """Convert supported input types to a list of floats."""
+        """Convert supported input types to a numerical FFT signal."""
+
         if isinstance(data, (int, float)):
             return [float(data)]
         if isinstance(data, str):
@@ -221,10 +148,6 @@ class UCNEmbedding:
             f"Unsupported type {type(data).__name__!r}. "
             "Expected int, float, str, bytes, list, or tuple."
         )
-
-    # ------------------------------------------------------------------
-    # Dunder
-    # ------------------------------------------------------------------
 
     def __repr__(self) -> str:
         return (
