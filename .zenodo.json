@@ -1,6 +1,6 @@
 {
-  "title": "UCNS — Unit Circle Number System",
-  "description": "Unit Circle Number System: a recursive factorization engine over epicyclic objects on the doubled cover of the unit circle. Includes Theorem N as an explicitly FRONTIER catalogue-sufficient factorization target, the Carrier-LCM Law (DEFENDED + TEST-BACKED via the carrier-support-pruning substrate), and a Lean 4 core formalization whose remaining sorry obligations confer no defended status.",
+  "title": "UCNS — Fixed-Origin Public Gonol and Scoped Recursive Factorization",
+  "description": "UCNS is rooted in the canonical public 157-gonal whose position 0 is SPACE/ZERO, the Möbius twist seam and fixed system origin; one 360-degree circuit reverses orientation and complete return requires 720 degrees. The package also contains a separately scoped normalized recursive factorization subsystem. Theorem N remains a FRONTIER catalogue-sufficient proof target, Carrier-LCM is proved only for the subsystem's internal projected n_min, and no bridge from the public gonol to the normalized factorization model is assumed.",
   "creators": [
     { "name": "Spencer, Erin Patrick", "affiliation": "The Interdependency LLC" }
   ],
@@ -9,9 +9,10 @@
   "access_right": "open",
   "version": "1.0.0rc1",
   "keywords": [
+    "public gonol",
+    "mobius twist origin",
     "recursive factorization",
     "unit circle number system",
-    "epicyclic composition",
     "formal verification",
     "Lean 4"
   ],
