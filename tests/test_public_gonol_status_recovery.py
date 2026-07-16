@@ -15,6 +15,7 @@ def test_current_specs_keep_theorem_n_at_frontier():
     required = {
         "ucns-spec.md": (
             "**Foundational public-frame boundary.**",
+            "**FRONTIER.** Theorem N is the catalogue-sufficient factorization proof target",
             "Theorem N catalogue-sufficient factorization remains `FRONTIER`",
             "internal factorization spec boundary",
         ),
@@ -25,6 +26,7 @@ def test_current_specs_keep_theorem_n_at_frontier():
         "ucns-spec-frontier-v090.md": (
             "Theorem N remains `FRONTIER`",
             "public-gonol bridge is absent",
+            "does not promote Theorem N itself beyond",
         ),
         "ucns-theorem-n.md": (
             "**Status:** FRONTIER",
@@ -45,6 +47,15 @@ def test_current_specs_keep_theorem_n_at_frontier():
         value = _text(path)
         for phrase in forbidden:
             assert phrase not in value, f"{path} restored theorem overclaim: {phrase!r}"
+
+
+def test_internal_tower_language_cannot_claim_public_seams_or_automatic_recovery():
+    frontier = _text("depth7-frontier.md")
+    assert "internal host traversal record" in frontier
+    assert "does not assert a public-gonol seam" in frontier
+    assert "explicitly scoped quotient evidence" in frontier
+    assert "one doubled-cover seam structure" not in frontier
+    assert "> Pairwise interlocking is UCNS product plus quotient recovery." not in frontier
 
 
 def test_hyperdimensional_and_ptca_language_is_frontier_not_established():
