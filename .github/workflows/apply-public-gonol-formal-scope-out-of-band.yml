@@ -42,6 +42,13 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install elan from pinned formal toolchain
+        working-directory: target/formal
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
       - name: Execute idempotent scope repair
         working-directory: target
         run: |
@@ -57,6 +64,20 @@ jobs:
               for line in workflow[start:end].splitlines()
           )
           exec(compile(script, "<public-gonol-scope-v4>", "exec"), {"__name__": "__main__"})
+
+          links = {
+              Path("docs/ucns-shape-reconciliation.md"): "docs/edcm-edcmbone-bridge-checklist.md",
+              Path("docs/pure-ucns-number-system.md"): "docs/edcm-edcmbone-bridge-checklist.md",
+              Path("docs/edcm-edcmbone-bridge-checklist.md"): "docs/prime-quartet-discontinuity.md",
+          }
+          for path, reference in links.items():
+              value = path.read_text(encoding="utf-8")
+              if reference not in value:
+                  value += (
+                      "\n\n## Related boundary document\n\n"
+                      f"- `{reference}`\n"
+                  )
+                  path.write_text(value, encoding="utf-8")
           PY
 
       - name: Regenerate clean metadata
@@ -104,11 +125,8 @@ jobs:
         shell: bash
         run: |
           set +e
-          lake exe cache get 2>&1 | tee "$RUNNER_TEMP/public-gonol-lean-cache.log"
-          cache_status=${PIPESTATUS[0]}
           lake build 2>&1 | tee "$RUNNER_TEMP/public-gonol-lean.log"
-          build_status=${PIPESTATUS[0]}
-          status=$(( cache_status != 0 ? cache_status : build_status ))
+          status=${PIPESTATUS[0]}
           echo "$status" > "$RUNNER_TEMP/public-gonol-lean.status"
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
@@ -122,7 +140,6 @@ jobs:
             ${{ runner.temp }}/public-gonol-python.status
             ${{ runner.temp }}/public-gonol-audit.log
             ${{ runner.temp }}/public-gonol-audit.status
-            ${{ runner.temp }}/public-gonol-lean-cache.log
             ${{ runner.temp }}/public-gonol-lean.log
             ${{ runner.temp }}/public-gonol-lean.status
           if-no-files-found: error
@@ -147,7 +164,13 @@ jobs:
           git add CLAUDE.md ucns_msdmd.ts \
             formal/Ucns/Core.lean formal/Ucns/CarrierLcm.lean formal/Ucns/TheoremN.lean \
             ucns/geometry_bridge.py ucns-theorem-n.md docs/carrier-support-pruning.md \
-            docs/unitcircle-import-assessment.md audit/obligation_ledger.md
+            docs/unitcircle-import-assessment.md audit/obligation_ledger.md \
+            docs/ucns-shape-reconciliation.md docs/pure-ucns-number-system.md \
+            docs/edcm-edcmbone-bridge-checklist.md
+          if git diff --cached --quiet; then
+            echo "validated target already current"
+            exit 0
+          fi
           git diff --cached --stat
           git commit -m "fix(canon): scope internal lemmas under the public twist origin"
           git push origin HEAD:agent/promote-public-gonol-canon
