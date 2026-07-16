@@ -1,3 +1,4 @@
+# Triggered after formal public-gonol foundation was added.
 name: apply public-gonol formal scope out of band
 
 on:
