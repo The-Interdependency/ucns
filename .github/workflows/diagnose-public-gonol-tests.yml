@@ -1,5 +1,6 @@
 name: diagnose public-gonol tests
 
+# Rerun after the line-break-robust canon guard update.
 on:
   pull_request:
     branches: [main]
