@@ -17,7 +17,7 @@ Status of UCNS layers under this vocabulary:
 
 - **DEFENDED.** Flat kernel (v0.3); epicyclic first freeze (v0.4); recursive sequence and multiset primality notions (v0.5); cancellativity and quotient uniqueness boundary (v0.5.1); quotient existence conditions and restricted completeness on a bounded depth-1 domain (v0.6.1–v0.6.5).
 - **DEFENDED + ORACLE-COMPLETE.** Depth-2 smallest oracle theorem (v0.8.1, Lemma 7). Complete only under the declared oracle/catalogue assumptions.
-- **DEFENDED — proof drafted, awaiting external formal review.** Theorem N (catalogue-sufficient factorization at all depths). See `ucns-theorem-n.md`. The only hypothesis is that the catalogue contains every recursive payload of the true factors; no depth condition is imposed on the algorithm.
+- **FRONTIER.** Theorem N is the catalogue-sufficient factorization proof target for the normalized factorization subsystem. Its implementation-backed proof sketch and Lean scaffold do not confer `DEFENDED` status; completeness statements remain `sorry`-backed, and no public-gonol bridge is proved.
 - **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical in `code/sweeps/t9_minimal_cat.py`).
 - **FRONTIER / out of v1.0 scope.** Carrier widening; tractable sub-catalogues; general recursive primality outside defended-complete domains; recursive disk-flip content symmetry as a depth-n theorem; depth-7 Fano/octonion conjecture.
 

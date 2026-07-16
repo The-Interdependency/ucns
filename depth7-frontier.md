@@ -118,13 +118,7 @@ The bridge can be stated safely as follows.
 
 A depth-`n` normalized factorization object may be explored through an `n`-level tower analogy. This is not public-gonol canon or a proved continuous geometry.
 
-Each level contributes:
-
-- one host traversal,
-- one doubled-cover seam structure,
-- one layer of payload fiber geometry.
-
-This is a structural interpretation of the recursive object model.
+Each level contributes an internal host traversal record, internal face data, and one layer of recursive payload structure. This is a structural description of the normalized factorization model; it does not assert a public-gonol seam or orientation frame at every payload level.
 
 ## 2.2 Interlocking as quotient-coupled product
 
@@ -132,7 +126,7 @@ Two objects interlock when their ordered product preserves information in a way 
 
 Safe statement:
 
-> Pairwise interlocking is UCNS product plus quotient recovery.
+> Pairwise interlocking is an exploratory label for an internal ordered product accompanied by explicitly scoped quotient evidence.
 
 Unsafe statement until proved:
 

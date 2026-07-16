@@ -83,8 +83,9 @@ as a class.
 **Reconciled 2026-05-17 canon.** The full frozen depth-2 domain is now
 `IMPLEMENTED` + `TEST-BACKED` in `factor_search_v08`, **not yet
 `DEFENDED`** at the spec level. The depth-2 oracle theorem (Lemma 7)
-remains `DEFENDED` + `ORACLE-COMPLETE` and is now recognized as an
-instance of Theorem N (`ucns-theorem-n.md §4.1`).
+remains `DEFENDED` + `ORACLE-COMPLETE`. It fits the intended catalogue-sufficient
+shape of the Theorem N proof target, but does not promote Theorem N itself beyond
+`FRONTIER` (`ucns-theorem-n.md §4.1`).
 
 So the current honest statement is:
 
@@ -231,7 +232,7 @@ The v0.9.0 UCNS completeness frontier (as captured here) was:
 Under the reconciled 2026-05-17 canon (`ucns-spec.md`, `ucns-theorem-n.md`):
 
 - DEFENDED: flat, depth-1 restricted theorem, cancellativity / quotient uniqueness,
-- DEFENDED + ORACLE-COMPLETE: depth-2 smallest oracle (Lemma 7 = Theorem N instance),
+- DEFENDED + ORACLE-COMPLETE: depth-2 smallest oracle; its catalogue-sufficient shape is evidence for the FRONTIER Theorem N target, not a status promotion,
 - FRONTIER: Theorem N — catalogue-sufficient factorization proof target in the normalized subsystem; Lean completeness remains `sorry`-backed and the public bridge is absent,
 - IMPLEMENTED + TEST-BACKED: full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9),
 - FRONTIER / out of v1.0 scope: carrier widening; tractable sub-catalogues; general primality outside defended-complete domains.
