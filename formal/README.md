@@ -31,20 +31,21 @@ complete return requires 720 degrees
 private/admissible transformations preserve origin
 ```
 
-`Ucns/PublicGonol.lean` proves the elementary consequences of those declarations:
+`Ucns/PublicGonol.lean` proves only the immediate discrete and orientation
+consequences of those declarations:
 
 ```text
 origin is uniquely position zero
 one circuit returns to the same local carrier position but changes orientation
 two circuits return to the same local position and restore orientation
 720 degrees = two 360-degree circuits
-existing mod-4 half-turn representation distinguishes 360 from the 720 return
 origin-preserving permutations fix SPACE/ZERO
 ```
 
-The mod-4 lemmas establish the already-declared 720-degree period of the
-internal angle representation. They do **not** define a map from public-gonol
-vertices to internal angles.
+The file deliberately does not import `Ucns.Core`. It contains no half-turn,
+`amod4`, vertex-angle, or normalization bridge. The 720-degree return is rooted
+in the public Möbius orientation canon itself, not inferred from the internal
+factorization representation.
 
 ## Theorem N status: FRONTIER / awaiting external formal review
 
@@ -81,17 +82,18 @@ fixed-origin, twist-bearing public carrier.
 
 ## Modeling boundaries
 
-`Ucns/Core.lean` retains the existing Python-faithful internal model:
+`Ucns/Core.lean` retains the existing internal factorization model:
 
-- rational angles reduced modulo four half-turn units;
-- 720-degree period;
+- rational internal angles reduced modulo four half-turn units;
 - object-relative first-angle normalization;
 - face XOR;
 - recursive payload multiplication;
 - `nMin` from projected circle-fraction denominators.
 
-Object-relative normalization is not applied to the public gonol and does not
-move or redefine SPACE/ZERO.
+That model may have its own four-half-turn period. No theorem currently proves
+that the internal period, coordinates, identity, multiplication, or carrier are
+the public gonol. Object-relative normalization is not applied to the public
+gonol and does not move or redefine SPACE/ZERO.
 
 The following remain explicitly unresolved:
 
