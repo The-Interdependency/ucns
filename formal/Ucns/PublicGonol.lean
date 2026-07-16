@@ -13,8 +13,8 @@
     * one 360-degree circuit changes orientation;
     * complete return requires 720 degrees.
 
-  This file deliberately does not import Ucns.Core and does not invent a map
-  from the 157 public vertices into normalized recursive factorization angles.
+  This file is independent of the normalized factorization core and does not
+  invent a map from the 157 public vertices into recursive factorization values.
   That bridge remains hmmm. It formalizes only the canon above and the lifted
   carrier facts already present in A0.
 -/
