@@ -91,9 +91,17 @@ class GonalSpec:
     seed: Optional[int] = None
 
 
-def build_gonal(spec: GonalSpec) -> List[str]:
-    """Build the public arrangement by the exact A0 declarative placement law."""
+def _validate_spec(spec: GonalSpec) -> None:
+    if not isinstance(spec.n, int) or isinstance(spec.n, bool) or spec.n < 1:
+        raise ValueError("gonal arity must be a positive integer")
+    if not isinstance(spec.origin, str) or len(spec.origin) != 1:
+        raise ValueError("gonal origin must be exactly one character")
 
+
+def build_gonal(spec: GonalSpec) -> List[str]:
+    """Build an arrangement by the exact A0 declarative placement law."""
+
+    _validate_spec(spec)
     n = spec.n
     slot: List[str] = [""] * n
     slot[0] = spec.origin
@@ -104,6 +112,8 @@ def build_gonal(spec: GonalSpec) -> List[str]:
     if spec.letter_sides == "opposite":
         upper_l = list(range(1, upper_arc[-1], 3))[:26]
         lower_l = list(range(lower_arc[1], lower_arc[-1], 3))[:26]
+        if len(upper_l) < len(UPPERCASE) or len(lower_l) < len(LOWERCASE):
+            raise ValueError("gonal arity is too small for opposite-side letter placement")
         for i, ch in enumerate(UPPERCASE):
             slot[upper_l[i]] = ch
         for i, ch in enumerate(LOWERCASE):
@@ -113,9 +123,13 @@ def build_gonal(spec: GonalSpec) -> List[str]:
         all_letters[::2] = UPPERCASE
         all_letters[1::2] = LOWERCASE
         upper_l = list(range(1, upper_arc[-1], 2))[:52]
+        if len(upper_l) < len(all_letters):
+            raise ValueError("gonal arity is too small for same-side letter placement")
         for i, ch in enumerate(all_letters):
-            if i < len(upper_l) and ch is not None:
+            if ch is not None:
                 slot[upper_l[i]] = ch
+    else:
+        raise ValueError("unsupported letter_sides {!r}".format(spec.letter_sides))
 
     if spec.digit_alternation:
         upper_gaps = [p for p in upper_arc if slot[p] == ""]
@@ -163,6 +177,8 @@ def build_gonal(spec: GonalSpec) -> List[str]:
                 nxt = (pos + 1) % n
                 if slot[nxt] == "":
                     slot[nxt] = cl
+    else:
+        raise ValueError("unsupported paired_alignment {!r}".format(spec.paired_alignment))
 
     unpaired = UNPAIRED_ALL + spec.extra_unpaired
     fill_positions = [p for p in range(n) if slot[p] == ""]
@@ -176,11 +192,50 @@ def build_gonal(spec: GonalSpec) -> List[str]:
 
 
 def validate_gonal(slot: List[str], spec: GonalSpec) -> Dict[str, object]:
-    """Validate the exact A0 adjacency and overflow rules."""
+    """Validate structure, fixed origin, uniqueness, adjacency, and overflow."""
 
-    n = len(slot)
     violations: List[str] = []
     warnings: List[str] = []
+
+    try:
+        _validate_spec(spec)
+    except ValueError as exc:
+        violations.append(str(exc))
+
+    n = len(slot)
+    if n != spec.n:
+        violations.append("arity mismatch: expected {}, got {}".format(spec.n, n))
+    if n == 0:
+        violations.append("carrier must be nonempty")
+
+    malformed = [
+        index
+        for index, glyph in enumerate(slot)
+        if not isinstance(glyph, str) or not glyph
+    ]
+    if malformed:
+        violations.append("non-string or empty glyph positions: {}".format(malformed))
+
+    if n > 0 and slot[0] != spec.origin:
+        violations.append(
+            "fixed origin mismatch at position 0: expected {!r}, got {!r}".format(
+                spec.origin, slot[0]
+            )
+        )
+
+    origin_positions = [index for index, glyph in enumerate(slot) if glyph == spec.origin]
+    if origin_positions != [0]:
+        violations.append(
+            "origin must occur exactly once at position 0; got {}".format(origin_positions)
+        )
+
+    duplicates = sorted(
+        glyph
+        for glyph in set(slot)
+        if slot.count(glyph) > 1
+    )
+    if duplicates:
+        violations.append("duplicate glyphs are not allowed: {!r}".format(duplicates))
 
     def char_type(ch: str) -> str:
         if ch in UPPERCASE:
@@ -203,28 +258,40 @@ def validate_gonal(slot: List[str], spec: GonalSpec) -> Dict[str, object]:
     def is_digit(ch: str) -> bool:
         return ch in string.digits
 
-    for k in range(n):
-        curr = slot[k]
-        nxt = slot[(k + 1) % n]
-        for constraint in spec.no_adjacent:
-            if constraint == "letter" and is_letter(curr) and is_letter(nxt):
-                violations.append(
-                    "letter-letter at pos {}-{}: {!r}-{!r}".format(k, (k + 1) % n, curr, nxt)
-                )
-            elif constraint == "digit" and is_digit(curr) and is_digit(nxt):
-                violations.append(
-                    "digit-digit at pos {}-{}: {!r}-{!r}".format(k, (k + 1) % n, curr, nxt)
-                )
-            elif constraint == "uppercase" and curr in UPPERCASE and nxt in UPPERCASE:
-                violations.append(
-                    "upper-upper at pos {}-{}: {!r}-{!r}".format(k, (k + 1) % n, curr, nxt)
-                )
-            elif constraint == "lowercase" and curr in LOWERCASE and nxt in LOWERCASE:
-                violations.append(
-                    "lower-lower at pos {}-{}: {!r}-{!r}".format(k, (k + 1) % n, curr, nxt)
-                )
+    if n > 0 and not malformed:
+        for k in range(n):
+            curr = slot[k]
+            nxt = slot[(k + 1) % n]
+            for constraint in spec.no_adjacent:
+                if constraint == "letter" and is_letter(curr) and is_letter(nxt):
+                    violations.append(
+                        "letter-letter at pos {}-{}: {!r}-{!r}".format(
+                            k, (k + 1) % n, curr, nxt
+                        )
+                    )
+                elif constraint == "digit" and is_digit(curr) and is_digit(nxt):
+                    violations.append(
+                        "digit-digit at pos {}-{}: {!r}-{!r}".format(
+                            k, (k + 1) % n, curr, nxt
+                        )
+                    )
+                elif constraint == "uppercase" and curr in UPPERCASE and nxt in UPPERCASE:
+                    violations.append(
+                        "upper-upper at pos {}-{}: {!r}-{!r}".format(
+                            k, (k + 1) % n, curr, nxt
+                        )
+                    )
+                elif constraint == "lowercase" and curr in LOWERCASE and nxt in LOWERCASE:
+                    violations.append(
+                        "lower-lower at pos {}-{}: {!r}-{!r}".format(
+                            k, (k + 1) % n, curr, nxt
+                        )
+                    )
 
-    overflow = [k for k in range(n) if str(slot[k]).startswith("\x00")]
+    overflow = [
+        k for k, glyph in enumerate(slot)
+        if isinstance(glyph, str) and glyph.startswith("\x00")
+    ]
     if overflow:
         violations.append("overflow positions (ran out of unpaired chars): {}".format(overflow))
 
@@ -237,11 +304,19 @@ def validate_gonal(slot: List[str], spec: GonalSpec) -> Dict[str, object]:
         "unpaired",
         "origin",
     ]
+    counts = {
+        name: sum(
+            1
+            for glyph in slot
+            if isinstance(glyph, str) and glyph and char_type(glyph) == name
+        )
+        for name in count_names
+    }
     return {
         "valid": len(violations) == 0,
         "violations": violations,
         "warnings": warnings,
-        "counts": {name: sum(1 for value in slot if char_type(value) == name) for name in count_names},
+        "counts": counts,
         "n": n,
     }
 
@@ -251,7 +326,8 @@ def print_gonal(slot: List[str], width: int = 10) -> None:
 
     n = len(slot)
     print("\n{}-GONAL ARRANGEMENT".format(n))
-    print("  pos   0: {!r}  ORIGIN".format(slot[0]))
+    if n:
+        print("  pos   0: {!r}  ORIGIN".format(slot[0]))
     for i in range(0, n, width):
         end = min(i + width, n)
         row = "  ".join("{:3}:{!r}".format(j, slot[j]) for j in range(i, end))
@@ -270,7 +346,11 @@ def make_example_157() -> List[str]:
         horizontal_symmetry="forbidden",
         origin=" ",
     )
-    return build_gonal(spec)
+    arrangement = build_gonal(spec)
+    report = validate_gonal(arrangement, spec)
+    if not report["valid"]:
+        raise RuntimeError("public gonol construction invalid: {!r}".format(report["violations"]))
+    return arrangement
 
 
 def public_gonol_sha256(glyphs: Tuple[str, ...]) -> str:
