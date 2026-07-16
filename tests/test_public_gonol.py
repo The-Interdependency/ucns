@@ -38,6 +38,25 @@ def test_exact_public_arrangement_and_digest():
     assert validate_gonal(get_default(), GonalSpec())["valid"] is True
 
 
+def test_validator_rejects_malformed_carriers_and_moved_origin():
+    spec = GonalSpec()
+
+    short = validate_gonal([" "], spec)
+    assert short["valid"] is False
+    assert any("arity mismatch" in item for item in short["violations"])
+
+    duplicated = validate_gonal([" "] * ARITY, spec)
+    assert duplicated["valid"] is False
+    assert any("origin must occur exactly once" in item for item in duplicated["violations"])
+    assert any("duplicate glyphs" in item for item in duplicated["violations"])
+
+    moved = list(PUBLIC_GONOL_157)
+    moved[0], moved[1] = moved[1], moved[0]
+    report = validate_gonal(moved, spec)
+    assert report["valid"] is False
+    assert any("fixed origin mismatch" in item for item in report["violations"])
+
+
 def test_origin_faces_chirality_and_mirror_are_exact():
     assert ORIGIN == 0
     assert face(0) == 1
@@ -89,3 +108,21 @@ def test_private_transform_keeps_twist_origin_fixed():
     assert advanced.perm[0] == ORIGIN
     assert advanced.perm == private.perm
     assert advanced.inscribe(2.0 * math.pi) == ORIGIN
+
+
+def test_private_transform_rejects_noncanonical_or_invalid_frames():
+    moved = list(PUBLIC_GONOL_157)
+    moved[0], moved[1] = moved[1], moved[0]
+    with pytest.raises(ValueError, match="custom PrivateGonal arrangements"):
+        PrivateGonal.from_seed(b"bad-frame", moved)
+
+    with pytest.raises(ValueError, match="must equal the canonical public gonol"):
+        PrivateGonal(tuple(moved), 0, tuple(range(ARITY)))
+
+    bad_perm = list(range(ARITY))
+    bad_perm[0], bad_perm[1] = bad_perm[1], bad_perm[0]
+    with pytest.raises(ValueError, match="must fix SPACE/ZERO"):
+        PrivateGonal(PUBLIC_GONOL_157, 0, tuple(bad_perm))
+
+    with pytest.raises(ValueError, match="phase must be in"):
+        PrivateGonal(PUBLIC_GONOL_157, ARITY - 1, tuple(range(ARITY)))
