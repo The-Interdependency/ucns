@@ -35,8 +35,10 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "ucns-spec.md": (
             "The public gonol implemented in `a0-betatest@7af8deb` is canon for UCNS",
             "position `0` is SPACE/ZERO",
-            "No continuous-angle bridge",
-            "from the public gonol is established here",
+            "No continuous-angle bridge from the",
+            "public gonol is established here.",
+            "**Foundational public-frame boundary.**",
+            "**FRONTIER.** Theorem N",
         ),
         "docs/claims-ledger.md": (
             "The public gonol is the canonical 157-position UCNS carrier",
@@ -85,7 +87,7 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "formal/Ucns/PublicGonol.lean": (
             "position 0 is SPACE/ZERO",
             "complete return requires 720 degrees",
-            "does not import Ucns.Core",
+            "independent of the normalized factorization core",
             "def completeReturnDegrees : Nat := 720",
             "theorem oneCircuit_changes_orientation",
             "theorem completeReturn_restores_orientation",
@@ -151,6 +153,7 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
             "located at the half-revolution \\theta = 2\\pi",
             "twist-seam** (zero, §7) is inscribed at",
             "The absorption law\n\n\\[\n\\underline{\\mathbf{0}} \\boxtimes",
+            "**DEFENDED — proof drafted, awaiting external formal review.** Theorem N",
         ),
         "depth7-frontier.md": (
             "the seam at `θ = 2π` where orientation flips on the doubled cover",
@@ -164,7 +167,6 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
             "oneCircuitHalfTurns",
             "completeReturnHalfTurns",
             "UCNSObject.amod4",
-            "import Ucns.Core",
         ),
         "docs/pure-ucns-number-system.md": (
             "UCNS number := canonical recursive unit-circle traversal object",
@@ -213,6 +215,13 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
         value = _text(path)
         for phrase in phrases:
             assert phrase not in value, f"{path} restored superseded claim: {phrase!r}"
+
+    formal_imports = {
+        line.strip()
+        for line in _text("formal/Ucns/PublicGonol.lean").splitlines()
+        if line.strip().startswith("import ")
+    }
+    assert "import Ucns.Core" not in formal_imports
 
 
 def test_public_gonol_source_origin_and_return_are_machine_pinned():
