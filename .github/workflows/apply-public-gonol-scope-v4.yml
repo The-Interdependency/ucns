@@ -109,6 +109,28 @@ jobs:
               )
           write(path, value)
 
+          path = "ucns-spec.md"
+          value = read(path)
+          value = value.replace(
+              "- **DEFENDED — proof drafted, awaiting external formal review.** Theorem N (catalogue-sufficient factorization at all depths). See `ucns-theorem-n.md`. The only hypothesis is that the catalogue contains every recursive payload of the true factors; no depth condition is imposed on the algorithm.",
+              "- **FRONTIER.** Theorem N (catalogue-sufficient factorization over the normalized recursive factorization model). Its Lean completeness statements remain `sorry`-backed and it has no public-gonol scope without a proved bridge. See `ucns-theorem-n.md`.",
+          )
+          value = value.replace(
+              "- **IMPLEMENTED + TEST-BACKED, not yet DEFENDED in the formal spec.** Full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical in `code/sweeps/t9_minimal_cat.py`).",
+              "- **IMPLEMENTED + TEST-BACKED in declared internal domains, not system-wide proof.** Full frozen depth-2 behavior and selected asymmetric depth-3 fixtures use `factor_search_v08`; numerical execution claims require immutable run artifacts.",
+          )
+          if "**Foundational public-frame boundary.**" not in value:
+              value = value.replace(
+                  "**Public API.** The v1.0 public Python API is the `ucns` package (and `ucns.a0_safe` for A0-safe inspection). The legacy `ucns_recursive` package remains importable as a compatibility surface but is deprecated for direct user imports.\n",
+                  "**Public API.** The v1.0 public Python API is the `ucns` package (and `ucns.a0_safe` for A0-safe inspection). The legacy `ucns_recursive` package remains importable as a compatibility surface but is deprecated for direct user imports.\n\n"
+                  "**Foundational public-frame boundary.** The canonical primitive is the exact 157-position public gonol with fixed SPACE/ZERO Möbius-twist origin and 720-degree complete return. The flat, recursive, and factor-search sections below specify normalized factorization subsystems. No first-anchor normalization, internal value, unit object, or carrier projection is the public origin. The bridge remains `hmmm`.\n",
+              )
+          value = value.replace(
+              "UCNS is a geometric-arithmetic system in which the primitive object is a paired traversal object rather than a scalar or symbol.\n\nA valid flat UCNS object is",
+              "UCNS is rooted in the canonical public gonol. The flat kernel below is an internal paired factorization layer rather than the definition of the system origin.\n\nA valid flat factorization object is",
+          )
+          write(path, value)
+
           path = "docs/carrier-support-pruning.md"
           value = read(path)
           if "PUBLIC-GONOL CARRIER SCOPE" not in value:
