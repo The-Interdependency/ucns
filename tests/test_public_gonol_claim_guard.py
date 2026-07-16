@@ -57,12 +57,24 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "docs/edcm-edcmbone-bridge-checklist.md": (
             "UCNS is rooted in the fixed-origin public gonol",
             "Catalogue-sufficient completeness (Theorem N)",
-            "no assumed bridge",
+            "There is no assumed bridge",
         ),
         "docs/carrier-support-pruning.md": (
             "not the complete carrier theorem for the fixed-origin",
             "internal projected-`n_min` identity",
             "720-degree return",
+        ),
+        "docs/eng_ucns_spec.md": (
+            "The public gonol",
+            "is canon for all UCNS",
+            "A 16-gonal grammatical class table",
+            "not the public gonol",
+            "not “proven at full depth”",
+        ),
+        "docs/ucns_operational_widening.md": (
+            "internal projected carrier `n_min`",
+            "not a theorem about widening of the canonical public gonol",
+            "not called “per-sublattice finiteness of UCNS”",
         ),
         "formal/README.md": (
             "fixed SPACE/ZERO Möbius-twist origin",
@@ -95,6 +107,25 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "ucns/geometry_bridge.py": (
             "not the public-gonol frame",
             'PUBLIC_GONOL_BRIDGE_STATUS = "hmmm"',
+        ),
+        "ucns/core.py": (
+            "not the canonical UCNS public gonol",
+            "does not model the 720-degree complete return",
+            "compatibility_only",
+        ),
+        "ucns/embedding.py": (
+            "not the canonical public gonol",
+            "distinct from ``ucns.encode_text_path``",
+            "compatibility_only",
+        ),
+        "ucns/epicycle.py": (
+            "does not define the UCNS public gonol",
+            "do not preserve the public Möbius orientation state",
+            "compatibility_only",
+        ),
+        "ucns/similarity.py": (
+            "not metrics on the canonical public gonol",
+            "compatibility_only",
         ),
     }
     for path, phrases in required.items():
@@ -145,6 +176,15 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
         "docs/ucns-shape-reconciliation.md": (
             "UCNS-A canonical object is a **recursive ordered sequence",
         ),
+        "docs/eng_ucns_spec.md": (
+            "UCNS-G geometry axis, not a linguistic or statistical choice",
+            "This law is proven at full depth",
+            "The carrier of a sentence is the LCM",
+        ),
+        "docs/ucns_operational_widening.md": (
+            "Carrier monotonicity is proven at full recursive depth",
+            "per-sublattice finiteness of UCNS",
+        ),
         "formal/Ucns/Core.lean": (
             "faithful definitions for the UCNS recursive algebra",
         ),
@@ -153,6 +193,20 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
         ),
         "formal/Ucns/TheoremN.lean": (
             "Lean 4 model of the UCNS Theorem N family",
+        ),
+        "ucns/core.py": (
+            "The fundamental numeric primitive",
+            "The additive identity (theta = 0)",
+        ),
+        "ucns/embedding.py": (
+            "the canonical UCNS inner product",
+            "High-level embedding API built on the Unit Circle Number System",
+        ),
+        "ucns/epicycle.py": (
+            "Why epicycles for UCNS?",
+        ),
+        "ucns/similarity.py": (
+            "Similarity and distance metrics for Unit Circle Number embeddings",
         ),
     }
     for path, phrases in forbidden.items():
