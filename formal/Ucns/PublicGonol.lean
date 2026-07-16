@@ -13,10 +13,10 @@
     * one 360-degree circuit changes orientation;
     * complete return requires 720 degrees.
 
-  This file does not invent a map from the 157 public vertices into the
-  normalized recursive factorization angles of Ucns.Core. That bridge remains
-  hmmm. It formalizes only the canon stated above and the lifted-carrier facts
-  already present in A0.
+  This file deliberately does not import Ucns.Core and does not invent a map
+  from the 157 public vertices into normalized recursive factorization angles.
+  That bridge remains hmmm. It formalizes only the canon above and the lifted
+  carrier facts already present in A0.
 -/
 
 -- === MODULE_BUILD ===
@@ -26,7 +26,7 @@
 --   summary: formalizes the fixed SPACE/ZERO Möbius-twist origin, 157-position lifted carrier, orientation flip after one circuit, and 720-degree complete return
 --   owner: Erin Spencer
 --   public_surface: arity, Vertex, origin, Orientation, flip, oneCircuitDegrees, completeReturnDegrees, FramedPosition, advanceOneCircuit, advanceCompleteReturn, OriginPreservingPermutation
---   internal_surface: oneCircuitHalfTurns, completeReturnHalfTurns
+--   internal_surface: none
 --   auth_boundary: none
 --   storage_boundary: none
 --   network_boundary: none
@@ -35,12 +35,12 @@
 --   tests: lake build; tests/test_public_gonol_claim_guard.py
 --   rollout: formal_definition_surface
 --   rollback: remove only with a canon migration explicitly approved by Erin Spencer
---   requires: ucns_formal_core_definitions
+--   requires: mathlib
 --   since: 2026-07-16
 --   unresolved: bridge from the fixed public-gonol frame into normalized recursive factorization objects remains hmmm
 -- === END MODULE_BUILD ===
 
-import Ucns.Core
+import Mathlib
 
 namespace Ucns
 namespace PublicGonol
@@ -48,7 +48,7 @@ namespace PublicGonol
 /-- The exact public-gonol arity. -/
 def arity : Nat := 157
 
- theorem arity_pos : 0 < arity := by
+theorem arity_pos : 0 < arity := by
   norm_num [arity]
 
 /-- A public-gonol carrier position. -/
@@ -81,7 +81,7 @@ def flip : Orientation → Orientation
 theorem flip_ne_self (o : Orientation) : flip o ≠ o := by
   cases o <;> simp [flip]
 
-/-- One circuit of the carrier. It is not a complete system return. -/
+/-- One 360-degree circuit of the carrier. It is not a complete system return. -/
 def oneCircuitDegrees : Nat := 360
 
 /-- The complete system return required by the Möbius twist. -/
@@ -92,28 +92,6 @@ def completeReturnDegrees : Nat := 720
 @[simp] theorem completeReturn_is_two_circuits :
     completeReturnDegrees = 2 * oneCircuitDegrees := by
   norm_num [completeReturnDegrees, oneCircuitDegrees]
-
-/-- Existing normalized factorization angles use half-turn units. These names
-    record the 360/720 period only; they do not map public vertices to angles. -/
-def oneCircuitHalfTurns : Rat := 2
-def completeReturnHalfTurns : Rat := 4
-
-/-- In the existing mod-4 internal angle representation, 360 degrees is the
-    opposite orientation state, not the normalized return. -/
-theorem oneCircuit_amod4 :
-    UCNSObject.amod4 oneCircuitHalfTurns = 2 := by
-  norm_num [oneCircuitHalfTurns, UCNSObject.amod4, UCNSObject.amod]
-
-/-- In the existing mod-4 internal angle representation, 720 degrees returns
-    to the period origin. This is a period fact, not a vertex-angle bridge. -/
-theorem completeReturn_amod4 :
-    UCNSObject.amod4 completeReturnHalfTurns = 0 := by
-  norm_num [completeReturnHalfTurns, UCNSObject.amod4, UCNSObject.amod]
-
-theorem oneCircuit_is_not_complete_return :
-    UCNSObject.amod4 oneCircuitHalfTurns ≠ 0 := by
-  rw [oneCircuit_amod4]
-  norm_num
 
 /-- Recover the local public-gonol position from an absolute lifted position. -/
 def localVertex (position : Nat) : Vertex :=
@@ -129,11 +107,11 @@ def localVertex (position : Nat) : Vertex :=
 theorem add_arity_same_local_vertex (position : Nat) :
     localVertex (position + arity) = localVertex position := by
   apply Fin.ext
-  simp [localVertex, Nat.add_mod]
+  simp [localVertex, arity, Nat.add_mod]
 
 /-- A circuit advances on the lifted path; it is never a zero-length repeat. -/
 theorem add_arity_strict (position : Nat) : position < position + arity := by
-  omega
+  exact Nat.lt_add_of_pos_right arity_pos
 
 /-- A lifted position together with the orientation carried across the twist. -/
 structure FramedPosition where
@@ -160,11 +138,13 @@ theorem oneCircuit_changes_orientation (state : FramedPosition) :
 
 @[simp] theorem completeReturn_same_local_vertex (state : FramedPosition) :
     localVertex (advanceCompleteReturn state).position = localVertex state.position := by
-  simp [advanceCompleteReturn, advanceOneCircuit, add_arity_same_local_vertex]
+  change localVertex ((state.position + arity) + arity) = localVertex state.position
+  rw [add_arity_same_local_vertex, add_arity_same_local_vertex]
 
 @[simp] theorem completeReturn_restores_orientation (state : FramedPosition) :
     (advanceCompleteReturn state).orientation = state.orientation := by
-  simp [advanceCompleteReturn, advanceOneCircuit]
+  change flip (flip state.orientation) = state.orientation
+  exact flip_flip state.orientation
 
 /-- An admissible public-frame permutation must fix SPACE/ZERO exactly. -/
 structure OriginPreservingPermutation where
