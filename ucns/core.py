@@ -1,21 +1,13 @@
-"""
-ucns.core
-=========
-Unit Circle Number (UCN) – the fundamental numeric primitive.
+"""Legacy 2π circular-coordinate helper.
 
-Every UCN is an angle θ ∈ [0, 2π) that identifies a point on the unit circle
-e^(iθ) ∈ ℂ.  Because |e^(iθ)| = 1 for all θ, the set of all UCNs forms a
-compact abelian group under multiplication (rotation), making them a natural
-substrate for periodic / cyclic data and for efficient angular embeddings.
+``UCN`` is a compact compatibility coordinate for periodic embedding and
+visualization code. It is **not** the canonical UCNS public gonol, does not
+identify SPACE/ZERO, does not carry the Möbius twist or fixed system origin,
+and does not model the 720-degree complete return.
 
-Key properties
---------------
-* **Closure**: multiplying two UCNs (adding angles) always stays on the unit
-  circle.
-* **Compact storage**: an angle fits in a 16-bit integer (65 536 steps vs 32
-  bits for a single-precision float).
-* **Fast inner product**: dot(u, v) = cos(θ_u − θ_v) – no square root needed.
-* **No external dependencies**: pure Python / math stdlib only.
+The canonical public frame is exported from :mod:`ucns.public_gonol`. Any bridge
+between that frame and this local 2π coordinate remains absent; consumers must
+not infer one from the shared word "circle".
 """
 
 from __future__ import annotations
@@ -23,8 +15,8 @@ from __future__ import annotations
 # === MODULE_BUILD ===
 # id: ucns_core
 #   module_name: core
-#   module_kind: engine
-#   summary: Defines UCN, the fundamental angle-on-unit-circle numeric primitive with group arithmetic, similarity, and compact serialization.
+#   module_kind: adapter
+#   summary: legacy local 2pi circular coordinate for periodic embeddings; explicitly not the fixed-origin public gonol or complete UCNS number-system primitive
 #   owner: Erin Spencer
 #   public_surface: UCN, TAU
 #   internal_surface: none
@@ -34,139 +26,137 @@ from __future__ import annotations
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_core
-#   rollout: default_enabled
-#   rollback: remove module and its re-exports
+#   rollout: compatibility_only
+#   rollback: remove after all legacy circular-embedding consumers migrate
 #   requires: none
 #   since: 2026-06-02
-#   unresolved: none
+#   unresolved: no public-gonol bridge is defined; this surface must remain scoped as a local 2pi coordinate
 # === END MODULE_BUILD ===
 
-import math
 import cmath
+import math
 import struct
 
 __all__ = ["UCN", "TAU"]
 
-TAU: float = 2.0 * math.pi  # full turn = τ
+TAU: float = 2.0 * math.pi
 
 
 class UCN:
-    """Unit Circle Number – a real number encoded as an angle on the unit circle.
+    """Local angle on a conventional 2π circle.
+
+    This class supports legacy embedding arithmetic only. Reducing ``theta``
+    modulo ``2π`` intentionally loses the orientation distinction that makes
+    720 degrees the complete return of the public Möbius frame. Therefore a
+    ``UCN`` value is not a public-gonol position and must not be serialized or
+    described as the system origin.
 
     Parameters
     ----------
     theta:
-        Angle in radians.  Automatically reduced modulo τ = 2π so that
-        ``self.theta`` is always in ``[0, τ)``.
+        Local angle in radians, reduced modulo ``TAU``.
     """
 
     __slots__ = ("_theta",)
 
     def __init__(self, theta: float) -> None:
-        self._theta: float = float(theta) % TAU
-
-    # ------------------------------------------------------------------
-    # Properties
-    # ------------------------------------------------------------------
+        value = float(theta)
+        if not math.isfinite(value):
+            raise ValueError("theta must be finite")
+        self._theta = value % TAU
 
     @property
     def theta(self) -> float:
-        """Angle in radians, normalised to ``[0, τ)``."""
+        """Local angle in radians, normalized to ``[0, TAU)``."""
+
         return self._theta
 
     @property
     def real(self) -> float:
-        """Real part of the corresponding unit-circle point: cos θ."""
+        """Real part of the local unit-circle point: ``cos(theta)``."""
+
         return math.cos(self._theta)
 
     @property
     def imag(self) -> float:
-        """Imaginary part of the corresponding unit-circle point: sin θ."""
+        """Imaginary part of the local unit-circle point: ``sin(theta)``."""
+
         return math.sin(self._theta)
 
     @property
     def complex(self) -> complex:
-        """The unit-circle point as a Python ``complex``: e^(iθ)."""
-        return cmath.exp(1j * self._theta)
+        """Local unit-circle point as ``exp(i * theta)``."""
 
-    # ------------------------------------------------------------------
-    # Constructors
-    # ------------------------------------------------------------------
+        return cmath.exp(1j * self._theta)
 
     @classmethod
     def from_complex(cls, z: complex) -> "UCN":
-        """Project any complex number *z* onto the unit circle (keep phase)."""
+        """Project a complex value onto the legacy local circle by phase."""
+
         return cls(cmath.phase(z))
 
     @classmethod
     def from_real(cls, x: float, lo: float = -1.0, hi: float = 1.0) -> "UCN":
-        """Map a real number *x* ∈ [lo, hi] uniformly onto [0, τ).
+        """Map a real interval into the legacy local 2π coordinate."""
 
-        Values outside ``[lo, hi]`` are clamped before mapping.
-        """
         if hi == lo:
             raise ValueError("lo and hi must differ")
-        t = (max(lo, min(hi, x)) - lo) / (hi - lo)  # ∈ [0, 1]
+        t = (max(lo, min(hi, x)) - lo) / (hi - lo)
         return cls(t * TAU)
 
-    # ------------------------------------------------------------------
-    # Group arithmetic  (unit circle = ℝ/τℤ)
-    # ------------------------------------------------------------------
-
     def __mul__(self, other: "UCN") -> "UCN":
-        """Rotation: θ₁ ⊗ θ₂ ≡ θ₁ + θ₂  (mod τ)."""
+        """Local 2π rotation composition."""
+
         return UCN(self._theta + other._theta)
 
     def __truediv__(self, other: "UCN") -> "UCN":
-        """Inverse rotation: θ₁ ⊘ θ₂ ≡ θ₁ − θ₂  (mod τ)."""
+        """Local inverse rotation."""
+
         return UCN(self._theta - other._theta)
 
     def conjugate(self) -> "UCN":
-        """Conjugate (reflection): θ* ≡ −θ  (mod τ)."""
+        """Local circular reflection."""
+
         return UCN(-self._theta)
 
-    # ------------------------------------------------------------------
-    # Metric / similarity
-    # ------------------------------------------------------------------
-
     def dot(self, other: "UCN") -> float:
-        """Angular inner product: cos(θ_self − θ_other) ∈ [−1, 1]."""
+        """Cosine similarity in the local 2π coordinate."""
+
         return math.cos(self._theta - other._theta)
 
     def arc_distance(self, other: "UCN") -> float:
-        """Geodesic (arc-length) distance on the unit circle ∈ [0, π]."""
+        """Shortest local-circle arc distance in ``[0, π]``."""
+
         diff = abs(self._theta - other._theta) % TAU
         return min(diff, TAU - diff)
 
-    # ------------------------------------------------------------------
-    # Compact serialisation
-    # ------------------------------------------------------------------
-
     def to_int16(self) -> int:
-        """Quantise angle to an unsigned 16-bit integer (0 … 65 535).
+        """Quantize the local angle to an unsigned 16-bit integer."""
 
-        Provides ~0.0001 rad (≈ 0.006°) angular resolution with only 2 bytes.
-        """
         return min(65535, int(self._theta * 65535.0 / TAU))
 
     @classmethod
     def from_int16(cls, v: int) -> "UCN":
-        """Restore a UCN from a 16-bit quantised integer."""
-        return cls(int(v) * TAU / 65535.0)
+        """Restore a local coordinate from an unsigned 16-bit integer."""
+
+        value = int(v)
+        if not 0 <= value <= 65535:
+            raise ValueError("v must be in [0, 65535]")
+        return cls(value * TAU / 65535.0)
 
     def to_bytes(self) -> bytes:
-        """Serialise to 2 bytes (little-endian unsigned short)."""
+        """Serialize the local coordinate to two bytes."""
+
         return struct.pack("<H", self.to_int16())
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "UCN":
-        """Deserialise from 2 bytes."""
+        """Deserialize a local coordinate from exactly two bytes or more."""
+
+        if len(data) < 2:
+            raise ValueError("UCN byte encoding requires at least two bytes")
         (v,) = struct.unpack("<H", data[:2])
         return cls.from_int16(v)
-
-    # ------------------------------------------------------------------
-    # Dunder helpers
-    # ------------------------------------------------------------------
 
     def __repr__(self) -> str:
         return f"UCN({self._theta:.6f})"
@@ -178,9 +168,3 @@ class UCN:
 
     def __hash__(self) -> int:
         return hash(round(self._theta, 9))
-
-    def __float__(self) -> float:
-        return self._theta
-
-    def __lt__(self, other: "UCN") -> bool:
-        return self._theta < other._theta
