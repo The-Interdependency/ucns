@@ -33,16 +33,38 @@ import math
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from .public_gonol import get_default
+from .public_gonol import PUBLIC_GONOL_157
+from .public_gonol_faces import ARITY, ORIGIN
 
 
 @dataclass(frozen=True)
 class PrivateGonal:
-    """Public gonol with deterministic private nonzero-ring phase/permutation."""
+    """Canonical public gonol with a private nonzero-ring transform.
+
+    The arrangement is not a private degree of freedom. It must be the exact
+    UCNS public gonol. Secrecy lives only in ``phase`` and ``perm`` over
+    positions ``1..156``; position zero remains SPACE/ZERO.
+    """
 
     arrangement: Tuple[str, ...]
     phase: int
     perm: Tuple[int, ...]
+
+    def __post_init__(self) -> None:
+        if tuple(self.arrangement) != PUBLIC_GONOL_157:
+            raise ValueError("PrivateGonal arrangement must equal the canonical public gonol")
+        if len(self.arrangement) != ARITY or self.arrangement[ORIGIN] != " ":
+            raise ValueError("PrivateGonal lost the fixed SPACE/ZERO origin")
+        if not isinstance(self.phase, int) or isinstance(self.phase, bool):
+            raise TypeError("PrivateGonal phase must be an integer")
+        if not 0 <= self.phase < ARITY - 1:
+            raise ValueError("PrivateGonal phase must be in [0, 155]")
+        if len(self.perm) != ARITY:
+            raise ValueError("PrivateGonal permutation must contain 157 positions")
+        if self.perm[ORIGIN] != ORIGIN:
+            raise ValueError("PrivateGonal permutation must fix SPACE/ZERO at position 0")
+        if set(self.perm[1:]) != set(range(1, ARITY)):
+            raise ValueError("PrivateGonal permutation must biject positions 1..156")
 
     @property
     def n(self) -> int:
@@ -52,16 +74,24 @@ class PrivateGonal:
     def from_seed(
         cls, seed_bytes: bytes, arrangement: Optional[List[str]] = None
     ) -> "PrivateGonal":
-        """Derive a transform while keeping position zero fixed."""
+        """Derive the exact A0 transform while keeping position zero fixed.
 
-        arr = tuple(arrangement) if arrangement is not None else tuple(get_default())
-        n = len(arr)
+        ``arrangement`` is retained only as a compatibility argument. When
+        supplied, it must equal the canonical public arrangement exactly.
+        """
+
+        if not isinstance(seed_bytes, bytes):
+            raise TypeError("seed_bytes must be bytes")
+        arr = PUBLIC_GONOL_157 if arrangement is None else tuple(arrangement)
+        if arr != PUBLIC_GONOL_157:
+            raise ValueError("custom PrivateGonal arrangements are not public-gonol canon")
+
         phase = int.from_bytes(
             hashlib.blake2b(seed_bytes + b"::phase", digest_size=8).digest(), "big"
-        ) % (n - 1)
-        perm = list(range(n))
+        ) % (ARITY - 1)
+        perm = list(range(ARITY))
         state = hashlib.blake2b(seed_bytes + b"::perm", digest_size=8).digest()
-        for i in range(n - 1, 1, -1):
+        for i in range(ARITY - 1, 1, -1):
             state = hashlib.blake2b(state, digest_size=8).digest()
             j = 1 + int.from_bytes(state, "big") % i
             perm[i], perm[j] = perm[j], perm[i]
@@ -74,7 +104,7 @@ class PrivateGonal:
             "{}:{}:{}".format(self.phase, int(public), pcea_digest).encode("utf-8"),
             digest_size=8,
         ).digest()
-        new_phase = (self.phase + int.from_bytes(digest, "big")) % (self.n - 1)
+        new_phase = (self.phase + int.from_bytes(digest, "big")) % (ARITY - 1)
         return PrivateGonal(
             arrangement=self.arrangement,
             phase=new_phase,
@@ -82,17 +112,24 @@ class PrivateGonal:
         )
 
     def inscribe(self, angle: float) -> int:
-        """Apply the exact A0 continuous-inscription transform."""
+        """Apply the exact A0 continuous-inscription application transform.
 
-        frac = (float(angle) / (2.0 * math.pi)) % 1.0
-        base = int(frac * self.n) % self.n
-        if base == 0:
-            return self.perm[0]
-        rotated = ((base - 1 + self.phase) % (self.n - 1)) + 1
+        This method is an A0 compatibility surface, not the definition of the
+        public-gonol origin or a bridge into normalized ``UCNSObject`` angles.
+        """
+
+        value = float(angle)
+        if not math.isfinite(value):
+            raise ValueError("inscription angle must be finite")
+        frac = (value / (2.0 * math.pi)) % 1.0
+        base = int(frac * ARITY) % ARITY
+        if base == ORIGIN:
+            return self.perm[ORIGIN]
+        rotated = ((base - 1 + self.phase) % (ARITY - 1)) + 1
         return self.perm[rotated]
 
     def char_at(self, vertex_idx: int) -> str:
-        return self.arrangement[vertex_idx % self.n]
+        return self.arrangement[vertex_idx % ARITY]
 
 
 __all__ = ["PrivateGonal"]
