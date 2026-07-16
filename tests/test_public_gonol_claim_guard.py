@@ -43,6 +43,26 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
             "Position `0` is SPACE/ZERO",
             "Unratified formulas such as `k/157` or `2k/157`",
         ),
+        "docs/pure-ucns-number-system.md": (
+            "UCNS public frame := canonical 157-position twist-bearing gonol",
+            "complete return   := 720 degrees; 360 degrees flips orientation",
+            "factorization-unit object, not public SPACE/ZERO",
+        ),
+        "docs/ucns-shape-reconciliation.md": (
+            "Canonical public-frame correction",
+            "fixed system origin",
+            "three-surface ontology",
+        ),
+        "docs/edcm-edcmbone-bridge-checklist.md": (
+            "UCNS is rooted in the fixed-origin public gonol",
+            "Theorem N) | `FRONTIER`",
+            "no assumed public-gonol bridge",
+        ),
+        "docs/carrier-support-pruning.md": (
+            "not the complete carrier theorem for the fixed-origin",
+            "internal projected-`n_min` identity",
+            "720-degree return",
+        ),
         "formal/README.md": (
             "fixed SPACE/ZERO Möbius-twist origin",
             "complete return after 720 degrees",
@@ -57,14 +77,31 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
             "theorem completeReturn_restores_orientation",
             "structure OriginPreservingPermutation",
         ),
+        "formal/Ucns/Core.lean": (
+            "normalized recursive factorization-object algebra",
+            "360-degree orientation-changing circuit",
+            "does not select, move, or quotient the public-gonol twist origin",
+        ),
+        "formal/Ucns/CarrierLcm.lean": (
+            "internal projected nMin",
+            "not the complete public-carrier theorem",
+        ),
+        "formal/Ucns/TheoremN.lean": (
+            "not completeness for the fixed-origin public gonol",
+            "no public-gonol bridge is assumed",
+        ),
+        "ucns/geometry_bridge.py": (
+            "not the public-gonol frame",
+            'PUBLIC_GONOL_BRIDGE_STATUS = "hmmm"',
+        ),
     }
     for path, phrases in required.items():
-        text = _text(path)
+        value = _text(path)
         for phrase in phrases:
-            assert phrase in text, f"{path} lost public-gonol canon phrase: {phrase!r}"
+            assert phrase in value, f"{path} lost public-gonol canon phrase: {phrase!r}"
 
 
-def test_superseded_origin_and_angle_claims_cannot_reappear():
+def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
     forbidden = {
         "docs/base-geometry.md": (
             "external glyph codebook is out of this repo's scope",
@@ -89,11 +126,30 @@ def test_superseded_origin_and_angle_claims_cannot_reappear():
             "360-degree complete return",
             "public gonol is gauge-normalized",
         ),
+        "docs/pure-ucns-number-system.md": (
+            "UCNS number := canonical recursive unit-circle traversal object",
+            "identity    := unit object / unit-equivalent traversal",
+        ),
+        "docs/edcm-edcmbone-bridge-checklist.md": (
+            "Catalogue-sufficient completeness (Theorem N) | `DEFENDED`",
+        ),
+        "docs/ucns-shape-reconciliation.md": (
+            "UCNS-A canonical object is a **recursive ordered sequence",
+        ),
+        "formal/Ucns/Core.lean": (
+            "faithful definitions for the UCNS recursive algebra",
+        ),
+        "formal/Ucns/CarrierLcm.lean": (
+            "Public Carrier-LCM law on the repaired `Complete` domain",
+        ),
+        "formal/Ucns/TheoremN.lean": (
+            "Lean 4 model of the UCNS Theorem N family",
+        ),
     }
     for path, phrases in forbidden.items():
-        text = _text(path)
+        value = _text(path)
         for phrase in phrases:
-            assert phrase not in text, f"{path} restored superseded claim: {phrase!r}"
+            assert phrase not in value, f"{path} restored superseded claim: {phrase!r}"
 
 
 def test_public_gonol_source_origin_and_return_are_machine_pinned():
@@ -129,3 +185,7 @@ def test_formal_theorem_families_are_scoped_away_from_unproved_public_bridge():
 
     imports = _text("formal/Ucns.lean")
     assert "import Ucns.PublicGonol" in imports
+
+    ledger = _text("audit/obligation_ledger.md")
+    for obligation in ("PG-1", "PG-2", "PG-3", "PG-4", "PG-5", "PG-6"):
+        assert obligation in ledger
