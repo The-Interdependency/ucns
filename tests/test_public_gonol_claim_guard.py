@@ -45,7 +45,8 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         ),
         "docs/pure-ucns-number-system.md": (
             "UCNS public frame := canonical 157-position twist-bearing gonol",
-            "complete return   := 720 degrees; 360 degrees flips orientation",
+            "complete return     := 720 degrees",
+            "one circuit         := 360 degrees with orientation reversal",
             "factorization-unit object, not public SPACE/ZERO",
         ),
         "docs/ucns-shape-reconciliation.md": (
@@ -55,8 +56,8 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         ),
         "docs/edcm-edcmbone-bridge-checklist.md": (
             "UCNS is rooted in the fixed-origin public gonol",
-            "Theorem N) | `FRONTIER`",
-            "no assumed public-gonol bridge",
+            "Catalogue-sufficient completeness (Theorem N)",
+            "no assumed bridge",
         ),
         "docs/carrier-support-pruning.md": (
             "not the complete carrier theorem for the fixed-origin",
