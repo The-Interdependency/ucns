@@ -32,6 +32,60 @@ def insert_before_once(relative: str, marker: str, addition: str) -> None:
     path.write_text(text.replace(marker, addition + marker), encoding="utf-8")
 
 
+def repair_agent_docs() -> None:
+    replace_once(
+        "AGENTS.md",
+        "## Repository invariants\n\n",
+        "## Repository invariants\n\n"
+        "- **Public-gonol canon is load-bearing.** Position `0` is SPACE/ZERO, the Möbius twist seam and fixed origin for the entire system. One 360-degree circuit changes orientation; complete return requires 720 degrees.\n"
+        "- Ordinary `UCNSObject` first-anchor normalization applies only inside the normalized factorization subsystem. It never moves, chooses, or quotients the public origin.\n"
+        "- Do not infer a bridge between the public gonol and normalized factorization objects. That bridge remains `hmmm`; Carrier-LCM and Theorem N retain internal scope until it is proved.\n"
+        "- Do not put application-level `2π` inscription, classical disk geometry, hash placement, or a replacement angle formula on the canonical public frame.\n"
+        "- Theorem N is `FRONTIER`; a proof sketch, implementation, green Lean build, or `sorry`-backed theorem does not confer `DEFENDED` status.\n",
+    )
+
+    replace_once(
+        "CLAUDE.md",
+        "`ucns` (pip package: **`ucns`**) is a zero-dependency, pure-Python research\nlibrary implementing **Unit Circle Number System** sequence theory with a focus\non **recursive factorization**. Given a UCNS product object P, the engine\nrecovers factors A and B such that `A ⊠ B = P` via a witness-matrix recursive\nquotient solver (`factor_search_v08`). The repo also carries mathematical\nspecs, a Lean 4 proof scaffold, empirical probe/sweep scripts, and an\nexperimental UCNS-native cache prototype.",
+        "`ucns` (pip package: **`ucns`**) is a zero-dependency, pure-Python research library whose load-bearing canon is the fixed-origin public gonol. Position `0` is SPACE/ZERO, the Möbius twist seam and system origin; one 360-degree circuit changes orientation and complete return requires 720 degrees. The repository also contains a separately scoped normalized recursive factorization subsystem with witness-matrix search. No bridge between them is assumed. It additionally carries specs, a Lean 4 proof scaffold, historical probe/sweep scripts, and an experimental cache prototype.",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "UCNS v1.0 is a scoped, reproducible research release for\n**catalogue-sufficient recursive factorization** (Theorem N), not a claim of\ntotal general recursive primality. Carrier widening, tractable sub-catalogues,\nand general recursive primality outside defended-complete domains are **out of\nv1.0 scope**.",
+        "UCNS v1.0 packages the fixed-origin public gonol and a separately scoped catalogue-driven recursive factorization research subsystem. Theorem N remains `FRONTIER`, not a claim of catalogue-sufficient completeness or total general recursive primality. Carrier widening, tractable sub-catalogues, and general recursive primality outside defended-complete internal domains are **out of v1.0 scope**.",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "| Depth-3 asymmetric (Theorem 9) | `TEST-BACKED` (6/6 empirical) |",
+        "| Depth-3 asymmetric experiment | `TEST-BACKED` only by cited immutable run artifacts; not a theorem-status promotion |",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "  canonical.py                     # UCNSObject, UNIT, multiply, is_unit\n",
+        "  canonical.py                     # normalized factorization objects only\n  public_gonol.py                  # exact public 157-gonal and fixed twist origin\n  public_gonol_faces.py            # public faces, chirality, adjacency\n  public_gonol_lifted_path.py      # lossless public-carrier traversal\n  public_gonol_private.py          # fixed-origin nonzero-ring transforms\n",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "  core.py, embedding.py, epicycle.py, mobius.py, similarity.py  # v0.6.5 lineage",
+        "  core.py, embedding.py, epicycle.py, mobius.py, similarity.py  # compatibility-only local coordinate/disk/embedding utilities; not the public frame",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "from ucns import UCNSObject, UNIT, multiply, is_unit, factor_search_v08\n",
+        "from ucns import PUBLIC_GONOL_157, ORIGIN, encode_text_path, PrivateGonal\nfrom ucns import UCNSObject, UNIT, multiply, is_unit, factor_search_v08\n",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "- Carrier widening / general recursive completeness remain out of v1.0 scope.\n",
+        "- The public-gonol ↔ normalized-factorization bridge remains `hmmm`.\n- Carrier widening / general recursive completeness remain out of v1.0 scope.\n",
+    )
+    replace_once(
+        "CLAUDE.md",
+        "| The-Interdependency/a0 | Agent platform that uses UCNS-derived encoding |",
+        "| The-Interdependency/a0 | Source provenance and downstream consumer of the UCNS public gonol; owns application projections, not canon |",
+    )
+
+
 def repair_readme() -> None:
     replace_once(
         "README.md",
@@ -152,6 +206,7 @@ def repair_crypto_note() -> None:
 
 
 def main() -> int:
+    repair_agent_docs()
     repair_readme()
     repair_spec_counts()
     repair_changelog()
