@@ -1,0 +1,244 @@
+name: apply public-gonol canon corrections
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/apply-public-gonol-canon-corrections.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  correct:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact pull-request branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Apply exact canon corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new, count=None):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              found = text.count(old)
+              expected = 1 if count is None else count
+              if found != expected:
+                  raise SystemExit(f"{path}: expected {expected} occurrence(s), found {found}: {old[:80]!r}")
+              p.write_text(text.replace(old, new), encoding="utf-8")
+
+          replace(
+              "ucns/canonical.py",
+              "UCNSObject               The fundamental recursive sequence object.",
+              "UCNSObject               The normalized recursive factorization object."
+          )
+          replace(
+              "ucns/canonical.py",
+              "#   given: normalized nonempty UCNSObjects at mixed depths, plus gauge-shifted\n#          and n_dec-varied raw representations of the same objects",
+              "#   given: ordinary normalized nonempty factorization UCNSObjects at mixed\n#          depths, plus object-relative shifted and n_dec-varied raw\n#          representations of the same factorization objects"
+          )
+          replace(
+              "ucns/canonical.py",
+              "#   given: the theta=0 origin e = UCNSObject(1, 1, [(0, None)], [0]) and\n#          arbitrary normalized objects a",
+              "#   given: the normalized factorization identity e =\n#          UCNSObject(1, 1, [(0, None)], [0]) and arbitrary normalized\n#          factorization objects a; e is not the public-gonol SPACE/ZERO twist"
+          )
+
+          replace(
+              "contracts/test_identity_two_sided.py",
+              '"""O2 — multiply_identity: the θ=0 origin is a two-sided identity.',
+              '"""O2 — multiply_identity: the normalized factorization identity is two-sided.'
+          )
+          replace(
+              "contracts/test_identity_two_sided.py",
+              "#   summary: prove the theta=0 origin (space/zero) is a two-sided identity for multiply",
+              "#   summary: prove the normalized factorization identity is two-sided; do not conflate it with the public-gonol SPACE/ZERO twist origin"
+          )
+          replace(
+              "contracts/test_identity_two_sided.py",
+              "#   unresolved: linkage of the theta=0 origin to the cross-repo 157-glyph codebook is out of this repo (hmmm)",
+              "#   unresolved: bridge between the fixed-origin public gonol and ordinary normalized factorization objects remains hmmm"
+          )
+          replace(
+              "contracts/test_identity_two_sided.py",
+              "origin fail as identity",
+              "normalized factorization identity fail"
+          )
+          replace(
+              "contracts/_harness.py",
+              "# theta=0 origin",
+              "# normalized factorization identity; not the public-gonol twist origin"
+          )
+          replace(
+              "audit/obligation_ledger.md",
+              "| `multiply_identity` | θ=0 origin is a two-sided identity |",
+              "| `multiply_identity` | normalized factorization identity is two-sided |"
+          )
+
+          replace(
+              "docs/base-geometry.md",
+              "Formal non-transfer: nothing here confers Lean-checked status; `formal/`\nremains `sorry`-backed.  Cross-repo non-continuity: the θ=0 origin's role in\nany external glyph codebook is out of this repo's scope.",
+              "Formal non-transfer: nothing here confers Lean-checked status; `formal/`\nremains `sorry`-backed.\n\n**Public-gonol scope.** UCNS owns the canonical public 157-gonal promoted from\n`a0-betatest@7af8deb`. Its position `0` is SPACE/ZERO: the Möbius twist point,\nseam, fixed system origin, and only always-known character. This document proves\nonly the operation algebra of ordinary normalized `UCNSObject` factorization\nvalues. Object-relative first-angle normalization does not act on, move, or\nredefine the public gonol. See `docs/public-gonol.md`."
+          )
+          replace("docs/base-geometry.md", "## 0. The carrier", "## 0. The normalized factorization carrier")
+          replace(
+              "docs/base-geometry.md",
+              "Let **N** be the set of *nonempty, recursively host-normalized* `UCNSObject`",
+              "The carrier in this proof surface is not the public gonol. Let **N** be the\nset of *nonempty, recursively host-normalized* `UCNSObject` factorization"
+          )
+          replace(
+              "docs/base-geometry.md",
+              "**Theorem 1.2 (representation independence).**  The product depends only on",
+              "**Theorem 1.2 (object-relative representation independence within N).**  The product depends only on"
+          )
+          replace(
+              "docs/base-geometry.md",
+              "of 1.1 for any admissible `n_dec` choices.  ∎",
+              "of 1.1 for any admissible `n_dec` choices.  ∎\n\nThis object-relative equivalence is not a license to rotate, gauge-shift, or\nnormalize away the public-gonol SPACE/ZERO twist origin."
+          )
+          replace(
+              "docs/base-geometry.md",
+              "## 2. O2 — the θ=0 origin is a two-sided identity  (`multiply_identity`)",
+              "## 2. O2 — the normalized factorization identity is two-sided  (`multiply_identity`)"
+          )
+          replace(
+              "docs/base-geometry.md",
+              "Let `e = UCNSObject(1, 1, [(0, None)], [0])`.",
+              "Let `e = UCNSObject(1, 1, [(0, None)], [0])`. Here `e` is the\nidentity of the normalized factorization-object monoid; it is not the public\ngonol's SPACE/ZERO twist origin."
+          )
+          replace(
+              "docs/base-geometry.md",
+              "| O2 `multiply_identity` | θ=0 origin two-sided |",
+              "| O2 `multiply_identity` | normalized factorization identity two-sided |"
+          )
+          replace(
+              "docs/base-geometry.md",
+              "- θ=0 origin ↔ external 157-glyph codebook linkage: cross-repo, out of\n  scope here.",
+              "- The bridge between the fixed-origin public gonol and ordinary normalized\n  `UCNSObject` factorization values remains `hmmm`; no angle conversion, gauge\n  quotient, or normalization bridge is inferred."
+          )
+
+          replace(
+              "depth7-frontier.md",
+              "## 1.3 Zero is now geometric\n\nThe merged spec reframes zero as the Möbius twist-point: the seam at `θ = 2π` where orientation flips on the doubled cover.\n\nConsequences of this framing:\n\n- zero is no longer an externally adjoined absorber,\n- the doubled `4π` cover is motivated by seam crossing and return,\n- face-state XOR is grounded as seam-crossing parity.\n\nThis is an ontological change to the spec, not merely a wording change.",
+              "## 1.3 Public-gonol zero canon correction\n\nThe public gonol is canon for UCNS. Position `0` is SPACE/ZERO: the Möbius\ntwist point, seam, fixed origin for the entire system, and only always-known\ncharacter. It is not located by an inferred continuous angle and is not an\nobject-relative gauge choice.\n\nThe earlier placement of zero at `θ = 2π`, the derived absorption account, and\nthe claim that face-state XOR was proved by that placement are superseded. Any\nbridge from the public gonol into a continuous or normalized factorization\nrepresentation remains `hmmm` until Erin ratifies it."
+          )
+
+          replace(
+              "ucns-spec.md",
+              "### 2.1 The Möbius Twist-Point and the Necessity of the Doubled Cover\n\nThe doubled cover is not an arbitrary choice. It is required by the existence of the Möbius twist-point.\n\nA single revolution (\\(0\\) to \\(2\\pi\\)) returns to the same geometric location on \\(S^1\\) but with orientation flipped. This flip is the Möbius twist: the seam inscribed in the cover where one sheet transitions to the other. A second revolution (\\(2\\pi\\) to \\(4\\pi\\)) restores the original orientation and closes the traversal.\n\nThe seam — the point the twist passes through — is where no orientation is assigned: a traversal-contact without face. It is not on either sheet. It is the beginning.\n\nThis geometric object is zero.\n\nThe \\(4\\pi\\) period of \\(\\widetilde{S^1}\\) is forced by zero's existence: one revolution to cross the seam, one revolution to close.",
+              "### 2.1 The canonical public-gonol twist origin\n\nThe public gonol implemented in `a0-betatest@7af8deb` is canon for UCNS. Its\nposition `0` is SPACE/ZERO: the Möbius twist point, seam, origin for the entire\nsystem, and only always-known character. Private transformations preserve this\npoint and act only on the 156 nonzero positions.\n\nThis fixed origin is not selected by a continuous angle, is not an arbitrary\nfirst anchor, and is not removable by object-relative normalization. Any\ncontinuous-cover model used elsewhere in this specification must be rooted in\nthis canon and must not relocate the seam. No continuous-angle bridge from the\npublic gonol is established here."
+          )
+
+          start = "## 7. Geometric Zero\n"
+          end = "## 8. Geometric Unit\n"
+          spec_path = Path("ucns-spec.md")
+          spec = spec_path.read_text(encoding="utf-8")
+          if spec.count(start) != 1 or spec.count(end) != 1:
+              raise SystemExit("ucns-spec.md: geometric-zero section markers drifted")
+          before, rest = spec.split(start, 1)
+          _, after = rest.split(end, 1)
+          zero_section = """## 7. Public-Gonol Zero\n\nZero is the public-gonol position `0`: SPACE/ZERO, the Möbius twist point,\nseam, fixed origin for the entire system, and only always-known character.\nThe digit `\"0\"` is an ordinary nonzero glyph.\n\nThe exact arrangement, faces, chirality, mirror, fixed-origin private\ntransformations, and lifted traversal are implemented by the UCNS public-gonol\nsurface promoted from `a0-betatest@7af8deb`. Spaces are emitted seam events; a\nrepeated character advances by a full 157-step revolution.\n\nThis canon does not by itself assert an absorbing multiplication law, locate\nzero at `2π`, identify the public twist with a normalized factorization unit,\nor prove an interpretation of face XOR. Any such bridge or algebraic extension\nremains `hmmm` until Erin ratifies it.\n\n"""
+          spec_path.write_text(before + zero_section + end + after, encoding="utf-8")
+
+          replace(
+              "ucns-spec.md",
+              "Face-states compose by XOR because XOR is the algebra of crossing the Möbius twist-point (Section 7.1): each face-state records accumulated seam-crossings, and crossing the seam twice restores orientation.",
+              "For ordinary normalized `UCNSObject` factorization values, face states compose by the implemented XOR rule. This specification does not derive that rule from an unratified continuous account of crossing the public-gonol twist; that bridge remains `hmmm`."
+          )
+
+          h1_start = "## H1. UCNS Objects as Möbius-Cylindrical Towers\n"
+          h1_end = "## H2. Coupling by Interlocking\n"
+          spec = spec_path.read_text(encoding="utf-8")
+          if spec.count(h1_start) != 1 or spec.count(h1_end) != 1:
+              raise SystemExit("ucns-spec.md: H1 section markers drifted")
+          before, rest = spec.split(h1_start, 1)
+          _, after = rest.split(h1_end, 1)
+          h1_section = """## H1. Recursive payload towers and the public-gonol boundary\n\n`UCNSObject` values carry recursive payload towers. Describing those towers as\ncontinuous Möbius-cylinder bundles is exploratory, not public-gonol canon.\n\nThe public-gonol twist/seam remains fixed at position `0`; it is not inscribed\nat `θ = 2π`, moved by a first-anchor shift, or reconstructed from a normalized\nobject. Any geometric bridge between the fixed public frame and recursive\nfactorization objects must preserve Erin's canon and remains `hmmm` until\nexplicitly specified.\n\n"""
+          spec_path.write_text(before + h1_section + h1_end + after, encoding="utf-8")
+
+          readme = Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+          public_api = "> `ucns.a0_safe` is the A0-safe inspection facade. The recursive\n> engine now lives directly under `ucns`; `ucns_recursive` is retained only as a\n> compatibility import path and is **deprecated** for direct user imports.\n"
+          if text.count(public_api) != 1:
+              raise SystemExit("README.md public API anchor drifted")
+          public_gonol_note = public_api + """>\n> **Public gonol canon.** `ucns` owns the exact public 157-gonal promoted from\n> `The-Interdependency/a0-betatest@7af8deb`. Position `0` is SPACE/ZERO: the\n> Möbius twist point, seam, fixed origin for the entire system, and only\n> always-known character. It is never moved by private phase or permutation.\n> No `k/157`, `2k/157`, arbitrary-origin, or removable-gauge interpretation is\n> part of this promotion. See `docs/public-gonol.md`.\n"""
+          text = text.replace(public_api, public_gonol_note)
+          layout_anchor = "  canonical.py           # UCNSObject, multiply, is_unit\n"
+          if text.count(layout_anchor) != 1:
+              raise SystemExit("README.md layout anchor drifted")
+          text = text.replace(
+              layout_anchor,
+              layout_anchor
+              + "  public_gonol.py         # exact public 157-gonal and fixed twist origin\n"
+              + "  public_gonol_faces.py   # faces, chirality, adjacency\n"
+              + "  public_gonol_mirror.py  # origin-fixed reflection\n"
+              + "  public_gonol_lifted_path.py  # lossless text traversal\n"
+              + "  public_gonol_private.py # fixed-origin nonzero-ring transforms\n"
+          )
+          install_end = "```\n\n---\n\n## Collaboration wanted\n"
+          if text.count(install_end) != 1:
+              raise SystemExit("README.md installation anchor drifted")
+          section = """```\n\n---\n\n## Canonical public gonol\n\n```python\nfrom ucns import (\n    PUBLIC_GONOL_157,\n    ORIGIN,\n    encode_text_path,\n    decode_text_path,\n    PrivateGonal,\n)\n\nassert PUBLIC_GONOL_157[ORIGIN] == \" \"\nassert decode_text_path(encode_text_path(\"a a\")) == \"a a\"\nassert PrivateGonal.from_seed(b\"agent\").perm[ORIGIN] == ORIGIN\n```\n\nThe public gonol is the fixed UCNS frame. Ordinary `UCNSObject` normalization\nremains a separate recursive-factorization representation and is not applied to\nthe public gonol. A bridge between the two remains `hmmm`; this package does not\ninvent one.\n\n---\n\n## Collaboration wanted\n"""
+          text = text.replace(install_end, section)
+          readme.write_text(text, encoding="utf-8")
+
+          forbidden = {
+              "docs/base-geometry.md": [
+                  "external glyph codebook is out of this repo's scope",
+                  "θ=0 origin ↔ external 157-glyph codebook linkage",
+              ],
+              "contracts/test_identity_two_sided.py": [
+                  "theta=0 origin (space/zero)",
+                  "cross-repo 157-glyph codebook is out of this repo",
+              ],
+              "ucns-spec.md": [
+                  "located at the half-revolution \\theta = 2\\pi",
+                  "twist-seam** (zero, §7) is inscribed at \\(\\theta = 2\\pi\\)",
+              ],
+          }
+          for path, phrases in forbidden.items():
+              text = Path(path).read_text(encoding="utf-8")
+              for phrase in phrases:
+                  if phrase in text:
+                      raise SystemExit(f"{path}: forbidden superseded phrase remains: {phrase}")
+          PY
+
+      - name: Regenerate living manifest and metadata collection
+        run: |
+          python .agents/skills/manifest/generate.py --write
+          git clone --quiet https://github.com/The-Interdependency/skill-lib.git .tmp-skill-lib
+          git -C .tmp-skill-lib checkout --quiet 05ee7aa9b7d906664d976bf1f06ea44522110489
+          PYTHONPATH=.tmp-skill-lib python .tmp-skill-lib/msdmd/collect.py \
+            --root . \
+            --repo The-Interdependency/ucns \
+            --out ucns_msdmd.ts
+          rm -rf .tmp-skill-lib
+
+      - name: Run reconciliation and focused tests
+        run: |
+          python audit/reconcile.py
+          python -m pytest tests/test_public_gonol.py contracts/test_identity_two_sided.py -q
+
+      - name: Commit exact corrections
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md CLAUDE.md ucns_msdmd.ts ucns/canonical.py \
+            contracts/test_identity_two_sided.py contracts/_harness.py \
+            audit/obligation_ledger.md docs/base-geometry.md depth7-frontier.md \
+            ucns-spec.md
+          if git diff --cached --quiet; then
+            echo "canon corrections already current"
+            exit 0
+          fi
+          git commit -m "docs(canon): root UCNS geometry in the public gonol twist"
+          git push origin "HEAD:${TARGET_BRANCH}"
