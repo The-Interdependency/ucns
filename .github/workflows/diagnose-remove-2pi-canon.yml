@@ -1,0 +1,88 @@
+name: diagnose remove-2pi canon
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-remove-2pi-canon.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/remove-2pi-inscription-from-canon
+          path: target
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install target with dev tools
+        working-directory: target
+        run: python -m pip install -e .[dev]
+
+      - name: Capture full pytest result
+        working-directory: target
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q 2>&1 | tee "$RUNNER_TEMP/pytest.log"
+          echo "${PIPESTATUS[0]}" > "$RUNNER_TEMP/pytest.status"
+          exit 0
+
+      - name: Capture manifest drift and exact generated diff
+        working-directory: target
+        shell: bash
+        run: |
+          set +e
+          python .agents/skills/manifest/generate.py --check 2>&1 | tee "$RUNNER_TEMP/manifest-check.log"
+          echo "${PIPESTATUS[0]}" > "$RUNNER_TEMP/manifest-check.status"
+          cp CLAUDE.md "$RUNNER_TEMP/CLAUDE.before.md"
+          python .agents/skills/manifest/generate.py --write 2>&1 | tee "$RUNNER_TEMP/manifest-write.log"
+          git diff -- CLAUDE.md > "$RUNNER_TEMP/CLAUDE.manifest.diff"
+          exit 0
+
+      - name: Capture package build result
+        working-directory: target
+        shell: bash
+        run: |
+          set +e
+          rm -rf dist build *.egg-info
+          python -m build 2>&1 | tee "$RUNNER_TEMP/build.log"
+          build_status=${PIPESTATUS[0]}
+          echo "$build_status" > "$RUNNER_TEMP/build.status"
+          if [ "$build_status" -eq 0 ]; then
+            python -m twine check dist/* 2>&1 | tee "$RUNNER_TEMP/twine.log"
+            echo "${PIPESTATUS[0]}" > "$RUNNER_TEMP/twine.status"
+          else
+            echo "not run because build failed" > "$RUNNER_TEMP/twine.log"
+            echo "125" > "$RUNNER_TEMP/twine.status"
+          fi
+          exit 0
+
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: remove-2pi-canon-diagnostic
+          path: |
+            ${{ runner.temp }}/pytest.log
+            ${{ runner.temp }}/pytest.status
+            ${{ runner.temp }}/manifest-check.log
+            ${{ runner.temp }}/manifest-check.status
+            ${{ runner.temp }}/manifest-write.log
+            ${{ runner.temp }}/CLAUDE.before.md
+            ${{ runner.temp }}/CLAUDE.manifest.diff
+            ${{ runner.temp }}/build.log
+            ${{ runner.temp }}/build.status
+            ${{ runner.temp }}/twine.log
+            ${{ runner.temp }}/twine.status
+          if-no-files-found: error
+          retention-days: 7
