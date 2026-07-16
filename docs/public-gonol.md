@@ -99,6 +99,17 @@ application scalar projection: not a UCNS rotation theorem
 
 No replacement continuous projection is invented here.
 
+## Classical disk transformations are a separate compatibility surface
+
+`ucns.mobius` implements classical bilinear transformations of an ordinary
+Poincaré disk. Its local `2π` rotation parameter is a visualization and legacy
+geometry coordinate. It is not the public-gonol Möbius twist, does not establish
+the fixed SPACE/ZERO origin, and does not preserve the 720-degree orientation
+return.
+
+No bridge from that disk utility to the public gonol is defined. Sharing the word
+“Möbius” does not make the two structures identical.
+
 ## Faces, chirality, mirror, and adjacency
 
 The promoted API preserves the A0 definitions:
