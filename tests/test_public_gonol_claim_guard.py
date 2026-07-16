@@ -43,6 +43,20 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
             "Position `0` is SPACE/ZERO",
             "Unratified formulas such as `k/157` or `2k/157`",
         ),
+        "formal/README.md": (
+            "fixed SPACE/ZERO Möbius-twist origin",
+            "complete return after 720 degrees",
+            "one 360-degree circuit flips orientation",
+            "Object-relative normalization is not applied to the public gonol",
+        ),
+        "formal/Ucns/PublicGonol.lean": (
+            "position 0 is SPACE/ZERO",
+            "complete return requires 720 degrees",
+            "def completeReturnDegrees : Nat := 720",
+            "theorem oneCircuit_changes_orientation",
+            "theorem completeReturn_restores_orientation",
+            "structure OriginPreservingPermutation",
+        ),
     }
     for path, phrases in required.items():
         text = _text(path)
@@ -71,6 +85,10 @@ def test_superseded_origin_and_angle_claims_cannot_reappear():
         "depth7-frontier.md": (
             "the seam at `θ = 2π` where orientation flips on the doubled cover",
         ),
+        "formal/README.md": (
+            "360-degree complete return",
+            "public gonol is gauge-normalized",
+        ),
     }
     for path, phrases in forbidden.items():
         text = _text(path)
@@ -78,7 +96,7 @@ def test_superseded_origin_and_angle_claims_cannot_reappear():
             assert phrase not in text, f"{path} restored superseded claim: {phrase!r}"
 
 
-def test_public_gonol_source_and_origin_are_machine_pinned():
+def test_public_gonol_source_origin_and_return_are_machine_pinned():
     source = _text("ucns/public_gonol.py")
     assert "7af8debf6ef3905f01baff02b43d8c3bee16ccbc" in source
     assert 'PUBLIC_GONOL_SHA256 = "20d6ed51fdff5505ed9696c38d6dcc82f982eba166d9b712bee68c4521b751ac"' in source
@@ -88,3 +106,26 @@ def test_public_gonol_source_and_origin_are_machine_pinned():
     assert "for i in range(n - 1, 1, -1)" in private
     assert "if base == 0:" in private
     assert "return self.perm[0]" in private
+
+    formal = _text("formal/Ucns/PublicGonol.lean")
+    assert "def origin : Vertex := ⟨0, arity_pos⟩" in formal
+    assert "def oneCircuitDegrees : Nat := 360" in formal
+    assert "def completeReturnDegrees : Nat := 720" in formal
+    assert "def completeReturnHalfTurns : Rat := 4" in formal
+    assert "UCNSObject.amod4 oneCircuitHalfTurns ≠ 0" in formal
+    assert "UCNSObject.amod4 completeReturnHalfTurns = 0" in formal
+
+
+def test_formal_theorem_families_are_scoped_away_from_unproved_public_bridge():
+    formal_readme = _text("formal/README.md")
+    required = (
+        "All Theorem N statements are presently scoped to the normalized recursive",
+        "not, without an additional bridge theorem, a theorem about the complete",
+        "proof that the internal multiplication preserves the public twist/origin",
+        "public-gonol scope for Theorem N completeness",
+    )
+    for phrase in required:
+        assert phrase in formal_readme
+
+    imports = _text("formal/Ucns.lean")
+    assert "import Ucns.PublicGonol" in imports
