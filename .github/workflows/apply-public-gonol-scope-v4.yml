@@ -1,0 +1,433 @@
+name: apply public-gonol scope repair v4
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/apply-public-gonol-scope-v4.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target canon branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/promote-public-gonol-canon
+          path: target
+          fetch-depth: 0
+
+      - name: Check out pinned canonical skill-lib outside target tree
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/skill-lib
+          ref: 05ee7aa9b7d906664d976bf1f06ea44522110489
+          path: skill-lib
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Apply idempotent scope corrections
+        working-directory: target
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if new in text:
+                  return
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(
+                      f"{path}: expected one old occurrence or existing replacement; found {count}: {old[:120]!r}"
+                  )
+              p.write_text(text.replace(old, new), encoding="utf-8")
+
+          # Core: internal factorization model, never the public origin/frame.
+          replace(
+              "formal/Ucns/Core.lean",
+              "  Ucns/Core.lean — faithful definitions for the UCNS recursive algebra.\n\n"
+              "  SOURCE OF TRUTH FOR SEMANTICS: ../../ucns/canonical.py\n"
+              "  and ../../ucns-spec.md. This file replaces the `Unit` placeholder\n"
+              "  carrier of the original scaffold with the real recursive\n"
+              "  (angle, face, payload) sequence object.",
+              "  Ucns/Core.lean — definitions for the normalized recursive\n"
+              "  factorization-object algebra.\n\n"
+              "  SOURCE OF TRUTH FOR THIS INTERNAL REPRESENTATION:\n"
+              "  ../../ucns/canonical.py and the factorization sections of\n"
+              "  ../../ucns-spec.md. The canonical public gonol is formalized\n"
+              "  separately in Ucns/PublicGonol.lean. This model does not select,\n"
+              "  move, or quotient the public-gonol twist origin."
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "  1. Angles are `Rat` (Lean core rationals), taken mod 4 via `amod4`,\n"
+              "     mirroring `Fraction` angles in `[0, 4)`.",
+              "  1. Internal factorization angles are `Rat` values taken mod 4 via\n"
+              "     `amod4`, mirroring `Fraction` values in `[0, 4)`. Their units\n"
+              "     and period are implementation-local; no public-gonol vertex,\n"
+              "     orientation, or origin bridge is asserted."
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "  4. `nMin` is computed exactly as `_compute_n_min`: lcm of denominators\n"
+              "     of nonzero circle-fractions `(a mod 2) / 2`.",
+              "  4. `nMin` is computed exactly as `_compute_n_min`: lcm of denominators\n"
+              "     of nonzero internal circle-fractions `(a mod 2) / 2`.\n"
+              "  5. First-angle normalization is object-relative. It neither acts on\n"
+              "     nor identifies the fixed public-gonol origin."
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "--   summary: Faithful Lean 4 model of UCNSObject, carrier (nMin), depth, fuel-indexed normalize and multiply, and the statement surface for the Carrier-LCM Law and cancellativity counterexample/status.",
+              "--   summary: Lean model of normalized recursive factorization UCNSObject values, internal projected nMin, depth, object-relative normalization and multiplication; explicitly not the public-gonol frame."
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "--   unresolved: AlignedComplete cancellativity as previously stated is refuted by a concrete mod-4 tail-angle counterexample; next true theorem needs canonical angle-range/floor-zero evidence. Carrier-LCM is discharged in Ucns/CarrierLcm.lean; remaining order — repair cancellativity domain, then depth1 completeness",
+              "--   unresolved: public-gonol bridge remains hmmm; AlignedComplete cancellativity is refuted by a mod-4 tail-angle counterexample; Carrier-LCM is discharged only for the internal nMin definition; remaining order — specify the public bridge, repair cancellativity domain, then depth1 completeness"
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "/-- A UCNS object: a nonempty-in-practice list of cells whose payloads\n"
+              "    are themselves UCNS objects. `n_dec` (declared carrier) is carried\n"
+              "    separately, as in the Python implementation. -/",
+              "/-- A normalized recursive factorization object: a nonempty-in-practice\n"
+              "    list of cells whose payloads are objects of the same internal type.\n"
+              "    It is not the public gonol. `n_dec` is carried separately. -/"
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "/-- Circle fraction `(a mod 2) / 2`, as in `_compute_n_min`. -/",
+              "/-- Internal projected circle fraction `(a mod 2) / 2`, as in\n"
+              "    `_compute_n_min`; not a complete public-gonol invariant. -/"
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "/-- The minimal carrier: lcm of nonzero circle-fraction denominators\n"
+              "    (empty lcm = 1). Host-level only — payloads do not enter, exactly\n"
+              "    as in `_compute_n_min`. -/",
+              "/-- The internal projected carrier: lcm of nonzero circle-fraction\n"
+              "    denominators (empty lcm = 1). No claim is made that this contains\n"
+              "    the complete twist-bearing public carrier. -/"
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "/-- Fuel-indexed normalization. Fuel 0 is the identity (out of budget);\n"
+              "    fuel (d+1) shifts host angles by the first angle and normalizes\n"
+              "    payloads with fuel d. For `x` with `depth x ≤ d`, `normalizeFuel d x`\n"
+              "    is the intended total normalization. -/",
+              "/-- Fuel-indexed object-relative normalization for internal factorization\n"
+              "    objects. Fuel (d+1) shifts by that object's first angle. This\n"
+              "    operation is never applied to the fixed public-gonol origin. -/"
+          )
+          replace(
+              "formal/Ucns/Core.lean",
+              "/-- Fuel-indexed ordered-concatenation product `A ⊠ B`, mirroring\n"
+              "    `multiply` in `canonical.py`: row-major cross product of cells,\n"
+              "    angles `αₖ + (βⱼ - β₀)` mod 4, faces XOR, payloads multiplied\n"
+              "    recursively (unit `none` is the payload identity). -/",
+              "/-- Fuel-indexed product of internal normalized factorization objects,\n"
+              "    mirroring `canonical.py`: row-major cells, object-relative right\n"
+              "    baseline, mod-4 internal values, face XOR, and recursive payload\n"
+              "    multiplication. No public-gonol bridge is assumed. -/"
+          )
+
+          # Carrier-LCM: exact theorem retained; system-wide scope removed.
+          replace(
+              "formal/Ucns/CarrierLcm.lean",
+              "  Ucns/CarrierLcm.lean — discharge skeleton for the Carrier-LCM Law.",
+              "  Ucns/CarrierLcm.lean — sorry-free LCM theorem for the internal\n"
+              "  projected nMin of normalized factorization objects. It is not the\n"
+              "  complete public-carrier theorem without a twist-preserving bridge."
+          )
+          replace(
+              "formal/Ucns/CarrierLcm.lean",
+              "--   summary: Decomposition of the Carrier-LCM Law into machine-checked composition plus isolated leaf obligations, with the Nat.lcm fold engine fully discharged.",
+              "--   summary: Sorry-free internal projected nMin LCM law for Complete normalized factorization objects; no complete public-gonol carrier claim."
+          )
+          replace(
+              "formal/Ucns/CarrierLcm.lean",
+              "--   unresolved: none in this module; imported frontier files still contain sorry-backed statements",
+              "--   unresolved: bridge from the fixed public gonol to internal nMin remains hmmm; this theorem does not identify nMin with the complete public carrier"
+          )
+          replace(
+              "formal/Ucns/CarrierLcm.lean",
+              "/-- The Law, composed from the bounds by antisymmetry. The Carrier-LCM\n"
+              "    decomposition in this module is machine-checked and sorry-free. -/",
+              "/-- The internal nMin LCM law, composed from the bounds by antisymmetry.\n"
+              "    It is machine-checked and sorry-free for this exact definition. -/"
+          )
+          replace(
+              "formal/Ucns/CarrierLcm.lean",
+              "/-- Public Carrier-LCM law on the repaired `Complete` domain.\n\n"
+              "    This replaces the older host-normalized-only Core stub, whose statement was\n"
+              "    too weak for empty-factor counterexamples. Fuel is written as `d + 1` to\n"
+              "    expose the one-step product case used by `multiplyFuel`. -/",
+              "/-- Exported internal projected-nMin LCM law on `Complete` normalized\n"
+              "    factorization objects. It is not the public-gonol carrier law. -/"
+          )
+
+          # Theorem N: internal search theorem only.
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "  Lean 4 model of the UCNS Theorem N family and of the finite search it\n"
+              "  quantifies over.",
+              "  Lean model of the Theorem N family over the normalized recursive\n"
+              "  factorization algebra and its finite search. This is not completeness\n"
+              "  for the fixed-origin public gonol."
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "  faithful object model of `Ucns/Core.lean`:",
+              "  internal normalized factorization-object model of `Ucns/Core.lean`;\n"
+              "  no public-gonol bridge is assumed:"
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "     products of normalized factors the recovered angles are already\n"
+              "     gauge-fixed). Recorded in the obligation ledger.",
+              "     products of normalized factors the recovered values already satisfy\n"
+              "     the object-relative baseline). This is not the fixed public origin.\n"
+              "     Recorded in the obligation ledger."
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "--   summary: Defined (non-opaque) finite-search model for factor_search_v08 - catalogue normalization, split/host/payload/face enumeration, unit rejection, exact-recomposition success relation - plus the Theorem N statement family over it.",
+              "--   summary: Defined finite-search model and Theorem N statement family over normalized recursive factorization objects; no public-gonol completeness claim."
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "--   unresolved: face-superset equivalence and no-renormalization boundary are undischarged obligations; the three completeness theorems remain sorry; not machine-checked in the authoring environment (no Lean toolchain) - CI formal.yml is the checking authority",
+              "--   unresolved: public-gonol bridge, face-superset equivalence, and assembly-normalization boundary are undischarged; all completeness theorems remain sorry and apply only to the internal model"
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "/-- The depth-agnostic product, at fuel sufficient for both operands. -/",
+              "/-- The depth-agnostic internal factorization product. It neither defines\n"
+              "    public-gonol composition nor proves preservation of its twist. -/"
+          )
+          replace(
+              "formal/Ucns/TheoremN.lean",
+              "    All three statements below remain closed by `sorry`: they are\n"
+              "    UNVERIFIED HOLES awaiting proof and external formal review, and they\n"
+              "    confer no DEFENDED status. What is no longer a hole is their\n"
+              "    MEANING — the conclusion now unfolds to \"some enumerated candidate\n"
+              "    pair survives unit rejection and exactly recomposes\". -/",
+              "    All three statements below remain closed by `sorry`: they are\n"
+              "    UNVERIFIED HOLES and confer no DEFENDED status. Their meaning is\n"
+              "    only over normalized recursive factorization objects. Discharge\n"
+              "    would not prove public-gonol completeness without a bridge. -/"
+          )
+
+          # Runtime geometry bridge: compatibility projection only.
+          replace(
+              "ucns/geometry_bridge.py",
+              "Commutative audit projection from UCNS-A into UCNS-G coordinates.",
+              "Commutative compatibility projection of normalized recursive\n"
+              "factorization objects. This is not the public-gonol frame and does not\n"
+              "recover, move, or normalize the fixed SPACE/ZERO twist origin."
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              "#   summary: commutative audit projection via recursive radius, breadth, spinor angle, and chirality coordinates",
+              "#   summary: commutative compatibility projection of normalized factorization objects; explicitly not the public-gonol frame"
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              "#   unresolved: injectivity-proof-analytical, degenerate-theta-canonical-form, quaternionic-axis-lift",
+              "#   unresolved: public-gonol bridge, twist/origin preservation, injectivity-proof-analytical, degenerate-theta-canonical-form, quaternionic-axis-lift"
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    "ThetaDegenerate",\n]',
+              '    "ThetaDegenerate",\n    "NORMALIZED_FACTORIZATION_PROJECTION",\n    "PUBLIC_GONOL_BRIDGE_STATUS",\n]'
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              "_TAU4 = 4.0 * math.pi\n_TOL = 1e-9",
+              "_TAU4 = 4.0 * math.pi\n_TOL = 1e-9\n\n"
+              "NORMALIZED_FACTORIZATION_PROJECTION = True\n"
+              "PUBLIC_GONOL_BRIDGE_STATUS = \"hmmm\""
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    """Commutative audit coordinates ``(rho, lambda, theta, z, w)``.\n\n'
+              '    ``r`` is retained as the backward-compatible field name for breadth\n'
+              '    ``lambda = log(len(A_plus))``. Use ``breadth`` in new prose and code.\n'
+              '    """',
+              '    """Compatibility coordinates for normalized factorization objects.\n\n'
+              '    ``r`` retains the backward-compatible breadth field. These\n'
+              '    coordinates do not identify the public-gonol origin.\n'
+              '    """'
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    """Circular mean angle on R/4piZ. None when degenerate."""',
+              '    """Internal circular mean on R/4piZ; not a public-origin coordinate."""'
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    """Map a UCNSObject to its commutative audit projection."""',
+              '    """Project a normalized factorization object; no public-gonol bridge."""'
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    """Check projection(a box b) == compose(projection(a), projection(b))."""',
+              '    """Check the internal compatibility projection homomorphism only."""'
+          )
+          replace(
+              "ucns/geometry_bridge.py",
+              '    """Check projection injectivity over a supplied finite collection."""',
+              '    """Check internal projection injectivity on a supplied finite set."""'
+          )
+
+          # Carrier and theorem prose.
+          theorem = Path("ucns-theorem-n.md")
+          value = theorem.read_text(encoding="utf-8")
+          boundary = (
+              "\n**Public-gonol boundary:** every object, multiplication, catalogue, and\n"
+              "completeness statement in this note belongs to the normalized recursive\n"
+              "factorization model. The fixed SPACE/ZERO twist origin and 720-degree\n"
+              "return are not represented by an inferred angle or first-anchor gauge.\n"
+              "Theorem N is not a theorem about the complete public gonol unless a\n"
+              "faithful bridge is separately specified and proved.\n"
+          )
+          if boundary.strip() not in value:
+              value = value.replace("**Authors:**", boundary + "\n**Authors:**", 1)
+          value = value.replace(
+              "**Key finding:** `factor_search_v08` is depth-agnostic.",
+              "**Key finding within the normalized factorization model:** `factor_search_v08` is depth-agnostic.",
+              1,
+          )
+          value = value.replace(
+              "Let `A`, `B` be UCNS objects",
+              "Let `A`, `B` be normalized recursive factorization objects",
+              1,
+          )
+          value = value.replace(
+              "returns the angle sequences of `A` and `B` exactly (both normalized to start at 0).",
+              "returns their internal sequences exactly (both object-relative normalized to start at 0; this is not the public origin).",
+              1,
+          )
+          if "**Public-gonol bridge.**" not in value:
+              value = value.replace(
+                  "## 8. hmmm preserved\n",
+                  "## 8. hmmm preserved\n\n"
+                  "- **Public-gonol bridge.** The fixed twist origin and 720-degree\n"
+                  "  return are not bridged into the normalized search model. No\n"
+                  "  system-wide completeness claim crosses that missing theorem.\n",
+                  1,
+              )
+          theorem.write_text(value, encoding="utf-8")
+
+          carrier = Path("docs/carrier-support-pruning.md")
+          value = carrier.read_text(encoding="utf-8")
+          value = value.replace(
+              "**Scope:** the canonical recursive engine in this repository\n(`ucns.canonical`): normalized `UCNSObject`s under `multiply`.",
+              "**Scope:** the normalized recursive factorization engine\n(`ucns.canonical`) under `multiply`. This is not the complete carrier theorem\nfor the fixed-origin public gonol.",
+              1,
+          )
+          value = value.replace(
+              "This document proves the underlying carrier identity *exactly*",
+              "This document proves the internal projected-`n_min` identity *exactly*",
+              1,
+          )
+          value = value.replace(
+              "> **Law.** For normalized UCNS objects `A`, `B` with `P = multiply(A, B)`:",
+              "> **Internal nMin law.** For normalized factorization objects `A`, `B` with `P = multiply(A, B)`:",
+              1,
+          )
+          if "720-degree return" not in value:
+              value = value.replace(
+                  "## hmmm\n",
+                  "## hmmm\n\n"
+                  "- A faithful bridge from the fixed-origin public gonol to internal\n"
+                  "  `n_min` is absent. Carrier-LCM is not a complete public-carrier\n"
+                  "  theorem until twist, orientation, faces, and the 720-degree return\n"
+                  "  are preserved.\n",
+                  1,
+              )
+          carrier.write_text(value, encoding="utf-8")
+
+          assessment = Path("docs/unitcircle-import-assessment.md")
+          value = assessment.read_text(encoding="utf-8")
+          correction = (
+              "\n## Public-gonol canon correction — 2026-07-16\n\n"
+              "The exact public gonol from `a0-betatest@7af8deb` is now a UCNS\n"
+              "runtime primitive. Any UnitCircle visualization must consume it and\n"
+              "may not redefine its twist origin or 720-degree return.\n"
+          )
+          if correction.strip() not in value:
+              value = value.replace("## Import decision", correction + "\n## Import decision", 1)
+          assessment.write_text(value, encoding="utf-8")
+
+          ledger = Path("audit/obligation_ledger.md")
+          value = ledger.read_text(encoding="utf-8")
+          value = value.replace(
+              "| `multiply_identity` | θ=0 origin is a two-sided identity |",
+              "| `multiply_identity` | normalized factorization identity is two-sided |",
+              1,
+          )
+          obligations = """
+
+## Public-gonol foundation and bridge obligations — 2026-07-16
+
+| ID | Obligation | Current state |
+|---|---|---|
+| PG-1 | Fixed SPACE/ZERO twist origin and 720-degree complete return formal surface | Implemented sorry-free in `formal/Ucns/PublicGonol.lean`; `lake build` is execution authority. |
+| PG-2 | Faithful bridge from public vertices/lifted paths into normalized `UCNSObject` values | `hmmm`; no angle formula, first-anchor normalization, or quotient substitution permitted. |
+| PG-3 | Proof that internal multiplication preserves public twist, orientation, faces, and 720-degree return | Open; no system-wide multiplication claim transfers without it. |
+| PG-4 | Proof that internal `nMin` is the complete public carrier invariant | Open; Carrier-LCM remains scoped to internal projected `nMin`. |
+| PG-5 | Public-gonol scope for Theorem N completeness | Open and downstream of PG-2/PG-3; current statements remain internal and `sorry`-backed. |
+| PG-6 | Derivation of face XOR from the exact public twist/chirality canon | Open; Boolean XOR facts remain valid, but the system interpretation is not inferred. |
+"""
+          if "## Public-gonol foundation and bridge obligations — 2026-07-16" not in value:
+              value += obligations
+          ledger.write_text(value, encoding="utf-8")
+          PY
+
+      - name: Regenerate living manifest and clean metadata collection
+        working-directory: target
+        run: |
+          rm -rf .tmp-skill-lib
+          python .agents/skills/manifest/generate.py --write
+          PYTHONPATH=../skill-lib python ../skill-lib/msdmd/collect.py \
+            --root . \
+            --repo The-Interdependency/ucns \
+            --out ucns_msdmd.ts
+          if grep -q '\.tmp-skill-lib' ucns_msdmd.ts; then
+            echo "temporary checkout leaked into collection" >&2
+            exit 1
+          fi
+
+      - name: Validate complete target
+        working-directory: target
+        run: |
+          python -m pip install -e .[dev]
+          python -m pytest -q
+          python audit/reconcile.py
+          cd formal
+          lake exe cache get
+          lake build
+
+      - name: Commit validated target changes
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE.md ucns_msdmd.ts \
+            formal/Ucns/Core.lean formal/Ucns/CarrierLcm.lean formal/Ucns/TheoremN.lean \
+            ucns/geometry_bridge.py ucns-theorem-n.md docs/carrier-support-pruning.md \
+            docs/unitcircle-import-assessment.md audit/obligation_ledger.md
+          git diff --cached --stat
+          git commit -m "fix(canon): scope internal lemmas under the public twist origin"
+          git push origin HEAD:agent/promote-public-gonol-canon
