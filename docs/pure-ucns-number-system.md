@@ -1,309 +1,332 @@
-GPT generated; context, prompt Erin Spencer
+GPT generated; canon and correction supplied by Erin Spencer.
 
 # Pure UCNS Number System
 
-## hmm
+## Canon authority
 
-This document defines UCNS as a number system before it is used as cognition, embedding, retrieval, or agent substrate. It is a canon frontier document: stable enough to guide implementation, explicit enough to expose unresolved constraints, and narrow enough to prevent A0 from consuming ad hoc recursive structures as if they were canonical UCNS numbers.
+The public gonol implemented in
+`The-Interdependency/a0-betatest@7af8debf6ef3905f01baff02b43d8c3bee16ccbc`
+is canon for all UCNS.
 
----
-
-## 0. Purpose
-
-The purpose of the pure UCNS number system layer is to define what a UCNS number is, how UCNS numbers compose, how they factor, how they serialize, and where the theorem frontier currently sits.
-
-A0 may use UCNS-derived cognition later. That layer is downstream. The pure number system must not depend on A0, EDCM, PTCA, PCTA, PCNA, embeddings, vector similarity, agent behavior, or symbolic interpretation.
-
-In this layer:
+The primitive UCNS frame is not an arbitrary unit-circle coordinate system and
+is not a recursively normalized factorization object. It is the exact
+157-position public gonol whose fixed position `0` is:
 
 ```text
-UCNS number := canonical recursive unit-circle traversal object
-operation   := recursive product, written ⊠
-identity    := unit object / unit-equivalent traversal
-prime       := irreducible object under ⊠ within a declared domain
-factor      := A or B where A ⊠ B = P
-quotient    := recovered complement under a known factor
+SPACE
+ZERO
+Möbius twist point
+seam
+origin for the entire system
+only always-known character
 ```
 
-## hmmm
+A 360-degree circuit returns to the same local carrier position with opposite
+orientation. The complete return requires 720 degrees.
+
+No `k/157`, `2k/157`, first-anchor gauge, inferred `θ = 2π` origin, or other
+continuous-coordinate bridge is established by this canon.
 
 ---
 
-## 0.1 Scope firewall (UCNS-A vs UCNS-G/EDCM)
+## 0. Three-surface ontology
 
-This document is scoped to **UCNS-A** (pure recursive number-system algebra).
-It does **not** claim that UCNS-A theorem status proves UCNS-G, EDCM, or
-edcmbone metric geometry outputs.
-
-Until the bridge checklist artifacts are implemented and verified, theorem
-transfer is forbidden:
-
-- `docs/edcm-edcmbone-bridge-checklist.md`
-- `docs/ucns-shape-reconciliation.md`
-- `docs/ucns-g-prime-cylinder-supplement.md`
-
-## hmmm
-
----
-
-## 1. Primitive Object
-
-A UCNS number is a recursively composable traversal object over the unit circle.
-
-At the flat layer, the object is a paired traversal structure with:
-
-- declared carrier
-- minimal carrier
-- positive anchor sequence
-- forced mirror anchor sequence
-- positive face-state sequence
-- forced mirror face-state sequence
-
-At the recursive layer, a stored anchor may carry a payload. A payload is either the unit or another UCNS number. This creates depth.
-
-A UCNS number is not a scalar. A scalar may be encoded into UCNS, but encoding is not the primitive ontology.
-
-## hmmm
-
----
-
-## 2. Identity and Equality
-
-Two UCNS numbers are equal only when their canonical recursive structure is equal under the active equality policy.
-
-The pure layer must distinguish:
-
-1. exact structural equality
-2. sequence equivalence
-3. presentation equivalence under carrier widening
-4. semantic equivalence introduced by an external codec
-
-Only the first three belong to the pure number system. Codec semantics belong to a transport or application layer.
-
-Unresolved constraint: the repository currently contains historical language from earlier embedding-oriented UCNS work. That language should remain as history or application surface, not as the primitive number definition.
-
-## hmmm
-
----
-
-## 3. Carrier
-
-The minimal carrier is intrinsic. It is the smallest carrier required by the anchor set.
-
-The declared carrier is a presentation or resolution parameter. It must be compatible with the minimal carrier, but it is not itself the identity of the number unless a policy explicitly makes it so.
-
-Carrier widening is a frontier operation. It should be treated as a controlled extension, not assumed by default.
-
-Pure UCNS must therefore track:
+UCNS must preserve three distinct surfaces:
 
 ```text
-minimal carrier
-declared carrier
-carrier compatibility
-carrier widening policy
+UCNS public frame := canonical 157-position twist-bearing gonol
+
+normalized factorization object := recursive UCNSObject representation used by
+                                   multiply, quotient, search, and serialization
+
+public/factorization bridge := hmmm until Erin specifies it and it is proved
 ```
 
-## hmmm
+The first surface is the irreducible system frame. The second is an implemented
+internal algebra. The third does not yet exist.
+
+The old flattened definition—“UCNS is the normalized recursive object”—is
+superseded. The recursive algebra is a UCNS subsystem; it is not the origin of
+the system.
 
 ---
 
-## 4. Sequence, Chirality, and Face
+## 1. Public frame
 
-A UCNS number preserves traversal order. Sequence order is semantic.
+The public gonol has:
 
-Reversing anchor order produces a mirror traversal, not automatically the same number. Face states are paired with traversal data and must be preserved through canonicalization.
-
-The mirror sequence is forced by the star operation. The face mirror is reverse-only unless a later canon layer explicitly changes that rule.
-
-Pure UCNS must not collapse chirality unless a formal equivalence rule has been declared.
-
-## hmmm
-
----
-
-## 5. Recursion
-
-A recursive UCNS number consists of host traversal data plus payloads.
-
-Payloads are either:
-
-- the unit
-- another UCNS number
-
-Depth is the maximum recursive nesting depth of payloads.
-
-Recursive closure requires that composition of two valid UCNS numbers produces another valid UCNS number, subject to the declared domain and carrier rules.
-
-The current active package surface treats `ucns` as the implementation home for recursive factorization, so public use should prefer:
-
-```python
-from ucns import UCNSObject, multiply, factor_search_v08
+```text
+arity              := 157
+origin              := position 0
+origin glyph        := SPACE
+origin meaning      := ZERO / Möbius twist / seam
+complete return     := 720 degrees
+one circuit         := 360 degrees with orientation reversal
+nonzero ring        := positions 1..156
 ```
 
-while `ucns_recursive` remains a compatibility import path only.
+The exact arrangement, face assignment, chirality, adjacency, origin-fixed
+mirror, private-transform rule, and lifted traversal are part of the canon.
 
-## hmmm
+Admissible private phase and permutation operations may obscure nonzero
+positions, but they preserve the public frame:
+
+```text
+perm[0] == 0
+phase acts only on positions 1..156
+permutation acts only on positions 1..156
+```
+
+The digit glyph `"0"` is an ordinary nonzero glyph. It is not ZERO.
 
 ---
 
-## 6. Arithmetic
+## 2. Lifted traversal and 720-degree return
 
-The core arithmetic operation is recursive product:
+A lossless text path is an ordered lift over the public carrier. The absolute
+lifted position is retained; the local carrier position may be recovered by the
+exact A0 operation used in the source implementation.
+
+Load-bearing behavior:
+
+- path positions are strictly increasing;
+- repeated characters require a full 157-step carrier revolution;
+- SPACE is emitted as a seam event, never deleted;
+- decoding is the exact inverse over the public carrier alphabet;
+- local recurrence after one circuit does not imply complete oriented return;
+- complete oriented return requires two circuits, or 720 degrees.
+
+The modulo operation used to recover a local vertex does not create the origin,
+remove the twist, or turn the frame into an unpointed cyclic quotient.
+
+---
+
+## 3. Faces, chirality, and twist
+
+Faces and chirality belong to the public frame. They are not decorative labels
+added after a coordinate has been chosen.
+
+The public implementation fixes:
+
+```text
+origin / upper public face := +1
+lower public face          := -1
+clockwise neighbor         := n_plus
+counterclockwise neighbor  := n_minus
+mirror                     := reflection through fixed origin 0
+```
+
+The twist is load-bearing in composition and orientation. Any later theorem
+connecting public chirality to the internal factorization face-XOR operation
+must be proved from this canon. Boolean XOR identities remain valid Boolean
+lemmas, but their public-gonol interpretation is not inferred.
+
+---
+
+## 4. Normalized recursive factorization objects
+
+`ucns.canonical.UCNSObject` implements a separate internal representation:
+
+```text
+UCNSObject(n_dec, n_min, A_plus, F_plus)
+```
+
+It provides:
+
+- ordered host cells;
+- recursive optional payloads;
+- internal rational values;
+- object-relative normalization;
+- face-bit data;
+- recursive multiplication;
+- quotients, factor search, stable serialization, and evidence records.
+
+This representation remains useful and substantially implemented. It is not the
+public gonol and may not move, redefine, or substitute for the public origin.
+
+The internal singleton object used as multiplication identity is a
+**factorization-unit object, not public SPACE/ZERO**.
+
+Object-relative first-cell normalization is therefore scoped as:
+
+```text
+normalization applies to normalized factorization objects
+normalization does not apply to the public gonol
+normalization does not establish the system origin
+```
+
+---
+
+## 5. Internal multiplication and factorization
+
+The existing recursive product is:
 
 ```text
 A ⊠ B = P
 ```
 
-Multiplication composes host traversal structure and recursively composes payloads.
+within the normalized factorization model. The implementation composes ordered
+host cells, internal values, face bits, and recursive payloads.
 
-A quotient is a recovery operation:
+Related operations are:
 
 ```text
 left_quotient(P, A)  -> B where A ⊠ B = P
 right_quotient(P, B) -> A where A ⊠ B = P
+factor_search(P)     -> factors or a scoped negative result
 ```
 
-A factorization engine attempts to recover both unknown factors from product P:
+These are not yet proved to be the public-gonol composition law. In particular,
+no current theorem proves that internal multiplication preserves:
 
 ```text
-factor_search(P) -> (A, B) or SEQ-PRIME
+fixed SPACE/ZERO origin
+Möbius twist
+orientation after one circuit
+720-degree complete return
+public faces and chirality
+lifted seam crossings
 ```
 
-Pure UCNS arithmetic should preserve these distinctions:
-
-- product: construction
-- quotient: complement recovery given one factor
-- factor search: recovery of both factors from the product
-- primality: failure to decompose under declared search domain
-
-`SEQ-PRIME` is domain-relative unless and until global completeness is proven.
-
-## hmmm
+That bridge remains `hmmm`.
 
 ---
 
-## 7. Primality and Irreducibility
+## 6. Carrier terminology
 
-A UCNS number is prime only relative to a declared factorization domain unless global recursive completeness is proved.
+Two carrier notions must not be flattened:
 
-A pure UCNS prime definition should use this shape:
+### Public carrier
 
-```text
-P is prime in domain D iff no non-unit A, B in D satisfy A ⊠ B = P.
-```
+The public carrier is the exact 157-position twist-bearing gonol.
+
+### Internal projected `n_min`
+
+The factorization model computes `n_min` from denominators of an internal
+projected value. Carrier-LCM is currently proved for that exact definition on
+its declared normalized-object domain.
 
 Therefore:
 
 ```text
-prime_D(P) != prime_global(P)
+Carrier-LCM theorem
+    = theorem about internal projected n_min
+    != theorem about the complete public carrier
 ```
 
-unless D is proven complete for P's class.
-
-The implementation must not market frontier-domain `SEQ-PRIME` results as absolute primality.
-
-## hmmm
+A public-carrier theorem requires a bridge that preserves the origin, twist,
+orientation, faces, chirality, and 720-degree return.
 
 ---
 
-## 8. Canonical Form, Serialization, and Hashing
+## 7. Equality and identity
 
-A0 must only consume canonical UCNS objects.
+Public-frame identity and internal-object equality are separate questions.
 
-A canonical UCNS object needs:
+### Public-frame identity
 
-1. normalized carrier representation
-2. normalized anchor representation
-3. preserved traversal order
-4. preserved face-state sequence
-5. canonical recursive payload ordering
-6. canonical unit representation
-7. stable serialization
-8. stable hash
-9. stable equality check
+The public frame is identified by the exact canon:
 
-The codec layer may encode Python values into UCNS objects, but Python value semantics are not UCNS identity. For example, byte strings, lists, and dictionaries may be represented by sentinel conventions, but those conventions are transport choices unless elevated into pure canon.
+- source commit;
+- 157-position arrangement;
+- fixed position-zero twist/origin;
+- faces, chirality, adjacency, mirror;
+- origin-preserving private transforms;
+- lossless lifted traversal.
 
-## hmmm
+### Internal factorization equality
+
+The internal model distinguishes exact structure, normalized sequence equality,
+presentation/carrier compatibility, and codec semantics according to its
+implemented policies.
+
+An internal equality or normalization theorem cannot silently imply equality of
+public frames.
 
 ---
 
-## 9. Domains and Theorem Frontier
+## 8. Serialization and stable identity
 
-The canon drift between `CLAUDE.md` ("full frozen depth-2 implemented")
-and the older `ucns-spec.md` status snapshot ("not solved") has been
-reconciled on 2026-05-17 (branch
-`claude/ucns-v1-canon-reconciliation-ELOzV`).
+UCNS needs separate canonical records for separate surfaces.
 
-Canonical status vocabulary (also codified as
-`ucns.domain_status.DomainProofStatus`):
+### Public gonol
+
+The public-gonol identity is pinned by its source provenance, exact arrangement,
+fixed origin, and behavior contracts.
+
+### Normalized factorization object
+
+`ucns.serialization` canonically serializes normalized recursive objects for
+hashing, retrieval, evidence, and cross-repository records.
+
+A future bridge record must state what information is preserved or lost. It may
+not encode the public frame by inventing an angle formula.
+
+---
+
+## 9. Primality and Theorem N
+
+Primality and Theorem N currently belong to the normalized recursive
+factorization model.
 
 ```text
-DEFENDED          proven or proof-defended in written spec
-IMPLEMENTED       implemented and test-backed, proof may lag
-TEST-BACKED       tests cover the claimed behavior in the declared domain
-ORACLE-COMPLETE   complete only with oracle/catalogue assumptions
-FRONTIER          plausible but not proven complete
-EXPERIMENTAL      useful for exploration, not canonical
+P is prime in domain D iff no non-unit internal A, B in D satisfy A ⊠ B = P
 ```
 
-Under this vocabulary the full frozen depth-2 domain is `IMPLEMENTED` +
-`TEST-BACKED` in `factor_search_v08`, not yet `DEFENDED` at the spec
-level. See `ucns-spec.md` §F2 and
-`docs/ucns-spec-status-addendum-2026-05-16.md` for the canonical
-statement. Carrier widening and general primality outside
-defended-complete domains are `FRONTIER` and out of v1.0 scope.
+`SEQ-PRIME` remains domain-relative unless completeness is proved for the exact
+declared factorization class.
 
-## hmmm
-
----
-
-## 10. A0 Interface Rule
-
-A0 may use UCNS only through canonical interfaces.
-
-A0 must not infer cognition directly from arbitrary recursive object shape. It may consume:
-
-- canonical UCNS numbers
-- canonical products
-- canonical quotients
-- canonical factorization results
-- explicit domain-status metadata
-- explicit proof/test status metadata
-
-A0 must treat incomplete domains as incomplete. It may explore frontier domains, but it must label them.
-
-The pure UCNS layer feeds A0. A0 does not define UCNS.
-
-## hmmm
+Theorem N remains `FRONTIER`. Its Lean completeness statements remain
+`sorry`-backed. Even after those holes are discharged, the result does not become
+a theorem about the complete public gonol unless the public/factorization bridge
+is also proved.
 
 ---
 
-## 11. Implementation Direction
+## 10. Geometry and measurement firewall
 
-Near-term implementation should prioritize:
+The public gonol is the UCNS frame. This does not make every geometry,
+visualization, embedding, or EDCM metric a theorem of that frame.
 
-1. canon repair between `CLAUDE.md` and `ucns-spec.md`
-2. canonical serialization and hashing
-3. explicit domain-status objects
-4. explicit result types instead of ambiguous sentinels where feasible
-5. tests proving A0-facing imports use `ucns` rather than private internals
-6. proof notes separating implemented/test-backed from proof-defended
+The current `(rho, lambda, theta, z, w)` geometry bridge is a compatibility
+projection of normalized factorization objects. It is not the public frame and
+does not recover the twist origin.
 
-Do not widen carriers, add cognition semantics, or add dependencies until the pure number layer is stable.
-
-## hmmm
+EDCM and edcmbone remain downstream measurement systems. No UCNS theorem status
+transfers to their empirical outputs without a separately implemented and proved
+status-preserving bridge.
 
 ---
 
-## 12. Frozen Working Definition
+## 11. Canonical status summary
 
-For current development:
+| Surface | Current status |
+|---|---|
+| Exact public gonol arrangement and fixed origin | `IMPLEMENTED` + `TEST-BACKED` after green promotion CI |
+| Public lifted traversal | `IMPLEMENTED` + `TEST-BACKED` after green promotion CI |
+| Public origin and 720-degree return formal definitions | intended sorry-free; `lake build` is authority |
+| Normalized recursive factorization engine | `IMPLEMENTED` + domain-scoped test/proof statuses |
+| Carrier-LCM | sorry-free for internal projected `n_min`; not public-carrier theorem |
+| Theorem N completeness | `FRONTIER`; `sorry`-backed |
+| Public-gonol ↔ normalized-factorization bridge | `hmmm` |
+| UCNS theorem ↔ EDCM measurement transfer | forbidden absent a proved bridge |
 
-```text
-A UCNS number is a canonical recursive unit-circle traversal object whose anchors, face states, carriers, and payloads are preserved under a declared equality policy, and whose arithmetic is recursive composition under ⊠.
-```
+---
 
-This definition supersedes embedding-first explanations for A0-facing development, while preserving earlier embedding work as a historical or application layer.
+## Reopening rule
+
+No document, test, or implementation may reintroduce any of these as canon:
+
+- an arbitrary or movable system origin;
+- public zero chosen from the first normalized cell;
+- 360 degrees as complete return;
+- public zero placed at an inferred continuous angle;
+- `k/157` or `2k/157` as the defining public coordinate;
+- factorization unit identified with public SPACE/ZERO;
+- Carrier-LCM or Theorem N claimed for the complete public gonol without a
+  bridge proof.
 
 ## hmmm
+
+The public frame is fixed. The internal algebra is retained. The missing bridge
+is now an explicit scientific obligation rather than an assumed equivalence.
