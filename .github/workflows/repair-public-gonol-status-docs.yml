@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/repair-public-gonol-status-docs.yml"
-      - "tools/repair_public_gonol_status_followup.py"
+      - "tools/repair_public_identity_docs.py"
 
 permissions:
   contents: write
@@ -40,9 +40,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Apply final status and scope corrections
+      - name: Reconcile public identity and planning docs
         working-directory: target
-        run: python ../maintenance/tools/repair_public_gonol_status_followup.py
+        run: python ../maintenance/tools/repair_public_identity_docs.py
 
       - name: Regenerate living manifest and metadata collection
         working-directory: target
@@ -58,10 +58,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CLAUDE.md ucns_msdmd.ts ucns-spec.md depth7-frontier.md \
-            ucns-spec-frontier-v090.md
+          git add CLAUDE.md ucns_msdmd.ts README.md CHANGELOG.md ucns-spec.md \
+            pcea-ucns/ucns-crypto-domain-v0.md
           git diff --cached --stat
-          git commit -m "docs(canon): close final theorem-status scope leaks"
+          git commit -m "docs(canon): root package and planning identity in the public frame"
           git push origin HEAD:agent/remove-2pi-inscription-from-canon
 
       - name: Run focused recovery gates on committed content
@@ -73,5 +73,6 @@ jobs:
             tests/test_docs_claim_guardrail.py \
             tests/test_public_gonol_claim_guard.py \
             tests/test_public_gonol_status_recovery.py \
+            tests/test_public_identity_recovery.py \
             tests/test_mobius_compatibility_scope.py \
             -q
