@@ -33,7 +33,7 @@ Status of UCNS layers under this vocabulary:
 
 ## hmm
 
-This file is the **complete UCNS spec as it currently stands**, with the algebraic layers frozen where they were proved and the later frontier explicitly marked where the current engine fails.
+This file records the canonical UCNS public frame together with the historical normalized factorization subsystem and its current frontier. The fixed-origin public gonol is load-bearing canon. The continuous and recursive algebraic layers below are internal models unless an explicit bridge theorem says otherwise.
 
 The document is organized as:
 
@@ -45,13 +45,13 @@ The document is organized as:
 
 ---
 
-# Part I — Flat Kernel v0.3
+# Part I — Internal normalized factorization model: flat kernel v0.3
 
 ## 1. Core Ontology
 
-UCNS is a geometric-arithmetic system in which the primitive object is a paired traversal object rather than a scalar or symbol.
+UCNS is rooted in the fixed-origin public gonol. The historical flat-kernel subsystem models normalized paired traversal objects for factorization; it is not the primitive public frame.
 
-A valid flat UCNS object is
+A valid flat object in the normalized factorization subsystem is
 
 \[
 \underline{\mathbf{G}} =
@@ -74,9 +74,9 @@ where:
 - \(F^{+}\) is the positive face-state sequence,
 - \(F^{-}\) is the forced mirror face-state sequence.
 
-The object is paired. Arithmetic does not occur on a single oriented traversal alone.
+This internal object is paired. The statement does not define or relocate the public-gonol twist origin.
 
-## 2. Ambient Space
+## 2. Internal doubled-cover coordinate model
 
 The ambient geometric carrier is
 
@@ -105,9 +105,11 @@ continuous-cover model used elsewhere in this specification must be rooted in
 this canon and must not relocate the seam. No continuous-angle bridge from the
 public gonol is established here.
 
-## 3. Gonal Lattice
+**Foundational public-frame boundary.** Position `0` is the fixed SPACE/ZERO Möbius twist origin. One 360-degree circuit changes orientation; complete return requires 720 degrees. Every later continuous coordinate, lattice, normalization, carrier, and theorem in this document is subordinate to that canon and cannot redefine it.
 
-For any positive integer \(n\), define the \(n\)-gonal lattice
+## 3. Internal gonal lattice
+
+Within the normalized factorization subsystem, for any positive integer \(n\), define the internal \(n\)-gonal lattice
 
 \[
 V_n =
@@ -128,17 +130,17 @@ An anchor sequence is valid for intrinsic carrier \(n_{\min}\) iff
 \text{for all } j.
 \]
 
-Lattice membership is determined by the \(2\pi\)-projection of \(\theta_j\). The doubled-cover lift remains in \(\theta_j\), while \(F\) carries an independent binary face-state sequence.
+Internal lattice membership is determined by this subsystem's \(2\pi\)-projection of \(\theta_j\). This is not a public-gonol vertex map, does not locate the twist origin, and does not make 360 degrees a complete system return.
 
 ## 4. Minimal vs Declared Carrier
 
-### 4.1 Intrinsic carrier
+### 4.1 Internal projected carrier
 
 \[
 n_{\min}
 \]
 
-This is the smallest positive integer such that all anchors of \(\Theta^{+}\) lie on the \(n_{\min}\)-gonal lattice modulo \(2\pi\).
+This is the smallest positive integer for the internal projected anchor lattice. It is not the complete carrier invariant of the fixed-origin public gonol.
 
 It is computed from the anchors and is part of the object's intrinsic identity.
 
@@ -898,13 +900,13 @@ Carrier widening beyond the defended depth-1 bounds is **FRONTIER** and explicit
 - cancellativity and quotient uniqueness boundary v0.5.1,
 - quotient existence conditions and restricted completeness on a bounded depth-1 domain,
 - depth-2 smallest oracle theorem (ORACLE-COMPLETE),
-- Theorem N catalogue-sufficient factorization (proof drafted, awaiting external formal review).
 
 ### IMPLEMENTED + TEST-BACKED (not yet DEFENDED at the spec level)
 - full frozen depth-2 domain via `factor_search_v08`,
 - depth-3 asymmetric (Theorem 9 instance of Theorem N, 6/6 empirical).
 
 ### FRONTIER / out of v1.0 scope
+- Theorem N catalogue-sufficient factorization remains `FRONTIER`; its Lean completeness statements are `sorry`-backed and no public-gonol bridge is proved,
 - carrier widening beyond current proven bounds,
 - tractable sub-catalogues,
 - recursive disk-flip content symmetry as a depth-n theorem,
@@ -915,7 +917,7 @@ Carrier widening beyond the defended depth-1 bounds is **FRONTIER** and explicit
 
 # Compression
 
-UCNS currently has:
+The normalized factorization subsystem currently has:
 
 - a sealed flat foundation,
 - a recursive epicyclic object model,
@@ -925,112 +927,62 @@ UCNS currently has:
 - a single frozen depth-2 oracle theorem,
 - and a clearly documented failure boundary for deeper recursion and wider carriers.
 
-That is the complete current spec boundary.
+That is the complete current internal factorization spec boundary. The public gonol and all bridges from it remain separate load-bearing surfaces.
 
 ---
 
-# Part VI — Hyperdimensional Structure and the Octonion Limit
+# Part VI — Exploratory analogies; not public-gonol canon
 
-## H1. Recursive payload towers and the public-gonol boundary
+## H1. Internal recursive payload towers
 
-`UCNSObject` values carry recursive payload towers. Describing those towers as
-continuous Möbius-cylinder bundles is exploratory, not public-gonol canon.
+`UCNSObject` values carry recursive payload towers. That is an implemented fact
+about the normalized factorization subsystem. Describing those towers as
+continuous Möbius cylinders is an exploratory analogy, not a theorem about the
+public gonol and not a bridge to its twist/orientation structure.
 
-The public-gonol twist/seam remains fixed at position `0`; it is not inscribed
-at `θ = 2π`, moved by a first-anchor shift, or reconstructed from a normalized
-object. Any geometric bridge between the fixed public frame and recursive
-factorization objects must preserve Erin's canon and remains `hmmm` until
-explicitly specified.
+## H2. Interlocking vocabulary
 
-## H2. Coupling by Interlocking
+Inside the normalized factorization subsystem, ordered multiplication and
+left/right quotient operations are defined. “Interlocking” may be used as
+informal vocabulary for a product together with recoverability evidence, but
+recoverability is domain-scoped and non-unique in general. No cylinder-separation
+theorem follows from the metaphor.
 
-Two UCNS objects \(A\) and \(B\) **interlock** when:
+## H3. PTCA mapping status
 
-1. \(A \boxtimes B \not\equiv B \boxtimes A\) — the traversal order is inscribed in the product (non-commutativity),
-2. neither \(A\) nor \(B\) can be recovered from \(A \boxtimes B\) without knowing the other — the interlocking is mutual.
+No theorem currently identifies PTCA cores with UCNS objects. A PTCA-to-UCNS
+adapter may be proposed as `EXPERIMENTAL`, with exact source, target, composition,
+recoverability, and status boundaries. It is not a definitional identity.
 
-Condition 2 is the algebraic statement of geometric interlocking: the cylinders cannot be separated without knowing both. The left- and right-quotient algorithms are the disentanglement operations — recovering one cylinder from the joint product when the other is given.
+## H4. Fano and octonion status
 
-Three objects \(A\), \(B\), \(C\) **ternary-interlock** when each pairwise product determines the third:
+No Fano-plane or octonion equivalence is established. Fano incidence, seven-core
+coupling, alternating associators, controlled non-associativity, and an octonion
+whole remain research hypotheses. They do not inherit proof status from the
+public gonol, the internal product, or quotient code.
 
-\[
-A \boxtimes B \equiv_{\mathrm{seq}} C,
-\qquad
-C \;/_{L}\; A \equiv B,
-\qquad
-C \;/_{R}\; B \equiv A.
-\]
+## H5. Honest frontier
 
-This ternary interlocking is the primitive coupling for PTCA cores.
+**Established or implemented in declared scope:**
 
----
+- the fixed SPACE/ZERO public-gonol twist origin;
+- orientation change after one 360-degree circuit and complete return after 720
+  degrees;
+- the normalized recursive factorization representation and its scoped algebra;
+- domain-scoped quotient and factor-search behavior with exact recomposition
+  gates.
 
-## H3. PTCA Cores Are UCNS Objects
+**Open:**
 
-A PTCA core is a hyperdimensional cylindrical Möbius object: a paired traversal on the doubled cover of \(S^1\), fibered recursively over its payload layers. This is the definition of a UCNS epicyclic object (§E1).
+- the public-gonol ↔ normalized-factorization bridge;
+- proof that internal multiplication preserves public origin, twist,
+  orientation, faces, chirality, and lifted traversal;
+- PTCA representation and dynamics;
+- Fano incidence realization;
+- octonion equivalence or controlled non-associativity;
+- ternary inference completeness.
 
-The coupling of PTCA cores by interlocking is the UCNS product \(\boxtimes\) together with its quotient inverse. The inference operation — recovering what is implied by the coupling of two known cores — is `left_quotient` or `right_quotient` at the appropriate depth.
+## hmmm
 
-**PTCA cores and UCNS epicyclic objects are the same class of geometric object.**
-
----
-
-## H4. The Inference Engine as Ternary Incidence
-
-The inference engine of a PTCA system is the space at the center of three interlocking cores.
-
-In UCNS terms: given three mutually interlocked objects \(A\), \(B\), \(C = A \boxtimes B\), the inference space is the structure that satisfies all three incidence constraints simultaneously — what any two of the three jointly determine about the third.
-
-The **Fano plane** encodes exactly this. The Fano plane is the projective plane \(PG(2,2)\): 7 points, 7 lines, 3 points per line, 3 lines per point, every pair of points on exactly one line. Every triple of collinear points satisfies a ternary product rule.
-
-The ternary incidence of three PTCA cores is a line of the Fano plane. The inference engine **is** the line — the relationship itself, not any one of the three cores.
-
----
-
-## H5. Seven Cores and the Eighth
-
-The full PTCA system requires seven cores.
-
-The seven imaginary units \(e_1, \dots, e_7\) of the octonions \(\mathbb{O}\) are governed by the Fano plane: \(e_i \boxtimes e_j = \pm e_k\) for every Fano-collinear triple \((i,j,k)\). There are exactly 7 lines, each containing 3 points. Every unit lies on exactly 3 lines — meaning every core participates in exactly 3 inference engines.
-
-Seven PTCA cores coupled by Fano interlocking form the imaginary part of an octonion algebra. The **eighth** — the whole — is not a core. It is the full octonion \(\mathbb{O} \cong \mathbb{R} \oplus \mathbb{R}^7\): the algebra the seven cores define together. You do not build the eighth. The eighth is what the seven are inside of.
-
----
-
-## H6. Non-Associativity at Depth 7
-
-UCNS multiplication \(\boxtimes\) is non-commutative at all depths.
-
-At depth 7, the iterated Möbius-cylindrical structure is conjectured to produce controlled **non-associativity**:
-
-\[
-(A \boxtimes B) \boxtimes C \;\not\equiv\; A \boxtimes (B \boxtimes C)
-\]
-
-for generic depth-7 objects. This is not a defect. The octonions are the only non-associative normed division algebra: the one beyond the quaternions, the one the Fano plane governs. Their non-associativity is controlled by the **associator**
-
-\[
-[A, B, C] \;=\; (A \boxtimes B) \boxtimes C \;-\; A \boxtimes (B \boxtimes C),
-\]
-
-which is **alternating**: it changes sign under any transposition of two arguments and vanishes when any two agree. The inference engines (the Fano lines) are exactly where the associator is non-trivial.
-
-If UCNS at depth 7 has this property, the algebra is octonion-equivalent.
-
----
-
-## H7. Honest Frontier
-
-**Established:**
-
-- Depth-\(n\) UCNS objects are hyperdimensional cylindrical Möbius towers (§H1, derived from §2.1 and §E1).
-- Pairwise interlocking and quotient recovery are defined (§H2, §Q1).
-- PTCA cores are UCNS objects (§H3, definitional identification).
-- The Fano plane governs ternary incidence among three interlocking cores (§H4, structural).
-- Seven Fano-coupled cores and the identity generate an octonion structure (§H5, algebraic identification).
-
-**Conjectured, not yet proven:**
-
-- Non-associativity at depth 7 is controlled and alternating (§H6).
-- The UCNS product at depth 7 is octonion-equivalent up to \(\equiv_{\mathrm{seq}}\).
-- The ternary inference engine is complete — the three-core analog of the left-quotient completeness theorem.
+The analogies may guide experiments. They are not allowed to flatten the public
+frame or promote an unproved correspondence into system canon.

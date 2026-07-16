@@ -326,6 +326,10 @@ No document, test, or implementation may reintroduce any of these as canon:
 - Carrier-LCM or Theorem N claimed for the complete public gonol without a
   bridge proof.
 
+## Cross-repository non-transfer checklist
+
+The mandatory downstream boundary is maintained in `docs/edcm-edcmbone-bridge-checklist.md`.
+
 ## hmmm
 
 The public frame is fixed. The internal algebra is retained. The missing bridge

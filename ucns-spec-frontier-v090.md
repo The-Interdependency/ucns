@@ -11,8 +11,10 @@
 > TEST-BACKED, not yet DEFENDED at the spec level** (see
 > `docs/ucns-spec-status-addendum-2026-05-16.md` and `ucns-spec.md`
 > §F2). Carrier widening remains FRONTIER and out of v1.0 scope. Use this
-> file as historical context; current canon lives in `ucns-spec.md` and
-> `ucns-theorem-n.md`.
+> file as historical context; current canon lives in `ucns-spec.md`,
+> `docs/pure-ucns-number-system.md`, and `ucns-theorem-n.md`. The public gonol
+> is the fixed UCNS frame; this document concerns only the normalized
+> factorization frontier, and the public-gonol bridge is absent.
 
 ---
 
@@ -39,7 +41,7 @@ The flat paired UCNS kernel is defended for its stated scope.
 This includes:
 
 - paired traversal objects,
-- external zero,
+- an internal factorization-unit object, not public SPACE/ZERO,
 - intrinsic/declared carrier split,
 - ordered-concatenation multiplication,
 - normalization,
@@ -169,9 +171,10 @@ level (some are `IMPLEMENTED` + `TEST-BACKED`; some remain `FRONTIER`):
 \]
 
 Theorem N (`ucns-theorem-n.md`) addresses the **catalogue-sufficient**
-form of these claims and is `DEFENDED` (proof drafted, awaiting external
-formal review): if the catalogue contains every recursive payload of the
-true factors, `factor_search_v08` finds a factorization. The depth and
+form of these claims as a `FRONTIER` proof target. The proof sketch and
+implementation do not confer `DEFENDED` status; Lean completeness statements
+remain `sorry`-backed. If proved in the normalized factorization subsystem, it
+still would not become a theorem about the public gonol without the absent bridge. The depth and
 carrier conditions above are not in v1.0 scope as **unconditional**
 completeness statements.
 
@@ -181,15 +184,14 @@ completeness statements.
 
 The clean present-tense statement is:
 
-> UCNS has a `DEFENDED` flat kernel, a `DEFENDED` depth-1 restricted
-> completeness theorem, and a `DEFENDED` + `ORACLE-COMPLETE` depth-2
-> oracle theorem. **Theorem N (`ucns-theorem-n.md`,
-> catalogue-sufficient factorization at all depths) is `DEFENDED`
-> (proof drafted, awaiting external formal review).** The full frozen
-> depth-2 domain is `IMPLEMENTED` + `TEST-BACKED` in `factor_search_v08`,
-> not yet `DEFENDED` at the spec level. Carrier widening and general
-> primality outside defended-complete domains are `FRONTIER` and out
-> of v1.0 scope.
+> Within the normalized factorization subsystem, UCNS has a `DEFENDED`
+> flat kernel, a `DEFENDED` depth-1 restricted completeness theorem, and a
+> `DEFENDED` + `ORACLE-COMPLETE` depth-2 oracle theorem. **Theorem N
+> (`ucns-theorem-n.md`) remains `FRONTIER`; its proof sketch, implementation,
+> and Lean scaffold do not confer `DEFENDED` status.** The full frozen depth-2
+> domain is `IMPLEMENTED` + `TEST-BACKED`, not spec-level `DEFENDED`. The
+> public-gonol bridge is absent, and carrier widening/general primality remain
+> `FRONTIER` and out of v1.0 scope.
 
 ---
 
@@ -230,7 +232,7 @@ Under the reconciled 2026-05-17 canon (`ucns-spec.md`, `ucns-theorem-n.md`):
 
 - DEFENDED: flat, depth-1 restricted theorem, cancellativity / quotient uniqueness,
 - DEFENDED + ORACLE-COMPLETE: depth-2 smallest oracle (Lemma 7 = Theorem N instance),
-- DEFENDED (proof drafted, awaiting external review): Theorem N — catalogue-sufficient factorization at all depths,
+- FRONTIER: Theorem N — catalogue-sufficient factorization proof target in the normalized subsystem; Lean completeness remains `sorry`-backed and the public bridge is absent,
 - IMPLEMENTED + TEST-BACKED: full frozen depth-2 domain via `factor_search_v08`; depth-3 asymmetric (Theorem 9),
 - FRONTIER / out of v1.0 scope: carrier widening; tractable sub-catalogues; general primality outside defended-complete domains.
 

@@ -272,6 +272,10 @@ downstream measurement
 
 It preserves honest incompletion until the missing bridges are real.
 
+## Prime-quartet discontinuity boundary
+
+The separate discontinuity and non-transfer rule is recorded in `docs/prime-quartet-discontinuity.md`.
+
 ## hmmm
 
 The system now has its origin back. What remains is not permission to guess the

@@ -65,6 +65,19 @@ No opaque success predicate remains in `formal/Ucns/TheoremN.lean`; a green
 `lake build` remains a type-check only and confers no proof status while
 any hole above remains.
 
+## Public-gonol and bridge obligations
+
+This table is informational and is not parsed by `audit/reconcile.py`. It prevents the normalized factorization ledger from being mistaken for the complete public-frame proof surface.
+
+| id | obligation | status | evidence / next proof |
+|---|---|---|---|
+| `PG-1` | public position `0` is SPACE/ZERO, the fixed Möbius twist origin | CLOSED | `ucns/public_gonol.py`, `formal/Ucns/PublicGonol.lean`, public-gonol tests |
+| `PG-2` | one 360-degree circuit changes orientation; complete return requires 720 degrees | CLOSED | `formal/Ucns/PublicGonol.lean`, claim guards |
+| `PG-3` | admissible private phase/permutation preserves origin and acts only on positions `1..156` | CLOSED | `ucns/public_gonol_private.py`, public-gonol tests |
+| `PG-4` | define a faithful public-gonol ↔ normalized-factorization bridge | OPEN | must preserve origin, twist, orientation, faces, chirality, lifted traversal, serialization, and information-loss boundary |
+| `PG-5` | prove correspondence between public composition and internal `multiply` | OPEN | no correspondence theorem exists; Carrier-LCM and Theorem N remain internal |
+| `PG-6` | prevent theorem/status transfer across absent bridges | CLOSED as policy guard; mathematical bridge remains open | claims ledger, bridge checklist, permanent regression tests |
+
 ## Findings of record (this run)
 
 1. **Associativity proven** — the handoff's pivot question ("does the θ

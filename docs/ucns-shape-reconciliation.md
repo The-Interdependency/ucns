@@ -203,6 +203,10 @@ Bridges among them are explicit obligations, not assumed identity.
 Theorem N remains scoped to UCNS-A and remains `FRONTIER`. No proof status
 transfers to UCNS-G or EDCM.
 
+## Cross-repository non-transfer checklist
+
+The mandatory downstream boundary is maintained in `docs/edcm-edcmbone-bridge-checklist.md`.
+
 ## hmmm
 
 The public frame is no longer missing from the ontology. The bridge from that

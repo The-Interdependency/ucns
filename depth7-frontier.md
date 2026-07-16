@@ -13,13 +13,13 @@ This document does not replace `ucns-spec.md`, `ucns-spec-frontier-v090.md`, or 
 
 It exists to keep the frontier honest.
 
-The current repository now contains two connected layers:
+The current repository contains three deliberately separated surfaces:
 
-1. an implemented and partially defended UCNS recursive algebra line, and
-2. a newly framed depth-7 geometric hypothesis that points toward Fano-plane / octonion behavior.
+1. the fixed-origin public gonol;
+2. an implemented and partially defended normalized factorization subsystem; and
+3. a depth-7 geometric hypothesis pointing toward Fano-plane / octonion behavior.
 
-The first layer is the engine.  
-The second layer is the frontier.
+The public frame is canon. The normalized factorization subsystem is the current engine. The depth-seven material is frontier analogy. None may be collapsed into another without a proved bridge.
 
 They should not be collapsed into one claim until the missing proof obligations are closed.
 
@@ -29,9 +29,9 @@ They should not be collapsed into one claim until the missing proof obligations 
 
 The following claims are established within the current UCNS repository/spec line, subject to the proof dependencies already named in the existing files.
 
-## 1.1 UCNS objects are recursive paired traversal objects
+## 1.1 Normalized factorization objects are recursive payload structures
 
-A UCNS object is a positive host sequence whose cells may carry payloads that are themselves UCNS objects.
+A normalized factorization object is a positive host sequence whose cells may carry payloads that are themselves normalized factorization objects.
 
 At finite nesting depth, this creates a recursive tower:
 
@@ -39,7 +39,7 @@ At finite nesting depth, this creates a recursive tower:
 - payload subobjects at the next level down,
 - termination at unit payloads / flat objects.
 
-This is the structural basis for calling depth-`n` UCNS objects recursive Möbius-cylindrical towers.
+This supports recursive-tower language inside the normalized factorization subsystem. Calling those towers Möbius cylinders is exploratory and does not identify them with the public gonol.
 
 ## 1.2 Multiplication is ordered and recursive
 
@@ -94,8 +94,7 @@ The currently defensible frontier, in the status vocabulary from
 - flat kernel: `DEFENDED`,
 - depth-1 restricted completeness: `DEFENDED` within stated bounded domain,
 - depth-2 oracle: `DEFENDED` + `ORACLE-COMPLETE`,
-- Theorem N (catalogue-sufficient factorization, `ucns-theorem-n.md`):
-  `DEFENDED` (proof drafted, awaiting external formal review),
+- Theorem N remains `FRONTIER`: the implementation-backed proof sketch and Lean scaffold do not confer `DEFENDED` status, and no public-gonol bridge is proved,
 - full frozen depth-2 domain: `IMPLEMENTED` + `TEST-BACKED`, not yet
   `DEFENDED` at the spec level,
 - carrier widening: `FRONTIER`, out of v1.0 scope,
@@ -117,7 +116,7 @@ The bridge can be stated safely as follows.
 
 ## 2.1 Depth as recursive geometry
 
-A depth-`n` UCNS object may be interpreted as an `n`-level recursive Möbius-cylindrical tower.
+A depth-`n` normalized factorization object may be explored through an `n`-level tower analogy. This is not public-gonol canon or a proved continuous geometry.
 
 Each level contributes:
 
