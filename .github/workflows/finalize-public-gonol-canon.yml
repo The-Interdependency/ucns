@@ -1,0 +1,94 @@
+name: finalize public-gonol canon
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/public-gonol-finalize.trigger"
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  finalize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out validated canon branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/promote-public-gonol-canon
+          fetch-depth: 0
+
+      - name: Require immutable green evidence
+        run: |
+          test -f audit/public_gonol_reconciliation_status.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          record = json.loads(Path("audit/public_gonol_reconciliation_status.json").read_text(encoding="utf-8"))
+          assert record["schema"] == "ucns.public-gonol-reconciliation-status"
+          assert record["canon"]["complete_return_degrees"] == 720
+          assert record["canon"]["public_gonol_bridge_to_normalized_factorization"] == "hmmm"
+          assert "SPACE/ZERO" in record["canon"]["origin"]
+          assert all(value == "passed" for value in record["gates"].values())
+          PY
+
+      - name: Rebase scope on current main with an explicit merge
+        run: |
+          git fetch origin main
+          git merge --no-edit origin/main
+          git push origin HEAD:agent/promote-public-gonol-canon
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Revalidate Python, claims, and audit after main merge
+        run: |
+          python -m pip install -e .[dev]
+          python -m pytest -q
+          python audit/reconcile.py
+          python - <<'PY'
+          from pathlib import Path
+          public = Path("formal/Ucns/PublicGonol.lean").read_text(encoding="utf-8")
+          assert "origin_is_zero" in public
+          assert "one_circuit_flips_orientation" in public
+          assert "complete_return_is_720" in public
+          assert "import Ucns.Core" not in public
+          assert "UCNSObject.amod4" not in public
+
+          core = Path("formal/Ucns/Core.lean").read_text(encoding="utf-8")
+          carrier = Path("formal/Ucns/CarrierLcm.lean").read_text(encoding="utf-8")
+          theorem_n = Path("formal/Ucns/TheoremN.lean").read_text(encoding="utf-8")
+          assert "normalized recursive factorization-object algebra" in core
+          assert "does not select, move, or quotient" in core
+          assert "internal projected nMin" in carrier
+          assert "not the complete public-carrier theorem" in carrier
+          assert "not completeness for the fixed-origin public gonol" in theorem_n
+          assert "no public-gonol bridge is assumed" in theorem_n
+          PY
+
+      - name: Install pinned Lean toolchain
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Revalidate complete formal surface after main merge
+        working-directory: formal
+        run: |
+          lake exe cache get
+          lake build
+
+      - name: Mark PR reviewable and merge validated canon
+        run: |
+          gh pr ready 119 --repo The-Interdependency/ucns || true
+          gh pr comment 119 --repo The-Interdependency/ucns --body "Final validation passed on the current merged-with-main branch: public SPACE/ZERO twist origin, 720-degree complete return, full Python suite, audit reconciliation, and complete Lean build. The public-gonol bridge to normalized factorization remains explicitly hmmm."
+          gh pr merge 119 --repo The-Interdependency/ucns --merge --admin --delete-branch
