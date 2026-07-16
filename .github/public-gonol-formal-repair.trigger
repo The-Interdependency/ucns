@@ -1,2 +1,2 @@
-trigger=2026-07-16T09:20:00Z
-purpose=run-evidenced-public-gonol-formal-scope-repair-v5
+trigger=2026-07-16T10:15:00Z
+purpose=run-complete-public-gonol-canon-repair-v6
