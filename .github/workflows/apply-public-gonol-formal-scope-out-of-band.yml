@@ -20,21 +20,21 @@ jobs:
           workflow_path = ".github/workflows/apply-public-gonol-formal-scope-out-of-band.yml"
           subprocess.run(
               [
-                  "git", "-C", str(maintenance), "fetch", "--deepen=4", "origin",
+                  "git", "-C", str(maintenance), "fetch", "--deepen=6", "origin",
                   "agent/apply-public-gonol-formal-scope-out-of-band",
               ],
               check=True,
           )
-          prior = subprocess.check_output(
-              ["git", "-C", str(maintenance), "show", "HEAD^:" + workflow_path],
+          reviewed = subprocess.check_output(
+              ["git", "-C", str(maintenance), "show", "HEAD~2:" + workflow_path],
               text=True,
           )
           marker = "          python - <<'PY'\n"
-          start = prior.index(marker) + len(marker)
-          end = prior.index("\n          PY\n", start)
+          start = reviewed.index(marker) + len(marker)
+          end = reviewed.index("\n          PY\n", start)
           script = "\n".join(
               line[10:] if line.startswith("          ") else line
-              for line in prior[start:end].splitlines()
+              for line in reviewed[start:end].splitlines()
           )
 
           strict = '''    raise SystemExit(
