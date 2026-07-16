@@ -1,0 +1,160 @@
+name: dispatch public-gonol final reconciliation v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/public-gonol-final-reconciliation-v2.trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out target canon branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/promote-public-gonol-canon
+          path: target
+          fetch-depth: 0
+
+      - name: Check out reconciliation driver from main
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: main
+          path: driver
+
+      - name: Check out pinned canonical skill-lib outside target
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/skill-lib
+          ref: 05ee7aa9b7d906664d976bf1f06ea44522110489
+          path: skill-lib
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Execute reviewed structural reconciliation
+        working-directory: target
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          workflow = Path("../driver/.github/workflows/execute-public-gonol-final-reconciliation.yml").read_text(encoding="utf-8")
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          script = "\n".join(
+              line[10:] if line.startswith("          ") else line
+              for line in workflow[start:end].splitlines()
+          )
+          exec(compile(script, "<public-gonol-final-reconciliation>", "exec"), {"__name__": "__main__"})
+          PY
+
+      - name: Regenerate clean living metadata
+        working-directory: target
+        run: |
+          rm -rf .tmp-skill-lib
+          python .agents/skills/manifest/generate.py --write
+          PYTHONPATH=../skill-lib python ../skill-lib/msdmd/collect.py \
+            --root . \
+            --repo The-Interdependency/ucns \
+            --out ucns_msdmd.ts
+          if grep -q '\.tmp-skill-lib' ucns_msdmd.ts; then
+            echo "temporary checkout leaked into collection" >&2
+            exit 1
+          fi
+
+      - name: Install and validate Python package
+        working-directory: target
+        run: |
+          python -m pip install -e .[dev]
+          python -m pytest -q
+          python audit/reconcile.py
+
+      - name: Install pinned Lean toolchain
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Validate formal surface
+        working-directory: target/formal
+        run: |
+          lake exe cache get
+          lake build
+
+      - name: Write immutable green-status evidence
+        working-directory: target
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          def sha256(path: str) -> str:
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+          record = {
+              "schema": "ucns.public-gonol-reconciliation-status",
+              "version": "1.0.0",
+              "source_canon": {
+                  "repository": "The-Interdependency/a0-betatest",
+                  "commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+              },
+              "target_branch_precommit": subprocess.check_output(
+                  ["git", "rev-parse", "HEAD"], text=True
+              ).strip(),
+              "github_actions_run_id": os.environ["RUN_ID"],
+              "github_actions_run_attempt": os.environ["RUN_ATTEMPT"],
+              "gates": {
+                  "canon_forbidden_claim_scan": "passed",
+                  "python_full_suite": "passed",
+                  "audit_reconciliation": "passed",
+                  "lean_build": "passed",
+              },
+              "canon": {
+                  "origin": "SPACE/ZERO Möbius twist point, seam, fixed system origin",
+                  "complete_return_degrees": 720,
+                  "public_gonol_bridge_to_normalized_factorization": "hmmm",
+              },
+              "file_sha256": {
+                  "public_gonol_python": sha256("ucns/public_gonol.py"),
+                  "public_gonol_formal": sha256("formal/Ucns/PublicGonol.lean"),
+                  "core_formal": sha256("formal/Ucns/Core.lean"),
+                  "carrier_lcm_formal": sha256("formal/Ucns/CarrierLcm.lean"),
+                  "theorem_n_formal": sha256("formal/Ucns/TheoremN.lean"),
+                  "claims_ledger": sha256("docs/claims-ledger.md"),
+              },
+          }
+          Path("audit/public_gonol_reconciliation_status.json").write_text(
+              json.dumps(record, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Commit validated target changes and evidence
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE.md ucns_msdmd.ts \
+            formal/Ucns/Core.lean formal/Ucns/CarrierLcm.lean formal/Ucns/TheoremN.lean \
+            ucns/geometry_bridge.py ucns-theorem-n.md docs/carrier-support-pruning.md \
+            docs/unitcircle-import-assessment.md audit/obligation_ledger.md \
+            audit/public_gonol_reconciliation_status.json
+          git diff --cached --stat
+          git commit -m "fix(canon): validate public twist origin and internal lemma scope"
+          git push origin HEAD:agent/promote-public-gonol-canon
