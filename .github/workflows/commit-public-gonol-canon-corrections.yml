@@ -1,0 +1,62 @@
+name: commit public-gonol canon corrections
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/commit-public-gonol-canon-corrections.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  commit:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact pull-request branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Reuse the reviewed exact replacement script
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          workflow = Path('.github/workflows/apply-public-gonol-canon-corrections.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          script = "\n".join(
+              line[10:] if line.startswith("          ") else line
+              for line in workflow[start:end].splitlines()
+          )
+          namespace = {'__name__': '__main__'}
+          exec(compile(script, '<public-gonol-canon-corrections>', 'exec'), namespace)
+          PY
+
+      - name: Regenerate living manifest and metadata collection
+        run: |
+          python .agents/skills/manifest/generate.py --write
+          git clone --quiet https://github.com/The-Interdependency/skill-lib.git .tmp-skill-lib
+          git -C .tmp-skill-lib checkout --quiet 05ee7aa9b7d906664d976bf1f06ea44522110489
+          PYTHONPATH=.tmp-skill-lib python .tmp-skill-lib/msdmd/collect.py \
+            --root . \
+            --repo The-Interdependency/ucns \
+            --out ucns_msdmd.ts
+          rm -rf .tmp-skill-lib
+
+      - name: Commit exact corrections
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md CLAUDE.md ucns_msdmd.ts ucns/canonical.py \
+            contracts/test_identity_two_sided.py contracts/_harness.py \
+            audit/obligation_ledger.md docs/base-geometry.md depth7-frontier.md \
+            ucns-spec.md
+          git diff --cached --stat
+          git commit -m "docs(canon): root UCNS geometry in the public gonol twist"
+          git push origin "HEAD:${TARGET_BRANCH}"
