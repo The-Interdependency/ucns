@@ -101,7 +101,8 @@ def localVertex (position : Nat) : Vertex :=
     (localVertex position).val = position % arity := rfl
 
 @[simp] theorem localVertex_zero : localVertex 0 = origin := by
-  rfl
+  apply Fin.ext
+  simp [localVertex, origin]
 
 /-- One 157-step circuit returns to the same local carrier position. -/
 theorem add_arity_same_local_vertex (position : Nat) :
@@ -111,7 +112,7 @@ theorem add_arity_same_local_vertex (position : Nat) :
 
 /-- A circuit advances on the lifted path; it is never a zero-length repeat. -/
 theorem add_arity_strict (position : Nat) : position < position + arity := by
-  exact Nat.lt_add_of_pos_right arity_pos
+  omega
 
 /-- A lifted position together with the orientation carried across the twist. -/
 structure FramedPosition where
