@@ -210,6 +210,11 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
         "ucns/similarity.py": (
             "Similarity and distance metrics for Unit Circle Number embeddings",
         ),
+        "ucns/public_gonol_private.py": (
+            "def inscribe(",
+            "2.0 * math.pi",
+            "value / (2.0 * math.pi)",
+        ),
     }
     for path, phrases in forbidden.items():
         value = _text(path)
@@ -232,8 +237,10 @@ def test_public_gonol_source_origin_and_return_are_machine_pinned():
     private = _text("ucns/public_gonol_private.py")
     assert "perm = list(range(ARITY))" in private
     assert "for i in range(ARITY - 1, 1, -1)" in private
-    assert "if base == ORIGIN:" in private
-    assert "return self.perm[ORIGIN]" in private
+    assert "def inscribe(" not in private
+    assert "2.0 * math.pi" not in private
+    assert "continuous angles" in private
+    assert "360 degrees is a complete UCNS return" in private
 
     formal = _text("formal/Ucns/PublicGonol.lean")
     assert "def origin : Vertex := ⟨0, arity_pos⟩" in formal
