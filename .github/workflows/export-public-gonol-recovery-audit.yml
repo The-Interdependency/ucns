@@ -1,0 +1,37 @@
+name: export public-gonol recovery audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/export-public-gonol-recovery-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact recovery branch
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/ucns
+          ref: agent/remove-2pi-inscription-from-canon
+          path: recovery
+          fetch-depth: 1
+
+      - name: Record exact identity and remove Git metadata
+        run: |
+          git -C recovery rev-parse HEAD > recovery/AUDIT_HEAD_SHA.txt
+          rm -rf recovery/.git
+          find recovery -type f | sort > recovery/AUDIT_FILE_INVENTORY.txt
+
+      - name: Upload exact recovery source
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-gonol-recovery-source
+          path: recovery
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
