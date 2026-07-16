@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import math
-
 import pytest
 
 from ucns import (
@@ -98,16 +96,16 @@ def test_off_carrier_character_is_refused():
         encode_text_path("hi ☃")
 
 
-def test_private_transform_keeps_twist_origin_fixed():
+def test_private_transform_keeps_twist_origin_fixed_without_angle_projection():
     private = PrivateGonal.from_seed(b"public-gonol-test")
     assert private.perm[0] == ORIGIN
     assert set(private.perm[1:]) == set(range(1, ARITY))
     assert private.char_at(0) == " "
-    assert private.inscribe(0.0) == ORIGIN
+    assert not hasattr(private, "inscribe")
     advanced = private.advance(7, "deadbeef")
     assert advanced.perm[0] == ORIGIN
     assert advanced.perm == private.perm
-    assert advanced.inscribe(2.0 * math.pi) == ORIGIN
+    assert not hasattr(advanced, "inscribe")
 
 
 def test_private_transform_rejects_noncanonical_or_invalid_frames():
