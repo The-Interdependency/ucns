@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/repair-public-gonol-status-docs.yml"
-      - "tools/repair_public_gonol_status_docs.py"
+      - "tools/repair_public_gonol_status_followup.py"
 
 permissions:
   contents: write
@@ -40,9 +40,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Apply exact status and scope corrections
+      - name: Apply final status and scope corrections
         working-directory: target
-        run: python ../maintenance/tools/repair_public_gonol_status_docs.py
+        run: python ../maintenance/tools/repair_public_gonol_status_followup.py
 
       - name: Regenerate living manifest and metadata collection
         working-directory: target
@@ -59,11 +59,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add CLAUDE.md ucns_msdmd.ts ucns-spec.md depth7-frontier.md \
-            ucns-spec-frontier-v090.md audit/obligation_ledger.md \
-            docs/ucns-shape-reconciliation.md docs/pure-ucns-number-system.md \
-            docs/edcm-edcmbone-bridge-checklist.md
+            ucns-spec-frontier-v090.md
           git diff --cached --stat
-          git commit -m "docs(canon): finish public-frame theorem and bridge recovery"
+          git commit -m "docs(canon): close final theorem-status scope leaks"
           git push origin HEAD:agent/remove-2pi-inscription-from-canon
 
       - name: Run focused recovery gates on committed content
