@@ -18,6 +18,13 @@ jobs:
 
           maintenance = Path.cwd().parent / "maintenance"
           workflow_path = ".github/workflows/apply-public-gonol-formal-scope-out-of-band.yml"
+          subprocess.run(
+              [
+                  "git", "-C", str(maintenance), "fetch", "--deepen=4", "origin",
+                  "agent/apply-public-gonol-formal-scope-out-of-band",
+              ],
+              check=True,
+          )
           prior = subprocess.check_output(
               ["git", "-C", str(maintenance), "show", "HEAD^:" + workflow_path],
               text=True,
