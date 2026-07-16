@@ -72,6 +72,7 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         "formal/Ucns/PublicGonol.lean": (
             "position 0 is SPACE/ZERO",
             "complete return requires 720 degrees",
+            "does not import Ucns.Core",
             "def completeReturnDegrees : Nat := 720",
             "theorem oneCircuit_changes_orientation",
             "theorem completeReturn_restores_orientation",
@@ -79,7 +80,7 @@ def test_public_gonol_canon_is_stated_on_authoritative_surfaces():
         ),
         "formal/Ucns/Core.lean": (
             "normalized recursive factorization-object algebra",
-            "360-degree orientation-changing circuit",
+            "object-relative",
             "does not select, move, or quotient the public-gonol twist origin",
         ),
         "formal/Ucns/CarrierLcm.lean": (
@@ -125,6 +126,13 @@ def test_superseded_origin_angle_and_system_scope_claims_cannot_reappear():
         "formal/README.md": (
             "360-degree complete return",
             "public gonol is gauge-normalized",
+            "mod-4 lemmas establish",
+        ),
+        "formal/Ucns/PublicGonol.lean": (
+            "oneCircuitHalfTurns",
+            "completeReturnHalfTurns",
+            "UCNSObject.amod4",
+            "import Ucns.Core",
         ),
         "docs/pure-ucns-number-system.md": (
             "UCNS number := canonical recursive unit-circle traversal object",
@@ -158,18 +166,18 @@ def test_public_gonol_source_origin_and_return_are_machine_pinned():
     assert 'PUBLIC_GONOL_SHA256 = "20d6ed51fdff5505ed9696c38d6dcc82f982eba166d9b712bee68c4521b751ac"' in source
 
     private = _text("ucns/public_gonol_private.py")
-    assert "perm = list(range(n))" in private
-    assert "for i in range(n - 1, 1, -1)" in private
-    assert "if base == 0:" in private
-    assert "return self.perm[0]" in private
+    assert "perm = list(range(ARITY))" in private
+    assert "for i in range(ARITY - 1, 1, -1)" in private
+    assert "if base == ORIGIN:" in private
+    assert "return self.perm[ORIGIN]" in private
 
     formal = _text("formal/Ucns/PublicGonol.lean")
     assert "def origin : Vertex := ⟨0, arity_pos⟩" in formal
     assert "def oneCircuitDegrees : Nat := 360" in formal
     assert "def completeReturnDegrees : Nat := 720" in formal
-    assert "def completeReturnHalfTurns : Rat := 4" in formal
-    assert "UCNSObject.amod4 oneCircuitHalfTurns ≠ 0" in formal
-    assert "UCNSObject.amod4 completeReturnHalfTurns = 0" in formal
+    assert "oneCircuitHalfTurns" not in formal
+    assert "completeReturnHalfTurns" not in formal
+    assert "UCNSObject.amod4" not in formal
 
 
 def test_formal_theorem_families_are_scoped_away_from_unproved_public_bridge():
