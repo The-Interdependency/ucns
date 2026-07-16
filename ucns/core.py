@@ -168,3 +168,15 @@ class UCN:
 
     def __hash__(self) -> int:
         return hash(round(self._theta, 9))
+
+    def __float__(self) -> float:
+        """Return the stored local angle for backward compatibility."""
+
+        return self._theta
+
+    def __lt__(self, other: "UCN") -> bool:
+        """Order legacy coordinates by their normalized local angle."""
+
+        if not isinstance(other, UCN):
+            return NotImplemented
+        return self._theta < other._theta
