@@ -102,6 +102,34 @@ Pruning removes only zero-support absent cells. Collapse returns Structural Null
 only when no positive-support cells survive after an explicitly supplied
 structural erasure.
 
+## Preservation of unresolved choice
+
+Where more than one interpretation, representation, policy, or construction
+remains admissible, UCNS preserves the capacity to choose among them.
+
+Until canon explicitly selects or excludes an option:
+
+- enough information must remain to recover every still-admissible option;
+- temporary computational choices must be explicit policies, strategies,
+  lenses, modes, or projections rather than being conflated with the object;
+- defaults remain replaceable and do not acquire canonical standing merely by
+  being convenient;
+- irreversible sorting, deduplication, flattening, merging, coercion, or
+  normalization is forbidden when it destroys distinctions required by another
+  admissible option;
+- operations that require an unresolved choice fail closed unless the choice is
+  supplied;
+- provenance records which choice was applied and what information it forgot.
+
+Choice preservation does not keep disproven options alive. An option may be
+removed by explicit canon, invariant violation, proof of recoverability, or an
+explicitly scoped user decision whose information loss is recorded.
+
+The current cell tuple preserves order, multiplicity, and left/right sidedness
+as evidence. It does **not** yet declare that cells are canonically a sequence
+rather than a set, multiset, graph, tree, or another structure. See
+[`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md).
+
 ## Current implementation boundary
 
 Implemented and test-backed:
@@ -111,7 +139,8 @@ Implemented and test-backed:
 3. structural-cell support representation and fail-closed zero-test;
 4. aggregate cell support `W`;
 5. Cartesian carrier pairing and the aggregate-support multiplication law;
-6. cell pruning and complete cell-support collapse.
+6. cell pruning and complete cell-support collapse;
+7. preservation of unresolved cell order, multiplicity, and operand sidedness.
 
 Still unresolved and not promoted:
 
@@ -143,4 +172,5 @@ The following are removed from formal canon:
 
 hmmm: cell support and aggregate support now have executable boundaries; the
 meaning of retained ordering, receipts, metadata, recursion, equivalence, `M`,
-and `B` remains deliberately open.
+and `B` remains deliberately open, with their option space preserved rather
+than flattened.
