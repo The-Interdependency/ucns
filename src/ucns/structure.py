@@ -2,7 +2,7 @@
 # id: structural_cell_support_floor
 #   module_name: structure
 #   module_kind: schema
-#   summary: defines canonical cells, non-null carriers, aggregate support, pairing, pruning, and complete collapse
+#   summary: defines canonical cells, non-null carriers, aggregate support, pairing, pruning, collapse, and choice-preserving structural evidence
 #   owner: Erin Spencer
 #   public_surface: Cell, Carrier, Structure, make_carrier, support_weight, pair, prune, collapse
 #   internal_surface: _has_distinction, _cells_from
@@ -16,7 +16,7 @@
 #   rollback: remove exports and this module
 #   requires: directed_carrier_floor
 #   since: 2026-07-21
-#   unresolved: domain-specific mu assignment, receipts, metadata, canonical structural equivalence, M, B
+#   unresolved: domain-specific mu assignment, receipts, metadata, canonical structural equivalence, choice policy type, M, B
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -62,6 +62,12 @@
 #   class: doctrine
 #   since: 2026-07-21
 #
+# id: unresolved_structure_choices_are_preserved
+#   given: present cells retain order, multiplicity, or left/right operand distinctions while canonical structural interpretation remains unresolved
+#   then: make_carrier, prune, and pair preserve those distinctions without sorting, deduplicating, flattening, merging, or overwriting them
+#   class: doctrine
+#   since: 2026-07-21
+#
 # id: collapse_requires_complete_structural_absence
 #   given: optional erasure is applied to a raw cell collection
 #   then: collapse returns STRUCTURAL_NULL exactly when no positive-support cells survive
@@ -78,11 +84,13 @@ Chapter 1 without inventing the still-open measuring instruments:
 * canonical non-null carrier construction;
 * aggregate support ``W`` as the sum of present-cell supports;
 * Cartesian pairing with multiplicative paired-cell support;
-* pruning and complete collapse.
+* pruning and complete collapse;
+* evidence-preserving retention of unresolved order, multiplicity, and sidedness.
 
-It does not define a product character ``M``, faithful breadth ``B``, receipts,
-metadata semantics, canonical structural equivalence, typed dispatch, or a
-complete ``UCNSObject``.
+The tuple representation preserves available choices; it does not yet canonize
+sequence semantics. It does not define a product character ``M``, faithful
+breadth ``B``, receipts, metadata semantics, canonical structural equivalence,
+typed dispatch, or a complete ``UCNSObject``.
 """
 
 from __future__ import annotations
@@ -155,6 +163,10 @@ class Carrier:
     Direct construction is fail-closed: an empty carrier or a carrier retaining
     an absent cell is invalid. Use :func:`make_carrier` for raw potential cells;
     it prunes absent cells and returns ``STRUCTURAL_NULL`` when nothing remains.
+
+    ``cells`` preserves order and multiplicity as evidence. This storage choice
+    does not declare whether canonical structural semantics are sequence, set,
+    multiset, graph, tree, or another interpretation.
     """
 
     cells: tuple[Cell, ...]
@@ -177,7 +189,11 @@ RawStructure: TypeAlias = Union[_StructuralNull, Carrier, Iterable[Cell]]
 
 
 def make_carrier(cells: Iterable[Cell]) -> Structure:
-    """Prune absent cells and return either a canonical Carrier or Structural Null."""
+    """Prune absent cells without sorting or deduplication.
+
+    Present-cell order and multiplicity are retained so future explicit
+    structural policies can choose among still-admissible interpretations.
+    """
 
     present = tuple(cell for cell in cells if cell.is_present)
     return STRUCTURAL_NULL if not present else Carrier(present)
@@ -194,7 +210,7 @@ def support_weight(obj: Structure) -> float:
 
 
 def prune(raw: RawStructure) -> Structure:
-    """Remove only zero-support absent cells, preserving present-cell order."""
+    """Remove only zero-support absent cells, preserving order and duplicates."""
 
     if raw is STRUCTURAL_NULL:
         return STRUCTURAL_NULL
@@ -204,7 +220,7 @@ def prune(raw: RawStructure) -> Structure:
 
 
 def pair(left: Structure, right: Structure) -> Structure:
-    """Cartesian carrier pairing with multiplicative paired-cell support."""
+    """Cartesian pairing preserving operand sidedness and encounter order."""
 
     if left is STRUCTURAL_NULL or right is STRUCTURAL_NULL:
         return STRUCTURAL_NULL
