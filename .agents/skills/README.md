@@ -1,25 +1,32 @@
-# Repo-local skill-lib contract
+# Repo-local skill-lib materialization
 
 Canonical source: `The-Interdependency/skill-lib`
 
 Pinned source commit:
 `fa6e6200bc274657de2334754bbbf98844ef6541`
 
-Applied skills:
+Vendored verbatim:
 
-- `msdmd` — line-oriented self-declared metadata blocks and visible gaps;
-- `meta-module-build` — source-owned `MODULE_BUILD` manifests before expansion;
-- `test-build` — source-owned `CONTRACTS`, test-owned `CHECKS`, and no-exec graph
-  reconciliation;
-- `canon` and `domain-claims` — formal terms must state scope, exclusions, and
-  standing before they become control surfaces;
-- `interdependent-work-graph` — the UCNS and skill-lib commits and authority
-  roles are pinned in `STACK_MANIFEST.json`.
+- `msdmd/`
+- `meta-module-build/`
+- `test-build/`
+- `canon/`
+- `domain-claims/`
+- `interdependent-work-graph/`
+- shared `doctrine/` required by those skills
 
-The repository currently consumes the pinned doctrine through exact commit
-identity and enforces its operative block contracts with
-`tools/verify_skill_lib_contracts.py`.
+Repo-local additions are allowed beside the canonical assets. UCNS adds
+`tools/verify_skill_lib_contracts.py` as its bounded executable evidence
+reconciler; it does not replace or modify the canonical skill files.
 
-hmmm: verbatim repo-local vendoring or a gitlink materialization of the pinned
-skill directories remains a separate supply-chain step; this build does not
-pretend the local bounded checker is the canonical universal parser.
+Drift gate:
+
+```text
+python <skill-lib>/tools/check_consumer_drift.py . \
+  --canon-root <skill-lib> \
+  --sha fa6e6200bc274657de2334754bbbf98844ef6541 \
+  --strict-sha --require-vendored
+```
+
+hmmm: future skill-lib updates require an explicit new pinned commit and
+a fresh drift-clean materialization; no floating update is authorized.

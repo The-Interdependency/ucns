@@ -37,7 +37,12 @@
     "aggregate support W",
     "nontrivial product character M with separation witnesses",
     "faithful breadth evaluator B",
-    "canonical structural equivalence",
-    "verbatim repo-local skill-lib materialization"
-  ]
+    "canonical structural equivalence"
+  ],
+  "skill_lib_materialization": {
+    "source_commit": "fa6e6200bc274657de2334754bbbf98844ef6541",
+    "path": ".agents/skills",
+    "mode": "verbatim canonical subset",
+    "drift_gate": "strict"
+  }
 }

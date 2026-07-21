@@ -15,7 +15,7 @@
 #   rollout: required CI gate
 #   rollback: remove workflow invocation and script
 #   since: 2026-07-21
-#   unresolved: exact vendored skill-lib runner replacement
+#   unresolved: mutation-level verification beyond planted graph gaps
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
