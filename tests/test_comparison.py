@@ -50,6 +50,10 @@ def test_explicit_comparison_policies() -> None:
     assert ulp_comparison_policy(1).matches(
         1.0, nextafter(1.0, 2.0)
     )
+    assert ulp_comparison_policy(0).matches(-0.0, 0.0)
+    assert not ulp_comparison_policy(
+        0, signed_zero_equal=False
+    ).matches(-0.0, 0.0)
     intervals = interval_overlap_policy()
     assert intervals.matches((0.0, 1.0), (0.5, 2.0))
     assert not intervals.matches((0.0, 1.0), (2.0, 3.0))
