@@ -2,7 +2,7 @@
 # id: explicit_comparison_policy_layer
 #   module_name: comparison
 #   module_kind: instrument
-#   summary: defines explicit numerical and structural comparison policies so evaluator laws never rely on hidden tolerance
+#   summary: defines versioned comparison policies with explicit implementation identity so evaluator laws never rely on hidden tolerance or callable inference
 #   owner: Erin Spencer
 #   public_surface: ComparisonMode, ComparisonPolicy, ComparisonRegistry, exact_comparison_policy, absolute_comparison_policy, relative_comparison_policy, combined_comparison_policy, ulp_comparison_policy, interval_overlap_policy, custom_comparison_policy
 #   internal_surface: _numeric_pair, _ordered_float
@@ -11,7 +11,7 @@
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_comparison.py, tests/test_laboratory.py
+#   tests: tests/test_comparison.py, tests/test_laboratory.py, tests/test_experiments.py
 #   rollout: explicit candidate-research comparison infrastructure only
 #   rollback: remove comparison exports and restore no implicit tolerance
 #   requires: structural_choice_policy_layer
@@ -36,6 +36,12 @@
 #   given: a comparison policy name is already registered
 #   then: replacement fails unless replace is explicitly true
 #   class: safety
+#   since: 2026-07-21
+#
+# id: custom_comparison_identity_is_explicit
+#   given: a custom comparison implementation is constructed or pinned in an experiment
+#   then: a nonempty code reference distinguishes the implementation independently of name, version, and parameters
+#   class: evidence
 #   since: 2026-07-21
 # === END CONTRACTS ===
 
@@ -67,12 +73,19 @@ class ComparisonPolicy:
     mode: ComparisonMode
     comparator: Comparator
     version: str
+    code_reference: str
     description: str = ""
     parameters: tuple[tuple[str, str], ...] = ()
 
     def __post_init__(self) -> None:
-        if not self.name.strip() or not self.version.strip():
-            raise ValueError("comparison policy name and version must be nonempty")
+        if (
+            not self.name.strip()
+            or not self.version.strip()
+            or not self.code_reference.strip()
+        ):
+            raise ValueError(
+                "comparison policy name, version, and code reference must be nonempty"
+            )
         object.__setattr__(self, "mode", ComparisonMode(self.mode))
         if not callable(self.comparator):
             raise TypeError("comparison policy comparator must be callable")
@@ -123,7 +136,12 @@ def exact_comparison_policy(
         return result if isinstance(result, bool) else False
 
     return ComparisonPolicy(
-        name, ComparisonMode.EXACT, comparator, version, "exact Python equality"
+        name,
+        ComparisonMode.EXACT,
+        comparator,
+        version,
+        "ucns.comparison:exact_comparison_policy",
+        "exact Python equality",
     )
 
 
@@ -148,6 +166,7 @@ def absolute_comparison_policy(
         ComparisonMode.ABSOLUTE,
         comparator,
         version,
+        "ucns.comparison:absolute_comparison_policy",
         parameters=(("tolerance", repr(tolerance)),),
     )
 
@@ -173,6 +192,7 @@ def relative_comparison_policy(
         ComparisonMode.RELATIVE,
         comparator,
         version,
+        "ucns.comparison:relative_comparison_policy",
         parameters=(("tolerance", repr(tolerance)),),
     )
 
@@ -203,6 +223,7 @@ def combined_comparison_policy(
         ComparisonMode.COMBINED,
         comparator,
         version,
+        "ucns.comparison:combined_comparison_policy",
         parameters=(("rel_tol", repr(rel_tol)), ("abs_tol", repr(abs_tol))),
     )
 
@@ -241,6 +262,7 @@ def ulp_comparison_policy(
         ComparisonMode.ULP,
         comparator,
         version,
+        "ucns.comparison:ulp_comparison_policy",
         parameters=(
             ("max_ulps", str(max_ulps)),
             ("signed_zero_equal", str(signed_zero_equal).lower()),
@@ -265,7 +287,11 @@ def interval_overlap_policy(
         return max(left_lower, right_lower) <= min(left_upper, right_upper)
 
     return ComparisonPolicy(
-        name, ComparisonMode.INTERVAL_OVERLAP, comparator, version
+        name,
+        ComparisonMode.INTERVAL_OVERLAP,
+        comparator,
+        version,
+        "ucns.comparison:interval_overlap_policy",
     )
 
 
@@ -274,6 +300,7 @@ def custom_comparison_policy(
     comparator: Comparator,
     *,
     version: str,
+    code_reference: str,
     description: str = "",
     parameters: tuple[tuple[str, str], ...] = (),
 ) -> ComparisonPolicy:
@@ -282,6 +309,7 @@ def custom_comparison_policy(
         ComparisonMode.CUSTOM,
         comparator,
         version,
+        code_reference,
         description,
         parameters,
     )
