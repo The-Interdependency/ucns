@@ -55,6 +55,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_unresolved_choice_preservation
+#   proves: unresolved_structure_choices_are_preserved
+#   call: self::test_unresolved_choice_preservation
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # id: check_complete_collapse
 #   proves: collapse_requires_complete_structural_absence
 #   call: self::test_complete_collapse
@@ -165,6 +173,45 @@ def test_pruning_rule() -> None:
     result = prune((Cell(mu=0.0), first, Cell(mu=0.0), second))
     assert isinstance(result, Carrier)
     assert result.cells == (first, second)
+
+
+def test_unresolved_choice_preservation() -> None:
+    first = Cell(coordinate="first", payload="same", mu=1.0)
+    duplicate = Cell(coordinate="first", payload="same", mu=1.0)
+    second = Cell(coordinate="second", payload="same", mu=1.0)
+    retained = (second, first, duplicate)
+
+    carrier = make_carrier(retained)
+    assert isinstance(carrier, Carrier)
+    assert carrier.cells == retained
+    assert len(carrier.cells) == 3
+
+    pruned = prune((Cell(mu=0.0), *retained, Cell(mu=0.0)))
+    assert isinstance(pruned, Carrier)
+    assert pruned.cells == retained
+
+    left = Carrier(
+        (
+            Cell(coordinate="L1", payload="left-1", mu=1.0),
+            Cell(coordinate="L2", payload="left-2", mu=1.0),
+        )
+    )
+    right = Carrier(
+        (
+            Cell(coordinate="R1", payload="right-1", mu=1.0),
+            Cell(coordinate="R2", payload="right-2", mu=1.0),
+        )
+    )
+    product = pair(left, right)
+    assert isinstance(product, Carrier)
+    assert tuple(cell.coordinate for cell in product.cells) == (
+        ("L1", "R1"),
+        ("L1", "R2"),
+        ("L2", "R1"),
+        ("L2", "R2"),
+    )
+    assert product.cells[0].payload == ("left-1", "right-1")
+    assert product.cells[0].coordinate != ("R1", "L1")
 
 
 def test_complete_collapse() -> None:
