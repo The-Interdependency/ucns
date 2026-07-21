@@ -1,35 +1,36 @@
 # === MODULE_BUILD ===
-# id: carrier_floor_public_surface
+# id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports only the ratified carrier-floor primitives
+#   summary: exports only the ratified carrier and structural-support foundations
 #   owner: Erin Spencer
-#   public_surface: carrier-floor names listed in __all__
+#   public_surface: carrier and structure names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_public_surface.py
-#   rollout: importable prototype only
-#   rollback: remove exports
-#   requires: directed_carrier_floor
+#   tests: tests/test_public_surface.py, tests/test_structure.py
+#   rollout: importable foundations prototype only
+#   rollback: remove structure exports while preserving carrier floor
+#   requires: directed_carrier_floor, structural_cell_support_floor
 #   since: 2026-07-21
-#   unresolved: full UCNS object public surface
+#   unresolved: receipts, metadata, canonical structural equivalence, M, B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
-# id: public_surface_exposes_only_carrier_floor
+# id: public_surface_exposes_only_ratified_foundations
 #   given: a consumer imports ucns
-#   then: only the ratified carrier-floor API is exported and no factorization or theorem surface is implied
+#   then: only the ratified carrier and structural-support foundations are exported; no M, B, factorization, or theorem surface is implied
 #   class: safety
 #   since: 2026-07-21
 # === END CONTRACTS ===
 
-"""UCNS definition-first carrier floor.
+"""UCNS definition-first carrier and structural-support foundations.
 
-No full ``UCNSObject`` or theorem-bearing arithmetic is exported yet.
+No complete ``UCNSObject``, product character, faithful-breadth evaluator,
+theorem-bearing arithmetic, or downstream-consumer promise is exported yet.
 """
 
 from .carrier import (
@@ -48,6 +49,16 @@ from .carrier import (
     same_lifted_position,
     same_visible_position,
 )
+from .structure import (
+    Carrier,
+    Cell,
+    Structure,
+    collapse,
+    make_carrier,
+    pair,
+    prune,
+    support_weight,
+)
 
 __all__ = [
     "LIFTED_PERIOD",
@@ -64,4 +75,12 @@ __all__ = [
     "radius_from_breadth",
     "same_lifted_position",
     "same_visible_position",
+    "Carrier",
+    "Cell",
+    "Structure",
+    "collapse",
+    "make_carrier",
+    "pair",
+    "prune",
+    "support_weight",
 ]
