@@ -76,6 +76,19 @@ def test_explicit_subject_adapters() -> None:
     first = SubjectRecord.create("first", {"b": 2, "a": 1}, adapter)
     second = SubjectRecord.create("second", {"a": 1, "b": 2}, adapter)
     assert first.digest == second.digest
+
+    author = AuthorshipRecord("witness-author", "Erin", "multiplicity fixture")
+    duplicate_case = WitnessCase(
+        "duplicate-occurrence",
+        (first.digest, first.digest),
+        "the same content occurs twice",
+        WitnessOrigin.HAND_AUTHORED,
+        CorpusPartition.DEVELOPMENT,
+        author,
+    )
+    corpus = WitnessCorpus("duplicates", "1", (first,), (duplicate_case,))
+    assert corpus.cases[0].subject_digests == (first.digest, first.digest)
+
     with pytest.raises(TypeError):
         SubjectRecord.create("bad", object(), adapter)
 
