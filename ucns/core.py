@@ -97,12 +97,11 @@ class Cell:
         )
 
     def support(self) -> float:
-        if self.mu <= 0.0:
-            return 0.0
-        # even algebraic-zero payload keeps support if other structure survives
-        if self.has_distinction() or self.payload is not None:
-            return max(0.0, float(self.mu))
-        return 0.0
+        # Chapter 1.4 / 1.5: the zero-test of μ determines whether a cell exists.
+        # Positive μ means the cell is present and contributes that weight to W,
+        # independent of whether payload/coordinate/etc. are populated.
+        # Algebraic zero in the payload does not force μ = 0.
+        return max(0.0, float(self.mu))
 
 
 # ---------------------------------------------------------------------------
