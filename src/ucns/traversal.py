@@ -2,7 +2,7 @@
 # id: cycle_safe_traversal_policy
 #   module_name: traversal
 #   module_kind: instrument
-#   summary: traverses recursive evidence under explicit cycle, identity, depth, node, and fixed-point policies
+#   summary: traverses recursive evidence under explicit cycle, shared-reference, identity, depth, node, and fixed-point policies
 #   owner: Erin Spencer
 #   public_surface: CycleMode, TraversalBudget, TraversalPolicy, Visit, ReferenceReceipt, TruncationReceipt, FixedPointReceipt, TraversalResult, CycleDetectedError, traverse
 #   internal_surface: none
@@ -16,7 +16,7 @@
 #   rollback: remove traversal exports; recursive candidates fail closed
 #   requires: retained_structure_envelope
 #   since: 2026-07-21
-#   unresolved: canonical recursive identity and fixed-point semantics
+#   unresolved: canonical recursive identity, sharing, and fixed-point semantics
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -24,6 +24,12 @@
 #   given: retained recursive evidence repeats an identity on the active path
 #   then: traversal rejects, references, depth-unfolds, or invokes a fixed-point resolver only as explicitly selected
 #   class: safety
+#   since: 2026-07-21
+#
+# id: shared_identity_references_are_retained
+#   given: reference traversal encounters an identity previously visited on another path
+#   then: traversal emits a ReferenceReceipt to the first path rather than double-counting or silently discarding shared structure
+#   class: evidence
 #   since: 2026-07-21
 #
 # id: traversal_budgets_emit_receipts
@@ -180,7 +186,8 @@ def traverse(
             )
             return
 
-        if node_id in ancestry:
+        is_cycle = node_id in ancestry
+        if is_cycle:
             first_path = first_paths.get(node_id, (node_id,))
             if policy.cycle_mode is CycleMode.REJECT:
                 raise CycleDetectedError(f"cycle detected at {node_id!r}")
@@ -203,6 +210,14 @@ def traverse(
                     )
                 )
                 return
+        elif (
+            node_id in first_paths
+            and policy.cycle_mode is CycleMode.REFERENCE
+        ):
+            references.append(
+                ReferenceReceipt(node_id, first_paths[node_id], path)
+            )
+            return
 
         first_paths.setdefault(node_id, path)
         visits.append(Visit(node_id, node, depth, path))
