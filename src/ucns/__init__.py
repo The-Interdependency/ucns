@@ -4,17 +4,17 @@
 #   module_kind: schema
 #   summary: exports ratified carrier/support foundations plus option-preserving policy, envelope, and evaluator-lab infrastructure
 #   owner: Erin Spencer
-#   public_surface: carrier, structure, policy, envelope, and laboratory names listed in __all__
+#   public_surface: carrier, structure, policy, envelope, laboratory, and product-character candidate names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_public_surface.py, tests/test_structure.py, tests/test_policy.py, tests/test_envelope.py, tests/test_laboratory.py
+#   tests: tests/test_public_surface.py, tests/test_structure.py, tests/test_policy.py, tests/test_envelope.py, tests/test_laboratory.py, tests/test_product_character_candidates.py
 #   rollout: importable foundations and candidate-research infrastructure only
-#   rollback: remove policy, envelope, and laboratory exports while preserving carrier/support floors
-#   requires: directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, evaluator_candidate_laboratory
+#   rollback: remove policy, envelope, laboratory, and candidate exports while preserving carrier/support floors
+#   requires: directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, evaluator_candidate_laboratory, product_character_candidates
 #   since: 2026-07-21
 #   unresolved: canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
@@ -100,6 +100,13 @@ from .laboratory import (
     same_reference_different_candidate_law,
     sensitivity_law,
 )
+from .product_character_candidates import (
+    PRODUCT_OF_SUPPORTS_CANDIDATE,
+    product_of_supports,
+    same_M_different_W_witness,
+    same_W_different_M_witness,
+    separation_suite_for_product_of_supports,
+)
 
 __all__ = [
     "LIFTED_PERIOD",
@@ -159,4 +166,9 @@ __all__ = [
     "same_candidate_different_reference_law",
     "same_reference_different_candidate_law",
     "sensitivity_law",
+    "PRODUCT_OF_SUPPORTS_CANDIDATE",
+    "product_of_supports",
+    "same_M_different_W_witness",
+    "same_W_different_M_witness",
+    "separation_suite_for_product_of_supports",
 ]
