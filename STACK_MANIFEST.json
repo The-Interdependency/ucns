@@ -1,13 +1,13 @@
 {
   "schema": "interdependent-work-graph/v1",
   "generated_at": "2026-07-21",
-  "work": "ucns-option-preserving-structural-instrument-lab",
+  "work": "ucns-reproducible-candidate-research-pipeline",
   "participants": [
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "979a4f1dbb595bd8424ea131e9435426f4cc2d54",
-      "authority_role": "current main carrier/support authority and option-preservation boundary",
-      "non_transfer": "archived tests, theorem language, experimental branch status, and candidate registration do not confer mathematical canon"
+      "commit": "0a6d415d8740e91647fa320df7dfd92fe896b5a3",
+      "authority_role": "current main carrier/support/policy/envelope/laboratory authority",
+      "non_transfer": "archived tests, experimental status, candidate registration, fixture success, and reviewable decision packets do not confer mathematical canon"
     },
     {
       "repository": "The-Interdependency/skill-lib",
@@ -24,7 +24,13 @@
     "formal_carrier": "directed twofold branched angular cover",
     "lifted_period_degrees": 720,
     "visible_period_degrees": 360,
-    "choice_rule": "preserve the capacity to choose among still-admissible options"
+    "choice_rule": "preserve the capacity to choose among still-admissible options",
+    "evidence_statuses": [
+      "represented evidence",
+      "candidate-measured evidence",
+      "canonically measured evidence"
+    ],
+    "current_maximum_status": "candidate-measured evidence"
   },
   "grok_recovery": {
     "source_branch": "ucns-Grok",
@@ -40,8 +46,8 @@
     ],
     "reconstructed_not_copied": true,
     "rejected": [
-      "current Grok product character M",
-      "current Grok faithful-breadth heuristic B",
+      "former Grok product character M",
+      "former Grok faithful-breadth heuristic B",
       "residual m_contrib parameter",
       "representable empty or all-absent Carrier values",
       "0.1.0-foundations package version",
@@ -49,61 +55,105 @@
       "claims that mu, M, or B are fully discharged"
     ]
   },
-  "option_preserving_infrastructure": {
-    "policy_layer": {
+  "research_pipeline": {
+    "comparison_policies": {
       "status": "implemented and test-backed candidate infrastructure",
       "surfaces": [
-        "StructurePolicy",
-        "PolicyRegistry",
-        "Projection",
-        "InformationLoss",
-        "caller-keyed ordered, multiset, and set views"
+        "exact",
+        "absolute",
+        "relative",
+        "combined relative and absolute",
+        "units in last place",
+        "interval overlap",
+        "custom domain comparator"
       ],
-      "non_transfer": "registration or use does not make a policy canonical"
+      "non_transfer": "a comparison policy determines declared output matching only and is not structural equivalence"
     },
-    "retained_envelope": {
-      "status": "implemented and test-backed evidence container",
+    "recursive_traversal": {
+      "status": "implemented and test-backed bounded traversal infrastructure",
       "surfaces": [
-        "RetainedLayer",
-        "RetainedStructure",
-        "explicit presence",
-        "repeated ordered layer occurrences",
-        "measured, unmeasured, or excluded contribution status"
+        "caller-defined identity",
+        "caller-defined child enumeration",
+        "reject cycles",
+        "reference receipts",
+        "depth-bounded unfolding",
+        "explicit fixed-point resolver",
+        "node and depth truncation receipts"
       ],
-      "non_transfer": "retained layers do not enter cell-only W or define M or B"
+      "non_transfer": "traversal behavior does not establish canonical recursive identity or measurement"
     },
-    "evaluator_laboratory": {
-      "status": "implemented and test-backed candidate comparison infrastructure",
+    "retained_layer_pairing": {
+      "status": "implemented and test-backed candidate composition infrastructure",
       "surfaces": [
-        "EvaluatorCandidate",
-        "EvaluatorRegistry",
-        "LawSuite",
-        "Witness",
-        "EvaluationReport",
-        "CandidateComparison",
-        "separation law builders"
+        "occurrence-addressed EnvelopePairPlan",
+        "concatenate",
+        "Cartesian product",
+        "positional zip",
+        "preserve sides",
+        "left and right selection",
+        "exclusion",
+        "custom policies",
+        "explicit unmatched-layer modes"
       ],
-      "non_transfer": "passing laws or candidate agreement does not select a canonical evaluator"
+      "non_transfer": "result layers remain unmeasured and no retained-layer product is canonical"
+    },
+    "reproducible_experiments": {
+      "status": "implemented and test-backed evidence infrastructure",
+      "surfaces": [
+        "named versioned ContentAdapter",
+        "content-addressed SubjectRecord",
+        "development and holdout WitnessCorpus partitions",
+        "candidate and policy digests",
+        "complete ExperimentManifest",
+        "mutation and metamorphic cases",
+        "counterexample minimization",
+        "reproduction checks",
+        "separate candidate, witness, and decision authorship",
+        "CandidateDecisionPacket"
+      ],
+      "non_transfer": "reviewable packets and reproduced results are not self-canonizing"
+    },
+    "first_candidate_packs": {
+      "status": "implemented and test-backed noncanonical candidates",
+      "equivalence": [
+        "exact adapter-defined evidence digest",
+        "policy-projection digest",
+        "selected-layer digest"
+      ],
+      "product_character": [
+        "geometric mean of positive cell supports",
+        "maximum positive cell support",
+        "minimum positive cell support"
+      ],
+      "faithful_breadth": [
+        "cell log support",
+        "cell detail",
+        "retained-layer presence"
+      ],
+      "non_transfer": "candidate multiplicativity or fixture success does not establish canonical M, B, or equivalence"
     }
   },
   "materialization_order": [
     "establish coordinate-free Structural Null and directed carrier floor",
-    "establish fail-closed structural cells and aggregate cell support",
-    "establish Cartesian pairing, pruning, and complete cell-support collapse",
-    "preserve unresolved choices through explicit policy projections",
-    "retain receipts, metadata, relations, recursion, provenance, and state without extending W",
-    "register and compare equivalence, M, and B candidates under declared law suites",
-    "canonize instruments only through explicit evidence-bearing selection",
+    "establish fail-closed cells, W, Cartesian pairing, pruning, and collapse",
+    "preserve unresolved choices and retained evidence",
+    "require explicit comparison and cycle-safe traversal policies",
+    "compose retained layers only through explicit plans",
+    "content-address witness corpora and complete experiment manifests",
+    "separate development, holdout, candidate, witness, and decision roles",
+    "pressure competing equivalence, M, and B candidate packs",
+    "canonize only through independent evidence-bearing decision",
     "recover arithmetic only after canonical instruments exist"
   ],
   "hmmm": [
     "domain-specific mu assignment",
-    "measurement contributions beyond the cell-only structure",
-    "graph and tree structural policies",
+    "canonical retained-layer measurement contributions",
+    "external sealed holdout custody",
+    "independent candidate calibration and review",
+    "canonical recursive identity, sharing, and fixed-point laws",
     "canonical structural equivalence",
-    "nontrivial product character M with valid multiplicativity and separation witnesses",
-    "faithful breadth evaluator B",
-    "candidate promotion and rollback protocol",
+    "canonical product character M",
+    "canonical faithful breadth B",
     "typed payload dispatch and complete UCNS object"
   ],
   "skill_lib_materialization": {
