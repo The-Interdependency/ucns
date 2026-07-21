@@ -213,10 +213,16 @@ def _ordered_float(value: float) -> int:
 
 
 def ulp_comparison_policy(
-    max_ulps: int, *, name: str = "ulp", version: str = "1"
+    max_ulps: int,
+    *,
+    signed_zero_equal: bool = True,
+    name: str = "ulp",
+    version: str = "1",
 ) -> ComparisonPolicy:
     if not isinstance(max_ulps, int) or max_ulps < 0:
         raise ValueError("max_ulps must be a nonnegative integer")
+    if not isinstance(signed_zero_equal, bool):
+        raise TypeError("signed_zero_equal must be bool")
     exact = exact_comparison_policy()
 
     def comparator(left: Any, right: Any) -> bool:
@@ -226,6 +232,8 @@ def ulp_comparison_policy(
         first, second = pair
         if not isfinite(first) or not isfinite(second):
             return first == second
+        if signed_zero_equal and first == second:
+            return True
         return abs(_ordered_float(first) - _ordered_float(second)) <= max_ulps
 
     return ComparisonPolicy(
@@ -233,7 +241,10 @@ def ulp_comparison_policy(
         ComparisonMode.ULP,
         comparator,
         version,
-        parameters=(("max_ulps", str(max_ulps)),),
+        parameters=(
+            ("max_ulps", str(max_ulps)),
+            ("signed_zero_equal", str(signed_zero_equal).lower()),
+        ),
     )
 
 
