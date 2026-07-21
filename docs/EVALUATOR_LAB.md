@@ -1,62 +1,111 @@
 # UCNS evaluator laboratory
 
-**Status:** candidate-evaluation infrastructure; no canonical evaluator selected.  
+**Status:** reproducible candidate-evaluation infrastructure; no canonical evaluator selected.  
 **Consumers:** internal UCNS research and validation only.
 
 ## Purpose
 
-Canonical structural equivalence, product character `M`, and faithful breadth `B` remain unresolved. The evaluator laboratory allows multiple candidates to coexist, run against declared laws, expose disagreements, and retain their witness evidence without appointing a default winner.
+Canonical structural equivalence, product character `M`, and faithful breadth
+`B` remain unresolved. The evaluator laboratory lets multiple versioned
+candidates coexist, run against declared laws, expose disagreements, and retain
+witness evidence without appointing a default winner.
 
-## Required objects
+## Candidate identity
 
-- `EvaluatorKind`: equivalence, product character, faithful breadth, or an explicitly named future kind.
-- `EvaluatorCandidate`: name, kind, callable evaluator, declared policy dependencies, and status notes.
-- `EvaluatorRegistry`: stores multiple candidates per kind and has no implicit default.
-- `Witness`: retained test subjects and the relation or law they are intended to pressure.
-- `Law`: a named check applied to one candidate.
-- `LawResult`: pass/fail/error plus evidence and explanatory detail.
-- `LawSuite`: an ordered collection of laws.
-- `EvaluationReport`: all law results for one candidate.
-- `CandidateComparison`: candidate outputs for one subject and whether they disagree.
-- `compare_candidates()`: evaluates candidates side by side without ranking them.
+Every `EvaluatorCandidate` records:
+
+- name and evaluator kind;
+- version;
+- explicit code reference;
+- declared scope;
+- policy dependencies;
+- notes.
+
+Callable identity is not inferred from memory address or bytecode.
 
 ## Registry boundary
 
-Candidate names are unique within an evaluator kind. Replacing a candidate requires an explicit `replace = true` operation.
+Candidate names are unique within an evaluator kind. Replacement requires
+`replace = true`. The registry provides no `default()`, `best()`, majority vote,
+or automatic promotion.
 
-The registry does not provide `default()`, `best()`, or automatic promotion. Callers must name the candidate or request all candidates of a kind.
+## Explicit comparison
+
+Every `LawSuite` and `compare_candidates()` call requires a named versioned
+`ComparisonPolicy`. Exact, absolute, relative, combined, ULP, interval-overlap,
+and custom comparison policies may coexist. No hidden numerical tolerance is
+permitted.
 
 ## Law execution
 
-A law receives the candidate and returns a `LawResult`. Exceptions are captured as failed results rather than terminating the suite or being mistaken for evidence.
-
-Law suites may be assembled from reusable constructors, including:
+Law suites retain pass, failure, exception, evidence, comparison-policy name,
+and explanatory detail. Reusable laws include:
 
 - null evaluates to zero;
-- output is finite and nonnegative on declared subjects;
-- multiplicativity under the actual carrier pairing law;
-- invariance under explicitly declared equivalent pairs;
-- sensitivity under explicitly declared distinct pairs;
-- same-`W`/different-`M` and same-`M`/different-`W` separation witnesses.
+- finite nonnegative output;
+- multiplicativity under the actual Cartesian cell pairing law;
+- invariance under explicitly declared equivalent witnesses;
+- sensitivity under explicitly declared distinct witnesses;
+- same-`W`/different-candidate and same-candidate/different-`W` separation.
 
-The laboratory does not assume that every law applies to every evaluator kind. Applicability is explicit in the selected suite.
+Not every law applies to every evaluator kind. Applicability is explicit in the
+selected suite.
 
-## Comparison boundary
+## Reproducible witness evidence
 
-Candidate comparison reports outputs and disagreements. It does not infer that majority agreement is truth, that numerical closeness establishes equivalence, or that a passing candidate is canonical.
+Experiment manifests pin:
 
-Subjects and outputs remain attached to the comparison record so later review can reproduce the disagreement.
+- candidate identity;
+- witness-corpus digest;
+- law-suite digest;
+- structural-policy digests;
+- comparison policy;
+- traversal policy when applicable;
+- declared environment.
+
+Subjects are content-addressed only through named versioned `ContentAdapter`
+values. UCNS does not hash arbitrary Python objects implicitly.
+
+Witness corpora distinguish development and holdout partitions and record
+hand-authored, generated, adversarial, historical, mutation, and metamorphic
+origins.
+
+## Candidate comparison
+
+Candidate comparison reports outputs, evaluation errors, and disagreement under
+the selected comparison policy. It does not infer that majority agreement is
+truth, numerical closeness is structural equivalence, or a passing candidate is
+canonical.
+
+## Decision packets
+
+A candidate packet records development and holdout reports, minimized
+counterexamples, retained alternatives, information loss, rollback behavior,
+and separate candidate, witness, and decision authorship.
+
+A packet is reviewable only with passing holdout evidence and rollback behavior.
+Reviewable does not mean canonical; `CandidateDecisionPacket.canonical` remains
+false.
+
+## Initial candidates
+
+The repository supplies explicit noncanonical equivalence, cell-only `M`, and
+`B` candidate families described in [`CANDIDATE_PACKS.md`](CANDIDATE_PACKS.md).
+They exist to produce pressure, disagreements, and counterexamples.
 
 ## Canonization boundary
 
-A candidate may become canon only through a separate explicit decision that records:
+A candidate may become canon only through a separate explicit decision recording:
 
-- the selected candidate and version;
-- the laws and witnesses it passed;
+- selected candidate and version;
+- code identity and scope;
+- laws, witnesses, comparison, traversal, and holdout evidence;
 - alternatives retained or rejected;
-- information lost by the choice;
-- rollback and migration behavior.
+- information lost;
+- rollback and migration behavior;
+- decision authority.
 
 No such selection is made by this laboratory.
 
-hmmm: the first candidate suite should pressure actual retained layers and explicit structural policies before any `M` or `B` implementation is promoted.
+hmmm: external holdout custody and independent calibration remain evidence
+obligations outside the candidate's own implementation.

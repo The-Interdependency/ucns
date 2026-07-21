@@ -20,90 +20,131 @@ The carrier is a **directed twofold branched angular cover**:
 - A 360-degree displacement does not automatically negate, reflect, reverse
   parity or chirality, invert a frame, or transform a payload.
 
-The earlier Möbius/seam account remains provenance only. It is not the formal
-object definition. See [`CANON.md`](CANON.md) and
-[`docs/chapter-1.md`](docs/chapter-1.md).
+See [`CANON.md`](CANON.md) and [`docs/chapter-1.md`](docs/chapter-1.md).
+
+## Status firewall
+
+UCNS distinguishes three statuses:
+
+1. **represented evidence** — retained without being measured;
+2. **candidate-measured evidence** — evaluated under a named candidate, policy,
+   comparison rule, traversal rule, witness corpus, and experiment manifest;
+3. **canonically measured evidence** — selected by an explicit canonization
+   decision with alternatives, information loss, rollback, and independent
+   evidence recorded.
+
+The repository currently supports the first two. It does not yet contain a
+canonical structural equivalence relation, canonical product character `M`, or
+canonical faithful breadth `B`.
 
 ## Choice preservation
 
 Where several interpretations, representations, policies, or constructions
 remain admissible, UCNS preserves the capacity to choose among them.
 
-Unresolved options are not silently collapsed into defaults. Current cell tuples
-retain order, multiplicity, and operand sidedness as evidence without declaring
-that canonical structural semantics are necessarily sequence-based.
-
-The policy layer now supports named projections, multiple coexisting policies,
-caller-keyed set and multiset views, retained source evidence, and explicit
-information-loss records. It has no default or canonical policy.
+Unresolved options are not silently collapsed into defaults. Policies produce
+non-destructive projections that retain their source evidence and declare
+information loss. Set and multiset views require caller-supplied identity keys.
 
 See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
 [`docs/CHOICE_POLICY.md`](docs/CHOICE_POLICY.md).
 
 ## Active code
 
-The root package implements five bounded layers.
-
 ### Directed carrier floor
 
-- Structural Null;
-- the faithful-breadth-to-radius map supplied with an already-known breadth;
-- 720-degree lifted points;
-- 360-degree visible projection;
+- unique Structural Null;
+- faithful-breadth-to-radius map for an already-supplied breadth;
+- 720-degree lifted points and 360-degree projection;
 - deck translation and the one/two branch law.
 
 ### Structural-support floor
 
-- fail-closed structural cells with finite support `mu >= 0`;
+- fail-closed cells with finite `mu >= 0`;
 - non-null canonical carriers;
-- aggregate support `W` as the sum of present-cell supports;
+- cell-only aggregate support `W`;
 - Cartesian pairing with multiplicative paired-cell support;
-- pruning of zero-support absent cells;
-- collapse to Structural Null only after complete cell-support erasure;
-- preservation of unresolved order, multiplicity, and operand sidedness.
+- pruning and complete cell-support collapse.
 
 See [`docs/STRUCTURE_CONTRACT.md`](docs/STRUCTURE_CONTRACT.md).
 
-### Structural-choice policies
+### Structural policies and retained evidence
 
-- `StructurePolicy` and `PolicyRegistry`;
-- non-destructive `Projection` values;
-- explicit `InformationLoss` records;
-- ordered-sequence, caller-keyed multiset, and caller-keyed set policy
-  constructors;
-- support for future custom graph, tree, relation, or domain policies.
-
-### Retained-structure envelope
-
-- repeated, ordered retained layers without overwrite;
+- named `StructurePolicy` and `PolicyRegistry` values with no default winner;
+- non-destructive projections and explicit loss records;
+- repeated retained layers without overwrite;
 - explicit presence even for falsey evidence;
-- optional policy bindings;
-- `measured`, `unmeasured`, and `excluded` contribution status;
-- receipt-only or metadata-only non-null evidence;
+- explicit `measured`, `unmeasured`, and `excluded` status;
 - a firewall that keeps current `W` cell-only.
 
 See [`docs/RETAINED_STRUCTURE.md`](docs/RETAINED_STRUCTURE.md).
 
-### Evaluator laboratory
+### Explicit comparison and recursive traversal
 
-- multiple equivalence, product-character, or faithful-breadth candidates;
-- no default, best, majority, or automatic winner;
-- law suites retaining pass, failure, exception, and witness evidence;
-- side-by-side disagreement reports;
-- reusable null, nonnegativity, pairing, invariance, sensitivity, and
-  separation laws.
+- exact, absolute, relative, combined, ULP, interval-overlap, and custom
+  `ComparisonPolicy` values;
+- no hidden numerical tolerance in law suites or candidate comparisons;
+- cycle handling by reject, reference receipt, bounded unfolding, or explicit
+  fixed-point resolver;
+- node and depth budgets with truncation receipts.
 
-See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md).
+See [`docs/COMPARISON_POLICY.md`](docs/COMPARISON_POLICY.md) and
+[`docs/TRAVERSAL_POLICY.md`](docs/TRAVERSAL_POLICY.md).
 
-The package does **not** yet implement a complete `UCNSObject`, domain-specific
-support assignment, canonical structural equivalence, canonical product
-character `M`, canonical faithful-breadth evaluation `B`, typed payload
-dispatch, factorization, encoding, or Theorem N.
+### Retained-layer pairing laboratory
 
-The structural-support implementation was selectively reconstructed from the
-useful parts of experimental branch `ucns-Grok`; the branch was not merged
-wholesale because its `M`, `B`, status, and consumer claims remain provisional
-or invalid.
+- occurrence-addressed `EnvelopePairPlan` values;
+- concatenate, Cartesian, positional zip, side-preserving, selection,
+  exclusion, and custom policies;
+- explicit unmatched-layer behavior;
+- retained left/right source evidence and loss records;
+- result layers remain unmeasured.
+
+See [`docs/LAYER_PAIRING.md`](docs/LAYER_PAIRING.md).
+
+### Evaluator and experiment laboratories
+
+- multiple candidates per evaluator kind with explicit version, code reference,
+  scope, and policy dependencies;
+- law suites retaining pass, failure, exception, witness, and comparison-policy
+  evidence;
+- content-addressed subjects through explicit versioned adapters;
+- development and holdout witness partitions;
+- mutation and metamorphic generators;
+- greedy counterexample minimization;
+- complete experiment manifests and reproduction checks;
+- candidate decision packets requiring holdout evidence, rollback, and separate
+  candidate, witness, and decision roles.
+
+See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md) and
+[`docs/EXPERIMENT_MANIFESTS.md`](docs/EXPERIMENT_MANIFESTS.md).
+
+### First competing candidate packs
+
+The repository now supplies explicit **noncanonical** candidates:
+
+- exact-adapter, policy-projection, and layer-scoped equivalence signatures;
+- geometric-mean, maximum-support, and minimum-support cell-only `M` candidates;
+- cell-log-support, cell-detail, and retained-presence `B` candidates.
+
+Cell-only candidates fail outside scope rather than treating retained-only
+evidence as zero distinction. A passing candidate remains a candidate.
+
+See [`docs/CANDIDATE_PACKS.md`](docs/CANDIDATE_PACKS.md).
+
+## Explicit nonclaims
+
+The package does **not** implement or promote:
+
+- a complete `UCNSObject`;
+- canonical structural equivalence;
+- canonical `M`;
+- canonical `B`;
+- a universal retained-layer product;
+- canonical numerical equality or recursive identity;
+- typed payload dispatch;
+- factorization, encoding, embeddings, public-gonol integration, or Theorem N;
+- any downstream-consumer dependency.
 
 ## Verification
 
@@ -126,6 +167,6 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: UCNS now preserves competing structural choices and can compare candidate
-instruments. Actual equivalence, `M`, and `B` candidates still have to be
-constructed, calibrated, and explicitly selected before they become canon.
+hmmm: UCNS can now preserve, reproduce, compose, and pressure candidate
+instruments. External holdout custody, candidate calibration, and any
+canonization decision remain independent truth obligations.

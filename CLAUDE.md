@@ -6,41 +6,73 @@
 - Lifted period: 720 degrees.
 - Visible projection: 360 degrees.
 - Structural Null: unique and coordinate-free.
-- Active package: carrier floor, structural-cell/support floor, structural-choice
-  policies, retained-structure envelope, and evaluator laboratory.
-- Implemented structural surface: `Cell`, non-null `Carrier`, cell-only aggregate
-  support `W`, Cartesian pairing, pruning, and complete cell-support collapse.
-- Implemented policy surface: named policies, independent registry entries,
-  non-destructive projections, explicit loss records, and caller-keyed set and
-  multiset views.
-- Implemented retained-evidence surface: repeated ordered layers, explicit
-  presence, optional policy binding, and explicit measured/unmeasured/excluded
-  status without silently entering `W`.
-- Implemented evaluator surface: multiple candidates per kind, law suites,
-  witnesses, failure/error evidence, separation-law builders, and disagreement
-  reports without a default winner.
-- Full `UCNSObject`: absent by design.
-- Canonical `M`, canonical `B`, canonical structural equivalence, typed dispatch,
-  arithmetic, factorization, codecs, embeddings, public-gonol bridge, and
-  Theorem N: not promoted.
+- Established measurement: cell-only aggregate support `W`.
+- Represented evidence: cells plus repeated retained layers with explicit presence,
+  policy binding, and contribution status.
+- Candidate-measured evidence: versioned candidates evaluated under explicit
+  comparison, traversal, pairing, witness, law-suite, and manifest choices.
+- Canonically measured structural equivalence, `M`, and `B`: absent by design.
+- Full `UCNSObject`, typed dispatch, arithmetic, factorization, codecs,
+  embeddings, public-gonol bridge, and Theorem N: not promoted.
+
+## Research infrastructure
+
+Implemented:
+
+- structural-choice policy registry and non-destructive projections;
+- retained-structure envelope and cell-support firewall;
+- explicit numerical comparison policies;
+- cycle-safe traversal with identity, cycle modes, budgets, and receipts;
+- occurrence-addressed retained-layer pairing plans;
+- evaluator registries and explicit-comparison law suites;
+- content-addressed subjects through named adapters;
+- witness corpora with development and holdout partitions;
+- mutation and metamorphic generation;
+- counterexample minimization and reproduction checks;
+- candidate decision packets with separate authorship and rollback requirements;
+- initial noncanonical equivalence, `M`, and `B` candidate families.
 
 ## Candidate boundary
 
-The policy registry, retained envelope, and evaluator laboratory are
-infrastructure. They do not establish a canonical policy or mathematical
-instrument.
+Infrastructure and candidates are not canon.
 
-- Do not appoint a default policy or evaluator.
+- Do not appoint a default policy, comparison rule, traversal mode, layer product,
+  or evaluator.
 - Do not count retained layers in cell support `W`.
-- Do not overwrite repeated layers.
-- Do not infer absence from falsey evidence.
-- Do not treat a passing candidate as canon without a separate recorded
-  selection decision.
+- Do not treat retained-only evidence as zero distinction.
+- Do not hash arbitrary Python objects without a named adapter.
+- Do not evaluate recursive content without identity, cycle policy, and budgets.
+- Do not pair retained layers without an explicit plan.
+- Do not treat development-corpus success as generality.
+- Do not make a packet reviewable without holdout evidence and rollback.
+- Do not treat a reviewable packet as canonical.
+
+## Initial candidate packs
+
+Equivalence signatures:
+
+- exact adapter-defined evidence;
+- selected policy projection;
+- selected retained layers.
+
+Cell-only product-character candidates:
+
+- geometric mean support;
+- maximum support;
+- minimum support.
+
+Faithful-breadth candidates:
+
+- cell log support;
+- cell detail;
+- retained-layer presence.
+
+These are pressure instruments. They are expected to disagree and fail laws.
 
 ## Grok recovery boundary
 
-Useful candidates from branch `ucns-Grok@7aec399` were selectively reconstructed
-on current main. Do not restore that branch's current `M`, heuristic `B`, residual
+Useful material from `ucns-Grok@7aec399` was selectively reconstructed. Do not
+restore that branch's rejected product character, heuristic breadth, residual
 `m_contrib`, package version, EDCM claims, or discharged-status language.
 
 ## Source order
@@ -51,10 +83,15 @@ on current main. Do not restore that branch's current `M`, heuristic `B`, residu
 4. `docs/CHOICE_PRESERVATION.md`
 5. `docs/CHOICE_POLICY.md`
 6. `docs/RETAINED_STRUCTURE.md`
-7. `docs/EVALUATOR_LAB.md`
-8. `STACK_MANIFEST.json`
-9. module `MODULE_BUILD` and `CONTRACTS`
-10. test `CHECKS`
+7. `docs/COMPARISON_POLICY.md`
+8. `docs/TRAVERSAL_POLICY.md`
+9. `docs/LAYER_PAIRING.md`
+10. `docs/EVALUATOR_LAB.md`
+11. `docs/EXPERIMENT_MANIFESTS.md`
+12. `docs/CANDIDATE_PACKS.md`
+13. `STACK_MANIFEST.json`
+14. module `MODULE_BUILD` and `CONTRACTS`
+15. test `CHECKS`
 
 ## Required gates
 
@@ -65,6 +102,6 @@ python -m build
 python -m twine check dist/*
 ```
 
-hmmm: infrastructure now preserves and tests competing options. The next
-construction boundary is actual equivalence, `M`, and `B` candidates over
-retained layers, followed by explicit calibration and canonization decisions.
+hmmm: the root can now reproduce and pressure candidate instruments. External
+holdout custody, independent calibration, retained-layer measurement laws, and
+an explicit canonization authority remain the next truth boundary.

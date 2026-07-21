@@ -19,18 +19,19 @@ def test_public_surface_is_bounded() -> None:
         "Cell",
         "Carrier",
         "support_weight",
-        "pair",
-        "prune",
-        "collapse",
         "StructurePolicy",
-        "PolicyRegistry",
-        "Projection",
-        "RetainedLayer",
         "RetainedStructure",
+        "ComparisonPolicy",
+        "TraversalPolicy",
         "EvaluatorCandidate",
-        "EvaluatorRegistry",
         "LawSuite",
-        "compare_candidates",
+        "LayerPairPolicy",
+        "EnvelopePairPlan",
+        "ContentAdapter",
+        "ExperimentManifest",
+        "CandidateDecisionPacket",
+        "geometric_mean_product_candidate",
+        "retained_presence_breadth_candidate",
     ):
         assert expected in exported
 
@@ -43,5 +44,7 @@ def test_public_surface_is_bounded() -> None:
         "TheoremN",
         "default_evaluator",
         "canonical_policy",
+        "canonical_product_character",
+        "canonical_faithful_breadth",
     ):
         assert forbidden not in exported
