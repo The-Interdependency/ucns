@@ -1,0 +1,142 @@
+name: one-shot-materialize-skill-lib
+
+on:
+  push:
+    branches: [agent/directed-carrier-floor]
+    paths:
+      - .github/workflows/materialize-skill-lib.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout UCNS recovery branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/directed-carrier-floor
+          fetch-depth: 0
+      - name: Checkout pinned skill-lib authority
+        uses: actions/checkout@v4
+        with:
+          repository: The-Interdependency/skill-lib
+          ref: fa6e6200bc274657de2334754bbbf98844ef6541
+          path: .skill-lib-canon
+          sparse-checkout: |
+            msdmd
+            meta-module-build
+            test-build
+            canon
+            domain-claims
+            interdependent-work-graph
+            doctrine
+            tools/check_consumer_drift.py
+          sparse-checkout-cone-mode: false
+      - name: Materialize exact canonical subset
+        shell: bash
+        run: |
+          set -euo pipefail
+          skills=(
+            msdmd
+            meta-module-build
+            test-build
+            canon
+            domain-claims
+            interdependent-work-graph
+          )
+          mkdir -p .agents/skills
+          for skill in "${skills[@]}"; do
+            rm -rf ".agents/skills/${skill}"
+            cp -a ".skill-lib-canon/${skill}" ".agents/skills/${skill}"
+          done
+          rm -rf .agents/skills/doctrine
+          cp -a .skill-lib-canon/doctrine .agents/skills/doctrine
+
+          cat > .agents/skills/README.md <<'EOF'
+          # Repo-local skill-lib materialization
+
+          Canonical source: `The-Interdependency/skill-lib`
+
+          Pinned source commit:
+          `fa6e6200bc274657de2334754bbbf98844ef6541`
+
+          Vendored verbatim:
+
+          - `msdmd/`
+          - `meta-module-build/`
+          - `test-build/`
+          - `canon/`
+          - `domain-claims/`
+          - `interdependent-work-graph/`
+          - shared `doctrine/` required by those skills
+
+          Repo-local additions are allowed beside the canonical assets. UCNS adds
+          `tools/verify_skill_lib_contracts.py` as its bounded executable evidence
+          reconciler; it does not replace or modify the canonical skill files.
+
+          Drift gate:
+
+          ```text
+          python <skill-lib>/tools/check_consumer_drift.py . \
+            --canon-root <skill-lib> \
+            --sha fa6e6200bc274657de2334754bbbf98844ef6541 \
+            --strict-sha --require-vendored
+          ```
+
+          hmmm: future skill-lib updates require an explicit new pinned commit and
+          a fresh drift-clean materialization; no floating update is authorized.
+          EOF
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("STACK_MANIFEST.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          data["skill_lib_materialization"] = {
+              "source_commit": "fa6e6200bc274657de2334754bbbf98844ef6541",
+              "path": ".agents/skills",
+              "mode": "verbatim canonical subset",
+              "drift_gate": "strict"
+          }
+          data["hmmm"] = [
+              item for item in data.get("hmmm", [])
+              if item != "verbatim repo-local skill-lib materialization"
+          ]
+          path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+          audit = Path("tools/verify_skill_lib_contracts.py")
+          text = audit.read_text(encoding="utf-8")
+          text = text.replace(
+              "#   unresolved: exact vendored skill-lib runner replacement",
+              "#   unresolved: mutation-level verification beyond planted graph gaps",
+          )
+          audit.write_text(text, encoding="utf-8")
+          PY
+
+          if ! grep -qxF '.skill-lib-canon/' .gitignore; then
+            printf '\n.skill-lib-canon/\n' >> .gitignore
+          fi
+      - name: Verify canonical drift before commit
+        run: >-
+          python .skill-lib-canon/tools/check_consumer_drift.py .
+          --canon-root .skill-lib-canon
+          --sha fa6e6200bc274657de2334754bbbf98844ef6541
+          --strict-sha
+          --require-vendored
+      - name: Commit exact materialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .skill-lib-canon
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .agents/skills .gitignore STACK_MANIFEST.json tools/verify_skill_lib_contracts.py
+          if git diff --cached --quiet; then
+            echo "No materialization changes required."
+            exit 0
+          fi
+          git commit -m "chore(skills): materialize pinned skill-lib subset"
+          git push origin HEAD:agent/directed-carrier-floor
