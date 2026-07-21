@@ -78,6 +78,11 @@ def test_structural_null_identity() -> None:
 def test_non_null_validation_and_radius() -> None:
     point = LiftedCarrierPoint(2.0, 0.0)
     assert 0.0 < point.radius < 1.0
+    wide = LiftedCarrierPoint(100.0, 0.0)
+    assert 0.0 < wide.radius < 1.0
+    visible = project(wide)
+    assert visible.breadth == wide.breadth
+    assert any(same_lifted_position(candidate, wide) for candidate in lifted_preimages(visible))
     with pytest.raises(ValueError):
         LiftedCarrierPoint(0.0, 0.0)
     with pytest.raises(ValueError):

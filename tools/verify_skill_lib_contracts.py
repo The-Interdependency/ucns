@@ -132,10 +132,12 @@ def parse_blocks(path: Path) -> List[Entry]:
 
 
 def _defined_functions(path: Path) -> Set[str]:
+    """Return top-level functions without importing or executing the module."""
+
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     return {
         node.name
-        for node in ast.walk(tree)
+        for node in tree.body
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
     }
 
@@ -149,9 +151,17 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
     problems: List[str] = []
     for path in _source_files(root):
         try:
-            entries.extend(parse_blocks(path))
+            path_entries = parse_blocks(path)
         except (SyntaxError, ValueError) as exc:
             problems.append(f"GAP parse {exc}")
+            continue
+
+        entries.extend(path_entries)
+        if path.is_relative_to(root / "src") or path.is_relative_to(root / "tools"):
+            declared = {entry.block for entry in path_entries}
+            for required_block in ("MODULE_BUILD", "CONTRACTS"):
+                if required_block not in declared:
+                    problems.append(f"GAP {path} missing {required_block} declaration block")
 
     ids: Dict[str, Entry] = {}
     for entry in entries:
@@ -192,7 +202,15 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             except SyntaxError as exc:
                 problems.append(f"GAP {check.id} cannot parse call source: {exc}")
             else:
-                if name not in defined:
+                is_test_module = (
+                    check.source.is_relative_to(root / "tests")
+                    and check.source.name.startswith("test_")
+                )
+                if not is_test_module or not name.startswith("test_"):
+                    problems.append(
+                        f"GAP {check.id} call does not target an executable pytest test: {call}"
+                    )
+                elif name not in defined:
                     problems.append(f"GAP {check.id} call does not resolve: {call}")
 
     for contract_id in sorted(set(contracts) - proved):

@@ -87,7 +87,7 @@ encoding, or theorem status.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import exp, isclose, isfinite, log1p, pi
+from math import expm1, isclose, isfinite, nextafter, pi
 from typing import Tuple, Union
 
 VISIBLE_PERIOD = 2.0 * pi
@@ -134,28 +134,34 @@ def radius_from_breadth(breadth: float) -> float:
     breadth = float(breadth)
     if not isfinite(breadth) or breadth < 0.0:
         raise ValueError("breadth must be finite and nonnegative")
-    return 1.0 - exp(-breadth)
+    radius = -expm1(-breadth)
+    # Binary float rounds the mathematical value to 1.0 for large but
+    # finite breadth. Preserve the canonical open rim in the finite
+    # representation rather than making valid points unprojectable.
+    return nextafter(1.0, 0.0) if radius >= 1.0 else radius
 
 
 @dataclass(frozen=True, eq=False)
 class VisibleCarrierPoint:
-    """A non-null point in the visible 360-degree projection."""
+    """A non-null point in the visible 360-degree projection.
 
-    radius: float
+    Breadth is retained directly so finite values beyond binary-float radial
+    resolution do not collapse into one another at the visible boundary.
+    """
+
+    breadth: float
     angle: float
 
     def __post_init__(self) -> None:
-        radius = float(self.radius)
-        if not isfinite(radius) or not 0.0 < radius < 1.0:
-            raise ValueError("visible radius must be finite and strictly between 0 and 1")
-        object.__setattr__(self, "radius", radius)
+        breadth = float(self.breadth)
+        if not isfinite(breadth) or breadth <= 0.0:
+            raise ValueError("a non-null visible point requires finite positive breadth")
+        object.__setattr__(self, "breadth", breadth)
         object.__setattr__(self, "angle", _normalize_angle(self.angle, VISIBLE_PERIOD))
 
     @property
-    def breadth(self) -> float:
-        """Inverse radial map for the already-represented visible radius."""
-
-        return -log1p(-self.radius)
+    def radius(self) -> float:
+        return radius_from_breadth(self.breadth)
 
 
 @dataclass(frozen=True, eq=False)
@@ -188,7 +194,7 @@ class LiftedCarrierPoint:
         return self.rotate(VISIBLE_PERIOD)
 
     def project(self) -> VisibleCarrierPoint:
-        return VisibleCarrierPoint(self.radius, self.angle)
+        return VisibleCarrierPoint(self.breadth, self.angle)
 
 
 CarrierPoint = Union[_StructuralNull, LiftedCarrierPoint]
@@ -262,6 +268,6 @@ def same_visible_position(
         return first is STRUCTURAL_NULL and second is STRUCTURAL_NULL
     if not isinstance(first, VisibleCarrierPoint) or not isinstance(second, VisibleCarrierPoint):
         raise TypeError("points must be visible carrier points")
-    return isclose(first.radius, second.radius, rel_tol=tolerance, abs_tol=tolerance) and _angles_match(
+    return isclose(first.breadth, second.breadth, rel_tol=tolerance, abs_tol=tolerance) and _angles_match(
         first.angle, second.angle, VISIBLE_PERIOD, tolerance
     )
