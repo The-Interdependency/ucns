@@ -2,7 +2,7 @@
 # id: evaluator_candidate_laboratory
 #   module_name: laboratory
 #   module_kind: instrument
-#   summary: registers versioned competing evaluator candidates and tests them under explicit comparison policies without selecting a winner
+#   summary: registers versioned evaluator candidates and versioned fixture-pinned laws under explicit comparison policies without selecting a winner
 #   owner: Erin Spencer
 #   public_surface: EvaluatorKind, EvaluatorCandidate, EvaluatorRegistry, Witness, LawResult, Law, LawSuite, EvaluationReport, CandidateOutput, CandidateComparison, compare_candidates, null_zero_law, finite_nonnegative_law, pair_multiplicative_law, invariance_law, sensitivity_law, same_reference_different_candidate_law, same_candidate_different_reference_law
 #   internal_surface: _evaluate_candidates
@@ -11,7 +11,7 @@
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_laboratory.py, tests/test_candidates.py
+#   tests: tests/test_laboratory.py, tests/test_candidates.py, tests/test_experiments.py
 #   rollout: candidate research infrastructure; no canonical evaluator
 #   rollback: remove public exports and this module
 #   requires: structural_cell_support_floor, retained_structure_envelope, structural_choice_policy_layer, explicit_comparison_policy_layer
@@ -35,6 +35,12 @@
 # id: evaluator_candidate_identity_is_explicit
 #   given: an evaluator candidate is constructed
 #   then: version, code reference, scope, and policy dependencies are recorded rather than inferred from a callable
+#   class: evidence
+#   since: 2026-07-21
+#
+# id: law_identity_covers_implementation_and_fixtures
+#   given: a law is admitted to a reproducible experiment manifest
+#   then: law name, version, code reference, and explicit fixture digest identify both implementation and retained evidence
 #   class: evidence
 #   since: 2026-07-21
 #
@@ -119,20 +125,15 @@ class EvaluatorRegistry:
         default_factory=dict, repr=False
     )
 
-    def register(
-        self, candidate: EvaluatorCandidate, *, replace: bool = False
-    ) -> None:
+    def register(self, candidate: EvaluatorCandidate, *, replace: bool = False) -> None:
         bucket = self._candidates.setdefault(candidate.kind, {})
         if candidate.name in bucket and not replace:
             raise ValueError(
-                "candidate already registered for "
-                f"{candidate.kind.value}: {candidate.name}"
+                f"candidate already registered for {candidate.kind.value}: {candidate.name}"
             )
         bucket[candidate.name] = candidate
 
-    def resolve(
-        self, kind: EvaluatorKind, name: str
-    ) -> EvaluatorCandidate:
+    def resolve(self, kind: EvaluatorKind, name: str) -> EvaluatorCandidate:
         selected_kind = EvaluatorKind(kind)
         try:
             return self._candidates[selected_kind][name]
@@ -144,16 +145,10 @@ class EvaluatorRegistry:
     def names(self, kind: EvaluatorKind) -> tuple[str, ...]:
         return tuple(self._candidates.get(EvaluatorKind(kind), {}))
 
-    def candidates(
-        self, kind: EvaluatorKind
-    ) -> tuple[EvaluatorCandidate, ...]:
-        return tuple(
-            self._candidates.get(EvaluatorKind(kind), {}).values()
-        )
+    def candidates(self, kind: EvaluatorKind) -> tuple[EvaluatorCandidate, ...]:
+        return tuple(self._candidates.get(EvaluatorKind(kind), {}).values())
 
-    def evaluate_all(
-        self, kind: EvaluatorKind, subject: Any
-    ) -> tuple["CandidateOutput", ...]:
+    def evaluate_all(self, kind: EvaluatorKind, subject: Any) -> tuple["CandidateOutput", ...]:
         return _evaluate_candidates(self.candidates(kind), subject)
 
 
@@ -166,9 +161,7 @@ class Witness:
 
     def __post_init__(self) -> None:
         if not self.name.strip() or not self.expectation.strip():
-            raise ValueError(
-                "witness name and expectation must be nonempty"
-            )
+            raise ValueError("witness name and expectation must be nonempty")
         subjects = tuple(self.subjects)
         if not subjects:
             raise ValueError("a witness requires at least one subject")
@@ -185,28 +178,32 @@ class LawResult:
 
     def __post_init__(self) -> None:
         if not self.law_name.strip() or not self.detail.strip():
-            raise ValueError(
-                "law result name and detail must be nonempty"
-            )
+            raise ValueError("law result name and detail must be nonempty")
         if self.passed and self.error is not None:
-            raise ValueError(
-                "a passing law result cannot carry an error"
-            )
+            raise ValueError("a passing law result cannot carry an error")
 
 
-LawCheck = Callable[
-    [EvaluatorCandidate, ComparisonPolicy], LawResult
-]
+LawCheck = Callable[[EvaluatorCandidate, ComparisonPolicy], LawResult]
 
 
 @dataclass(frozen=True, slots=True)
 class Law:
     name: str
     check: LawCheck
+    version: str = "1"
+    code_reference: str = "unrecorded"
+    fixture_digest: str = "unrecorded"
 
     def __post_init__(self) -> None:
-        if not self.name.strip():
-            raise ValueError("law name must be nonempty")
+        if (
+            not self.name.strip()
+            or not self.version.strip()
+            or not self.code_reference.strip()
+            or not self.fixture_digest.strip()
+        ):
+            raise ValueError(
+                "law name, version, code reference, and fixture digest must be nonempty"
+            )
         if not callable(self.check):
             raise TypeError("law check must be callable")
 
@@ -247,9 +244,7 @@ class EvaluationReport:
 
     @property
     def all_passed(self) -> bool:
-        return bool(self.results) and all(
-            result.passed for result in self.results
-        )
+        return bool(self.results) and all(result.passed for result in self.results)
 
 
 @dataclass(frozen=True, slots=True)
@@ -265,23 +260,16 @@ class LawSuite:
         if not laws:
             raise ValueError("a law suite requires at least one law")
         if not isinstance(self.comparison, ComparisonPolicy):
-            raise TypeError(
-                "a law suite requires an explicit ComparisonPolicy"
-            )
+            raise TypeError("a law suite requires an explicit ComparisonPolicy")
         object.__setattr__(self, "laws", laws)
 
-    def evaluate(
-        self, candidate: EvaluatorCandidate
-    ) -> EvaluationReport:
+    def evaluate(self, candidate: EvaluatorCandidate) -> EvaluationReport:
         return EvaluationReport(
             candidate.name,
             candidate.kind,
             self.name,
             self.comparison.name,
-            tuple(
-                law.run(candidate, self.comparison)
-                for law in self.laws
-            ),
+            tuple(law.run(candidate, self.comparison) for law in self.laws),
         )
 
 
@@ -311,12 +299,7 @@ def _evaluate_candidates(
     outputs: list[CandidateOutput] = []
     for candidate in tuple(candidates):
         try:
-            outputs.append(
-                CandidateOutput(
-                    candidate.name,
-                    candidate.evaluate(subject),
-                )
-            )
+            outputs.append(CandidateOutput(candidate.name, candidate.evaluate(subject)))
         except Exception as exc:
             outputs.append(
                 CandidateOutput(
@@ -335,55 +318,50 @@ def compare_candidates(
 ) -> tuple[CandidateComparison, ...]:
     selected = tuple(candidates)
     if not selected:
-        raise ValueError(
-            "candidate comparison requires at least one candidate"
-        )
+        raise ValueError("candidate comparison requires at least one candidate")
     if not isinstance(comparison, ComparisonPolicy):
-        raise TypeError(
-            "candidate comparison requires explicit ComparisonPolicy"
-        )
+        raise TypeError("candidate comparison requires explicit ComparisonPolicy")
     kinds = {candidate.kind for candidate in selected}
     if len(kinds) != 1:
-        raise ValueError(
-            "candidate comparison requires one evaluator kind"
-        )
+        raise ValueError("candidate comparison requires one evaluator kind")
     kind = selected[0].kind
     comparisons: list[CandidateComparison] = []
     for subject in tuple(subjects):
         outputs = _evaluate_candidates(selected, subject)
-        successful = [
-            output.output for output in outputs if output.succeeded
-        ]
-        disagreement = any(
-            not output.succeeded for output in outputs
-        )
+        successful = [output.output for output in outputs if output.succeeded]
+        disagreement = any(not output.succeeded for output in outputs)
         if successful:
             first = successful[0]
             disagreement = disagreement or any(
-                not comparison.matches(first, value)
-                for value in successful[1:]
+                not comparison.matches(first, value) for value in successful[1:]
             )
         comparisons.append(
             CandidateComparison(
-                kind,
-                subject,
-                outputs,
-                disagreement,
-                comparison.name,
+                kind, subject, outputs, disagreement, comparison.name
             )
         )
     return tuple(comparisons)
+
+
+def _law(
+    name: str,
+    check: LawCheck,
+    *,
+    version: str,
+    code_reference: str,
+    fixture_digest: str,
+) -> Law:
+    return Law(name, check, version, code_reference, fixture_digest)
 
 
 def null_zero_law(
     *,
     name: str = "null-evaluates-to-zero",
     null_subject: Any = STRUCTURAL_NULL,
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         value = candidate.evaluate(null_subject)
         return LawResult(
             name,
@@ -392,24 +370,27 @@ def null_zero_law(
             value,
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:null_zero_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def finite_nonnegative_law(
     subjects: Iterable[Any],
     *,
     name: str = "finite-nonnegative",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     retained = tuple(subjects)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         del comparison
-        values = tuple(
-            candidate.evaluate(subject) for subject in retained
-        )
+        values = tuple(candidate.evaluate(subject) for subject in retained)
         passed = all(
             isinstance(value, (int, float))
             and not isinstance(value, bool)
@@ -424,32 +405,34 @@ def finite_nonnegative_law(
             values,
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:finite_nonnegative_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def pair_multiplicative_law(
     pairs: Iterable[tuple[Structure, Structure]],
     *,
     name: str = "pair-multiplicative",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     retained = tuple(pairs)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         evidence: list[tuple[Any, Any, Any]] = []
         passed = True
         for left, right in retained:
             left_value = candidate.evaluate(left)
             right_value = candidate.evaluate(right)
             paired_value = candidate.evaluate(pair(left, right))
-            evidence.append(
-                (left_value, right_value, paired_value)
-            )
+            evidence.append((left_value, right_value, paired_value))
             passed = passed and comparison.matches(
-                paired_value,
-                float(left_value) * float(right_value),
+                paired_value, float(left_value) * float(right_value)
             )
         return LawResult(
             name,
@@ -458,32 +441,33 @@ def pair_multiplicative_law(
             tuple(evidence),
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:pair_multiplicative_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def invariance_law(
     witnesses: Iterable[Witness],
     *,
     name: str = "declared-invariance",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     retained = tuple(witnesses)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         evidence: list[tuple[str, tuple[Any, ...]]] = []
         passed = True
         for witness in retained:
-            values = tuple(
-                candidate.evaluate(subject)
-                for subject in witness.subjects
-            )
+            values = tuple(candidate.evaluate(subject) for subject in witness.subjects)
             evidence.append((witness.name, values))
             first = values[0]
             passed = passed and all(
-                comparison.matches(first, value)
-                for value in values[1:]
+                comparison.matches(first, value) for value in values[1:]
             )
         return LawResult(
             name,
@@ -492,27 +476,29 @@ def invariance_law(
             tuple(evidence),
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:invariance_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def sensitivity_law(
     witnesses: Iterable[Witness],
     *,
     name: str = "declared-sensitivity",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     retained = tuple(witnesses)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         evidence: list[tuple[str, tuple[Any, ...]]] = []
         passed = True
         for witness in retained:
-            values = tuple(
-                candidate.evaluate(subject)
-                for subject in witness.subjects
-            )
+            values = tuple(candidate.evaluate(subject) for subject in witness.subjects)
             evidence.append((witness.name, values))
             passed = (
                 passed
@@ -529,7 +515,13 @@ def sensitivity_law(
             tuple(evidence),
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:sensitivity_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def same_reference_different_candidate_law(
@@ -537,22 +529,19 @@ def same_reference_different_candidate_law(
     witnesses: Iterable[Witness],
     *,
     name: str = "same-reference-different-candidate",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     if not callable(reference):
         raise TypeError("reference evaluator must be callable")
     retained = tuple(witnesses)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         evidence = []
         passed = True
         for witness in retained:
             if len(witness.subjects) != 2:
-                raise ValueError(
-                    "separation witnesses require exactly two subjects"
-                )
+                raise ValueError("separation witnesses require exactly two subjects")
             left, right = witness.subjects
             reference_left = reference(left)
             reference_right = reference(right)
@@ -569,12 +558,8 @@ def same_reference_different_candidate_law(
             )
             passed = (
                 passed
-                and comparison.matches(
-                    reference_left, reference_right
-                )
-                and not comparison.matches(
-                    candidate_left, candidate_right
-                )
+                and comparison.matches(reference_left, reference_right)
+                and not comparison.matches(candidate_left, candidate_right)
             )
         return LawResult(
             name,
@@ -583,7 +568,13 @@ def same_reference_different_candidate_law(
             tuple(evidence),
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:same_reference_different_candidate_law",
+        fixture_digest=fixture_digest,
+    )
 
 
 def same_candidate_different_reference_law(
@@ -591,22 +582,19 @@ def same_candidate_different_reference_law(
     witnesses: Iterable[Witness],
     *,
     name: str = "same-candidate-different-reference",
+    fixture_digest: str = "unrecorded",
+    version: str = "1",
 ) -> Law:
     if not callable(reference):
         raise TypeError("reference evaluator must be callable")
     retained = tuple(witnesses)
 
-    def check(
-        candidate: EvaluatorCandidate,
-        comparison: ComparisonPolicy,
-    ) -> LawResult:
+    def check(candidate: EvaluatorCandidate, comparison: ComparisonPolicy) -> LawResult:
         evidence = []
         passed = True
         for witness in retained:
             if len(witness.subjects) != 2:
-                raise ValueError(
-                    "separation witnesses require exactly two subjects"
-                )
+                raise ValueError("separation witnesses require exactly two subjects")
             left, right = witness.subjects
             reference_left = reference(left)
             reference_right = reference(right)
@@ -623,12 +611,8 @@ def same_candidate_different_reference_law(
             )
             passed = (
                 passed
-                and not comparison.matches(
-                    reference_left, reference_right
-                )
-                and comparison.matches(
-                    candidate_left, candidate_right
-                )
+                and not comparison.matches(reference_left, reference_right)
+                and comparison.matches(candidate_left, candidate_right)
             )
         return LawResult(
             name,
@@ -637,4 +621,10 @@ def same_candidate_different_reference_law(
             tuple(evidence),
         )
 
-    return Law(name, check)
+    return _law(
+        name,
+        check,
+        version=version,
+        code_reference="ucns.laboratory:same_candidate_different_reference_law",
+        fixture_digest=fixture_digest,
+    )
