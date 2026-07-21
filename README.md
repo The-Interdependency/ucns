@@ -26,7 +26,9 @@ object definition. See [`CANON.md`](CANON.md) and
 
 ## Active code
 
-The root package currently implements only the carrier floor:
+The root package implements two bounded layers.
+
+### Directed carrier floor
 
 - Structural Null;
 - the faithful-breadth-to-radius map supplied with an already-known breadth;
@@ -34,9 +36,26 @@ The root package currently implements only the carrier floor:
 - 360-degree visible projection;
 - deck translation and the one/two branch law.
 
-It does **not** yet implement a complete `UCNSObject`, faithful-breadth
-evaluation, support weights, product character, pairing, payload dispatch,
+### Structural-support floor
+
+- fail-closed structural cells with finite support `mu >= 0`;
+- non-null canonical carriers;
+- aggregate support `W` as the sum of present-cell supports;
+- Cartesian pairing with multiplicative paired-cell support;
+- pruning of zero-support absent cells;
+- collapse to Structural Null only after complete cell-support erasure.
+
+See [`docs/STRUCTURE_CONTRACT.md`](docs/STRUCTURE_CONTRACT.md).
+
+It does **not** yet implement a complete `UCNSObject`, domain-specific support
+assignment, receipts, metadata, canonical structural equivalence, product
+character `M`, faithful-breadth evaluation `B`, typed payload dispatch,
 factorization, encoding, or Theorem N.
+
+The structural-support implementation was selectively reconstructed from the
+useful parts of experimental branch `ucns-Grok`; the branch was not merged
+wholesale because its `M`, `B`, status, and consumer claims remain provisional
+or invalid.
 
 ## Verification
 
@@ -48,8 +67,9 @@ python -m twine check dist/*
 ```
 
 The source owns skill-lib `MODULE_BUILD` and `CONTRACTS` declarations; tests own
-`CHECKS` declarations. The no-exec audit fails closed on missing contracts,
-unknown witnesses, or unresolved `self::` calls.
+`CHECKS` declarations. The no-exec audit fails closed on undeclared source
+modules, missing contracts, unknown witnesses, non-executable check targets, or
+unresolved `self::` calls.
 
 ## Build doctrine
 
@@ -58,5 +78,6 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: the topology is executable; the three measuring instruments still have
-to earn their names under traffic.
+hmmm: cells and aggregate support now have executable boundaries; receipts,
+metadata, recursive structure, equivalence, `M`, and `B` still have to earn
+their semantics before they become public structure.
