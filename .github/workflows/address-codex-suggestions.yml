@@ -1,0 +1,254 @@
+name: one-shot-address-codex-suggestions
+
+on:
+  push:
+    branches: [agent/directed-carrier-floor]
+    paths:
+      - .github/workflows/address-codex-suggestions.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout recovery branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/directed-carrier-floor
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install verification dependencies
+        run: python -m pip install --upgrade pip pytest build twine
+      - name: Apply reviewed corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              target = Path(path)
+              text = target.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{path}: expected one replacement, found {count}")
+              target.write_text(text.replace(old, new), encoding="utf-8")
+
+          replace_once(
+              "src/ucns/carrier.py",
+              "from math import exp, isclose, isfinite, log1p, pi\n",
+              "from math import expm1, isclose, isfinite, nextafter, pi\n",
+          )
+          replace_once(
+              "src/ucns/carrier.py",
+              '    return 1.0 - exp(-breadth)\n',
+              '    radius = -expm1(-breadth)\n'
+              '    # Binary float rounds the mathematical value to 1.0 for large but\n'
+              '    # finite breadth. Preserve the canonical open rim in the finite\n'
+              '    # representation rather than making valid points unprojectable.\n'
+              '    return nextafter(1.0, 0.0) if radius >= 1.0 else radius\n',
+          )
+          replace_once(
+              "src/ucns/carrier.py",
+              '''@dataclass(frozen=True, eq=False)
+          class VisibleCarrierPoint:
+              """A non-null point in the visible 360-degree projection."""
+
+              radius: float
+              angle: float
+
+              def __post_init__(self) -> None:
+                  radius = float(self.radius)
+                  if not isfinite(radius) or not 0.0 < radius < 1.0:
+                      raise ValueError("visible radius must be finite and strictly between 0 and 1")
+                  object.__setattr__(self, "radius", radius)
+                  object.__setattr__(self, "angle", _normalize_angle(self.angle, VISIBLE_PERIOD))
+
+              @property
+              def breadth(self) -> float:
+                  """Inverse radial map for the already-represented visible radius."""
+
+                  return -log1p(-self.radius)
+          ''',
+              '''@dataclass(frozen=True, eq=False)
+          class VisibleCarrierPoint:
+              """A non-null point in the visible 360-degree projection.
+
+              Breadth is retained directly so finite values beyond binary-float radial
+              resolution do not collapse into one another at the visible boundary.
+              """
+
+              breadth: float
+              angle: float
+
+              def __post_init__(self) -> None:
+                  breadth = float(self.breadth)
+                  if not isfinite(breadth) or breadth <= 0.0:
+                      raise ValueError("a non-null visible point requires finite positive breadth")
+                  object.__setattr__(self, "breadth", breadth)
+                  object.__setattr__(self, "angle", _normalize_angle(self.angle, VISIBLE_PERIOD))
+
+              @property
+              def radius(self) -> float:
+                  return radius_from_breadth(self.breadth)
+          ''',
+          )
+          replace_once(
+              "src/ucns/carrier.py",
+              "        return VisibleCarrierPoint(self.radius, self.angle)\n",
+              "        return VisibleCarrierPoint(self.breadth, self.angle)\n",
+          )
+          replace_once(
+              "src/ucns/carrier.py",
+              "    return isclose(first.radius, second.radius, rel_tol=tolerance, abs_tol=tolerance) and _angles_match(\n",
+              "    return isclose(first.breadth, second.breadth, rel_tol=tolerance, abs_tol=tolerance) and _angles_match(\n",
+          )
+
+          replace_once(
+              "tools/verify_skill_lib_contracts.py",
+              '''def _defined_functions(path: Path) -> Set[str]:
+              tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+              return {
+                  node.name
+                  for node in ast.walk(tree)
+                  if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+              }
+          ''',
+              '''def _defined_functions(path: Path) -> Set[str]:
+              """Return top-level functions without importing or executing the module."""
+
+              tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+              return {
+                  node.name
+                  for node in tree.body
+                  if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+              }
+          ''',
+          )
+          replace_once(
+              "tools/verify_skill_lib_contracts.py",
+              '''    for path in _source_files(root):
+                  try:
+                      entries.extend(parse_blocks(path))
+                  except (SyntaxError, ValueError) as exc:
+                      problems.append(f"GAP parse {exc}")
+          ''',
+              '''    for path in _source_files(root):
+                  try:
+                      path_entries = parse_blocks(path)
+                  except (SyntaxError, ValueError) as exc:
+                      problems.append(f"GAP parse {exc}")
+                      continue
+
+                  entries.extend(path_entries)
+                  if path.is_relative_to(root / "src") or path.is_relative_to(root / "tools"):
+                      declared = {entry.block for entry in path_entries}
+                      for required_block in ("MODULE_BUILD", "CONTRACTS"):
+                          if required_block not in declared:
+                              problems.append(f"GAP {path} missing {required_block} declaration block")
+          ''',
+          )
+          replace_once(
+              "tools/verify_skill_lib_contracts.py",
+              '''            else:
+                          if name not in defined:
+                              problems.append(f"GAP {check.id} call does not resolve: {call}")
+          ''',
+              '''            else:
+                          is_test_module = (
+                              check.source.is_relative_to(root / "tests")
+                              and check.source.name.startswith("test_")
+                          )
+                          if not is_test_module or not name.startswith("test_"):
+                              problems.append(
+                                  f"GAP {check.id} call does not target an executable pytest test: {call}"
+                              )
+                          elif name not in defined:
+                              problems.append(f"GAP {check.id} call does not resolve: {call}")
+          ''',
+          )
+
+          replace_once(
+              "tests/test_carrier.py",
+              '''    point = LiftedCarrierPoint(2.0, 0.0)
+              assert 0.0 < point.radius < 1.0
+          ''',
+              '''    point = LiftedCarrierPoint(2.0, 0.0)
+              assert 0.0 < point.radius < 1.0
+              wide = LiftedCarrierPoint(100.0, 0.0)
+              assert 0.0 < wide.radius < 1.0
+              visible = project(wide)
+              assert visible.breadth == wide.breadth
+              assert any(same_lifted_position(candidate, wide) for candidate in lifted_preimages(visible))
+          ''',
+          )
+
+          replace_once(
+              "tests/test_skill_lib_contracts.py",
+              '''        (root / "tests").mkdir()
+                  (root / "tests" / "test_orphan.py").write_text(
+          ''',
+              '''        (root / "tests").mkdir()
+                  (root / "src").mkdir()
+                  (root / "src" / "bare.py").write_text(
+                      "def behavior():\\n"
+                      "    return 1\\n",
+                      encoding="utf-8",
+                  )
+                  (root / "tests" / "test_orphan.py").write_text(
+          ''',
+          )
+          replace_once(
+              "tests/test_skill_lib_contracts.py",
+              '''            "# === END CHECKS ===\\n",
+                      encoding="utf-8",
+                  )
+                  ok, problems = audit_repository(root)
+                  assert not ok
+                  assert any("unknown contract" in problem for problem in problems)
+                  assert any("does not resolve" in problem for problem in problems)
+          ''',
+              '''            "# === END CHECKS ===\\n"
+                      "def missing_function():\\n"
+                      "    return None\\n",
+                      encoding="utf-8",
+                  )
+                  ok, problems = audit_repository(root)
+                  assert not ok
+                  assert any("unknown contract" in problem for problem in problems)
+                  assert any("missing MODULE_BUILD" in problem for problem in problems)
+                  assert any("missing CONTRACTS" in problem for problem in problems)
+                  assert any("does not target an executable pytest test" in problem for problem in problems)
+          ''',
+          )
+
+          manifest_path = Path("STACK_MANIFEST.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          chapter_bytes = Path("docs/chapter-1.md").read_bytes()
+          manifest["canon"]["imported_content_sha256"] = hashlib.sha256(chapter_bytes).hexdigest()
+          manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Verify corrections
+        run: |
+          python -m pip install -e .
+          python tools/verify_skill_lib_contracts.py .
+          python -m pytest
+          python -m build
+          python -m twine check dist/*
+      - name: Commit corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/ucns/carrier.py tools/verify_skill_lib_contracts.py tests/test_carrier.py tests/test_skill_lib_contracts.py STACK_MANIFEST.json
+          git commit -m "fix: address Codex carrier and audit findings"
+          git push origin HEAD:agent/directed-carrier-floor
