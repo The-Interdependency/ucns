@@ -22,6 +22,14 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+#
+# id: check_custom_comparison_identity
+#   proves: custom_comparison_identity_is_explicit
+#   call: self::test_custom_comparison_identity
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from math import nextafter
@@ -32,6 +40,7 @@ from ucns import (
     ComparisonRegistry,
     absolute_comparison_policy,
     combined_comparison_policy,
+    custom_comparison_policy,
     exact_comparison_policy,
     interval_overlap_policy,
     relative_comparison_policy,
@@ -78,3 +87,25 @@ def test_comparison_replacement() -> None:
     replacement = exact_comparison_policy(version="2")
     registry.register(replacement, replace=True)
     assert registry.resolve("exact") is replacement
+
+
+def test_custom_comparison_identity() -> None:
+    with pytest.raises(TypeError):
+        custom_comparison_policy(
+            "custom",
+            lambda left, right: left == right,
+            version="1",
+        )
+    first = custom_comparison_policy(
+        "custom",
+        lambda left, right: left == right,
+        version="1",
+        code_reference="tests.test_comparison:equal",
+    )
+    second = custom_comparison_policy(
+        "custom",
+        lambda left, right: left != right,
+        version="1",
+        code_reference="tests.test_comparison:not-equal",
+    )
+    assert first.code_reference != second.code_reference
