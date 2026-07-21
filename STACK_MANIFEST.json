@@ -1,13 +1,13 @@
 {
   "schema": "interdependent-work-graph/v1",
   "generated_at": "2026-07-21",
-  "work": "ucns-directed-carrier-floor",
+  "work": "ucns-carrier-and-structural-support-floor",
   "participants": [
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "4556d8cf198475a54e9dad3915460c8ecae295bf",
-      "authority_role": "target repository and archive provenance",
-      "non_transfer": "archived tests and theorem language do not confer status on the replacement carrier"
+      "commit": "a8a6a417ecedd58e8fce75f3d55a84c583cf8357",
+      "authority_role": "current main carrier-floor authority and archive provenance",
+      "non_transfer": "archived tests, theorem language, and experimental branch status do not confer status on current canon"
     },
     {
       "repository": "The-Interdependency/skill-lib",
@@ -25,17 +25,41 @@
     "lifted_period_degrees": 720,
     "visible_period_degrees": 360
   },
+  "grok_recovery": {
+    "source_branch": "ucns-Grok",
+    "source_commit": "7aec3997879b5b7f748445f92f9faab92a0ed0dc",
+    "selected": [
+      "structural cell field inventory",
+      "finite nonnegative cell support representation",
+      "aggregate cell support W",
+      "Cartesian carrier pairing",
+      "paired-cell support multiplication",
+      "zero-support pruning",
+      "complete cell-support collapse fixtures"
+    ],
+    "reconstructed_not_copied": true,
+    "rejected": [
+      "current Grok product character M",
+      "current Grok faithful-breadth heuristic B",
+      "residual m_contrib parameter",
+      "representable empty or all-absent Carrier values",
+      "0.1.0-foundations package version",
+      "EDCM producer/consumer dependency claims",
+      "claims that mu, M, or B are fully discharged"
+    ]
+  },
   "materialization_order": [
-    "replace stale root canon",
-    "implement coordinate-free Structural Null and directed carrier floor",
-    "close skill-lib contract graph",
-    "run tests and package checks",
-    "construct measuring instruments before arithmetic recovery"
+    "establish coordinate-free Structural Null and directed carrier floor",
+    "establish fail-closed structural cells and aggregate cell support",
+    "establish Cartesian pairing, pruning, and complete cell-support collapse",
+    "define receipts, metadata, recursion, and canonical structural equivalence",
+    "construct M and B before any arithmetic recovery"
   ],
   "hmmm": [
-    "canonical mu assignment",
-    "aggregate support W",
-    "nontrivial product character M with separation witnesses",
+    "domain-specific mu assignment",
+    "support accounting beyond the cell-only structure",
+    "receipt, metadata, and recursive-structure representation",
+    "nontrivial product character M with valid multiplicativity and separation witnesses",
     "faithful breadth evaluator B",
     "canonical structural equivalence"
   ],
