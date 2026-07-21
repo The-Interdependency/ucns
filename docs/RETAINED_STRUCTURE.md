@@ -1,62 +1,98 @@
 # UCNS retained-structure envelope
 
-**Status:** bounded evidence container; not a complete `UCNSObject`.  
+**Status:** bounded evidence container with explicit candidate composition; not a complete `UCNSObject`.  
 **Consumers:** none currently.
 
 ## Purpose
 
-The current `Carrier` and aggregate support `W` are intentionally cell-only. UCNS also needs to retain receipts, metadata, relations, recursive content, provenance, state, and future structural layers without forcing them into cells or silently extending `W`.
-
-The retained-structure envelope preserves those layers as evidence while leaving their semantics and measurement status explicit.
-
-## Required objects
-
-- `ContributionStatus`: `measured`, `unmeasured`, or `excluded`.
-- `RetainedLayer`: a named occurrence of evidence with optional policy binding and explicit contribution status.
-- `RetainedStructure`: a non-null envelope containing a cell carrier, one or more retained layers, or both.
-- `make_retained_structure()`: returns Structural Null only when neither a carrier nor any retained layer remains.
-- `project_layer()`: applies a named structural policy to one selected layer without rewriting the envelope.
+The current `Carrier` and aggregate support `W` are intentionally cell-only.
+UCNS also retains receipts, metadata, relations, recursive content, provenance,
+state, and future named layers without forcing them into cells or silently
+extending `W`.
 
 ## Layer rules
 
-Layers are stored as an ordered tuple of occurrences. Repeated layer names are permitted. Adding a layer appends; it never overwrites an earlier layer.
+Layers are stored as ordered occurrences. Repeated names are permitted. Adding a
+layer appends and never overwrites earlier evidence.
 
-A layer records:
+A `RetainedLayer` records:
 
-- its name;
-- its raw evidence;
-- whether evidence is actually retained;
-- an optional policy name;
-- contribution status;
-- a scoped note explaining measurement or exclusion.
+- name;
+- raw evidence;
+- explicit retained/absent status;
+- optional structural-policy binding;
+- `measured`, `unmeasured`, or `excluded` contribution status;
+- scoped contribution or exclusion note.
 
-Truthiness is not an absence test. Values such as `0`, `False`, `None`, an empty mapping, or an empty sequence may be retained evidence when the layer explicitly says they are retained.
-
-An absent placeholder has `retained = false` and no evidence. It is ignored by the non-null test but may remain in an envelope as a declared option slot.
+Truthiness is not absence. Values such as `0`, `False`, `None`, empty mappings,
+and empty sequences may remain retained evidence.
 
 ## Measurement firewall
 
-Only the current cell carrier contributes to `support_weight()`.
+Only the current cell carrier contributes to `cell_support_weight()`.
 
-A retained layer does not enter `W`, `M`, or `B` merely because it exists. Its contribution status must remain one of:
+A retained layer does not enter `W`, `M`, or `B` merely because it exists. The
+envelope itself does not calculate `M` or `B`.
 
-- `measured`: a named evaluator and scope have established a contribution;
-- `unmeasured`: retained but not yet assigned a lawful contribution;
-- `excluded`: deliberately omitted under an explicit scope, with the reason recorded.
+A receipt-only, metadata-only, provenance-only, or recursive-only envelope remains
+non-null evidence even though its cell support is zero and its broader
+measurement remains unresolved.
 
-The envelope itself does not calculate `M` or `B`.
+## Structural policy projections
+
+`project_layer()` applies a named structural policy to one selected layer without
+rewriting the envelope. The projection retains the untouched source and records
+information loss.
+
+## Retained-layer pairing
+
+Retained layers compose only through an explicit `EnvelopePairPlan`.
+
+A `LayerRef` identifies a name and occurrence ordinal. Every `LayerPairRule`
+selects one left occurrence, one right occurrence, a registered pairing policy,
+and a result-layer name.
+
+Initial candidate pairing policies include:
+
+- concatenate;
+- Cartesian product;
+- positional zip;
+- preserve left and right separately;
+- select left;
+- select right;
+- exclude;
+- custom domain policy.
+
+Unmatched occurrences follow an explicit plan mode: fail closed, preserve sides,
+or exclude with loss records. There is no implicit fallback.
+
+Every paired-layer projection retains the untouched left and right sources,
+projected view, retained/excluded state, and losses. Result layers remain
+`unmeasured` and do not silently enter `W`, `M`, or `B`.
+
+The cell carriers continue using the already established Cartesian cell law.
+See [`LAYER_PAIRING.md`](LAYER_PAIRING.md).
+
+## Recursive evidence
+
+Recursive layers may contain shared graphs or cycles. Any traversal requires a
+caller-supplied identity function, child enumerator, cycle mode, depth budget,
+and node budget. Repeated references and truncation produce receipts. See
+[`TRAVERSAL_POLICY.md`](TRAVERSAL_POLICY.md).
 
 ## Structural Null
 
-`make_retained_structure()` returns the unique Structural Null only when:
+`make_retained_structure()` returns Structural Null only when:
 
 - the carrier is Structural Null; and
 - no layer occurrence has `retained = true`.
 
-Therefore a receipt-only, metadata-only, provenance-only, or recursive-only envelope remains non-null evidence even though its cell support is currently zero and unmeasured.
-
 ## Nonclaims
 
-This envelope does not settle whether layers are cells, relations among cells, graphs, trees, receipts, or distinct structural strata. It preserves each admissible representation until a policy or canon decision is made.
+The envelope and pairing laboratory do not settle whether retained layers are
+cells, relations among cells, graphs, trees, receipts, or distinct structural
+strata. They do not establish canonical pairing, canonical equivalence,
+canonical `M`, or canonical `B`.
 
-hmmm: how retained layers contribute to canonical equivalence, product character, and faithful breadth remains evaluator work rather than container behavior.
+hmmm: retained-layer measurement laws remain evaluator and canonization work,
+not container or pairing-plan behavior.
