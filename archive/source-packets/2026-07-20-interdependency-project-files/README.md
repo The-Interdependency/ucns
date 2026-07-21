@@ -9,21 +9,27 @@ and private business records.
 
 This is a provenance record, not a restoration of pre-reset UCNS.
 
-## Governing boundary
+## Canon supersession note
 
-Current root canon remains [`CANON.md`](../../../CANON.md): every UCNS object is
-a recursive Möbius carrier; its unique hidden twist/seam is zero; one visible
-circuit reverses orientation; two circuits complete the return.
+The packet was first reviewed while the reset root still described UCNS through
+Möbius/seam language. That account was subsequently removed from formal canon.
+Current root canon is [`CANON.md`](../../../CANON.md): Structural Null is unique
+and coordinate-free; non-null points inhabit a directed twofold branched angular
+cover with a 720-degree lifted period and a 360-degree visible projection; one
+visible lap is deck translation only and does not automatically reverse
+orientation, parity, chirality, or sign.
 
-No uploaded implementation satisfies that object boundary. The recovered UCNS
-lineage instead repeatedly:
+The source-placement result remains unchanged. No uploaded implementation
+satisfies the current object boundary. The recovered UCNS lineage repeatedly:
 
 - chooses the first anchor as zero during normalization;
 - identifies `None` or a trivial anchor object with the multiplicative unit;
-- computes host geometry on a one-circle modulus;
-- stores face state independently of lawful seam-crossing parity;
-- allows recursive payload absence rather than requiring a complete
-  twist-bearing payload object; and
+- computes host geometry on a one-circle modulus or permits one-circle
+  completion inside a nominal doubled cover;
+- stores face state as independent data without a ratified typed interaction
+  law;
+- permits structural absence or payload collapse to be represented by a local
+  sentinel rather than the unique coordinate-free Structural Null; and
 - states factorization or completeness results over that incomplete carrier.
 
 Those are historical facts about the development lineage. They are not defects
@@ -58,6 +64,7 @@ None of the following enters the root:
 - `normalize()` behavior that shifts the first anchor to zero;
 - `None`-as-unit semantics;
 - one-circle / 360-degree completion assumptions;
+- topology-invented sign, parity, chirality, or frame effects;
 - pre-reset multiplication, quotient, factor-search, codec, embedding, or
   theorem claims; or
 - tests whose success depends on those assumptions.
@@ -104,19 +111,25 @@ The filename-level packet inventory and SHA-256 prefixes are recorded in
 ## Reuse rule
 
 A historical algorithm may be recovered only after it is restated as an
-explicit projection of the complete twist-bearing object. Recovery must define:
+explicit projection of the complete directed carrier object. Recovery must
+define:
 
 1. what information the projection forgets;
-2. how the hidden seam remains intrinsic and immovable;
-3. how 720-degree return and orientation state are represented;
-4. how recursive payloads remain complete UCNS objects;
-5. which old tests remain meaningful under the projection; and
-6. which old theorem statements must be weakened, replaced, or discarded.
+2. how Structural Null remains unique and coordinate-free;
+3. how the 720-degree lifted period and 360-degree visible projection are
+   represented;
+4. how sign, parity, chirality, reflection, or frame effects remain owned by an
+   explicit typed algebra rather than inferred from one lap;
+5. how recursive content, provenance, metadata, and receipts remain visible to
+   faithful breadth; and
+6. which old tests remain meaningful and which theorem statements must be
+   weakened, replaced, or discarded.
 
 Until those obligations are met, historical code remains evidence only.
 
 ## hmmm
 
 The packet contains substantial reusable search machinery, but no lawful bridge
-from the reset object to that machinery has yet been defined. The missing bridge
-is the boundary between preserved work and legitimate recovery.
+from the directed carrier and its still-owed measuring instruments to that
+machinery has yet been defined. The missing bridge is the boundary between
+preserved work and legitimate recovery.

@@ -1,40 +1,62 @@
-# UCNS — reset at zero
+# UCNS — definition-first restart
 
-This repository has been reset in public.
+UCNS is rebuilding from its carrier definition rather than patching the former
+factorization kernel.
 
-The previous seven months of implementation, experiments, specifications,
-tests, and formal work are preserved without deletion under
-[`archive/`](archive/), with the complete Git history still intact.
+The previous implementation, specifications, tests, formal work, and
+experiments remain preserved under [`archive/`](archive/) with complete Git
+history. They are evidence and potential machinery, not current canon.
 
-That work produced a normalized recursive factorization kernel, but the
-type called `UCNSObject` omitted a load-bearing invariant specified at the
-beginning of the project: **every UCNS object is a Möbius-twisted carrier,
-and zero exists only at its hidden twist/seam**.
+## Current formal foundation
 
-This is a foundational object-definition failure, not a cosmetic refactor.
-Continuing to patch the old type would preserve the error. The root of the
-repository therefore begins again from zero. Archived code may later be
-recovered only as an explicitly defined projection of complete UCNS; it is
-not to be represented as complete UCNS merely because it compiled, passed
-tests, or accumulated proofs.
+The carrier is a **directed twofold branched angular cover**:
 
-## Canonical starting constraint
+- Structural Null is the unique coordinate-free absence of distinction.
+- Non-null carrier points have a 720-degree lifted period.
+- The visible projection has a 360-degree period.
+- One visible lap advances to the second lifted representative on the same
+  directed path.
+- Two visible laps complete the lifted return.
+- A 360-degree displacement does not automatically negate, reflect, reverse
+  parity or chirality, invert a frame, or transform a payload.
 
-- Every UCNS object is a recursive Möbius carrier.
-- Every object has exactly one intrinsic hidden twist/seam.
-- The seam is zero.
-- Zero is not an anchor, coordinate, ordinary glyph, face bit, empty list,
-  first-angle normalization point, or multiplicative identity.
-- One circuit returns to the same visible position with reversed orientation.
-- Two circuits restore orientation and complete the return.
-- Normalization and admissible transformations cannot select, move, erase,
-  or expose the seam.
-- Every recursive payload is itself a complete twist-bearing UCNS object.
+The earlier Möbius/seam account remains provenance only. It is not the formal
+object definition. See [`CANON.md`](CANON.md) and
+[`docs/chapter-1.md`](docs/chapter-1.md).
 
-## Current status
+## Active code
 
-There is no current implementation and no system-wide theorem claim at the
-repository root. The archive is evidence, history, and potentially reusable
-machinery—not the definition of UCNS.
+The root package currently implements only the carrier floor:
 
-hmmm: the restart is public because the error and the work are public.
+- Structural Null;
+- the faithful-breadth-to-radius map supplied with an already-known breadth;
+- 720-degree lifted points;
+- 360-degree visible projection;
+- deck translation and the one/two branch law.
+
+It does **not** yet implement a complete `UCNSObject`, faithful-breadth
+evaluation, support weights, product character, pairing, payload dispatch,
+factorization, encoding, or Theorem N.
+
+## Verification
+
+```text
+python tools/verify_skill_lib_contracts.py .
+python -m pytest
+python -m build
+python -m twine check dist/*
+```
+
+The source owns skill-lib `MODULE_BUILD` and `CONTRACTS` declarations; tests own
+`CHECKS` declarations. The no-exec audit fails closed on missing contracts,
+unknown witnesses, or unresolved `self::` calls.
+
+## Build doctrine
+
+This build is pinned to
+`The-Interdependency/skill-lib@fa6e6200bc274657de2334754bbbf98844ef6541`.
+See [`.agents/skills/README.md`](.agents/skills/README.md) and
+[`STACK_MANIFEST.json`](STACK_MANIFEST.json).
+
+hmmm: the topology is executable; the three measuring instruments still have
+to earn their names under traffic.

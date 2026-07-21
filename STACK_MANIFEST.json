@@ -1,0 +1,48 @@
+{
+  "schema": "interdependent-work-graph/v1",
+  "generated_at": "2026-07-21",
+  "work": "ucns-directed-carrier-floor",
+  "participants": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "4556d8cf198475a54e9dad3915460c8ecae295bf",
+      "authority_role": "target repository and archive provenance",
+      "non_transfer": "archived tests and theorem language do not confer status on the replacement carrier"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "fa6e6200bc274657de2334754bbbf98844ef6541",
+      "authority_role": "build metadata, contract evidence, canon, domain-claims, and cross-repository workflow doctrine",
+      "non_transfer": "skill conformance does not establish UCNS mathematical validity"
+    }
+  ],
+  "canon": {
+    "source_name": "ucns_chapter_1_final.md",
+    "repository_path": "docs/chapter-1.md",
+    "imported_content_sha256": "e02a6b775954019eaf9215e363503ed9d4bf9c4bc12175e440a72ac1d88d6c48",
+    "authority": "Erin Spencer",
+    "formal_carrier": "directed twofold branched angular cover",
+    "lifted_period_degrees": 720,
+    "visible_period_degrees": 360
+  },
+  "materialization_order": [
+    "replace stale root canon",
+    "implement coordinate-free Structural Null and directed carrier floor",
+    "close skill-lib contract graph",
+    "run tests and package checks",
+    "construct measuring instruments before arithmetic recovery"
+  ],
+  "hmmm": [
+    "canonical mu assignment",
+    "aggregate support W",
+    "nontrivial product character M with separation witnesses",
+    "faithful breadth evaluator B",
+    "canonical structural equivalence"
+  ],
+  "skill_lib_materialization": {
+    "source_commit": "fa6e6200bc274657de2334754bbbf98844ef6541",
+    "path": ".agents/skills",
+    "mode": "verbatim canonical subset",
+    "drift_gate": "strict"
+  }
+}
