@@ -62,6 +62,8 @@ def test_recursive_cycle_modes() -> None:
         policy=TraversalPolicy("reference", CycleMode.REFERENCE),
     )
     assert len(referenced.references) == 1
+    assert referenced.references[0].first_path == ("a",)
+    assert referenced.references[0].repeated_path == ("a", "b", "a")
 
     fixed = traverse(
         "a",
@@ -71,6 +73,7 @@ def test_recursive_cycle_modes() -> None:
             "fixed",
             CycleMode.FIXED_POINT,
             fixed_point_resolver=lambda node, path: (node, path),
+            resolver_reference="tests.test_traversal:fixed-resolver",
         ),
     )
     assert fixed.fixed_points
@@ -92,6 +95,7 @@ def test_shared_identity_reference() -> None:
     assert tuple(visit.identity for visit in result.visits).count("shared") == 1
     assert len(result.references) == 1
     assert result.references[0].identity == "shared"
+    assert result.references[0].first_path == ("root", "left", "shared")
 
 
 def test_traversal_budget_receipts() -> None:
@@ -108,7 +112,44 @@ def test_traversal_budget_receipts() -> None:
     assert unfolded.truncations
     assert not unfolded.complete
 
+    pulled: list[int] = []
+
+    def children(node):
+        if node != "root":
+            return ()
+
+        def stream():
+            index = 0
+            while True:
+                pulled.append(index)
+                yield f"child-{index}"
+                index += 1
+
+        return stream()
+
+    bounded = traverse(
+        "root",
+        children=children,
+        identity=lambda node: node,
+        policy=TraversalPolicy(
+            "node-budget",
+            CycleMode.REJECT,
+            TraversalBudget(max_depth=5, max_nodes=2),
+        ),
+    )
+    assert pulled == [0]
+    assert any(
+        receipt.reason == "max-nodes-children"
+        for receipt in bounded.truncations
+    )
+
 
 def test_fixed_point_requires_resolver() -> None:
     with pytest.raises(ValueError):
         TraversalPolicy("fixed", CycleMode.FIXED_POINT)
+    with pytest.raises(ValueError):
+        TraversalPolicy(
+            "fixed",
+            CycleMode.FIXED_POINT,
+            fixed_point_resolver=lambda node, path: node,
+        )
