@@ -53,8 +53,11 @@ Therefore the structural-support floor has a unique aggregate-support zero:
 support_weight(A) == 0  iff  A is STRUCTURAL_NULL
 ```
 
-This claim is scoped to the current cell-only structure. Receipts, metadata, and
-recursive structure have not yet been admitted into the object model.
+This claim is scoped to the current **cell carrier**. Receipts, metadata,
+relations, recursive content, provenance, and state may now be retained in a
+`RetainedStructure`, but they remain outside `Carrier` and do not silently enter
+cell support `W`. A layer-only retained envelope is non-null evidence with zero
+current cell support, not proven zero faithful breadth.
 
 ## Pairing law
 
@@ -71,7 +74,7 @@ W(A pair C) = W(A) * W(C)
 ```
 
 Structural Null is absorbing. Pairing defines where cells meet; it does not
-define typed payload interaction.
+define typed payload interaction or retained-layer pairing.
 
 ## Choice-preservation law
 
@@ -89,22 +92,30 @@ graph, tree, or other interpretations:
 - no default interpretation may destroy information required by another
   still-admissible interpretation.
 
-Any future operation whose result depends on one of these unresolved choices
-must accept an explicit policy or fail closed. A temporary default is not canon.
-See [`CHOICE_PRESERVATION.md`](CHOICE_PRESERVATION.md).
+Operations whose result depends on those choices use explicit `StructurePolicy`
+values. Policy projections retain their source and declare information loss;
+policy registration does not make a policy canonical.
+
+See [`CHOICE_PRESERVATION.md`](CHOICE_PRESERVATION.md) and
+[`CHOICE_POLICY.md`](CHOICE_POLICY.md).
 
 ## Explicit exclusions
 
 This contract does not define or authorize:
 
-- a product character `M`;
-- faithful breadth `B`;
+- a canonical product character `M`;
+- canonical faithful breadth `B`;
 - canonical structural equivalence;
-- receipt or metadata semantics;
-- typed payload dispatch;
+- measurement contributions for retained receipts, metadata, relations,
+  recursion, provenance, or state;
+- retained-layer pairing or typed payload dispatch;
 - a complete `UCNSObject`;
 - factorization, encoding, embedding, or theorem claims;
 - any EDCM or other downstream-consumer dependency.
+
+Candidate policies and evaluators may be represented and tested through the
+policy layer and evaluator laboratory, but that infrastructure does not promote
+their mathematical claims.
 
 ## Provenance
 
@@ -116,6 +127,6 @@ also contained an invalid multiplicativity claim for `M`, a provisional `B`
 heuristic, representable non-null objects with zero breadth, and premature status
 language.
 
-hmmm: the next boundary is designing explicit policy and provenance types for
-choosing among receipt, metadata, recursion, ordering, multiplicity, and relation
-interpretations without destroying the alternatives not selected.
+hmmm: the next boundary is constructing actual equivalence, `M`, and `B`
+candidates over the retained envelope, then calibrating them under explicit law
+suites without confusing candidate infrastructure with canon.
