@@ -13,18 +13,35 @@ import ucns
 
 def test_public_surface_is_bounded() -> None:
     exported = set(ucns.__all__)
-    assert "LiftedCarrierPoint" in exported
-    assert "STRUCTURAL_NULL" in exported
-    assert "Cell" in exported
-    assert "Carrier" in exported
-    assert "support_weight" in exported
-    assert "pair" in exported
-    assert "prune" in exported
-    assert "collapse" in exported
+    for expected in (
+        "LiftedCarrierPoint",
+        "STRUCTURAL_NULL",
+        "Cell",
+        "Carrier",
+        "support_weight",
+        "pair",
+        "prune",
+        "collapse",
+        "StructurePolicy",
+        "PolicyRegistry",
+        "Projection",
+        "RetainedLayer",
+        "RetainedStructure",
+        "EvaluatorCandidate",
+        "EvaluatorRegistry",
+        "LawSuite",
+        "compare_candidates",
+    ):
+        assert expected in exported
 
-    assert "UCNSObject" not in exported
-    assert "product_character" not in exported
-    assert "faithful_breadth" not in exported
-    assert "multiply" not in exported
-    assert "factor" not in exported
-    assert "TheoremN" not in exported
+    for forbidden in (
+        "UCNSObject",
+        "product_character",
+        "faithful_breadth",
+        "multiply",
+        "factor",
+        "TheoremN",
+        "default_evaluator",
+        "canonical_policy",
+    ):
+        assert forbidden not in exported
