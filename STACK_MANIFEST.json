@@ -1,13 +1,13 @@
 {
   "schema": "interdependent-work-graph/v1",
   "generated_at": "2026-07-21",
-  "work": "ucns-carrier-and-structural-support-floor",
+  "work": "ucns-option-preserving-structural-instrument-lab",
   "participants": [
     {
       "repository": "The-Interdependency/ucns",
-      "commit": "a8a6a417ecedd58e8fce75f3d55a84c583cf8357",
-      "authority_role": "current main carrier-floor authority and archive provenance",
-      "non_transfer": "archived tests, theorem language, and experimental branch status do not confer status on current canon"
+      "commit": "979a4f1dbb595bd8424ea131e9435426f4cc2d54",
+      "authority_role": "current main carrier/support authority and option-preservation boundary",
+      "non_transfer": "archived tests, theorem language, experimental branch status, and candidate registration do not confer mathematical canon"
     },
     {
       "repository": "The-Interdependency/skill-lib",
@@ -23,7 +23,8 @@
     "authority": "Erin Spencer",
     "formal_carrier": "directed twofold branched angular cover",
     "lifted_period_degrees": 720,
-    "visible_period_degrees": 360
+    "visible_period_degrees": 360,
+    "choice_rule": "preserve the capacity to choose among still-admissible options"
   },
   "grok_recovery": {
     "source_branch": "ucns-Grok",
@@ -48,20 +49,62 @@
       "claims that mu, M, or B are fully discharged"
     ]
   },
+  "option_preserving_infrastructure": {
+    "policy_layer": {
+      "status": "implemented and test-backed candidate infrastructure",
+      "surfaces": [
+        "StructurePolicy",
+        "PolicyRegistry",
+        "Projection",
+        "InformationLoss",
+        "caller-keyed ordered, multiset, and set views"
+      ],
+      "non_transfer": "registration or use does not make a policy canonical"
+    },
+    "retained_envelope": {
+      "status": "implemented and test-backed evidence container",
+      "surfaces": [
+        "RetainedLayer",
+        "RetainedStructure",
+        "explicit presence",
+        "repeated ordered layer occurrences",
+        "measured, unmeasured, or excluded contribution status"
+      ],
+      "non_transfer": "retained layers do not enter cell-only W or define M or B"
+    },
+    "evaluator_laboratory": {
+      "status": "implemented and test-backed candidate comparison infrastructure",
+      "surfaces": [
+        "EvaluatorCandidate",
+        "EvaluatorRegistry",
+        "LawSuite",
+        "Witness",
+        "EvaluationReport",
+        "CandidateComparison",
+        "separation law builders"
+      ],
+      "non_transfer": "passing laws or candidate agreement does not select a canonical evaluator"
+    }
+  },
   "materialization_order": [
     "establish coordinate-free Structural Null and directed carrier floor",
     "establish fail-closed structural cells and aggregate cell support",
     "establish Cartesian pairing, pruning, and complete cell-support collapse",
-    "define receipts, metadata, recursion, and canonical structural equivalence",
-    "construct M and B before any arithmetic recovery"
+    "preserve unresolved choices through explicit policy projections",
+    "retain receipts, metadata, relations, recursion, provenance, and state without extending W",
+    "register and compare equivalence, M, and B candidates under declared law suites",
+    "canonize instruments only through explicit evidence-bearing selection",
+    "recover arithmetic only after canonical instruments exist"
   ],
   "hmmm": [
     "domain-specific mu assignment",
-    "support accounting beyond the cell-only structure",
-    "receipt, metadata, and recursive-structure representation",
+    "measurement contributions beyond the cell-only structure",
+    "graph and tree structural policies",
+    "canonical structural equivalence",
     "nontrivial product character M with valid multiplicativity and separation witnesses",
     "faithful breadth evaluator B",
-    "canonical structural equivalence"
+    "candidate promotion and rollback protocol",
+    "typed payload dispatch and complete UCNS object"
   ],
   "skill_lib_materialization": {
     "source_commit": "fa6e6200bc274657de2334754bbbf98844ef6541",

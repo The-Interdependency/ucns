@@ -1,4 +1,4 @@
-# UCNS object canon — directed carrier and structural-support floor
+# UCNS object canon — directed carrier and option-preserving structural floor
 
 ## Formal carrier
 
@@ -126,9 +126,69 @@ removed by explicit canon, invariant violation, proof of recoverability, or an
 explicitly scoped user decision whose information loss is recorded.
 
 The current cell tuple preserves order, multiplicity, and left/right sidedness
-as evidence. It does **not** yet declare that cells are canonically a sequence
-rather than a set, multiset, graph, tree, or another structure. See
-[`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md).
+as evidence. It does **not** declare that cells are canonically a sequence rather
+than a set, multiset, graph, tree, or another structure.
+
+The structural-choice policy layer now makes those choices explicit:
+
+- multiple policies coexist in a registry with no default winner;
+- every projection retains its untouched source evidence;
+- ignored or discarded distinctions are reported as information loss;
+- set and multiset views require caller-supplied identity keys;
+- graph, tree, and future domain interpretations remain registerable policies
+  rather than changes to the retained object.
+
+See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
+[`docs/CHOICE_POLICY.md`](docs/CHOICE_POLICY.md).
+
+## Retained structural layers
+
+Cells are not required to absorb every kind of evidence. A
+`RetainedStructure` may preserve repeated, ordered layer occurrences for:
+
+- receipts;
+- metadata;
+- relations;
+- recursive content;
+- provenance;
+- state;
+- future named layers.
+
+Layer presence is explicit rather than inferred from truthiness. Values such as
+`0`, `False`, `None`, empty mappings, and empty sequences may remain retained
+evidence.
+
+Repeated layer names append and do not overwrite one another. Each layer records
+an optional policy binding and one of three contribution states: `measured`,
+`unmeasured`, or `excluded` with a scoped explanation.
+
+This representation does not extend cell support. Current `W` still measures
+only the cell carrier. A receipt-only or metadata-only envelope is non-null but
+has zero **cell support**, not proven zero faithful breadth.
+
+See [`docs/RETAINED_STRUCTURE.md`](docs/RETAINED_STRUCTURE.md).
+
+## Evaluator laboratory
+
+Canonical structural equivalence, product character `M`, and faithful breadth
+`B` must be developed as competing candidates before selection.
+
+The evaluator laboratory provides:
+
+- named candidate registries separated by evaluator kind;
+- explicit replacement rather than silent overwrite;
+- no `default`, `best`, majority, or automatic promotion operation;
+- ordered law suites retaining pass, failure, exception, and witness evidence;
+- side-by-side candidate comparison that reports disagreement without ranking;
+- reusable null, nonnegativity, pairing, invariance, sensitivity, and separation
+  laws.
+
+Candidate infrastructure is not an evaluator. Registering or passing a candidate
+does not make it canonical. Canonization requires a separate recorded decision
+that identifies the selected version, passed laws, witnesses, alternatives,
+information loss, and rollback behavior.
+
+See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md).
 
 ## Current implementation boundary
 
@@ -140,12 +200,18 @@ Implemented and test-backed:
 4. aggregate cell support `W`;
 5. Cartesian carrier pairing and the aggregate-support multiplication law;
 6. cell pruning and complete cell-support collapse;
-7. preservation of unresolved cell order, multiplicity, and operand sidedness.
+7. preservation of unresolved cell order, multiplicity, and operand sidedness;
+8. explicit structural policy registry, projections, and information-loss records;
+9. retained-layer envelopes with explicit presence, policy binding, and
+   contribution status;
+10. evaluator candidate registries, law suites, witness retention, separation
+    law builders, and disagreement reports.
 
 Still unresolved and not promoted:
 
 1. domain-specific rules assigning `mu` to real structures;
-2. receipts, metadata, recursion, and their relation to cells;
+2. lawful measurement contributions for receipts, metadata, relations,
+   recursion, provenance, and state;
 3. canonical structural equivalence;
 4. a nontrivial multiplicative product character `M`, witnessed distinct from
    `W` under the actual pairing law;
@@ -170,7 +236,7 @@ The following are removed from formal canon:
 - one-circle completion;
 - face state inferred from a seam crossing.
 
-hmmm: cell support and aggregate support now have executable boundaries; the
-meaning of retained ordering, receipts, metadata, recursion, equivalence, `M`,
-and `B` remains deliberately open, with their option space preserved rather
-than flattened.
+hmmm: UCNS can now retain the unresolved structure, apply explicit competing
+policies, and compare candidate instruments. The next truth boundary is the
+construction and calibration of actual equivalence, `M`, and `B` candidates over
+retained layers without mistaking infrastructure for mathematical validity.

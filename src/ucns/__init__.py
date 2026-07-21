@@ -2,35 +2,35 @@
 # id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports only the ratified carrier and structural-support foundations
+#   summary: exports ratified carrier/support foundations plus option-preserving policy, envelope, and evaluator-lab infrastructure
 #   owner: Erin Spencer
-#   public_surface: carrier and structure names listed in __all__
+#   public_surface: carrier, structure, policy, envelope, and laboratory names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_public_surface.py, tests/test_structure.py
-#   rollout: importable foundations prototype only
-#   rollback: remove structure exports while preserving carrier floor
-#   requires: directed_carrier_floor, structural_cell_support_floor
+#   tests: tests/test_public_surface.py, tests/test_structure.py, tests/test_policy.py, tests/test_envelope.py, tests/test_laboratory.py
+#   rollout: importable foundations and candidate-research infrastructure only
+#   rollback: remove policy, envelope, and laboratory exports while preserving carrier/support floors
+#   requires: directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, evaluator_candidate_laboratory
 #   since: 2026-07-21
-#   unresolved: receipts, metadata, canonical structural equivalence, M, B, complete UCNS object
+#   unresolved: canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
 # id: public_surface_exposes_only_ratified_foundations
 #   given: a consumer imports ucns
-#   then: only the ratified carrier and structural-support foundations are exported; no M, B, factorization, or theorem surface is implied
+#   then: ratified foundations and explicit candidate infrastructure are exported without implying canonical M, B, factorization, theorem, or downstream status
 #   class: safety
 #   since: 2026-07-21
 # === END CONTRACTS ===
 
-"""UCNS definition-first carrier and structural-support foundations.
+"""UCNS foundations and option-preserving candidate infrastructure.
 
-No complete ``UCNSObject``, product character, faithful-breadth evaluator,
-theorem-bearing arithmetic, or downstream-consumer promise is exported yet.
+No complete ``UCNSObject``, canonical product character, canonical faithful-breadth
+evaluator, theorem-bearing arithmetic, or downstream-consumer promise is exported.
 """
 
 from .carrier import (
@@ -59,6 +59,47 @@ from .structure import (
     prune,
     support_weight,
 )
+from .policy import (
+    InformationLoss,
+    OccurrenceGroup,
+    PolicyRegistry,
+    Projection,
+    SetEntry,
+    StructurePolicy,
+    apply_policy,
+    ordered_sequence_policy,
+    set_policy,
+    unordered_multiset_policy,
+)
+from .envelope import (
+    ContributionStatus,
+    RetainedEnvelope,
+    RetainedLayer,
+    RetainedStructure,
+    cell_support_weight,
+    make_retained_structure,
+    project_layer,
+)
+from .laboratory import (
+    CandidateComparison,
+    CandidateOutput,
+    EvaluationReport,
+    EvaluatorCandidate,
+    EvaluatorKind,
+    EvaluatorRegistry,
+    Law,
+    LawResult,
+    LawSuite,
+    Witness,
+    compare_candidates,
+    finite_nonnegative_law,
+    invariance_law,
+    null_zero_law,
+    pair_multiplicative_law,
+    same_candidate_different_reference_law,
+    same_reference_different_candidate_law,
+    sensitivity_law,
+)
 
 __all__ = [
     "LIFTED_PERIOD",
@@ -83,4 +124,39 @@ __all__ = [
     "pair",
     "prune",
     "support_weight",
+    "InformationLoss",
+    "OccurrenceGroup",
+    "PolicyRegistry",
+    "Projection",
+    "SetEntry",
+    "StructurePolicy",
+    "apply_policy",
+    "ordered_sequence_policy",
+    "set_policy",
+    "unordered_multiset_policy",
+    "ContributionStatus",
+    "RetainedEnvelope",
+    "RetainedLayer",
+    "RetainedStructure",
+    "cell_support_weight",
+    "make_retained_structure",
+    "project_layer",
+    "CandidateComparison",
+    "CandidateOutput",
+    "EvaluationReport",
+    "EvaluatorCandidate",
+    "EvaluatorKind",
+    "EvaluatorRegistry",
+    "Law",
+    "LawResult",
+    "LawSuite",
+    "Witness",
+    "compare_candidates",
+    "finite_nonnegative_law",
+    "invariance_law",
+    "null_zero_law",
+    "pair_multiplicative_law",
+    "same_candidate_different_reference_law",
+    "same_reference_different_candidate_law",
+    "sensitivity_law",
 ]

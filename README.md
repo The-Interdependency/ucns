@@ -31,15 +31,18 @@ remain admissible, UCNS preserves the capacity to choose among them.
 
 Unresolved options are not silently collapsed into defaults. Current cell tuples
 retain order, multiplicity, and operand sidedness as evidence without declaring
-that canonical structural semantics are necessarily sequence-based. Any future
-operation whose result depends on an unresolved interpretation must accept an
-explicit policy or fail closed.
+that canonical structural semantics are necessarily sequence-based.
 
-See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md).
+The policy layer now supports named projections, multiple coexisting policies,
+caller-keyed set and multiset views, retained source evidence, and explicit
+information-loss records. It has no default or canonical policy.
+
+See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
+[`docs/CHOICE_POLICY.md`](docs/CHOICE_POLICY.md).
 
 ## Active code
 
-The root package implements two bounded layers.
+The root package implements five bounded layers.
 
 ### Directed carrier floor
 
@@ -61,10 +64,41 @@ The root package implements two bounded layers.
 
 See [`docs/STRUCTURE_CONTRACT.md`](docs/STRUCTURE_CONTRACT.md).
 
-It does **not** yet implement a complete `UCNSObject`, domain-specific support
-assignment, receipts, metadata, canonical structural equivalence, product
-character `M`, faithful-breadth evaluation `B`, typed payload dispatch,
-factorization, encoding, or Theorem N.
+### Structural-choice policies
+
+- `StructurePolicy` and `PolicyRegistry`;
+- non-destructive `Projection` values;
+- explicit `InformationLoss` records;
+- ordered-sequence, caller-keyed multiset, and caller-keyed set policy
+  constructors;
+- support for future custom graph, tree, relation, or domain policies.
+
+### Retained-structure envelope
+
+- repeated, ordered retained layers without overwrite;
+- explicit presence even for falsey evidence;
+- optional policy bindings;
+- `measured`, `unmeasured`, and `excluded` contribution status;
+- receipt-only or metadata-only non-null evidence;
+- a firewall that keeps current `W` cell-only.
+
+See [`docs/RETAINED_STRUCTURE.md`](docs/RETAINED_STRUCTURE.md).
+
+### Evaluator laboratory
+
+- multiple equivalence, product-character, or faithful-breadth candidates;
+- no default, best, majority, or automatic winner;
+- law suites retaining pass, failure, exception, and witness evidence;
+- side-by-side disagreement reports;
+- reusable null, nonnegativity, pairing, invariance, sensitivity, and
+  separation laws.
+
+See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md).
+
+The package does **not** yet implement a complete `UCNSObject`, domain-specific
+support assignment, canonical structural equivalence, canonical product
+character `M`, canonical faithful-breadth evaluation `B`, typed payload
+dispatch, factorization, encoding, or Theorem N.
 
 The structural-support implementation was selectively reconstructed from the
 useful parts of experimental branch `ucns-Grok`; the branch was not merged
@@ -92,6 +126,6 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: cells and aggregate support now have executable boundaries; receipts,
-metadata, recursive structure, equivalence, `M`, and `B` still have to earn
-their semantics without destroying the options not selected.
+hmmm: UCNS now preserves competing structural choices and can compare candidate
+instruments. Actual equivalence, `M`, and `B` candidates still have to be
+constructed, calibrated, and explicitly selected before they become canon.
