@@ -116,7 +116,7 @@ class Carrier:
     Radius is derived solely from faithful breadth B.
     """
     cells: Tuple[Cell, ...] = field(default_factory=tuple)
-    # explicit product-character contribution (combinatorial grading)
+    # residual product-character grade (default 1.0) for future typed work
     m_contrib: float = 1.0
     # retained causal receipts (ordinary structure)
     receipts: Tuple[Any, ...] = field(default_factory=tuple)
@@ -136,16 +136,27 @@ class Carrier:
 
     def M(self) -> float:
         """
-        Product character.
+        Product character — derived combinatorial invariant.
         Multiplicative under pairing.
-        Neutral value is 1; unique zero is Structural Null.
+        Neutral value is 1 (any collection of unit-support cells); unique zero is Structural Null.
+
+        Primary factor is the product of the cell supports µ(c).
+        This is independent of the sum W, so different partitions of the same
+        total support yield different M (separation witness).
+        An optional residual m_contrib (default 1) remains for future typed grading.
+        Receipts contribute a multiplicative factor.
         """
         if self.W() <= 0.0 and not self.receipts and not self.extra:
             return 0.0
-        # combinatorial grading; may be refined by concrete evaluator
-        base = max(0.0, float(self.m_contrib))
-        # receipts contribute multiplicatively if present
-        r = 1.0 + 0.1 * len(self.receipts)  # provisional; concrete later
+        # product of cell supports (primary combinatorial character)
+        prod = 1.0
+        for c in self.cells:
+            s = c.support()
+            if s > 0.0:
+                prod *= s
+        # residual explicit grade (default 1.0) + receipt distinction
+        base = max(0.0, float(self.m_contrib)) * prod
+        r = 1.0 + 0.1 * len(self.receipts)
         return base * r
 
     def B(self) -> float:

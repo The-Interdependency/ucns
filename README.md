@@ -16,9 +16,13 @@ That work is not the current definition.
 
 See `docs/chapter_1_subtractive_foundations.md` for the sealed specification.
 
-## Current status
+## Current status (branch `ucns-Grok`)
 
-Core object model and valuations under construction from the sealed Chapter 1.
-No system-wide theorem claims at root until the measuring instruments (\(\mu\), \(M\), \(B\)) are discharged with separation witnesses.
+- Core object model executable: `StructuralNull`, `Cell`, `Carrier`, pair / prune / collapse
+- \( M \) derived from product of cell supports (no free primary parameter)
+- Separation witnesses for \( M \ne W \) in both directions, including under pairing
+- First invariance tests for faithful breadth \( B \)
+- Minimal producer contract for EDCM: `docs/PRODUCER_CONTRACT.md`
+- 10 contract tests passing
 
-hmmm — the floor is specified; the first concrete evaluators are the next footprint.
+hmmm — the free parameter is gone, the witnesses are structural, and a contract surface exists. The geometry still has almost no computational footprint and the full equivalence relation for \( B \) remains open.

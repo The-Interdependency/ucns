@@ -20,9 +20,15 @@ A conforming object definition must make the following unrepresentable:
 
 No multiplication, factorization, embedding, codec, or theorem is promoted into the new root until it is defined over this object and preserves these obligations.
 
-## Implementation obligations still open
+## Implementation status (2026-07-21)
 
-- assign cell-support primitive \(\mu\) and its zero-test
-- construct nontrivial product character \( M \) with witnesses \( M \ne W \)
-- build null-faithful \( B \) evaluator with invariance tests
-- separation witnesses for the triad
+- cell-support primitive \(\mu\) and its zero-test — **discharged** (positive \(\mu\) is definitive existence)
+- nontrivial product character \( M \) with witnesses \( M \ne W \) — **discharged** (derived from product of cell supports; both separation directions present and tested)
+- null-faithful \( B \) evaluator with first invariance tests — **partial** (heuristic + reordering/receipt order tests exist; full canonical equivalence still open)
+- residual free parameter in \( M \) — **removed** as primary mechanism; only a residual grade remains for future typed work
+
+## Remaining open
+
+- richer canonical equivalence for receipts and encoding artifacts
+- full typed payload dispatch surface
+- EDCM consumption of the producer contract (`docs/PRODUCER_CONTRACT.md`)

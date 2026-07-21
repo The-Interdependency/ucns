@@ -96,3 +96,29 @@ def test_separation_witnesses():
     assert support_weight(D) != support_weight(E)
 
     assert verify_separation() is True
+
+
+def test_B_invariance_under_cell_reordering():
+    """B must not depend on the order of cells with identical support."""
+    from ucns import Carrier, Cell, faithful_breadth
+    c1 = Cell(mu=1.0, payload="a")
+    c2 = Cell(mu=1.0, payload="b")
+    left  = Carrier(cells=(c1, c2))
+    right = Carrier(cells=(c2, c1))
+    assert abs(faithful_breadth(left) - faithful_breadth(right)) < 1e-12
+
+
+def test_B_invariance_under_equivalent_receipts():
+    """Identical receipt multisets (order-insensitive for now) give same B."""
+    from ucns import Carrier, Cell, faithful_breadth
+    base = (Cell(mu=1.0),)
+    a = Carrier(cells=base, receipts=("r1", "r2"))
+    b = Carrier(cells=base, receipts=("r2", "r1"))
+    assert abs(faithful_breadth(a) - faithful_breadth(b)) < 1e-12
+
+
+def test_M_is_multiplicative_under_pairing():
+    from ucns import unit, pair, product_character
+    u = unit()
+    p = pair(u, u)
+    assert abs(product_character(p) - product_character(u)**2) < 1e-12
