@@ -25,6 +25,11 @@ from .core import (
     unit,
     from_payload,
 )
+from .witnesses import (
+    witness_same_W_different_M,
+    witness_same_M_different_W,
+    verify_separation,
+)
 
 __all__ = [
     "StructuralNull",
@@ -41,6 +46,9 @@ __all__ = [
     "collapse",
     "unit",
     "from_payload",
+    "witness_same_W_different_M",
+    "witness_same_M_different_W",
+    "verify_separation",
 ]
 
 __version__ = "0.1.0-foundations"

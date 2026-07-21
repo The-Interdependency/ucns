@@ -77,3 +77,22 @@ def test_collapse_requires_complete_absence():
     # only after complete structural erasure
     empty = Carrier(cells=())
     assert is_null(collapse(empty))
+
+
+def test_separation_witnesses():
+    from ucns import (
+        witness_same_W_different_M,
+        witness_same_M_different_W,
+        verify_separation,
+        support_weight,
+        product_character,
+    )
+    A, C = witness_same_W_different_M()
+    assert support_weight(A) == support_weight(C)
+    assert product_character(A) != product_character(C)
+
+    D, E = witness_same_M_different_W()
+    assert product_character(D) == product_character(E)
+    assert support_weight(D) != support_weight(E)
+
+    assert verify_separation() is True
