@@ -7,6 +7,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_shared_identity_reference
+#   proves: shared_identity_references_are_retained
+#   call: self::test_shared_identity_reference
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # id: check_traversal_budget_receipts
 #   proves: traversal_budgets_emit_receipts
 #   call: self::test_traversal_budget_receipts
@@ -66,6 +74,24 @@ def test_recursive_cycle_modes() -> None:
         ),
     )
     assert fixed.fixed_points
+
+
+def test_shared_identity_reference() -> None:
+    shared_graph = {
+        "root": ("left", "right"),
+        "left": ("shared",),
+        "right": ("shared",),
+        "shared": (),
+    }
+    result = traverse(
+        "root",
+        children=lambda node: shared_graph[node],
+        identity=lambda node: node,
+        policy=TraversalPolicy("reference", CycleMode.REFERENCE),
+    )
+    assert tuple(visit.identity for visit in result.visits).count("shared") == 1
+    assert len(result.references) == 1
+    assert result.references[0].identity == "shared"
 
 
 def test_traversal_budget_receipts() -> None:
