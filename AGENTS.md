@@ -5,9 +5,10 @@ Read, in order:
 1. `CANON.md`
 2. `docs/chapter-1.md`
 3. `docs/STRUCTURE_CONTRACT.md`
-4. `.agents/skills/README.md`
-5. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-6. the corresponding test module's `CHECKS` block
+4. `docs/CHOICE_PRESERVATION.md`
+5. `.agents/skills/README.md`
+6. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+7. the corresponding test module's `CHECKS` block
 
 Rules:
 
@@ -19,6 +20,14 @@ Rules:
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell-only
   structure. Do not silently extend it to receipts, metadata, or recursion.
+- Where multiple interpretations or representations remain admissible, preserve
+  enough information to choose among them later. Do not silently sort,
+  deduplicate, flatten, merge, coerce, or normalize away an unresolved option.
+- Temporary choices must be explicit policies, strategies, lenses, modes, or
+  projections. Defaults are conveniences, not canon.
+- An option may be removed only by explicit canon, demonstrated invariant
+  violation, proof of recoverability, or a scoped user choice whose information
+  loss is recorded.
 - Do not create a complete `UCNSObject` until receipts, metadata, recursion,
   canonical structural equivalence, a valid multiplicative `M`, and faithful `B`
   are explicitly constructed and tested.
