@@ -73,6 +73,26 @@ W(A pair C) = W(A) * W(C)
 Structural Null is absorbing. Pairing defines where cells meet; it does not
 define typed payload interaction.
 
+## Choice-preservation law
+
+The tuple used by the current implementation is an evidence-preserving container,
+not a final decision that structural cells are canonically a sequence.
+
+Until canonical structural equivalence selects among set, multiset, sequence,
+graph, tree, or other interpretations:
+
+- `make_carrier()` preserves input order and multiplicity of present cells;
+- `prune()` removes absent cells without sorting or deduplicating survivors;
+- `pair()` preserves operand sidedness and deterministic Cartesian encounter
+  order;
+- paired fields remain two-sided tuples rather than being flattened or merged;
+- no default interpretation may destroy information required by another
+  still-admissible interpretation.
+
+Any future operation whose result depends on one of these unresolved choices
+must accept an explicit policy or fail closed. A temporary default is not canon.
+See [`CHOICE_PRESERVATION.md`](CHOICE_PRESERVATION.md).
+
 ## Explicit exclusions
 
 This contract does not define or authorize:
@@ -96,6 +116,6 @@ also contained an invalid multiplicativity claim for `M`, a provisional `B`
 heuristic, representable non-null objects with zero breadth, and premature status
 language.
 
-hmmm: the next boundary is deciding whether receipts, metadata, recursion, and
-ordering are cells, relations among cells, or distinct structural layers before
-canonical equivalence and faithful breadth can be defined.
+hmmm: the next boundary is designing explicit policy and provenance types for
+choosing among receipt, metadata, recursion, ordering, multiplicity, and relation
+interpretations without destroying the alternatives not selected.
