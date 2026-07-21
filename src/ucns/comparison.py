@@ -14,7 +14,7 @@
 #   tests: tests/test_comparison.py, tests/test_laboratory.py
 #   rollout: explicit candidate-research comparison infrastructure only
 #   rollback: remove comparison exports and restore no implicit tolerance
-#   requires: evaluator_candidate_laboratory
+#   requires: structural_choice_policy_layer
 #   since: 2026-07-21
 #   unresolved: canonical numerical comparison policy
 # === END MODULE_BUILD ===
