@@ -24,6 +24,19 @@ The earlier Möbius/seam account remains provenance only. It is not the formal
 object definition. See [`CANON.md`](CANON.md) and
 [`docs/chapter-1.md`](docs/chapter-1.md).
 
+## Choice preservation
+
+Where several interpretations, representations, policies, or constructions
+remain admissible, UCNS preserves the capacity to choose among them.
+
+Unresolved options are not silently collapsed into defaults. Current cell tuples
+retain order, multiplicity, and operand sidedness as evidence without declaring
+that canonical structural semantics are necessarily sequence-based. Any future
+operation whose result depends on an unresolved interpretation must accept an
+explicit policy or fail closed.
+
+See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md).
+
 ## Active code
 
 The root package implements two bounded layers.
@@ -43,7 +56,8 @@ The root package implements two bounded layers.
 - aggregate support `W` as the sum of present-cell supports;
 - Cartesian pairing with multiplicative paired-cell support;
 - pruning of zero-support absent cells;
-- collapse to Structural Null only after complete cell-support erasure.
+- collapse to Structural Null only after complete cell-support erasure;
+- preservation of unresolved order, multiplicity, and operand sidedness.
 
 See [`docs/STRUCTURE_CONTRACT.md`](docs/STRUCTURE_CONTRACT.md).
 
@@ -80,4 +94,4 @@ See [`.agents/skills/README.md`](.agents/skills/README.md) and
 
 hmmm: cells and aggregate support now have executable boundaries; receipts,
 metadata, recursive structure, equivalence, `M`, and `B` still have to earn
-their semantics before they become public structure.
+their semantics without destroying the options not selected.
