@@ -2,7 +2,7 @@
 # id: cycle_safe_traversal_policy
 #   module_name: traversal
 #   module_kind: instrument
-#   summary: traverses recursive evidence under explicit cycle, shared-reference, identity, depth, node, and fixed-point policies
+#   summary: traverses recursive evidence under explicit cycle, shared-reference, implementation-identity, depth, node, and fixed-point policies
 #   owner: Erin Spencer
 #   public_surface: CycleMode, TraversalBudget, TraversalPolicy, Visit, ReferenceReceipt, TruncationReceipt, FixedPointReceipt, TraversalResult, CycleDetectedError, traverse
 #   internal_surface: none
@@ -11,7 +11,7 @@
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests/test_traversal.py
+#   tests: tests/test_traversal.py, tests/test_experiments.py
 #   rollout: recursive-evidence research infrastructure only
 #   rollback: remove traversal exports; recursive candidates fail closed
 #   requires: retained_structure_envelope
@@ -33,14 +33,14 @@
 #   since: 2026-07-21
 #
 # id: traversal_budgets_emit_receipts
-#   given: recursive traversal reaches a depth or node budget
-#   then: traversal stops that path and retains a TruncationReceipt rather than silently dropping evidence
+#   given: recursive traversal reaches a depth or node budget, including while iterating a large or unbounded child iterable
+#   then: traversal stops without materializing the remaining iterable and retains a TruncationReceipt
 #   class: evidence
 #   since: 2026-07-21
 #
 # id: fixed_point_traversal_requires_resolver
 #   given: fixed-point cycle handling is selected
-#   then: construction fails unless an explicit resolver is supplied
+#   then: construction fails unless both an explicit resolver and versioned resolver code reference are supplied
 #   class: safety
 #   since: 2026-07-21
 # === END CONTRACTS ===
@@ -111,22 +111,23 @@ class TraversalPolicy:
     cycle_mode: CycleMode
     budget: TraversalBudget = TraversalBudget()
     fixed_point_resolver: FixedPointResolver | None = None
+    resolver_reference: str | None = None
     version: str = "1"
 
     def __post_init__(self) -> None:
         if not self.name.strip() or not self.version.strip():
             raise ValueError("traversal policy name and version must be nonempty")
         object.__setattr__(self, "cycle_mode", CycleMode(self.cycle_mode))
-        if self.cycle_mode is CycleMode.FIXED_POINT and not callable(
-            self.fixed_point_resolver
-        ):
-            raise ValueError("fixed-point traversal requires a resolver")
-        if (
-            self.cycle_mode is not CycleMode.FIXED_POINT
-            and self.fixed_point_resolver is not None
-        ):
+        if self.cycle_mode is CycleMode.FIXED_POINT:
+            if not callable(self.fixed_point_resolver):
+                raise ValueError("fixed-point traversal requires a resolver")
+            if self.resolver_reference is None or not self.resolver_reference.strip():
+                raise ValueError(
+                    "fixed-point traversal requires a resolver code reference"
+                )
+        elif self.fixed_point_resolver is not None or self.resolver_reference is not None:
             raise ValueError(
-                "fixed-point resolver is valid only for fixed-point traversal"
+                "fixed-point resolver and reference are valid only for fixed-point traversal"
             )
 
 
@@ -186,13 +187,15 @@ def traverse(
             )
             return
 
-        is_cycle = node_id in ancestry
-        if is_cycle:
-            first_path = first_paths.get(node_id, (node_id,))
+        if node_id in ancestry:
+            first_index = ancestry.index(node_id)
+            active_first_path = ancestry[: first_index + 1]
             if policy.cycle_mode is CycleMode.REJECT:
                 raise CycleDetectedError(f"cycle detected at {node_id!r}")
             if policy.cycle_mode is CycleMode.REFERENCE:
-                references.append(ReferenceReceipt(node_id, first_path, path))
+                references.append(
+                    ReferenceReceipt(node_id, active_first_path, path)
+                )
                 return
             if policy.cycle_mode is CycleMode.UNFOLD_TO_DEPTH:
                 if depth >= policy.budget.max_depth:
@@ -210,10 +213,7 @@ def traverse(
                     )
                 )
                 return
-        elif (
-            node_id in first_paths
-            and policy.cycle_mode is CycleMode.REFERENCE
-        ):
+        elif node_id in first_paths and policy.cycle_mode is CycleMode.REFERENCE:
             references.append(
                 ReferenceReceipt(node_id, first_paths[node_id], path)
             )
@@ -221,7 +221,17 @@ def traverse(
 
         first_paths.setdefault(node_id, path)
         visits.append(Visit(node_id, node, depth, path))
-        for child in tuple(children(node)):
+        child_iter = iter(children(node))
+        while True:
+            if len(visits) >= policy.budget.max_nodes:
+                truncations.append(
+                    TruncationReceipt("max-nodes-children", node_id, depth, path)
+                )
+                break
+            try:
+                child = next(child_iter)
+            except StopIteration:
+                break
             walk(child, depth + 1, path)
 
     walk(root, 0, ())
