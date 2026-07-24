@@ -4,7 +4,7 @@
 #   module_kind: schema
 #   summary: exports ratified foundations plus option-preserving, reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, and candidate names listed in __all__
+#   public_surface: carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,8 +12,8 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable foundations and candidate-research infrastructure only
-#   rollback: remove research exports while preserving carrier/support floors
+#   rollout: importable foundations, candidate-research infrastructure, and one explicit downstream profile only
+#   rollback: remove downstream profile exports while preserving foundations and research surfaces
 #   requires: directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
 #   unresolved: canonical structural equivalence, canonical M, canonical B, complete UCNS object
@@ -22,7 +22,7 @@
 # === CONTRACTS ===
 # id: public_surface_exposes_only_ratified_foundations
 #   given: a consumer imports ucns
-#   then: ratified foundations and explicit research infrastructure are exported without implying canonical M, B, factorization, theorem, or downstream status
+#   then: ratified foundations, explicit research infrastructure, and the named bounded downstream profile are exported without implying canonical M, B, factorization, theorem, or universal arithmetic
 #   class: safety
 #   since: 2026-07-21
 # === END CONTRACTS ===
@@ -30,7 +30,7 @@
 """UCNS foundations and option-preserving candidate research infrastructure.
 
 No complete ``UCNSObject``, canonical product character, canonical faithful-breadth
-evaluator, theorem-bearing arithmetic, or downstream-consumer promise is exported.
+evaluator, theorem-bearing arithmetic, or universal downstream promise is exported.
 """
 
 from .carrier import (
@@ -189,6 +189,23 @@ from .candidates import (
     policy_projection_equivalence_candidate,
     retained_presence_breadth_candidate,
 )
+from .bridge import (
+    BRIDGE_SCHEMA_ID,
+    BRIDGE_SCHEMA_VERSION,
+    PRODUCER_EPOCH,
+    PROFILE_ID,
+    PROFILE_VERSION,
+    BridgeCell,
+    BridgeValidationError,
+    EdcmMetapatBridgeRecord,
+    InformationLossRecord,
+    RetainedLayerDigest,
+)
+from .profiles import (
+    PROFILE_OPTIONS,
+    EdcmMetapatOrderedOccurrenceProfile,
+    ProfileBoundStructure,
+)
 
 __all__ = [
     "LIFTED_PERIOD", "STRUCTURAL_NULL", "VISIBLE_PERIOD", "CarrierPoint",
@@ -240,4 +257,9 @@ __all__ = [
     "maximum_support_product_candidate", "minimum_support_product_candidate",
     "policy_projection_equivalence_candidate",
     "retained_presence_breadth_candidate",
+    "BRIDGE_SCHEMA_ID", "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
+    "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",
+    "EdcmMetapatBridgeRecord", "InformationLossRecord",
+    "RetainedLayerDigest", "PROFILE_OPTIONS",
+    "EdcmMetapatOrderedOccurrenceProfile", "ProfileBoundStructure",
 ]

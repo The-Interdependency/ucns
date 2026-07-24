@@ -1,0 +1,84 @@
+name: EDCM METAPAT profile boundary
+
+on:
+  pull_request:
+    paths:
+      - "src/ucns/bridge.py"
+      - "src/ucns/profiles.py"
+      - "src/ucns/__init__.py"
+      - "tests/test_profile_boundary.py"
+      - ".github/workflows/profile-boundary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile-boundary:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[test]"
+      - run: python -m pytest tests/test_profile_boundary.py -v
+      - run: python -m pytest tests/test_public_surface.py -v
+      - run: python -m pytest tests/ -k "profile or bridge or public_surface" -v
+      - name: Build wheel
+        run: |
+          python -m pip install ".[build]"
+          rm -rf build dist
+          python -m build
+          python -m twine check dist/*
+      - name: Verify installed-wheel bridge round-trip
+        env:
+          UCNS_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python -m venv .wheel-venv
+          .wheel-venv/bin/python -m pip install --upgrade pip
+          .wheel-venv/bin/python -m pip install dist/*.whl
+          SMOKE_DIR="$(mktemp -d)"
+          cd "${SMOKE_DIR}"
+          "${GITHUB_WORKSPACE}/.wheel-venv/bin/python" - <<'PY'
+          import os
+
+          from ucns import (
+              Cell,
+              EdcmMetapatBridgeRecord,
+              EdcmMetapatOrderedOccurrenceProfile,
+              make_carrier,
+          )
+
+          source_commit = os.environ["UCNS_SOURCE_COMMIT"]
+          assert len(source_commit) == 40
+
+          profile = EdcmMetapatOrderedOccurrenceProfile()
+          structure = make_carrier(
+              [
+                  Cell(payload=0, provenance={"source": "wheel-smoke"}),
+                  Cell(payload=0, provenance={"source": "wheel-smoke"}),
+              ]
+          )
+          bound = profile.bind(structure)
+          record = profile.to_bridge(
+              bound,
+              source_commit=source_commit,
+              operator_history=("wheel-round-trip",),
+          )
+          encoded = record.to_json_bytes()
+          decoded = EdcmMetapatBridgeRecord.from_json_bytes(encoded)
+
+          assert decoded == record
+          assert decoded.to_json_bytes() == encoded
+          assert len(decoded.cells) == 2
+          assert decoded.cells[0].occurrence_id != decoded.cells[1].occurrence_id
+          assert decoded.theorem_status_transfer is False
+          assert decoded.edcm_measurement_validity_transfer is False
+          assert decoded.metapat_validity_transfer is False
+          print("installed-wheel bridge round-trip passed")
+          PY
