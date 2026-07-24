@@ -1,3 +1,43 @@
+# === MODULE_BUILD ===
+# id: edcm_metapat_post_reset_bridge
+#   module_name: bridge
+#   module_kind: schema
+#   summary: provides one immutable validated post-reset bridge record for the ordered-occurrence EDCM/METAPAT profile
+#   owner: Erin Spencer
+#   public_surface: EdcmMetapatBridgeRecord, BridgeCell, RetainedLayerDigest, InformationLossRecord, BridgeValidationError
+#   internal_surface: _canonical_value, _canonical_bytes, _digest
+#   auth_boundary: none
+#   storage_boundary: serialized bridge bytes only
+#   network_boundary: none
+#   user_data_boundary: caller-supplied payloads must be deterministic JSON values
+#   admin_only: false
+#   tests: tests/test_profile_boundary.py
+#   rollout: draft bridge only; consumers remain suspended until merge and package validation
+#   rollback: remove bridge exports and module without changing current carrier foundations
+#   since: 2026-07-23
+#   unresolved: downstream consumer pinning and installed-wheel validation
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: post_reset_bridge_is_exact_and_fail_closed
+#   given: a downstream bridge record is constructed or parsed
+#   then: only the exact post-reset schema, producer epoch, profile identity, fixed false transfer fields, complete field set, and deterministic JSON values are accepted
+#   class: safety
+#   since: 2026-07-23
+#
+# id: bridge_identity_binds_order_profile_and_content
+#   given: bridge cells, occurrence identities, options, retained layers, operator history, information loss, or source commit differ
+#   then: stable identity differs or parsing fails because identity binds the complete ordered bridge payload
+#   class: correctness
+#   since: 2026-07-23
+#
+# id: validity_transfer_is_forbidden
+#   given: any bridge record claims theorem, EDCM measurement, or METAPAT validity transfer
+#   then: construction and parsing fail closed
+#   class: doctrine
+#   since: 2026-07-23
+# === END CONTRACTS ===
+
 """Validated post-reset bridge records for bounded downstream profiles.
 
 This module does not migrate archived bridge schemas and does not transfer theorem,
