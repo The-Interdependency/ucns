@@ -1,0 +1,31 @@
+name: EDCM METAPAT profile boundary
+
+on:
+  pull_request:
+    paths:
+      - "src/ucns/bridge.py"
+      - "src/ucns/profiles.py"
+      - "src/ucns/__init__.py"
+      - "tests/test_profile_boundary.py"
+      - ".github/workflows/profile-boundary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile-boundary:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[test]"
+      - run: python -m pytest tests/test_profile_boundary.py -v
+      - run: python -m pytest tests/test_public_surface.py -v
+      - run: python -m pytest tests/ -k "profile or bridge or public_surface" -v
