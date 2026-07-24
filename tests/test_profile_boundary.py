@@ -1,3 +1,101 @@
+# === CHECKS ===
+# id: check_duplicate_occurrence_identity
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_equal_valued_duplicate_occurrences_remain_distinct
+#   mutates: none
+#   cleanup: none
+#
+# id: check_order_binds_identity
+#   proves: bridge_identity_binds_order_profile_and_content
+#   call: self::test_reordering_changes_stable_identity
+#   mutates: none
+#   cleanup: none
+#
+# id: check_cartesian_pair_cardinality
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_cartesian_pairing_produces_p_times_q_occurrences
+#   mutates: none
+#   cleanup: none
+#
+# id: check_cartesian_pair_order
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_cartesian_pairing_is_left_major
+#   mutates: none
+#   cleanup: none
+#
+# id: check_pair_sidedness
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_pairing_preserves_left_right_sidedness
+#   mutates: none
+#   cleanup: none
+#
+# id: check_algebraic_zero_retained
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_algebraic_zero_remains_positive_retained_structure
+#   mutates: none
+#   cleanup: none
+#
+# id: check_structural_null_distinction
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_structural_null_is_distinct_from_algebraic_zero
+#   mutates: none
+#   cleanup: none
+#
+# id: check_retained_relation_support_boundary
+#   proves: ordered_occurrence_profile_preserves_declared_choices
+#   call: self::test_retained_relation_layer_does_not_change_scalar_support
+#   mutates: none
+#   cleanup: none
+#
+# id: check_bridge_serialization_determinism
+#   proves: post_reset_bridge_is_exact_and_fail_closed, bridge_identity_binds_order_profile_and_content
+#   call: self::test_serialization_is_byte_deterministic
+#   mutates: none
+#   cleanup: none
+#
+# id: check_bridge_round_trip
+#   proves: post_reset_bridge_is_exact_and_fail_closed
+#   call: self::test_bridge_round_trip_preserves_complete_record
+#   mutates: none
+#   cleanup: none
+#
+# id: check_archived_schema_rejection
+#   proves: post_reset_bridge_is_exact_and_fail_closed
+#   call: self::test_archived_schema_ids_fail_closed
+#   mutates: none
+#   cleanup: none
+#
+# id: check_profile_option_rejection
+#   proves: profile_binding_is_fail_closed
+#   call: self::test_option_mismatch_fails_closed
+#   mutates: none
+#   cleanup: none
+#
+# id: check_profile_identity_binding
+#   proves: bridge_identity_binds_order_profile_and_content, profile_binding_is_fail_closed
+#   call: self::test_profile_identity_participates_in_stable_identity
+#   mutates: none
+#   cleanup: none
+#
+# id: check_validity_transfer_firewall
+#   proves: validity_transfer_is_forbidden
+#   call: self::test_validity_transfer_fields_are_permanently_false
+#   mutates: none
+#   cleanup: none
+#
+# id: check_archived_arithmetic_not_restored
+#   proves: profile_does_not_restore_archived_arithmetic
+#   call: self::test_profile_does_not_restore_factorization_or_universal_multiplication
+#   mutates: none
+#   cleanup: none
+#
+# id: check_existing_public_surface_retained
+#   proves: profile_does_not_restore_archived_arithmetic
+#   call: self::test_existing_public_exports_remain_present
+#   mutates: none
+#   cleanup: none
+# === END CHECKS ===
+
 import json
 
 import pytest
@@ -198,6 +296,4 @@ def test_existing_public_exports_remain_present() -> None:
     ):
         assert expected in ucns.__all__
         assert hasattr(ucns, expected)
-    assert BRIDGE_SCHEMA_ID in {
-        "ucns.bridge.edcm-metapat-ordered-occurrence"
-    }
+    assert BRIDGE_SCHEMA_ID == "ucns.bridge.edcm-metapat-ordered-occurrence"
