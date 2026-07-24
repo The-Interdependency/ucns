@@ -1,3 +1,43 @@
+# === MODULE_BUILD ===
+# id: edcm_metapat_ordered_occurrence_profile
+#   module_name: profiles
+#   module_kind: schema
+#   summary: binds current UCNS structures to one explicit post-reset ordered-occurrence profile for EDCM and METAPAT
+#   owner: Erin Spencer
+#   public_surface: EdcmMetapatOrderedOccurrenceProfile, ProfileBoundStructure, PROFILE_OPTIONS
+#   internal_surface: _jsonable, _cell_identity_payload, _occurrence_id
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_profile_boundary.py
+#   rollout: draft profile only; downstream activation remains suspended until merge and package validation
+#   rollback: remove profile exports and module without changing current carrier foundations
+#   since: 2026-07-23
+#   unresolved: downstream METAPAT and EDCM adapter activation
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: ordered_occurrence_profile_preserves_declared_choices
+#   given: a current-root Carrier is bound to the EDCM/METAPAT profile
+#   then: order, multiplicity, occurrence identity, sidedness, algebraic zero, and retained evidence remain explicit without projection
+#   class: doctrine
+#   since: 2026-07-23
+#
+# id: profile_binding_is_fail_closed
+#   given: a caller supplies a structure, profile identity, option declaration, or occurrence identities
+#   then: only Carrier or Structural Null with the exact fixed profile declaration and matching ordered occurrence identities is accepted
+#   class: safety
+#   since: 2026-07-23
+#
+# id: profile_does_not_restore_archived_arithmetic
+#   given: the bounded profile is exported publicly
+#   then: no universal UCNSObject, multiplication, factorization, theorem, or validity-transfer authority is restored
+#   class: safety
+#   since: 2026-07-23
+# === END CONTRACTS ===
+
 """Bounded downstream profiles built from current UCNS structural foundations."""
 
 from __future__ import annotations
@@ -16,7 +56,7 @@ from .bridge import (
     PRODUCER_EPOCH,
     retained_layer_digests,
 )
-from .carrier import STRUCTURAL_NULL, _StructuralNull
+from .carrier import STRUCTURAL_NULL
 from .structure import Carrier, Cell, Structure
 
 
