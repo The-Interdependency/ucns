@@ -3,21 +3,53 @@
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-25  
 **Machine surface:** `src/ucns/option_registry.json`  
-**Status:** active project authority; no mathematical option winner is selected here.
+**Corpus research:** [`EDCM_REAL_SYSTEM_CORPORA.md`](EDCM_REAL_SYSTEM_CORPORA.md)  
+**Status:** active EDCM-scoped authority; decided constraints coexist with incomplete evidence.
 
-## Decisions now set
+## Authority boundary
 
-1. **UCNS is a stable identifier without a canonical expansion.** Any expansion is an alias or provenance description only.
-2. **UCNS is optionalized.** Every unresolved construction choice must be named, versioned, provenance-bearing, and visible in configuration identity. Implementation or registration does not appoint a global default.
-3. **Old and new UCNS are decomposed into choices.** Historical lineages are not restored or rejected wholesale. Individual choices retain evidence and an explicit standing.
-4. **The current project is EDCM configuration selection.** UCNS supplies choices; EDCM tests configurations against real systems to determine an EDCM-scoped ideal configuration.
-5. **Selection remains scoped.** An EDCM result cannot become universal UCNS canon or transfer theorem, EDCM measurement, or METAPAT validity.
-6. **The current ordered-occurrence profile is one candidate configuration.** It preserves order, multiplicity, occurrence identity, sidedness, algebraic zero, and retained layers outside scalar support. It is not the selected ideal configuration.
-7. **Configuration identity is exact.** Producer epoch, profile, bridge schema, source identity, and complete option values participate in identity and fail closed on mismatch.
-8. **Negative results remain evidence.** A changed result is not automatically a regression. Earlier experiment reports may not be rewritten.
-9. **Typed absence remains load-bearing.** `NA != 0`.
+UCNS is a stable identifier without a canonical expansion. UCNS exposes named,
+versioned, provenance-bearing choices without appointing hidden global defaults.
 
-## Current implemented configuration
+The active project is narrower: determine an EDCM-specific UCNS configuration
+against real systems. An EDCM decision does not become universal UCNS canon and
+transfers no theorem, measurement, or METAPAT validity.
+
+## EDCM constraints now decided
+
+1. **Möbius carrier requirement.** For EDCM, the Möbius twist is critical. Its
+   interpretation of space as singular and superpositioned supplies a causal
+   chain needed by the future hyper-dimensional lattice relating letters and
+   words.
+2. **Structural Null and initiation.** Structural Null is the singular
+   superpositioned space. The twist occurs when a new gonol initiates.
+3. **Occurrence operation.** EDCM requires ordered concatenation. Multiset and
+   set views may exist only as named information-losing projections.
+4. **Support baseline.** EDCM stays with unit-turn support pending contrary
+   real-system evidence.
+5. **Graph contribution.** More information is required. Graphs, edges, nodes,
+   relation labels, and graph-dependent state remain retained outside scalar
+   `W`.
+6. **Equivalence progression.** Exact evidence is the baseline. Projection may
+   increase only along an explicit sliding scale justified by accumulated
+   experimental evidence and recorded information loss.
+7. **Product character `M`.** Display geometric mean, maximum support, and
+   minimum support together. None is selected.
+8. **Faithful breadth `B`.** Display cell-log support, cell detail, and retained
+   presence together pending more information. None is selected.
+9. **Operators.** Use carrier pairing only for EDCM pending more information.
+   Typed payload dispatch remains outside the active configuration.
+10. **Profile scope.** The target profile is EDCM-specific. The combined
+    EDCM-METAPAT profile remains a compatibility artifact, not an eligible target
+    configuration.
+11. **Selection evidence.** Real-system corpora are required. Development must
+    seek examples and configurations that expose incompleteness and worst-case
+    behavior rather than flattering the current fixtures.
+
+These are scoped constraints, not proof that the ideal configuration has been
+found.
+
+## Current implementation mismatch
 
 The exact post-reset producer profile remains:
 
@@ -27,74 +59,84 @@ epoch:           ucns.post-reset.v1
 profile:         ucns.profile.edcm-metapat-ordered-occurrence/1.0.0
 bridge:          ucns.bridge.edcm-metapat-ordered-occurrence/1.0.0
 shorthand:       edcm-ucns-v1
-standing:        implemented candidate
+standing:        implemented compatibility candidate
 selection:       none
 ```
 
-The shorthand is not schema authority. Downstream consumers continue to require the exact producer, profile, bridge, commit, and option values.
+It preserves order, multiplicity, occurrence identity, sidedness, algebraic
+zero, and retained layers outside scalar support. It does **not** yet implement
+the decided Möbius causal carrier, superpositioned Structural Null,
+new-gonol-initiation twist, or EDCM-specific profile, so it cannot select itself.
 
-## Choices still open
+The directed twofold branched angular cover remains useful executable evidence.
+For EDCM it is admissible only if its formal integration with the Möbius
+construction preserves the decided origin and causal semantics.
 
-| Dimension | Current evidence | Choice still required |
+## What remains open
+
+| Dimension | Decided floor | Information still required |
 |---|---|---|
-| Carrier model | Directed twofold branched angular cover is implemented. | Determine its formal relation to the required Möbius-origin/hidden-zero construction: distinct options, equivalent descriptions, parameterized relation, or incompatibility. |
-| Origin semantics | Coordinate-free Structural Null is implemented; first-anchor shift is rejected pre-reset. | Specify and test how the Möbius twist supplies origin/hidden zero without erasing retained origin testimony. |
-| Occurrence structure | Ordered sequence is required by the initial profile; multiset and set remain available as scoped projections. | Determine which readouts lawfully admit order- or multiplicity-discarding projections. |
-| Support assignment | Unit-turn, token-turn, and pressure-turn are experiment candidates. | Select or construct support policies for real EDCM systems. |
-| Graph contribution | Graphs remain retained outside cell-only `W`; v0.4 separated nodes, edges, and graph-dependent state. | Decide whether any named edge or graph policy contributes to scalar support. |
-| Structural equivalence | Exact, policy-projection, and selected-layer signatures exist. | Select only after real-system falsifiers and independent evidence. |
-| Product character `M` | Geometric-mean, maximum-support, and minimum-support candidates exist. | Determine whether any remains lawful over the selected retained structure. |
-| Faithful breadth `B` | Cell-log, cell-detail, and retained-presence candidates exist. | Construct a breadth that reports every distinction required by the selected EDCM scope. |
-| Operators | Cartesian carrier pairing is implemented. | Define operators appropriate to each admitted carrier and payload option set; typed dispatch remains unresolved. |
-| Profile scope | One combined EDCM/METAPAT profile is implemented. | Determine whether EDCM requires a separately scoped profile because METAPAT does not own EDCM option selection. |
-| Selection evidence | Synthetic v0.1–v0.4 reports are reproducible. | Define real-system corpora, consent, provenance, outcome labels, partitions, independent holdouts, replication, and selection authority. |
+| Directed-cover/Möbius relation | Möbius semantics are mandatory for EDCM. | Determine whether the directed cover implements, embeds, parameterizes, or conflicts with the Möbius carrier. |
+| Structural Null formalism | Structural Null is superpositioned space; a new gonol initiates through the twist. | Define the formal transition, identity law, hidden-zero relation, and observable consequences. |
+| Graph contribution | Graph evidence remains outside scalar `W`. | Determine whether any named edge, graph, or state policy contributes to a scalar without destroying graph distinctions. |
+| Projection scale | Exact evidence is the zero-loss baseline. | Define evidence thresholds, permitted losses, reversibility, and how far each readout may move toward projection. |
+| `M` interpretation | All three candidates are displayed. | Determine what each display means, whether the formulas remain lawful beyond cells, and whether an aggregate is ever justified. |
+| `B` interpretation | All three candidates are displayed. | Determine whether any candidate reports every required retained distinction and how disagreements should be shown. |
+| EDCM-specific profile | Separate scope is required. | Define the new profile identity, migration, bridge version, compatibility behavior, and failure mode. |
+| Corpus admission | Real systems and failure-seeking slices are required. | Pin versions, licenses, consent treatment, adapters, labels, partitions, and independent holdout custody. |
+| Typed payload operations | Carrier pairing only is active. | Define typed modalities and dispatch laws before this boundary can expand. |
+| Final selection procedure | No implementation or fixture may select itself. | Define sufficiency, replication, authority, rollback, and migration requirements. |
 
-## Experiment-supported restrictions
+## Candidate real-system sources
 
-Existing EDCM experiments already require the option surface to preserve:
+Seven sources are registered for evaluation:
 
-- exact order until a readout-specific policy discards it;
-- occurrence multiplicity even when a set view is available;
-- explicit support assignment;
+- WildChat-1M for uncontrolled human-model traffic;
+- PRISM for preference, interpretation, and alternative responses;
+- LMSYS-Chat-1M for cross-model field traffic under a gated license;
+- ICSI for natural multiparty meetings;
+- AMI for constrained collaborative process and multimodal evidence;
+- MultiWOZ 2.1 for task state and failed completion;
+- Molweni for discourse graphs and unresolved references.
+
+Their provenance, licensing, weaknesses, and proposed failure-first use are
+recorded in [`EDCM_REAL_SYSTEM_CORPORA.md`](EDCM_REAL_SYSTEM_CORPORA.md).
+Registration does not mean ingestion or selection.
+
+## Experiment-supported preservation rules
+
+Every EDCM candidate must preserve:
+
+- ordered concatenation before any projection;
+- multiplicity and occurrence identity;
+- unit support as the current declared baseline;
 - sequence state separately from scalar `W`, `M`, and `B`;
-- assertion, negation, quotation, hypothetical mention, repair, and retraction as distinct evidence;
-- speaker ownership for ownership-sensitive reference;
-- unresolved references as positive evidence;
-- every admissible graph alternative within the declared bound;
-- relation labels, direction, source, and target identity;
+- assertion, negation, quotation, hypothetical mention, repair, and retraction;
+- speaker ownership and unresolved references;
+- admissible graph alternatives, relation labels, direction, source, and target;
 - quote containment separately from retraction;
-- suspension, resumption, activation, deactivation, contradiction, repair, and retraction as distinct operations;
-- node quantity, edge quantity, and graph-dependent state separately;
-- graph structure rather than pretending a scalar support total can replace it.
-
-These are restrictions on admissible EDCM configurations. They are not a universal UCNS option selection.
-
-## Historical choices
-
-The following remain unavailable to the current profile while their provenance stays visible:
-
-- first-anchor normalization to zero;
-- `None` as multiplicative unit;
-- single-circle completion;
-- archived universal multiplication and factorization authority;
-- the pre-reset multiplicity behavior;
-- unconditional quotient or cancellativity claims already damaged by counterexamples.
-
-A historical choice can return to evaluation only through a named versioned candidate with its counterevidence intact. Resemblance to an archived class, field set, or package name grants no authority.
+- suspension, resumption, activation, deactivation, contradiction, and repair;
+- nodes, edges, and graph-dependent state separately;
+- exact evidence and every declared projection loss;
+- all three `M` and all three `B` displays.
 
 ## Selection rule
 
 ```text
-UCNS choices
-  -> exact EDCM configuration
-  -> declared real system and readouts
-  -> reproducible supported, falsified, errored, and scope-failed evidence
-  -> independent review and holdout
-  -> explicit EDCM-scoped decision with alternatives, losses, rollback, and migration
+explicit UCNS choices
+  -> EDCM-specific configuration
+  -> failure-seeking development slices from declared real systems
+  -> supported, falsified, errored, disagreement, and scope-failed evidence
+  -> locked independent holdout and reproduction
+  -> explicit EDCM-scoped decision with losses, rollback, and migration
 ```
 
-No experiment, majority vote, passing fixture, or currently implemented profile can select itself.
+Passing current fixtures is evidence that the fixtures were passed. It is not a
+selection event.
 
 ## hmmm
 
-The option registry now records what is decided and what remains open. It does not yet contain the real-system corpus, independent holdout custody, authority procedure, or evidence required to name an ideal EDCM configuration. The map is now honest; traffic has not yet selected the road.
+Most decisions still require information before they can close; the decided
+items are the floor that determines what evidence must not be erased while
+learning. The research succeeds faster if it finds the transcript that makes the
+current model look embarrassingly incomplete before a reviewer does.
