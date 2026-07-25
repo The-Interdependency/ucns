@@ -42,6 +42,12 @@
 #   then: its exact option values are registered as an implemented candidate with no selection effect
 #   class: correctness
 #   since: 2026-07-25
+#
+# id: edcm_constraints_are_explicit_without_early_collapse
+#   given: Erin's EDCM configuration directions and the real-system research boundary are inspected
+#   then: every decided constraint, plural M and B display, failure-seeking principle, and corpus candidate is explicit while unresolved dimensions remain open
+#   class: doctrine
+#   since: 2026-07-25
 # === END CONTRACTS ===
 
 """UCNS decision and unresolved-option registry.
@@ -57,7 +63,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.0.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.1.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -67,6 +73,7 @@ STANDING_VALUES = frozenset(
         "experiment-candidate",
         "required-evaluation",
         "rejected-pre-reset",
+        "superseded-for-edcm",
         "unresolved",
     }
 )
@@ -82,6 +89,17 @@ REQUIRED_DECISION_IDS = frozenset(
         "initial-occurrence-boundary",
         "negative-results-are-evidence",
         "typed-absence",
+        "edcm-mobius-causal-carrier",
+        "structural-null-superposition",
+        "edcm-ordered-concatenation",
+        "edcm-unit-support",
+        "exact-to-projection-evidence-scale",
+        "plural-M-display",
+        "plural-B-display",
+        "edcm-carrier-pairing-only",
+        "edcm-specific-profile",
+        "real-system-corpora-required",
+        "failure-seeking-research",
     }
 )
 
@@ -118,6 +136,30 @@ def _validate_registry(data: dict[str, Any]) -> None:
         if project.get(field) is not False:
             raise OptionRegistryError(f"{field} must remain false")
 
+    if project.get("configuration_state") != "decided-constraints-with-incomplete-evidence":
+        raise OptionRegistryError("EDCM configuration state must preserve honest incompletion")
+    selection_principle = project.get("selection_principle")
+    if not isinstance(selection_principle, str) or "Refuse early collapse" not in selection_principle:
+        raise OptionRegistryError("failure-seeking anti-collapse principle is required")
+
+    constraints = project.get("decided_configuration_constraints")
+    expected_constraints = {
+        "carrier_requirement": "mobius-origin-hidden-zero",
+        "structural_null_semantics": "superpositioned-space",
+        "twist_event": "new-gonol-initiation",
+        "occurrence_operation": "ordered-concatenation",
+        "support_policy": "unit-turn",
+        "equivalence_baseline": "exact-evidence",
+        "equivalence_progression": "evidence-scaled-projection",
+        "payload_operator": "carrier-pairing-only",
+        "profile_scope": "edcm-specific",
+    }
+    if not isinstance(constraints, dict):
+        raise OptionRegistryError("decided EDCM constraints are required")
+    for key, value in expected_constraints.items():
+        if constraints.get(key) != value:
+            raise OptionRegistryError(f"EDCM constraint mismatch: {key}")
+
     decisions = data.get("decisions")
     if not isinstance(decisions, list):
         raise OptionRegistryError("decision list is required")
@@ -147,6 +189,87 @@ def _validate_registry(data: dict[str, Any]) -> None:
         for choice in choices:
             if not isinstance(choice, dict) or choice.get("standing") not in STANDING_VALUES:
                 raise OptionRegistryError("every choice requires recognized standing")
+
+    dimension_by_id = {dimension["id"]: dimension for dimension in dimensions}
+    required_dimension_ids = {
+        "carrier-model",
+        "origin-semantics",
+        "occurrence-structure",
+        "support-assignment",
+        "graph-contribution",
+        "structural-equivalence",
+        "product-character-M",
+        "faithful-breadth-B",
+        "typed-payload-operators",
+        "profile-scope",
+        "selection-evidence",
+    }
+    if not required_dimension_ids.issubset(dimension_by_id):
+        raise OptionRegistryError("required EDCM option dimensions are missing")
+
+    def choice_standing(dimension_id: str, choice_id: str) -> str | None:
+        for choice in dimension_by_id[dimension_id]["choices"]:
+            if choice["id"] == choice_id:
+                return choice["standing"]
+        return None
+
+    decided_choices = {
+        ("carrier-model", "mobius-origin-hidden-zero"),
+        ("origin-semantics", "superpositioned-structural-null"),
+        ("origin-semantics", "gonol-initiation-mobius-twist"),
+        ("occurrence-structure", "ordered-concatenation"),
+        ("support-assignment", "unit-turn"),
+        ("structural-equivalence", "exact-evidence"),
+        ("typed-payload-operators", "carrier-pairing-only"),
+        ("profile-scope", "edcm-specific-profile"),
+        ("selection-evidence", "real-system-corpora"),
+        ("selection-evidence", "failure-seeking-development-slices"),
+    }
+    for dimension_id, choice_id in decided_choices:
+        if choice_standing(dimension_id, choice_id) != "decided-constraint":
+            raise OptionRegistryError(
+                f"EDCM decided constraint missing: {dimension_id}/{choice_id}"
+            )
+
+    if choice_standing(
+        "profile-scope", "combined-edcm-metapat-ordered-occurrence"
+    ) != "superseded-for-edcm":
+        raise OptionRegistryError("combined profile must be superseded for EDCM selection")
+
+    expected_m = [
+        "geometric-mean-support",
+        "maximum-support",
+        "minimum-support",
+    ]
+    expected_b = [
+        "cell-log-support",
+        "cell-detail",
+        "retained-presence",
+    ]
+    for dimension_id, expected_display in (
+        ("product-character-M", expected_m),
+        ("faithful-breadth-B", expected_b),
+    ):
+        dimension = dimension_by_id[dimension_id]
+        if dimension.get("display_rule") != "display-all-three":
+            raise OptionRegistryError(f"{dimension_id} must display all three candidates")
+        if dimension.get("display_order") != expected_display:
+            raise OptionRegistryError(f"{dimension_id} display order mismatch")
+        if dimension.get("selection_effect") != "none":
+            raise OptionRegistryError(f"{dimension_id} cannot select a candidate")
+
+    corpora = data.get("real_system_corpus_candidates")
+    if not isinstance(corpora, list) or not corpora:
+        raise OptionRegistryError("real-system corpus candidates are required")
+    corpus_ids = [corpus.get("id") for corpus in corpora if isinstance(corpus, dict)]
+    if len(corpus_ids) != len(corpora) or len(corpus_ids) != len(set(corpus_ids)):
+        raise OptionRegistryError("real-system corpus candidates require unique ids")
+    for corpus in corpora:
+        if corpus.get("standing") not in STANDING_VALUES:
+            raise OptionRegistryError("corpus candidate requires recognized standing")
+        for field in ("provenance", "source", "access", "edcm_fit", "limitation"):
+            if not corpus.get(field):
+                raise OptionRegistryError(f"corpus candidate missing {field}")
 
     current_profile = data.get("current_profile")
     if not isinstance(current_profile, dict):
