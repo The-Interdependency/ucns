@@ -64,7 +64,9 @@ boundaries live in `docs/EDCM_REAL_SYSTEM_CORPORA.md`.
 - Do not evaluate recursive content without identity, cycle policy, and budgets.
 - Do not pair retained layers without an explicit plan.
 - Do not treat development-corpus success as generality.
-- Do not make a packet reviewable without holdout evidence and rollback.
+- When a separately declared study uses a holdout, do not make its packet
+  reviewable without holdout evidence and rollback. This is not the current
+  EDCM full-corpus protocol.
 - Do not treat a reviewable packet as canonical.
 
 ## Initial candidate packs
@@ -102,20 +104,21 @@ restore that branch's rejected product character, heuristic breadth, residual
 2. `docs/UCNS_OPTION_DECISIONS.md`
 3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
 4. `src/ucns/option_registry.json`
-5. `docs/chapter-1.md`
-6. `docs/STRUCTURE_CONTRACT.md`
-7. `docs/CHOICE_PRESERVATION.md`
-8. `docs/CHOICE_POLICY.md`
-9. `docs/RETAINED_STRUCTURE.md`
-10. `docs/COMPARISON_POLICY.md`
-11. `docs/TRAVERSAL_POLICY.md`
-12. `docs/LAYER_PAIRING.md`
-13. `docs/EVALUATOR_LAB.md`
-14. `docs/EXPERIMENT_MANIFESTS.md`
-15. `docs/CANDIDATE_PACKS.md`
-16. `STACK_MANIFEST.json`
-17. module `MODULE_BUILD` and `CONTRACTS`
-18. test `CHECKS`
+5. `src/ucns/edcm.py`
+6. `docs/chapter-1.md`
+7. `docs/STRUCTURE_CONTRACT.md`
+8. `docs/CHOICE_PRESERVATION.md`
+9. `docs/CHOICE_POLICY.md`
+10. `docs/RETAINED_STRUCTURE.md`
+11. `docs/COMPARISON_POLICY.md`
+12. `docs/TRAVERSAL_POLICY.md`
+13. `docs/LAYER_PAIRING.md`
+14. `docs/EVALUATOR_LAB.md`
+15. `docs/EXPERIMENT_MANIFESTS.md`
+16. `docs/CANDIDATE_PACKS.md`
+17. `STACK_MANIFEST.json`
+18. module `MODULE_BUILD` and `CONTRACTS`
+19. test `CHECKS`
 
 ## Required gates
 
