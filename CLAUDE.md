@@ -2,7 +2,12 @@
 
 ## Current root
 
-- Formal carrier: directed twofold branched angular cover.
+- Identifier: `UCNS`; no canonical expansion.
+- Current project: expose UCNS choices and determine an EDCM-scoped ideal
+  configuration against real systems.
+- Implemented carrier candidate: directed twofold branched angular cover.
+- Required evaluation: formal relation to the Möbius-origin/hidden-zero
+  construction.
 - Lifted period: 720 degrees.
 - Visible projection: 360 degrees.
 - Structural Null: unique and coordinate-free.
@@ -34,7 +39,9 @@ Implemented:
 
 ## Candidate boundary
 
-Infrastructure and candidates are not canon.
+Infrastructure and candidates are not canon. The exact decisions and unresolved
+choices live in `docs/UCNS_OPTION_DECISIONS.md` and
+`src/ucns/option_registry.json`.
 
 - Do not appoint a default policy, comparison rule, traversal mode, layer product,
   or evaluator.
@@ -78,20 +85,22 @@ restore that branch's rejected product character, heuristic breadth, residual
 ## Source order
 
 1. `CANON.md`
-2. `docs/chapter-1.md`
-3. `docs/STRUCTURE_CONTRACT.md`
-4. `docs/CHOICE_PRESERVATION.md`
-5. `docs/CHOICE_POLICY.md`
-6. `docs/RETAINED_STRUCTURE.md`
-7. `docs/COMPARISON_POLICY.md`
-8. `docs/TRAVERSAL_POLICY.md`
-9. `docs/LAYER_PAIRING.md`
-10. `docs/EVALUATOR_LAB.md`
-11. `docs/EXPERIMENT_MANIFESTS.md`
-12. `docs/CANDIDATE_PACKS.md`
-13. `STACK_MANIFEST.json`
-14. module `MODULE_BUILD` and `CONTRACTS`
-15. test `CHECKS`
+2. `docs/UCNS_OPTION_DECISIONS.md`
+3. `src/ucns/option_registry.json`
+4. `docs/chapter-1.md`
+5. `docs/STRUCTURE_CONTRACT.md`
+6. `docs/CHOICE_PRESERVATION.md`
+7. `docs/CHOICE_POLICY.md`
+8. `docs/RETAINED_STRUCTURE.md`
+9. `docs/COMPARISON_POLICY.md`
+10. `docs/TRAVERSAL_POLICY.md`
+11. `docs/LAYER_PAIRING.md`
+12. `docs/EVALUATOR_LAB.md`
+13. `docs/EXPERIMENT_MANIFESTS.md`
+14. `docs/CANDIDATE_PACKS.md`
+15. `STACK_MANIFEST.json`
+16. module `MODULE_BUILD` and `CONTRACTS`
+17. test `CHECKS`
 
 ## Required gates
 
@@ -102,6 +111,8 @@ python -m build
 python -m twine check dist/*
 ```
 
-hmmm: the root can now reproduce and pressure candidate instruments. External
-holdout custody, independent calibration, retained-layer measurement laws, and
-an explicit canonization authority remain the next truth boundary.
+hmmm: the root can now reproduce and pressure candidate instruments while
+keeping option standing visible. Real-system EDCM evidence, the carrier-model
+relation, external holdout custody, independent calibration, retained-layer
+measurement laws, and an explicit selection authority remain the next truth
+boundary.
