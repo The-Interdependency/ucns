@@ -1,15 +1,30 @@
-# UCNS — definition-first restart
+# UCNS — option-preserving definition-first restart
 
-UCNS is rebuilding from its carrier definition rather than patching the former
+UCNS is a stable identifier without a canonical expansion. It is rebuilding as
+an option-bearing construction system rather than patching the former
 factorization kernel.
+
+The current project exposes UCNS choices and uses EDCM experiments against real
+systems to determine an EDCM-scoped ideal configuration. That selection cannot
+become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
 history. They are evidence and potential machinery, not current canon.
 
-## Current formal foundation
+## Option decision surface
 
-The carrier is a **directed twofold branched angular cover**:
+Decisions, standing, the current exact profile, and every known unresolved
+choice are recorded in
+[`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md). The packaged
+machine surface is `src/ucns/option_registry.json`, validated by
+`ucns.options` and repository tests. No option dimension has a hidden global
+default.
+
+## Current implemented carrier candidate
+
+The current reference implementation uses a **directed twofold branched angular
+cover**:
 
 - Structural Null is the unique coordinate-free absence of distinction.
 - Non-null carrier points have a 720-degree lifted period.
@@ -144,7 +159,9 @@ The package does **not** implement or promote:
 - canonical numerical equality or recursive identity;
 - typed payload dispatch;
 - factorization, encoding, embeddings, public-gonol integration, or Theorem N;
-- any downstream-consumer dependency.
+- any downstream-consumer dependency;
+- a universally selected carrier model;
+- an ideal EDCM option configuration.
 
 ## Verification
 
@@ -168,5 +185,7 @@ See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
 hmmm: UCNS can now preserve, reproduce, compose, and pressure candidate
-instruments. External holdout custody, candidate calibration, and any
-canonization decision remain independent truth obligations.
+instruments while keeping the current implementation in candidate standing.
+Real-system EDCM evidence, the directed-cover/Möbius-origin relation, external
+holdout custody, candidate calibration, and any selection decision remain
+independent truth obligations.
