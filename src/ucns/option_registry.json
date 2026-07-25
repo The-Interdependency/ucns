@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-25",
   "identifier": {
@@ -19,13 +19,13 @@
     "measurement_validity_transfer": false,
     "metapat_validity_transfer": false,
     "configuration_state": "decided-constraints-with-incomplete-evidence",
-    "selection_principle": "Refuse early collapse. Prefer development slices and configurations that expose incompleteness, disagreement, and worst-case behavior over those that merely fit current examples.",
+    "selection_principle": "Refuse early collapse. Run each admitted corpus in full, then surface the configurations and cases that expose incompleteness, disagreement, and worst-case behavior rather than flattering current examples.",
     "decided_configuration_constraints": {
       "carrier_requirement": "mobius-origin-hidden-zero",
       "structural_null_semantics": "superpositioned-space",
       "twist_event": "new-gonol-initiation",
       "occurrence_operation": "ordered-concatenation",
-      "support_policy": "unit-turn",
+      "support_policy": "unit-speaker-turn",
       "equivalence_baseline": "exact-evidence",
       "equivalence_progression": "evidence-scaled-projection",
       "product_character_display": [
@@ -39,7 +39,14 @@
         "retained-presence"
       ],
       "payload_operator": "carrier-pairing-only",
-      "profile_scope": "edcm-specific"
+      "profile_scope": "edcm-specific",
+      "smallest_gonol": "word",
+      "nesting_boundary": "superpositioned-space",
+      "token_alphabet": "public-gonol-157",
+      "token_identity": "unicode-code-point",
+      "normalization_policy": "none-preserve-source",
+      "corpus_execution": "full-corpus",
+      "out_of_alphabet_policy": "retain-and-report"
     }
   },
   "standing_vocabulary": {
@@ -102,7 +109,7 @@
     },
     {
       "id": "edcm-unit-support",
-      "statement": "The current EDCM configuration uses unit-turn support pending contrary real-system evidence."
+      "statement": "One complete speaker turn has one unit of EDCM support; token count, word count, and text extent do not alter that support."
     },
     {
       "id": "exact-to-projection-evidence-scale",
@@ -130,7 +137,23 @@
     },
     {
       "id": "failure-seeking-research",
-      "statement": "Development evidence must seek configurations and examples that make current results look incomplete or worst, rather than selecting configurations that flatter current fixtures."
+      "statement": "Every admitted corpus is run in full. Failure-seeking occurs in post-run comparison and surfacing, not by sampling a flattering or adversarial subset."
+    },
+    {
+      "id": "word-gonol-smallest-scale",
+      "statement": "The word is the smallest EDCM gonol. Character tokens compose each word gonol, and every larger gonol must compose from word gonols without flattening the SPACE nesting boundary."
+    },
+    {
+      "id": "exact-public-gonol-157",
+      "statement": "EDCM token identity is the exact public 157-position Unicode code-point fixture from The-Interdependency/a0-betatest at its recorded source commit and SHA-256 digest."
+    },
+    {
+      "id": "edcm-source-normalization-none",
+      "statement": "Authoritative EDCM evidence is never Unicode-normalized or folded. Exact source code points are preserved; any NFC view is a separately named comparison projection with recorded divergence."
+    },
+    {
+      "id": "full-corpus-runs",
+      "statement": "EDCM configuration experiments run every turn in each admitted corpus. Sampling and holdout partitioning do not define the current execution protocol."
     }
   ],
   "current_profile": {
@@ -228,12 +251,12 @@
     },
     {
       "id": "support-assignment",
-      "question": "What support baseline does EDCM use while real-system evidence remains incomplete?",
+      "question": "What is the EDCM support unit?",
       "choices": [
         {
-          "id": "unit-turn",
+          "id": "unit-speaker-turn",
           "standing": "decided-constraint",
-          "evidence": "Current EDCM support baseline: one unit per ordered turn or declared occurrence, pending contrary real-system evidence."
+          "evidence": "One complete speaker turn has support one, independent of its token count, word count, or text extent."
         },
         {
           "id": "token-turn",
@@ -381,7 +404,7 @@
     },
     {
       "id": "selection-evidence",
-      "question": "What staged evidence can challenge an EDCM configuration without allowing current examples to select it?",
+      "question": "What evidence can challenge an EDCM configuration without allowing current examples to select it?",
       "choices": [
         {
           "id": "synthetic-v0.1-through-v0.4",
@@ -391,27 +414,120 @@
         {
           "id": "real-system-corpora",
           "standing": "decided-constraint",
-          "evidence": "Required for the active project; candidate sources are registered, but corpus partitions and acceptance procedures remain open."
+          "evidence": "Required for the active project; each admitted source is processed in full by a deterministic adapter."
         },
         {
           "id": "independent-holdout-and-replication",
-          "standing": "required-evaluation",
-          "evidence": "Required before an externally meaningful selection."
+          "standing": "superseded-for-edcm",
+          "evidence": "Not part of the present full-corpus configuration-discovery protocol; external predictive validation may define a separate study."
         },
         {
           "id": "failure-seeking-development-slices",
+          "standing": "superseded-for-edcm",
+          "evidence": "Sampling is replaced by full-corpus execution followed by failure-seeking analysis."
+        },
+        {
+          "id": "failure-seeking-full-corpus-analysis",
           "standing": "decided-constraint",
-          "evidence": "Development selection must emphasize contradiction, repair, retraction, ambiguity, unresolved references, ownership changes, graph disagreement, and other cases that expose incompleteness or worst-case behavior."
+          "evidence": "Compare all configurations over every turn, then surface contradiction, repair, retraction, ambiguity, unresolved references, ownership changes, graph disagreement, alphabet failures, and other worst cases."
+        }
+      ]
+    },
+    {
+      "id": "gonol-scale",
+      "question": "What is the smallest EDCM gonol, and how may larger scales be formed without flattening the nesting boundary?",
+      "choices": [
+        {
+          "id": "word-gonol",
+          "standing": "decided-constraint",
+          "evidence": "The word is the smallest gonol. Its ordered character tokens initiate through the Mobius twist, and all larger gonols compose from word gonols."
+        },
+        {
+          "id": "character-gonol",
+          "standing": "superseded-for-edcm",
+          "evidence": "Characters are the 157 tokens within a word gonol; treating each character as a gonol collapses the decided scale distinction."
+        },
+        {
+          "id": "flat-turn-segmentation",
+          "standing": "superseded-for-edcm",
+          "evidence": "A speaker turn supplies unit support and ordering, but is not a flat bag or the smallest gonol."
+        }
+      ]
+    },
+    {
+      "id": "token-alphabet",
+      "question": "How is corpus text related to the exact 157-token EDCM alphabet?",
+      "choices": [
+        {
+          "id": "exact-public-gonol-157",
+          "standing": "decided-constraint",
+          "evidence": "Use the exact source-provenance fixture and digest. Each position contains one Unicode code point; SPACE is position zero."
+        },
+        {
+          "id": "retain-out-of-alphabet-evidence",
+          "standing": "decided-constraint",
+          "evidence": "Unmapped corpus code points remain in exact order and are reported as alphabet-coverage failures rather than dropped or coerced."
+        },
+        {
+          "id": "alphabet-extension-or-escape",
+          "standing": "unresolved",
+          "evidence": "Full-corpus evidence must show whether the 157-token boundary needs a named escape, another carrier, or no expansion at all."
+        }
+      ]
+    },
+    {
+      "id": "unicode-normalization",
+      "question": "What Unicode transformation, if any, may act on authoritative EDCM evidence?",
+      "choices": [
+        {
+          "id": "none-preserve-source",
+          "standing": "decided-constraint",
+          "evidence": "Strict UTF-8 decoding followed by exact code-point observation. No source mutation is authorized."
+        },
+        {
+          "id": "nfc-derived-comparison-view",
+          "standing": "experiment-candidate",
+          "evidence": "Canonical-equivalence comparison may be useful only as a separately named projection that preserves the raw source and records every changed sequence."
+        },
+        {
+          "id": "compatibility-case-whitespace-or-punctuation-folding",
+          "standing": "superseded-for-edcm",
+          "evidence": "NFKC/NFKD, case folding, whitespace collapse, quote or dash folding, confusable mapping, and similar transforms erase token or nesting distinctions."
+        }
+      ]
+    },
+    {
+      "id": "corpus-execution",
+      "question": "Does the EDCM configuration experiment run samples or the complete admitted corpus?",
+      "choices": [
+        {
+          "id": "full-corpus",
+          "standing": "decided-constraint",
+          "evidence": "Run every speaker turn in source order. Failure-seeking is a post-run comparison and surfacing rule."
+        },
+        {
+          "id": "sampled-development-slices",
+          "standing": "superseded-for-edcm",
+          "evidence": "Sampling was an earlier proposal and is not the current EDCM execution protocol."
+        },
+        {
+          "id": "locked-holdout-partition",
+          "standing": "superseded-for-edcm",
+          "evidence": "Partitioned execution is not required for the present configuration-discovery runs; external prediction studies may define separate protocols later."
         }
       ]
     }
   ],
   "experiment_supported_boundaries": [
-    "Refuse early collapse and seek configurations and examples that expose incompleteness, disagreement, and worst-case behavior.",
+    "Refuse early collapse; run admitted corpora in full and surface failures after the run.",
     "For EDCM, require the Mobius twist as a causal carrier constraint.",
-    "For EDCM, treat Structural Null as superpositioned space and initiate a new gonol through the twist.",
+    "For EDCM, treat Structural Null as superpositioned space and initiate every new gonol through the twist.",
+    "Use the word as the smallest gonol and build every larger gonol from word gonols.",
+    "Preserve every exact SPACE occurrence as token, word boundary, and superpositioned nesting interface.",
+    "Use the exact source-provenance public 157-position Unicode code-point fixture.",
+    "Apply no normalization or folding to authoritative source text; retain and report every out-of-alphabet code point.",
     "Use ordered concatenation as the EDCM primary occurrence operation.",
-    "Use unit-turn support for the current EDCM configuration pending contrary real-system evidence.",
+    "Use one unit of support per complete speaker turn.",
     "Begin EDCM equivalence with exact evidence and move toward projection only on an explicit evidence-backed sliding scale.",
     "Display all three M candidates without selecting one.",
     "Display all three B candidates without selecting one.",
@@ -431,13 +547,16 @@
   ],
   "hmmm": [
     "Formal integration or incompatibility between the implemented directed cover and the EDCM-critical Mobius carrier.",
-    "Formal semantics of singular superpositioned Structural Null and the new-gonol initiation twist.",
+    "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
+    "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening SPACE.",
+    "Whether out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
+    "Whether visual glyph identity requires a pinned font, shaping engine, and Unicode version in addition to exact code-point identity.",
     "Definition and authority procedure for an ideal EDCM-scoped configuration.",
     "Graph and retained-layer contribution laws; more information is required.",
     "Evidence thresholds and loss accounting for the sliding scale from exact evidence toward projection.",
     "Interpretation and visualization of the three simultaneous M and three simultaneous B readouts.",
-    "Corpus-specific consent, provenance, redaction, partitions, outcome labels, and external holdout custody.",
-    "Implementation and migration of the EDCM-specific profile from the current combined compatibility profile.",
+    "Corpus-specific license, consent, provenance, redaction, and deterministic full-corpus adapters.",
+    "Formal promotion and migration criteria for the EDCM observation profile after the Mobius and higher-gonol laws are executable.",
     "Typed payload operator registry and dispatch laws remain outside the active EDCM configuration."
   ],
   "real_system_corpus_candidates": [
@@ -448,7 +567,7 @@
       "source": "https://huggingface.co/datasets/allenai/WildChat-1M",
       "access": "Public ODC-BY dataset; approximately 3.36 GB.",
       "edcm_fit": "Primary messy human-model development source for multi-turn correction, refusal, topic switching, multilingual use, and unsafe or ambiguous cases.",
-      "limitation": "Potentially sensitive content, provider-era effects, imperfect redaction, and no independent EDCM outcome labels."
+      "limitation": "Potentially sensitive content, provider-era effects, and imperfect redaction; source and redaction effects must remain explicit."
     },
     {
       "id": "prism-alignment",
@@ -504,5 +623,32 @@
       "edcm_fit": "Relation labels, direction, speaker ownership, discourse graphs, clarification, and unresolved-reference evidence.",
       "limitation": "Derived and filtered corpus; source-chat provenance and annotation effects must remain explicit."
     }
-  ]
+  ],
+  "target_profile": {
+    "profile_id": "ucns.profile.edcm-word-gonol",
+    "profile_version": "0.1.0",
+    "scope": "edcm-only",
+    "standing": "implemented-candidate",
+    "selection_effect": "none",
+    "smallest_gonol": "word",
+    "nesting_boundary": "superpositioned-space",
+    "gonol_initiation": "mobius-twist",
+    "occurrence_operation": "ordered-concatenation",
+    "support_policy": "unit-speaker-turn",
+    "token_alphabet": {
+      "id": "public-gonol-157",
+      "arity": 157,
+      "source_repository": "The-Interdependency/a0-betatest",
+      "source_commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+      "source_path": "backend/interdependent_lib/gonal/gonal.py",
+      "sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+      "origin_position": 0,
+      "origin_token": " ",
+      "digit_zero_position": 139
+    },
+    "normalization_policy": "none-preserve-source",
+    "out_of_alphabet_policy": "retain-and-report",
+    "corpus_execution": "full-corpus",
+    "boundary": "This profile makes exact corpus observation executable. It records the required Mobius initiation event but does not claim to supply the unresolved Mobius coordinate construction or higher-gonol composition law."
+  }
 }
