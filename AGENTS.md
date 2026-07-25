@@ -4,21 +4,22 @@ Read, in order:
 
 1. `CANON.md`
 2. `docs/UCNS_OPTION_DECISIONS.md`
-3. `src/ucns/option_registry.json`
-4. `docs/chapter-1.md`
-5. `docs/STRUCTURE_CONTRACT.md`
-6. `docs/CHOICE_PRESERVATION.md`
-7. `docs/CHOICE_POLICY.md`
-8. `docs/RETAINED_STRUCTURE.md`
-9. `docs/COMPARISON_POLICY.md`
-10. `docs/TRAVERSAL_POLICY.md`
-11. `docs/LAYER_PAIRING.md`
-12. `docs/EVALUATOR_LAB.md`
-13. `docs/EXPERIMENT_MANIFESTS.md`
-14. `docs/CANDIDATE_PACKS.md`
-15. `.agents/skills/README.md`
-16. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-17. the corresponding test module's `CHECKS` block
+3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
+4. `src/ucns/option_registry.json`
+5. `docs/chapter-1.md`
+6. `docs/STRUCTURE_CONTRACT.md`
+7. `docs/CHOICE_PRESERVATION.md`
+8. `docs/CHOICE_POLICY.md`
+9. `docs/RETAINED_STRUCTURE.md`
+10. `docs/COMPARISON_POLICY.md`
+11. `docs/TRAVERSAL_POLICY.md`
+12. `docs/LAYER_PAIRING.md`
+13. `docs/EVALUATOR_LAB.md`
+14. `docs/EXPERIMENT_MANIFESTS.md`
+15. `docs/CANDIDATE_PACKS.md`
+16. `.agents/skills/README.md`
+17. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+18. the corresponding test module's `CHECKS` block
 
 Rules:
 
@@ -26,13 +27,18 @@ Rules:
 - Treat every option-registry standing as authoritative. Do not appoint a global
   default or selected winner where the registry does not.
 - Preserve the directed 720-degree lifted carrier and 360-degree visible
-  projection as the current implemented candidate, not universal option canon.
-- Do not promote Möbius, seam, hidden-zero, automatic orientation reversal, or
-  one-circle-completion semantics as settled formal claims. Preserve the
-  Möbius-origin/hidden-zero construction as `required-evaluation` until its
-  exact relation to the directed-cover candidate is decided.
-- Use EDCM experiments against real systems to support an EDCM-scoped option
-  selection. Never transfer that selection into universal UCNS canon.
+  projection as executable comparison evidence, not the EDCM target or universal
+  option canon.
+- For EDCM, require the Möbius causal carrier, singular superpositioned Structural
+  Null, and a twist when a new gonol initiates. Do not let the current directed
+  cover erase these decided constraints; its integration remains unresolved.
+- For EDCM, require ordered concatenation, unit-turn support, exact evidence as
+  the baseline, carrier pairing only, and an EDCM-specific profile.
+- Display all three registered `M` and all three registered `B` candidates. Do
+  not select or hide one while information remains incomplete.
+- Use failure-seeking real-system experiments for an EDCM-scoped option
+  selection. Prefer evidence that exposes incompleteness and worst-case behavior;
+  never transfer an EDCM selection into universal UCNS canon.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.
@@ -61,9 +67,11 @@ Rules:
   scope, and policy dependencies. Do not infer stable identity from a callable.
 - Witness corpora keep development and holdout partitions separate. Do not
   expose hidden holdout content merely to improve a candidate.
-- Passing development fixtures is not evidence of generality. Use holdouts,
-  generated mutations, metamorphic cases, adversarial cases, and minimized
-  counterexamples.
+- Passing development fixtures is not evidence of generality. Use real-system
+  corpora, failure-seeking slices, holdouts, generated mutations, metamorphic
+  cases, adversarial cases, and minimized counterexamples. Follow
+  `docs/EDCM_REAL_SYSTEM_CORPORA.md` and preserve every source's license, consent,
+  redaction, provenance, and partition boundary.
 - Candidate, witness, and decision authorship remain separately recorded.
 - A candidate decision packet may become reviewable only with passing holdout
   evidence and rollback behavior. Reviewable does not mean canonical.
