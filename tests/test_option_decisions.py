@@ -51,6 +51,9 @@
 import pytest
 
 from ucns import (
+    EDCM_PROFILE_ID,
+    EDCM_PROFILE_VERSION,
+    PUBLIC_GONOL_SHA256,
     OPTION_REGISTRY_SCHEMA_ID,
     PROFILE_ID,
     PROFILE_OPTIONS,
@@ -113,7 +116,14 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
     assert constraints["structural_null_semantics"] == "superpositioned-space"
     assert constraints["twist_event"] == "new-gonol-initiation"
     assert constraints["occurrence_operation"] == "ordered-concatenation"
-    assert constraints["support_policy"] == "unit-turn"
+    assert constraints["support_policy"] == "unit-speaker-turn"
+    assert constraints["smallest_gonol"] == "word"
+    assert constraints["nesting_boundary"] == "superpositioned-space"
+    assert constraints["token_alphabet"] == "public-gonol-157"
+    assert constraints["token_identity"] == "unicode-code-point"
+    assert constraints["normalization_policy"] == "none-preserve-source"
+    assert constraints["corpus_execution"] == "full-corpus"
+    assert constraints["out_of_alphabet_policy"] == "retain-and-report"
     assert constraints["equivalence_baseline"] == "exact-evidence"
     assert constraints["equivalence_progression"] == "evidence-scaled-projection"
     assert constraints["payload_operator"] == "carrier-pairing-only"
@@ -131,6 +141,22 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
         "retained-presence",
     ]
     assert option_dimension("faithful-breadth-B")["selection_effect"] == "none"
+
+    target = registry["target_profile"]
+    assert target["profile_id"] == EDCM_PROFILE_ID
+    assert target["profile_version"] == EDCM_PROFILE_VERSION
+    assert target["selection_effect"] == "none"
+    assert target["smallest_gonol"] == "word"
+    assert target["support_policy"] == "unit-speaker-turn"
+    assert target["corpus_execution"] == "full-corpus"
+    assert target["token_alphabet"]["arity"] == 157
+    assert target["token_alphabet"]["origin_token"] == " "
+    assert target["token_alphabet"]["digit_zero_position"] == 139
+    assert target["token_alphabet"]["sha256"] == PUBLIC_GONOL_SHA256
+
+    assert option_dimension("gonol-scale")["choices"][0]["id"] == "word-gonol"
+    assert option_dimension("unicode-normalization")["choices"][0]["id"] == "none-preserve-source"
+    assert option_dimension("corpus-execution")["choices"][0]["id"] == "full-corpus"
 
     corpus_ids = {corpus["id"] for corpus in registry["real_system_corpus_candidates"]}
     assert {
