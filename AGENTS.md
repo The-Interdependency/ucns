@@ -6,7 +6,8 @@ Read, in order:
 2. `docs/UCNS_OPTION_DECISIONS.md`
 3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
 4. `src/ucns/option_registry.json`
-5. `docs/chapter-1.md`
+5. `src/ucns/edcm.py`
+6. `docs/chapter-1.md`
 6. `docs/STRUCTURE_CONTRACT.md`
 7. `docs/CHOICE_PRESERVATION.md`
 8. `docs/CHOICE_POLICY.md`
@@ -32,13 +33,21 @@ Rules:
 - For EDCM, require the Möbius causal carrier, singular superpositioned Structural
   Null, and a twist when a new gonol initiates. Do not let the current directed
   cover erase these decided constraints; its integration remains unresolved.
-- For EDCM, require ordered concatenation, unit-turn support, exact evidence as
-  the baseline, carrier pairing only, and an EDCM-specific profile.
+- For EDCM, characters are the exact 157 Unicode code-point tokens; words are
+  the smallest gonols; every exact SPACE occurrence is simultaneously token,
+  word boundary, and superpositioned nesting interface; every larger gonol
+  composes from word gonols without flattening that boundary.
+- Apply no normalization or folding to authoritative EDCM source evidence.
+  Decode UTF-8 strictly and retain every out-of-alphabet code point in order as
+  positive coverage-failure evidence.
+- For EDCM, require ordered concatenation, one support unit per complete speaker
+  turn, exact evidence as the baseline, carrier pairing only, full-corpus
+  execution, and the EDCM-specific word-gonol profile.
 - Display all three registered `M` and all three registered `B` candidates. Do
   not select or hide one while information remains incomplete.
-- Use failure-seeking real-system experiments for an EDCM-scoped option
-  selection. Prefer evidence that exposes incompleteness and worst-case behavior;
-  never transfer an EDCM selection into universal UCNS canon.
+- Run every turn of each admitted EDCM corpus. Seek incompleteness and worst-case
+  behavior in post-run comparison and surfacing, not by sampling the execution.
+  Never transfer an EDCM selection into universal UCNS canon.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.
@@ -65,13 +74,14 @@ Rules:
   produce receipts.
 - Candidate identity records name, evaluator kind, version, code reference,
   scope, and policy dependencies. Do not infer stable identity from a callable.
-- Witness corpora keep development and holdout partitions separate. Do not
-  expose hidden holdout content merely to improve a candidate.
-- Passing development fixtures is not evidence of generality. Use real-system
-  corpora, failure-seeking slices, holdouts, generated mutations, metamorphic
-  cases, adversarial cases, and minimized counterexamples. Follow
-  `docs/EDCM_REAL_SYSTEM_CORPORA.md` and preserve every source's license, consent,
-  redaction, provenance, and partition boundary.
+- When a separately declared non-EDCM study uses development and holdout
+  partitions, keep them separate and do not expose hidden holdout content. This
+  generic laboratory feature is not the current EDCM execution protocol.
+- Passing fixtures is not evidence of generality. For EDCM, run real-system
+  corpora completely, then use generated mutations, metamorphic cases,
+  adversarial queries, and minimized counterexamples over the resulting
+  evidence. Preserve every source's license, consent, redaction, provenance,
+  exact turn count, and completion receipt.
 - Candidate, witness, and decision authorship remain separately recorded.
 - A candidate decision packet may become reviewable only with passing holdout
   evidence and rollback behavior. Reviewable does not mean canonical.
