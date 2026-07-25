@@ -5,12 +5,17 @@
 - Identifier: `UCNS`; no canonical expansion.
 - Current project: expose UCNS choices and determine an EDCM-scoped ideal
   configuration against real systems.
-- Implemented carrier candidate: directed twofold branched angular cover.
-- Required evaluation: formal relation to the Möbius-origin/hidden-zero
-  construction.
-- Lifted period: 720 degrees.
-- Visible projection: 360 degrees.
-- Structural Null: unique and coordinate-free.
+- Implemented comparison carrier: directed twofold branched angular cover.
+- EDCM carrier constraint: Möbius causal chain with singular superpositioned
+  Structural Null and a twist when a new gonol initiates.
+- Open integration: whether the directed cover implements, embeds, parameterizes,
+  or conflicts with the required Möbius construction.
+- Lifted comparison period: 720 degrees.
+- Visible comparison projection: 360 degrees.
+- Current coordinate-free null: executable but superseded as EDCM target semantics.
+- EDCM operation floor: ordered concatenation, unit-turn support, exact-evidence
+  baseline, carrier pairing only, and an EDCM-specific profile.
+- EDCM displays: all three `M` and all three `B` candidates; no selected winner.
 - Established measurement: cell-only aggregate support `W`.
 - Represented evidence: cells plus repeated retained layers with explicit presence,
   policy binding, and contribution status.
@@ -41,7 +46,8 @@ Implemented:
 
 Infrastructure and candidates are not canon. The exact decisions and unresolved
 choices live in `docs/UCNS_OPTION_DECISIONS.md` and
-`src/ucns/option_registry.json`.
+`src/ucns/option_registry.json`. Real-system corpus candidates and admission
+boundaries live in `docs/EDCM_REAL_SYSTEM_CORPORA.md`.
 
 - Do not appoint a default policy, comparison rule, traversal mode, layer product,
   or evaluator.
@@ -74,7 +80,8 @@ Faithful-breadth candidates:
 - cell detail;
 - retained-layer presence.
 
-These are pressure instruments. They are expected to disagree and fail laws.
+These are pressure instruments. For EDCM, every `M` and every `B` candidate is
+shown; they are expected to disagree and fail laws.
 
 ## Grok recovery boundary
 
@@ -86,21 +93,22 @@ restore that branch's rejected product character, heuristic breadth, residual
 
 1. `CANON.md`
 2. `docs/UCNS_OPTION_DECISIONS.md`
-3. `src/ucns/option_registry.json`
-4. `docs/chapter-1.md`
-5. `docs/STRUCTURE_CONTRACT.md`
-6. `docs/CHOICE_PRESERVATION.md`
-7. `docs/CHOICE_POLICY.md`
-8. `docs/RETAINED_STRUCTURE.md`
-9. `docs/COMPARISON_POLICY.md`
-10. `docs/TRAVERSAL_POLICY.md`
-11. `docs/LAYER_PAIRING.md`
-12. `docs/EVALUATOR_LAB.md`
-13. `docs/EXPERIMENT_MANIFESTS.md`
-14. `docs/CANDIDATE_PACKS.md`
-15. `STACK_MANIFEST.json`
-16. module `MODULE_BUILD` and `CONTRACTS`
-17. test `CHECKS`
+3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
+4. `src/ucns/option_registry.json`
+5. `docs/chapter-1.md`
+6. `docs/STRUCTURE_CONTRACT.md`
+7. `docs/CHOICE_PRESERVATION.md`
+8. `docs/CHOICE_POLICY.md`
+9. `docs/RETAINED_STRUCTURE.md`
+10. `docs/COMPARISON_POLICY.md`
+11. `docs/TRAVERSAL_POLICY.md`
+12. `docs/LAYER_PAIRING.md`
+13. `docs/EVALUATOR_LAB.md`
+14. `docs/EXPERIMENT_MANIFESTS.md`
+15. `docs/CANDIDATE_PACKS.md`
+16. `STACK_MANIFEST.json`
+17. module `MODULE_BUILD` and `CONTRACTS`
+18. test `CHECKS`
 
 ## Required gates
 
@@ -111,8 +119,7 @@ python -m build
 python -m twine check dist/*
 ```
 
-hmmm: the root can now reproduce and pressure candidate instruments while
-keeping option standing visible. Real-system EDCM evidence, the carrier-model
-relation, external holdout custody, independent calibration, retained-layer
-measurement laws, and an explicit selection authority remain the next truth
-boundary.
+hmmm: the decided EDCM floor is visible without pretending that it completes
+the configuration. Real-system failure slices, the Möbius/directed-cover
+integration, graph contribution, projection thresholds, external holdout custody,
+and an explicit selection authority remain the next truth boundary.
