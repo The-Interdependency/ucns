@@ -5,8 +5,12 @@ an option-bearing construction system rather than patching the former
 factorization kernel.
 
 The current project exposes UCNS choices and uses EDCM experiments against real
-systems to determine an EDCM-scoped ideal configuration. That selection cannot
-become universal UCNS canon or transfer proof or measurement validity.
+systems to determine an EDCM-scoped ideal configuration. EDCM now fixes a
+Möbius causal carrier, superpositioned Structural Null, ordered concatenation,
+unit support, exact-evidence baseline, carrier pairing only, and an EDCM-specific
+profile while keeping graph contribution and other information-dependent choices
+open. Any eventual selection cannot become universal UCNS canon or transfer
+proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -18,15 +22,22 @@ Decisions, standing, the current exact profile, and every known unresolved
 choice are recorded in
 [`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md). The packaged
 machine surface is `src/ucns/option_registry.json`, validated by
-`ucns.options` and repository tests. No option dimension has a hidden global
-default.
+`ucns.options` and repository tests. Candidate real-system sources and their
+access boundaries are recorded in
+[`docs/EDCM_REAL_SYSTEM_CORPORA.md`](docs/EDCM_REAL_SYSTEM_CORPORA.md). No option
+dimension has a hidden global default.
 
 ## Current implemented carrier candidate
 
 The current reference implementation uses a **directed twofold branched angular
-cover**:
+cover**. It remains executable comparison evidence but is not an eligible EDCM
+target unless it integrates the required Möbius causal chain. For EDCM,
+Structural Null is the singular superpositioned space and the twist occurs when
+a new gonol initiates; the current code does not yet implement that requirement.
 
-- Structural Null is the unique coordinate-free absence of distinction.
+The comparison candidate currently provides:
+
+- a unique coordinate-free null representation, superseded for the EDCM target;
 - Non-null carrier points have a 720-degree lifted period.
 - The visible projection has a 360-degree period.
 - One visible lap advances to the second lifted representative on the same
@@ -139,8 +150,10 @@ See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md) and
 The repository now supplies explicit **noncanonical** candidates:
 
 - exact-adapter, policy-projection, and layer-scoped equivalence signatures;
-- geometric-mean, maximum-support, and minimum-support cell-only `M` candidates;
-- cell-log-support, cell-detail, and retained-presence `B` candidates.
+- geometric-mean, maximum-support, and minimum-support cell-only `M` candidates,
+  displayed together for EDCM without a selected winner;
+- cell-log-support, cell-detail, and retained-presence `B` candidates, likewise
+  displayed together pending more information.
 
 Cell-only candidates fail outside scope rather than treating retained-only
 evidence as zero distinction. A passing candidate remains a candidate.
@@ -184,8 +197,7 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: UCNS can now preserve, reproduce, compose, and pressure candidate
-instruments while keeping the current implementation in candidate standing.
-Real-system EDCM evidence, the directed-cover/Möbius-origin relation, external
-holdout custody, candidate calibration, and any selection decision remain
-independent truth obligations.
+hmmm: the EDCM floor is clearer and the current implementation is more honestly
+incomplete. Seven real-system corpus candidates are documented, but ingestion,
+failure-first partitions, the directed-cover/Möbius integration, external holdout
+custody, and any ideal-configuration claim remain independent truth obligations.
