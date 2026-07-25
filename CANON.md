@@ -275,9 +275,13 @@ Implemented and test-backed infrastructure:
 10. cycle-safe traversal with budgets and receipts;
 11. retained-layer pairing plans and result evidence;
 12. content-addressed witness corpora and experiment manifests;
-13. development/holdout separation, mutation and metamorphic generation,
-    reproduction checks, and candidate decision packets;
-14. initial noncanonical equivalence, `M`, and `B` candidate families.
+13. optional development/holdout separation for separately declared study
+    protocols, mutation and metamorphic generation, reproduction checks, and
+    candidate decision packets;
+14. initial noncanonical equivalence, `M`, and `B` candidate families;
+15. an EDCM-only observation profile with the exact 157-code-point fixture,
+    word gonols, explicit SPACE nesting, strict no-normalization evidence,
+    one-unit speaker turns, out-of-alphabet reporting, and full-corpus iteration.
 
 Still unresolved and not promoted:
 
@@ -292,10 +296,10 @@ Still unresolved and not promoted:
 8. typed payload dispatch;
 9. formal integration of the EDCM-critical Möbius carrier with the current
    directed cover;
-10. the EDCM-specific profile and migration from the combined compatibility
-    profile;
-11. a complete `UCNSObject`, factorization, encoding, embedding, codec,
-    public-gonol bridge, or theorem claim.
+10. formal promotion and migration of the EDCM observation profile after the
+    Möbius coordinate and higher-gonol composition laws are executable;
+11. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+    public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
 reconstructed from experimental branch `ucns-Grok`. Its former `M`, heuristic
@@ -319,13 +323,16 @@ for EDCM. Its relation to the current directed-cover candidate must still be
 formalized and tested: the directed cover may implement, embed, parameterize, or
 conflict with it, but it cannot erase it.
 
-EDCM additionally fixes ordered concatenation, unit-turn support, exact evidence
-as the equivalence baseline, carrier pairing only, and an EDCM-specific target
-profile. All three `M` and all three `B` candidates remain simultaneously visible.
+EDCM additionally fixes words as the smallest gonols, exact SPACE as the
+superpositioned nesting interface, the exact public 157-code-point alphabet with
+no authoritative normalization, ordered concatenation, one unit per speaker
+turn, full-corpus execution, exact evidence as the equivalence baseline, carrier
+pairing only, and an EDCM-specific target profile. All three `M` and all three `B` candidates remain simultaneously visible.
 Graph contribution and the movement from exact evidence toward projection remain
 open pending more information.
 
-hmmm: the floor now refuses early collapse, but the current executable carrier
-still lacks the EDCM-critical initiation twist. Real-system corpora, failure-first
-partitions, independent holdout, and formal integration must make that mismatch
-more precise before any configuration can honestly call itself ideal.
+hmmm: the observation profile now preserves the EDCM-critical initiation event,
+word scale, SPACE nesting, exact tokens, and turn support, but it does not supply
+the formal Möbius coordinates or higher-gonol composition law. Complete
+real-system runs and post-run failure analysis must make those missing laws more
+precise before any configuration can honestly call itself ideal.
