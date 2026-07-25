@@ -3,27 +3,36 @@
 Read, in order:
 
 1. `CANON.md`
-2. `docs/chapter-1.md`
-3. `docs/STRUCTURE_CONTRACT.md`
-4. `docs/CHOICE_PRESERVATION.md`
-5. `docs/CHOICE_POLICY.md`
-6. `docs/RETAINED_STRUCTURE.md`
-7. `docs/COMPARISON_POLICY.md`
-8. `docs/TRAVERSAL_POLICY.md`
-9. `docs/LAYER_PAIRING.md`
-10. `docs/EVALUATOR_LAB.md`
-11. `docs/EXPERIMENT_MANIFESTS.md`
-12. `docs/CANDIDATE_PACKS.md`
-13. `.agents/skills/README.md`
-14. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-15. the corresponding test module's `CHECKS` block
+2. `docs/UCNS_OPTION_DECISIONS.md`
+3. `src/ucns/option_registry.json`
+4. `docs/chapter-1.md`
+5. `docs/STRUCTURE_CONTRACT.md`
+6. `docs/CHOICE_PRESERVATION.md`
+7. `docs/CHOICE_POLICY.md`
+8. `docs/RETAINED_STRUCTURE.md`
+9. `docs/COMPARISON_POLICY.md`
+10. `docs/TRAVERSAL_POLICY.md`
+11. `docs/LAYER_PAIRING.md`
+12. `docs/EVALUATOR_LAB.md`
+13. `docs/EXPERIMENT_MANIFESTS.md`
+14. `docs/CANDIDATE_PACKS.md`
+15. `.agents/skills/README.md`
+16. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+17. the corresponding test module's `CHECKS` block
 
 Rules:
 
+- Treat `UCNS` as a stable identifier without a canonical expansion.
+- Treat every option-registry standing as authoritative. Do not appoint a global
+  default or selected winner where the registry does not.
 - Preserve the directed 720-degree lifted carrier and 360-degree visible
-  projection.
-- Do not reintroduce Möbius, seam, hidden-zero, automatic orientation reversal,
-  or one-circle-completion semantics as formal carrier claims.
+  projection as the current implemented candidate, not universal option canon.
+- Do not promote Möbius, seam, hidden-zero, automatic orientation reversal, or
+  one-circle-completion semantics as settled formal claims. Preserve the
+  Möbius-origin/hidden-zero construction as `required-evaluation` until its
+  exact relation to the directed-cover candidate is decided.
+- Use EDCM experiments against real systems to support an EDCM-scoped option
+  selection. Never transfer that selection into universal UCNS canon.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.
