@@ -2,7 +2,7 @@
 
 **Research authority:** Erin Spencer  
 **Recorded:** 2026-07-25  
-**Status:** candidate sources found; none ingested, selected, or assigned to holdout  
+**Status:** candidate sources found; none ingested or run through the EDCM profile  
 **Decision surface:** [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md)
 
 ## Purpose
