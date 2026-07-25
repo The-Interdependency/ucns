@@ -28,6 +28,18 @@
 #   call: self::test_observe_corpus_runs_every_turn_without_sampling
 #   mutates: none
 #   cleanup: none
+#
+# id: check_profile_options_fail_closed
+#   proves: edcm_source_text_is_not_normalized
+#   call: self::test_profile_options_fail_closed
+#   mutates: none
+#   cleanup: none
+#
+# id: check_strict_utf8_decoding
+#   proves: edcm_source_text_is_not_normalized
+#   call: self::test_utf8_decoding_is_strict
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import unicodedata
