@@ -2,7 +2,7 @@
 # id: edcm_metapat_ordered_occurrence_profile
 #   module_name: profiles
 #   module_kind: schema
-#   summary: binds current UCNS structures to one explicit post-reset ordered-occurrence profile for EDCM and METAPAT
+#   summary: binds current UCNS structures to one explicit initial post-reset option configuration for EDCM and METAPAT
 #   owner: Erin Spencer
 #   public_surface: EdcmMetapatOrderedOccurrenceProfile, ProfileBoundStructure, PROFILE_OPTIONS
 #   internal_surface: _jsonable, _cell_identity_payload, _occurrence_id
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_profile_boundary.py
-#   rollout: draft profile only; downstream activation remains suspended until merge and package validation
+#   rollout: merged and package-validated initial configuration; no global or EDCM option selection
 #   rollback: remove profile exports and module without changing current carrier foundations
 #   since: 2026-07-23
-#   unresolved: downstream METAPAT and EDCM adapter activation
+#   unresolved: ideal EDCM-scoped option configuration and whether EDCM and METAPAT require separate profiles
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -166,7 +166,7 @@ class ProfileBoundStructure:
 
 @dataclass(frozen=True, slots=True)
 class EdcmMetapatOrderedOccurrenceProfile:
-    """Single post-reset profile for ordered EDCM/METAPAT occurrences."""
+    """One initial post-reset option configuration for EDCM/METAPAT occurrences."""
 
     profile_id: str = PROFILE_ID
     version: str = PROFILE_VERSION
@@ -179,7 +179,7 @@ class EdcmMetapatOrderedOccurrenceProfile:
         if self.producer_epoch != PRODUCER_EPOCH:
             raise ValueError("producer epoch is fixed")
         if self.options != PROFILE_OPTIONS:
-            raise ValueError("profile options are fixed and fail closed")
+            raise ValueError("profile options are fixed for this profile and fail closed")
 
     def bind(self, structure: Structure) -> ProfileBoundStructure:
         """Validate and bind a current-root structure without projecting it."""
