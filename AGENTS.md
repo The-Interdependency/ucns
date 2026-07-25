@@ -8,19 +8,19 @@ Read, in order:
 4. `src/ucns/option_registry.json`
 5. `src/ucns/edcm.py`
 6. `docs/chapter-1.md`
-6. `docs/STRUCTURE_CONTRACT.md`
-7. `docs/CHOICE_PRESERVATION.md`
-8. `docs/CHOICE_POLICY.md`
-9. `docs/RETAINED_STRUCTURE.md`
-10. `docs/COMPARISON_POLICY.md`
-11. `docs/TRAVERSAL_POLICY.md`
-12. `docs/LAYER_PAIRING.md`
-13. `docs/EVALUATOR_LAB.md`
-14. `docs/EXPERIMENT_MANIFESTS.md`
-15. `docs/CANDIDATE_PACKS.md`
-16. `.agents/skills/README.md`
-17. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-18. the corresponding test module's `CHECKS` block
+7. `docs/STRUCTURE_CONTRACT.md`
+8. `docs/CHOICE_PRESERVATION.md`
+9. `docs/CHOICE_POLICY.md`
+10. `docs/RETAINED_STRUCTURE.md`
+11. `docs/COMPARISON_POLICY.md`
+12. `docs/TRAVERSAL_POLICY.md`
+13. `docs/LAYER_PAIRING.md`
+14. `docs/EVALUATOR_LAB.md`
+15. `docs/EXPERIMENT_MANIFESTS.md`
+16. `docs/CANDIDATE_PACKS.md`
+17. `.agents/skills/README.md`
+18. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+19. the corresponding test module's `CHECKS` block
 
 Rules:
 
@@ -83,11 +83,13 @@ Rules:
   evidence. Preserve every source's license, consent, redaction, provenance,
   exact turn count, and completion receipt.
 - Candidate, witness, and decision authorship remain separately recorded.
-- A candidate decision packet may become reviewable only with passing holdout
-  evidence and rollback behavior. Reviewable does not mean canonical.
+- Under a separately declared protocol that uses a holdout, a candidate decision
+  packet may become reviewable only with passing holdout evidence and rollback
+  behavior. This rule does not create a holdout requirement for the current
+  full-corpus EDCM discovery protocol.
 - Canonization requires a separate explicit decision recording the selected
-  version, laws, witnesses, holdout custody, alternatives, information loss,
-  rollback, and migration behavior.
+  version, laws, witnesses, applicable evidence custody, alternatives,
+  information loss, rollback, and migration behavior.
 - Do not create a complete `UCNSObject` until canonical structural equivalence,
   valid retained-layer-aware `M`, faithful `B`, typed dispatch, and their
   external evidence are explicitly constructed and ratified.
