@@ -2,9 +2,9 @@
 # id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports ratified foundations plus option-preserving, reproducible candidate-research infrastructure
+#   summary: exports the UCNS decision registry, current implemented foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,11 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable foundations, candidate-research infrastructure, and one explicit downstream profile only
+#   rollout: importable decision registry, implemented candidates, research infrastructure, and one explicit downstream profile
 #   rollback: remove downstream profile exports while preserving foundations and research surfaces
-#   requires: directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: ideal EDCM option configuration, carrier-model relation, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -189,6 +189,14 @@ from .candidates import (
     policy_projection_equivalence_candidate,
     retained_presence_breadth_candidate,
 )
+from .options import (
+    OPTION_REGISTRY_SCHEMA_ID,
+    OPTION_REGISTRY_SCHEMA_VERSION,
+    UCNS_IDENTIFIER,
+    OptionRegistryError,
+    load_option_registry,
+    option_dimension,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -257,7 +265,9 @@ __all__ = [
     "maximum_support_product_candidate", "minimum_support_product_candidate",
     "policy_projection_equivalence_candidate",
     "retained_presence_breadth_candidate",
-    "BRIDGE_SCHEMA_ID", "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
+    "OPTION_REGISTRY_SCHEMA_ID", "OPTION_REGISTRY_SCHEMA_VERSION",
+    "UCNS_IDENTIFIER", "OptionRegistryError", "load_option_registry",
+    "option_dimension", "BRIDGE_SCHEMA_ID", "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",
     "EdcmMetapatBridgeRecord", "InformationLossRecord",
     "RetainedLayerDigest", "PROFILE_OPTIONS",
