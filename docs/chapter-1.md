@@ -1,6 +1,8 @@
 # Chapter 1: The Subtractive Foundations of the Unit Carrier
 
-The construction of the Unit Carrier Number System (UCNS) did not begin by adding axioms. It began by removing illusions.
+**Scope:** current implemented directed-cover candidate; not universal UCNS option selection. See [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md).
+
+The construction of UCNS did not begin by adding axioms. It began by removing illusions.
 
 Early attempts to build a payload-bearing geometric number system on a directed unit carrier imported metaphors from physics and from familiar topological models: zero-point energy vaults accumulating at the origin, continuous frame inversions producing destructive interference, arbitrary bounds on causal memory, signed fibers reintroducing negation, and antipodal placements that forced the second representative across the carrier rather than along the same directed path. These imports did not clarify the object; they concealed the distinctions the carrier actually possesses and erased distinctions it retains.
 
@@ -12,7 +14,7 @@ The required reset therefore removed every coordinate, sign, seam, inversion, an
 - algebraic zero is not Structural Null;
 - memory is ordinary structure and contributes exactly the breadth it retains.
 
-The term “Möbius” is retained only as informal provenance. It does not appear in the formal definition. The object is a **directed twofold branched angular cover** with a 720° lifted period and a 360° visible projection.
+This chapter formalizes the current **directed twofold branched angular cover** candidate with a 720° lifted period and a 360° visible projection. It does not settle the entire UCNS carrier option space. The Möbius-origin/hidden-zero construction retains `required-evaluation` standing; its exact relation to this candidate remains an open formal and empirical decision.
 
 ## 1.1 The Radial Map and the Unique Null
 
@@ -192,7 +194,7 @@ The familiar two-part test (payload algebra declares semantic erasure and no rec
 
 ## 1.9 Implementation Boundary
 
-Chapter 1 fixes the architecture, jurisdictions, and laws. It determines that faithful breadth must satisfy \(B(A) \ge 0\), \(B(A) = 0 \iff A = \mathbf{N}\), and \(a(A) = 1 - e^{-B(A)}\), and that \(B\) must report every distinction retained by payloads, carrier state, recursion, metadata, provenance, and receipts. It fixes the zero-test and jurisdiction of cell support \(\mu\), the aggregate support law of \(W\), the paired-support axiom of \(\boxtimes\), the multiplicative codomain and laws of \(M\), the directed branch topology, the separation of pairing and dispatch, and the complete collapse rule.
+Within the current directed-cover candidate, Chapter 1 fixes the architecture, jurisdictions, and laws. It determines that faithful breadth must satisfy \(B(A) \ge 0\), \(B(A) = 0 \iff A = \mathbf{N}\), and \(a(A) = 1 - e^{-B(A)}\), and that \(B\) must report every distinction retained by payloads, carrier state, recursion, metadata, provenance, and receipts. It fixes the zero-test and jurisdiction of cell support \(\mu\), the aggregate support law of \(W\), the paired-support axiom of \(\boxtimes\), the multiplicative codomain and laws of \(M\), the directed branch topology, the separation of pairing and dispatch, and the complete collapse rule.
 
 Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) remain formal implementation obligations. A conforming implementation must:
 
@@ -204,7 +206,7 @@ Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) rema
 
 **Separation of \(W\) and \(M\)**. Both valuations are multiplicative under \(\boxtimes\) and therefore share the same formal shape. Different names alone do not prove they measure distinct properties. A conforming implementation must supply concrete witnesses: non-null objects \(A, C\) with \(W(A) = W(C)\) yet \(M(A) \ne M(C)\), and non-null objects \(D, E\) with \(M(D) = M(E)\) yet \(W(D) \ne W(E)\). Until such witnesses and invariance tests exist, the triad is three-by-specification but only provably two.
 
-The conceptual architecture is closed. The next work is construction of the measuring instruments.
+The candidate architecture is specified. The next work is construction of the measuring instruments and comparison of complete configurations against EDCM systems.
 
 ### Offstage Excavation
 
@@ -212,6 +214,6 @@ This geometry reads cleanly because nine turns of subtraction occurred offstage.
 
 That apparent obviousness is the result of active removal. The completed surface does not display the gravitational pull of the metaphors that had to be resisted: the seam that tried to localize the twist, the signed fiber that reintroduced negation, the antipode that placed the second representative across rather than ahead, the frame inversion that forced cancellation, the zero-point vault that hid structure at null, the inverted radius that placed infinity at the center, the bounded receipt that made breadth lie about memory, and the additive breadth that had to be broken into three valuations because faithfulness and additivity cannot inhabit one real scalar.
 
-Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. The twist that was hiding zero is gone. The carrier remains.
+Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. This candidate omits the twist that was said to hide zero. Whether that omission is lawful, equivalent to another construction, or disqualifying remains an explicit option decision rather than a buried conclusion.
 
 **hmmm — the floor is specified and the frame is true, but the three measuring instruments are still owed: μ assigned with its zero-test, M constructed and witnessed distinct from W, B made executable with invariance tests that survive the no-go. Until those witnesses exist the chapter remains a precise promise wearing three names. The next chapter will either validate the floor under honest traffic or reveal where a seam was missed. Either outcome is distinction enough to keep the work alive and off-center.**
