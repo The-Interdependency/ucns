@@ -13,9 +13,10 @@ worst: contradiction, repair, retraction, refusal, ambiguity, unresolved
 reference, speaker-ownership changes, graph disagreement, delayed resolution,
 and information loss under projection.
 
-A large average-case corpus is not enough. Each admitted source needs a pinned
-version, license record, provenance receipt, privacy treatment, deterministic
-adapter, and development/holdout partition.
+A large average-case total is not enough. Each admitted source needs a license
+record, provenance receipt, privacy treatment, deterministic adapter, and a
+completion receipt proving that every source turn was processed. The execution
+unit is the full admitted corpus, not a sample or holdout partition.
 
 ## Candidate sources
 
@@ -31,8 +32,8 @@ that polished benchmarks tend to remove.
 - Access: public, ODC-BY; approximately 3.36 GB
 - EDCM value: correction chains, refusal, escalation, topic change, ambiguity,
   empty inputs, and long-tail behavior
-- Boundary: sensitive content, imperfect redaction, dated provider behavior, and
-  no independent EDCM outcome labels
+- Boundary: sensitive content, imperfect redaction, and dated provider behavior;
+  source text and redaction effects must remain distinguishable
 
 ### PRISM — preference and interpretation candidate
 
@@ -121,24 +122,33 @@ pressures the currently unresolved graph-contribution dimension.
 - Boundary: it is a filtered and annotated derivative of Ubuntu chat; source,
   filter, and annotation effects must remain explicit
 
-## Proposed first corpus stack
+## Full-corpus run queue
 
-No source should carry the whole claim. The smallest useful development stack
-is:
+Each admitted source is run in full. The queue orders engineering work; it does
+not define a sample, ranking, or claim that earlier corpora are more
+authoritative.
 
-1. **WildChat-1M:** uncontrolled human-model failure and correction.
-2. **PRISM:** preference, interpretation, and alternative-response evidence.
-3. **ICSI:** natural multiparty ownership, repair, and extended state.
-4. **Molweni:** explicit discourse relations and unresolved references.
-5. **MultiWOZ 2.1:** task state and observable completion or failure.
+1. **MultiWOZ 2.1:** smallest open source in the set, useful for proving the
+   end-to-end adapter, turn accounting, exact-text receipts, and complete-run
+   reporting.
+2. **Molweni:** full discourse-graph and unresolved-reference pressure.
+3. **PRISM:** full preference, interpretation, and alternative-response
+   pressure.
+4. **ICSI:** full natural multiparty ownership, interruption, and repair.
+5. **AMI:** full multimodal and decision-process evidence, with native
+   partitions retained as provenance rather than execution fragments.
+6. **WildChat-1M:** full uncontrolled human-model traffic after privacy and
+   storage handling are ready.
+7. **LMSYS-Chat-1M:** full gated source after license acceptance and
+   non-redistribution controls are implemented.
 
-AMI adds multimodal and decision-process evidence. LMSYS adds model diversity
-but should remain outside the first ingestion step until its gated license is
-accepted and its non-redistribution boundary is implemented.
+The first engineering milestone is therefore a complete MultiWOZ run, not a
+MultiWOZ slice. A source that cannot be processed completely is reported as an
+incomplete run with the exact stopping point and reason.
 
-## Failure-first partition rule
+## Failure-seeking post-run rule
 
-Development slices should deliberately over-sample:
+Failure-seeking happens after each full run. Reports must surface and count:
 
 - corrections that fail or require repeated repair;
 - assertions later negated, qualified, quoted, or retracted;
@@ -147,13 +157,14 @@ Development slices should deliberately over-sample:
 - topic changes and delayed causal dependencies;
 - refusals, hedges, blame transfer, shutdown, and escalation;
 - cases where exact evidence and a projection disagree;
+- every out-of-alphabet code point and affected word gonol;
+- repeated, leading, and trailing SPACE boundaries;
 - empty, malformed, multilingual, or code-switched turns;
 - incomplete tasks and contradictory annotations.
 
-Only after these slices stabilize the configuration should a corpus be
-partitioned into ordinary development traffic and a locked holdout. Selection
-criteria, random seeds, source hashes, adapter versions, exclusions, and every
-manual label must be recorded before the holdout is read.
+Candidate configurations run over the same complete turn stream. Configuration
+comparison may sort or filter the resulting evidence for inspection, but it may
+not pretend that an inspected subset was the corpus execution.
 
 ## Admission gates
 
@@ -164,16 +175,20 @@ A corpus is not admitted merely because it is downloadable. Admission requires:
 - immutable source version or content hash;
 - ordered-turn and speaker-identity preservation;
 - distinction among source text, redaction, transcription, and annotation;
-- deterministic conversion into an EDCM-specific profile;
-- development/holdout separation;
-- explicit outcome-label provenance;
+- deterministic conversion into the EDCM-specific word-gonol profile;
+- exact speaker-turn count before and after conversion;
+- a full-run completion or explicit incomplete-run receipt;
+- exact out-of-alphabet and SPACE-boundary coverage totals;
+- no source-text normalization or sampled execution;
+- outcome-label provenance only when a separate predictive study uses labels;
 - a removal path for sources with deletion obligations.
 
 No raw restricted corpus belongs in the UCNS repository.
 
 ## hmmm
 
-The corpora have been found, not domesticated. The next honest step is a small,
-version-pinned ingestion manifest and failure-first slice from one open source;
-otherwise seven datasets merely become seven impressive ways to postpone the
-first ugly transcript.
+The corpora have been found; the missing object is a deterministic full-corpus
+adapter and receipt. MultiWOZ 2.1 is the practical first complete run because it
+is small enough to expose accounting errors quickly, after which Molweni tests
+whether the same profile preserves graph and unresolved-reference evidence
+without flattening it.
