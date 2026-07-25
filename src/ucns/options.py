@@ -63,7 +63,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.1.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.2.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -100,6 +100,10 @@ REQUIRED_DECISION_IDS = frozenset(
         "edcm-specific-profile",
         "real-system-corpora-required",
         "failure-seeking-research",
+        "word-gonol-smallest-scale",
+        "exact-public-gonol-157",
+        "edcm-source-normalization-none",
+        "full-corpus-runs",
     }
 )
 
@@ -148,7 +152,14 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "structural_null_semantics": "superpositioned-space",
         "twist_event": "new-gonol-initiation",
         "occurrence_operation": "ordered-concatenation",
-        "support_policy": "unit-turn",
+        "support_policy": "unit-speaker-turn",
+        "smallest_gonol": "word",
+        "nesting_boundary": "superpositioned-space",
+        "token_alphabet": "public-gonol-157",
+        "token_identity": "unicode-code-point",
+        "normalization_policy": "none-preserve-source",
+        "corpus_execution": "full-corpus",
+        "out_of_alphabet_policy": "retain-and-report",
         "equivalence_baseline": "exact-evidence",
         "equivalence_progression": "evidence-scaled-projection",
         "payload_operator": "carrier-pairing-only",
@@ -203,6 +214,10 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "typed-payload-operators",
         "profile-scope",
         "selection-evidence",
+        "gonol-scale",
+        "token-alphabet",
+        "unicode-normalization",
+        "corpus-execution",
     }
     if not required_dimension_ids.issubset(dimension_by_id):
         raise OptionRegistryError("required EDCM option dimensions are missing")
@@ -218,12 +233,17 @@ def _validate_registry(data: dict[str, Any]) -> None:
         ("origin-semantics", "superpositioned-structural-null"),
         ("origin-semantics", "gonol-initiation-mobius-twist"),
         ("occurrence-structure", "ordered-concatenation"),
-        ("support-assignment", "unit-turn"),
+        ("support-assignment", "unit-speaker-turn"),
+        ("gonol-scale", "word-gonol"),
+        ("token-alphabet", "exact-public-gonol-157"),
+        ("token-alphabet", "retain-out-of-alphabet-evidence"),
+        ("unicode-normalization", "none-preserve-source"),
+        ("corpus-execution", "full-corpus"),
         ("structural-equivalence", "exact-evidence"),
         ("typed-payload-operators", "carrier-pairing-only"),
         ("profile-scope", "edcm-specific-profile"),
         ("selection-evidence", "real-system-corpora"),
-        ("selection-evidence", "failure-seeking-development-slices"),
+        ("selection-evidence", "failure-seeking-full-corpus-analysis"),
     }
     for dimension_id, choice_id in decided_choices:
         if choice_standing(dimension_id, choice_id) != "decided-constraint":
@@ -270,6 +290,49 @@ def _validate_registry(data: dict[str, Any]) -> None:
         for field in ("provenance", "source", "access", "edcm_fit", "limitation"):
             if not corpus.get(field):
                 raise OptionRegistryError(f"corpus candidate missing {field}")
+
+    target_profile = data.get("target_profile")
+    if not isinstance(target_profile, dict):
+        raise OptionRegistryError("EDCM target profile record is required")
+    if target_profile.get("profile_id") != "ucns.profile.edcm-word-gonol":
+        raise OptionRegistryError("EDCM target profile identity mismatch")
+    if target_profile.get("profile_version") != "0.1.0":
+        raise OptionRegistryError("EDCM target profile version mismatch")
+    if target_profile.get("scope") != "edcm-only":
+        raise OptionRegistryError("EDCM target profile scope mismatch")
+    if target_profile.get("standing") != "implemented-candidate":
+        raise OptionRegistryError("EDCM target profile standing mismatch")
+    if target_profile.get("selection_effect") != "none":
+        raise OptionRegistryError("EDCM target profile cannot select itself")
+    token_alphabet = target_profile.get("token_alphabet")
+    if not isinstance(token_alphabet, dict):
+        raise OptionRegistryError("EDCM target token alphabet is required")
+    expected_alphabet = {
+        "id": "public-gonol-157",
+        "arity": 157,
+        "source_repository": "The-Interdependency/a0-betatest",
+        "source_commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+        "source_path": "backend/interdependent_lib/gonal/gonal.py",
+        "sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+        "origin_position": 0,
+        "origin_token": " ",
+        "digit_zero_position": 139,
+    }
+    if token_alphabet != expected_alphabet:
+        raise OptionRegistryError("EDCM target token alphabet mismatch")
+    expected_target_values = {
+        "smallest_gonol": "word",
+        "nesting_boundary": "superpositioned-space",
+        "gonol_initiation": "mobius-twist",
+        "occurrence_operation": "ordered-concatenation",
+        "support_policy": "unit-speaker-turn",
+        "normalization_policy": "none-preserve-source",
+        "out_of_alphabet_policy": "retain-and-report",
+        "corpus_execution": "full-corpus",
+    }
+    for key, value in expected_target_values.items():
+        if target_profile.get(key) != value:
+            raise OptionRegistryError(f"EDCM target profile mismatch: {key}")
 
     current_profile = data.get("current_profile")
     if not isinstance(current_profile, dict):
