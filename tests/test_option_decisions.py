@@ -30,6 +30,14 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+#
+# id: check_unknown_dimension_fails_closed
+#   proves: ucns_options_have_explicit_non_default_standing
+#   call: self::test_unknown_option_dimension_fails_closed
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import pytest
