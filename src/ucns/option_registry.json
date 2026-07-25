@@ -1,0 +1,339 @@
+{
+  "schema_id": "ucns.option-registry",
+  "schema_version": "1.0.0",
+  "authority": "Erin Spencer",
+  "recorded_on": "2026-07-25",
+  "identifier": {
+    "value": "UCNS",
+    "canonical_expansion": null,
+    "rule": "UCNS is a stable identifier. Any expansion is an alias or provenance description only and cannot become schema authority, mathematical canon, or implementation law."
+  },
+  "project": {
+    "id": "ucns-edcm-option-configuration-v1",
+    "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
+    "ucns_role": "Provide explicit, versioned, composable, provenance-bearing choices without hidden global defaults.",
+    "edcm_role": "Test configurations against declared systems and readouts, retain failures, and support an explicit EDCM-scoped selection decision.",
+    "selection_scope": "edcm-only",
+    "universal_ucns_canon_transfer": false,
+    "theorem_status_transfer": false,
+    "measurement_validity_transfer": false,
+    "metapat_validity_transfer": false
+  },
+  "standing_vocabulary": {
+    "decided-constraint": "Required within the declared scope; not a universal default outside that scope.",
+    "implemented-candidate": "Executable current construction awaiting comparative selection.",
+    "experiment-candidate": "Available for falsifiable comparison with no selected winner.",
+    "required-evaluation": "Must be represented and tested before the affected decision may close.",
+    "rejected-pre-reset": "Excluded from current activation; retained with historical evidence.",
+    "unresolved": "The choice boundary or admissible constructions are not yet complete."
+  },
+  "decisions": [
+    {
+      "id": "stable-identifier",
+      "statement": "UCNS has no canonical expansion."
+    },
+    {
+      "id": "optionalized-construction",
+      "statement": "UCNS exposes choices as explicit configurations; registration or implementation does not appoint a global default."
+    },
+    {
+      "id": "old-new-decomposition",
+      "statement": "Old and new lineages are decomposed into individual choices with evidence and standing rather than restored or rejected wholesale."
+    },
+    {
+      "id": "edcm-empirical-selection",
+      "statement": "The current project uses EDCM experiments against real systems to determine an EDCM-scoped ideal UCNS configuration."
+    },
+    {
+      "id": "selection-non-transfer",
+      "statement": "An EDCM-scoped selection does not become universal UCNS canon and transfers no theorem, EDCM measurement, or METAPAT validity."
+    },
+    {
+      "id": "exact-configuration-identity",
+      "statement": "Producer epoch, profile, bridge schema, source identity, and complete option values participate in configuration identity and must fail closed on mismatch."
+    },
+    {
+      "id": "initial-occurrence-boundary",
+      "statement": "The initial EDCM profile preserves order, multiplicity, occurrence identity, left-right sidedness, algebraic zero, and retained layers outside scalar support."
+    },
+    {
+      "id": "negative-results-are-evidence",
+      "statement": "A changed or failed result is evidence about a choice boundary, not automatically a regression and not permission to rewrite earlier reports."
+    },
+    {
+      "id": "typed-absence",
+      "statement": "NA is distinct from numeric or structural zero."
+    }
+  ],
+  "current_profile": {
+    "profile_id": "ucns.profile.edcm-metapat-ordered-occurrence",
+    "profile_version": "1.0.0",
+    "producer_epoch": "ucns.post-reset.v1",
+    "producer_commit": "19f1afddb993f7d933ac8727627e7d5e1c3b88fc",
+    "bridge_schema_id": "ucns.bridge.edcm-metapat-ordered-occurrence",
+    "bridge_schema_version": "1.0.0",
+    "standing": "implemented-candidate",
+    "aliases": [
+      {
+        "value": "edcm-ucns-v1",
+        "authority": "project shorthand only"
+      }
+    ],
+    "option_values": {
+      "left_right_sidedness_preserved": true,
+      "multiplicity_preserved": true,
+      "no_deduplication": true,
+      "no_implicit_coercion": true,
+      "no_shift_to_first_origin": true,
+      "no_sorting": true,
+      "occurrence_identity_preserved": true,
+      "order_preserved": true,
+      "retained_layers_outside_scalar_support": true,
+      "structural_null_distinct_from_algebraic_zero": true
+    },
+    "selection_effect": "none",
+    "boundary": "This is one exact initial configuration. It neither selects the ideal EDCM configuration nor closes other UCNS option dimensions."
+  },
+  "dimensions": [
+    {
+      "id": "carrier-model",
+      "question": "What formal carrier construction best preserves EDCM-relevant distinctions?",
+      "choices": [
+        {
+          "id": "directed-twofold-branched-angular-cover",
+          "standing": "implemented-candidate",
+          "evidence": "Current executable 720-degree lifted and 360-degree visible reference implementation."
+        },
+        {
+          "id": "mobius-origin-hidden-zero",
+          "standing": "required-evaluation",
+          "evidence": "Standing load-bearing origin and twist requirement; exact relation to the directed-cover construction is unresolved."
+        }
+      ]
+    },
+    {
+      "id": "origin-semantics",
+      "question": "How are Structural Null, origin, hidden zero, and angular identity related?",
+      "choices": [
+        {
+          "id": "coordinate-free-structural-null-at-center",
+          "standing": "implemented-candidate",
+          "evidence": "Current carrier and cell-support implementation."
+        },
+        {
+          "id": "mobius-twist-supplies-origin-hidden-zero",
+          "standing": "required-evaluation",
+          "evidence": "Standing requirement not represented by the current carrier code."
+        },
+        {
+          "id": "first-anchor-shift-to-zero",
+          "standing": "rejected-pre-reset",
+          "evidence": "Historical normalization erased origin testimony and is disabled in the initial profile."
+        }
+      ]
+    },
+    {
+      "id": "occurrence-structure",
+      "question": "Which occurrence view is lawful for a declared EDCM readout?",
+      "choices": [
+        {
+          "id": "ordered-sequence",
+          "standing": "decided-constraint",
+          "evidence": "Required by the initial profile; v0.1 order contrasts changed EDCM readouts."
+        },
+        {
+          "id": "unordered-multiset",
+          "standing": "experiment-candidate",
+          "evidence": "Preserves multiplicity but can erase load-bearing order."
+        },
+        {
+          "id": "set-view",
+          "standing": "experiment-candidate",
+          "evidence": "Scoped view only; v0.1 falsified it as the sole view for occurrence-sensitive readouts."
+        }
+      ]
+    },
+    {
+      "id": "support-assignment",
+      "question": "Which explicit support policy is fit for each EDCM measurement scope?",
+      "choices": [
+        {
+          "id": "unit-turn",
+          "standing": "experiment-candidate",
+          "evidence": "Preserves occurrence and is blind to text extent and declared pressure."
+        },
+        {
+          "id": "token-turn",
+          "standing": "experiment-candidate",
+          "evidence": "Preserves textual extent but not semantic pressure."
+        },
+        {
+          "id": "pressure-turn",
+          "standing": "experiment-candidate",
+          "evidence": "Preserves declared candidate pressure signals; not canon."
+        },
+        {
+          "id": "domain-specific-support",
+          "standing": "unresolved",
+          "evidence": "Real systems may require additional named policies with independent evidence."
+        }
+      ]
+    },
+    {
+      "id": "graph-contribution",
+      "question": "Which graph evidence remains retained and which named policy may contribute it to scalar support?",
+      "choices": [
+        {
+          "id": "retain-graphs-outside-cell-W",
+          "standing": "decided-constraint",
+          "evidence": "Initial profile firewall; node, edge, and graph-dependent state remain distinct."
+        },
+        {
+          "id": "named-edge-or-graph-support-policy",
+          "standing": "required-evaluation",
+          "evidence": "v0.4 showed equal node/reference support while selected edges and state differed."
+        }
+      ]
+    },
+    {
+      "id": "structural-equivalence",
+      "question": "Which scoped equivalence preserves each named EDCM distinction?",
+      "choices": [
+        {
+          "id": "exact-evidence",
+          "standing": "experiment-candidate",
+          "evidence": "Current UCNS candidate pack."
+        },
+        {
+          "id": "policy-projection",
+          "standing": "experiment-candidate",
+          "evidence": "Current UCNS candidate pack with explicit information loss."
+        },
+        {
+          "id": "selected-retained-layers",
+          "standing": "experiment-candidate",
+          "evidence": "Current UCNS candidate pack."
+        }
+      ]
+    },
+    {
+      "id": "product-character-M",
+      "question": "Which multiplicative product character, if any, is lawful for the selected structure?",
+      "choices": [
+        {
+          "id": "geometric-mean-support",
+          "standing": "experiment-candidate",
+          "evidence": "Current cell-only candidate."
+        },
+        {
+          "id": "maximum-support",
+          "standing": "experiment-candidate",
+          "evidence": "Current cell-only candidate."
+        },
+        {
+          "id": "minimum-support",
+          "standing": "experiment-candidate",
+          "evidence": "Current cell-only candidate."
+        }
+      ]
+    },
+    {
+      "id": "faithful-breadth-B",
+      "question": "Which breadth candidate reports every retained distinction within its declared scope?",
+      "choices": [
+        {
+          "id": "cell-log-support",
+          "standing": "experiment-candidate",
+          "evidence": "Current candidate; fails outside cell-only scope."
+        },
+        {
+          "id": "cell-detail",
+          "standing": "experiment-candidate",
+          "evidence": "Current candidate; occurrence-sensitive but not sequence-state complete."
+        },
+        {
+          "id": "retained-presence",
+          "standing": "experiment-candidate",
+          "evidence": "Current candidate using retained-layer presence without canonical contribution laws."
+        }
+      ]
+    },
+    {
+      "id": "typed-payload-operators",
+      "question": "Which operators apply to each selected carrier and payload option set?",
+      "choices": [
+        {
+          "id": "carrier-pairing-only",
+          "standing": "implemented-candidate",
+          "evidence": "Current Cartesian cell-pairing floor."
+        },
+        {
+          "id": "typed-domain-dispatch",
+          "standing": "unresolved",
+          "evidence": "No canonical modality registry, interaction law, or dispatch selection exists."
+        }
+      ]
+    },
+    {
+      "id": "profile-scope",
+      "question": "Should EDCM and METAPAT share one profile or request separately scoped profiles?",
+      "choices": [
+        {
+          "id": "combined-edcm-metapat-ordered-occurrence",
+          "standing": "implemented-candidate",
+          "evidence": "Current exact downstream profile."
+        },
+        {
+          "id": "edcm-specific-profile",
+          "standing": "required-evaluation",
+          "evidence": "The current selection project is EDCM-scoped and may require choices METAPAT does not own."
+        }
+      ]
+    },
+    {
+      "id": "selection-evidence",
+      "question": "What evidence is sufficient for the first EDCM-scoped option selection?",
+      "choices": [
+        {
+          "id": "synthetic-v0.1-through-v0.4",
+          "standing": "implemented-candidate",
+          "evidence": "Reproducible development evidence; no canon selection."
+        },
+        {
+          "id": "real-system-corpora",
+          "standing": "required-evaluation",
+          "evidence": "Declared current project objective; corpus and acceptance procedure are not yet selected."
+        },
+        {
+          "id": "independent-holdout-and-replication",
+          "standing": "required-evaluation",
+          "evidence": "Required before an externally meaningful selection."
+        }
+      ]
+    }
+  ],
+  "experiment_supported_boundaries": [
+    "Preserve exact order until a readout-specific policy explicitly discards it.",
+    "Preserve multiplicity even when a set view is available.",
+    "Keep support assignment explicit.",
+    "Keep sequence state separate from scalar W, M, and B.",
+    "Preserve assertion, negation, quotation, hypothetical mention, repair, and retraction as distinct evidence.",
+    "Preserve speaker ownership when it affects reference resolution.",
+    "Preserve unresolved references as positive evidence.",
+    "Preserve every admissible graph alternative within the declared bound.",
+    "Preserve relation labels, direction, source, and target identity.",
+    "Keep quote containment distinct from retraction.",
+    "Treat suspension, resumption, activation, deactivation, contradiction, repair, and retraction as distinct operations.",
+    "Keep node quantity, edge quantity, and graph-dependent state separate.",
+    "Do not expect scalar support to replace a graph."
+  ],
+  "hmmm": [
+    "Formal relation between the directed-cover and Mobius-origin constructions.",
+    "Definition and authority procedure for an ideal EDCM-scoped configuration.",
+    "Real-system corpora, consent, provenance, partitions, outcome labels, and external holdout custody.",
+    "Canonical support assignment, structural equivalence, M, and B.",
+    "Graph and retained-layer contribution laws.",
+    "Whether EDCM and METAPAT require separate profiles.",
+    "Typed payload operator registry and dispatch laws."
+  ]
+}
