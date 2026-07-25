@@ -1,14 +1,42 @@
-# UCNS object canon — directed carrier and reproducible candidate-research floor
+# UCNS canon — option-preserving construction and candidate-research floor
 
-## Formal carrier
+## Authority and current project
 
-The formal UCNS carrier is a **directed twofold branched angular cover**.
-“Möbius” is retained only as project provenance and is not part of the object
-definition.
+**UCNS** is a stable identifier without a canonical expansion. Any expansion is
+an alias or provenance description only and cannot become schema authority,
+mathematical canon, or implementation law.
 
-There is one unique **Structural Null** `N`. Structural Null contains no
-coordinate, payload, type, shape, metadata, provenance, receipt, recursive
-content, or retained relation.
+UCNS is an option-bearing construction system. The current project exposes those
+choices and uses EDCM experiments against real systems to determine an
+**EDCM-scoped** ideal configuration. An EDCM selection does not become universal
+UCNS canon and transfers no theorem, measurement, or METAPAT validity.
+
+The authoritative decision surface and open choices are recorded in
+[`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md) and the packaged
+`src/ucns/option_registry.json`.
+
+## Current implemented carrier candidate
+
+The current reference implementation is a **directed twofold branched angular
+cover**. It is an implemented candidate, not a universal option selection.
+
+For EDCM, the Möbius-origin/hidden-zero construction is now a **decided
+constraint**. The twist interprets space as singular and superpositioned and
+supplies a causal chain required by the future hyper-dimensional lattice relating
+letters and words. The current directed-cover implementation is incomplete for
+EDCM unless its formal integration with the Möbius construction preserves those
+semantics.
+
+For EDCM, **Structural Null** is the singular superpositioned space, and the
+twist occurs when a new gonol initiates. The formal transition, identity law, and
+observable consequences remain implementation and experiment obligations.
+
+The remaining carrier statements in this section describe only the current
+directed-cover implementation. In that candidate there is one coordinate-free
+**Structural Null** `N`, represented as containing no coordinate, payload, type,
+shape, metadata, provenance, receipt, recursive content, or retained relation.
+That representation is executable comparison evidence but is superseded as the
+EDCM target semantics.
 
 Every non-null carrier point has:
 
@@ -35,11 +63,14 @@ algebra or interaction driver.
 
 These are distinct and may not be substituted for one another:
 
-1. Structural Null `N`: complete absence of distinction.
-2. Neutral product character `M = 1`: a proposed non-null multiplicative
+1. EDCM Structural Null `N`: singular superpositioned space before gonol
+   initiation through the twist.
+2. Current directed-cover null: coordinate-free absence used by the executable
+   comparison candidate; not the target EDCM semantics.
+3. Neutral product character `M = 1`: a proposed non-null multiplicative
    baseline; canonical `M` is not implemented.
-3. Algebraic zero `0_V`: zero inside a specific payload algebra.
-4. Absent cell `mu(c) = 0`: no structural support at a potential cell.
+4. Algebraic zero `0_V`: zero inside a specific payload algebra.
+5. Absent cell `mu(c) = 0`: no structural support at a potential cell.
 
 Algebraic zero does not imply Structural Null. Any retained coordinate, type,
 shape, state, provenance, receipt, relation, metadata, or recursive structure
@@ -170,8 +201,11 @@ declared losses. Result layers remain unmeasured and do not silently enter `W`,
 
 ## Evaluator and experiment laboratories
 
-Canonical structural equivalence, product character `M`, and faithful breadth
-`B` are developed as competing candidates before selection.
+EDCM begins structural equivalence at exact evidence and may move toward
+projection only on an explicit evidence-backed sliding scale with every loss
+recorded. Product character `M` and faithful breadth `B` remain plural displays:
+all three registered `M` candidates and all three registered `B` candidates are
+shown together without selecting one.
 
 The laboratory provides:
 
@@ -229,7 +263,8 @@ unmeasured distinction as zero.
 Implemented and test-backed infrastructure:
 
 1. directed 720-degree lifted carrier and 360-degree visible projection;
-2. unique coordinate-free Structural Null;
+2. unique coordinate-free Structural Null in the current comparison candidate,
+   superseded as the EDCM target semantics;
 3. fail-closed structural cells and cell-only aggregate support `W`;
 4. Cartesian cell pairing, pruning, and complete cell-support collapse;
 5. preservation of unresolved order, multiplicity, and operand sidedness;
@@ -240,9 +275,13 @@ Implemented and test-backed infrastructure:
 10. cycle-safe traversal with budgets and receipts;
 11. retained-layer pairing plans and result evidence;
 12. content-addressed witness corpora and experiment manifests;
-13. development/holdout separation, mutation and metamorphic generation,
-    reproduction checks, and candidate decision packets;
-14. initial noncanonical equivalence, `M`, and `B` candidate families.
+13. optional development/holdout separation for separately declared study
+    protocols, mutation and metamorphic generation, reproduction checks, and
+    candidate decision packets;
+14. initial noncanonical equivalence, `M`, and `B` candidate families;
+15. an EDCM-only observation profile with the exact 157-code-point fixture,
+    word gonols, explicit SPACE nesting, strict no-normalization evidence,
+    one-unit speaker turns, out-of-alphabet reporting, and full-corpus iteration.
 
 Still unresolved and not promoted:
 
@@ -255,25 +294,45 @@ Still unresolved and not promoted:
 6. external holdout custody and independent candidate calibration;
 7. canonical recursive identity, sharing, and fixed-point laws;
 8. typed payload dispatch;
-9. a complete `UCNSObject`, factorization, encoding, embedding, codec,
-   public-gonol bridge, or theorem claim.
+9. formal integration of the EDCM-critical Möbius carrier with the current
+   directed cover;
+10. formal promotion and migration of the EDCM observation profile after the
+    Möbius coordinate and higher-gonol composition laws are executable;
+11. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+    public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
 reconstructed from experimental branch `ucns-Grok`. Its former `M`, heuristic
 `B`, package version, status, and downstream-consumer claims are not canon.
 
-## Retired root doctrine
+## Historical and unresolved carrier choices
 
-The following remain removed from formal canon:
+The following are not active in the current profile:
 
-- a Möbius strip as the carrier object;
-- a localized seam or twist containing hidden zero;
 - automatic orientation reversal after 360 degrees;
 - first-anchor normalization as geometric zero;
 - `None` or a trivial object as multiplicative identity;
 - one-circle completion;
 - face state inferred from a seam crossing.
 
-hmmm: UCNS can now retain, reproduce, compose, traverse, and pressure candidate
-instruments. Canonical equivalence, `M`, and `B` remain on the far side of
-independent holdout evidence and an explicit canonization decision.
+Those pre-reset choices retain provenance and counterevidence; they do not regain
+authority through name or field resemblance.
+
+The Möbius-origin/hidden-zero construction has `decided-constraint` standing
+for EDCM. Its relation to the current directed-cover candidate must still be
+formalized and tested: the directed cover may implement, embed, parameterize, or
+conflict with it, but it cannot erase it.
+
+EDCM additionally fixes words as the smallest gonols, exact SPACE as the
+superpositioned nesting interface, the exact public 157-code-point alphabet with
+no authoritative normalization, ordered concatenation, one unit per speaker
+turn, full-corpus execution, exact evidence as the equivalence baseline, carrier
+pairing only, and an EDCM-specific target profile. All three `M` and all three `B` candidates remain simultaneously visible.
+Graph contribution and the movement from exact evidence toward projection remain
+open pending more information.
+
+hmmm: the observation profile now preserves the EDCM-critical initiation event,
+word scale, SPACE nesting, exact tokens, and turn support, but it does not supply
+the formal Möbius coordinates or higher-gonol composition law. Complete
+real-system runs and post-run failure analysis must make those missing laws more
+precise before any configuration can honestly call itself ideal.

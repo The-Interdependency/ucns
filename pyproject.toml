@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ucns"
 version = "0.0.0.dev0"
-description = "Definition-first carrier floor for the Unit Carrier Number System"
+description = "Option-preserving UCNS carrier and candidate-research floor"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name = "Erin Spencer"}]
@@ -26,6 +26,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+ucns = ["option_registry.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

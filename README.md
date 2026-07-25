@@ -1,17 +1,47 @@
-# UCNS — definition-first restart
+# UCNS — option-preserving definition-first restart
 
-UCNS is rebuilding from its carrier definition rather than patching the former
+UCNS is a stable identifier without a canonical expansion. It is rebuilding as
+an option-bearing construction system rather than patching the former
 factorization kernel.
+
+The current project exposes UCNS choices and uses EDCM experiments against real
+systems to determine an EDCM-scoped ideal configuration. EDCM now fixes a
+Möbius causal carrier, superpositioned Structural Null, words as the smallest
+gonols, exact SPACE nesting boundaries, ordered concatenation, one unit per
+speaker turn, the exact 157-code-point alphabet without normalization,
+exact-evidence baseline, carrier pairing only, full-corpus runs, and an
+EDCM-specific profile while keeping the carrier coordinates, higher composition,
+graph contribution, and other information-dependent choices open. Any eventual selection cannot become universal UCNS canon or transfer
+proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
 history. They are evidence and potential machinery, not current canon.
 
-## Current formal foundation
+## Option decision surface
 
-The carrier is a **directed twofold branched angular cover**:
+Decisions, standing, the current exact profile, and every known unresolved
+choice are recorded in
+[`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md). The packaged
+machine surface is `src/ucns/option_registry.json`, validated by
+`ucns.options` and repository tests. Candidate real-system sources and their
+access boundaries are recorded in
+[`docs/EDCM_REAL_SYSTEM_CORPORA.md`](docs/EDCM_REAL_SYSTEM_CORPORA.md). No option
+dimension has a hidden global default.
 
-- Structural Null is the unique coordinate-free absence of distinction.
+## Current implemented carrier candidate
+
+The current reference implementation uses a **directed twofold branched angular
+cover**. It remains executable comparison evidence but is not an eligible EDCM
+target unless it integrates the required Möbius causal chain. For EDCM,
+Structural Null is the singular superpositioned space and the twist occurs when
+a new gonol initiates. The EDCM observation profile now records this initiation
+and preserves the nesting boundary, while the formal Möbius coordinates remain
+unimplemented.
+
+The comparison candidate currently provides:
+
+- a unique coordinate-free null representation, superseded for the EDCM target;
 - Non-null carrier points have a 720-degree lifted period.
 - The visible projection has a 360-degree period.
 - One visible lap advances to the second lifted representative on the same
@@ -50,6 +80,20 @@ See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
 [`docs/CHOICE_POLICY.md`](docs/CHOICE_POLICY.md).
 
 ## Active code
+
+### EDCM word-gonol observation profile
+
+- exact source-provenance public 157-position Unicode code-point fixture;
+- strict UTF-8 decoding and no authoritative normalization or folding;
+- word gonols as maximal ordered non-SPACE token sequences;
+- every exact SPACE retained as token, word boundary, and superpositioned nesting
+  interface;
+- one unit of support per complete speaker turn;
+- out-of-alphabet code points retained and reported;
+- complete iteration over every supplied corpus turn without sampling.
+
+This profile makes the observation boundary executable. It does not invent the
+unresolved Möbius coordinate or higher-gonol composition laws.
 
 ### Directed carrier floor
 
@@ -109,7 +153,9 @@ See [`docs/LAYER_PAIRING.md`](docs/LAYER_PAIRING.md).
 - law suites retaining pass, failure, exception, witness, and comparison-policy
   evidence;
 - content-addressed subjects through explicit versioned adapters;
-- development and holdout witness partitions;
+- optional development and holdout witness partitions for separately declared
+  study protocols; the current EDCM configuration-discovery protocol runs each
+  admitted corpus in full;
 - mutation and metamorphic generators;
 - greedy counterexample minimization;
 - complete experiment manifests and reproduction checks;
@@ -124,8 +170,10 @@ See [`docs/EVALUATOR_LAB.md`](docs/EVALUATOR_LAB.md) and
 The repository now supplies explicit **noncanonical** candidates:
 
 - exact-adapter, policy-projection, and layer-scoped equivalence signatures;
-- geometric-mean, maximum-support, and minimum-support cell-only `M` candidates;
-- cell-log-support, cell-detail, and retained-presence `B` candidates.
+- geometric-mean, maximum-support, and minimum-support cell-only `M` candidates,
+  displayed together for EDCM without a selected winner;
+- cell-log-support, cell-detail, and retained-presence `B` candidates, likewise
+  displayed together pending more information.
 
 Cell-only candidates fail outside scope rather than treating retained-only
 evidence as zero distinction. A passing candidate remains a candidate.
@@ -143,8 +191,11 @@ The package does **not** implement or promote:
 - a universal retained-layer product;
 - canonical numerical equality or recursive identity;
 - typed payload dispatch;
-- factorization, encoding, embeddings, public-gonol integration, or Theorem N;
-- any downstream-consumer dependency.
+- factorization, general encoding, embeddings, a complete public-gonol algebra,
+  or Theorem N;
+- any downstream-consumer dependency;
+- a universally selected carrier model;
+- an ideal EDCM option configuration.
 
 ## Verification
 
@@ -167,6 +218,8 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: UCNS can now preserve, reproduce, compose, and pressure candidate
-instruments. External holdout custody, candidate calibration, and any
-canonization decision remain independent truth obligations.
+hmmm: the exact EDCM observation floor is executable without pretending to
+complete the mathematics. The next truth obligations are a deterministic
+full-MultiWOZ adapter and run receipt, the formal Möbius/directed-cover relation,
+the higher-gonol composition law, and evidence from the failures surfaced across
+complete corpora.

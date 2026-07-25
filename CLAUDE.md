@@ -2,10 +2,26 @@
 
 ## Current root
 
-- Formal carrier: directed twofold branched angular cover.
-- Lifted period: 720 degrees.
-- Visible projection: 360 degrees.
-- Structural Null: unique and coordinate-free.
+- Identifier: `UCNS`; no canonical expansion.
+- Current project: expose UCNS choices and determine an EDCM-scoped ideal
+  configuration against real systems.
+- Implemented comparison carrier: directed twofold branched angular cover.
+- EDCM carrier constraint: Möbius causal chain with singular superpositioned
+  Structural Null and a twist when a new gonol initiates.
+- Open integration: whether the directed cover implements, embeds, parameterizes,
+  or conflicts with the required Möbius construction.
+- Lifted comparison period: 720 degrees.
+- Visible comparison projection: 360 degrees.
+- Current coordinate-free null: executable but superseded as EDCM target semantics.
+- EDCM scale: exact 157 Unicode code-point tokens compose word gonols; words are
+  the smallest gonols; every exact SPACE is a superpositioned nesting interface
+  from which higher gonols must compose.
+- EDCM source boundary: strict UTF-8, no authoritative normalization or folding,
+  and ordered retention/reporting of every out-of-alphabet code point.
+- EDCM operation floor: ordered concatenation, one support unit per complete
+  speaker turn, exact-evidence baseline, carrier pairing only, full-corpus
+  execution, and the EDCM-specific word-gonol profile.
+- EDCM displays: all three `M` and all three `B` candidates; no selected winner.
 - Established measurement: cell-only aggregate support `W`.
 - Represented evidence: cells plus repeated retained layers with explicit presence,
   policy binding, and contribution status.
@@ -26,7 +42,8 @@ Implemented:
 - occurrence-addressed retained-layer pairing plans;
 - evaluator registries and explicit-comparison law suites;
 - content-addressed subjects through named adapters;
-- witness corpora with development and holdout partitions;
+- optional witness partitions for separately declared studies; current EDCM
+  configuration discovery uses complete corpus runs;
 - mutation and metamorphic generation;
 - counterexample minimization and reproduction checks;
 - candidate decision packets with separate authorship and rollback requirements;
@@ -34,7 +51,10 @@ Implemented:
 
 ## Candidate boundary
 
-Infrastructure and candidates are not canon.
+Infrastructure and candidates are not canon. The exact decisions and unresolved
+choices live in `docs/UCNS_OPTION_DECISIONS.md` and
+`src/ucns/option_registry.json`. Real-system corpus candidates and admission
+boundaries live in `docs/EDCM_REAL_SYSTEM_CORPORA.md`.
 
 - Do not appoint a default policy, comparison rule, traversal mode, layer product,
   or evaluator.
@@ -44,7 +64,9 @@ Infrastructure and candidates are not canon.
 - Do not evaluate recursive content without identity, cycle policy, and budgets.
 - Do not pair retained layers without an explicit plan.
 - Do not treat development-corpus success as generality.
-- Do not make a packet reviewable without holdout evidence and rollback.
+- When a separately declared study uses a holdout, do not make its packet
+  reviewable without holdout evidence and rollback. This is not the current
+  EDCM full-corpus protocol.
 - Do not treat a reviewable packet as canonical.
 
 ## Initial candidate packs
@@ -67,7 +89,8 @@ Faithful-breadth candidates:
 - cell detail;
 - retained-layer presence.
 
-These are pressure instruments. They are expected to disagree and fail laws.
+These are pressure instruments. For EDCM, every `M` and every `B` candidate is
+shown; they are expected to disagree and fail laws.
 
 ## Grok recovery boundary
 
@@ -78,20 +101,24 @@ restore that branch's rejected product character, heuristic breadth, residual
 ## Source order
 
 1. `CANON.md`
-2. `docs/chapter-1.md`
-3. `docs/STRUCTURE_CONTRACT.md`
-4. `docs/CHOICE_PRESERVATION.md`
-5. `docs/CHOICE_POLICY.md`
-6. `docs/RETAINED_STRUCTURE.md`
-7. `docs/COMPARISON_POLICY.md`
-8. `docs/TRAVERSAL_POLICY.md`
-9. `docs/LAYER_PAIRING.md`
-10. `docs/EVALUATOR_LAB.md`
-11. `docs/EXPERIMENT_MANIFESTS.md`
-12. `docs/CANDIDATE_PACKS.md`
-13. `STACK_MANIFEST.json`
-14. module `MODULE_BUILD` and `CONTRACTS`
-15. test `CHECKS`
+2. `docs/UCNS_OPTION_DECISIONS.md`
+3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
+4. `src/ucns/option_registry.json`
+5. `src/ucns/edcm.py`
+6. `docs/chapter-1.md`
+7. `docs/STRUCTURE_CONTRACT.md`
+8. `docs/CHOICE_PRESERVATION.md`
+9. `docs/CHOICE_POLICY.md`
+10. `docs/RETAINED_STRUCTURE.md`
+11. `docs/COMPARISON_POLICY.md`
+12. `docs/TRAVERSAL_POLICY.md`
+13. `docs/LAYER_PAIRING.md`
+14. `docs/EVALUATOR_LAB.md`
+15. `docs/EXPERIMENT_MANIFESTS.md`
+16. `docs/CANDIDATE_PACKS.md`
+17. `STACK_MANIFEST.json`
+18. module `MODULE_BUILD` and `CONTRACTS`
+19. test `CHECKS`
 
 ## Required gates
 
@@ -102,6 +129,8 @@ python -m build
 python -m twine check dist/*
 ```
 
-hmmm: the root can now reproduce and pressure candidate instruments. External
-holdout custody, independent calibration, retained-layer measurement laws, and
-an explicit canonization authority remain the next truth boundary.
+hmmm: the exact EDCM observation floor is executable without pretending that it
+completes the configuration. Complete real-system runs, the
+Möbius/directed-cover relation, higher-gonol composition, graph contribution,
+projection thresholds, and an explicit EDCM selection authority remain the next
+truth boundary.

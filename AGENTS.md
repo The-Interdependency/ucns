@@ -3,27 +3,51 @@
 Read, in order:
 
 1. `CANON.md`
-2. `docs/chapter-1.md`
-3. `docs/STRUCTURE_CONTRACT.md`
-4. `docs/CHOICE_PRESERVATION.md`
-5. `docs/CHOICE_POLICY.md`
-6. `docs/RETAINED_STRUCTURE.md`
-7. `docs/COMPARISON_POLICY.md`
-8. `docs/TRAVERSAL_POLICY.md`
-9. `docs/LAYER_PAIRING.md`
-10. `docs/EVALUATOR_LAB.md`
-11. `docs/EXPERIMENT_MANIFESTS.md`
-12. `docs/CANDIDATE_PACKS.md`
-13. `.agents/skills/README.md`
-14. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-15. the corresponding test module's `CHECKS` block
+2. `docs/UCNS_OPTION_DECISIONS.md`
+3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
+4. `src/ucns/option_registry.json`
+5. `src/ucns/edcm.py`
+6. `docs/chapter-1.md`
+7. `docs/STRUCTURE_CONTRACT.md`
+8. `docs/CHOICE_PRESERVATION.md`
+9. `docs/CHOICE_POLICY.md`
+10. `docs/RETAINED_STRUCTURE.md`
+11. `docs/COMPARISON_POLICY.md`
+12. `docs/TRAVERSAL_POLICY.md`
+13. `docs/LAYER_PAIRING.md`
+14. `docs/EVALUATOR_LAB.md`
+15. `docs/EXPERIMENT_MANIFESTS.md`
+16. `docs/CANDIDATE_PACKS.md`
+17. `.agents/skills/README.md`
+18. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+19. the corresponding test module's `CHECKS` block
 
 Rules:
 
+- Treat `UCNS` as a stable identifier without a canonical expansion.
+- Treat every option-registry standing as authoritative. Do not appoint a global
+  default or selected winner where the registry does not.
 - Preserve the directed 720-degree lifted carrier and 360-degree visible
-  projection.
-- Do not reintroduce Möbius, seam, hidden-zero, automatic orientation reversal,
-  or one-circle-completion semantics as formal carrier claims.
+  projection as executable comparison evidence, not the EDCM target or universal
+  option canon.
+- For EDCM, require the Möbius causal carrier, singular superpositioned Structural
+  Null, and a twist when a new gonol initiates. Do not let the current directed
+  cover erase these decided constraints; its integration remains unresolved.
+- For EDCM, characters are the exact 157 Unicode code-point tokens; words are
+  the smallest gonols; every exact SPACE occurrence is simultaneously token,
+  word boundary, and superpositioned nesting interface; every larger gonol
+  composes from word gonols without flattening that boundary.
+- Apply no normalization or folding to authoritative EDCM source evidence.
+  Decode UTF-8 strictly and retain every out-of-alphabet code point in order as
+  positive coverage-failure evidence.
+- For EDCM, require ordered concatenation, one support unit per complete speaker
+  turn, exact evidence as the baseline, carrier pairing only, full-corpus
+  execution, and the EDCM-specific word-gonol profile.
+- Display all three registered `M` and all three registered `B` candidates. Do
+  not select or hide one while information remains incomplete.
+- Run every turn of each admitted EDCM corpus. Seek incompleteness and worst-case
+  behavior in post-run comparison and surfacing, not by sampling the execution.
+  Never transfer an EDCM selection into universal UCNS canon.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.
@@ -50,17 +74,22 @@ Rules:
   produce receipts.
 - Candidate identity records name, evaluator kind, version, code reference,
   scope, and policy dependencies. Do not infer stable identity from a callable.
-- Witness corpora keep development and holdout partitions separate. Do not
-  expose hidden holdout content merely to improve a candidate.
-- Passing development fixtures is not evidence of generality. Use holdouts,
-  generated mutations, metamorphic cases, adversarial cases, and minimized
-  counterexamples.
+- When a separately declared non-EDCM study uses development and holdout
+  partitions, keep them separate and do not expose hidden holdout content. This
+  generic laboratory feature is not the current EDCM execution protocol.
+- Passing fixtures is not evidence of generality. For EDCM, run real-system
+  corpora completely, then use generated mutations, metamorphic cases,
+  adversarial queries, and minimized counterexamples over the resulting
+  evidence. Preserve every source's license, consent, redaction, provenance,
+  exact turn count, and completion receipt.
 - Candidate, witness, and decision authorship remain separately recorded.
-- A candidate decision packet may become reviewable only with passing holdout
-  evidence and rollback behavior. Reviewable does not mean canonical.
+- Under a separately declared protocol that uses a holdout, a candidate decision
+  packet may become reviewable only with passing holdout evidence and rollback
+  behavior. This rule does not create a holdout requirement for the current
+  full-corpus EDCM discovery protocol.
 - Canonization requires a separate explicit decision recording the selected
-  version, laws, witnesses, holdout custody, alternatives, information loss,
-  rollback, and migration behavior.
+  version, laws, witnesses, applicable evidence custody, alternatives,
+  information loss, rollback, and migration behavior.
 - Do not create a complete `UCNSObject` until canonical structural equivalence,
   valid retained-layer-aware `M`, faithful `B`, typed dispatch, and their
   external evidence are explicitly constructed and ratified.

@@ -1,6 +1,8 @@
 # Chapter 1: The Subtractive Foundations of the Unit Carrier
 
-The construction of the Unit Carrier Number System (UCNS) did not begin by adding axioms. It began by removing illusions.
+**Scope:** current implemented directed-cover comparison candidate. It is not the EDCM target carrier unless it integrates the required Möbius causal chain, superpositioned Structural Null, and new-gonol initiation twist. See [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md).
+
+The construction of UCNS did not begin by adding axioms. It began by removing illusions.
 
 Early attempts to build a payload-bearing geometric number system on a directed unit carrier imported metaphors from physics and from familiar topological models: zero-point energy vaults accumulating at the origin, continuous frame inversions producing destructive interference, arbitrary bounds on causal memory, signed fibers reintroducing negation, and antipodal placements that forced the second representative across the carrier rather than along the same directed path. These imports did not clarify the object; they concealed the distinctions the carrier actually possesses and erased distinctions it retains.
 
@@ -12,9 +14,14 @@ The required reset therefore removed every coordinate, sign, seam, inversion, an
 - algebraic zero is not Structural Null;
 - memory is ordinary structure and contributes exactly the breadth it retains.
 
-The term “Möbius” is retained only as informal provenance. It does not appear in the formal definition. The object is a **directed twofold branched angular cover** with a 720° lifted period and a 360° visible projection.
+This chapter formalizes the current **directed twofold branched angular cover** candidate with a 720° lifted period and a 360° visible projection. It does not settle the entire UCNS carrier option space. For EDCM, the Möbius-origin/hidden-zero construction now has `decided-constraint` standing: the twist interprets space as singular and superpositioned and supplies a causal chain needed by the future hyper-dimensional lattice relating letters and words. Its exact integration with this directed candidate remains open.
 
 ## 1.1 The Radial Map and the Unique Null
+
+**Candidate-only null semantics.** EDCM defines Structural Null as the singular
+superpositioned space and places the twist at the initiation of a new gonol. The
+coordinate-free center below documents the current executable comparison model;
+it is superseded as the EDCM target semantics and cannot decide the origin question.
 
 Let \(\mathcal{O}\) be the class of UCNS carrier objects. Each object \(A \in \mathcal{O}\) carries a nonnegative scalar called its **faithful breadth** \(B(A) \ge 0\), which measures the complete structural distinction retained by the object.
 
@@ -91,7 +98,7 @@ A multiplicative unit may satisfy \(M(A) = 1\) while remaining structurally pres
 
 ## 1.4 The Parallel Valuation Triad
 
-UCNS measures each carrier with three scalar valuations \(W\), \(M\), and \(B\). Over the manifest domain \(\mathcal{O}^* = \mathcal{O} \setminus \{\mathbf{N}\}\) these valuations are canonically decoupled; they share no functional dependence or conversion law. Their only required coincidence is the common zero at Structural Null:
+Within this directed-cover candidate, UCNS describes three scalar valuations \(W\), \(M\), and \(B\). For active EDCM research, unit support is the declared \(W\) baseline, while all three registered \(M\) candidates and all three registered \(B\) candidates must be displayed together with no selected winner. Over the manifest domain \(\mathcal{O}^* = \mathcal{O} \setminus \{\mathbf{N}\}\) these valuations are canonically decoupled; they share no functional dependence or conversion law. Their only required coincidence is the common zero at Structural Null:
 \[
 W(\mathbf{N}) = M(\mathbf{N}) = B(\mathbf{N}) = 0.
 \]
@@ -160,6 +167,11 @@ The lemma authorizes pruning of structurally absent cells only. It does not auth
 
 ## 1.6 Carrier Pairing and Typed Dispatch
 
+For the active EDCM configuration, processing stops at carrier pairing. Typed
+payload dispatch remains outside the configuration pending more information.
+The two-stage description below is retained as broader candidate machinery, not
+an active EDCM rule.
+
 UCNS interaction proceeds in two ordered stages.
 
 **Carrier pairing** \(A \boxtimes C\) constructs the complete Cartesian cross-pairing of supported cells. It determines which structural positions meet; it does not decide the algebraic meaning of the encounter.
@@ -192,7 +204,7 @@ The familiar two-part test (payload algebra declares semantic erasure and no rec
 
 ## 1.9 Implementation Boundary
 
-Chapter 1 fixes the architecture, jurisdictions, and laws. It determines that faithful breadth must satisfy \(B(A) \ge 0\), \(B(A) = 0 \iff A = \mathbf{N}\), and \(a(A) = 1 - e^{-B(A)}\), and that \(B\) must report every distinction retained by payloads, carrier state, recursion, metadata, provenance, and receipts. It fixes the zero-test and jurisdiction of cell support \(\mu\), the aggregate support law of \(W\), the paired-support axiom of \(\boxtimes\), the multiplicative codomain and laws of \(M\), the directed branch topology, the separation of pairing and dispatch, and the complete collapse rule.
+Within the current directed-cover comparison candidate, Chapter 1 fixes the architecture, jurisdictions, and laws of that candidate only. The EDCM target additionally requires the Möbius causal carrier, superpositioned Structural Null, a twist whenever a new gonol initiates, exact Unicode code-point tokens from the public 157-position fixture, words as the smallest gonols, exact SPACE as the superpositioned interface through which all larger gonols compose, ordered concatenation, one unit of support per complete speaker turn, no authoritative source normalization, full-corpus execution, exact-evidence baseline, carrier pairing only, plural `M` and `B` displays, and an EDCM-specific profile. It determines that faithful breadth must satisfy \(B(A) \ge 0\), \(B(A) = 0 \iff A = \mathbf{N}\), and \(a(A) = 1 - e^{-B(A)}\), and that \(B\) must report every distinction retained by payloads, carrier state, recursion, metadata, provenance, and receipts. It fixes the zero-test and jurisdiction of cell support \(\mu\), the aggregate support law of \(W\), the paired-support axiom of \(\boxtimes\), the multiplicative codomain and laws of \(M\), the directed branch topology, the separation of pairing and dispatch, and the complete collapse rule.
 
 Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) remain formal implementation obligations. A conforming implementation must:
 
@@ -204,7 +216,7 @@ Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) rema
 
 **Separation of \(W\) and \(M\)**. Both valuations are multiplicative under \(\boxtimes\) and therefore share the same formal shape. Different names alone do not prove they measure distinct properties. A conforming implementation must supply concrete witnesses: non-null objects \(A, C\) with \(W(A) = W(C)\) yet \(M(A) \ne M(C)\), and non-null objects \(D, E\) with \(M(D) = M(E)\) yet \(W(D) \ne W(E)\). Until such witnesses and invariance tests exist, the triad is three-by-specification but only provably two.
 
-The conceptual architecture is closed. The next work is construction of the measuring instruments.
+The EDCM observation profile now makes the token, word, SPACE-boundary, speaker-turn support, and full-corpus execution floor testable. It records but does not geometrically implement the initiating Möbius twist. The next work is the formal Möbius carrier, the higher-gonol composition law, construction of the measuring instruments, and comparison of complete configurations against complete EDCM corpora.
 
 ### Offstage Excavation
 
@@ -212,6 +224,6 @@ This geometry reads cleanly because nine turns of subtraction occurred offstage.
 
 That apparent obviousness is the result of active removal. The completed surface does not display the gravitational pull of the metaphors that had to be resisted: the seam that tried to localize the twist, the signed fiber that reintroduced negation, the antipode that placed the second representative across rather than ahead, the frame inversion that forced cancellation, the zero-point vault that hid structure at null, the inverted radius that placed infinity at the center, the bounded receipt that made breadth lie about memory, and the additive breadth that had to be broken into three valuations because faithfulness and additivity cannot inhabit one real scalar.
 
-Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. The twist that was hiding zero is gone. The carrier remains.
+Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. This candidate omits the twist that supplies EDCM's origin and causal chain. That omission is disqualifying for the target EDCM configuration unless formal integration shows that the directed cover preserves the required Möbius and superposition semantics.
 
-**hmmm — the floor is specified and the frame is true, but the three measuring instruments are still owed: μ assigned with its zero-test, M constructed and witnessed distinct from W, B made executable with invariance tests that survive the no-go. Until those witnesses exist the chapter remains a precise promise wearing three names. The next chapter will either validate the floor under honest traffic or reveal where a seam was missed. Either outcome is distinction enough to keep the work alive and off-center.**
+**hmmm — this chapter now survives as comparison evidence, not as the EDCM answer. The missing initiation twist, formal superposition semantics, graph contribution laws, projection scale, and real-system failure corpus are exactly the places where honest traffic should make the current construction look incomplete.**
