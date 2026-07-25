@@ -38,6 +38,14 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+#
+# id: check_edcm_explicit_constraints_and_corpora
+#   proves: edcm_constraints_are_explicit_without_early_collapse
+#   call: self::test_edcm_constraints_plural_displays_and_corpora_remain_explicit
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import pytest
@@ -73,7 +81,7 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     carrier = option_dimension("carrier-model")
     standing_by_choice = {choice["id"]: choice["standing"] for choice in carrier["choices"]}
     assert standing_by_choice["directed-twofold-branched-angular-cover"] == "implemented-candidate"
-    assert standing_by_choice["mobius-origin-hidden-zero"] == "required-evaluation"
+    assert standing_by_choice["mobius-origin-hidden-zero"] == "decided-constraint"
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:
@@ -92,6 +100,48 @@ def test_current_profile_is_one_exact_candidate_configuration() -> None:
     assert profile["standing"] == "implemented-candidate"
     assert profile["selection_effect"] == "none"
     assert profile["option_values"] == dict(PROFILE_OPTIONS)
+
+
+def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
+    registry = load_option_registry()
+    project = registry["project"]
+    constraints = project["decided_configuration_constraints"]
+
+    assert project["configuration_state"] == "decided-constraints-with-incomplete-evidence"
+    assert "Refuse early collapse" in project["selection_principle"]
+    assert constraints["carrier_requirement"] == "mobius-origin-hidden-zero"
+    assert constraints["structural_null_semantics"] == "superpositioned-space"
+    assert constraints["twist_event"] == "new-gonol-initiation"
+    assert constraints["occurrence_operation"] == "ordered-concatenation"
+    assert constraints["support_policy"] == "unit-turn"
+    assert constraints["equivalence_baseline"] == "exact-evidence"
+    assert constraints["equivalence_progression"] == "evidence-scaled-projection"
+    assert constraints["payload_operator"] == "carrier-pairing-only"
+    assert constraints["profile_scope"] == "edcm-specific"
+
+    assert option_dimension("product-character-M")["display_order"] == [
+        "geometric-mean-support",
+        "maximum-support",
+        "minimum-support",
+    ]
+    assert option_dimension("product-character-M")["selection_effect"] == "none"
+    assert option_dimension("faithful-breadth-B")["display_order"] == [
+        "cell-log-support",
+        "cell-detail",
+        "retained-presence",
+    ]
+    assert option_dimension("faithful-breadth-B")["selection_effect"] == "none"
+
+    corpus_ids = {corpus["id"] for corpus in registry["real_system_corpus_candidates"]}
+    assert {
+        "wildchat-1m",
+        "prism-alignment",
+        "lmsys-chat-1m",
+        "icsi-meeting-corpus",
+        "ami-meeting-corpus",
+        "multiwoz-2.1",
+        "molweni",
+    } <= corpus_ids
 
 
 def test_unknown_option_dimension_fails_closed() -> None:
