@@ -13,8 +13,14 @@
 - Lifted comparison period: 720 degrees.
 - Visible comparison projection: 360 degrees.
 - Current coordinate-free null: executable but superseded as EDCM target semantics.
-- EDCM operation floor: ordered concatenation, unit-turn support, exact-evidence
-  baseline, carrier pairing only, and an EDCM-specific profile.
+- EDCM scale: exact 157 Unicode code-point tokens compose word gonols; words are
+  the smallest gonols; every exact SPACE is a superpositioned nesting interface
+  from which higher gonols must compose.
+- EDCM source boundary: strict UTF-8, no authoritative normalization or folding,
+  and ordered retention/reporting of every out-of-alphabet code point.
+- EDCM operation floor: ordered concatenation, one support unit per complete
+  speaker turn, exact-evidence baseline, carrier pairing only, full-corpus
+  execution, and the EDCM-specific word-gonol profile.
 - EDCM displays: all three `M` and all three `B` candidates; no selected winner.
 - Established measurement: cell-only aggregate support `W`.
 - Represented evidence: cells plus repeated retained layers with explicit presence,
@@ -36,7 +42,8 @@ Implemented:
 - occurrence-addressed retained-layer pairing plans;
 - evaluator registries and explicit-comparison law suites;
 - content-addressed subjects through named adapters;
-- witness corpora with development and holdout partitions;
+- optional witness partitions for separately declared studies; current EDCM
+  configuration discovery uses complete corpus runs;
 - mutation and metamorphic generation;
 - counterexample minimization and reproduction checks;
 - candidate decision packets with separate authorship and rollback requirements;
@@ -119,7 +126,8 @@ python -m build
 python -m twine check dist/*
 ```
 
-hmmm: the decided EDCM floor is visible without pretending that it completes
-the configuration. Real-system failure slices, the Möbius/directed-cover
-integration, graph contribution, projection thresholds, external holdout custody,
-and an explicit selection authority remain the next truth boundary.
+hmmm: the exact EDCM observation floor is executable without pretending that it
+completes the configuration. Complete real-system runs, the
+Möbius/directed-cover relation, higher-gonol composition, graph contribution,
+projection thresholds, and an explicit EDCM selection authority remain the next
+truth boundary.
