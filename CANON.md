@@ -1,10 +1,31 @@
-# UCNS object canon — directed carrier and reproducible candidate-research floor
+# UCNS canon — option-preserving construction and candidate-research floor
 
-## Formal carrier
+## Authority and current project
 
-The formal UCNS carrier is a **directed twofold branched angular cover**.
-“Möbius” is retained only as project provenance and is not part of the object
-definition.
+**UCNS** is a stable identifier without a canonical expansion. Any expansion is
+an alias or provenance description only and cannot become schema authority,
+mathematical canon, or implementation law.
+
+UCNS is an option-bearing construction system. The current project exposes those
+choices and uses EDCM experiments against real systems to determine an
+**EDCM-scoped** ideal configuration. An EDCM selection does not become universal
+UCNS canon and transfers no theorem, measurement, or METAPAT validity.
+
+The authoritative decision surface and open choices are recorded in
+[`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md) and the packaged
+`src/ucns/option_registry.json`.
+
+## Current implemented carrier candidate
+
+The current reference implementation is a **directed twofold branched angular
+cover**. It is an implemented candidate, not a universal option selection.
+
+The Möbius-origin/hidden-zero construction is a required evaluation candidate.
+It is not restored as a settled formal claim; neither may it be silently erased.
+Its exact relation to the directed-cover construction remains unresolved.
+
+The remaining carrier statements in this section describe the current
+implemented candidate.
 
 There is one unique **Structural Null** `N`. Structural Null contains no
 coordinate, payload, type, shape, metadata, provenance, receipt, recursive
@@ -262,18 +283,25 @@ The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
 reconstructed from experimental branch `ucns-Grok`. Its former `M`, heuristic
 `B`, package version, status, and downstream-consumer claims are not canon.
 
-## Retired root doctrine
+## Historical and unresolved carrier choices
 
-The following remain removed from formal canon:
+The following are not active in the current profile:
 
-- a Möbius strip as the carrier object;
-- a localized seam or twist containing hidden zero;
 - automatic orientation reversal after 360 degrees;
 - first-anchor normalization as geometric zero;
 - `None` or a trivial object as multiplicative identity;
 - one-circle completion;
 - face state inferred from a seam crossing.
 
-hmmm: UCNS can now retain, reproduce, compose, traverse, and pressure candidate
-instruments. Canonical equivalence, `M`, and `B` remain on the far side of
-independent holdout evidence and an explicit canonization decision.
+Those pre-reset choices retain provenance and counterevidence; they do not regain
+authority through name or field resemblance.
+
+A Möbius-origin/hidden-zero construction has `required-evaluation` standing in
+the option registry. Its relation to the current directed-cover candidate must
+be formalized and tested before the carrier-model and origin-semantic dimensions
+can close.
+
+hmmm: UCNS now records decisions and unresolved choices without appointing the
+current implementation as the universal answer. Canonical equivalence, `M`,
+`B`, the carrier relation, and the ideal EDCM-scoped configuration remain on the
+far side of real-system evidence, independent holdout, and explicit decision.
