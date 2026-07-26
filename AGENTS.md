@@ -7,20 +7,23 @@ Read, in order:
 3. `docs/EDCM_REAL_SYSTEM_CORPORA.md`
 4. `src/ucns/option_registry.json`
 5. `src/ucns/edcm.py`
-6. `docs/chapter-1.md`
-7. `docs/STRUCTURE_CONTRACT.md`
-8. `docs/CHOICE_PRESERVATION.md`
-9. `docs/CHOICE_POLICY.md`
-10. `docs/RETAINED_STRUCTURE.md`
-11. `docs/COMPARISON_POLICY.md`
-12. `docs/TRAVERSAL_POLICY.md`
-13. `docs/LAYER_PAIRING.md`
-14. `docs/EVALUATOR_LAB.md`
-15. `docs/EXPERIMENT_MANIFESTS.md`
-16. `docs/CANDIDATE_PACKS.md`
-17. `.agents/skills/README.md`
-18. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
-19. the corresponding test module's `CHECKS` block
+6. `docs/EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`
+7. `src/ucns/edcm_motion.py`
+8. `docs/EDCM_COMPLETION_MOTION_EVIDENCE.md`
+9. `docs/chapter-1.md`
+10. `docs/STRUCTURE_CONTRACT.md`
+11. `docs/CHOICE_PRESERVATION.md`
+12. `docs/CHOICE_POLICY.md`
+13. `docs/RETAINED_STRUCTURE.md`
+14. `docs/COMPARISON_POLICY.md`
+15. `docs/TRAVERSAL_POLICY.md`
+16. `docs/LAYER_PAIRING.md`
+17. `docs/EVALUATOR_LAB.md`
+18. `docs/EXPERIMENT_MANIFESTS.md`
+19. `docs/CANDIDATE_PACKS.md`
+20. `.agents/skills/README.md`
+21. the source module's `MODULE_BUILD` and `CONTRACTS` blocks
+22. the corresponding test module's `CHECKS` block
 
 Rules:
 
@@ -43,6 +46,13 @@ Rules:
 - For EDCM, require ordered concatenation, one support unit per complete speaker
   turn, exact evidence as the baseline, carrier pairing only, full-corpus
   execution, and the EDCM-specific word-gonol profile.
+- Treat the complete UCNS–EDCM trajectory as the measurement identity. Geometric
+  assignments and motion laws remain explicit unresolved or experiment-candidate
+  evidence until ratified; scalar metrics are optional declared-loss projections
+  that must retain a link to the complete source observation.
+- Scope every completion receipt to its declared construction boundary. A
+  completed construction cannot claim epistemic exhaustion of the underlying
+  unknowable.
 - Display all three registered `M` and all three registered `B` candidates. Do
   not select or hide one while information remains incomplete.
 - Run every turn of each admitted EDCM corpus. Seek incompleteness and worst-case

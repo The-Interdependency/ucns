@@ -46,6 +46,14 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+#
+# id: check_ucns_completion_motion_root
+#   proves: ucns_completion_motion_root_is_authoritative
+#   call: self::test_completion_motion_root_scope_and_projection_firewall
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import pytest
@@ -55,6 +63,7 @@ from ucns import (
     EDCM_PROFILE_VERSION,
     PUBLIC_GONOL_SHA256,
     OPTION_REGISTRY_SCHEMA_ID,
+    OPTION_REGISTRY_SCHEMA_VERSION,
     PROFILE_ID,
     PROFILE_OPTIONS,
     UCNS_IDENTIFIER,
@@ -69,6 +78,25 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.3.0"
+
+
+def test_completion_motion_root_scope_and_projection_firewall() -> None:
+    project = load_option_registry()["project"]
+    assert project["system_root"] == (
+        "UCNS assigns elements of an unknowable to completion through "
+        "geometric motion."
+    )
+    assert "does not exhaust" in project["completion_scope"]
+    assert (
+        project["motion_evidence_schema"]
+        == "ucns.edcm.completion-motion-evidence/0.1.0"
+    )
+    assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
+    assert (
+        project["scalar_projection_policy"]
+        == "optional-declared-loss-with-source-link"
+    )
 
 
 def test_option_dimensions_have_no_hidden_default() -> None:
@@ -128,6 +156,9 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
     assert constraints["equivalence_progression"] == "evidence-scaled-projection"
     assert constraints["payload_operator"] == "carrier-pairing-only"
     assert constraints["profile_scope"] == "edcm-specific"
+    assert constraints["measurement_identity"] == "completion-motion-trajectory"
+    assert constraints["scalar_projection"] == "optional-declared-loss"
+    assert constraints["completion_scope"] == "declared-construction-boundary"
 
     assert option_dimension("product-character-M")["display_order"] == [
         "geometric-mean-support",

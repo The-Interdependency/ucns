@@ -2,9 +2,9 @@
 # id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports the UCNS decision registry, EDCM word-gonol observation profile, current foundations, and reproducible candidate-research infrastructure
+#   summary: exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: option decisions, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, EDCM observation and completion-motion evidence, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,11 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable decisions, exact EDCM word-gonol observation profile, compatibility profile, and research infrastructure
-#   rollback: remove downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, compatibility profile, and research infrastructure
+#   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: formal Mobius coordinates, higher-gonol composition, out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: element-assignment law, formal Mobius coordinates, circle-epicycle-disk-sphere transitions, higher-gonol composition, out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -218,6 +218,31 @@ from .edcm import (
     decode_utf8_exact,
     public_gonol_sha256,
 )
+from .edcm_motion import (
+    EDCM_ASSIGNMENT_LAW_STATUS,
+    EDCM_HIGHER_MOTION_LAW_STATUS,
+    EDCM_MOTION_SCHEMA_ID,
+    EDCM_MOTION_SCHEMA_VERSION,
+    EDCM_MOTION_SCOPE,
+    EDCM_MOTION_SELECTION_EFFECT,
+    CompletionRegistration,
+    CompletionState,
+    EdcmCompletionTrace,
+    EdcmMetricFamily,
+    EdcmMotionError,
+    EdcmMotionObservation,
+    EpicyclicParentage,
+    EvidenceStatus,
+    GeometricAssignment,
+    GeometryKind,
+    HmmmBoundary,
+    LawStanding,
+    MotionStep,
+    ObservedElement,
+    ScalarProjection,
+    SourceProvenance,
+    record_word_motion,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -295,7 +320,16 @@ __all__ = [
     "EdcmProfileError", "EdcmTokenObservation", "EdcmTurnObservation",
     "EdcmWordGonol", "EdcmWordGonolProfile",
     "SuperpositionedSpaceBoundary", "decode_utf8_exact",
-    "public_gonol_sha256", "BRIDGE_SCHEMA_ID", "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
+    "public_gonol_sha256", "EDCM_ASSIGNMENT_LAW_STATUS",
+    "EDCM_HIGHER_MOTION_LAW_STATUS", "EDCM_MOTION_SCHEMA_ID",
+    "EDCM_MOTION_SCHEMA_VERSION", "EDCM_MOTION_SCOPE",
+    "EDCM_MOTION_SELECTION_EFFECT", "CompletionRegistration",
+    "CompletionState", "EdcmCompletionTrace", "EdcmMetricFamily",
+    "EdcmMotionError", "EdcmMotionObservation", "EpicyclicParentage",
+    "EvidenceStatus", "GeometricAssignment", "GeometryKind", "HmmmBoundary",
+    "LawStanding", "MotionStep", "ObservedElement", "ScalarProjection",
+    "SourceProvenance", "record_word_motion", "BRIDGE_SCHEMA_ID",
+    "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",
     "EdcmMetapatBridgeRecord", "InformationLossRecord",
     "RetainedLayerDigest", "PROFILE_OPTIONS",
