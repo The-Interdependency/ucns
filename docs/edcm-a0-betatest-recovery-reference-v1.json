@@ -1,0 +1,99 @@
+{
+  "schema_id": "ucns.edcm-a0-recovery-reference",
+  "schema_version": "1.0.0",
+  "authority": "Erin Patrick Spencer",
+  "recorded_on": "2026-07-26",
+  "status": "load-bearing-recovery-constraint",
+  "system_definition": "UCNS assigns elements of an unknowable to completion through a geometric-motion algorithm of epicyclic circles, spheres, and disks.",
+  "completion_boundary": "Completion is relative to the declared construction and does not claim exhaustive knowledge of the unknowable.",
+  "primary_historical_specimen": {
+    "repository": "The-Interdependency/a0-betatest",
+    "commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+    "standing": "primary-edcm-recovery-specimen",
+    "active_producer": false,
+    "theorem_status_transfer": false,
+    "measurement_validity_transfer": false,
+    "metapat_validity_transfer": false,
+    "files": [
+      {
+        "path": "backend/interdependent_lib/gonal/gonal.py",
+        "blob_sha": "2833783aaf78099b554a406796f11f83129fd8a5",
+        "recovery_role": "157-position circular carrier construction and arrangement source"
+      },
+      {
+        "path": "backend/interdependent_lib/ucns_embed.py",
+        "blob_sha": "83a7d0088821d179de0d4264020663664bbec36c",
+        "recovery_role": "angular field lanes, chirality, and ordered non-commutative composition specimen"
+      },
+      {
+        "path": "backend/interdependent_lib/gonal_stack.py",
+        "blob_sha": "d1ec2f9ec2d8eecc175293d47754ecd7ecccc26f",
+        "recovery_role": "recursive grain disks and ordered session-level stack specimen"
+      },
+      {
+        "path": "backend/interdependent_lib/zfae/morphology.py",
+        "blob_sha": "5eeabbfa61e673d4d8f4a60fbf9f394bbe2441fa",
+        "recovery_role": "bone-root-word scale composition specimen"
+      },
+      {
+        "path": "backend/interdependent_lib/zfae/gonal_inscription.py",
+        "blob_sha": "26074f73a7aa8282c7df13fa4fb4e3b486802be8",
+        "recovery_role": "full-field angular inscription and fixed-seam event specimen"
+      },
+      {
+        "path": "backend/interdependent_lib/ucns_bridge.py",
+        "blob_sha": "32430beff6b865c7b06fe4314ab8f5f6b735626d",
+        "recovery_role": "subordinate historical factorization bridge and counterevidence"
+      }
+    ]
+  },
+  "candidate_invariants": [
+    "assignment-is-geometric-and-relational",
+    "order-is-load-bearing",
+    "orientation-is-explicit",
+    "trajectory-is-not-replaced-by-scalar-summary",
+    "grain-and-recursive-scale-are-explicit",
+    "larger-constructions-compose-from-ordered-lower-scale-constructions",
+    "space-zero-is-an-intrinsic-seam-and-nesting-event",
+    "one-general-motion-family-operates-across-scales-unless-exception-is-justified",
+    "source-evidence-and-geometric-projection-remain-separately-recoverable",
+    "inverse-and-factorization-stay-gated-until-established"
+  ],
+  "required_geometry": [
+    "circle",
+    "epicycle",
+    "disk",
+    "sphere",
+    "recursive-scale",
+    "mobius-origin-hidden-zero",
+    "720-degree-complete-return"
+  ],
+  "candidate_or_rejected_mechanisms": [
+    "blake2-derived-phase-lanes-as-final-assignment-law",
+    "53-lanes-as-universal-constant",
+    "2pi-reduction-as-complete-mobius-motion",
+    "sine-sign-as-complete-orientation-law",
+    "cylindrical-disk-stack-as-complete-sphere-and-epicycle-law",
+    "coherence-as-sufficient-completion-measure",
+    "ucns-0.8.3-as-current-producer",
+    "factorization-kernel-as-complete-ucns-system"
+  ],
+  "activation": {
+    "recovered_completion_motion_producer_available": false,
+    "a0_betatest_activation_permitted": false,
+    "archived_ucns_activation_permitted": false,
+    "exact_observation_profiles_may_continue": true,
+    "candidate_laboratories_may_continue": true
+  },
+  "open_obligations": [
+    "define-admission-from-unknowable-source-evidence",
+    "define-circle-epicycle-disk-sphere-relations",
+    "define-mobius-seam-orientation-transition-and-720-return",
+    "define-universal-motion-and-composition-law",
+    "define-boundary-relative-completion-and-noncompletion-receipts",
+    "bind-edcm-observations-to-retained-motion-state",
+    "test-against-real-edcm-corpora-without-circular-selection",
+    "restore-factorization-only-as-subordinate-machinery"
+  ],
+  "hmmm": "The system root and the nearest historical specimen are pinned; the actual epicyclic circle, disk, sphere, and completion laws remain to be reconstructed."
+}
