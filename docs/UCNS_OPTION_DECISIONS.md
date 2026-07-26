@@ -1,24 +1,43 @@
 # UCNS option decisions and open choices
 
 **Authority:** Erin Spencer  
-**Recorded:** 2026-07-25  
+**Recorded:** 2026-07-26  
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
+**Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
+**Recovery manifest:** [`edcm-a0-betatest-recovery-reference-v1.json`](edcm-a0-betatest-recovery-reference-v1.json)  
 **Corpus research:** [`EDCM_REAL_SYSTEM_CORPORA.md`](EDCM_REAL_SYSTEM_CORPORA.md)  
-**Status:** active EDCM-scoped authority; an exact observation profile is
-implemented, while the carrier and higher-composition mathematics remain
-incomplete.
+**Status:** active EDCM-scoped authority; the completion-motion root and primary
+historical recovery specimen are pinned, an exact observation profile is
+implemented, and the carrier, epicyclic geometry, completion, and
+higher-composition mathematics remain incomplete.
 
 ## Authority boundary
 
 UCNS is a stable identifier without a canonical expansion. UCNS exposes named,
 versioned, provenance-bearing choices without appointing hidden global defaults.
 
+The load-bearing system definition is:
+
+> UCNS assigns elements of an unknowable to completion through a geometric-motion
+> algorithm of epicyclic circles, spheres, and disks.
+
+An object constructor, carrier, static coordinate, hash, factorization kernel,
+metric, or visualization may implement or project part of that system. It may not
+replace the assignment-and-motion function merely because it is executable.
+Completion is relative to the declared construction boundary and is not a claim
+that the unknowable has been exhausted into complete knowledge.
+
 The active project is narrower: determine an EDCM-specific UCNS configuration
 against real systems. An EDCM decision does not become universal UCNS canon and
 transfers no theorem, measurement, or METAPAT validity.
 
 ## EDCM floor now decided
+
+The EDCM floor must retain assignment, geometric relation, motion, scale,
+orientation, nesting, completion state, and unresolved state whenever those
+properties affect the readout. A detached scalar is a named lossy projection,
+not the complete EDCM object.
 
 1. **Scale and nesting.** The word is the smallest gonol. The 157 character
    tokens compose word gonols; every larger gonol must compose from word gonols
@@ -59,6 +78,36 @@ transfers no theorem, measurement, or METAPAT validity.
 These are scoped constraints, not proof that the ideal configuration has been
 found.
 
+## Primary EDCM recovery specimen
+
+The closest surviving executable fit for EDCM is the historical A0-betatest
+epoch:
+
+```text
+repository: The-Interdependency/a0-betatest
+commit:     7af8debf6ef3905f01baff02b43d8c3bee16ccbc
+standing:   primary EDCM recovery specimen
+activation: prohibited as a current UCNS producer
+```
+
+Its load-bearing recovery value is the combined shape of:
+
+- the 157-position gonal carrier;
+- angular phase lanes and explicit chirality;
+- ordered, non-commutative composition;
+- a recursive grain ladder;
+- one disk per grain rung and an ordered chapter/session fold;
+- full-field inscription into a private gonal;
+- an intrinsic SPACE/ZERO seam emitted as an event;
+- separate structural-bone, content-root, and composed-word roles.
+
+The source packet and exact blob identities are pinned in the recovery manifest.
+The specimen transfers candidate invariants and counterevidence, not authority to
+its temporary mechanisms. Blake2-derived lanes, the fixed lane count, ordinary
+`2π` reduction, sine-sign chirality, cylinder-only geometry, coherence as a
+completion scalar, the `ucns==0.8.3` bridge, and factorization-centered system
+claims remain candidates or rejected shortcuts.
+
 ## Implemented EDCM observation profile
 
 ```text
@@ -78,8 +127,9 @@ selection:       none
 The profile reconstructs every turn exactly, preserves every SPACE occurrence,
 initiates each maximal non-SPACE word sequence as a word gonol, and reports every
 code point outside the 157-token alphabet. It records the required initiating
-event but does not pretend that the unresolved Möbius coordinate construction or
-higher-gonol composition law has been supplied.
+event but does not pretend that the unresolved Möbius coordinate construction,
+epicyclic circle/disk/sphere law, completion condition, or higher-gonol
+composition law has been supplied.
 
 ## Unicode and glyph normalization
 
@@ -120,9 +170,23 @@ selection:       none
 It still preserves useful occurrence evidence but does not implement the
 EDCM-specific nesting contract. The directed twofold branched angular cover also
 remains executable comparison evidence; its formal relation to the required
-Möbius construction is open.
+Möbius construction and completion-motion root is open.
 
 ## Choices still genuinely open
+
+### Completion-motion geometry
+
+**Direct epicyclic construction.** Define the assignment and motion law directly
+across circles, epicycles, disks, spheres, and recursive scale. The law must
+specify completion and honest non-completion receipts.
+
+**A0-betatest invariant reconstruction.** Recover the ordered field, chirality,
+grain, disk-stack, inscription, and seam invariants while rejecting temporary
+hash, lane-count, `2π`, cylinder-only, and factorization substitutions.
+
+**Alternative faithful construction.** A different implementation may replace
+the historical mechanisms only if it preserves the load-bearing system
+function and passes separating falsifiers against the pinned specimen.
 
 ### Möbius carrier and directed cover
 
@@ -226,7 +290,8 @@ provenance layers. This maximizes fidelity but requires more adapter work.
 
 **Shared minimal envelope.** Map every corpus into a small common turn envelope
 while retaining source-native evidence beside it. The common fields must not
-flatten multiparty, graph, task-state, or multimodal differences.
+flatten multiparty, graph, task-state, multimodal, or geometric-motion
+differences.
 
 Outcome labels are not required to measure EDCM. They become relevant only if a
 separate study asks whether an EDCM readout predicts an external outcome.
@@ -256,6 +321,7 @@ rollback. Promotion still transfers no authority to universal UCNS or METAPAT.
 exact source corpus
   -> every speaker turn, in source order
   -> exact code points + explicit SPACE nesting + word gonols
+  -> retained assignment, orientation, scale, motion, and unresolved state
   -> all candidate configurations and all M/B displays
   -> post-run failure, disagreement, and coverage analysis
   -> explicit EDCM-scoped decision, or an honest unresolved result
@@ -267,6 +333,9 @@ Passing current fixtures or a corpus average is not a selection event.
 
 The flattening failure is now an explicit negative constraint: characters are
 tokens, words are the smallest gonols, SPACE is a superpositioned nesting
-interface, and a speaker turn is the support unit. Any adapter or evaluator that
-turns those four different roles into one flat sequence has changed the EDCM
-question before the experiment begins.
+interface, a speaker turn is the support unit, and UCNS is assignment through
+geometric motion to completion. Any adapter or evaluator that turns those roles,
+orientations, scales, and trajectories into one flat sequence or one unreceipted
+scalar has changed the EDCM question before the experiment begins. The exact
+epicyclic circle, disk, sphere, Möbius, composition, and completion laws remain
+the living recovery boundary.
