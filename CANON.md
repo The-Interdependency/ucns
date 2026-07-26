@@ -15,6 +15,55 @@ The authoritative decision surface and open choices are recorded in
 [`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md) and the packaged
 `src/ucns/option_registry.json`.
 
+## Load-bearing system function
+
+> UCNS assigns elements of an unknowable to completion through a geometric-motion
+> algorithm of epicyclic circles, spheres, and disks.
+
+This statement governs the system identity. Option registries, objects, carriers,
+coordinates, hashes, factorization algebras, metrics, and visualizations are
+possible instruments or projections. None is the complete UCNS merely because it
+is executable or formalized.
+
+The load-bearing terms are:
+
+- **assignment** — admission of an element into a declared geometric relation;
+- **motion** — ordered alteration retaining orientation, nesting, scale, and
+  causal sequence where they affect the result;
+- **completion** — a registered condition of the declared construction;
+- **unknowable** — source reality not claimed to be exhausted by the completed
+  construction.
+
+Completion is therefore boundary-relative. Unknown, absent, neutral, zero,
+unmeasured, incomplete, and complete remain distinct states.
+
+A lawful recovery must account for circles, epicycles, disks, spheres, recursive
+scale, the Möbius origin/hidden zero, and the 720-degree complete return. The
+exact equations and transition laws remain open; naming the forms is not an
+implementation.
+
+## Primary EDCM recovery specimen
+
+The closest surviving executable fit for EDCM is the historical epoch:
+
+```text
+The-Interdependency/a0-betatest
+@7af8debf6ef3905f01baff02b43d8c3bee16ccbc
+```
+
+Its combined gonal carrier, angular phase lanes, chirality, ordered
+non-commutative composition, recursive grain ladder, disk stack, full-field
+inscription, and fixed SPACE/ZERO seam make it the primary EDCM recovery
+specimen. It is not an active UCNS producer and does not transfer authority to
+its temporary hash, lane-count, `2*pi`, cylinder-only, coherence, bridge, or
+factorization mechanisms.
+
+The exact source paths, blob identities, candidate invariants, rejected
+shortcuts, activation boundary, and recovery order are recorded in
+[`docs/EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](docs/EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)
+and
+[`docs/edcm-a0-betatest-recovery-reference-v1.json`](docs/edcm-a0-betatest-recovery-reference-v1.json).
+
 ## Current implemented carrier candidate
 
 The current reference implementation is a **directed twofold branched angular
@@ -285,20 +334,23 @@ Implemented and test-backed infrastructure:
 
 Still unresolved and not promoted:
 
-1. domain-specific rules assigning `mu` to real structures;
-2. canonical measurement contributions for retained layers;
-3. canonical structural equivalence;
-4. canonical multiplicative `M` with externally reviewed separation and retained
+1. the recovered assignment-to-completion motion algorithm;
+2. canonical epicyclic circle, disk, and sphere relations;
+3. the completion condition and honest non-completion receipts;
+4. domain-specific rules assigning `mu` to real structures;
+5. canonical measurement contributions for retained layers;
+6. canonical structural equivalence;
+7. canonical multiplicative `M` with externally reviewed separation and retained
    layer laws;
-5. canonical faithful `B` reporting every retained distinction;
-6. external holdout custody and independent candidate calibration;
-7. canonical recursive identity, sharing, and fixed-point laws;
-8. typed payload dispatch;
-9. formal integration of the EDCM-critical Möbius carrier with the current
-   directed cover;
-10. formal promotion and migration of the EDCM observation profile after the
+8. canonical faithful `B` reporting every retained distinction;
+9. external holdout custody and independent candidate calibration;
+10. canonical recursive identity, sharing, and fixed-point laws;
+11. typed payload dispatch;
+12. formal integration of the EDCM-critical Möbius carrier with the current
+    directed cover;
+13. formal promotion and migration of the EDCM observation profile after the
     Möbius coordinate and higher-gonol composition laws are executable;
-11. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+14. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
     public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
@@ -318,6 +370,17 @@ The following are not active in the current profile:
 Those pre-reset choices retain provenance and counterevidence; they do not regain
 authority through name or field resemblance.
 
+The A0-betatest recovery specimen also retains noncanonical mechanisms that may
+not regain authority merely because its system shape is the closest EDCM fit:
+
+- hash-derived assignment lanes;
+- a fixed 53-lane count;
+- ordinary `2*pi` phase reduction;
+- sine-sign chirality;
+- cylinder-only disk stacking;
+- scalar coherence as completion;
+- the archived package bridge and factorization-centered interpretation.
+
 The Möbius-origin/hidden-zero construction has `decided-constraint` standing
 for EDCM. Its relation to the current directed-cover candidate must still be
 formalized and tested: the directed cover may implement, embed, parameterize, or
@@ -327,12 +390,12 @@ EDCM additionally fixes words as the smallest gonols, exact SPACE as the
 superpositioned nesting interface, the exact public 157-code-point alphabet with
 no authoritative normalization, ordered concatenation, one unit per speaker
 turn, full-corpus execution, exact evidence as the equivalence baseline, carrier
-pairing only, and an EDCM-specific target profile. All three `M` and all three `B` candidates remain simultaneously visible.
-Graph contribution and the movement from exact evidence toward projection remain
-open pending more information.
+pairing only, and an EDCM-specific target profile. All three `M` and all three `B`
+candidates remain simultaneously visible. Graph contribution and the movement
+from exact evidence toward projection remain open pending more information.
 
-hmmm: the observation profile now preserves the EDCM-critical initiation event,
-word scale, SPACE nesting, exact tokens, and turn support, but it does not supply
-the formal Möbius coordinates or higher-gonol composition law. Complete
-real-system runs and post-run failure analysis must make those missing laws more
-precise before any configuration can honestly call itself ideal.
+hmmm: the load-bearing completion-motion root and the nearest surviving
+EDCM-facing specimen are now pinned. The exact assignment law, epicyclic circle,
+disk, sphere, Möbius, recursive composition, and completion conditions remain
+unrecovered. Real-system experiments may pressure those laws, but current metric
+projections may not circularly select the geometry that makes them appear valid.
