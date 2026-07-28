@@ -95,6 +95,24 @@ See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
 This profile makes the observation boundary executable. It does not invent the
 unresolved Möbius coordinate or higher-gonol composition laws.
 
+### EDCM completion-motion evidence
+
+- exact word observations bound to source provenance and a declared `hmmm`
+  construction boundary;
+- externally supplied circle, epicycle, disk, or sphere relation evidence with
+  explicit noncanonical law standing;
+- orientation, sidedness, motion since the prior state, and ordered recursive
+  or epicyclic parentage retained in the observation identity;
+- completion registered only relative to a declared construction boundary;
+- represented and candidate-measured evidence distinguished; and
+- optional scalar metric projections require named policies, source links, and
+  declared information loss.
+
+This schema makes trajectory retention executable without fabricating the
+unresolved element-assignment, Möbius-coordinate, geometric-transition,
+higher-gonol, completion, or metric laws. See
+[`docs/EDCM_COMPLETION_MOTION_EVIDENCE.md`](docs/EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
 ### Directed carrier floor
 
 - unique Structural Null;
@@ -197,6 +215,10 @@ The package does **not** implement or promote:
 - a universally selected carrier model;
 - an ideal EDCM option configuration.
 
+The completion-motion evidence surface additionally does not derive an
+element-assignment law, select a circle/epicycle/disk/sphere transition law, or
+promote any scalar metric formula.
+
 ## Verification
 
 ```text
@@ -218,8 +240,9 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: the exact EDCM observation floor is executable without pretending to
-complete the mathematics. The next truth obligations are a deterministic
-full-MultiWOZ adapter and run receipt, the formal Möbius/directed-cover relation,
-the higher-gonol composition law, and evidence from the failures surfaced across
-complete corpora.
+hmmm: exact word observation and trajectory retention are executable without
+pretending to complete the mathematics. The next truth obligations are the
+element-assignment and circle/epicycle/disk/sphere transition laws, a
+deterministic full-MultiWOZ adapter and run receipt, the formal
+Möbius/directed-cover relation, the higher-gonol composition law, and evidence
+from the failures surfaced across complete corpora.

@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-25",
   "identifier": {
@@ -10,6 +10,11 @@
   },
   "project": {
     "id": "ucns-edcm-option-configuration-v1",
+    "system_root": "UCNS assigns elements of an unknowable to completion through geometric motion.",
+    "completion_scope": "Completion closes a declared construction relative to its declared boundary and does not exhaust the underlying unknowable.",
+    "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+    "trajectory_identity": "complete-assignment-and-motion-trajectory",
+    "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
     "ucns_role": "Provide explicit, versioned, composable, provenance-bearing choices without hidden global defaults.",
     "edcm_role": "Test configurations against declared systems and readouts, retain failures, and support an explicit EDCM-scoped selection decision.",
@@ -46,7 +51,10 @@
       "token_identity": "unicode-code-point",
       "normalization_policy": "none-preserve-source",
       "corpus_execution": "full-corpus",
-      "out_of_alphabet_policy": "retain-and-report"
+      "out_of_alphabet_policy": "retain-and-report",
+      "measurement_identity": "completion-motion-trajectory",
+      "scalar_projection": "optional-declared-loss",
+      "completion_scope": "declared-construction-boundary"
     }
   },
   "standing_vocabulary": {
@@ -154,6 +162,18 @@
     {
       "id": "full-corpus-runs",
       "statement": "EDCM configuration experiments run every turn in each admitted corpus. Sampling and holdout partitioning do not define the current execution protocol."
+    },
+    {
+      "id": "ucns-completion-motion-root",
+      "statement": "UCNS assigns elements of an unknowable to completion through geometric motion; carrier, algebra, factorization, hashes, and scalars remain subordinate instruments or projections."
+    },
+    {
+      "id": "completion-scoped-to-declared-boundary",
+      "statement": "Completion closes only a declared construction relative to its declared boundary and cannot claim epistemic exhaustion of the underlying unknowable."
+    },
+    {
+      "id": "trajectory-before-scalar",
+      "statement": "The complete assignment-and-motion trajectory is the EDCM observation identity; any scalar is an optional declared-loss projection linked to its retained source trajectory."
     }
   ],
   "current_profile": {
