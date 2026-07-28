@@ -32,6 +32,25 @@ The active project is narrower: determine an EDCM-specific UCNS configuration
 against real systems. An EDCM decision does not become universal UCNS canon and
 transfers no theorem, measurement, or METAPAT validity.
 
+## Defining operation now restored
+
+**UCNS assigns elements of an unknowable to completion through geometric
+motion.**
+
+The motion is expressed through recursively related circles, epicycles, disks,
+and spheres. Assignment, motion, nesting, scale transition, and registration of
+completion are the system. The option registry, 157-token carrier,
+factorization, hashing, coordinates, and scalar readouts are subordinate
+instruments or projections.
+
+Completion closes only the declared construction relative to its declared
+boundary. It does not imply epistemic exhaustion of the underlying unknowable.
+
+The exact element-assignment law, Möbius coordinates, geometric transition law,
+and higher-gonol composition remain unresolved. The current
+`ucns.edcm.completion-motion-evidence/0.1.0` surface retains supplied trajectory
+evidence while refusing to manufacture those laws.
+
 ## EDCM floor now decided
 
 The EDCM floor must retain assignment, geometric relation, motion, scale,
@@ -74,6 +93,11 @@ not the complete EDCM object.
     configuration.
 13. **Corpus execution.** Run every turn of each admitted corpus. Failure-seeking
     is post-run comparison and surfacing, not sampled execution.
+14. **Measurement identity.** The complete assignment-and-motion trajectory is
+    the observation identity. A scalar may appear only as an optional named
+    information-losing projection that links back to the retained trajectory.
+15. **Completion scope.** A completion receipt applies only to its declared
+    construction boundary and cannot claim exhaustion of the unknowable.
 
 These are scoped constraints, not proof that the ideal configuration has been
 found.
@@ -130,6 +154,25 @@ code point outside the 157-token alphabet. It records the required initiating
 event but does not pretend that the unresolved Möbius coordinate construction,
 epicyclic circle/disk/sphere law, completion condition, or higher-gonol
 composition law has been supplied.
+
+## Implemented EDCM completion-motion evidence
+
+```text
+schema:           ucns.edcm.completion-motion-evidence/0.1.0
+scope:            EDCM only
+input:            exact word-gonol observation
+assignment:       explicit supplied evidence; law unresolved or candidate
+motion:           explicit supplied evidence; law unresolved or candidate
+parentage:        ordered recursive / epicyclic references
+completion:       scoped to declared hmmm boundary
+measurement:      represented or candidate-measured evidence
+scalar:           optional declared-loss projection with source link
+selection:        none
+```
+
+This schema implements recoverable evidence identity, not the missing
+completion-motion algorithm. See
+[`EDCM_COMPLETION_MOTION_EVIDENCE.md`](EDCM_COMPLETION_MOTION_EVIDENCE.md).
 
 ## Unicode and glyph normalization
 

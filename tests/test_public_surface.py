@@ -32,6 +32,10 @@ def test_public_surface_is_bounded() -> None:
         "CandidateDecisionPacket",
         "geometric_mean_product_candidate",
         "retained_presence_breadth_candidate",
+        "EdcmMotionObservation",
+        "EdcmCompletionTrace",
+        "HmmmBoundary",
+        "ScalarProjection",
     ):
         assert expected in exported
 

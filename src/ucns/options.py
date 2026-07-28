@@ -2,7 +2,7 @@
 # id: ucns_option_decision_registry
 #   module_name: options
 #   module_kind: schema
-#   summary: loads and validates the authoritative UCNS decision and unresolved-option registry
+#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, and unresolved-option registry
 #   owner: Erin Spencer
 #   public_surface: OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension
 #   internal_surface: _validate_registry
@@ -12,7 +12,7 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_option_decisions.py
-#   rollout: authoritative decisions and explicit unresolved choices; no mathematical option selection
+#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
 #   unresolved: ideal EDCM-scoped configuration and the option dimensions marked required-evaluation or unresolved
@@ -48,6 +48,12 @@
 #   then: every decided constraint, plural M and B display, failure-seeking principle, and corpus candidate is explicit while unresolved dimensions remain open
 #   class: doctrine
 #   since: 2026-07-25
+#
+# id: ucns_completion_motion_root_is_authoritative
+#   given: the UCNS option registry is loaded
+#   then: completion-motion is the system root, completion remains scoped, trajectory is the observation identity, and scalar projections remain optional declared-loss views
+#   class: doctrine
+#   since: 2026-07-26
 # === END CONTRACTS ===
 
 """UCNS decision and unresolved-option registry.
@@ -63,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.2.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.3.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -104,6 +110,9 @@ REQUIRED_DECISION_IDS = frozenset(
         "exact-public-gonol-157",
         "edcm-source-normalization-none",
         "full-corpus-runs",
+        "ucns-completion-motion-root",
+        "completion-scoped-to-declared-boundary",
+        "trajectory-before-scalar",
     }
 )
 
@@ -131,6 +140,22 @@ def _validate_registry(data: dict[str, Any]) -> None:
         raise OptionRegistryError("project record is required")
     if project.get("selection_scope") != "edcm-only":
         raise OptionRegistryError("selection scope must remain EDCM-only")
+    expected_root = {
+        "system_root": (
+            "UCNS assigns elements of an unknowable to completion through "
+            "geometric motion."
+        ),
+        "completion_scope": (
+            "Completion closes a declared construction relative to its declared "
+            "boundary and does not exhaust the underlying unknowable."
+        ),
+        "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+        "trajectory_identity": "complete-assignment-and-motion-trajectory",
+        "scalar_projection_policy": "optional-declared-loss-with-source-link",
+    }
+    for field, expected in expected_root.items():
+        if project.get(field) != expected:
+            raise OptionRegistryError(f"UCNS completion-motion root mismatch: {field}")
     for field in (
         "universal_ucns_canon_transfer",
         "theorem_status_transfer",
@@ -164,6 +189,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "equivalence_progression": "evidence-scaled-projection",
         "payload_operator": "carrier-pairing-only",
         "profile_scope": "edcm-specific",
+        "measurement_identity": "completion-motion-trajectory",
+        "scalar_projection": "optional-declared-loss",
+        "completion_scope": "declared-construction-boundary",
     }
     if not isinstance(constraints, dict):
         raise OptionRegistryError("decided EDCM constraints are required")

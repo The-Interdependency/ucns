@@ -11,6 +11,28 @@ choices and uses EDCM experiments against real systems to determine an
 **EDCM-scoped** ideal configuration. An EDCM selection does not become universal
 UCNS canon and transfers no theorem, measurement, or METAPAT validity.
 
+## Defining operation
+
+**UCNS assigns elements of an unknowable to completion through geometric
+motion.**
+
+The motion is expressed through recursively related circles, epicycles, disks,
+and spheres. Assignment, ordered motion, nesting, recursive scale transition,
+and registration of completion define the system. Carriers, factorization,
+identities, scalar coordinates, hashes, and signal decompositions may serve as
+instruments or projections; none replaces the defining operation.
+
+Completion is scoped. It closes a declared construction relative to its declared
+boundary. It does not claim that the underlying unknowable has been
+epistemically exhausted.
+
+The current implementation can retain exact word evidence and externally
+supplied completion-motion trajectories. The law that assigns an element to
+geometry, the formal Möbius coordinates, the circle/epicycle/disk/sphere
+transition law, and higher-gonol composition remain unresolved. Their absence
+must stay explicit rather than being filled by a hash, ordinary `2π` angle,
+Fourier phase, factorization, or scalar proxy.
+
 The authoritative decision surface and open choices are recorded in
 [`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md) and the packaged
 `src/ucns/option_registry.json`.
@@ -330,7 +352,11 @@ Implemented and test-backed infrastructure:
 14. initial noncanonical equivalence, `M`, and `B` candidate families;
 15. an EDCM-only observation profile with the exact 157-code-point fixture,
     word gonols, explicit SPACE nesting, strict no-normalization evidence,
-    one-unit speaker turns, out-of-alphabet reporting, and full-corpus iteration.
+    one-unit speaker turns, out-of-alphabet reporting, and full-corpus iteration;
+16. an EDCM-only completion-motion evidence schema retaining provenance, declared
+    unresolved boundary, geometric relation, orientation, sidedness, motion,
+    recursive parentage, scoped completion effect, remaining unresolved capacity,
+    evidence status, and optional recoverably linked lossy scalar projections.
 
 Still unresolved and not promoted:
 
@@ -348,9 +374,11 @@ Still unresolved and not promoted:
 11. typed payload dispatch;
 12. formal integration of the EDCM-critical Möbius carrier with the current
     directed cover;
-13. formal promotion and migration of the EDCM observation profile after the
+13. the law assigning exact observed elements to epicyclic geometry and the
+    circle/epicycle/disk/sphere transition laws across recursive scale;
+14. formal promotion and migration of the EDCM observation profile after the
     Möbius coordinate and higher-gonol composition laws are executable;
-14. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+15. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
     public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
