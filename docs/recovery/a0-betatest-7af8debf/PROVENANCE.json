@@ -1,0 +1,40 @@
+{
+  "schema_id": "ucns.recovery-packet",
+  "schema_version": "1.0.0",
+  "packet_id": "ucns.recovery.a0-betatest.7af8debf",
+  "prepared_on": "2026-07-28",
+  "authority": "Erin Spencer",
+  "source": {
+    "repository": "The-Interdependency/a0-betatest",
+    "commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+    "commit_date": "2026-07-14T16:15:02-07:00"
+  },
+  "prepared_against": {
+    "repository": "The-Interdependency/ucns",
+    "commit": "8a5245ae98f6e7d3711e86fc7dd623fc7f49cb0a"
+  },
+  "standing": "historical-recovery-evidence",
+  "executable": false,
+  "selection_effect": "none",
+  "universal_ucns_canon_transfer": false,
+  "edcm_measurement_validity_transfer": false,
+  "theorem_status_transfer": false,
+  "metapat_validity_transfer": false,
+  "archived_activation_allowed": false,
+  "root_statement": "UCNS assigns elements of an unknowable to completion through geometric motion.",
+  "completion_scope": "declared-construction-relative",
+  "snapshot_suffix": ".py.txt",
+  "classifications": [
+    "recoverable-architecture",
+    "provisional-mechanism",
+    "counterevidence",
+    "activation-hazard"
+  ],
+  "hmmm": [
+    "Exact element-assignment law",
+    "Möbius initiation coordinates and observable consequences",
+    "Circle, epicycle, disk, and sphere transition laws",
+    "Higher-gonol composition from exact word and SPACE evidence",
+    "Geometric completion-registration condition"
+  ]
+}

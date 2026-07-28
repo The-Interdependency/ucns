@@ -5,6 +5,8 @@
 > **Recovery specimen:** [`The-Interdependency/a0-betatest@7af8debf6ef3905f01baff02b43d8c3bee16ccbc`](https://github.com/The-Interdependency/a0-betatest/commit/7af8debf6ef3905f01baff02b43d8c3bee16ccbc)
 >
 > **Provenance:** Corrective system statement supplied by Erin Patrick Spencer on 2026-07-26. It supersedes interpretations that reduce UCNS to its public frame, internal algebra, downstream geometry, or factorization lineage.
+>
+> **Frozen packet:** [`docs/recovery/a0-betatest-7af8debf/`](recovery/a0-betatest-7af8debf/README.md), including verbatim non-executable source snapshots, SHA-256 manifest, machine-readable provenance, completion-motion root, and source-by-source recovery classification.
 
 ## Corrected root
 
@@ -182,16 +184,16 @@ recovered UCNS
 
 ## Recovery order
 
-1. Freeze the relevant a0-betatest epoch and its component files as a recovery packet.
-2. State the completion-motion root before discussing object constructors or algebra.
-3. Extract the invariants shared by the gonal, phase field, inscription, grain ladder, and disk stack.
-4. Define the unknown or unknowable boundary and what constitutes an element assignment.
-5. Define circle, epicycle, disk, and sphere transitions.
-6. Define how orientation and the 720-degree twist affect motion and return.
-7. Define completion as a registered geometric condition.
-8. Bind EDCM events and metrics to changes in that motion.
-9. Permit scalars only as declared lossy projections with recoverable source trajectories.
-10. Bring back factorization only where it serves this system rather than replacing it.
+1. **Preserved:** freeze the relevant a0-betatest epoch and its component files as a recovery packet.
+2. **Recorded:** state the completion-motion root before discussing object constructors or algebra.
+3. **Recorded as candidates:** extract the shared invariants and known flattening operations from the gonal, phase field, inscription, grain ladder, disk stack, and readout.
+4. **Open:** define the unknown or unknowable boundary and what constitutes an element assignment.
+5. **Open:** define circle, epicycle, disk, and sphere transitions.
+6. **Open:** define how orientation and the 720-degree twist affect motion and return.
+7. **Open:** define completion as a registered geometric condition.
+8. **Open:** bind EDCM events and metrics to changes in that motion.
+9. **Open:** permit scalars only as declared lossy projections with recoverable source trajectories.
+10. **Open:** bring back factorization only where it serves this system rather than replacing it.
 
 ## hmmm
 
