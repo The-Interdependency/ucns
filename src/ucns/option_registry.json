@@ -1,8 +1,8 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.3.0",
+  "schema_version": "1.4.0",
   "authority": "Erin Spencer",
-  "recorded_on": "2026-07-25",
+  "recorded_on": "2026-07-28",
   "identifier": {
     "value": "UCNS",
     "canonical_expansion": null,
@@ -49,7 +49,9 @@
       "nesting_boundary": "superpositioned-space",
       "token_alphabet": "public-gonol-157",
       "token_identity": "unicode-code-point",
+      "source_domain": "unicode-scalar-values",
       "normalization_policy": "none-preserve-source",
+      "space_assignment_policy": "unicode-white-space-origin-v1",
       "corpus_execution": "full-corpus",
       "out_of_alphabet_policy": "retain-and-report",
       "measurement_identity": "completion-motion-trajectory",
@@ -154,6 +156,14 @@
     {
       "id": "exact-public-gonol-157",
       "statement": "EDCM token identity is the exact public 157-position Unicode code-point fixture from The-Interdependency/a0-betatest at its recorded source commit and SHA-256 digest."
+    },
+    {
+      "id": "edcm-source-domain-scalar-values",
+      "statement": "The EDCM source domain is Unicode scalar values: surrogate code points are rejected, while valid carrier-unassigned witnesses such as private-use U+E000, reserved U+0378, and noncharacter U+FDD0 remain exact ordered evidence rather than being coerced into carrier membership."
+    },
+    {
+      "id": "edcm-space-origin-assignment",
+      "statement": "Every source code point in the profile-pinned Unicode White_Space set assigns to the U+0020 public-gonol origin while its exact source value, code point, and offset remain unchanged."
     },
     {
       "id": "edcm-source-normalization-none",
@@ -481,12 +491,22 @@
         {
           "id": "exact-public-gonol-157",
           "standing": "decided-constraint",
-          "evidence": "Use the exact source-provenance fixture and digest. Each position contains one Unicode code point; SPACE is position zero."
+          "evidence": "Use the exact source-provenance fixture and digest. Each position contains one Unicode code point; U+0020 SPACE is the position-zero carrier token."
+        },
+        {
+          "id": "unicode-scalar-source-domain",
+          "standing": "decided-constraint",
+          "evidence": "Observe Unicode scalar values and reject surrogate code points. Valid carrier-unassigned scalar witnesses remain exact evidence without acquiring public-gonol membership."
+        },
+        {
+          "id": "space-manifestations-map-to-origin",
+          "standing": "decided-constraint",
+          "evidence": "The profile-pinned Unicode White_Space set assigns to carrier position zero. Raw source code points, offsets, and reconstruction remain exact, so this is a carrier assignment rather than whitespace normalization or collapse."
         },
         {
           "id": "retain-out-of-alphabet-evidence",
           "standing": "decided-constraint",
-          "evidence": "Unmapped corpus code points remain in exact order and are reported as alphabet-coverage failures rather than dropped or coerced."
+          "evidence": "Unmapped non-SPACE corpus code points remain in exact order and are reported as alphabet-coverage failures rather than dropped or coerced."
         },
         {
           "id": "alphabet-extension-or-escape",
@@ -543,9 +563,10 @@
     "For EDCM, require the Mobius twist as a causal carrier constraint.",
     "For EDCM, treat Structural Null as superpositioned space and initiate every new gonol through the twist.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
-    "Preserve every exact SPACE occurrence as token, word boundary, and superpositioned nesting interface.",
+    "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
-    "Apply no normalization or folding to authoritative source text; retain and report every out-of-alphabet code point.",
+    "Use Unicode scalar values as the source domain, reject surrogates, and retain valid carrier-unassigned scalars without claiming carrier membership.",
+    "Apply no normalization or folding to authoritative source text; retain and report every non-SPACE out-of-alphabet code point.",
     "Use ordered concatenation as the EDCM primary occurrence operation.",
     "Use one unit of support per complete speaker turn.",
     "Begin EDCM equivalence with exact evidence and move toward projection only on an explicit evidence-backed sliding scale.",
@@ -568,8 +589,8 @@
   "hmmm": [
     "Formal integration or incompatibility between the implemented directed cover and the EDCM-critical Mobius carrier.",
     "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
-    "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening SPACE.",
-    "Whether out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
+    "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
+    "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
     "Whether visual glyph identity requires a pinned font, shaping engine, and Unicode version in addition to exact code-point identity.",
     "Definition and authority procedure for an ideal EDCM-scoped configuration.",
     "Graph and retained-layer contribution laws; more information is required.",
@@ -646,7 +667,7 @@
   ],
   "target_profile": {
     "profile_id": "ucns.profile.edcm-word-gonol",
-    "profile_version": "0.1.0",
+    "profile_version": "0.2.0",
     "scope": "edcm-only",
     "standing": "implemented-candidate",
     "selection_effect": "none",
@@ -667,8 +688,41 @@
       "digit_zero_position": 139
     },
     "normalization_policy": "none-preserve-source",
+    "source_domain": "unicode-scalar-values",
+    "space_assignment": {
+      "policy_id": "unicode-white-space-origin-v1",
+      "carrier_position": 0,
+      "carrier_token": " ",
+      "source_code_points": [
+        "U+0009",
+        "U+000A",
+        "U+000B",
+        "U+000C",
+        "U+000D",
+        "U+0020",
+        "U+0085",
+        "U+00A0",
+        "U+1680",
+        "U+2000",
+        "U+2001",
+        "U+2002",
+        "U+2003",
+        "U+2004",
+        "U+2005",
+        "U+2006",
+        "U+2007",
+        "U+2008",
+        "U+2009",
+        "U+200A",
+        "U+2028",
+        "U+2029",
+        "U+202F",
+        "U+205F",
+        "U+3000"
+      ]
+    },
     "out_of_alphabet_policy": "retain-and-report",
     "corpus_execution": "full-corpus",
-    "boundary": "This profile makes exact corpus observation executable. It records the required Mobius initiation event but does not claim to supply the unresolved Mobius coordinate construction or higher-gonol composition law."
+    "boundary": "This profile makes exact Unicode-scalar corpus observation executable, rejects surrogate code points, and assigns a pinned set of source-preserved SPACE manifestations to the carrier origin. Valid carrier-unassigned scalar witnesses remain exact evidence and do not become public-gonol members. The profile records the required Mobius initiation event but does not claim to supply the unresolved Mobius coordinate construction or higher-gonol composition law."
   }
 }

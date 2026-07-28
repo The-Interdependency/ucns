@@ -61,6 +61,9 @@ import pytest
 from ucns import (
     EDCM_PROFILE_ID,
     EDCM_PROFILE_VERSION,
+    EDCM_SOURCE_DOMAIN,
+    EDCM_SPACE_ASSIGNMENT_POLICY,
+    EDCM_SPACE_CODE_POINTS,
     PUBLIC_GONOL_SHA256,
     OPTION_REGISTRY_SCHEMA_ID,
     OPTION_REGISTRY_SCHEMA_VERSION,
@@ -78,7 +81,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.3.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.4.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -150,6 +153,8 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
     assert constraints["token_alphabet"] == "public-gonol-157"
     assert constraints["token_identity"] == "unicode-code-point"
     assert constraints["normalization_policy"] == "none-preserve-source"
+    assert constraints["source_domain"] == EDCM_SOURCE_DOMAIN
+    assert constraints["space_assignment_policy"] == EDCM_SPACE_ASSIGNMENT_POLICY
     assert constraints["corpus_execution"] == "full-corpus"
     assert constraints["out_of_alphabet_policy"] == "retain-and-report"
     assert constraints["equivalence_baseline"] == "exact-evidence"
@@ -177,6 +182,7 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
     assert target["profile_id"] == EDCM_PROFILE_ID
     assert target["profile_version"] == EDCM_PROFILE_VERSION
     assert target["selection_effect"] == "none"
+    assert target["source_domain"] == EDCM_SOURCE_DOMAIN
     assert target["smallest_gonol"] == "word"
     assert target["support_policy"] == "unit-speaker-turn"
     assert target["corpus_execution"] == "full-corpus"
@@ -184,8 +190,28 @@ def test_edcm_constraints_plural_displays_and_corpora_remain_explicit() -> None:
     assert target["token_alphabet"]["origin_token"] == " "
     assert target["token_alphabet"]["digit_zero_position"] == 139
     assert target["token_alphabet"]["sha256"] == PUBLIC_GONOL_SHA256
+    assert target["space_assignment"] == {
+        "policy_id": EDCM_SPACE_ASSIGNMENT_POLICY,
+        "carrier_position": 0,
+        "carrier_token": " ",
+        "source_code_points": [
+            f"U+{ord(value):04X}" for value in EDCM_SPACE_CODE_POINTS
+        ],
+    }
 
     assert option_dimension("gonol-scale")["choices"][0]["id"] == "word-gonol"
+    token_alphabet_choices = {
+        choice["id"]: choice["standing"]
+        for choice in option_dimension("token-alphabet")["choices"]
+    }
+    assert (
+        token_alphabet_choices["space-manifestations-map-to-origin"]
+        == "decided-constraint"
+    )
+    assert (
+        token_alphabet_choices["unicode-scalar-source-domain"]
+        == "decided-constraint"
+    )
     assert option_dimension("unicode-normalization")["choices"][0]["id"] == "none-preserve-source"
     assert option_dimension("corpus-execution")["choices"][0]["id"] == "full-corpus"
 

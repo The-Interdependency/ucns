@@ -13,11 +13,15 @@
 - Lifted comparison period: 720 degrees.
 - Visible comparison projection: 360 degrees.
 - Current coordinate-free null: executable but superseded as EDCM target semantics.
-- EDCM scale: exact 157 Unicode code-point tokens compose word gonols; words are
-  the smallest gonols; every exact SPACE is a superpositioned nesting interface
-  from which higher gonols must compose.
-- EDCM source boundary: strict UTF-8, no authoritative normalization or folding,
-  and ordered retention/reporting of every out-of-alphabet code point.
+- EDCM scale: the exact 157-position public gonol remains the carrier; words are
+  the smallest gonols; every source code point in the profile-pinned Unicode
+  White_Space set assigns to the U+0020 origin while retaining exact source
+  provenance and acts as a superpositioned nesting interface from which higher
+  gonols must compose.
+- EDCM source boundary: Unicode scalar values, strict UTF-8, surrogate rejection,
+  no authoritative normalization or folding, exact reconstruction across
+  SPACE-origin assignment, and ordered retention/reporting of every non-SPACE
+  carrier-unassigned scalar.
 - EDCM operation floor: ordered concatenation, one support unit per complete
   speaker turn, exact-evidence baseline, carrier pairing only, full-corpus
   execution, and the EDCM-specific word-gonol profile.

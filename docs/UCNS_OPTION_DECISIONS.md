@@ -2,6 +2,7 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-26  
+**Updated:** 2026-07-28
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
 **Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
@@ -58,20 +59,28 @@ orientation, nesting, completion state, and unresolved state whenever those
 properties affect the readout. A detached scalar is a named lossy projection,
 not the complete EDCM object.
 
-1. **Scale and nesting.** The word is the smallest gonol. The 157 character
-   tokens compose word gonols; every larger gonol must compose from word gonols
-   without flattening the exact SPACE occurrences that act simultaneously as
-   token, word boundary, and superpositioned nesting interface.
+1. **Scale and nesting.** The word is the smallest gonol. The exact
+   157-position public gonol remains the carrier. Every source code point in the
+   profile-pinned Unicode White_Space set assigns to its U+0020 position-zero
+   origin while retaining its exact source identity. Every larger gonol must
+   compose from word gonols without flattening those SPACE manifestations, which
+   act simultaneously as source token, word boundary, and superpositioned
+   nesting interface.
 2. **Möbius initiation.** Structural Null is singular superpositioned space. A
    new gonol initiates through the Möbius twist, supplying the causal chain
    needed by the later hyper-dimensional lattice relating letters and words.
 3. **Token alphabet.** The alphabet is the exact source-provenance public
-   157-position fixture. Each entry is one Unicode code point, SPACE occupies
-   position zero, and the digit `0` is an ordinary token at zero-based position
-   139.
+   157-position fixture. Each entry is one Unicode code point, U+0020 SPACE
+   occupies position zero, and the digit `0` is an ordinary token at zero-based
+   position 139. The pinned SPACE-origin assignment changes neither the fixture
+   nor its digest. The source domain is Unicode scalar values; surrogate code
+   points are rejected. Valid carrier-unassigned scalar witnesses, including
+   U+E000, U+0378, and U+FDD0, remain exact and ordered without acquiring carrier
+   membership.
 4. **Source normalization.** Authoritative evidence is not normalized. UTF-8 is
-   decoded strictly, exact code points are preserved, and out-of-alphabet code
-   points stay in order as coverage failures.
+   decoded strictly, exact source code points are preserved, and SPACE-origin
+   carrier assignment never rewrites or collapses them. Non-SPACE
+   out-of-alphabet code points stay in order as coverage failures.
 5. **Occurrence operation.** EDCM requires ordered concatenation. Multiset and
    set views may exist only as named information-losing projections.
 6. **Support.** One complete speaker turn has support one. Token count, word
@@ -135,25 +144,36 @@ claims remain candidates or rejected shortcuts.
 ## Implemented EDCM observation profile
 
 ```text
-profile:         ucns.profile.edcm-word-gonol/0.1.0
+profile:         ucns.profile.edcm-word-gonol/0.2.0
 scope:           EDCM only
 smallest gonol:  word
-boundary:        exact SPACE / superpositioned nesting interface
+boundary:        pinned Unicode White_Space -> U+0020 carrier origin
 initiation:      Möbius twist event
 alphabet:        exact public-gonol-157
 normalization:   none; preserve source
-out of alphabet: retain and report
+source witness:  raw value, code point, and offset retained exactly
+source domain:   Unicode scalar values; surrogates rejected
+out of alphabet: retain and report non-SPACE unmapped code points
 support:         one unit per speaker turn
 execution:       full corpus
 selection:       none
 ```
 
-The profile reconstructs every turn exactly, preserves every SPACE occurrence,
+The profile reconstructs every turn exactly, preserves every SPACE manifestation
+as its original source code point, assigns it to the U+0020 carrier origin,
 initiates each maximal non-SPACE word sequence as a word gonol, and reports every
-code point outside the 157-token alphabet. It records the required initiating
-event but does not pretend that the unresolved Möbius coordinate construction,
-epicyclic circle/disk/sphere law, completion condition, or higher-gonol
-composition law has been supplied.
+non-SPACE code point outside the 157-position carrier. It records the required
+initiating event but does not pretend that the unresolved Möbius coordinate
+construction, epicyclic circle/disk/sphere law, completion condition, or
+higher-gonol composition law has been supplied.
+
+`has_carrier_assignment`, `carrier_unassigned`, and
+`has_complete_carrier_assignment` are the canonical profile `0.2.0` terms.
+`is_public_gonol_token` separately reports literal raw membership in the exact
+fixture. The earlier `in_alphabet`, `out_of_alphabet`, and
+`has_complete_alphabet_coverage` names remain backward-compatible
+carrier-assignment aliases; they do not authorize conflating raw fixture
+membership with carrier assignment.
 
 ## Implemented EDCM completion-motion evidence
 
@@ -186,6 +206,9 @@ must preserve the raw source and record every changed sequence. NFKC/NFKD, case
 folding, diacritic stripping, whitespace trimming or collapse, quote/dash
 folding, confusable mapping, and variation-selector removal are not authoritative
 EDCM transformations because they can destroy token or nesting distinctions.
+The `unicode-white-space-origin-v1` carrier assignment is not such a
+transformation: the raw value, code point, offset, and reconstruction remain
+unchanged while the declared carrier position is zero.
 
 A Unicode code point is not a font-rendered glyph identifier. The current
 fixture fixes character identity; if visual glyph shape becomes evidential, the
@@ -249,9 +272,10 @@ identification.
 
 ### Higher-gonol composition above words
 
-**Recursive SPACE composition.** Treat exact SPACE occurrences as the interfaces
-that recursively compose adjacent word gonols into larger gonols. This needs a
-law for nesting depth and for repeated, leading, and trailing spaces.
+**Recursive SPACE composition.** Treat source-preserved SPACE manifestations as
+the interfaces that recursively compose adjacent word gonols into larger gonols.
+This needs a law for nesting depth and for repeated, leading, and trailing
+manifestations.
 
 **Turn- and dialogue-scoped composition.** Use speaker-turn and dialogue
 structure to determine higher groupings while retaining SPACE as the internal
@@ -262,11 +286,12 @@ gonol.
 relations to create higher gonols over word gonols. The relation must remain
 explicit, and no parser may silently replace the source nesting evidence.
 
-### Code points outside the 157-token alphabet
+### Non-SPACE code points outside the 157-position carrier
 
-**Coverage failure only.** Preserve and report every unmapped code point while
-declining to construct a fully covered word gonol. This is the strictest reading
-of the fixed alphabet and will show its real-system boundary quickly.
+**Coverage failure only.** Preserve and report every unmapped non-SPACE code
+point while declining to construct a fully covered word gonol. This is the
+strictest reading of the fixed carrier and will show its real-system boundary
+quickly.
 
 **Named escape or secondary carrier.** Preserve the 157 positions and represent
 other code points through an explicit escape or another carrier. The encoding
@@ -363,7 +388,7 @@ rollback. Promotion still transfers no authority to universal UCNS or METAPAT.
 ```text
 exact source corpus
   -> every speaker turn, in source order
-  -> exact code points + explicit SPACE nesting + word gonols
+  -> exact code points + source-preserved SPACE-origin nesting + word gonols
   -> retained assignment, orientation, scale, motion, and unresolved state
   -> all candidate configurations and all M/B displays
   -> post-run failure, disagreement, and coverage analysis
@@ -374,11 +399,12 @@ Passing current fixtures or a corpus average is not a selection event.
 
 ## hmmm
 
-The flattening failure is now an explicit negative constraint: characters are
-tokens, words are the smallest gonols, SPACE is a superpositioned nesting
-interface, a speaker turn is the support unit, and UCNS is assignment through
-geometric motion to completion. Any adapter or evaluator that turns those roles,
-orientations, scales, and trajectories into one flat sequence or one unreceipted
-scalar has changed the EDCM question before the experiment begins. The exact
-epicyclic circle, disk, sphere, Möbius, composition, and completion laws remain
-the living recovery boundary.
+The flattening failure is now an explicit negative constraint: source code
+points retain their identity while assigning to carrier positions, words are
+the smallest gonols, pinned SPACE manifestations assign to the superpositioned
+origin without source rewriting, a speaker turn is the support unit, and UCNS
+is assignment through geometric motion to completion. Any adapter or evaluator
+that turns those roles, orientations, scales, and trajectories into one flat
+sequence or one unreceipted scalar has changed the EDCM question before the
+experiment begins. The exact epicyclic circle, disk, sphere, Möbius,
+composition, and completion laws remain the living recovery boundary.
