@@ -36,13 +36,19 @@ Rules:
 - For EDCM, require the Möbius causal carrier, singular superpositioned Structural
   Null, and a twist when a new gonol initiates. Do not let the current directed
   cover erase these decided constraints; its integration remains unresolved.
-- For EDCM, characters are the exact 157 Unicode code-point tokens; words are
-  the smallest gonols; every exact SPACE occurrence is simultaneously token,
-  word boundary, and superpositioned nesting interface; every larger gonol
-  composes from word gonols without flattening that boundary.
+- For EDCM, the public gonol remains the exact 157-position Unicode code-point
+  carrier; words are the smallest gonols. Every source code point in the
+  profile-pinned Unicode White_Space set assigns to the U+0020 position-zero
+  carrier token while retaining its exact value, code point, and offset. Every
+  such SPACE manifestation is simultaneously source token, word boundary, and
+  superpositioned nesting interface; every larger gonol composes from word
+  gonols without flattening that boundary.
 - Apply no normalization or folding to authoritative EDCM source evidence.
-  Decode UTF-8 strictly and retain every out-of-alphabet code point in order as
-  positive coverage-failure evidence.
+  The source domain is Unicode scalar values: decode UTF-8 strictly, reject
+  surrogate code points, and retain every non-SPACE carrier-unassigned scalar in
+  order as positive coverage-failure evidence. SPACE-origin carrier assignment
+  never authorizes source rewriting, trimming, collapse, or a claim that an
+  assigned raw value is literally a public-gonol token.
 - For EDCM, require ordered concatenation, one support unit per complete speaker
   turn, exact evidence as the baseline, carrier pairing only, full-corpus
   execution, and the EDCM-specific word-gonol profile.

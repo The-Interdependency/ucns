@@ -350,9 +350,11 @@ Implemented and test-backed infrastructure:
     protocols, mutation and metamorphic generation, reproduction checks, and
     candidate decision packets;
 14. initial noncanonical equivalence, `M`, and `B` candidate families;
-15. an EDCM-only observation profile with the exact 157-code-point fixture,
-    word gonols, explicit SPACE nesting, strict no-normalization evidence,
-    one-unit speaker turns, out-of-alphabet reporting, and full-corpus iteration;
+15. an EDCM-only observation profile with the exact 157-position fixture,
+    source-preserving assignment of the pinned Unicode White_Space set to its
+    U+0020 origin, word gonols, explicit SPACE nesting, strict no-normalization
+    evidence, one-unit speaker turns, surrogate rejection, non-SPACE
+    carrier-unassigned reporting, and full-corpus iteration;
 16. an EDCM-only completion-motion evidence schema retaining provenance, declared
     unresolved boundary, geometric relation, orientation, sidedness, motion,
     recursive parentage, scoped completion effect, remaining unresolved capacity,
@@ -414,13 +416,18 @@ for EDCM. Its relation to the current directed-cover candidate must still be
 formalized and tested: the directed cover may implement, embed, parameterize, or
 conflict with it, but it cannot erase it.
 
-EDCM additionally fixes words as the smallest gonols, exact SPACE as the
-superpositioned nesting interface, the exact public 157-code-point alphabet with
-no authoritative normalization, ordered concatenation, one unit per speaker
-turn, full-corpus execution, exact evidence as the equivalence baseline, carrier
-pairing only, and an EDCM-specific target profile. All three `M` and all three `B`
-candidates remain simultaneously visible. Graph contribution and the movement
-from exact evidence toward projection remain open pending more information.
+EDCM additionally fixes words as the smallest gonols and every source code point
+in the profile-pinned Unicode White_Space set as a source-preserved
+manifestation of the superpositioned U+0020 carrier origin. The exact public
+157-position carrier and digest remain unchanged; the assignment performs no
+authoritative normalization, rewriting, trimming, or collapse. EDCM also fixes
+ordered concatenation, one unit per speaker turn, full-corpus execution, exact
+evidence as the equivalence baseline, carrier pairing only, and an EDCM-specific
+target profile. Non-SPACE unmapped code points remain retained coverage
+failures when they are Unicode scalar values; surrogate code points are outside
+the source domain and fail closed. All three `M` and all three `B` candidates
+remain simultaneously visible. Graph contribution and the movement from exact
+evidence toward projection remain open pending more information.
 
 hmmm: the load-bearing completion-motion root and the nearest surviving
 EDCM-facing specimen are now pinned. The exact assignment law, epicyclic circle,

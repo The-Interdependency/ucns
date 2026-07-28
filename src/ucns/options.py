@@ -15,7 +15,7 @@
 #   rollout: authoritative completion-motion root, scoped completion, trajectory identity, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
-#   unresolved: ideal EDCM-scoped configuration and the option dimensions marked required-evaluation or unresolved
+#   unresolved: ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.3.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.4.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -108,6 +108,8 @@ REQUIRED_DECISION_IDS = frozenset(
         "failure-seeking-research",
         "word-gonol-smallest-scale",
         "exact-public-gonol-157",
+        "edcm-source-domain-scalar-values",
+        "edcm-space-origin-assignment",
         "edcm-source-normalization-none",
         "full-corpus-runs",
         "ucns-completion-motion-root",
@@ -182,7 +184,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "nesting_boundary": "superpositioned-space",
         "token_alphabet": "public-gonol-157",
         "token_identity": "unicode-code-point",
+        "source_domain": "unicode-scalar-values",
         "normalization_policy": "none-preserve-source",
+        "space_assignment_policy": "unicode-white-space-origin-v1",
         "corpus_execution": "full-corpus",
         "out_of_alphabet_policy": "retain-and-report",
         "equivalence_baseline": "exact-evidence",
@@ -264,6 +268,8 @@ def _validate_registry(data: dict[str, Any]) -> None:
         ("support-assignment", "unit-speaker-turn"),
         ("gonol-scale", "word-gonol"),
         ("token-alphabet", "exact-public-gonol-157"),
+        ("token-alphabet", "unicode-scalar-source-domain"),
+        ("token-alphabet", "space-manifestations-map-to-origin"),
         ("token-alphabet", "retain-out-of-alphabet-evidence"),
         ("unicode-normalization", "none-preserve-source"),
         ("corpus-execution", "full-corpus"),
@@ -324,7 +330,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         raise OptionRegistryError("EDCM target profile record is required")
     if target_profile.get("profile_id") != "ucns.profile.edcm-word-gonol":
         raise OptionRegistryError("EDCM target profile identity mismatch")
-    if target_profile.get("profile_version") != "0.1.0":
+    if target_profile.get("profile_version") != "0.2.0":
         raise OptionRegistryError("EDCM target profile version mismatch")
     if target_profile.get("scope") != "edcm-only":
         raise OptionRegistryError("EDCM target profile scope mismatch")
@@ -348,12 +354,47 @@ def _validate_registry(data: dict[str, Any]) -> None:
     }
     if token_alphabet != expected_alphabet:
         raise OptionRegistryError("EDCM target token alphabet mismatch")
+    expected_space_assignment = {
+        "policy_id": "unicode-white-space-origin-v1",
+        "carrier_position": 0,
+        "carrier_token": " ",
+        "source_code_points": [
+            "U+0009",
+            "U+000A",
+            "U+000B",
+            "U+000C",
+            "U+000D",
+            "U+0020",
+            "U+0085",
+            "U+00A0",
+            "U+1680",
+            "U+2000",
+            "U+2001",
+            "U+2002",
+            "U+2003",
+            "U+2004",
+            "U+2005",
+            "U+2006",
+            "U+2007",
+            "U+2008",
+            "U+2009",
+            "U+200A",
+            "U+2028",
+            "U+2029",
+            "U+202F",
+            "U+205F",
+            "U+3000",
+        ],
+    }
+    if target_profile.get("space_assignment") != expected_space_assignment:
+        raise OptionRegistryError("EDCM SPACE-origin assignment mismatch")
     expected_target_values = {
         "smallest_gonol": "word",
         "nesting_boundary": "superpositioned-space",
         "gonol_initiation": "mobius-twist",
         "occurrence_operation": "ordered-concatenation",
         "support_policy": "unit-speaker-turn",
+        "source_domain": "unicode-scalar-values",
         "normalization_policy": "none-preserve-source",
         "out_of_alphabet_policy": "retain-and-report",
         "corpus_execution": "full-corpus",

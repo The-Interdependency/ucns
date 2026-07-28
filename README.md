@@ -29,7 +29,7 @@ and its machine-readable
 The current project exposes UCNS choices and uses EDCM experiments against real
 systems to determine an EDCM-scoped ideal configuration. EDCM now fixes a
 Möbius causal carrier, superpositioned Structural Null, words as the smallest
-gonols, exact SPACE nesting boundaries, ordered concatenation, one unit per
+gonols, source-preserved SPACE-origin nesting boundaries, ordered concatenation, one unit per
 speaker turn, the exact 157-code-point alphabet without normalization,
 exact-evidence baseline, carrier pairing only, full-corpus runs, and an
 EDCM-specific profile while keeping the carrier coordinates, higher composition,
@@ -107,13 +107,27 @@ See [`docs/CHOICE_PRESERVATION.md`](docs/CHOICE_PRESERVATION.md) and
 ### EDCM word-gonol observation profile
 
 - exact source-provenance public 157-position Unicode code-point fixture;
+- Unicode scalar values as the source domain, with surrogate code points
+  rejected by strict observation and strict UTF-8 decoding;
 - strict UTF-8 decoding and no authoritative normalization or folding;
+- a deterministic pinned Unicode White_Space set whose exact source code points
+  assign to the U+0020 position-zero carrier token without rewriting source;
 - word gonols as maximal ordered non-SPACE token sequences;
-- every exact SPACE retained as token, word boundary, and superpositioned nesting
-  interface;
+- every SPACE manifestation retained as source token, word boundary, and
+  superpositioned nesting interface;
 - one unit of support per complete speaker turn;
-- out-of-alphabet code points retained and reported;
+- non-SPACE out-of-alphabet code points retained and reported;
 - complete iteration over every supplied corpus turn without sampling.
+
+The canonical API names are `has_carrier_assignment`,
+`is_public_gonol_token`, `carrier_unassigned`, and
+`has_complete_carrier_assignment`. The earlier `in_alphabet`,
+`out_of_alphabet`, and `has_complete_alphabet_coverage` properties remain
+backward-compatible carrier-assignment aliases in profile `0.2.0`; they no
+longer imply that a raw SPACE manifestation is literally present in the
+157-token fixture. Valid scalar witnesses such as U+E000, U+0378, and U+FDD0
+remain exact and ordered when carrier-unassigned. Their retention is not a claim
+that they are public-gonol carrier members.
 
 This profile makes the observation boundary executable. It does not invent the
 unresolved Möbius coordinate or higher-gonol composition laws.

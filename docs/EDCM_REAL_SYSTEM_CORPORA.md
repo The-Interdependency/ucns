@@ -2,7 +2,9 @@
 
 **Research authority:** Erin Spencer  
 **Recorded:** 2026-07-25  
-**Status:** candidate sources found; none ingested or run through the EDCM profile  
+**Status:** candidate sources found; the first complete downstream MultiWOZ 2.1
+run exposed and repaired a SPACE-origin assignment defect; corrected rerun
+evidence remains downstream work
 **Decision surface:** [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md)
 
 ## Purpose
@@ -17,6 +19,27 @@ A large average-case total is not enough. Each admitted source needs a license
 record, provenance receipt, privacy treatment, deterministic adapter, and a
 completion receipt proving that every source turn was processed. The execution
 unit is the full admitted corpus, not a sample or holdout partition.
+
+## First full-run profile repair
+
+The first complete downstream MultiWOZ 2.1 run processed all 10,438 dialogues
+and 143,048 turns. Its `ucns.profile.edcm-word-gonol/0.1.0` report classified
+4,094 source occurrences as out of alphabet:
+
+| Source code point | Occurrences | Correct profile role |
+|---|---:|---|
+| U+0009 CHARACTER TABULATION | 1,976 | SPACE-origin manifestation |
+| U+000A LINE FEED | 2,115 | SPACE-origin manifestation |
+| U+00A0 NO-BREAK SPACE | 3 | SPACE-origin manifestation |
+
+That report remains immutable evidence of the `0.1.0` profile behavior; it is
+not rewritten into a corrected result. Profile `0.2.0` instead pins the Unicode
+White_Space set, assigns each such source code point to the U+0020 position-zero
+carrier token, and preserves the exact raw value, code point, offset, and turn
+reconstruction. These 4,094 occurrences are therefore SPACE boundaries, not
+alphabet failures, under the repaired profile. A new complete run must carry a
+new profile identity and supersession receipt. Non-SPACE unmapped code points
+remain retained and reported as positive coverage-failure evidence.
 
 ## Candidate sources
 
@@ -157,8 +180,8 @@ Failure-seeking happens after each full run. Reports must surface and count:
 - topic changes and delayed causal dependencies;
 - refusals, hedges, blame transfer, shutdown, and escalation;
 - cases where exact evidence and a projection disagree;
-- every out-of-alphabet code point and affected word gonol;
-- repeated, leading, and trailing SPACE boundaries;
+- every non-SPACE out-of-alphabet code point and affected word gonol;
+- repeated, leading, and trailing source-preserved SPACE manifestations;
 - empty, malformed, multilingual, or code-switched turns;
 - incomplete tasks and contradictory annotations.
 
@@ -178,7 +201,7 @@ A corpus is not admitted merely because it is downloadable. Admission requires:
 - deterministic conversion into the EDCM-specific word-gonol profile;
 - exact speaker-turn count before and after conversion;
 - a full-run completion or explicit incomplete-run receipt;
-- exact out-of-alphabet and SPACE-boundary coverage totals;
+- exact non-SPACE out-of-alphabet and SPACE-origin boundary coverage totals;
 - no source-text normalization or sampled execution;
 - outcome-label provenance only when a separate predictive study uses labels;
 - a removal path for sources with deletion obligations.
@@ -187,8 +210,8 @@ No raw restricted corpus belongs in the UCNS repository.
 
 ## hmmm
 
-The corpora have been found; the missing object is a deterministic full-corpus
-adapter and receipt. MultiWOZ 2.1 is the practical first complete run because it
-is small enough to expose accounting errors quickly, after which Molweni tests
-whether the same profile preserves graph and unresolved-reference evidence
-without flattening it.
+The first complete MultiWOZ 2.1 run did what the corpus program was meant to do:
+it exposed a boundary error that fixtures missed. The repaired profile now needs
+an immutable full-corpus rerun and supersession receipt. After that, Molweni
+tests whether the same source-preserving profile retains graph and
+unresolved-reference evidence without flattening it.

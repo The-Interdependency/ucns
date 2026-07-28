@@ -16,7 +16,7 @@
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
 #   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: element-assignment law, formal Mobius coordinates, circle-epicycle-disk-sphere transitions, higher-gonol composition, out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: element-assignment law, formal Mobius coordinates, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -206,6 +206,9 @@ from .edcm import (
     EDCM_PROFILE_SCOPE,
     EDCM_PROFILE_VERSION,
     EDCM_SMALLEST_GONOL,
+    EDCM_SOURCE_DOMAIN,
+    EDCM_SPACE_ASSIGNMENT_POLICY,
+    EDCM_SPACE_CODE_POINTS,
     EDCM_SUPPORT_POLICY,
     PUBLIC_GONOL_157,
     PUBLIC_GONOL_SHA256,
@@ -216,6 +219,7 @@ from .edcm import (
     EdcmWordGonolProfile,
     SuperpositionedSpaceBoundary,
     decode_utf8_exact,
+    edcm_carrier_position,
     public_gonol_sha256,
 )
 from .edcm_motion import (
@@ -316,11 +320,14 @@ __all__ = [
     "option_dimension", "EDCM_CORPUS_EXECUTION", "EDCM_GONOL_INITIATION",
     "EDCM_NORMALIZATION_POLICY", "EDCM_PROFILE_ID", "EDCM_PROFILE_OPTIONS",
     "EDCM_PROFILE_SCOPE", "EDCM_PROFILE_VERSION", "EDCM_SMALLEST_GONOL",
+    "EDCM_SOURCE_DOMAIN", "EDCM_SPACE_ASSIGNMENT_POLICY",
+    "EDCM_SPACE_CODE_POINTS",
     "EDCM_SUPPORT_POLICY", "PUBLIC_GONOL_157", "PUBLIC_GONOL_SHA256",
     "EdcmProfileError", "EdcmTokenObservation", "EdcmTurnObservation",
     "EdcmWordGonol", "EdcmWordGonolProfile",
     "SuperpositionedSpaceBoundary", "decode_utf8_exact",
-    "public_gonol_sha256", "EDCM_ASSIGNMENT_LAW_STATUS",
+    "edcm_carrier_position", "public_gonol_sha256",
+    "EDCM_ASSIGNMENT_LAW_STATUS",
     "EDCM_HIGHER_MOTION_LAW_STATUS", "EDCM_MOTION_SCHEMA_ID",
     "EDCM_MOTION_SCHEMA_VERSION", "EDCM_MOTION_SCOPE",
     "EDCM_MOTION_SELECTION_EFFECT", "CompletionRegistration",
