@@ -4,6 +4,28 @@ UCNS is a stable identifier without a canonical expansion. It is rebuilding as
 an option-bearing construction system rather than patching the former
 factorization kernel.
 
+## Load-bearing system definition
+
+> UCNS assigns elements of an unknowable to completion through a geometric-motion
+> algorithm of epicyclic circles, spheres, and disks.
+
+The object constructor, public carrier, factorization algebra, hash, metric,
+coordinate, and visualization surfaces are instruments or projections of that
+system. None may replace the assignment-and-motion function merely because it is
+implemented more completely.
+
+Completion is relative to a declared construction boundary. It does not claim
+that the unknowable has been exhausted into complete knowledge. A lawful
+implementation must retain what was assigned, its scale and geometric relation,
+its motion toward completion, the completion condition, and unresolved state.
+
+For EDCM recovery, the closest surviving executable system shape is the pinned
+historical `a0-betatest` epoch. It remains a recovery specimen rather than an
+active UCNS producer. See
+[`docs/EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](docs/EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)
+and its machine-readable
+[`recovery manifest`](docs/edcm-a0-betatest-recovery-reference-v1.json).
+
 The current project exposes UCNS choices and uses EDCM experiments against real
 systems to determine an EDCM-scoped ideal configuration. EDCM now fixes a
 Möbius causal carrier, superpositioned Structural Null, words as the smallest
@@ -11,8 +33,9 @@ gonols, exact SPACE nesting boundaries, ordered concatenation, one unit per
 speaker turn, the exact 157-code-point alphabet without normalization,
 exact-evidence baseline, carrier pairing only, full-corpus runs, and an
 EDCM-specific profile while keeping the carrier coordinates, higher composition,
-graph contribution, and other information-dependent choices open. Any eventual selection cannot become universal UCNS canon or transfer
-proof or measurement validity.
+graph contribution, and other information-dependent choices open. Any eventual
+selection cannot become universal UCNS canon or transfer proof or measurement
+validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -202,6 +225,8 @@ See [`docs/CANDIDATE_PACKS.md`](docs/CANDIDATE_PACKS.md).
 
 The package does **not** implement or promote:
 
+- the recovered completion-motion algorithm;
+- canonical epicyclic circle, disk, and sphere composition laws;
 - a complete `UCNSObject`;
 - canonical structural equivalence;
 - canonical `M`;
@@ -241,8 +266,11 @@ See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
 hmmm: exact word observation and trajectory retention are executable without
-pretending to complete the mathematics. The next truth obligations are the
-element-assignment and circle/epicycle/disk/sphere transition laws, a
-deterministic full-MultiWOZ adapter and run receipt, the formal
-Möbius/directed-cover relation, the higher-gonol composition law, and evidence
-from the failures surfaced across complete corpora.
+pretending to complete the mathematics, and the completion-motion root is now
+preserved. The next truth obligations are reconstruction of the
+element-assignment and circle/epicycle/disk/sphere motion and transition laws
+from the pinned A0-betatest specimen, a deterministic full-MultiWOZ adapter and
+run receipt, the formal Möbius/directed-cover relation, the higher-gonol
+composition law, and evidence from the failures surfaced across complete
+corpora — with failure analysis that does not allow the present metric
+projections to select the geometry that validates them.
