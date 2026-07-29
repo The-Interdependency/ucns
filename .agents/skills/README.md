@@ -3,7 +3,7 @@
 Canonical source: `The-Interdependency/skill-lib`
 
 Pinned source commit:
-`fa6e6200bc274657de2334754bbbf98844ef6541`
+`289d4959f7920efc214f180cca3443d8090f4095`
 
 Vendored verbatim:
 
