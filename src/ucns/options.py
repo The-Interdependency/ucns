@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.7.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.8.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -118,6 +118,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "bounded-root-loop-cover-chart",
         "exact-rational-transverse-envelope-correction",
         "bounded-carrier-coordinate-admissibility",
+        "exact-coordinate-representation-boundary",
     }
 )
 
@@ -240,6 +241,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
     required_dimension_ids = {
         "carrier-model",
         "carrier-coordinate-admissibility",
+        "exact-coordinate-representation",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -315,6 +317,25 @@ def _validate_registry(data: dict[str, Any]) -> None:
             raise OptionRegistryError(f"{dimension_id} display order mismatch")
         if dimension.get("selection_effect") != "none":
             raise OptionRegistryError(f"{dimension_id} cannot select a candidate")
+
+    representation = dimension_by_id["exact-coordinate-representation"]
+    if representation.get("display_rule") != (
+        "display-exact-source-and-rendering-together"
+    ):
+        raise OptionRegistryError(
+            "exact-coordinate representation must retain source and rendering"
+        )
+    if representation.get("display_order") != [
+        "signed-local-exact-rational-coordinate",
+        "linked-binary64-carrier-rendering",
+    ]:
+        raise OptionRegistryError(
+            "exact-coordinate representation display order mismatch"
+        )
+    if representation.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "exact-coordinate representation cannot select a candidate"
+        )
 
     corpora = data.get("real_system_corpus_candidates")
     if not isinstance(corpora, list) or not corpora:

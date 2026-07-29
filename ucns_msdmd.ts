@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
         "summary": "exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "element-assignment law, global or real-continuous transverse/radial directed-cover coordinates beyond the v0.10 bounded candidate domain, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "element-assignment law, real-continuous full-carrier relationship beyond the v0.11 exact-rational representation boundary, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -1905,6 +1905,96 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/envelope.py",
       "id": "retained_structure_envelope"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "exact transverse values zero and two to the minus fifty-third are rendered at the same lifted turn",
+        "since": "2026-07-29",
+        "then": "their exact breadths remain distinct while their actual binary64 LiftedCarrierPoint identities collide"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_binary64_breadth_collision_is_retained"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "an exact coordinate is materialized as a LiftedCarrierPoint",
+        "since": "2026-07-29",
+        "then": "the actual binary64 fields, exact source record, rendering policy, and known information losses remain linked while the float point is classified only as a rendering"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_binary64_is_declared_rendering"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "exact lifted turns one and one plus two to the minus fifty-four are rendered at the same transverse value",
+        "since": "2026-07-29",
+        "then": "their exact lifted turns remain distinct while their actual binary64 LiftedCarrierPoint identities collide"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_binary64_turn_collision_is_retained"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the v0.11 boundary report is constructed",
+        "since": "2026-07-29",
+        "then": "exact rational injectivity and binary64 noninjectivity are reported together while carrier selection, faithful-breadth canon, arbitrary-element assignment, real-continuity theorem, EDCM activation, and METAPAT activation remain absent"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_boundary_does_not_select_or_activate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "an exact coordinate record is constructed",
+        "since": "2026-07-29",
+        "then": "the v0.10 source candidate, v0.11 law identity, code reference, scope, and nonselection effect remain attached and fail closed on substitution"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_provenance_is_fixed_and_retained"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any exact rational local transverse value in the declared interval is mapped by the signed-local affine law",
+        "since": "2026-07-29",
+        "then": "breadth remains an exact positive Fraction and the exact inverse recovers the original transverse value without enumeration or binary64 conversion"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "exact_coordinate_signed_local_law_round_trips"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact Fraction validation, exact coordinate identities, binary64 rendering identities, and fixed witness construction",
+        "module_kind": "experiment",
+        "module_name": "exact_coordinate",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "ExactCoordinateProvenance, ExactCarrierCoordinate, Binary64CarrierRendering, Binary64CollisionKind, Binary64CollisionWitness, ExactCoordinateBoundaryReport, signed_local_exact_coordinate, recover_signed_local_transverse, render_exact_coordinate_binary64, binary64_collision_witnesses, run_v011_exact_coordinate_boundary_experiment",
+        "requires": "edcm_carrier_coordinate_admissibility_experiment, directed_carrier_floor",
+        "rollback": "remove this module, its exports, tests, and v0.11 document while retaining the complete v0.10 candidate-family evidence",
+        "rollout": "explicit UCNS-only v0.11 representation-boundary experiment; no carrier selection, canonical faithful breadth, arbitrary-element assignment, real-continuity theorem, EDCM activation, or METAPAT activation",
+        "since": "2026-07-29",
+        "storage_boundary": "none",
+        "summary": "preserves the signed-local carrier-coordinate candidate as exact rational evidence and exhibits explicit binary64 rendering collisions",
+        "tests": "tests/test_exact_coordinate.py",
+        "unresolved": "real-continuous full-carrier map, arbitrary-element assignment, canonical faithful breadth, global Mobius-to-cover equivalence, higher geometry, and scoped completion",
+        "user_data_boundary": "exact local transverse value, lifted turn, upstream candidate identity, law identity, and rendering loss remain linked"
+      },
+      "file": "src/ucns/exact_coordinate.py",
+      "id": "edcm_exact_coordinate_representation_boundary"
     },
     {
       "block": "CONTRACTS",
@@ -3428,6 +3518,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_envelope.py",
       "id": "check_retained_null_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_binary64_breadth_collision_retains_exact_distinction",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_binary64_breadth_collision_is_retained",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_binary64_breadth_collision"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_binary64_point_is_linked_lossy_rendering_only",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_binary64_is_declared_rendering",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_binary64_rendering_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_binary64_turn_collision_retains_exact_distinction",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_binary64_turn_collision_is_retained",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_binary64_turn_collision"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_exact_coordinate_retains_fixed_provenance_and_fails_closed",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_provenance_is_fixed_and_retained",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_fixed_provenance"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_v011_report_keeps_selection_and_activation_absent",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_boundary_does_not_select_or_activate",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_nonselection_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_signed_local_exact_law_round_trips_rational_domain",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "exact_coordinate_signed_local_law_round_trips",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_exact_coordinate.py",
+      "id": "check_exact_coordinate_signed_local_round_trip"
     },
     {
       "block": "CHECKS",
@@ -5419,6 +5587,132 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_exact_coordinate_binary64_breadth_collision",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_breadth_collision",
+      "to": "self::test_binary64_breadth_collision_retains_exact_distinction"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_breadth_collision",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_breadth_collision",
+      "to": "exact_coordinate_binary64_breadth_collision_is_retained"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_breadth_collision",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_breadth_collision",
+      "to": "python3"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_rendering_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_rendering_boundary",
+      "to": "self::test_binary64_point_is_linked_lossy_rendering_only"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_rendering_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_rendering_boundary",
+      "to": "exact_coordinate_binary64_is_declared_rendering"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_rendering_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_rendering_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_turn_collision",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_turn_collision",
+      "to": "self::test_binary64_turn_collision_retains_exact_distinction"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_turn_collision",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_turn_collision",
+      "to": "exact_coordinate_binary64_turn_collision_is_retained"
+    },
+    {
+      "from": "check_exact_coordinate_binary64_turn_collision",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_binary64_turn_collision",
+      "to": "python3"
+    },
+    {
+      "from": "check_exact_coordinate_fixed_provenance",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_fixed_provenance",
+      "to": "self::test_exact_coordinate_retains_fixed_provenance_and_fails_closed"
+    },
+    {
+      "from": "check_exact_coordinate_fixed_provenance",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_fixed_provenance",
+      "to": "exact_coordinate_provenance_is_fixed_and_retained"
+    },
+    {
+      "from": "check_exact_coordinate_fixed_provenance",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_fixed_provenance",
+      "to": "python3"
+    },
+    {
+      "from": "check_exact_coordinate_nonselection_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_nonselection_boundary",
+      "to": "self::test_v011_report_keeps_selection_and_activation_absent"
+    },
+    {
+      "from": "check_exact_coordinate_nonselection_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_nonselection_boundary",
+      "to": "exact_coordinate_boundary_does_not_select_or_activate"
+    },
+    {
+      "from": "check_exact_coordinate_nonselection_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_nonselection_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_exact_coordinate_signed_local_round_trip",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_signed_local_round_trip",
+      "to": "self::test_signed_local_exact_law_round_trips_rational_domain"
+    },
+    {
+      "from": "check_exact_coordinate_signed_local_round_trip",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_signed_local_round_trip",
+      "to": "exact_coordinate_signed_local_law_round_trips"
+    },
+    {
+      "from": "check_exact_coordinate_signed_local_round_trip",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_exact_coordinate_signed_local_round_trip",
+      "to": "python3"
+    },
+    {
       "from": "check_exact_public_gonol_fixture",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -7183,6 +7477,27 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "edcm_exact_coordinate_representation_boundary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_exact_coordinate_representation_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_exact_coordinate_representation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_exact_coordinate_representation_boundary",
+      "to": "directed_carrier_floor"
+    },
+    {
+      "from": "edcm_exact_coordinate_representation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_exact_coordinate_representation_boundary",
+      "to": "edcm_carrier_coordinate_admissibility_experiment"
+    },
+    {
       "from": "edcm_exact_rational_transverse_envelope_experiment",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -7426,6 +7741,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_completion_motion_evidence"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_exact_coordinate_representation_boundary"
     },
     {
       "from": "foundations_public_surface",

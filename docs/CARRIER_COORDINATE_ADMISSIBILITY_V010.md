@@ -153,3 +153,12 @@ The sidecar now has one bounded route into the actual cover, but the route is
 still wearing an experiment badge. Arbitrary assignment, exact-to-real
 continuity, faithful-breadth authority, higher geometry, and completion remain
 the living boundary.
+
+## Follow-on evidence
+
+v0.11 preserves the signed-local formula and inverse as exact rational
+coordinate evidence and retains explicit binary64 breadth and lifted-turn
+collisions. See
+[`EXACT_COORDINATE_BOUNDARY_V011.md`](EXACT_COORDINATE_BOUNDARY_V011.md).
+The v0.10 finite materialization result remains unchanged; v0.11 establishes
+why it cannot be generalized to arbitrary exact rationals in binary64 storage.

@@ -112,9 +112,14 @@ tests their actual `LiftedCarrierPoint` breadth/angle materializations over the
 complete 45-fiber exact-rational stress domain. The signed local affine law is
 injective, zero-restricting, convention-invariant, and motion-commuting on that
 declared finite domain; the other three candidates retain collision or
-odd-motion failure witnesses. No carrier, convention, or faithful-breadth law
-is selected, and global continuity, arbitrary-element, higher-geometric, and
-completion mapping remains unresolved.
+odd-motion failure witnesses. v0.11 preserves the surviving candidate as exact
+rational transverse, breadth, and lifted-turn evidence with an exact inverse.
+It also retains explicit breadth and lifted-turn witnesses proving that
+binary64 `LiftedCarrierPoint` materialization is not injective over the
+arbitrary exact-rational domain and must remain a linked rendering. No carrier,
+convention, or faithful-breadth law is selected, and full-carrier real
+continuity, arbitrary-element, higher-geometric, and completion mapping remains
+unresolved.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -391,7 +396,13 @@ Implemented and test-backed infrastructure:
 20. a bounded carrier-coordinate admissibility experiment over four declared
     radial laws, with complete actual-cover materialization, root-restriction,
     convention, collision, and motion evidence. Signed local affine breadth is
-    admissible on the 45-fiber rational domain without selection or promotion.
+    admissible on the 45-fiber rational domain without selection or promotion;
+    and
+21. an exact-coordinate representation boundary that preserves the signed-local
+    affine law and inverse over the declared rational transverse interval,
+    retains fixed provenance, classifies binary64 points as lossy renderings,
+    and records explicit breadth and lifted-turn collisions without selection
+    or downstream activation.
 
 Still unresolved and not promoted:
 
@@ -407,9 +418,9 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. extension of the v0.10 bounded signed-local radial candidate beyond the
-    finite binary64 materialization domain to arbitrary exact rationals, real
-    continuity, arbitrary-element assignment, higher geometry, and completion;
+12. real continuity of the complete signed-local Möbius-to-cover relationship
+    beyond the v0.11 exact-rational representation boundary, arbitrary-element
+    assignment, higher geometry, and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -453,11 +464,15 @@ records collisions showing that distinct transverse values share one actual
 cover coordinate. v0.10 then maps four explicit radial laws into actual cover
 breadth and angle fields. Signed local affine breadth survives the declared
 45-fiber domain; constant, unsigned, and signed-global alternatives retain
-specific failures. This bounded admissibility result does not establish a
-global embedding, select a carrier, or canonize breadth. Whether the directed
-cover implements, embeds, parameterizes, or conflicts with the Möbius
-construction beyond that bounded domain remains unresolved, and the cover
-cannot erase the decided causal semantics.
+specific failures. v0.11 then gives the signed-local law an exact rational
+coordinate record and inverse while retaining two separating witnesses showing
+that the float carrier representation collides. The exact law therefore extends
+beyond the finite stress grid, but its current binary64 rendering does not.
+Neither result establishes a global embedding, selects a carrier, or canonizes
+breadth. Whether the directed cover implements, embeds, parameterizes, or
+conflicts with the Möbius construction as a complete real-continuous
+relationship remains unresolved, and the cover cannot erase the decided causal
+semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -476,9 +491,10 @@ hmmm: the load-bearing completion-motion root, nearest surviving EDCM-facing
 specimen, native framed root loop, and bounded root cover chart are pinned. The
 transverse envelope now records its own failure to embed in the actual cover.
 One signed-local radial law now survives a bounded actual-cover admissibility
-experiment without becoming selected. Extension beyond the finite rational
-materialization domain, arbitrary-element assignment, canonical breadth,
-epicyclic circle, disk, sphere, recursive composition, and completion
-conditions remain unrecovered. Real-system experiments may pressure those laws,
-but current metric projections may not circularly select the geometry that
-makes them appear valid.
+experiment without becoming selected. Its exact rational law and inverse now
+survive beyond the finite grid, while binary64 materialization records its own
+noninjectivity. Full-carrier real continuity, arbitrary-element assignment,
+canonical breadth, epicyclic circle, disk, sphere, recursive composition, and
+completion conditions remain unrecovered. Real-system experiments may pressure
+those laws, but current metric projections may not circularly select the
+geometry that makes them appear valid.
