@@ -2,7 +2,7 @@
   "schema_id": "ucns.option-registry",
   "schema_version": "1.4.0",
   "authority": "Erin Spencer",
-  "recorded_on": "2026-07-28",
+  "recorded_on": "2026-07-29",
   "identifier": {
     "value": "UCNS",
     "canonical_expansion": null,
@@ -184,6 +184,10 @@
     {
       "id": "trajectory-before-scalar",
       "statement": "The complete assignment-and-motion trajectory is the EDCM observation identity; any scalar is an optional declared-loss projection linked to its retained source trajectory."
+    },
+    {
+      "id": "bounded-root-loop-cover-chart",
+      "statement": "The exact rational framed Mobius root loop has a reversible source-preserving chart into the first and second directed-cover representatives for the complete minimum witness packet; this evidence is bounded, nonselecting, and does not establish transverse, radial, arbitrary-element, higher-geometric, or completion equivalence."
     }
   ],
   "current_profile": {
@@ -223,7 +227,7 @@
         {
           "id": "directed-twofold-branched-angular-cover",
           "standing": "implemented-candidate",
-          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. It is not an admissible final EDCM carrier unless its formal relation to the required Mobius construction preserves the decided causal semantics."
+          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 exact reversible chart preserves the decided causal semantics only for the framed root-loop minimum-witness domain; extension to transverse, radial, arbitrary-element, higher-geometric, and completion state remains unresolved."
         },
         {
           "id": "mobius-origin-hidden-zero",
@@ -562,6 +566,7 @@
     "Refuse early collapse; run admitted corpora in full and surface failures after the run.",
     "For EDCM, require the Mobius twist as a causal carrier constraint.",
     "For EDCM, treat Structural Null as superpositioned space and initiate every new gonol through the twist.",
+    "Retain the v0.7 exact reversible root-loop chart as bounded C1-to-C2 evidence with no carrier selection or global equivalence claim.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -587,7 +592,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "Formal integration or incompatibility between the implemented directed cover and the EDCM-critical Mobius carrier.",
+    "Extension or separating failure of the bounded root-loop chart under transverse, radial, arbitrary-element, higher-geometric, and completion state.",
     "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",

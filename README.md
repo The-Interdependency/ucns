@@ -35,9 +35,12 @@ exact-evidence baseline, carrier pairing only, full-corpus runs, and an
 EDCM-specific profile while keeping carrier coordinates beyond the framed root
 loop, higher composition, graph contribution, and other information-dependent
 choices open. The bounded v0.6 direct-Möbius candidate now supplies exact framed
-root-loop coordinates; arbitrary element assignment and transverse or higher
-coordinates remain open. Any eventual selection cannot become universal UCNS
-canon or transfer proof or measurement validity.
+root-loop coordinates. The bounded v0.7 chart experiment now supplies an exact
+reversible map between that native root loop and the directed twofold cover for
+all fourteen minimum-packet initiations. Arbitrary element assignment,
+transverse or higher coordinates, and global C1/C2 equivalence remain open. Any
+eventual selection cannot become universal UCNS canon or transfer proof or
+measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -54,10 +57,10 @@ access boundaries are recorded in
 [`docs/EDCM_REAL_SYSTEM_CORPORA.md`](docs/EDCM_REAL_SYSTEM_CORPORA.md). No option
 dimension has a hidden global default.
 
-## Current implemented carrier candidates
+## Current implemented carrier candidates and relationship evidence
 
-The repository retains two implemented experiment candidates without selecting
-either relationship:
+The repository retains two implemented carrier candidates plus one bounded
+relationship experiment without selecting a carrier:
 
 1. The **directed twofold branched angular cover** remains executable comparison
    evidence. It is not an eligible EDCM target unless an explicit reversible map
@@ -68,6 +71,12 @@ either relationship:
    360° frame change, 720° root-state return, and inverse evidence without a
    directed-cover dependency. It does not assign arbitrary elements, establish
    completion, or select C1.
+3. The bounded **root-loop cover chart** maps positive and reversed native
+   frames to the first and second exact lifted representatives. Both directions
+   round-trip all fourteen source-linked initiations and commute with
+   initiation, 360°, 720°, and inverse motion. This supports C2 and falsifies
+   C3 only for the declared root-loop domain; it does not establish global
+   equivalence or select C2.
 
 The directed-cover comparison candidate provides:
 
@@ -138,7 +147,8 @@ that they are public-gonol carrier members.
 
 This profile makes the observation boundary executable. It does not itself
 supply carrier coordinates or higher-gonol composition laws; the separate v0.6
-candidate supplies only the bounded native framed root-loop law.
+candidate supplies the bounded native framed root-loop law and v0.7 supplies
+only its bounded reversible chart into the directed cover.
 
 ### EDCM completion-motion evidence
 
@@ -175,6 +185,20 @@ higher-gonol, completion, or metric laws. See
 
 See
 [`docs/DIRECT_MOBIUS_CANDIDATE_V06.md`](docs/DIRECT_MOBIUS_CANDIDATE_V06.md).
+
+### Bounded root-loop cover chart
+
+- exact rational two-way map between framed native phase and lifted cover turn;
+- first/second representative used as an explicit chart hypothesis, not an
+  orientation field invented in the directed carrier floor;
+- all fourteen source-linked word initiations round-trip in both directions;
+- initiation, 360°, 720°, and inverse commutation checked exactly;
+- F12 supported and F13 falsified only for the declared root-loop domain;
+- fixed breadth one used only for nonauthoritative cover materialization; and
+- no carrier selection, completion, EDCM activation, or METAPAT activation.
+
+See
+[`docs/ROOT_LOOP_COVER_CHART_V07.md`](docs/ROOT_LOOP_COVER_CHART_V07.md).
 
 ### Directed carrier floor
 
@@ -306,11 +330,11 @@ See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
 hmmm: exact word observation, trajectory retention, and the bounded native
-Möbius root loop are executable without pretending to complete the mathematics.
-The next truth obligations are an explicit reversible C1↔C2 map attempt,
-reconstruction of arbitrary element assignment and
-circle/epicycle/disk/sphere transition laws from the pinned A0-betatest
-specimen, a deterministic full-MultiWOZ adapter and run receipt, higher-gonol
-composition, and evidence from failures surfaced across complete corpora —
-without allowing present metric projections to select the geometry that
-validates them.
+Möbius root loop now meet the directed cover through an exact bounded chart
+without pretending to complete the mathematics. The next truth obligations are
+extension or failure of that map under transverse and radial assignment,
+reconstruction of arbitrary element assignment and circle/epicycle/disk/sphere
+transition laws from the pinned A0-betatest specimen, a deterministic
+full-MultiWOZ adapter and run receipt, higher-gonol composition, and evidence
+from failures surfaced across complete corpora — without allowing present
+metric projections to select the geometry that validates them.

@@ -4,7 +4,7 @@
 #   module_kind: schema
 #   summary: exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,11 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, compatibility profile, and research infrastructure
+#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, compatibility profile, and research infrastructure
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: element-assignment law, Mobius coordinates beyond the framed root loop, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: element-assignment law, extension of the bounded root-loop chart to transverse and radial geometry, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -298,6 +298,24 @@ from .direct_mobius import (
     native_direct_mobius_trace,
     run_v06_direct_mobius_experiment,
 )
+from .root_loop_chart import (
+    ROOT_LOOP_CHART_BREADTH,
+    ROOT_LOOP_CHART_MAP_ID,
+    ROOT_LOOP_CHART_MAP_VERSION,
+    ROOT_LOOP_CHART_SCOPE,
+    V07_ROOT_LOOP_CHART_SCHEMA_ID,
+    V07_ROOT_LOOP_CHART_SCHEMA_VERSION,
+    V07_SELECTION_EFFECT,
+    RootLoopChartError,
+    RootLoopChartReport,
+    RootLoopChartRoundTrip,
+    RootLoopCoverChartState,
+    build_root_loop_chart_evidence,
+    build_root_loop_chart_round_trips,
+    mobius_to_root_loop_cover,
+    root_loop_cover_to_mobius,
+    run_v07_root_loop_chart_experiment,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -408,6 +426,14 @@ __all__ = [
     "StructuralNullIdentity", "StructuralNullKind",
     "StructuralNullManifestation", "build_native_mobius_initiation_packet",
     "native_direct_mobius_trace", "run_v06_direct_mobius_experiment",
+    "ROOT_LOOP_CHART_BREADTH", "ROOT_LOOP_CHART_MAP_ID",
+    "ROOT_LOOP_CHART_MAP_VERSION", "ROOT_LOOP_CHART_SCOPE",
+    "V07_ROOT_LOOP_CHART_SCHEMA_ID", "V07_ROOT_LOOP_CHART_SCHEMA_VERSION",
+    "V07_SELECTION_EFFECT", "RootLoopChartError", "RootLoopChartReport",
+    "RootLoopChartRoundTrip", "RootLoopCoverChartState",
+    "build_root_loop_chart_evidence", "build_root_loop_chart_round_trips",
+    "mobius_to_root_loop_cover", "root_loop_cover_to_mobius",
+    "run_v07_root_loop_chart_experiment",
     "BRIDGE_SCHEMA_ID",
     "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",

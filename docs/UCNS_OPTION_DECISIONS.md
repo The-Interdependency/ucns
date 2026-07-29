@@ -2,16 +2,17 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-26  
-**Updated:** 2026-07-28
+**Updated:** 2026-07-29
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
 **Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
 **Recovery manifest:** [`edcm-a0-betatest-recovery-reference-v1.json`](edcm-a0-betatest-recovery-reference-v1.json)  
 **Corpus research:** [`EDCM_REAL_SYSTEM_CORPORA.md`](EDCM_REAL_SYSTEM_CORPORA.md)  
 **Status:** active EDCM-scoped authority; the completion-motion root and primary
-historical recovery specimen are pinned, an exact observation profile is
-implemented, and the carrier, epicyclic geometry, completion, and
-higher-composition mathematics remain incomplete.
+historical recovery specimen are pinned, an exact observation profile, native
+framed root loop, and bounded reversible cover chart are implemented, and
+arbitrary assignment, transverse and radial geometry, epicyclic geometry,
+completion, and higher-composition mathematics remain incomplete.
 
 ## Authority boundary
 
@@ -47,8 +48,9 @@ instruments or projections.
 Completion closes only the declared construction relative to its declared
 boundary. It does not imply epistemic exhaustion of the underlying unknowable.
 
-The exact element-assignment law, Möbius coordinates, geometric transition law,
-and higher-gonol composition remain unresolved. The current
+The exact element-assignment law, Möbius coordinates outside the framed root
+loop, geometric transition law, and higher-gonol composition remain unresolved.
+The current
 `ucns.edcm.completion-motion-evidence/0.1.0` surface retains supplied trajectory
 evidence while refusing to manufacture those laws.
 
@@ -235,8 +237,10 @@ selection:       none
 
 It still preserves useful occurrence evidence but does not implement the
 EDCM-specific nesting contract. The directed twofold branched angular cover also
-remains executable comparison evidence; its formal relation to the required
-Möbius construction and completion-motion root is open.
+remains executable comparison evidence. Its exact reversible relation to the
+required Möbius construction is supported only for the bounded framed root-loop
+minimum-witness domain; extension or incompatibility beyond that domain remains
+open.
 
 ## Choices still genuinely open
 
@@ -258,17 +262,21 @@ function and passes separating falsifiers against the pinned specimen.
 
 **Direct Möbius carrier.** Implement the twist as the primary carrier and treat
 the directed cover only as historical comparison evidence. This is cleanest if
-the cover cannot preserve the singular-space initiation semantics.
+the cover cannot preserve the singular-space initiation semantics outside the
+bounded root-loop chart already demonstrated.
 
 **Directed cover as a Möbius chart.** Retain the 720-degree cover as a coordinate
-or observation chart over a formally distinct Möbius carrier. This is admissible
-only if the mapping preserves the twist's causal meaning rather than merely
-sharing a two-lap visual pattern.
+or observation chart over a formally distinct Möbius carrier. The v0.7 map
+preserves exact source, initiation, order, multiplicity, sidedness, parentage,
+scope, and bounded motion for all fourteen minimum-packet initiations. Whether
+that chart extends to transverse, radial, arbitrary-element, higher-geometric,
+or completion state remains unresolved.
 
 **Formal incompatibility.** Prove that the cover and Möbius construction encode
 different structures and keep both as explicitly incompatible options. A
-negative result here is useful because it prevents a convenient but false
-identification.
+global incompatibility claim must begin outside the bounded root-loop domain,
+where v0.7 already supplies a reversible preserving map. One failed extension
+does not prove that every admissible map fails.
 
 ### Higher-gonol composition above words
 
@@ -406,5 +414,7 @@ origin without source rewriting, a speaker turn is the support unit, and UCNS
 is assignment through geometric motion to completion. Any adapter or evaluator
 that turns those roles, orientations, scales, and trajectories into one flat
 sequence or one unreceipted scalar has changed the EDCM question before the
-experiment begins. The exact epicyclic circle, disk, sphere, Möbius,
-composition, and completion laws remain the living recovery boundary.
+experiment begins. The exact root-loop chart is now evidence rather than visual
+analogy; arbitrary assignment, transverse and radial geometry, epicyclic circle,
+disk, sphere, composition, and completion laws remain the living recovery
+boundary.

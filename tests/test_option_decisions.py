@@ -116,6 +116,15 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     standing_by_choice = {choice["id"]: choice["standing"] for choice in carrier["choices"]}
     assert standing_by_choice["directed-twofold-branched-angular-cover"] == "implemented-candidate"
     assert standing_by_choice["mobius-origin-hidden-zero"] == "decided-constraint"
+    cover_evidence = {
+        choice["id"]: choice["evidence"] for choice in carrier["choices"]
+    }["directed-twofold-branched-angular-cover"]
+    assert "v0.7 exact reversible chart" in cover_evidence
+    decisions = {
+        item["id"]: item["statement"] for item in registry["decisions"]
+    }
+    assert "bounded-root-loop-cover-chart" in decisions
+    assert "bounded, nonselecting" in decisions["bounded-root-loop-cover-chart"]
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:
