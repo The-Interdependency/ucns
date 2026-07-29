@@ -40,6 +40,10 @@ def test_public_surface_is_bounded() -> None:
         "CarrierRelationship",
         "FalsifierVerdict",
         "run_v05_carrier_experiment",
+        "DirectMobiusCandidateReport",
+        "NativeMobiusState",
+        "StructuralNullIdentity",
+        "run_v06_direct_mobius_experiment",
     ):
         assert expected in exported
 
