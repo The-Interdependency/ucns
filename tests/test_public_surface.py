@@ -36,6 +36,10 @@ def test_public_surface_is_bounded() -> None:
         "EdcmCompletionTrace",
         "HmmmBoundary",
         "ScalarProjection",
+        "CarrierExperimentReport",
+        "CarrierRelationship",
+        "FalsifierVerdict",
+        "run_v05_carrier_experiment",
     ):
         assert expected in exported
 
