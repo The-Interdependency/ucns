@@ -33,14 +33,17 @@ gonols, source-preserved SPACE-origin nesting boundaries, ordered concatenation,
 speaker turn, the exact 157-code-point alphabet without normalization,
 exact-evidence baseline, carrier pairing only, full-corpus runs, and an
 EDCM-specific profile while keeping carrier coordinates beyond the framed root
-loop, higher composition, graph contribution, and other information-dependent
-choices open. The bounded v0.6 direct-Möbius candidate now supplies exact framed
+loop's finite transverse witness extension, higher composition, graph
+contribution, and other information-dependent choices open. The bounded v0.6
+direct-Möbius candidate now supplies exact framed
 root-loop coordinates. The bounded v0.7 chart experiment now supplies an exact
 reversible map between that native root loop and the directed twofold cover for
-all fourteen minimum-packet initiations. Arbitrary element assignment,
-transverse or higher coordinates, and global C1/C2 equivalence remain open. Any
-eventual selection cannot become universal UCNS canon or transfer proof or
-measurement validity.
+all fourteen minimum-packet initiations. The bounded v0.8 experiment extends
+that map across exact transverse witnesses `-1`, `0`, and `+1` under reversible
+local-frame and global-side coordinate conventions without selecting either.
+Continuous-strip generality, radial and arbitrary-element assignment, higher
+coordinates, and global C1/C2 equivalence remain open. Any eventual selection
+cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -59,8 +62,8 @@ dimension has a hidden global default.
 
 ## Current implemented carrier candidates and relationship evidence
 
-The repository retains two implemented carrier candidates plus one bounded
-relationship experiment without selecting a carrier:
+The repository retains two implemented carrier candidates plus two bounded
+relationship experiments without selecting a carrier or coordinate convention:
 
 1. The **directed twofold branched angular cover** remains executable comparison
    evidence. It is not an eligible EDCM target unless an explicit reversible map
@@ -77,6 +80,12 @@ relationship experiment without selecting a carrier:
    initiation, 360°, 720°, and inverse motion. This supports C2 and falsifies
    C3 only for the declared root-loop domain; it does not establish global
    equivalence or select C2.
+4. The bounded **transverse-strip cover chart** crosses all fourteen
+   initiations with exact transverse witnesses `-1`, `0`, and `+1`. Both
+   local-frame and global-side coordinates round-trip, commute with bounded
+   motion, and change coordinates exactly. This extends the chart evidence
+   without proving continuous-strip or radial generality and without selecting
+   a convention.
 
 The directed-cover comparison candidate provides:
 
@@ -148,7 +157,9 @@ that they are public-gonol carrier members.
 This profile makes the observation boundary executable. It does not itself
 supply carrier coordinates or higher-gonol composition laws; the separate v0.6
 candidate supplies the bounded native framed root-loop law and v0.7 supplies
-only its bounded reversible chart into the directed cover.
+its bounded reversible chart into the directed cover. v0.8 supplies the first
+bounded nonzero transverse witnesses while leaving their assignment law and
+continuous generality unresolved.
 
 ### EDCM completion-motion evidence
 
@@ -199,6 +210,24 @@ See
 
 See
 [`docs/ROOT_LOOP_COVER_CHART_V07.md`](docs/ROOT_LOOP_COVER_CHART_V07.md).
+
+### Bounded transverse-strip cover chart
+
+- exact native state `(phase, frame, local transverse)` with the complete v0.7
+  root state retained as a subobject;
+- exact witnesses `-1`, `0`, and `+1` across all fourteen initiations;
+- local-frame and global-side coordinate conventions retained together;
+- exact sheet-aware two-way coordinate change with no selected convention;
+- 84 native/cover round trips, 28 root restrictions, 336 map/motion
+  commutations, 42 convention round trips, and 168 convention/motion
+  commutations;
+- F12 supported and F13 falsified only for the declared finite transverse
+  witness packet; and
+- no continuous-strip claim, radial assignment, arbitrary-element assignment,
+  completion, carrier selection, EDCM activation, or METAPAT activation.
+
+See
+[`docs/TRANSVERSE_STRIP_COVER_CHART_V08.md`](docs/TRANSVERSE_STRIP_COVER_CHART_V08.md).
 
 ### Directed carrier floor
 
@@ -325,16 +354,17 @@ unresolved `self::` calls.
 ## Build doctrine
 
 This build is pinned to
-`The-Interdependency/skill-lib@fa6e6200bc274657de2334754bbbf98844ef6541`.
+`The-Interdependency/skill-lib@289d4959f7920efc214f180cca3443d8090f4095`.
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: exact word observation, trajectory retention, and the bounded native
-Möbius root loop now meet the directed cover through an exact bounded chart
-without pretending to complete the mathematics. The next truth obligations are
-extension or failure of that map under transverse and radial assignment,
-reconstruction of arbitrary element assignment and circle/epicycle/disk/sphere
-transition laws from the pinned A0-betatest specimen, a deterministic
-full-MultiWOZ adapter and run receipt, higher-gonol composition, and evidence
-from failures surfaced across complete corpora — without allowing present
-metric projections to select the geometry that validates them.
+hmmm: exact word observation, trajectory retention, the bounded native Möbius
+root loop, and its first nonzero transverse witnesses now meet the directed
+cover through exact reversible charts without pretending to complete the
+mathematics. The next truth obligations are continuous transverse extension or
+failure, radial and arbitrary-element assignment, reconstruction of
+circle/epicycle/disk/sphere transition laws from the pinned A0-betatest
+specimen, a deterministic full-MultiWOZ adapter and run receipt, higher-gonol
+composition, and evidence from failures surfaced across complete corpora —
+without allowing present metric projections to select the geometry that
+validates them.

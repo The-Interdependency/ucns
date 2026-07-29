@@ -24,7 +24,7 @@ Drift gate:
 ```text
 python <skill-lib>/tools/check_consumer_drift.py . \
   --canon-root <skill-lib> \
-  --sha fa6e6200bc274657de2334754bbbf98844ef6541 \
+  --sha 289d4959f7920efc214f180cca3443d8090f4095 \
   --strict-sha --require-vendored
 ```
 

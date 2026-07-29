@@ -101,10 +101,14 @@ semantics.
 The bounded v0.6 native candidate now implements the framed central Möbius root
 loop. The bounded v0.7 relationship experiment supplies an exact reversible
 map between that root loop and the first/second representatives of the directed
-cover for all fourteen minimum-packet initiations. This supports the cover-chart
-relationship and falsifies incompatibility only on that declared domain. It
-does not select a carrier, establish global equivalence, or extend the map to
-transverse, radial, arbitrary-element, higher-geometric, or completion state.
+cover for all fourteen minimum-packet initiations. The bounded v0.8 experiment
+extends that exact map across transverse witnesses `-1`, `0`, and `+1` under
+both local-frame and global-side coordinate conventions, and supplies an exact
+sheet-aware change of coordinates between them. This supports the cover-chart
+relationship and falsifies incompatibility only on the declared finite witness
+domain. It does not select a carrier or convention, establish global or
+continuous-strip equivalence, or extend the map to radial, arbitrary-element,
+higher-geometric, or completion state.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -372,7 +376,10 @@ Implemented and test-backed infrastructure:
     return, and exact inverse motion; and
 18. an exact two-way root-loop chart into the directed cover that preserves all
     fourteen minimum-packet initiations and commutes with initiation, 360-degree,
-    720-degree, and inverse transitions without selecting a carrier.
+    720-degree, and inverse transitions without selecting a carrier; and
+19. an exact bounded transverse witness chart at `-1`, `0`, and `+1` under both
+    local-frame and global-side coordinates, including exact v0.7 restriction,
+    map/motion commutation, and reversible coordinate change without selection.
 
 Still unresolved and not promoted:
 
@@ -389,8 +396,8 @@ Still unresolved and not promoted:
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
 12. extension or separating failure of the bounded Möbius-to-cover chart under
-    transverse, radial, arbitrary-element, higher-geometric, and completion
-    state;
+    continuous transverse, radial, arbitrary-element, higher-geometric, and
+    completion state;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -428,10 +435,12 @@ not regain authority merely because its system shape is the closest EDCM fit:
 
 The Möbius-origin/hidden-zero construction has `decided-constraint` standing
 for EDCM. Its bounded framed root loop now has a reversible exact chart into the
-current directed-cover candidate. Whether the directed cover implements,
-embeds, parameterizes, or conflicts with the Möbius construction outside that
-root-loop domain remains unresolved, and the cover cannot erase the decided
-causal semantics.
+current directed-cover candidate, and the chart now survives exact transverse
+witnesses `-1`, `0`, and `+1` under two reversibly related coordinate
+conventions. Whether the directed cover implements, embeds, parameterizes, or
+conflicts with the Möbius construction across the continuous strip, radial
+assignment, arbitrary elements, or higher state remains unresolved, and the
+cover cannot erase the decided causal semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -447,9 +456,9 @@ remain simultaneously visible. Graph contribution and the movement from exact
 evidence toward projection remain open pending more information.
 
 hmmm: the load-bearing completion-motion root, nearest surviving EDCM-facing
-specimen, native framed root loop, and bounded cover chart are now pinned. The
-exact arbitrary-element assignment law, transverse and radial geometry,
-epicyclic circle, disk, sphere, recursive composition, and completion conditions
-remain unrecovered. Real-system experiments may pressure those laws, but current
-metric projections may not circularly select the geometry that makes them
-appear valid.
+specimen, native framed root loop, bounded cover chart, and first nonzero
+transverse witnesses are now pinned. The exact continuous transverse law,
+radial and arbitrary-element assignment, epicyclic circle, disk, sphere,
+recursive composition, and completion conditions remain unrecovered. Real-system
+experiments may pressure those laws, but current metric projections may not
+circularly select the geometry that makes them appear valid.

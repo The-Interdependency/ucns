@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.4.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.5.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -115,6 +115,8 @@ REQUIRED_DECISION_IDS = frozenset(
         "ucns-completion-motion-root",
         "completion-scoped-to-declared-boundary",
         "trajectory-before-scalar",
+        "bounded-root-loop-cover-chart",
+        "bounded-transverse-strip-chart",
     }
 )
 

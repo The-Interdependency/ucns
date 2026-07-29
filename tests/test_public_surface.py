@@ -47,6 +47,10 @@ def test_public_surface_is_bounded() -> None:
         "RootLoopChartReport",
         "RootLoopCoverChartState",
         "run_v07_root_loop_chart_experiment",
+        "FramedMobiusStripState",
+        "TransverseCoverChartState",
+        "TransverseStripReport",
+        "run_v08_transverse_strip_experiment",
     ):
         assert expected in exported
 
