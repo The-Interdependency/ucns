@@ -52,6 +52,11 @@ def test_public_surface_is_bounded() -> None:
         "TransverseEnvelopeReport",
         "TransverseCarrierCollisionWitness",
         "run_v09_transverse_envelope_experiment",
+        "CarrierCoordinateCandidate",
+        "CarrierCoordinateImage",
+        "CarrierCoordinateCandidateResult",
+        "CarrierCoordinateAdmissibilityReport",
+        "run_v010_carrier_coordinate_experiment",
     ):
         assert expected in exported
 

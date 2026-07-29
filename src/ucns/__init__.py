@@ -4,7 +4,7 @@
 #   module_kind: schema
 #   summary: exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,11 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, compatibility profile, and research infrastructure
+#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, compatibility profile, and research infrastructure
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: element-assignment law, an injective transverse or radial directed-cover coordinate, arbitrary-element assignment, real-valued continuity, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: element-assignment law, global or real-continuous transverse/radial directed-cover coordinates beyond the v0.10 bounded candidate domain, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -354,6 +354,34 @@ from .transverse_envelope import (
     transverse_envelope_to_mobius,
     transverse_exact_comparison_policy,
 )
+from .carrier_coordinate import (
+    CARRIER_COORDINATE_CANDIDATE_VERSION,
+    CARRIER_COORDINATE_CODE_REFERENCE,
+    CARRIER_COORDINATE_COMPARISON_POLICY_CODE_REFERENCE,
+    CARRIER_COORDINATE_COMPARISON_POLICY_NAME,
+    CARRIER_COORDINATE_COMPARISON_POLICY_VERSION,
+    CARRIER_COORDINATE_RADIAL_SCALE,
+    CARRIER_COORDINATE_ROOT_BREADTH,
+    CARRIER_COORDINATE_SCOPE,
+    V010_CARRIER_COORDINATE_SCHEMA_ID,
+    V010_CARRIER_COORDINATE_SCHEMA_VERSION,
+    V010_SELECTION_EFFECT,
+    CarrierCoordinateAdmissibility,
+    CarrierCoordinateAdmissibilityReport,
+    CarrierCoordinateBasis,
+    CarrierCoordinateCandidate,
+    CarrierCoordinateCandidateResult,
+    CarrierCoordinateCollisionWitness,
+    CarrierCoordinateConventionWitness,
+    CarrierCoordinateError,
+    CarrierCoordinateImage,
+    CarrierCoordinateMotionWitness,
+    CarrierCoordinateRootRestrictionWitness,
+    carrier_coordinate_candidates,
+    carrier_coordinate_exact_comparison_policy,
+    map_transverse_to_actual_cover,
+    run_v010_carrier_coordinate_experiment,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -493,6 +521,25 @@ __all__ = [
     "convert_transverse_convention", "exact_rational_stress_fibers",
     "mobius_to_transverse_envelope", "run_v09_transverse_envelope_experiment",
     "transverse_envelope_to_mobius", "transverse_exact_comparison_policy",
+    "CARRIER_COORDINATE_CANDIDATE_VERSION",
+    "CARRIER_COORDINATE_CODE_REFERENCE",
+    "CARRIER_COORDINATE_COMPARISON_POLICY_CODE_REFERENCE",
+    "CARRIER_COORDINATE_COMPARISON_POLICY_NAME",
+    "CARRIER_COORDINATE_COMPARISON_POLICY_VERSION",
+    "CARRIER_COORDINATE_RADIAL_SCALE", "CARRIER_COORDINATE_ROOT_BREADTH",
+    "CARRIER_COORDINATE_SCOPE", "V010_CARRIER_COORDINATE_SCHEMA_ID",
+    "V010_CARRIER_COORDINATE_SCHEMA_VERSION", "V010_SELECTION_EFFECT",
+    "CarrierCoordinateAdmissibility",
+    "CarrierCoordinateAdmissibilityReport", "CarrierCoordinateBasis",
+    "CarrierCoordinateCandidate", "CarrierCoordinateCandidateResult",
+    "CarrierCoordinateCollisionWitness",
+    "CarrierCoordinateConventionWitness", "CarrierCoordinateError",
+    "CarrierCoordinateImage", "CarrierCoordinateMotionWitness",
+    "CarrierCoordinateRootRestrictionWitness",
+    "carrier_coordinate_candidates",
+    "carrier_coordinate_exact_comparison_policy",
+    "map_transverse_to_actual_cover",
+    "run_v010_carrier_coordinate_experiment",
     "BRIDGE_SCHEMA_ID",
     "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",

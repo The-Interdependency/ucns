@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.6.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.7.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -117,6 +117,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "trajectory-before-scalar",
         "bounded-root-loop-cover-chart",
         "exact-rational-transverse-envelope-correction",
+        "bounded-carrier-coordinate-admissibility",
     }
 )
 
@@ -238,6 +239,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
     dimension_by_id = {dimension["id"]: dimension for dimension in dimensions}
     required_dimension_ids = {
         "carrier-model",
+        "carrier-coordinate-admissibility",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",

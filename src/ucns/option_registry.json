@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.6.0",
+  "schema_version": "1.7.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-29",
   "identifier": {
@@ -192,6 +192,10 @@
     {
       "id": "exact-rational-transverse-envelope-correction",
       "statement": "The v0.8 transverse construction is an exact sidecar envelope over the v0.7 root chart, not a transverse directed-cover embedding. v0.9 retains reversible local-frame and global-side descriptions under a named exact comparison policy, validates complete witness identities, and records actual-cover collisions without extending F12/F13 or selecting a carrier or convention."
+    },
+    {
+      "id": "bounded-carrier-coordinate-admissibility",
+      "statement": "v0.10 evaluates four explicit radial candidate laws in actual LiftedCarrierPoint breadth and angle fields over the complete 45-fiber exact-rational stress domain. The signed local affine radial law is injective, zero-restricting, convention-invariant, and motion-commuting on that declared domain; constant breadth and unsigned radial laws retain collision witnesses, and the signed global law retains odd-motion failures. Every candidate remains an experiment-candidate with selection effect none."
     }
   ],
   "current_profile": {
@@ -231,7 +235,7 @@
         {
           "id": "directed-twofold-branched-angular-cover",
           "standing": "implemented-candidate",
-          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension: distinct transverse envelope states collide at the same actual directed-cover coordinate, so transverse and radial mapping, arbitrary-element assignment, higher geometry, and completion state remain unresolved."
+          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension by showing that distinct sidecar states collide at the same actual directed-cover coordinate. v0.10 evaluates four explicit radial laws in actual LiftedCarrierPoint fields: signed local affine breadth is admissible on the declared 45-fiber rational domain, while three alternatives retain collision or motion-failure witnesses. No candidate is selected, and global continuity, arbitrary-element assignment, higher geometry, and completion remain unresolved."
         },
         {
           "id": "mobius-origin-hidden-zero",
@@ -239,6 +243,40 @@
           "evidence": "Required for EDCM: the twist interprets space as singular and superpositioned and supplies a causal chain needed by the future hyper-dimensional lattice relating letters and words."
         }
       ]
+    },
+    {
+      "id": "carrier-coordinate-admissibility",
+      "question": "Which declared transverse-to-directed-cover coordinate laws satisfy actual-cover injectivity, zero-fiber restriction, convention invariance, and motion commutation on the bounded v0.10 domain?",
+      "choices": [
+        {
+          "id": "constant-root-breadth",
+          "standing": "experiment-candidate",
+          "evidence": "Rejected on the declared domain: all distinct transverse fibers at one root collide in the same actual LiftedCarrierPoint coordinate."
+        },
+        {
+          "id": "unsigned-local-radial",
+          "standing": "experiment-candidate",
+          "evidence": "Rejected on the declared domain: opposite signed transverse fibers collide because absolute magnitude discards side."
+        },
+        {
+          "id": "signed-local-affine-radial",
+          "standing": "experiment-candidate",
+          "evidence": "Admissible on the declared 45-fiber exact-rational domain: B(u)=1+u/2 is positive, injective after actual-cover materialization, restricts u=0 to the v0.7 root, is convention-invariant, and commutes with declared root motion. This is bounded evidence, not selection or canonical faithful breadth."
+        },
+        {
+          "id": "signed-global-affine-radial",
+          "standing": "experiment-candidate",
+          "evidence": "Rejected on the declared domain: the coordinate is fiber-injective but fails to commute with odd root-loop motion because the global side reverses while actual carrier rotation preserves breadth."
+        }
+      ],
+      "display_rule": "display-all-four",
+      "display_order": [
+        "constant-root-breadth",
+        "unsigned-local-radial",
+        "signed-local-affine-radial",
+        "signed-global-affine-radial"
+      ],
+      "selection_effect": "none"
     },
     {
       "id": "origin-semantics",
@@ -572,6 +610,7 @@
     "For EDCM, treat Structural Null as superpositioned space and initiate every new gonol through the twist.",
     "Retain the v0.7 exact reversible root-loop chart as bounded C1-to-C2 evidence with no carrier selection or global equivalence claim.",
     "Retain the v0.9 exact-rational transverse envelope and its reversible local-frame/global-side descriptions as sidecar evidence only; actual-cover collisions prohibit treating it as a transverse chart or extending F12/F13.",
+    "Retain all four v0.10 carrier-coordinate candidates and their complete bounded evidence. The signed local affine radial law is admissible only on the declared exact-rational domain; this does not select a carrier, canonize faithful breadth, establish real continuity, or authorize downstream activation.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -597,7 +636,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "An injective transverse or radial directed-cover coordinate, or a separating witness covering every declared admissible map, followed by arbitrary-element, higher-geometric, and completion state.",
+    "The v0.10 signed local affine radial law is injective on the declared 45-fiber exact-rational materialization domain. Extension to arbitrary exact rationals, real continuity, arbitrary elements, canonical faithful breadth, higher geometry, and completion remains unresolved.",
     "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
