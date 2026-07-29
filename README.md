@@ -32,10 +32,12 @@ Möbius causal carrier, superpositioned Structural Null, words as the smallest
 gonols, source-preserved SPACE-origin nesting boundaries, ordered concatenation, one unit per
 speaker turn, the exact 157-code-point alphabet without normalization,
 exact-evidence baseline, carrier pairing only, full-corpus runs, and an
-EDCM-specific profile while keeping the carrier coordinates, higher composition,
-graph contribution, and other information-dependent choices open. Any eventual
-selection cannot become universal UCNS canon or transfer proof or measurement
-validity.
+EDCM-specific profile while keeping carrier coordinates beyond the framed root
+loop, higher composition, graph contribution, and other information-dependent
+choices open. The bounded v0.6 direct-Möbius candidate now supplies exact framed
+root-loop coordinates; arbitrary element assignment and transverse or higher
+coordinates remain open. Any eventual selection cannot become universal UCNS
+canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -52,17 +54,22 @@ access boundaries are recorded in
 [`docs/EDCM_REAL_SYSTEM_CORPORA.md`](docs/EDCM_REAL_SYSTEM_CORPORA.md). No option
 dimension has a hidden global default.
 
-## Current implemented carrier candidate
+## Current implemented carrier candidates
 
-The current reference implementation uses a **directed twofold branched angular
-cover**. It remains executable comparison evidence but is not an eligible EDCM
-target unless it integrates the required Möbius causal chain. For EDCM,
-Structural Null is the singular superpositioned space and the twist occurs when
-a new gonol initiates. The EDCM observation profile now records this initiation
-and preserves the nesting boundary, while the formal Möbius coordinates remain
-unimplemented.
+The repository retains two implemented experiment candidates without selecting
+either relationship:
 
-The comparison candidate currently provides:
+1. The **directed twofold branched angular cover** remains executable comparison
+   evidence. It is not an eligible EDCM target unless an explicit reversible map
+   preserves the required Möbius causal chain.
+2. The bounded **native direct-Möbius framed root loop** implements Structural
+   Null initiation and the quotient law
+   `(t, ε) ~ (t + n, (-1)^n ε)` for exact rational turns. It supplies native
+   360° frame change, 720° root-state return, and inverse evidence without a
+   directed-cover dependency. It does not assign arbitrary elements, establish
+   completion, or select C1.
+
+The directed-cover comparison candidate provides:
 
 - a unique coordinate-free null representation, superseded for the EDCM target;
 - Non-null carrier points have a 720-degree lifted period.
@@ -129,8 +136,9 @@ longer imply that a raw SPACE manifestation is literally present in the
 remain exact and ordered when carrier-unassigned. Their retention is not a claim
 that they are public-gonol carrier members.
 
-This profile makes the observation boundary executable. It does not invent the
-unresolved Möbius coordinate or higher-gonol composition laws.
+This profile makes the observation boundary executable. It does not itself
+supply carrier coordinates or higher-gonol composition laws; the separate v0.6
+candidate supplies only the bounded native framed root-loop law.
 
 ### EDCM completion-motion evidence
 
@@ -146,9 +154,27 @@ unresolved Möbius coordinate or higher-gonol composition laws.
   declared information loss.
 
 This schema makes trajectory retention executable without fabricating the
-unresolved element-assignment, Möbius-coordinate, geometric-transition,
+unresolved element-assignment, transverse-Möbius, geometric-transition,
 higher-gonol, completion, or metric laws. See
 [`docs/EDCM_COMPLETION_MOTION_EVIDENCE.md`](docs/EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
+### Native direct-Möbius root-loop candidate
+
+- typed singular Structural Null, distinct from numeric zero, absence, empty
+  source, unresolved state, and completion;
+- every exact SPACE and turn-boundary hidden-zero condition retained as a
+  distinct source-linked manifestation of that one origin;
+- one causal initiation event per word gonol with typed pre-state and framed
+  root-loop post-state;
+- exact rational-turn motion under the native Möbius quotient;
+- 360° visible coincidence with retained local-frame reversal;
+- 720° complete root-state return and exact inverse motion;
+- complete entry into the v0.5 F01–F16 matrix with no carrier selection; and
+- explicit `hmmm` retention for arbitrary assignment, transverse coordinates,
+  scoped completion, higher geometry, higher-gonol composition, and C1↔C2.
+
+See
+[`docs/DIRECT_MOBIUS_CANDIDATE_V06.md`](docs/DIRECT_MOBIUS_CANDIDATE_V06.md).
 
 ### Directed carrier floor
 
@@ -279,12 +305,12 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: exact word observation and trajectory retention are executable without
-pretending to complete the mathematics, and the completion-motion root is now
-preserved. The next truth obligations are reconstruction of the
-element-assignment and circle/epicycle/disk/sphere motion and transition laws
-from the pinned A0-betatest specimen, a deterministic full-MultiWOZ adapter and
-run receipt, the formal Möbius/directed-cover relation, the higher-gonol
-composition law, and evidence from the failures surfaced across complete
-corpora — with failure analysis that does not allow the present metric
-projections to select the geometry that validates them.
+hmmm: exact word observation, trajectory retention, and the bounded native
+Möbius root loop are executable without pretending to complete the mathematics.
+The next truth obligations are an explicit reversible C1↔C2 map attempt,
+reconstruction of arbitrary element assignment and
+circle/epicycle/disk/sphere transition laws from the pinned A0-betatest
+specimen, a deterministic full-MultiWOZ adapter and run receipt, higher-gonol
+composition, and evidence from failures surfaced across complete corpora —
+without allowing present metric projections to select the geometry that
+validates them.

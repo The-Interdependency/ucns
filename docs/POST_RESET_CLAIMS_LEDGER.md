@@ -1,6 +1,6 @@
 # UCNS–EDCM post-reset claims ledger
 
-> **Status:** v0.5 authority and evidence ledger. It records standing; it does not promote any candidate.
+> **Status:** v0.6 authority and evidence ledger. It records standing; it does not promote any candidate.
 >
 > **Recovery boundary:** claims are evaluated against current UCNS `main`, the EDCM decision record, exact corpus evidence, and the primary A0 recovery specimen at `7af8debf6ef3905f01baff02b43d8c3bee16ccbc`.
 
@@ -35,7 +35,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `A2` | Every code point in the profile-pinned Unicode `White_Space` set assigns to the U+0020 origin while its exact source value, code point, and offset remain unchanged. | `implemented-evidence` | Current EDCM profile and tests. Assignment is not normalization or textual identity. |
 | `A3` | Structural Null / hidden zero is the singular superpositioned SPACE-origin condition through which a new gonol initiates. | `decided-constraint` | EDCM option decision. Its exact relation to the broader UCNS unique-null law is unresolved and belongs to the carrier experiment. |
 | `A4` | A word is the smallest EDCM gonol; every maximal ordered non-SPACE sequence is retained as a word gonol. | `implemented-evidence` | Current EDCM profile. |
-| `A5` | Every new word gonol records a Möbius initiation event. | `implemented-evidence` | The current profile records the event label. Its geometric pre/post state and causal action are unresolved. |
+| `A5` | Every new word gonol records a Möbius initiation event. | `implemented-evidence` | The observation profile records the event label. The v0.6 C1 candidate adds a typed Structural Null pre-state, exact causal boundary, and framed root-loop post-state for the minimum witness domain; general element assignment remains unresolved. |
 | `A6` | One complete speaker turn contributes one unit of support. | `implemented-evidence` | Current EDCM profile. Token, word, and trajectory counts do not change that support unit. |
 | `A7` | Exact full-corpus execution is required; sampling cannot establish the profile result. | `decided-constraint` | Corpus evidence contract. Current corpus admission and coverage remain dataset-specific. |
 
@@ -50,6 +50,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `M5` | The current directed twofold 4π cover with 2π visible projection is executable comparison evidence. | `implemented-evidence` | Current directed-cover implementation and Chapter 1. It is not the EDCM answer unless the required causal chain is demonstrated. |
 | `M6` | Matching a 720° period is sufficient to identify the directed cover with the Möbius carrier. | `negative-boundary` | Period agreement alone does not preserve initiation, sidedness, source, inverse, parentage, or completion. |
 | `M7` | The seam or first angular anchor may be chosen from hash phase, normalization order, or visual convenience. | `negative-boundary` | Initiation must derive from the declared hidden-zero/source boundary and remain uniquely auditable. |
+| `M8` | The framed root-loop quotient `(t, ε) ~ (t + n, (-1)^n ε)` supplies a native C1 transition law for Structural Null initiation, 360° frame change, 720° return, and exact inverse motion. | `implemented-evidence` | [`DIRECT_MOBIUS_CANDIDATE_V06.md`](DIRECT_MOBIUS_CANDIDATE_V06.md) and `src/ucns/direct_mobius.py`; scope is the exact v0.6 minimum witness packet and framed central root loop only. It does not select C1 or define arbitrary element assignment or completion. |
 
 ## 5. Composition and retained-structure claims
 
@@ -82,12 +83,12 @@ Only a separate explicit authority decision can change a claim’s standing to c
 
 ## 8. Open obligations
 
-The following remain `unresolved` after v0.5 specification work:
+The following remain `unresolved` after the bounded v0.6 C1 root-loop work:
 
-1. the exact Möbius carrier coordinates or coordinate-free state;
+1. Möbius coordinates beyond the native framed central root loop;
 2. the exact element-assignment law;
-3. the initiation transition and its inverse;
-4. canonical state equivalence for complete 720° return;
+3. initiation and transition laws beyond the v0.6 minimum witness domain;
+4. canonical state equivalence beyond the C1 experiment candidate;
 5. the explicit relationship map, or separating impossibility witness, between the direct carrier and directed cover;
 6. circle, epicycle, disk, and sphere transition laws;
 7. higher-gonol composition and recursive scale transition;
@@ -101,4 +102,4 @@ Every carrier or metric PR should cite the relevant claim IDs and state whether 
 
 ## hmmm
 
-The post-reset gain is a cleaner burden of proof. UCNS already has a lawful observation floor and useful candidate machinery; what it does not yet have is the reversible causal law joining hidden-zero initiation to 360° state change, 720° complete return, recursive composition, and scoped completion.
+The post-reset gain is a cleaner burden of proof. UCNS now has a bounded native C1 law joining hidden-zero initiation to 360° frame change, 720° root-state return, and inverse motion. It does not yet have arbitrary element assignment, transverse or higher geometry, recursive composition, scoped completion, or the reversible map or separating witness needed to decide the C1↔C2 relationship.
