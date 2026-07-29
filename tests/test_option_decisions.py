@@ -81,7 +81,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.7.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.8.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -137,6 +137,10 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "selection effect" in decisions[
         "bounded-carrier-coordinate-admissibility"
     ]
+    assert "exact-coordinate-representation-boundary" in decisions
+    assert "lossy binary64 renderings" in decisions[
+        "exact-coordinate-representation-boundary"
+    ]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
     assert coordinate_dimension["selection_effect"] == "none"
@@ -148,6 +152,20 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     ]
     assert {
         choice["standing"] for choice in coordinate_dimension["choices"]
+    } == {"experiment-candidate"}
+    representation_dimension = option_dimension(
+        "exact-coordinate-representation"
+    )
+    assert representation_dimension["display_rule"] == (
+        "display-exact-source-and-rendering-together"
+    )
+    assert representation_dimension["display_order"] == [
+        "signed-local-exact-rational-coordinate",
+        "linked-binary64-carrier-rendering",
+    ]
+    assert representation_dimension["selection_effect"] == "none"
+    assert {
+        choice["standing"] for choice in representation_dimension["choices"]
     } == {"experiment-candidate"}
 
 

@@ -46,10 +46,15 @@ a bounded exact-rational stress domain, pins exact comparison semantics, and
 exposes actual-cover coordinate collisions. v0.10 evaluates four explicit
 radial laws in actual directed-cover breadth and angle fields. Signed local
 affine breadth is admissible on the declared 45-fiber materialization domain;
-three alternatives retain collision or motion-failure evidence. No law is
-selected, and arbitrary-element assignment, real continuity, higher
-coordinates, and global C1/C2 equivalence remain open. Any eventual selection
-cannot become universal UCNS canon or transfer proof or measurement validity.
+three alternatives retain collision or motion-failure evidence. v0.11
+separates that surviving candidate's exact rational coordinate from its
+binary64 rendering. The affine law has an exact inverse on the declared
+rational interval, while explicit breadth and lifted-turn witnesses prove that
+`LiftedCarrierPoint` storage is not injective over the arbitrary-rational
+domain. No law is selected, and arbitrary-element assignment, full-carrier real
+continuity, higher coordinates, and global C1/C2 equivalence remain open. Any
+eventual selection cannot become universal UCNS canon or transfer proof or
+measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -99,6 +104,13 @@ law, or convention:
    convention invariance, and motion commutation on the declared 45-fiber
    domain. The other candidates retain their exact failures. Passing does not
    select the law or canonize faithful breadth.
+6. The **exact-coordinate representation boundary** retains the surviving
+   signed-local candidate as exact `Fraction`-valued transverse, breadth, and
+   lifted-turn evidence with fixed provenance and exact inverse. Linked
+   `LiftedCarrierPoint` values are explicitly lossy renderings; fixed breadth
+   and lifted-turn witnesses collide in binary64. Exact-law evidence therefore
+   survives without pretending the float representation is arbitrary-rational
+   or selected.
 
 The directed-cover comparison candidate provides:
 
@@ -174,7 +186,10 @@ its bounded reversible chart into the directed cover. v0.9 retains exact
 rational transverse evidence only as an explicit sidecar. v0.10 then evaluates
 four actual-cover radial laws and finds signed local affine breadth admissible
 on the declared 45-fiber materialization domain without selecting it or
-claiming arbitrary-rational or real-continuous extension.
+claiming arbitrary-rational or real-continuous extension. v0.11 preserves that
+law and its inverse exactly over the declared rational interval, while
+classifying actual float points as provenance-linked renderings and retaining
+two explicit binary64 collision witnesses.
 
 ### EDCM completion-motion evidence
 
@@ -268,6 +283,24 @@ and the
 
 See
 [`docs/CARRIER_COORDINATE_ADMISSIBILITY_V010.md`](docs/CARRIER_COORDINATE_ADMISSIBILITY_V010.md).
+
+### Exact-coordinate representation boundary
+
+- records `u`, `B(u)=1+u/2`, and normalized lifted turns as exact
+  `fractions.Fraction` values;
+- verifies the exact inverse `u=2*(B-1)` without a finite-domain inference;
+- retains the v0.10 candidate identity plus the v0.11 law identity, formula,
+  code reference, scope, and nonselection effect;
+- classifies actual `LiftedCarrierPoint` values as
+  `lossy-nonauthoritative-rendering`;
+- retains one exact breadth collision and one exact lifted-turn collision after
+  binary64 rendering; and
+- makes no carrier-selection, faithful-breadth, arbitrary-element,
+  full-carrier real-continuity, completion, EDCM-activation, or
+  METAPAT-activation claim.
+
+See
+[`docs/EXACT_COORDINATE_BOUNDARY_V011.md`](docs/EXACT_COORDINATE_BOUNDARY_V011.md).
 
 ### Directed carrier floor
 
@@ -401,10 +434,12 @@ See [`.agents/skills/README.md`](.agents/skills/README.md) and
 hmmm: exact word observation, trajectory retention, and the bounded native
 Möbius root loop meet the directed cover through the v0.7 exact reversible
 chart. The v0.9 sidecar does not embed by itself; v0.10 supplies one bounded
-signed-local route into actual cover fields without selecting it. The next
-truth obligations are arbitrary-rational and real-continuity pressure,
-arbitrary-element assignment, reconstruction of circle/epicycle/disk/sphere
-transition laws from the pinned A0-betatest specimen, a deterministic
-full-MultiWOZ adapter and run receipt, higher-gonol composition, and evidence
-from failures surfaced across complete corpora—without allowing present metric
-projections to select the geometry that validates them.
+signed-local route into actual cover fields without selecting it. v0.11
+preserves that route exactly over the rational transverse interval and records
+why binary64 cannot carry its arbitrary-rational identity. The next truth
+obligations are full-carrier real continuity, arbitrary-element assignment,
+reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
+A0-betatest specimen, a deterministic full-MultiWOZ adapter and run receipt,
+higher-gonol composition, and evidence from failures surfaced across complete
+corpora—without allowing present metric projections to select the geometry that
+validates them.

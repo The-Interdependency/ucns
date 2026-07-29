@@ -57,6 +57,12 @@ def test_public_surface_is_bounded() -> None:
         "CarrierCoordinateCandidateResult",
         "CarrierCoordinateAdmissibilityReport",
         "run_v010_carrier_coordinate_experiment",
+        "ExactCarrierCoordinate",
+        "ExactCoordinateProvenance",
+        "Binary64CarrierRendering",
+        "Binary64CollisionWitness",
+        "ExactCoordinateBoundaryReport",
+        "run_v011_exact_coordinate_boundary_experiment",
     ):
         assert expected in exported
 

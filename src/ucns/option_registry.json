@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.7.0",
+  "schema_version": "1.8.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-29",
   "identifier": {
@@ -196,6 +196,10 @@
     {
       "id": "bounded-carrier-coordinate-admissibility",
       "statement": "v0.10 evaluates four explicit radial candidate laws in actual LiftedCarrierPoint breadth and angle fields over the complete 45-fiber exact-rational stress domain. The signed local affine radial law is injective, zero-restricting, convention-invariant, and motion-commuting on that declared domain; constant breadth and unsigned radial laws retain collision witnesses, and the signed global law retains odd-motion failures. Every candidate remains an experiment-candidate with selection effect none."
+    },
+    {
+      "id": "exact-coordinate-representation-boundary",
+      "statement": "v0.11 preserves the signed local affine candidate as exact rational coordinate evidence with exact inverse u=2*(B-1), classifies LiftedCarrierPoint values as linked lossy binary64 renderings, and retains explicit breadth and lifted-turn collision witnesses. This establishes the exact-versus-rendered representation boundary without selecting a carrier, canonizing faithful breadth, proving the full real-continuous relationship, or activating EDCM or METAPAT."
     }
   ],
   "current_profile": {
@@ -235,7 +239,7 @@
         {
           "id": "directed-twofold-branched-angular-cover",
           "standing": "implemented-candidate",
-          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension by showing that distinct sidecar states collide at the same actual directed-cover coordinate. v0.10 evaluates four explicit radial laws in actual LiftedCarrierPoint fields: signed local affine breadth is admissible on the declared 45-fiber rational domain, while three alternatives retain collision or motion-failure witnesses. No candidate is selected, and global continuity, arbitrary-element assignment, higher geometry, and completion remain unresolved."
+          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension by showing that distinct sidecar states collide at the same actual directed-cover coordinate. v0.10 evaluates four explicit radial laws in actual LiftedCarrierPoint fields: signed local affine breadth is admissible on the declared 45-fiber rational domain, while three alternatives retain collision or motion-failure witnesses. v0.11 preserves the signed-local law and inverse as exact rational evidence while exhibiting binary64 breadth and lifted-turn collisions. No candidate is selected, and full-carrier real continuity, arbitrary-element assignment, higher geometry, and completion remain unresolved."
         },
         {
           "id": "mobius-origin-hidden-zero",
@@ -275,6 +279,28 @@
         "unsigned-local-radial",
         "signed-local-affine-radial",
         "signed-global-affine-radial"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "exact-coordinate-representation",
+      "question": "Which representation preserves the v0.10 signed-local candidate beyond its finite binary64 materialization evidence?",
+      "choices": [
+        {
+          "id": "signed-local-exact-rational-coordinate",
+          "standing": "experiment-candidate",
+          "evidence": "v0.11 retains u, B(u)=1+u/2, normalized lifted turns, the exact inverse u=2*(B-1), and fixed upstream/law provenance as Fraction-valued evidence over the declared rational transverse interval."
+        },
+        {
+          "id": "linked-binary64-carrier-rendering",
+          "standing": "experiment-candidate",
+          "evidence": "v0.11 classifies LiftedCarrierPoint breadth and angle as lossy renderings only. Explicit rational witnesses collide at binary64 breadth 1.0 and at one lifted turn, so binary64 storage is not injective over the arbitrary exact-rational domain."
+        }
+      ],
+      "display_rule": "display-exact-source-and-rendering-together",
+      "display_order": [
+        "signed-local-exact-rational-coordinate",
+        "linked-binary64-carrier-rendering"
       ],
       "selection_effect": "none"
     },
@@ -611,6 +637,7 @@
     "Retain the v0.7 exact reversible root-loop chart as bounded C1-to-C2 evidence with no carrier selection or global equivalence claim.",
     "Retain the v0.9 exact-rational transverse envelope and its reversible local-frame/global-side descriptions as sidecar evidence only; actual-cover collisions prohibit treating it as a transverse chart or extending F12/F13.",
     "Retain all four v0.10 carrier-coordinate candidates and their complete bounded evidence. The signed local affine radial law is admissible only on the declared exact-rational domain; this does not select a carrier, canonize faithful breadth, establish real continuity, or authorize downstream activation.",
+    "Retain the v0.11 exact signed-local coordinate and every binary64 rendering together. The exact affine law and inverse hold over the declared rational interval, while explicit breadth and lifted-turn collisions prohibit binary64 LiftedCarrierPoint storage from serving as arbitrary-rational evidence identity.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -636,7 +663,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "The v0.10 signed local affine radial law is injective on the declared 45-fiber exact-rational materialization domain. Extension to arbitrary exact rationals, real continuity, arbitrary elements, canonical faithful breadth, higher geometry, and completion remains unresolved.",
+    "The v0.11 signed local affine radial law is exact and invertible over the declared rational transverse interval. Binary64 LiftedCarrierPoint materialization is explicitly noninjective and remains a linked rendering. Real continuity of the complete carrier relationship, arbitrary elements, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",

@@ -15,8 +15,12 @@ reclassifies the attempted v0.8 transverse extension as an exact sidecar
 envelope and records its actual-cover coordinate collisions. v0.10 evaluates
 four actual-cover radial laws over the complete 45-fiber stress domain; signed
 local affine breadth is admissible on that bounded domain without selection.
-Arbitrary assignment, real continuity, canonical breadth, epicyclic geometry,
-completion, and higher-composition mathematics remain incomplete.
+v0.11 preserves that candidate as exact rational coordinate evidence with an
+exact inverse and records explicit binary64 breadth and lifted-turn collisions,
+so float points remain linked renderings rather than arbitrary-rational
+identity. Arbitrary assignment, full-carrier real continuity, canonical
+breadth, epicyclic geometry, completion, and higher-composition mathematics
+remain incomplete.
 
 ## Authority boundary
 
@@ -249,7 +253,10 @@ the sidecar is not represented in the actual directed cover. v0.10 separately
 maps four declared laws into actual cover breadth and angle fields. Signed local
 affine breadth survives the bounded rational materialization domain; constant,
 unsigned, and signed-global laws retain collision or motion-failure evidence.
-No candidate is selected, and arbitrary-element, real-continuous,
+v0.11 preserves the signed-local law exactly over the declared rational
+interval, but proves by two fixed collisions that binary64
+`LiftedCarrierPoint` storage cannot preserve arbitrary-rational identity. No
+candidate is selected, and arbitrary-element, full-carrier real-continuous,
 higher-geometric, and completion extension or incompatibility remains open.
 
 ## Choices still genuinely open
@@ -284,16 +291,19 @@ envelope while demonstrating that distinct transverse values collide at one
 actual cover coordinate. A transverse or radial chart must supply an injective
 cover coordinate before extending the v0.7 relationship verdict. v0.10 supplies
 one such coordinate candidate only on its declared 45-fiber binary64
-materialization domain. That result is useful bounded evidence, not a global
-chart verdict or faithful-breadth selection.
+materialization domain. v0.11 supplies the exact rational law and inverse but
+also demonstrates that the current binary64 carrier representation collides.
+Those results are useful representation evidence, not a global chart verdict
+or faithful-breadth selection.
 
 **Formal incompatibility.** Prove that the cover and Möbius construction encode
 different structures and keep both as explicitly incompatible options. The
 v0.9 sidecar collisions disprove one attempted transverse embedding. v0.10
 declares four radial laws, rejects three on exact witnesses, and admits signed
 local affine breadth on the bounded domain. The admitted candidate prevents a
-separating claim for that declared family while leaving global incompatibility
-unproved.
+separating claim for that declared family. v0.11 removes the finite-rational
+uncertainty from its affine law while retaining binary64 representation
+failures; global incompatibility remains unproved.
 
 ### Higher-gonol composition above words
 
@@ -435,6 +445,8 @@ experiment begins. The exact root-loop chart is evidence rather than visual
 analogy. The attempted transverse extension is retained as exact envelope
 algebra plus a concrete nonembedding witness. The v0.10 signed-local radial
 candidate survives bounded actual-cover materialization without acquiring
-selection authority. Arbitrary-rational and real-continuity extension,
-arbitrary assignment, canonical breadth, epicyclic circle, disk, sphere,
-composition, and completion laws remain the living recovery boundary.
+selection authority. v0.11 preserves its exact rational law and inverse while
+recording that binary64 cannot carry its arbitrary-rational identity.
+Full-carrier real continuity, arbitrary assignment, canonical breadth,
+epicyclic circle, disk, sphere, composition, and completion laws remain the
+living recovery boundary.
