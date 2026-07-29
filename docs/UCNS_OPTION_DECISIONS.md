@@ -10,10 +10,11 @@
 **Corpus research:** [`EDCM_REAL_SYSTEM_CORPORA.md`](EDCM_REAL_SYSTEM_CORPORA.md)  
 **Status:** active EDCM-scoped authority; the completion-motion root and primary
 historical recovery specimen are pinned, an exact observation profile, native
-framed root loop, bounded reversible root chart, and first exact transverse
-witness extension are implemented, and continuous transverse geometry, radial
-and arbitrary assignment, epicyclic geometry, completion, and
-higher-composition mathematics remain incomplete.
+framed root loop, and bounded reversible root chart are implemented. v0.9
+reclassifies the attempted v0.8 transverse extension as an exact sidecar
+envelope and records its actual-cover coordinate collisions. An injective
+transverse or radial map, arbitrary assignment, epicyclic geometry, completion,
+and higher-composition mathematics remain incomplete.
 
 ## Authority boundary
 
@@ -239,11 +240,12 @@ selection:       none
 It still preserves useful occurrence evidence but does not implement the
 EDCM-specific nesting contract. The directed twofold branched angular cover also
 remains executable comparison evidence. Its exact reversible relation to the
-required Möbius construction is supported for the bounded framed root loop and
-for the complete minimum initiation packet crossed with exact transverse
-witnesses `-1`, `0`, and `+1` under both reversibly related coordinate
-conventions. Continuous-strip, radial, arbitrary-element, higher-geometric, and
-completion extension or incompatibility remains open.
+required Möbius construction is supported for the bounded framed root loop.
+The attempted v0.8 transverse extension is now classified as an exact
+transverse sidecar envelope: its coordinate descriptions are reversible, but
+the sidecar is not represented in the actual directed cover. Transverse,
+radial, arbitrary-element, higher-geometric, and completion extension or
+incompatibility remains open.
 
 ## Choices still genuinely open
 
@@ -271,18 +273,17 @@ bounded root-loop chart already demonstrated.
 **Directed cover as a Möbius chart.** Retain the 720-degree cover as a coordinate
 or observation chart over a formally distinct Möbius carrier. The v0.7 map
 preserves exact source, initiation, order, multiplicity, sidedness, parentage,
-scope, and bounded motion for all fourteen minimum-packet initiations. The v0.8
-map adds exact transverse witnesses `-1`, `0`, and `+1`, preserves both
-local-frame and global-side coordinate descriptions, and proves their
-sheet-aware change of coordinates on that finite domain. Whether that chart
-extends to a continuous transverse strip, radial, arbitrary-element,
-higher-geometric, or completion state remains unresolved.
+scope, and bounded motion for all fourteen minimum-packet initiations. v0.9
+preserves the useful v0.8 local-frame/global-side algebra as an exact-rational
+envelope while demonstrating that distinct transverse values collide at one
+actual cover coordinate. A transverse or radial chart must supply an injective
+cover coordinate before extending the v0.7 relationship verdict.
 
 **Formal incompatibility.** Prove that the cover and Möbius construction encode
-different structures and keep both as explicitly incompatible options. A
-global incompatibility claim must begin outside the bounded transverse witness
-domain, where v0.8 supplies reversible preserving maps and an exact coordinate
-change. One failed extension does not prove that every admissible map fails.
+different structures and keep both as explicitly incompatible options. The
+v0.9 sidecar collisions disprove one attempted transverse embedding but do not
+prove that every admissible map fails. A valid incompatibility witness must
+declare the admissible map family and separate all of it.
 
 ### Higher-gonol composition above words
 
@@ -420,7 +421,8 @@ origin without source rewriting, a speaker turn is the support unit, and UCNS
 is assignment through geometric motion to completion. Any adapter or evaluator
 that turns those roles, orientations, scales, and trajectories into one flat
 sequence or one unreceipted scalar has changed the EDCM question before the
-experiment begins. The exact root-loop chart and first nonzero transverse
-witnesses are now evidence rather than visual analogy; continuous transverse
-geometry, radial and arbitrary assignment, epicyclic circle, disk, sphere,
-composition, and completion laws remain the living recovery boundary.
+experiment begins. The exact root-loop chart is evidence rather than visual
+analogy. The attempted transverse extension is retained as exact envelope
+algebra plus a concrete nonembedding witness. An injective transverse or radial
+map, arbitrary assignment, epicyclic circle, disk, sphere, composition, and
+completion laws remain the living recovery boundary.

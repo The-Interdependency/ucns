@@ -33,17 +33,20 @@ gonols, source-preserved SPACE-origin nesting boundaries, ordered concatenation,
 speaker turn, the exact 157-code-point alphabet without normalization,
 exact-evidence baseline, carrier pairing only, full-corpus runs, and an
 EDCM-specific profile while keeping carrier coordinates beyond the framed root
-loop's finite transverse witness extension, higher composition, graph
-contribution, and other information-dependent choices open. The bounded v0.6
+loop, higher composition, graph contribution, and other information-dependent
+choices open. The bounded v0.6
 direct-Möbius candidate now supplies exact framed
 root-loop coordinates. The bounded v0.7 chart experiment now supplies an exact
 reversible map between that native root loop and the directed twofold cover for
-all fourteen minimum-packet initiations. The bounded v0.8 experiment extends
-that map across exact transverse witnesses `-1`, `0`, and `+1` under reversible
-local-frame and global-side coordinate conventions without selecting either.
-Continuous-strip generality, radial and arbitrary-element assignment, higher
-coordinates, and global C1/C2 equivalence remain open. Any eventual selection
-cannot become universal UCNS canon or transfer proof or measurement validity.
+all fourteen minimum-packet initiations. v0.9 corrects the merged v0.8
+transverse overclaim: v0.8 constructed an exact transverse sidecar over the
+unchanged v0.7 root chart, not a transverse directed-cover embedding. The
+replacement preserves reversible local-frame and global-side descriptions over
+a bounded exact-rational stress domain, pins exact comparison semantics, and
+exposes actual-cover coordinate collisions. Transverse and radial cover
+coordinates, arbitrary-element assignment, higher coordinates, and global
+C1/C2 equivalence remain open. Any eventual selection cannot become universal
+UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -62,8 +65,9 @@ dimension has a hidden global default.
 
 ## Current implemented carrier candidates and relationship evidence
 
-The repository retains two implemented carrier candidates plus two bounded
-relationship experiments without selecting a carrier or coordinate convention:
+The repository retains two implemented carrier candidates, one bounded
+relationship experiment, and one corrective envelope experiment without
+selecting a carrier or coordinate convention:
 
 1. The **directed twofold branched angular cover** remains executable comparison
    evidence. It is not an eligible EDCM target unless an explicit reversible map
@@ -80,12 +84,11 @@ relationship experiments without selecting a carrier or coordinate convention:
    initiation, 360°, 720°, and inverse motion. This supports C2 and falsifies
    C3 only for the declared root-loop domain; it does not establish global
    equivalence or select C2.
-4. The bounded **transverse-strip cover chart** crosses all fourteen
-   initiations with exact transverse witnesses `-1`, `0`, and `+1`. Both
-   local-frame and global-side coordinates round-trip, commute with bounded
-   motion, and change coordinates exactly. This extends the chart evidence
-   without proving continuous-strip or radial generality and without selecting
-   a convention.
+4. The **exact-rational transverse envelope** retains a transverse sidecar over
+   the v0.7 root chart. Both local-frame and global-side descriptions
+   round-trip and commute exactly across a 45-fiber rational stress grid. The
+   experiment also proves that distinct sidecars collide at one actual
+   directed-cover coordinate, so it does not extend the v0.7 chart verdict.
 
 The directed-cover comparison candidate provides:
 
@@ -157,9 +160,9 @@ that they are public-gonol carrier members.
 This profile makes the observation boundary executable. It does not itself
 supply carrier coordinates or higher-gonol composition laws; the separate v0.6
 candidate supplies the bounded native framed root-loop law and v0.7 supplies
-its bounded reversible chart into the directed cover. v0.8 supplies the first
-bounded nonzero transverse witnesses while leaving their assignment law and
-continuous generality unresolved.
+its bounded reversible chart into the directed cover. v0.9 retains exact
+rational transverse evidence only as an explicit sidecar and demonstrates why
+an injective transverse or radial assignment is still required.
 
 ### EDCM completion-motion evidence
 
@@ -211,23 +214,28 @@ See
 See
 [`docs/ROOT_LOOP_COVER_CHART_V07.md`](docs/ROOT_LOOP_COVER_CHART_V07.md).
 
-### Bounded transverse-strip cover chart
+### Exact-rational transverse envelope repair
 
-- exact native state `(phase, frame, local transverse)` with the complete v0.7
-  root state retained as a subobject;
-- exact witnesses `-1`, `0`, and `+1` across all fourteen initiations;
-- local-frame and global-side coordinate conventions retained together;
-- exact sheet-aware two-way coordinate change with no selected convention;
-- 84 native/cover round trips, 28 root restrictions, 336 map/motion
-  commutations, 42 convention round trips, and 168 convention/motion
-  commutations;
-- F12 supported and F13 falsified only for the declared finite transverse
-  witness packet; and
-- no continuous-strip claim, radial assignment, arbitrary-element assignment,
-  completion, carrier selection, EDCM activation, or METAPAT activation.
+- removes the deprecated v0.8 transverse-cover module and false cover-chart
+  names;
+- retains exact native state `(phase, frame, local transverse)` with the v0.7
+  root chart as a subobject and the transverse value marked `unmapped-sidecar`;
+- preserves local-frame and global-side descriptions together;
+- pins `transverse-envelope-exact@0.9.0` for every comparison;
+- validates complete event/fiber/convention/transition identities rather than
+  accepting count-only evidence;
+- stresses 45 exact rational fibers across all fourteen initiations;
+- records 1,260 envelope round trips, 5,040 motion commutations, 630 convention
+  round trips, 2,520 convention/motion commutations, and 28 actual-cover
+  collisions;
+- leaves F12/F13 attributed only to the v0.7 root-loop map; and
+- makes no transverse-cover, continuity, radial, arbitrary-element, completion,
+  carrier-selection, EDCM-activation, or METAPAT-activation claim.
 
 See
-[`docs/TRANSVERSE_STRIP_COVER_CHART_V08.md`](docs/TRANSVERSE_STRIP_COVER_CHART_V08.md).
+[`docs/EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md`](docs/EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md)
+and the
+[`v0.8 correction`](docs/TRANSVERSE_STRIP_COVER_CHART_V08.md).
 
 ### Directed carrier floor
 
@@ -358,11 +366,11 @@ This build is pinned to
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
-hmmm: exact word observation, trajectory retention, the bounded native Möbius
-root loop, and its first nonzero transverse witnesses now meet the directed
-cover through exact reversible charts without pretending to complete the
-mathematics. The next truth obligations are continuous transverse extension or
-failure, radial and arbitrary-element assignment, reconstruction of
+hmmm: exact word observation, trajectory retention, and the bounded native
+Möbius root loop meet the directed cover through the v0.7 exact reversible
+chart. The transverse sidecar does not. The next truth obligations are an
+injective transverse or radial map—or a separating impossibility
+witness—plus arbitrary-element assignment, reconstruction of
 circle/epicycle/disk/sphere transition laws from the pinned A0-betatest
 specimen, a deterministic full-MultiWOZ adapter and run receipt, higher-gonol
 composition, and evidence from failures surfaced across complete corpora —

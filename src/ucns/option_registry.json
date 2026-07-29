@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.5.0",
+  "schema_version": "1.6.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-29",
   "identifier": {
@@ -190,8 +190,8 @@
       "statement": "The exact rational framed Mobius root loop has a reversible source-preserving chart into the first and second directed-cover representatives for the complete minimum witness packet; this evidence is bounded, nonselecting, and does not establish transverse, radial, arbitrary-element, higher-geometric, or completion equivalence."
     },
     {
-      "id": "bounded-transverse-strip-chart",
-      "statement": "The root-loop chart extends reversibly across exact transverse witnesses -1, 0, and +1 for all fourteen minimum-packet initiations under both coordinate conventions; local-frame and global-side coordinates are joined by an exact sheet-aware change of coordinates with no selected winner, and the bounded evidence does not establish continuous-strip, radial, arbitrary-element, higher-geometric, or completion equivalence."
+      "id": "exact-rational-transverse-envelope-correction",
+      "statement": "The v0.8 transverse construction is an exact sidecar envelope over the v0.7 root chart, not a transverse directed-cover embedding. v0.9 retains reversible local-frame and global-side descriptions under a named exact comparison policy, validates complete witness identities, and records actual-cover collisions without extending F12/F13 or selecting a carrier or convention."
     }
   ],
   "current_profile": {
@@ -231,7 +231,7 @@
         {
           "id": "directed-twofold-branched-angular-cover",
           "standing": "implemented-candidate",
-          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.8 exact transverse witness extension preserves the decided causal semantics for the minimum initiation packet crossed with exact fibers -1, 0, and +1 under both reversible coordinate conventions. Continuous-strip generality, radial, arbitrary-element, higher-geometric, and completion state remain unresolved."
+          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension: distinct transverse envelope states collide at the same actual directed-cover coordinate, so transverse and radial mapping, arbitrary-element assignment, higher geometry, and completion state remain unresolved."
         },
         {
           "id": "mobius-origin-hidden-zero",
@@ -571,7 +571,7 @@
     "For EDCM, require the Mobius twist as a causal carrier constraint.",
     "For EDCM, treat Structural Null as superpositioned space and initiate every new gonol through the twist.",
     "Retain the v0.7 exact reversible root-loop chart as bounded C1-to-C2 evidence with no carrier selection or global equivalence claim.",
-    "Retain the v0.8 exact transverse witness extension and its reversible local-frame/global-side coordinate change with no convention selection, continuous-strip claim, radial assignment, or global equivalence claim.",
+    "Retain the v0.9 exact-rational transverse envelope and its reversible local-frame/global-side descriptions as sidecar evidence only; actual-cover collisions prohibit treating it as a transverse chart or extending F12/F13.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -597,7 +597,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "Extension or separating failure of the bounded transverse witness chart under continuous-strip, radial, arbitrary-element, higher-geometric, and completion state.",
+    "An injective transverse or radial directed-cover coordinate, or a separating witness covering every declared admissible map, followed by arbitrary-element, higher-geometric, and completion state.",
     "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
