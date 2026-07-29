@@ -48,9 +48,10 @@ def test_public_surface_is_bounded() -> None:
         "RootLoopCoverChartState",
         "run_v07_root_loop_chart_experiment",
         "FramedMobiusStripState",
-        "TransverseCoverChartState",
-        "TransverseStripReport",
-        "run_v08_transverse_strip_experiment",
+        "TransverseEnvelopeState",
+        "TransverseEnvelopeReport",
+        "TransverseCarrierCollisionWitness",
+        "run_v09_transverse_envelope_experiment",
     ):
         assert expected in exported
 
@@ -65,5 +66,8 @@ def test_public_surface_is_bounded() -> None:
         "canonical_policy",
         "canonical_product_character",
         "canonical_faithful_breadth",
+        "TransverseCoverChartState",
+        "TransverseStripReport",
+        "run_v08_transverse_strip_experiment",
     ):
         assert forbidden not in exported

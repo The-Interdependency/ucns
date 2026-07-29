@@ -101,14 +101,15 @@ semantics.
 The bounded v0.6 native candidate now implements the framed central Möbius root
 loop. The bounded v0.7 relationship experiment supplies an exact reversible
 map between that root loop and the first/second representatives of the directed
-cover for all fourteen minimum-packet initiations. The bounded v0.8 experiment
-extends that exact map across transverse witnesses `-1`, `0`, and `+1` under
-both local-frame and global-side coordinate conventions, and supplies an exact
-sheet-aware change of coordinates between them. This supports the cover-chart
-relationship and falsifies incompatibility only on the declared finite witness
-domain. It does not select a carrier or convention, establish global or
-continuous-strip equivalence, or extend the map to radial, arbitrary-element,
-higher-geometric, or completion state.
+cover for all fourteen minimum-packet initiations. The merged v0.8 experiment
+placed transverse witnesses `-1`, `0`, and `+1` beside that unchanged root
+chart under reversible local-frame and global-side descriptions. v0.9 corrects
+the resulting overclaim: this is an exact augmented envelope, not a transverse
+directed-cover chart. Distinct transverse envelope states collide at the same
+actual cover coordinate. F12 support and F13 falsification therefore remain
+bounded to the v0.7 root loop. No carrier or convention is selected, and
+transverse, radial, arbitrary-element, higher-geometric, or completion mapping
+remains unresolved.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -377,9 +378,11 @@ Implemented and test-backed infrastructure:
 18. an exact two-way root-loop chart into the directed cover that preserves all
     fourteen minimum-packet initiations and commutes with initiation, 360-degree,
     720-degree, and inverse transitions without selecting a carrier; and
-19. an exact bounded transverse witness chart at `-1`, `0`, and `+1` under both
-    local-frame and global-side coordinates, including exact v0.7 restriction,
-    map/motion commutation, and reversible coordinate change without selection.
+19. a corrective exact-rational transverse envelope over the v0.7 root chart,
+    with a named exact comparison policy, exhaustive witness-identity
+    validation, exact v0.7 restriction, reversible local/global descriptions,
+    and explicit actual-cover collisions proving the sidecar is not an
+    injective transverse cover map.
 
 Still unresolved and not promoted:
 
@@ -395,9 +398,9 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. extension or separating failure of the bounded Möbius-to-cover chart under
-    continuous transverse, radial, arbitrary-element, higher-geometric, and
-    completion state;
+12. an injective transverse or radial Möbius-to-cover map, or a separating
+    failure witness covering the declared admissible map family, followed by
+    arbitrary-element, higher-geometric, and completion state;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -434,13 +437,13 @@ not regain authority merely because its system shape is the closest EDCM fit:
 - the archived package bridge and factorization-centered interpretation.
 
 The Möbius-origin/hidden-zero construction has `decided-constraint` standing
-for EDCM. Its bounded framed root loop now has a reversible exact chart into the
-current directed-cover candidate, and the chart now survives exact transverse
-witnesses `-1`, `0`, and `+1` under two reversibly related coordinate
-conventions. Whether the directed cover implements, embeds, parameterizes, or
-conflicts with the Möbius construction across the continuous strip, radial
-assignment, arbitrary elements, or higher state remains unresolved, and the
-cover cannot erase the decided causal semantics.
+for EDCM. Its bounded framed root loop has a reversible exact chart into the
+current directed-cover candidate. The attempted v0.8 transverse extension did
+not survive review as a cover map: it was an exact sidecar envelope, and v0.9
+records collisions showing that distinct transverse values share one actual
+cover coordinate. Whether the directed cover implements, embeds, parameterizes,
+or conflicts with the Möbius construction beyond the root loop remains
+unresolved, and the cover cannot erase the decided causal semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -456,9 +459,10 @@ remain simultaneously visible. Graph contribution and the movement from exact
 evidence toward projection remain open pending more information.
 
 hmmm: the load-bearing completion-motion root, nearest surviving EDCM-facing
-specimen, native framed root loop, bounded cover chart, and first nonzero
-transverse witnesses are now pinned. The exact continuous transverse law,
-radial and arbitrary-element assignment, epicyclic circle, disk, sphere,
-recursive composition, and completion conditions remain unrecovered. Real-system
-experiments may pressure those laws, but current metric projections may not
-circularly select the geometry that makes them appear valid.
+specimen, native framed root loop, and bounded root cover chart are pinned. The
+transverse envelope now records its own failure to embed in the actual cover.
+An injective transverse or radial law, arbitrary-element assignment, epicyclic
+circle, disk, sphere, recursive composition, and completion conditions remain
+unrecovered. Real-system experiments may pressure those laws, but current
+metric projections may not circularly select the geometry that makes them
+appear valid.

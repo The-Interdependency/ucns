@@ -81,7 +81,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.5.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.6.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -119,15 +119,16 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     cover_evidence = {
         choice["id"]: choice["evidence"] for choice in carrier["choices"]
     }["directed-twofold-branched-angular-cover"]
-    assert "v0.8 exact transverse witness extension" in cover_evidence
+    assert "v0.9 corrects the attempted v0.8 transverse extension" in cover_evidence
+    assert "collide at the same actual directed-cover coordinate" in cover_evidence
     decisions = {
         item["id"]: item["statement"] for item in registry["decisions"]
     }
     assert "bounded-root-loop-cover-chart" in decisions
     assert "bounded, nonselecting" in decisions["bounded-root-loop-cover-chart"]
-    assert "bounded-transverse-strip-chart" in decisions
-    assert "both coordinate conventions" in decisions[
-        "bounded-transverse-strip-chart"
+    assert "exact-rational-transverse-envelope-correction" in decisions
+    assert "not a transverse directed-cover embedding" in decisions[
+        "exact-rational-transverse-envelope-correction"
     ]
 
 
