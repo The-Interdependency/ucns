@@ -86,7 +86,7 @@ shortcuts, activation boundary, and recovery order are recorded in
 and
 [`docs/edcm-a0-betatest-recovery-reference-v1.json`](docs/edcm-a0-betatest-recovery-reference-v1.json).
 
-## Current implemented carrier candidate
+## Current implemented carrier and relationship candidates
 
 The current reference implementation is a **directed twofold branched angular
 cover**. It is an implemented candidate, not a universal option selection.
@@ -97,6 +97,14 @@ supplies a causal chain required by the future hyper-dimensional lattice relatin
 letters and words. The current directed-cover implementation is incomplete for
 EDCM unless its formal integration with the Möbius construction preserves those
 semantics.
+
+The bounded v0.6 native candidate now implements the framed central Möbius root
+loop. The bounded v0.7 relationship experiment supplies an exact reversible
+map between that root loop and the first/second representatives of the directed
+cover for all fourteen minimum-packet initiations. This supports the cover-chart
+relationship and falsifies incompatibility only on that declared domain. It
+does not select a carrier, establish global equivalence, or extend the map to
+transverse, radial, arbitrary-element, higher-geometric, or completion state.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -358,7 +366,13 @@ Implemented and test-backed infrastructure:
 16. an EDCM-only completion-motion evidence schema retaining provenance, declared
     unresolved boundary, geometric relation, orientation, sidedness, motion,
     recursive parentage, scoped completion effect, remaining unresolved capacity,
-    evidence status, and optional recoverably linked lossy scalar projections.
+    evidence status, and optional recoverably linked lossy scalar projections;
+17. a native exact-rational framed Möbius root-loop candidate with typed
+    Structural Null initiation, 360-degree frame change, 720-degree root-state
+    return, and exact inverse motion; and
+18. an exact two-way root-loop chart into the directed cover that preserves all
+    fourteen minimum-packet initiations and commutes with initiation, 360-degree,
+    720-degree, and inverse transitions without selecting a carrier.
 
 Still unresolved and not promoted:
 
@@ -374,8 +388,9 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. formal integration of the EDCM-critical Möbius carrier with the current
-    directed cover;
+12. extension or separating failure of the bounded Möbius-to-cover chart under
+    transverse, radial, arbitrary-element, higher-geometric, and completion
+    state;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -412,9 +427,11 @@ not regain authority merely because its system shape is the closest EDCM fit:
 - the archived package bridge and factorization-centered interpretation.
 
 The Möbius-origin/hidden-zero construction has `decided-constraint` standing
-for EDCM. Its relation to the current directed-cover candidate must still be
-formalized and tested: the directed cover may implement, embed, parameterize, or
-conflict with it, but it cannot erase it.
+for EDCM. Its bounded framed root loop now has a reversible exact chart into the
+current directed-cover candidate. Whether the directed cover implements,
+embeds, parameterizes, or conflicts with the Möbius construction outside that
+root-loop domain remains unresolved, and the cover cannot erase the decided
+causal semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -429,8 +446,10 @@ the source domain and fail closed. All three `M` and all three `B` candidates
 remain simultaneously visible. Graph contribution and the movement from exact
 evidence toward projection remain open pending more information.
 
-hmmm: the load-bearing completion-motion root and the nearest surviving
-EDCM-facing specimen are now pinned. The exact assignment law, epicyclic circle,
-disk, sphere, Möbius, recursive composition, and completion conditions remain
-unrecovered. Real-system experiments may pressure those laws, but current metric
-projections may not circularly select the geometry that makes them appear valid.
+hmmm: the load-bearing completion-motion root, nearest surviving EDCM-facing
+specimen, native framed root loop, and bounded cover chart are now pinned. The
+exact arbitrary-element assignment law, transverse and radial geometry,
+epicyclic circle, disk, sphere, recursive composition, and completion conditions
+remain unrecovered. Real-system experiments may pressure those laws, but current
+metric projections may not circularly select the geometry that makes them
+appear valid.

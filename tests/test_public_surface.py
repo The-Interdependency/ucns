@@ -44,6 +44,9 @@ def test_public_surface_is_bounded() -> None:
         "NativeMobiusState",
         "StructuralNullIdentity",
         "run_v06_direct_mobius_experiment",
+        "RootLoopChartReport",
+        "RootLoopCoverChartState",
+        "run_v07_root_loop_chart_experiment",
     ):
         assert expected in exported
 
