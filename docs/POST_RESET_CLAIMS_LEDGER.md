@@ -45,14 +45,15 @@ Only a separate explicit authority decision can change a claim’s standing to c
 |---|---|---|---|
 | `M1` | A 360° visible return must retain a changed complete orientation/sidedness state; a 720° motion must permit complete return. | `decided-constraint` | EDCM option decision. No canonical transition or state-equivalence law exists yet. |
 | `M2` | A direct Möbius carrier is the native EDCM relationship. | `experiment-candidate` | Candidate `C1-direct-mobius`; not selected. |
-| `M3` | The directed 720° cover is a chart or lifted presentation of a distinct Möbius carrier. | `experiment-candidate` | Candidate `C2-cover-chart`; v0.7 supplies the exact two-way framed root-loop map. v0.9 shows that the attempted v0.8 transverse construction is only a sidecar envelope: distinct transverse values share one actual cover coordinate. No transverse or global extension is established. |
-| `M4` | The direct Möbius carrier and directed cover are formally incompatible under the decided preservation obligations. | `experiment-candidate` | Candidate `C3-incompatible`; v0.7 falsifies incompatibility only on the bounded root-loop domain. v0.9 disproves one attempted transverse embedding but does not separate every admissible map, so broader incompatibility remains unproved. |
+| `M3` | The directed 720° cover is a chart or lifted presentation of a distinct Möbius carrier. | `experiment-candidate` | Candidate `C2-cover-chart`; v0.7 supplies the exact two-way framed root-loop map. v0.9 shows that the attempted v0.8 transverse construction is only a sidecar envelope. v0.10 maps four declared radial laws into actual cover fields and finds signed local affine breadth admissible on the bounded 45-fiber domain. No global extension or selection is established. |
+| `M4` | The direct Möbius carrier and directed cover are formally incompatible under the decided preservation obligations. | `experiment-candidate` | Candidate `C3-incompatible`; v0.7 falsifies incompatibility on the bounded root-loop domain, and v0.10 admits one candidate radial law on its bounded transverse domain. Broader incompatibility remains unproved. |
 | `M5` | The current directed twofold 4π cover with 2π visible projection is executable comparison evidence. | `implemented-evidence` | Current directed-cover implementation and Chapter 1. It is not the EDCM answer unless the required causal chain is demonstrated. |
 | `M6` | Matching a 720° period is sufficient to identify the directed cover with the Möbius carrier. | `negative-boundary` | Period agreement alone does not preserve initiation, sidedness, source, inverse, parentage, or completion. |
 | `M7` | The seam or first angular anchor may be chosen from hash phase, normalization order, or visual convenience. | `negative-boundary` | Initiation must derive from the declared hidden-zero/source boundary and remain uniquely auditable. |
 | `M8` | The framed root-loop quotient `(t, ε) ~ (t + n, (-1)^n ε)` supplies a native C1 transition law for Structural Null initiation, 360° frame change, 720° return, and exact inverse motion. | `implemented-evidence` | [`DIRECT_MOBIUS_CANDIDATE_V06.md`](DIRECT_MOBIUS_CANDIDATE_V06.md) and `src/ucns/direct_mobius.py`; scope is the exact v0.6 minimum witness packet and framed central root loop only. It does not select C1 or define arbitrary element assignment or completion. |
 | `M9` | On the exact framed root loop, `(p,+1) ↔ p` and `(p,-1) ↔ p+1` define a reversible C1↔C2 chart preserving the required causal evidence. | `implemented-evidence` | [`ROOT_LOOP_COVER_CHART_V07.md`](ROOT_LOOP_COVER_CHART_V07.md) and `src/ucns/root_loop_chart.py`; all 14 initiations round-trip and initiation/360°/720°/inverse commute. Fixed breadth one is display scope, not canonical `B` or arbitrary assignment. |
 | `M10` | Exact local-frame `u` and global-side `εu` descriptions form a reversible transverse sidecar envelope over the v0.7 root chart, not a transverse directed-cover embedding. | `implemented-evidence` | [`EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md`](EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md) and `src/ucns/transverse_envelope.py`; the named exact policy validates 45 rational stress fibers across all initiation/convention/transition identities, while 28 collision witnesses show that distinct sidecars share one actual cover coordinate. F12/F13 remain v0.7-only and no convention is selected. |
+| `M11` | Four declared radial laws can be evaluated as actual `LiftedCarrierPoint` coordinates without selecting one; signed local affine breadth is admissible on the bounded v0.10 domain. | `implemented-evidence` | [`CARRIER_COORDINATE_ADMISSIBILITY_V010.md`](CARRIER_COORDINATE_ADMISSIBILITY_V010.md) and `src/ucns/carrier_coordinate.py`; 5,040 images and 20,160 motion rows show signed local affine breadth is injective, zero-restricting, convention-invariant, and motion-commuting over 45 materialized rational fibers. Constant and unsigned laws retain 1,848 collision links; signed global retains 2,464 motion failures. The result is finite, nonselecting, and not canonical `B`. |
 
 ## 5. Composition and retained-structure claims
 
@@ -85,9 +86,9 @@ Only a separate explicit authority decision can change a claim’s standing to c
 
 ## 8. Open obligations
 
-The following remain `unresolved` after the v0.9 transverse-envelope repair:
+The following remain `unresolved` after the v0.10 bounded coordinate experiment:
 
-1. an injective transverse or radial directed-cover coordinate, or a separating witness covering every declared admissible map;
+1. extension of the signed-local radial candidate beyond the finite 45-fiber binary64 materialization domain to arbitrary exact rationals and real continuity;
 2. the exact element-assignment law;
 3. initiation and transition laws beyond the minimum witness and bounded exact-rational domain;
 4. canonical state equivalence beyond the C1 experiment candidate;
@@ -108,7 +109,9 @@ The post-reset gain is a cleaner burden of proof. UCNS now has a bounded native
 C1 law joining hidden-zero initiation to 360° frame change, 720° root-state
 return, and inverse motion; an exact reversible C1↔C2 root chart; and a
 corrected exact-rational transverse envelope that preserves two descriptions
-while exposing its own cover-coordinate collisions. It does not yet have an
-injective transverse or radial map, arbitrary-element assignment, recursive
-composition, scoped completion, or evidence that every admissible extension
-must fail.
+while exposing its own cover-coordinate collisions; and a bounded coordinate
+experiment that admits signed local affine breadth while retaining three
+candidate failures. It does not yet have arbitrary-rational or real-continuous
+extension, arbitrary-element assignment, canonical breadth, recursive
+composition, scoped completion, or evidence that the bounded candidate
+generalizes.

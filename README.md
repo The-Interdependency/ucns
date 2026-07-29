@@ -43,10 +43,13 @@ transverse overclaim: v0.8 constructed an exact transverse sidecar over the
 unchanged v0.7 root chart, not a transverse directed-cover embedding. The
 replacement preserves reversible local-frame and global-side descriptions over
 a bounded exact-rational stress domain, pins exact comparison semantics, and
-exposes actual-cover coordinate collisions. Transverse and radial cover
-coordinates, arbitrary-element assignment, higher coordinates, and global
-C1/C2 equivalence remain open. Any eventual selection cannot become universal
-UCNS canon or transfer proof or measurement validity.
+exposes actual-cover coordinate collisions. v0.10 evaluates four explicit
+radial laws in actual directed-cover breadth and angle fields. Signed local
+affine breadth is admissible on the declared 45-fiber materialization domain;
+three alternatives retain collision or motion-failure evidence. No law is
+selected, and arbitrary-element assignment, real continuity, higher
+coordinates, and global C1/C2 equivalence remain open. Any eventual selection
+cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -66,8 +69,9 @@ dimension has a hidden global default.
 ## Current implemented carrier candidates and relationship evidence
 
 The repository retains two implemented carrier candidates, one bounded
-relationship experiment, and one corrective envelope experiment without
-selecting a carrier or coordinate convention:
+relationship experiment, one corrective envelope experiment, and one bounded
+coordinate-admissibility experiment without selecting a carrier, coordinate
+law, or convention:
 
 1. The **directed twofold branched angular cover** remains executable comparison
    evidence. It is not an eligible EDCM target unless an explicit reversible map
@@ -89,6 +93,12 @@ selecting a carrier or coordinate convention:
    round-trip and commute exactly across a 45-fiber rational stress grid. The
    experiment also proves that distinct sidecars collide at one actual
    directed-cover coordinate, so it does not extend the v0.7 chart verdict.
+5. The **bounded carrier-coordinate admissibility experiment** maps four
+   explicit radial laws into actual `LiftedCarrierPoint` breadth and angle
+   fields. Signed local affine breadth passes injectivity, zero restriction,
+   convention invariance, and motion commutation on the declared 45-fiber
+   domain. The other candidates retain their exact failures. Passing does not
+   select the law or canonize faithful breadth.
 
 The directed-cover comparison candidate provides:
 
@@ -161,8 +171,10 @@ This profile makes the observation boundary executable. It does not itself
 supply carrier coordinates or higher-gonol composition laws; the separate v0.6
 candidate supplies the bounded native framed root-loop law and v0.7 supplies
 its bounded reversible chart into the directed cover. v0.9 retains exact
-rational transverse evidence only as an explicit sidecar and demonstrates why
-an injective transverse or radial assignment is still required.
+rational transverse evidence only as an explicit sidecar. v0.10 then evaluates
+four actual-cover radial laws and finds signed local affine breadth admissible
+on the declared 45-fiber materialization domain without selecting it or
+claiming arbitrary-rational or real-continuous extension.
 
 ### EDCM completion-motion evidence
 
@@ -236,6 +248,26 @@ See
 [`docs/EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md`](docs/EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md)
 and the
 [`v0.8 correction`](docs/TRANSVERSE_STRIP_COVER_CHART_V08.md).
+
+### Bounded carrier-coordinate admissibility
+
+- declares constant, unsigned-local, signed-local, and signed-global radial
+  candidates with fixed identities and formulas;
+- counts only actual `LiftedCarrierPoint.breadth` and `.angle` fields as mapped
+  coordinates;
+- pins `carrier-coordinate-admissibility-exact@0.10.0` with no hidden
+  tolerance;
+- validates 5,040 images, 112 zero-fiber restrictions, 2,520 convention
+  witnesses, and 20,160 motion witnesses;
+- retains 1,848 actual-cover collision links and 2,464 signed-global
+  odd-motion failures;
+- records signed local affine breadth as
+  `admissible-on-declared-domain`; and
+- makes no carrier-selection, faithful-breadth, arbitrary-element,
+  real-continuity, completion, EDCM-activation, or METAPAT-activation claim.
+
+See
+[`docs/CARRIER_COORDINATE_ADMISSIBILITY_V010.md`](docs/CARRIER_COORDINATE_ADMISSIBILITY_V010.md).
 
 ### Directed carrier floor
 
@@ -362,17 +394,17 @@ unresolved `self::` calls.
 ## Build doctrine
 
 This build is pinned to
-`The-Interdependency/skill-lib@289d4959f7920efc214f180cca3443d8090f4095`.
+`The-Interdependency/skill-lib@2b24be24947223b86440f59f1bd9766130f9cc11`.
 See [`.agents/skills/README.md`](.agents/skills/README.md) and
 [`STACK_MANIFEST.json`](STACK_MANIFEST.json).
 
 hmmm: exact word observation, trajectory retention, and the bounded native
 Möbius root loop meet the directed cover through the v0.7 exact reversible
-chart. The transverse sidecar does not. The next truth obligations are an
-injective transverse or radial map—or a separating impossibility
-witness—plus arbitrary-element assignment, reconstruction of
-circle/epicycle/disk/sphere transition laws from the pinned A0-betatest
-specimen, a deterministic full-MultiWOZ adapter and run receipt, higher-gonol
-composition, and evidence from failures surfaced across complete corpora —
-without allowing present metric projections to select the geometry that
-validates them.
+chart. The v0.9 sidecar does not embed by itself; v0.10 supplies one bounded
+signed-local route into actual cover fields without selecting it. The next
+truth obligations are arbitrary-rational and real-continuity pressure,
+arbitrary-element assignment, reconstruction of circle/epicycle/disk/sphere
+transition laws from the pinned A0-betatest specimen, a deterministic
+full-MultiWOZ adapter and run receipt, higher-gonol composition, and evidence
+from failures surfaced across complete corpora—without allowing present metric
+projections to select the geometry that validates them.

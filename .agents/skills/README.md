@@ -3,7 +3,7 @@
 Canonical source: `The-Interdependency/skill-lib`
 
 Pinned source commit:
-`289d4959f7920efc214f180cca3443d8090f4095`
+`2b24be24947223b86440f59f1bd9766130f9cc11`
 
 Vendored verbatim:
 
@@ -24,7 +24,7 @@ Drift gate:
 ```text
 python <skill-lib>/tools/check_consumer_drift.py . \
   --canon-root <skill-lib> \
-  --sha 289d4959f7920efc214f180cca3443d8090f4095 \
+  --sha 2b24be24947223b86440f59f1bd9766130f9cc11 \
   --strict-sha --require-vendored
 ```
 

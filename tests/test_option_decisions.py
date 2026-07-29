@@ -81,7 +81,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.6.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.7.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -130,6 +130,25 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "not a transverse directed-cover embedding" in decisions[
         "exact-rational-transverse-envelope-correction"
     ]
+    assert "bounded-carrier-coordinate-admissibility" in decisions
+    assert "signed local affine radial" in decisions[
+        "bounded-carrier-coordinate-admissibility"
+    ]
+    assert "selection effect" in decisions[
+        "bounded-carrier-coordinate-admissibility"
+    ]
+    coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
+    assert coordinate_dimension["display_rule"] == "display-all-four"
+    assert coordinate_dimension["selection_effect"] == "none"
+    assert coordinate_dimension["display_order"] == [
+        "constant-root-breadth",
+        "unsigned-local-radial",
+        "signed-local-affine-radial",
+        "signed-global-affine-radial",
+    ]
+    assert {
+        choice["standing"] for choice in coordinate_dimension["choices"]
+    } == {"experiment-candidate"}
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:

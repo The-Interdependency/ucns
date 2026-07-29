@@ -12,9 +12,11 @@
 historical recovery specimen are pinned, an exact observation profile, native
 framed root loop, and bounded reversible root chart are implemented. v0.9
 reclassifies the attempted v0.8 transverse extension as an exact sidecar
-envelope and records its actual-cover coordinate collisions. An injective
-transverse or radial map, arbitrary assignment, epicyclic geometry, completion,
-and higher-composition mathematics remain incomplete.
+envelope and records its actual-cover coordinate collisions. v0.10 evaluates
+four actual-cover radial laws over the complete 45-fiber stress domain; signed
+local affine breadth is admissible on that bounded domain without selection.
+Arbitrary assignment, real continuity, canonical breadth, epicyclic geometry,
+completion, and higher-composition mathematics remain incomplete.
 
 ## Authority boundary
 
@@ -243,9 +245,12 @@ remains executable comparison evidence. Its exact reversible relation to the
 required Möbius construction is supported for the bounded framed root loop.
 The attempted v0.8 transverse extension is now classified as an exact
 transverse sidecar envelope: its coordinate descriptions are reversible, but
-the sidecar is not represented in the actual directed cover. Transverse,
-radial, arbitrary-element, higher-geometric, and completion extension or
-incompatibility remains open.
+the sidecar is not represented in the actual directed cover. v0.10 separately
+maps four declared laws into actual cover breadth and angle fields. Signed local
+affine breadth survives the bounded rational materialization domain; constant,
+unsigned, and signed-global laws retain collision or motion-failure evidence.
+No candidate is selected, and arbitrary-element, real-continuous,
+higher-geometric, and completion extension or incompatibility remains open.
 
 ## Choices still genuinely open
 
@@ -277,13 +282,18 @@ scope, and bounded motion for all fourteen minimum-packet initiations. v0.9
 preserves the useful v0.8 local-frame/global-side algebra as an exact-rational
 envelope while demonstrating that distinct transverse values collide at one
 actual cover coordinate. A transverse or radial chart must supply an injective
-cover coordinate before extending the v0.7 relationship verdict.
+cover coordinate before extending the v0.7 relationship verdict. v0.10 supplies
+one such coordinate candidate only on its declared 45-fiber binary64
+materialization domain. That result is useful bounded evidence, not a global
+chart verdict or faithful-breadth selection.
 
 **Formal incompatibility.** Prove that the cover and Möbius construction encode
 different structures and keep both as explicitly incompatible options. The
-v0.9 sidecar collisions disprove one attempted transverse embedding but do not
-prove that every admissible map fails. A valid incompatibility witness must
-declare the admissible map family and separate all of it.
+v0.9 sidecar collisions disprove one attempted transverse embedding. v0.10
+declares four radial laws, rejects three on exact witnesses, and admits signed
+local affine breadth on the bounded domain. The admitted candidate prevents a
+separating claim for that declared family while leaving global incompatibility
+unproved.
 
 ### Higher-gonol composition above words
 
@@ -423,6 +433,8 @@ that turns those roles, orientations, scales, and trajectories into one flat
 sequence or one unreceipted scalar has changed the EDCM question before the
 experiment begins. The exact root-loop chart is evidence rather than visual
 analogy. The attempted transverse extension is retained as exact envelope
-algebra plus a concrete nonembedding witness. An injective transverse or radial
-map, arbitrary assignment, epicyclic circle, disk, sphere, composition, and
-completion laws remain the living recovery boundary.
+algebra plus a concrete nonembedding witness. The v0.10 signed-local radial
+candidate survives bounded actual-cover materialization without acquiring
+selection authority. Arbitrary-rational and real-continuity extension,
+arbitrary assignment, canonical breadth, epicyclic circle, disk, sphere,
+composition, and completion laws remain the living recovery boundary.

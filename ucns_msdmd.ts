@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
         "summary": "exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "element-assignment law, an injective transverse or radial directed-cover coordinate, arbitrary-element assignment, real-valued continuity, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "element-assignment law, global or real-continuous transverse/radial directed-cover coordinates beyond the v0.10 bounded candidate domain, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -1422,6 +1422,96 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/carrier.py",
       "id": "directed_carrier_floor"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a candidate loses transverse sign, collapses fibers, or fails to commute with root motion",
+        "since": "2026-07-29",
+        "then": "the exact collision or motion witness remains in its result and the candidate is rejected only on the declared finite domain"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_admissibility_retains_failures"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "a candidate is injective and passes every declared criterion on the bounded exact-rational domain",
+        "since": "2026-07-29",
+        "then": "its status is admissible-on-declared-domain while carrier selection, faithful-breadth canon, arbitrary-element assignment, EDCM activation, and METAPAT activation remain absent"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_constructive_result_does_not_select"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the v0.10 experiment is constructed",
+        "since": "2026-07-29",
+        "then": "every candidate has a fixed name, version, formula, coordinate basis, code reference, and scope; all results remain visible and selection_effect remains none"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_family_is_explicit_and_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a v0.10 report is constructed or replaced through the public dataclass API",
+        "since": "2026-07-29",
+        "then": "every expected candidate, event, fiber, convention, and transition key appears exactly once in declared order and collision witnesses are re-derived from the actual cover identities"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_report_validates_complete_witness_identities"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "a candidate maps one transverse envelope",
+        "since": "2026-07-29",
+        "then": "the declared exact breadth and unchanged lifted turn materialize as the breadth and angle of an actual LiftedCarrierPoint; wrapper-only identity does not count as coordinate injectivity"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_uses_actual_cover_fields"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any declared v0.10 candidate receives exact transverse zero",
+        "since": "2026-07-29",
+        "then": "its actual directed-cover point equals the unchanged v0.7 root materialization under the pinned exact comparison policy"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "carrier_coordinate_zero_fiber_restricts_to_v07"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact coordinate adapters, binary64 materialization identities, exhaustive witness-key validation, collision classes, root restrictions, convention witnesses, and motion witnesses",
+        "module_kind": "experiment",
+        "module_name": "carrier_coordinate",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "CarrierCoordinateCandidate, CarrierCoordinateImage, CarrierCoordinateCandidateResult, CarrierCoordinateAdmissibilityReport, carrier_coordinate_candidates, map_transverse_to_actual_cover, run_v010_carrier_coordinate_experiment",
+        "requires": "edcm_exact_rational_transverse_envelope_experiment, directed_carrier_floor, explicit_comparison_policy_layer",
+        "rollback": "remove this module, its exports, tests, and v0.10 document while retaining the v0.5 through v0.9 evidence",
+        "rollout": "explicit UCNS-only v0.10 bounded candidate experiment; no carrier selection, faithful-breadth canon, arbitrary-element assignment, global equivalence, completion, EDCM activation, or METAPAT activation",
+        "since": "2026-07-29",
+        "storage_boundary": "none",
+        "summary": "evaluates a declared family of exact-rational transverse-to-cover coordinate laws against actual directed-cover materialization, injectivity, root restriction, convention invariance, and motion commutation",
+        "tests": "tests/test_carrier_coordinate.py",
+        "unresolved": "real-valued continuity, arbitrary-element assignment, canonical faithful breadth, global Mobius-to-cover equivalence, scoped completion, higher-gonol composition, circle-epicycle-disk-sphere transitions",
+        "user_data_boundary": "exact source, Structural Null cause, initiation identity, order, multiplicity, sidedness, parentage, and native completion scope remain linked through every candidate coordinate image"
+      },
+      "file": "src/ucns/carrier_coordinate.py",
+      "id": "edcm_carrier_coordinate_admissibility_experiment"
     },
     {
       "block": "CONTRACTS",
@@ -2856,6 +2946,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_carrier.py",
       "id": "check_visible_projection_and_branch_law"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_candidate_image_materializes_declared_breadth_and_root_angle",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_uses_actual_cover_fields",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_actual_cover_fields"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_signed_local_candidate_is_bounded_admissible_without_selection",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_constructive_result_does_not_select",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_constructive_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rejected_candidates_retain_exact_collision_and_motion_witnesses",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_admissibility_retains_failures",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_failure_retention"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_candidate_family_is_explicit_ordered_and_nonselecting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_family_is_explicit_and_nonselecting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_family_identity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_every_candidate_zero_fiber_is_the_v07_actual_root",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_zero_fiber_restricts_to_v07",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_root_restriction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_report_rejects_count_preserving_identity_substitution",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "carrier_coordinate_report_validates_complete_witness_identities",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_carrier_coordinate.py",
+      "id": "check_carrier_coordinate_witness_identities"
     },
     {
       "block": "CHECKS",
@@ -4555,6 +4723,132 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_carrier_constructor",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_actual_cover_fields",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_actual_cover_fields",
+      "to": "self::test_candidate_image_materializes_declared_breadth_and_root_angle"
+    },
+    {
+      "from": "check_carrier_coordinate_actual_cover_fields",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_actual_cover_fields",
+      "to": "carrier_coordinate_uses_actual_cover_fields"
+    },
+    {
+      "from": "check_carrier_coordinate_actual_cover_fields",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_actual_cover_fields",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_constructive_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_constructive_boundary",
+      "to": "self::test_signed_local_candidate_is_bounded_admissible_without_selection"
+    },
+    {
+      "from": "check_carrier_coordinate_constructive_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_constructive_boundary",
+      "to": "carrier_coordinate_constructive_result_does_not_select"
+    },
+    {
+      "from": "check_carrier_coordinate_constructive_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_constructive_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_failure_retention",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_failure_retention",
+      "to": "self::test_rejected_candidates_retain_exact_collision_and_motion_witnesses"
+    },
+    {
+      "from": "check_carrier_coordinate_failure_retention",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_failure_retention",
+      "to": "carrier_coordinate_admissibility_retains_failures"
+    },
+    {
+      "from": "check_carrier_coordinate_failure_retention",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_failure_retention",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_family_identity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_family_identity",
+      "to": "self::test_candidate_family_is_explicit_ordered_and_nonselecting"
+    },
+    {
+      "from": "check_carrier_coordinate_family_identity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_family_identity",
+      "to": "carrier_coordinate_family_is_explicit_and_nonselecting"
+    },
+    {
+      "from": "check_carrier_coordinate_family_identity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_family_identity",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_root_restriction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_root_restriction",
+      "to": "self::test_every_candidate_zero_fiber_is_the_v07_actual_root"
+    },
+    {
+      "from": "check_carrier_coordinate_root_restriction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_root_restriction",
+      "to": "carrier_coordinate_zero_fiber_restricts_to_v07"
+    },
+    {
+      "from": "check_carrier_coordinate_root_restriction",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_root_restriction",
+      "to": "python3"
+    },
+    {
+      "from": "check_carrier_coordinate_witness_identities",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_witness_identities",
+      "to": "self::test_report_rejects_count_preserving_identity_substitution"
+    },
+    {
+      "from": "check_carrier_coordinate_witness_identities",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_witness_identities",
+      "to": "carrier_coordinate_report_validates_complete_witness_identities"
+    },
+    {
+      "from": "check_carrier_coordinate_witness_identities",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_carrier_coordinate_witness_identities",
       "to": "python3"
     },
     {
@@ -6854,6 +7148,34 @@ export default defineMsdmdCollection({
       "to": "ucns_canonical"
     },
     {
+      "from": "edcm_carrier_coordinate_admissibility_experiment",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_carrier_coordinate_admissibility_experiment",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_carrier_coordinate_admissibility_experiment",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_carrier_coordinate_admissibility_experiment",
+      "to": "directed_carrier_floor"
+    },
+    {
+      "from": "edcm_carrier_coordinate_admissibility_experiment",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_carrier_coordinate_admissibility_experiment",
+      "to": "edcm_exact_rational_transverse_envelope_experiment"
+    },
+    {
+      "from": "edcm_carrier_coordinate_admissibility_experiment",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_carrier_coordinate_admissibility_experiment",
+      "to": "explicit_comparison_policy_layer"
+    },
+    {
       "from": "edcm_completion_motion_evidence",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -7090,6 +7412,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "directed_carrier_floor"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_carrier_coordinate_admissibility_experiment"
     },
     {
       "from": "foundations_public_surface",
