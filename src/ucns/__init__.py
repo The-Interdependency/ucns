@@ -4,7 +4,7 @@
 #   module_kind: schema
 #   summary: exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: option decisions, EDCM observation and completion-motion evidence, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 Mobius carrier experiment, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,9 +12,9 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, compatibility profile, and research infrastructure
+#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, compatibility profile, and research infrastructure
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
 #   unresolved: element-assignment law, formal Mobius coordinates, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
@@ -247,6 +247,35 @@ from .edcm_motion import (
     SourceProvenance,
     record_word_motion,
 )
+from .mobius_experiment import (
+    BREADTH_CANDIDATE_IDS,
+    FALSIFIER_IDS,
+    MINIMUM_WITNESS_TEXTS,
+    PRODUCT_CANDIDATE_IDS,
+    REQUIRED_COMMUTATION_LABELS,
+    REQUIRED_MAP_DISTINCTIONS,
+    V05_EXPERIMENT_SCHEMA_ID,
+    V05_EXPERIMENT_SCHEMA_VERSION,
+    V05_SELECTION_EFFECT,
+    CandidateTrace,
+    CarrierExperimentError,
+    CarrierExperimentReport,
+    CarrierExperimentState,
+    CarrierMapEvidence,
+    CarrierRelationship,
+    FalsifierResult,
+    FalsifierVerdict,
+    MapCommutationWitness,
+    MetricDisplay,
+    SeparatingWitness,
+    SourceWitness,
+    build_v05_witness_packet,
+    directed_cover_trace,
+    evaluate_candidate_trace,
+    evaluate_chart_map,
+    evaluate_separating_witness,
+    run_v05_carrier_experiment,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -335,7 +364,19 @@ __all__ = [
     "EdcmMotionError", "EdcmMotionObservation", "EpicyclicParentage",
     "EvidenceStatus", "GeometricAssignment", "GeometryKind", "HmmmBoundary",
     "LawStanding", "MotionStep", "ObservedElement", "ScalarProjection",
-    "SourceProvenance", "record_word_motion", "BRIDGE_SCHEMA_ID",
+    "SourceProvenance", "record_word_motion",
+    "BREADTH_CANDIDATE_IDS", "FALSIFIER_IDS", "MINIMUM_WITNESS_TEXTS",
+    "PRODUCT_CANDIDATE_IDS", "REQUIRED_COMMUTATION_LABELS",
+    "REQUIRED_MAP_DISTINCTIONS", "V05_EXPERIMENT_SCHEMA_ID",
+    "V05_EXPERIMENT_SCHEMA_VERSION", "V05_SELECTION_EFFECT",
+    "CandidateTrace", "CarrierExperimentError", "CarrierExperimentReport",
+    "CarrierExperimentState", "CarrierMapEvidence", "CarrierRelationship",
+    "FalsifierResult", "FalsifierVerdict", "MapCommutationWitness",
+    "MetricDisplay", "SeparatingWitness", "SourceWitness",
+    "build_v05_witness_packet", "directed_cover_trace",
+    "evaluate_candidate_trace", "evaluate_chart_map",
+    "evaluate_separating_witness", "run_v05_carrier_experiment",
+    "BRIDGE_SCHEMA_ID",
     "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",
     "EdcmMetapatBridgeRecord", "InformationLossRecord",
