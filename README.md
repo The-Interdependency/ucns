@@ -51,10 +51,14 @@ separates that surviving candidate's exact rational coordinate from its
 binary64 rendering. The affine law has an exact inverse on the declared
 rational interval, while explicit breadth and lifted-turn witnesses prove that
 `LiftedCarrierPoint` storage is not injective over the arbitrary-rational
-domain. No law is selected, and arbitrary-element assignment, full-carrier real
-continuity, higher coordinates, and global C1/C2 equivalence remain open. Any
-eventual selection cannot become universal UCNS canon or transfer proof or
-measurement validity.
+domain. v0.12 now specifies, without adding runtime behavior, the real
+product-quotient topology and falsifiers required to extend that candidate into
+a complete carrier relationship. It separates the continuous affine non-null
+component from the still-unresolved seam, Structural Null attachment, causal
+initiation, and arbitrary-element assignment. No law is selected, and
+full-carrier real continuity, higher coordinates, and global C1/C2 equivalence
+remain open. Any eventual selection cannot become universal UCNS canon or
+transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -111,6 +115,16 @@ law, or convention:
    and lifted-turn witnesses collide in binary64. Exact-law evidence therefore
    survives without pretending the float representation is arbitrary-rational
    or selected.
+
+The documentation-only **v0.12 full-carrier real-continuity specification**
+defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
+cylinder, local/global transverse distinction, and ten separating falsifiers.
+It records that the affine real coordinate component is continuous while the
+topology attaching Structural Null and causal initiation remains unresolved.
+It adds no implemented carrier surface or activation.
+
+See
+[`docs/FULL_CARRIER_CONTINUITY_SPEC_V012.md`](docs/FULL_CARRIER_CONTINUITY_SPEC_V012.md).
 
 The directed-cover comparison candidate provides:
 
@@ -436,8 +450,10 @@ Möbius root loop meet the directed cover through the v0.7 exact reversible
 chart. The v0.9 sidecar does not embed by itself; v0.10 supplies one bounded
 signed-local route into actual cover fields without selecting it. v0.11
 preserves that route exactly over the rational transverse interval and records
-why binary64 cannot carry its arbitrary-rational identity. The next truth
-obligations are full-carrier real continuity, arbitrary-element assignment,
+why binary64 cannot carry its arbitrary-rational identity. v0.12 specifies the
+real topological candidate and demonstrates why smooth affine coordinates alone
+cannot supply the seam or Structural Null initiation. The next truth obligations
+are executable full-carrier attachment evidence, arbitrary-element assignment,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
 A0-betatest specimen, a deterministic full-MultiWOZ adapter and run receipt,
 higher-gonol composition, and evidence from failures surfaced across complete

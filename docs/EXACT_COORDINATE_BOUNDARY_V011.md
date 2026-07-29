@@ -124,6 +124,14 @@ remains valid bounded evidence: none of those 45 values collided. v0.11 shows
 why that finite pass cannot generalize to every exact rational after binary64
 materialization.
 
+## Follow-on specification
+
+v0.12 defines the documentation-only topology and falsifier boundary for a
+possible real-continuous extension. It separates the ordinary affine non-null
+coordinate component from seam provenance, Structural Null attachment, causal
+initiation, source preservation, and carrier activation. See
+[`FULL_CARRIER_CONTINUITY_SPEC_V012.md`](FULL_CARRIER_CONTINUITY_SPEC_V012.md).
+
 ## Reproduction
 
 ```bash
