@@ -81,7 +81,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.8.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.9.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -141,6 +141,10 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "lossy binary64 renderings" in decisions[
         "exact-coordinate-representation-boundary"
     ]
+    assert "partial-initiation-boundary" in decisions
+    assert "fourteen minimum-packet word initiations" in decisions[
+        "partial-initiation-boundary"
+    ]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
     assert coordinate_dimension["selection_effect"] == "none"
@@ -167,6 +171,24 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert {
         choice["standing"] for choice in representation_dimension["choices"]
     } == {"experiment-candidate"}
+    attachment_dimension = option_dimension("initiation-attachment")
+    assert attachment_dimension["display_rule"] == (
+        "preserve-all-seam-alternatives"
+    )
+    assert attachment_dimension["display_order"] == [
+        "marked-source-bound-partial-attachment",
+        "intrinsic-derived-initiation-seam",
+        "invariant-initiation-equivalence-class",
+    ]
+    assert attachment_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in attachment_dimension["choices"]
+    } == {
+        "marked-source-bound-partial-attachment": "implemented-candidate",
+        "intrinsic-derived-initiation-seam": "unresolved",
+        "invariant-initiation-equivalence-class": "unresolved",
+    }
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:

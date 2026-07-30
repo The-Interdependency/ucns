@@ -1,8 +1,8 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.8.0",
+  "schema_version": "1.9.0",
   "authority": "Erin Spencer",
-  "recorded_on": "2026-07-29",
+  "recorded_on": "2026-07-30",
   "identifier": {
     "value": "UCNS",
     "canonical_expansion": null,
@@ -200,6 +200,10 @@
     {
       "id": "exact-coordinate-representation-boundary",
       "statement": "v0.11 preserves the signed local affine candidate as exact rational coordinate evidence with exact inverse u=2*(B-1), classifies LiftedCarrierPoint values as linked lossy binary64 renderings, and retains explicit breadth and lifted-turn collision witnesses. This establishes the exact-versus-rendered representation boundary without selecting a carrier, canonizing faithful breadth, proving the full real-continuous relationship, or activating EDCM or METAPAT."
+    },
+    {
+      "id": "partial-initiation-boundary",
+      "statement": "v0.13 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It preserves 360-degree change, 720-degree local return, and append-only history while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
     }
   ],
   "current_profile": {
@@ -301,6 +305,34 @@
       "display_order": [
         "signed-local-exact-rational-coordinate",
         "linked-binary64-carrier-rendering"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "initiation-attachment",
+      "question": "Which seam construction may attach the EDCM Structural Null prestate to an initiated non-null carrier without hiding unresolved alternatives?",
+      "choices": [
+        {
+          "id": "marked-source-bound-partial-attachment",
+          "standing": "implemented-candidate",
+          "evidence": "v0.13 supplies fourteen source-provenance marked seams and twist receipts over the exact rational root and fixed minimum packet. Numeric coordinate cuts remain nonauthoritative views. RC01 and RC03 remain inconclusive, and the result has no selection effect."
+        },
+        {
+          "id": "intrinsic-derived-initiation-seam",
+          "standing": "unresolved",
+          "evidence": "No invariant currently derives one seam from the complete carrier topology without a marked source record."
+        },
+        {
+          "id": "invariant-initiation-equivalence-class",
+          "standing": "unresolved",
+          "evidence": "No implemented equivalence class currently preserves every initiation consequence across coordinate descriptions."
+        }
+      ],
+      "display_rule": "preserve-all-seam-alternatives",
+      "display_order": [
+        "marked-source-bound-partial-attachment",
+        "intrinsic-derived-initiation-seam",
+        "invariant-initiation-equivalence-class"
       ],
       "selection_effect": "none"
     },
@@ -638,6 +670,7 @@
     "Retain the v0.9 exact-rational transverse envelope and its reversible local-frame/global-side descriptions as sidecar evidence only; actual-cover collisions prohibit treating it as a transverse chart or extending F12/F13.",
     "Retain all four v0.10 carrier-coordinate candidates and their complete bounded evidence. The signed local affine radial law is admissible only on the declared exact-rational domain; this does not select a carrier, canonize faithful breadth, establish real continuity, or authorize downstream activation.",
     "Retain the v0.11 exact signed-local coordinate and every binary64 rendering together. The exact affine law and inverse hold over the declared rational interval, while explicit breadth and lifted-turn collisions prohibit binary64 LiftedCarrierPoint storage from serving as arbitrary-rational evidence identity.",
+    "Retain the v0.13 marked source-bound partial attachment together with the unresolved intrinsic-seam and invariant-equivalence-class alternatives. Its typed disjoint prestate, fourteen twist receipts, and append-only root motion do not establish arbitrary-real seam limits, arbitrary-element transverse assignment, complete carrier continuity, or selection.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -663,8 +696,8 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "The v0.11 signed local affine radial law is exact and invertible over the declared rational transverse interval. Binary64 LiftedCarrierPoint materialization is explicitly noninjective and remains a linked rendering. Real continuity of the complete carrier relationship, arbitrary elements, canonical faithful breadth, higher geometry, and completion remain unresolved.",
-    "Formal coordinates and observable consequences of singular superpositioned Structural Null and the new-gonol initiation twist.",
+    "The v0.13 marked source-bound partial attachment joins the typed Structural Null prestate to the exact rational root over the minimum packet. Arbitrary-real seam-side continuity, arbitrary-element transverse assignment, canonical faithful breadth, higher geometry, and completion remain unresolved.",
+    "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
     "Whether visual glyph identity requires a pinned font, shaping engine, and Unicode version in addition to exact code-point identity.",

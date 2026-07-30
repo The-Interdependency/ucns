@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
         "summary": "exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "element-assignment law, real-continuous full-carrier relationship beyond the v0.11 exact-rational representation boundary, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "element-assignment law, arbitrary-real seam-side limits and full-carrier relationship beyond the v0.13 partial root attachment, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -2074,6 +2074,96 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/experiments.py",
       "id": "reproducible_witness_experiment_pipeline"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an exact rational signed-local coordinate enters the declared sheet involution",
+        "since": "2026-07-30",
+        "then": "D maps B(u),t to B(-u),t+1 exactly and applying D twice restores the original coordinate"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_exact_quotient_compatibility"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an attached root state advances by two successive visible turns",
+        "since": "2026-07-30",
+        "then": "one turn restores visible position and changes complete local state, two turns restore local state, and both source-linked motion receipts remain appended"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_motion_preserves_360_720_and_history"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "the v0.13 report is produced",
+        "since": "2026-07-30",
+        "then": "RC01 through RC10 appear in order with bounded evidence or honest inconclusive status while carrier selection and consumer activation remain absent"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_report_executes_rc_packet_without_selection"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "one source-linked initiation is represented under different numeric coordinate cuts",
+        "since": "2026-07-30",
+        "then": "the marked seam retains one event and boundary-manifestation identity while each numeric cut remains a nonauthoritative view"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_seam_is_provenance_bearing"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a v0.13 initiation attachment is constructed",
+        "since": "2026-07-30",
+        "then": "typed Structural Null remains a disjoint marked prestate connected to a non-null exact root only by the declared partial initiation relation"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_structural_null_topology_is_explicit"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "each minimum-packet word gonol initiates",
+        "since": "2026-07-30",
+        "then": "exactly one twist receipt links its typed prestate, marked seam, exact source occurrence, native post-state, and exact root coordinate"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "partial_initiation_twist_receipt_is_source_bound"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact validation helpers and fixed RC01-RC10 result construction",
+        "module_kind": "experiment",
+        "module_name": "initiation_boundary",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "StructuralNullTopologyKind, MarkedInitiationSeam, SeamCoordinateView, TwistReceipt, PartialInitiationAttachment, CarrierMotionReceipt, InitiatedCarrierState, ContinuityFalsifierResult, PartialInitiationBoundaryReport, build_partial_initiation_attachments, view_marked_seam_at_cut, initiate_carrier_state, advance_attached_state, exact_sheet_involution, run_v013_partial_initiation_boundary_experiment",
+        "requires": "edcm_native_direct_mobius_candidate, edcm_exact_coordinate_representation_boundary",
+        "rollback": "remove this module, its exports, tests, and v0.13 document while retaining the v0.12 specification and all earlier evidence",
+        "rollout": "explicit UCNS-only v0.13 partial-attachment experiment; no carrier selection, canonical faithful breadth, arbitrary-element assignment, full real-continuity theorem, EDCM activation, or METAPAT activation",
+        "since": "2026-07-30",
+        "storage_boundary": "none",
+        "summary": "attaches the typed Structural Null prestate to exact root coordinates through source-provenance marked seams and retained twist receipts",
+        "tests": "tests/test_initiation_boundary.py",
+        "unresolved": "arbitrary-real seam-side limits, intrinsic seam derivation, arbitrary-element transverse assignment, higher geometry, higher-gonol composition, scoped completion, and global carrier relationship",
+        "user_data_boundary": "exact source witness, boundary manifestation, word occurrence, offsets, parentage, and initiation provenance remain linked without normalization"
+      },
+      "file": "src/ucns/initiation_boundary.py",
+      "id": "edcm_partial_initiation_boundary"
     },
     {
       "block": "CONTRACTS",
@@ -3661,6 +3751,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_experiments.py",
       "id": "check_separate_authorship_records"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_marked_seam_survives_numeric_coordinate_cut_movement",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_seam_is_provenance_bearing",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_marked_seam_provenance"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_360_changes_720_returns_and_two_motion_receipts_survive",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_motion_preserves_360_720_and_history",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_motion_history"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_v013_report_is_complete_bounded_and_nonselecting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_report_executes_rc_packet_without_selection",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_rc_packet"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_exact_sheet_involution_matches_signed_local_quotient",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_exact_quotient_compatibility",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_sheet_involution"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_structural_null_is_disjoint_typed_prestate_with_partial_edges",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_structural_null_topology_is_explicit",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_structural_null_topology"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_every_word_attachment_has_one_source_bound_twist_receipt",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "partial_initiation_twist_receipt_is_source_bound",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_initiation_boundary.py",
+      "id": "check_partial_initiation_twist_receipts"
     },
     {
       "block": "CHECKS",
@@ -6252,6 +6420,132 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_partial_initiation_marked_seam_provenance",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_marked_seam_provenance",
+      "to": "self::test_marked_seam_survives_numeric_coordinate_cut_movement"
+    },
+    {
+      "from": "check_partial_initiation_marked_seam_provenance",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_marked_seam_provenance",
+      "to": "partial_initiation_seam_is_provenance_bearing"
+    },
+    {
+      "from": "check_partial_initiation_marked_seam_provenance",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_marked_seam_provenance",
+      "to": "python3"
+    },
+    {
+      "from": "check_partial_initiation_motion_history",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_motion_history",
+      "to": "self::test_360_changes_720_returns_and_two_motion_receipts_survive"
+    },
+    {
+      "from": "check_partial_initiation_motion_history",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_motion_history",
+      "to": "partial_initiation_motion_preserves_360_720_and_history"
+    },
+    {
+      "from": "check_partial_initiation_motion_history",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_motion_history",
+      "to": "python3"
+    },
+    {
+      "from": "check_partial_initiation_rc_packet",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_rc_packet",
+      "to": "self::test_v013_report_is_complete_bounded_and_nonselecting"
+    },
+    {
+      "from": "check_partial_initiation_rc_packet",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_rc_packet",
+      "to": "partial_initiation_report_executes_rc_packet_without_selection"
+    },
+    {
+      "from": "check_partial_initiation_rc_packet",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_rc_packet",
+      "to": "python3"
+    },
+    {
+      "from": "check_partial_initiation_sheet_involution",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_sheet_involution",
+      "to": "self::test_exact_sheet_involution_matches_signed_local_quotient"
+    },
+    {
+      "from": "check_partial_initiation_sheet_involution",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_sheet_involution",
+      "to": "partial_initiation_exact_quotient_compatibility"
+    },
+    {
+      "from": "check_partial_initiation_sheet_involution",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_sheet_involution",
+      "to": "python3"
+    },
+    {
+      "from": "check_partial_initiation_structural_null_topology",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_structural_null_topology",
+      "to": "self::test_structural_null_is_disjoint_typed_prestate_with_partial_edges"
+    },
+    {
+      "from": "check_partial_initiation_structural_null_topology",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_structural_null_topology",
+      "to": "partial_initiation_structural_null_topology_is_explicit"
+    },
+    {
+      "from": "check_partial_initiation_structural_null_topology",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_structural_null_topology",
+      "to": "python3"
+    },
+    {
+      "from": "check_partial_initiation_twist_receipts",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_twist_receipts",
+      "to": "self::test_every_word_attachment_has_one_source_bound_twist_receipt"
+    },
+    {
+      "from": "check_partial_initiation_twist_receipts",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_twist_receipts",
+      "to": "partial_initiation_twist_receipt_is_source_bound"
+    },
+    {
+      "from": "check_partial_initiation_twist_receipts",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_partial_initiation_twist_receipts",
+      "to": "python3"
+    },
+    {
       "from": "check_payload_zero_does_not_collapse_carrier",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -7603,6 +7897,27 @@ export default defineMsdmdCollection({
       "to": "edcm_word_gonol_profile"
     },
     {
+      "from": "edcm_partial_initiation_boundary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_partial_initiation_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_partial_initiation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_partial_initiation_boundary",
+      "to": "edcm_exact_coordinate_representation_boundary"
+    },
+    {
+      "from": "edcm_partial_initiation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_partial_initiation_boundary",
+      "to": "edcm_native_direct_mobius_candidate"
+    },
+    {
       "from": "edcm_root_loop_cover_chart_candidate",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -7769,6 +8084,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_native_direct_mobius_candidate"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_partial_initiation_boundary"
     },
     {
       "from": "foundations_public_surface",

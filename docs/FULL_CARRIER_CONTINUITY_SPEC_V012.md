@@ -370,6 +370,23 @@ work is not continuity of the affine formula by itself. It is the faithful
 attachment of causal initiation and retained evidence to the non-null
 topological candidate.
 
+## v0.13 partial implementation
+
+v0.13 implements one bounded response to that target. It represents Structural
+Null as a disjoint typed marked prestate and attaches every v0.6 minimum-packet
+word initiation to the exact v0.11 root coordinate through a source-provenance
+marked seam and twist receipt. Two successive visible turns retain separate
+motion receipts while restoring complete local state.
+
+The executable report supports `RC02` and `RC04`–`RC10` on its declared exact
+rational root and minimum-packet scope. `RC01` and `RC03` remain inconclusive
+because arbitrary-real runtime continuity and seam-side limits are not
+represented. The result does not assign arbitrary elements to transverse
+coordinates or establish a complete carrier relationship.
+
+See
+[`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
+
 ## Reproduction boundary
 
 No v0.12 runtime behavior is added. The repository's existing tests reproduce
