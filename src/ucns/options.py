@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.10.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.10.1"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(

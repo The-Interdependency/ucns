@@ -217,13 +217,15 @@ completion-motion algorithm. See
 ## Implemented partial initiation boundary
 
 ```text
-schema:           ucns.edcm.partial-initiation-boundary/0.13.0
+schema:           ucns.edcm.partial-initiation-boundary/0.13.1
 scope:            fixed nine-witness / fourteen-initiation packet
 Structural Null:  explicit disjoint typed prestate
 seam:             marked source-provenance candidate
 attachment:       partial relation to exact root u=0, B=1, t=0
 twist:            retained source-bound receipt
-motion:           360 change, 720 local return, append-only history
+visible:          source-linked root projection/0.13.1 with declared loss
+comparison:       named exact RC policy/0.13.1
+motion:           endpoint-validated 360 change, 720 local return, append-only history
 RC packet:        RC01-RC10; arbitrary-real obligations remain inconclusive
 selection:        none
 EDCM activation:  inactive

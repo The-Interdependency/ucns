@@ -1,9 +1,9 @@
 # UCNS v0.13 partial initiation boundary
 
 **Status:** implemented, test-backed experiment evidence over the fixed
-minimum source packet and exact rational root fiber. No carrier, seam
-representation, coordinate law, faithful-breadth evaluator, EDCM profile, or
-METAPAT profile is selected.
+minimum source packet and exact rational root fiber; report schema hardened at
+`0.13.1`. No carrier, seam representation, coordinate law, faithful-breadth
+evaluator, EDCM profile, or METAPAT profile is selected.
 
 **Predecessor:** the documentation-only
 [`FULL_CARRIER_CONTINUITY_SPEC_V012.md`](FULL_CARRIER_CONTINUITY_SPEC_V012.md).
@@ -48,7 +48,7 @@ neighboring_terms:
   - ucns.coordinate.angular_cut
 known_collisions:
   - ordinary visualization cut
-effective_version: 0.13.0
+effective_version: 0.13.1
 supersedes: none
 unresolved:
   - whether an intrinsic or invariant-equivalence-class seam later replaces or coexists with the marked candidate
@@ -81,7 +81,7 @@ neighboring_terms:
   - ucns.carrier_relation.real_continuity
 known_collisions:
   - complete full-carrier attachment
-effective_version: 0.13.0
+effective_version: 0.13.1
 supersedes: none
 unresolved:
   - extension beyond the exact root fiber and minimum packet
@@ -152,13 +152,20 @@ typed Structural Null prestate
 ```
 
 The receipt retains event, source, parentage, law, relation, scope, and version
-identity. The word value is not hashed or used to invent a transverse
-coordinate. This is why the relation remains honest and partial.
+identity. The attachment identity additionally includes the native post-state
+source links, parent-observation identifiers, completion scope, and initiation
+event. Two otherwise matching events with distinct native provenance therefore
+cannot collapse to one attachment identity. The word value is not hashed or
+used to invent a transverse coordinate. This is why the relation remains
+honest and partial.
 
 ## Motion evidence
 
 `InitiatedCarrierState` keeps local state separate from append-only history.
-For two successive one-turn motions:
+Every receipt's before and after endpoints must equal the trajectory implied by
+the attachment root and its exact motion displacement. Report states must share
+one attachment, and the 720° history must extend rather than replace the 360°
+history. For two successive one-turn motions:
 
 ```text
 visible(s + 1) = visible(s)
@@ -170,6 +177,25 @@ len(history(s + 2)) = 2
 The changed one-turn distinctions are the native local frame and exact lifted
 representative. The second turn restores local state without erasing either
 motion receipt. Local return is not construction completion.
+
+## Projection and comparison policy
+
+`RC04` uses only
+`ucns.edcm.root-visible-projection/0.13.1`. Its domain is a source-linked
+`InitiatedCarrierState`; its codomain is `RootVisibleProjection`. It retains
+attachment identity, native source links, parent observations, candidate
+identity, exact local transverse value, exact breadth, and turns modulo one.
+It explicitly discards native local frame, whole lifted-turn count, and motion
+history. The discarded fields remain in complete local state and the
+trajectory; they are not erased from evidence.
+
+The complete RC packet uses the exact named policy
+`ucns.edcm.v013-rc-exact/0.13.1`, implemented by
+`ucns.comparison:exact_comparison_policy`. No tolerance, binary64
+approximation, symbolic substitution, or arbitrary-real limit rule is hidden
+inside the report. Missing arbitrary-real structure remains `inconclusive`.
+The expected verdict map and all boundary-status values are fixed by the report
+schema; reconstructing a report cannot promote them.
 
 ## Exact quotient witness
 
@@ -196,8 +222,8 @@ signed-local law.
 | `RC01` | inconclusive | exact rational inverse is executable; arbitrary-real runtime continuity is not |
 | `RC02` | supported | exact rational sheet involution and `D²=id` |
 | `RC03` | inconclusive | coordinate-cut independence is executable; arbitrary-real seam-side limits are not |
-| `RC04` | supported | 360° visible return and complete local change at the attached root |
-| `RC05` | supported | 720° local return with two retained motion receipts |
+| `RC04` | supported | versioned source-linked visible projection returns after 360° while complete local state changes |
+| `RC05` | supported | 720° local return with two endpoint-validated, prefix-extending motion receipts |
 | `RC06` | supported | marked seam retains exact provenance under numeric cut movement |
 | `RC07` | supported | explicit disjoint prestate plus fourteen partial initiation edges |
 | `RC08` | supported | exact source reconstruction and initiation order over all nine witnesses |
@@ -215,6 +241,8 @@ status claim.
 | explicit typed disjoint prestate topology | implemented experiment candidate |
 | source-bound Structural Null → root initiation relation | implemented partial relation |
 | retained twist receipt | implemented evidence |
+| named exact RC comparison policy | implemented and pinned |
+| versioned source-linked visible projection | implemented with declared information loss |
 | 360°/720° root motion with append-only history | implemented evidence |
 | exact rational sheet involution | implemented candidate evidence |
 | arbitrary-real seam limits | inconclusive |

@@ -4,7 +4,7 @@
 #   module_kind: experiment
 #   summary: attaches the typed Structural Null prestate to exact root coordinates through source-provenance marked seams and retained twist receipts
 #   owner: Erin Spencer
-#   public_surface: StructuralNullTopologyKind, MarkedInitiationSeam, SeamCoordinateView, TwistReceipt, PartialInitiationAttachment, CarrierMotionReceipt, InitiatedCarrierState, ContinuityFalsifierResult, PartialInitiationBoundaryReport, build_partial_initiation_attachments, view_marked_seam_at_cut, initiate_carrier_state, advance_attached_state, exact_sheet_involution, run_v013_partial_initiation_boundary_experiment
+#   public_surface: StructuralNullTopologyKind, MarkedInitiationSeam, SeamCoordinateView, TwistReceipt, PartialInitiationAttachment, CarrierMotionReceipt, RootVisibleProjection, InitiatedCarrierState, ContinuityFalsifierResult, PartialInitiationBoundaryReport, partial_initiation_exact_comparison_policy, build_partial_initiation_attachments, view_marked_seam_at_cut, project_root_visible_state, initiate_carrier_state, advance_attached_state, exact_sheet_involution, run_v013_partial_initiation_boundary_experiment
 #   internal_surface: exact validation helpers and fixed RC01-RC10 result construction
 #   auth_boundary: none
 #   storage_boundary: none
@@ -28,7 +28,7 @@
 #
 # id: partial_initiation_seam_is_provenance_bearing
 #   given: one source-linked initiation is represented under different numeric coordinate cuts
-#   then: the marked seam retains one event and boundary-manifestation identity while each numeric cut remains a nonauthoritative view
+#   then: the marked seam and attachment identity retain the event, boundary manifestation, native source links, and parent observations while each numeric cut remains a nonauthoritative view
 #   class: evidence
 #   since: 2026-07-30
 #
@@ -40,7 +40,7 @@
 #
 # id: partial_initiation_motion_preserves_360_720_and_history
 #   given: an attached root state advances by two successive visible turns
-#   then: one turn restores visible position and changes complete local state, two turns restore local state, and both source-linked motion receipts remain appended
+#   then: the versioned source-linked visible projection returns after one turn while complete local state changes, two turns restore local state, and both endpoint-validated motion receipts remain appended
 #   class: correctness
 #   since: 2026-07-30
 #
@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 appear in order with bounded evidence or honest inconclusive status while carrier selection and consumer activation remain absent
+#   then: RC01 through RC10 use the pinned exact ComparisonPolicy and fixed honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -84,6 +84,11 @@ from dataclasses import dataclass
 from enum import Enum
 from fractions import Fraction
 
+from .comparison import (
+    ComparisonMode,
+    ComparisonPolicy,
+    exact_comparison_policy,
+)
 from .direct_mobius import (
     STRUCTURAL_NULL_ORIGIN,
     MobiusInitiationEvent,
@@ -106,7 +111,7 @@ from .mobius_experiment import FalsifierVerdict
 V013_INITIATION_BOUNDARY_SCHEMA_ID = (
     "ucns.edcm.partial-initiation-boundary"
 )
-V013_INITIATION_BOUNDARY_SCHEMA_VERSION = "0.13.0"
+V013_INITIATION_BOUNDARY_SCHEMA_VERSION = "0.13.1"
 V013_SELECTION_EFFECT = "none"
 
 PARTIAL_INITIATION_SCOPE = (
@@ -121,8 +126,50 @@ MARKED_SEAM_POLICY_VERSION = "0.13.0"
 TWIST_RECEIPT_LAW_ID = "ucns.edcm.source-bound-root-twist-receipt"
 TWIST_RECEIPT_LAW_VERSION = "0.13.0"
 SEAM_COORDINATE_VIEW_STATUS = "nonauthoritative-coordinate-cut-view"
+ROOT_VISIBLE_PROJECTION_ID = "ucns.edcm.root-visible-projection"
+ROOT_VISIBLE_PROJECTION_VERSION = "0.13.1"
+ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS = (
+    "native-local-frame",
+    "whole-lifted-turn-count",
+    "append-only-motion-history",
+)
+RC_COMPARISON_POLICY_NAME = "ucns.edcm.v013-rc-exact"
+RC_COMPARISON_POLICY_VERSION = "0.13.1"
+RC_COMPARISON_POLICY_CODE_REFERENCE = (
+    "ucns.comparison:exact_comparison_policy"
+)
 
 RC_FALSIFIER_IDS = tuple(f"RC{index:02d}" for index in range(1, 11))
+RC_EXPECTED_VERDICTS = (
+    ("RC01", FalsifierVerdict.INCONCLUSIVE),
+    ("RC02", FalsifierVerdict.SUPPORTED),
+    ("RC03", FalsifierVerdict.INCONCLUSIVE),
+    ("RC04", FalsifierVerdict.SUPPORTED),
+    ("RC05", FalsifierVerdict.SUPPORTED),
+    ("RC06", FalsifierVerdict.SUPPORTED),
+    ("RC07", FalsifierVerdict.SUPPORTED),
+    ("RC08", FalsifierVerdict.SUPPORTED),
+    ("RC09", FalsifierVerdict.SUPPORTED),
+    ("RC10", FalsifierVerdict.SUPPORTED),
+)
+
+V013_COORDINATE_COMPONENT_STATUS = (
+    "exact-rational-quotient-compatible-candidate"
+)
+V013_SEAM_STATUS = "marked-provenance-bearing-on-minimum-packet"
+V013_STRUCTURAL_NULL_TOPOLOGY_STATUS = (
+    "explicit-disjoint-typed-prestate-with-partial-initiation-relation"
+)
+V013_COMPLETE_RELATIONSHIP_STATUS = (
+    "inconclusive-partial-root-attachment-only"
+)
+V013_HMMM = (
+    "arbitrary-real seam-side limits remain unimplemented",
+    "intrinsic and invariant-equivalence-class seam alternatives remain unresolved",
+    "arbitrary observed-element and transverse initiation assignment remains unresolved",
+    "circle, epicycle, disk, sphere, recursive composition, and scoped completion remain unresolved",
+    "the complete global carrier relationship remains inconclusive",
+)
 
 
 class InitiationBoundaryError(ValueError):
@@ -147,6 +194,36 @@ def _normalize_turns(value: Fraction, period: Fraction) -> Fraction:
     _require_fraction(value, "turns")
     whole_periods = value // period
     return value - period * whole_periods
+
+
+def partial_initiation_exact_comparison_policy() -> ComparisonPolicy:
+    """Return the named exact policy pinned by the v0.13 RC packet."""
+
+    return exact_comparison_policy(
+        name=RC_COMPARISON_POLICY_NAME,
+        version=RC_COMPARISON_POLICY_VERSION,
+    )
+
+
+def _validate_comparison_policy(policy: ComparisonPolicy) -> None:
+    if not isinstance(policy, ComparisonPolicy):
+        raise TypeError("comparison_policy must be ComparisonPolicy")
+    if policy.name != RC_COMPARISON_POLICY_NAME:
+        raise InitiationBoundaryError(
+            "v0.13 comparison policy name is fixed"
+        )
+    if policy.version != RC_COMPARISON_POLICY_VERSION:
+        raise InitiationBoundaryError(
+            "v0.13 comparison policy version is fixed"
+        )
+    if policy.mode is not ComparisonMode.EXACT:
+        raise InitiationBoundaryError(
+            "v0.13 comparison policy must be exact"
+        )
+    if policy.code_reference != RC_COMPARISON_POLICY_CODE_REFERENCE:
+        raise InitiationBoundaryError(
+            "v0.13 comparison implementation reference is fixed"
+        )
 
 
 class StructuralNullTopologyKind(str, Enum):
@@ -387,11 +464,19 @@ class PartialInitiationAttachment:
 
     @property
     def attachment_identity(self) -> tuple[object, ...]:
+        native_state = self.twist_receipt.post_native_state
         return (
             self.event.event_id,
             self.seam.evidence_identity,
             self.twist_receipt.receipt_id,
             self.twist_receipt.post_coordinate.exact_identity,
+            ("native-source-links", native_state.source_links),
+            (
+                "native-parent-observation-ids",
+                native_state.parent_observation_ids,
+            ),
+            ("native-completion-scope", native_state.completion_scope),
+            ("native-initiation-event-id", native_state.initiation_event_id),
         )
 
 
@@ -478,6 +563,59 @@ class CarrierMotionReceipt:
 
 
 @dataclass(frozen=True, slots=True)
+class RootVisibleProjection:
+    """Versioned source-linked visible view used only by RC04."""
+
+    attachment_identity: tuple[object, ...]
+    source_links: tuple[str, ...]
+    parent_observation_ids: tuple[str, ...]
+    source_candidate_id: str
+    local_transverse: Fraction
+    breadth: Fraction
+    visible_turns: Fraction
+    projection_id: str = ROOT_VISIBLE_PROJECTION_ID
+    projection_version: str = ROOT_VISIBLE_PROJECTION_VERSION
+    information_loss: tuple[str, ...] = (
+        ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS
+    )
+
+    def __post_init__(self) -> None:
+        if not self.attachment_identity:
+            raise InitiationBoundaryError(
+                "visible projection must retain its attachment identity"
+            )
+        if not self.source_links or any(
+            not item.strip() for item in self.source_links
+        ):
+            raise InitiationBoundaryError(
+                "visible projection must retain native source links"
+            )
+        if any(not item.strip() for item in self.parent_observation_ids):
+            raise InitiationBoundaryError(
+                "visible projection parent observations must be nonempty"
+            )
+        _require_text(self.source_candidate_id, "source_candidate_id")
+        _require_fraction(self.local_transverse, "local_transverse")
+        _require_fraction(self.breadth, "breadth")
+        _require_fraction(self.visible_turns, "visible_turns")
+        if not Fraction(0) <= self.visible_turns < Fraction(1):
+            raise InitiationBoundaryError(
+                "visible projection turns must be normalized to [0, 1)"
+            )
+        if (
+            self.projection_id != ROOT_VISIBLE_PROJECTION_ID
+            or self.projection_version != ROOT_VISIBLE_PROJECTION_VERSION
+        ):
+            raise InitiationBoundaryError(
+                "RC04 visible projection identity is fixed"
+            )
+        if self.information_loss != ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS:
+            raise InitiationBoundaryError(
+                "RC04 visible projection loss declaration is fixed"
+            )
+
+
+@dataclass(frozen=True, slots=True)
 class InitiatedCarrierState:
     """Exact root state plus append-only trajectory evidence."""
 
@@ -511,6 +649,8 @@ class InitiatedCarrierState:
             raise InitiationBoundaryError(
                 "native frame must agree with the exact lifted representative"
             )
+        expected_native = self.attachment.twist_receipt.post_native_state
+        expected_coordinate = self.attachment.twist_receipt.post_coordinate
         for expected_index, receipt in enumerate(self.motion_history):
             if receipt.step_index != expected_index:
                 raise InitiationBoundaryError(
@@ -520,18 +660,42 @@ class InitiatedCarrierState:
                 raise InitiationBoundaryError(
                     "motion receipt must retain the same initiation attachment"
                 )
+            if (
+                receipt.before_native_key != expected_native.complete_key
+                or receipt.before_coordinate_identity
+                != expected_coordinate.exact_identity
+            ):
+                raise InitiationBoundaryError(
+                    "motion receipt before endpoint must match its trajectory"
+                )
+            expected_native = expected_native.advance(
+                receipt.motion_turns
+            )
+            expected_coordinate = signed_local_exact_coordinate(
+                expected_coordinate.local_transverse,
+                expected_coordinate.lifted_turns + receipt.motion_turns,
+            )
+            if (
+                receipt.after_native_key != expected_native.complete_key
+                or receipt.after_coordinate_identity
+                != expected_coordinate.exact_identity
+            ):
+                raise InitiationBoundaryError(
+                    "motion receipt after endpoint must match its trajectory"
+                )
+        if (
+            self.native_state != expected_native
+            or self.coordinate != expected_coordinate
+        ):
+            raise InitiationBoundaryError(
+                "carrier state must equal its complete motion trajectory endpoint"
+            )
 
     @property
-    def visible_identity(self) -> tuple[tuple[str, str], ...]:
-        return (
-            ("candidate", self.coordinate.provenance.source_candidate_id),
-            ("local-transverse", _fraction_key(self.coordinate.local_transverse)),
-            ("breadth", _fraction_key(self.coordinate.breadth)),
-            (
-                "visible-turns",
-                _fraction_key(self.coordinate.lifted_turns % 1),
-            ),
-        )
+    def visible_identity(self) -> RootVisibleProjection:
+        """Return the exact named projection used by RC04."""
+
+        return project_root_visible_state(self)
 
     @property
     def complete_local_identity(self) -> tuple[object, ...]:
@@ -539,6 +703,25 @@ class InitiatedCarrierState:
             self.coordinate.exact_identity,
             self.native_state.complete_key,
         )
+
+
+def project_root_visible_state(
+    state: InitiatedCarrierState,
+) -> RootVisibleProjection:
+    """Project one root state while retaining its exact source-evidence link."""
+
+    if not isinstance(state, InitiatedCarrierState):
+        raise TypeError("state must be InitiatedCarrierState")
+    native_origin = state.attachment.twist_receipt.post_native_state
+    return RootVisibleProjection(
+        attachment_identity=state.attachment.attachment_identity,
+        source_links=native_origin.source_links,
+        parent_observation_ids=native_origin.parent_observation_ids,
+        source_candidate_id=state.coordinate.provenance.source_candidate_id,
+        local_transverse=state.coordinate.local_transverse,
+        breadth=state.coordinate.breadth,
+        visible_turns=state.coordinate.lifted_turns % 1,
+    )
 
 
 def initiate_carrier_state(
@@ -643,30 +826,23 @@ class PartialInitiationBoundaryReport:
     seam_views: tuple[SeamCoordinateView, SeamCoordinateView]
     binary64_witnesses: tuple[Binary64CollisionWitness, ...]
     results: tuple[ContinuityFalsifierResult, ...]
+    comparison_policy: ComparisonPolicy
     schema_id: str = V013_INITIATION_BOUNDARY_SCHEMA_ID
     schema_version: str = V013_INITIATION_BOUNDARY_SCHEMA_VERSION
-    coordinate_component_status: str = (
-        "exact-rational-quotient-compatible-candidate"
-    )
-    seam_status: str = "marked-provenance-bearing-on-minimum-packet"
+    coordinate_component_status: str = V013_COORDINATE_COMPONENT_STATUS
+    seam_status: str = V013_SEAM_STATUS
     structural_null_topology_status: str = (
-        "explicit-disjoint-typed-prestate-with-partial-initiation-relation"
+        V013_STRUCTURAL_NULL_TOPOLOGY_STATUS
     )
-    complete_relationship_status: str = (
-        "inconclusive-partial-root-attachment-only"
-    )
+    complete_relationship_status: str = V013_COMPLETE_RELATIONSHIP_STATUS
     selection_effect: str = V013_SELECTION_EFFECT
     edcm_activation: str = "inactive"
     metapat_activation: str = "inactive"
-    hmmm: tuple[str, ...] = (
-        "arbitrary-real seam-side limits remain unimplemented",
-        "intrinsic and invariant-equivalence-class seam alternatives remain unresolved",
-        "arbitrary observed-element and transverse initiation assignment remains unresolved",
-        "circle, epicycle, disk, sphere, recursive composition, and scoped completion remain unresolved",
-        "the complete global carrier relationship remains inconclusive",
-    )
+    hmmm: tuple[str, ...] = V013_HMMM
 
     def __post_init__(self) -> None:
+        _validate_comparison_policy(self.comparison_policy)
+        policy = self.comparison_policy
         if (
             self.schema_id != V013_INITIATION_BOUNDARY_SCHEMA_ID
             or self.schema_version != V013_INITIATION_BOUNDARY_SCHEMA_VERSION
@@ -707,43 +883,85 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "720 state must retain both motion receipts"
             )
-        if initial.visible_identity != after_360.visible_identity:
+        attachment_identities = tuple(
+            item.attachment.attachment_identity for item in self.trajectory
+        )
+        if not (
+            policy.matches(attachment_identities[0], attachment_identities[1])
+            and policy.matches(
+                attachment_identities[1],
+                attachment_identities[2],
+            )
+        ):
+            raise InitiationBoundaryError(
+                "all trajectory states must retain one initiation attachment"
+            )
+        if not policy.matches(
+            after_360.motion_history,
+            after_720.motion_history[:1],
+        ):
+            raise InitiationBoundaryError(
+                "trajectory histories must extend without replacement"
+            )
+        if not policy.matches(
+            initial.visible_identity,
+            after_360.visible_identity,
+        ):
             raise InitiationBoundaryError(
                 "360 motion must restore visible position"
             )
-        if initial.complete_local_identity == after_360.complete_local_identity:
+        if policy.matches(
+            initial.complete_local_identity,
+            after_360.complete_local_identity,
+        ):
             raise InitiationBoundaryError(
                 "360 motion must change complete local state"
             )
-        if initial.complete_local_identity != after_720.complete_local_identity:
+        if not policy.matches(
+            initial.complete_local_identity,
+            after_720.complete_local_identity,
+        ):
             raise InitiationBoundaryError(
                 "720 motion must restore complete local state"
             )
         first_sheet, second_sheet = self.sheet_witness
-        if exact_sheet_involution(first_sheet) != second_sheet:
+        if not policy.matches(
+            exact_sheet_involution(first_sheet),
+            second_sheet,
+        ):
             raise InitiationBoundaryError(
                 "sheet witness must satisfy exact quotient compatibility"
             )
-        if exact_sheet_involution(second_sheet) != first_sheet:
+        if not policy.matches(
+            exact_sheet_involution(second_sheet),
+            first_sheet,
+        ):
             raise InitiationBoundaryError(
                 "sheet involution must square to identity"
             )
         first_view, second_view = self.seam_views
-        if (
-            first_view.structural_seam_identity
-            != second_view.structural_seam_identity
+        if not policy.matches(
+            first_view.structural_seam_identity,
+            second_view.structural_seam_identity,
         ):
             raise InitiationBoundaryError(
                 "numeric cut movement cannot change marked seam identity"
             )
-        if first_view.coordinate_cut_turns == second_view.coordinate_cut_turns:
+        if policy.matches(
+            first_view.coordinate_cut_turns,
+            second_view.coordinate_cut_turns,
+        ):
             raise InitiationBoundaryError(
                 "seam-cut witness requires distinct numeric views"
             )
-        if tuple(
-            item.evidence_identity for item in self.binary64_witnesses
-        ) != tuple(
-            item.evidence_identity for item in binary64_collision_witnesses()
+        if not policy.matches(
+            tuple(
+                item.evidence_identity for item in self.binary64_witnesses
+            ),
+            tuple(
+                item.evidence_identity
+                for item in binary64_collision_witnesses()
+            ),
         ):
             raise InitiationBoundaryError(
                 "v0.13 must retain both fixed binary64 collision witnesses"
@@ -752,15 +970,37 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "v0.13 must report RC01 through RC10 in order"
             )
+        if not policy.matches(
+            tuple(
+                (item.falsifier_id, item.verdict)
+                for item in self.results
+            ),
+            RC_EXPECTED_VERDICTS,
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 RC verdict map is fixed and cannot promote an inconclusive result"
+            )
+        if (
+            self.coordinate_component_status
+            != V013_COORDINATE_COMPONENT_STATUS
+            or self.seam_status != V013_SEAM_STATUS
+            or self.structural_null_topology_status
+            != V013_STRUCTURAL_NULL_TOPOLOGY_STATUS
+            or self.complete_relationship_status
+            != V013_COMPLETE_RELATIONSHIP_STATUS
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 boundary statuses are fixed"
+            )
         if self.selection_effect != V013_SELECTION_EFFECT:
             raise InitiationBoundaryError("v0.13 cannot select a carrier")
         if self.edcm_activation != "inactive":
             raise InitiationBoundaryError("v0.13 cannot activate EDCM")
         if self.metapat_activation != "inactive":
             raise InitiationBoundaryError("v0.13 cannot activate METAPAT")
-        if not self.hmmm or any(not item.strip() for item in self.hmmm):
+        if self.hmmm != V013_HMMM:
             raise InitiationBoundaryError(
-                "v0.13 unresolved boundary must remain explicit"
+                "v0.13 unresolved boundary is fixed"
             )
 
     def result(self, falsifier_id: str) -> ContinuityFalsifierResult:
@@ -856,9 +1096,11 @@ def run_v013_partial_initiation_boundary_experiment(
             "RC04",
             FalsifierVerdict.SUPPORTED,
             (
+                f"visible-projection:{ROOT_VISIBLE_PROJECTION_ID}@{ROOT_VISIBLE_PROJECTION_VERSION}",
                 "visible-after-360:equal",
                 "complete-local-after-360:changed",
                 "retained-change:native-frame-and-lifted-representative",
+                "projection-loss:native-frame,whole-lifted-turn-count,motion-history",
             ),
             "support is bounded to the source-linked exact root attachment",
         ),
@@ -936,6 +1178,7 @@ def run_v013_partial_initiation_boundary_experiment(
         seam_views=(seam_first, seam_second),
         binary64_witnesses=binary64_collision_witnesses(),
         results=results,
+        comparison_policy=partial_initiation_exact_comparison_policy(),
     )
 
 
@@ -945,13 +1188,25 @@ __all__ = [
     "PARTIAL_INITIATION_RELATION_ID",
     "PARTIAL_INITIATION_RELATION_VERSION",
     "PARTIAL_INITIATION_SCOPE",
+    "RC_COMPARISON_POLICY_CODE_REFERENCE",
+    "RC_COMPARISON_POLICY_NAME",
+    "RC_COMPARISON_POLICY_VERSION",
+    "RC_EXPECTED_VERDICTS",
     "RC_FALSIFIER_IDS",
+    "ROOT_VISIBLE_PROJECTION_ID",
+    "ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS",
+    "ROOT_VISIBLE_PROJECTION_VERSION",
     "SEAM_COORDINATE_VIEW_STATUS",
     "TWIST_RECEIPT_LAW_ID",
     "TWIST_RECEIPT_LAW_VERSION",
+    "V013_COMPLETE_RELATIONSHIP_STATUS",
+    "V013_COORDINATE_COMPONENT_STATUS",
+    "V013_HMMM",
     "V013_INITIATION_BOUNDARY_SCHEMA_ID",
     "V013_INITIATION_BOUNDARY_SCHEMA_VERSION",
+    "V013_SEAM_STATUS",
     "V013_SELECTION_EFFECT",
+    "V013_STRUCTURAL_NULL_TOPOLOGY_STATUS",
     "CarrierMotionReceipt",
     "ContinuityFalsifierResult",
     "InitiatedCarrierState",
@@ -959,6 +1214,7 @@ __all__ = [
     "MarkedInitiationSeam",
     "PartialInitiationAttachment",
     "PartialInitiationBoundaryReport",
+    "RootVisibleProjection",
     "SeamCoordinateView",
     "StructuralNullTopologyKind",
     "TwistReceipt",
@@ -966,6 +1222,8 @@ __all__ = [
     "build_partial_initiation_attachments",
     "exact_sheet_involution",
     "initiate_carrier_state",
+    "partial_initiation_exact_comparison_policy",
+    "project_root_visible_state",
     "run_v013_partial_initiation_boundary_experiment",
     "view_marked_seam_at_cut",
 ]

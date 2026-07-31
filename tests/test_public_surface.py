@@ -72,6 +72,9 @@ def test_public_surface_is_bounded() -> None:
         "TwistReceipt",
         "PartialInitiationAttachment",
         "PartialInitiationBoundaryReport",
+        "RootVisibleProjection",
+        "partial_initiation_exact_comparison_policy",
+        "project_root_visible_state",
         "run_v013_partial_initiation_boundary_experiment",
     ):
         assert expected in exported

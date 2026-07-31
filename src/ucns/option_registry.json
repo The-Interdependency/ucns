@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.10.0",
+  "schema_version": "1.10.1",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -208,7 +208,7 @@
     },
     {
       "id": "partial-initiation-boundary",
-      "statement": "v0.13 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It preserves 360-degree change, 720-degree local return, and append-only history while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
+      "statement": "v0.13.1 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It pins the source-linked visible projection and exact RC comparison policy, includes native provenance in attachment identity, and rejects forged receipt endpoints, trajectory substitution, verdict promotion, and boundary-status promotion while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
     }
   ],
   "current_profile": {

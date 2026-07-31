@@ -59,8 +59,11 @@ initiation, and arbitrary-element assignment. v0.13 implements one bounded
 attachment candidate: the typed Structural Null prestate reaches the exact
 rational root through fourteen source-provenance marked seams and twist
 receipts, and two successive turns restore local state without erasing motion
-history. Arbitrary-real seam limits and arbitrary-element transverse assignment
-remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
+history. Its `0.13.1` hardening pins the source-linked visible projection and
+exact comparison policy, includes native provenance in attachment identity,
+and rejects forged receipt endpoints, trajectory switches, verdicts, or
+boundary statuses. Arbitrary-real seam limits and arbitrary-element transverse
+assignment remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
 post-run analysis requires supplied-stream exhaustion, externally declared
 turn-count agreement, and exact source/reconstruction stream-digest agreement.
 It does not claim a real-system run or activate EDCM. No law is selected, and
@@ -127,8 +130,10 @@ seam representation, or convention:
    explicit disjoint typed prestate and attaches all fourteen minimum-packet
    word initiations to the exact root coordinate through marked source seams and
    twist receipts. Numeric coordinate cuts remain nonauthoritative views.
-   Successive 360° motions append history while producing 360° local change and
-   720° local return. `RC01` and `RC03` remain inconclusive.
+   The source-linked visible projection and exact comparison policy are pinned;
+   successive endpoint-validated 360° motions append history while producing
+   360° local change and 720° local return. `RC01` and `RC03` remain
+   inconclusive.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -143,8 +148,9 @@ See
 The implemented **v0.13 partial initiation boundary** executes one marked-seam
 alternative without selecting it. It supplies an explicit partial topology,
 source-bound initiation edges, twist receipts, exact quotient compatibility,
-and bounded `RC01`–`RC10` results. It does not establish arbitrary-real
-continuity or arbitrary-element assignment.
+and bounded `RC01`–`RC10` results. The `0.13.1` report schema prevents
+provenance, trajectory, verdict, and boundary-status substitution. It does not
+establish arbitrary-real continuity or arbitrary-element assignment.
 
 See
 [`docs/PARTIAL_INITIATION_BOUNDARY_V013.md`](docs/PARTIAL_INITIATION_BOUNDARY_V013.md).

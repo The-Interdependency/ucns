@@ -2171,7 +2171,7 @@ export default defineMsdmdCollection({
         "class": "correctness",
         "given": "an attached root state advances by two successive visible turns",
         "since": "2026-07-30",
-        "then": "one turn restores visible position and changes complete local state, two turns restore local state, and both source-linked motion receipts remain appended"
+        "then": "the versioned source-linked visible projection returns after one turn while complete local state changes, two turns restore local state, and both endpoint-validated motion receipts remain appended"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_motion_preserves_360_720_and_history"
@@ -2182,7 +2182,7 @@ export default defineMsdmdCollection({
         "class": "safety",
         "given": "the v0.13 report is produced",
         "since": "2026-07-30",
-        "then": "RC01 through RC10 appear in order with bounded evidence or honest inconclusive status while carrier selection and consumer activation remain absent"
+        "then": "RC01 through RC10 use the pinned exact ComparisonPolicy and fixed honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_report_executes_rc_packet_without_selection"
@@ -2193,7 +2193,7 @@ export default defineMsdmdCollection({
         "class": "evidence",
         "given": "one source-linked initiation is represented under different numeric coordinate cuts",
         "since": "2026-07-30",
-        "then": "the marked seam retains one event and boundary-manifestation identity while each numeric cut remains a nonauthoritative view"
+        "then": "the marked seam and attachment identity retain the event, boundary manifestation, native source links, and parent observations while each numeric cut remains a nonauthoritative view"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_seam_is_provenance_bearing"
@@ -2230,7 +2230,7 @@ export default defineMsdmdCollection({
         "module_name": "initiation_boundary",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "StructuralNullTopologyKind, MarkedInitiationSeam, SeamCoordinateView, TwistReceipt, PartialInitiationAttachment, CarrierMotionReceipt, InitiatedCarrierState, ContinuityFalsifierResult, PartialInitiationBoundaryReport, build_partial_initiation_attachments, view_marked_seam_at_cut, initiate_carrier_state, advance_attached_state, exact_sheet_involution, run_v013_partial_initiation_boundary_experiment",
+        "public_surface": "StructuralNullTopologyKind, MarkedInitiationSeam, SeamCoordinateView, TwistReceipt, PartialInitiationAttachment, CarrierMotionReceipt, RootVisibleProjection, InitiatedCarrierState, ContinuityFalsifierResult, PartialInitiationBoundaryReport, partial_initiation_exact_comparison_policy, build_partial_initiation_attachments, view_marked_seam_at_cut, project_root_visible_state, initiate_carrier_state, advance_attached_state, exact_sheet_involution, run_v013_partial_initiation_boundary_experiment",
         "requires": "edcm_native_direct_mobius_candidate, edcm_exact_coordinate_representation_boundary",
         "rollback": "remove this module, its exports, tests, and v0.13 document while retaining the v0.12 specification and all earlier evidence",
         "rollout": "explicit UCNS-only v0.13 partial-attachment experiment; no carrier selection, canonical faithful breadth, arbitrary-element assignment, full real-continuity theorem, EDCM activation, or METAPAT activation",
