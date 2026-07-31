@@ -304,6 +304,10 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         def __eq__(self, other: object) -> bool:
             return True
 
+    class AlwaysEqualTuple(tuple):
+        def __eq__(self, other: object) -> bool:
+            return True
+
     assert report.schema_id == V013_INITIATION_BOUNDARY_SCHEMA_ID
     assert report.schema_version == V013_INITIATION_BOUNDARY_SCHEMA_VERSION
     assert report.comparison_policy.name == RC_COMPARISON_POLICY_NAME
@@ -445,6 +449,24 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             ),
         )
 
+    forged_result = replace(
+        report.results[3],
+        evidence=("completed-global-carrier:true",),
+        limitation="arbitrary-real completion established",
+    )
+    overloaded_results = AlwaysEqualTuple(
+        (
+            *report.results[:3],
+            forged_result,
+            *report.results[4:],
+        )
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="results must be an exact tuple",
+    ):
+        replace(report, results=overloaded_results)
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -483,6 +505,41 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         replace(
             report,
             trajectory=(external_initial, external_360, external_720),
+        )
+
+    overloaded_source_links = (
+        packet.initiations[0].post_state.source_links[:1]
+        + (AlwaysEqualStr("word:forged-external-link"),)
+        + packet.initiations[0].post_state.source_links[2:]
+    )
+    overloaded_event = replace(
+        packet.initiations[0],
+        post_state=replace(
+            packet.initiations[0].post_state,
+            source_links=overloaded_source_links,
+        ),
+    )
+    overloaded_packet = replace(
+        packet,
+        initiations=(overloaded_event,) + packet.initiations[1:],
+    )
+    overloaded_attachment = build_partial_initiation_attachments(
+        overloaded_packet
+    )[0]
+    overloaded_initial = initiate_carrier_state(overloaded_attachment)
+    overloaded_360 = advance_attached_state(overloaded_initial, 1)
+    overloaded_720 = advance_attached_state(overloaded_360, 1)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment identities must contain only exact built-in",
+    ):
+        replace(
+            report,
+            trajectory=(
+                overloaded_initial,
+                overloaded_360,
+                overloaded_720,
+            ),
         )
 
     initial, _, _ = report.trajectory

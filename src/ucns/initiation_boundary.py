@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use canonical built-in payload types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent
+#   then: RC01 through RC10 use canonical built-in payload and container types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -184,6 +184,20 @@ def _require_text(value: str, field: str) -> None:
 def _require_fraction(value: Fraction, field: str) -> None:
     if not isinstance(value, Fraction):
         raise InitiationBoundaryError(f"{field} must be an exact Fraction")
+
+
+def _require_exact_string_tuple_tree(value: object, field: str) -> None:
+    """Reject equality-overloading values from authority-bearing identities."""
+
+    if type(value) is str:
+        return
+    if type(value) is tuple:
+        for item in value:
+            _require_exact_string_tuple_tree(item, field)
+        return
+    raise InitiationBoundaryError(
+        f"{field} must contain only exact built-in tuple and str values"
+    )
 
 
 def _fraction_key(value: Fraction) -> str:
@@ -867,11 +881,35 @@ class PartialInitiationBoundaryReport:
         policy = partial_initiation_exact_comparison_policy()
         object.__setattr__(self, "comparison_policy", policy)
         _validate_comparison_policy(policy)
+        if type(self.results) is not tuple or any(
+            type(item) is not ContinuityFalsifierResult
+            for item in self.results
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 results must be an exact tuple of "
+                "ContinuityFalsifierResult values"
+            )
         if (
             self.schema_id != V013_INITIATION_BOUNDARY_SCHEMA_ID
             or self.schema_version != V013_INITIATION_BOUNDARY_SCHEMA_VERSION
         ):
             raise InitiationBoundaryError("v0.13 schema identity mismatch")
+        if type(self.attachments) is not tuple or any(
+            type(item) is not PartialInitiationAttachment
+            for item in self.attachments
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 attachments must be an exact tuple of "
+                "PartialInitiationAttachment values"
+            )
+        retained_attachment_identities = tuple(
+            item.attachment_identity for item in self.attachments
+        )
+        for identity in retained_attachment_identities:
+            _require_exact_string_tuple_tree(
+                identity,
+                "v0.13 attachment identities",
+            )
         if len(self.attachments) != 14:
             raise InitiationBoundaryError(
                 "v0.13 must retain all fourteen minimum-packet initiations"
@@ -889,6 +927,14 @@ class PartialInitiationBoundaryReport:
         ) != expected_attachments:
             raise InitiationBoundaryError(
                 "v0.13 must retain the fixed minimum-packet attachments"
+            )
+        if type(self.trajectory) is not tuple or any(
+            type(item) is not InitiatedCarrierState
+            for item in self.trajectory
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 trajectory must be an exact tuple of "
+                "InitiatedCarrierState values"
             )
         if len(self.trajectory) != 3:
             raise InitiationBoundaryError(
@@ -918,6 +964,11 @@ class PartialInitiationBoundaryReport:
         attachment_identities = tuple(
             item.attachment.attachment_identity for item in self.trajectory
         )
+        for identity in attachment_identities:
+            _require_exact_string_tuple_tree(
+                identity,
+                "v0.13 attachment identities",
+            )
         if not (
             policy.matches(attachment_identities[0], attachment_identities[1])
             and policy.matches(
@@ -928,9 +979,6 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "all trajectory states must retain one initiation attachment"
             )
-        retained_attachment_identities = tuple(
-            item.attachment_identity for item in self.attachments
-        )
         if not any(
             policy.matches(attachment_identities[0], retained_identity)
             for retained_identity in retained_attachment_identities
