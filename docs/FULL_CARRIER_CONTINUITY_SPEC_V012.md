@@ -433,6 +433,24 @@ coordinates or establish a complete carrier relationship.
 See
 [`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
 
+## v0.15 analytic evidence
+
+v0.15 records the affine continuity derivation as exact endpoint,
+inverse-composition, and epsilon-delta modulus data. It also records the
+continuous-product-map, two-turn deck-equivariance, and exact sheet identity
+needed for the non-null quotient map to descend and commute across coordinate
+cuts. This supplies analytic support for `RC01` and non-null `RC03` over the
+complete declared real candidate spaces without numerical sampling.
+
+The v0.13 report remains unchanged and inconclusive on those obligations within
+its executable rational-root scope. The v0.15 combined report retains that
+mixed standing explicitly. It does not supply a runtime arbitrary-real model,
+a machine-checked theorem, arbitrary-element assignment, or a total Structural
+Null relationship.
+
+See
+[`FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md`](FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md).
+
 ## Reproduction boundary
 
 No v0.12 runtime behavior is added. The repository's existing tests reproduce

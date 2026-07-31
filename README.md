@@ -62,15 +62,21 @@ receipts, and two successive turns restore local state without erasing motion
 history. Its `0.13.2` hardening binds the actual exact comparator, pins each RC
 result to the partial scope, includes native provenance in attachment identity,
 requires exact one-turn endpoint-validated receipts, and rejects trajectory,
-verdict, or boundary-status substitution. Arbitrary-real seam limits and arbitrary-element transverse
-assignment remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
+verdict, or boundary-status substitution. v0.14 adds a separate fail-closed
+full-corpus execution gate:
 post-run analysis requires supplied-stream exhaustion, externally declared
 turn-count agreement, and exact source/reconstruction stream-digest agreement.
 Its `0.14.1` receipts additionally require module-executed evidence and bind
 license, privacy, redaction, and every other manifest authority field. It does
-not claim a real-system run or activate EDCM. No law is selected, and
-full-carrier real continuity, higher
-coordinates, and global C1/C2 equivalence remain open. Any eventual selection
+not by itself claim a real-system run or activate EDCM. EDCM PR #44 now records
+the first downstream source-native `0.14.1` receipt: all 10,438 MultiWOZ 2.1
+dialogues and 143,048 turns reconcile exactly against UCNS producer commit
+`868d80878c9ecd93ff30e91ca289122ded805a49`. v0.15 then records exact
+epsilon-delta and quotient-equivariance certificates for the complete declared
+real non-null candidate while retaining the v0.13 Structural Null attachment
+as partial and root-only. No law is selected, and arbitrary-element assignment,
+the total Structural Null relationship, higher coordinates, and global C1/C2
+equivalence remain open. Any eventual selection
 cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
@@ -136,6 +142,13 @@ seam representation, or convention:
    successive endpoint-validated 360° motions append history while producing
    360° local change and 720° local return. `RC01` and `RC03` remain
    inconclusive.
+8. The **full-carrier attachment evidence package** leaves that v0.13 report
+   unchanged while adding a universal analytic certificate for `RC01` and a
+   quotient-descent and sheet-commutation certificate for non-null `RC03`.
+   Exact coefficients replace sampling. The proof standing remains
+   `analytic-certificate-not-machine-checked`, and the combined report keeps
+   arbitrary-element assignment and the total Structural Null relationship
+   unresolved.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -158,6 +171,17 @@ establish arbitrary-real continuity or arbitrary-element assignment.
 See
 [`docs/PARTIAL_INITIATION_BOUNDARY_V013.md`](docs/PARTIAL_INITIATION_BOUNDARY_V013.md).
 
+The implemented **v0.15 full-carrier attachment evidence** records exact
+affine coefficients, inverse compositions, endpoint images, epsilon-delta
+moduli, two-turn deck equivariance, and the sheet identity
+`B_R(-u)=2-B_R(u)`. This analytically supports the complete declared real
+non-null intervals and quotient without claiming a runtime arbitrary-real
+object or machine-checked theorem. It joins, but does not widen, the v0.13
+source-bound root attachments.
+
+See
+[`docs/FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md`](docs/FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md).
+
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
 after iterator exhaustion, admitted expected-count agreement, and exact
@@ -170,6 +194,8 @@ METAPAT.
 
 See
 [`docs/FULL_CORPUS_EXECUTION_GATE_V014.md`](docs/FULL_CORPUS_EXECUTION_GATE_V014.md).
+The exact downstream EDCM PR #44 result and receipt identities are pinned in
+[`docs/evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json`](docs/evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json).
 
 The directed-cover comparison candidate provides:
 
@@ -514,12 +540,15 @@ why binary64 cannot carry its arbitrary-rational identity. v0.12 specifies the
 real topological candidate and demonstrates why smooth affine coordinates alone
 cannot supply the seam or Structural Null initiation. v0.13 now builds the
 bounded door without mistaking it for the whole carrier: marked source seams,
-twist receipts, and append-only root motion are executable while arbitrary-real
-limits remain inconclusive. The next truth obligations are arbitrary-real
-full-carrier attachment evidence, arbitrary-element transverse assignment,
+twist receipts, and append-only root motion are executable. v0.15 supplies the
+written analytic proof certificate for the full declared non-null affine and
+quotient relationship without rewriting the partial initiation standing. The
+downstream EDCM PR #44 receipt closes the source-native MultiWOZ v0.14.1
+execution obligation for that exact corpus and producer. The next truth
+obligations are arbitrary-element transverse assignment and a total Structural
+Null relationship,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
-A0-betatest specimen, a deterministic source-native MultiWOZ adapter and
-corrected v0.14-gated complete run,
-higher-gonol composition, and evidence from failures surfaced across complete
-corpora—without allowing present metric projections to select the geometry that
-validates them.
+A0-betatest specimen, higher-gonol composition, later source-native corpus
+adapters and complete runs beginning with Molweni, and evidence from failures
+surfaced across complete corpora—without allowing present metric projections
+to select the geometry that validates them.

@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation, completion-motion, and v0.14 full-corpus execution evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
-        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, and full-corpus execution evidence, current foundations, and reproducible candidate-research infrastructure",
+        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, and bounded full-carrier attachment evidence, current foundations, and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "element-assignment law, arbitrary-real seam-side limits and full-carrier relationship beyond the v0.13 partial root attachment, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "element-assignment law and total Structural Null relationship beyond the v0.15 analytic non-null and partial root evidence, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -2079,6 +2079,85 @@ export default defineMsdmdCollection({
       "block": "CONTRACTS",
       "fields": {
         "class": "evidence",
+        "given": "the corrected downstream EDCM MultiWOZ result is recorded in UCNS",
+        "since": "2026-07-31",
+        "then": "the corpus, report, receipt, producer, and publication identities remain exact while geometry, proof, canon, EDCM activation, and METAPAT activation do not transfer"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "external_multiwoz_v0141_handoff_is_exact_and_nonpromoting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the v0.15 affine continuity certificate is constructed",
+        "since": "2026-07-31",
+        "then": "exact coefficients, endpoints, inverse compositions, and epsilon-delta multipliers encode the written proof over both complete real intervals without numerical sampling"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "full_carrier_affine_certificate_is_universal_and_exact"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "analytic non-null evidence and bounded initiation evidence are joined",
+        "since": "2026-07-31",
+        "then": "arbitrary-element assignment, a total Structural Null relation, machine-checked proof, carrier selection, EDCM activation, and METAPAT activation remain absent and fail closed on substitution"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "full_carrier_attachment_does_not_complete_select_or_activate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the v0.15 combined report is constructed",
+        "since": "2026-07-31",
+        "then": "RC01 and non-null RC03 retain analytic standing, RC02 and RC04-RC10 retain their bounded v0.13 executable standing, and no result is relabeled as one uniform arbitrary-real runtime scope"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "full_carrier_attachment_retains_mixed_evidence_scopes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the v0.15 quotient seam certificate is constructed",
+        "since": "2026-07-31",
+        "then": "two-turn deck equivariance and the one-turn sheet identity hold by exact coefficient algebra while coordinate cuts remain nonauthoritative and Structural Null remains outside the non-null quotient"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "full_carrier_quotient_certificate_commutes_without_moving_the_marked_seam"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact coefficient validation and fixed mixed-scope RC01-RC10 evidence construction",
+        "module_kind": "experiment",
+        "module_name": "full_carrier_attachment",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "AffineContinuityCertificate, QuotientSeamCommutationCertificate, CarrierAttachmentEvidenceResult, FullCarrierAttachmentReport, ContinuityEvidenceStanding, run_v015_full_carrier_attachment_experiment",
+        "requires": "edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary",
+        "rollback": "remove this module, exports, tests, and v0.15 document while retaining v0.12 specification and v0.13 executable evidence",
+        "rollout": "nonselecting v0.15 analytic certificates for the complete declared real affine intervals and non-null quotient, joined to the unchanged v0.13 partial root attachment",
+        "since": "2026-07-31",
+        "storage_boundary": "none",
+        "summary": "records exact analytic certificates for the declared full non-null affine carrier and quotient seam while retaining the bounded source-bound Structural Null attachment",
+        "tests": "tests/test_full_carrier_attachment.py",
+        "unresolved": "arbitrary observed-element transverse assignment, total Structural Null initiation relationship, intrinsic-versus-marked seam choice, proof-assistant formalization, higher geometry, higher-gonol composition, scoped completion, canonical faithful breadth, and carrier selection",
+        "user_data_boundary": "v0.13 source provenance remains attached and no arbitrary observed-element assignment is introduced"
+      },
+      "file": "src/ucns/full_carrier_attachment.py",
+      "id": "edcm_full_carrier_attachment_evidence"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
         "given": "every successfully processed speaker turn is observed",
         "since": "2026-07-31",
         "then": "length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
@@ -2581,12 +2660,12 @@ export default defineMsdmdCollection({
         "owner": "Erin Spencer",
         "public_surface": "OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension",
         "rollback": "remove the registry surface without changing existing carrier or profile behavior",
-        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, decisions, and explicit unresolved choices; no mathematical option selection",
+        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, decisions, and explicit unresolved choices; no mathematical option selection",
         "since": "2026-07-25",
         "storage_boundary": "packaged option_registry.json",
-        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, and unresolved-option registry",
+        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, and unresolved-option registry",
         "tests": "tests/test_option_decisions.py",
-        "unresolved": "ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
+        "unresolved": "arbitrary-element assignment, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/options.py",
@@ -3830,6 +3909,71 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_experiments.py",
       "id": "check_separate_authorship_records"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_external_edcm_receipt_handoff_is_exact_and_nonpromoting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "external_multiwoz_v0141_handoff_is_exact_and_nonpromoting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_carrier_attachment.py",
+      "id": "check_edcm_multiwoz_v0141_handoff"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_affine_certificate_retains_exact_universal_proof_data",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_carrier_affine_certificate_is_universal_and_exact",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_carrier_attachment.py",
+      "id": "check_full_carrier_affine_certificate"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_report_retains_analytic_and_bounded_executable_scopes",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_carrier_attachment_retains_mixed_evidence_scopes",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_carrier_attachment.py",
+      "id": "check_full_carrier_mixed_scope_report"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_report_rejects_scope_completion_selection_and_activation",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_carrier_attachment_does_not_complete_select_or_activate",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_carrier_attachment.py",
+      "id": "check_full_carrier_nonactivation_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_quotient_certificate_commutes_and_excludes_structural_null",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_carrier_quotient_certificate_commutes_without_moving_the_marked_seam",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_carrier_attachment.py",
+      "id": "check_full_carrier_quotient_certificate"
     },
     {
       "block": "CHECKS",
@@ -5772,6 +5916,27 @@ export default defineMsdmdCollection({
       "to": "edcm_scalar_projection_is_declared_lossy"
     },
     {
+      "from": "check_edcm_multiwoz_v0141_handoff",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_multiwoz_v0141_handoff",
+      "to": "self::test_external_edcm_receipt_handoff_is_exact_and_nonpromoting"
+    },
+    {
+      "from": "check_edcm_multiwoz_v0141_handoff",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_multiwoz_v0141_handoff",
+      "to": "external_multiwoz_v0141_handoff_is_exact_and_nonpromoting"
+    },
+    {
+      "from": "check_edcm_multiwoz_v0141_handoff",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_multiwoz_v0141_handoff",
+      "to": "python3"
+    },
+    {
       "from": "check_edcm_parentage_fail_closed",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -6231,6 +6396,90 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_fixed_point_requires_resolver",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_carrier_affine_certificate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_affine_certificate",
+      "to": "self::test_affine_certificate_retains_exact_universal_proof_data"
+    },
+    {
+      "from": "check_full_carrier_affine_certificate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_affine_certificate",
+      "to": "full_carrier_affine_certificate_is_universal_and_exact"
+    },
+    {
+      "from": "check_full_carrier_affine_certificate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_affine_certificate",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_carrier_mixed_scope_report",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_mixed_scope_report",
+      "to": "self::test_report_retains_analytic_and_bounded_executable_scopes"
+    },
+    {
+      "from": "check_full_carrier_mixed_scope_report",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_mixed_scope_report",
+      "to": "full_carrier_attachment_retains_mixed_evidence_scopes"
+    },
+    {
+      "from": "check_full_carrier_mixed_scope_report",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_mixed_scope_report",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_carrier_nonactivation_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_nonactivation_boundary",
+      "to": "self::test_report_rejects_scope_completion_selection_and_activation"
+    },
+    {
+      "from": "check_full_carrier_nonactivation_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_nonactivation_boundary",
+      "to": "full_carrier_attachment_does_not_complete_select_or_activate"
+    },
+    {
+      "from": "check_full_carrier_nonactivation_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_nonactivation_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_carrier_quotient_certificate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_quotient_certificate",
+      "to": "self::test_quotient_certificate_commutes_and_excludes_structural_null"
+    },
+    {
+      "from": "check_full_carrier_quotient_certificate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_quotient_certificate",
+      "to": "full_carrier_quotient_certificate_commutes_without_moving_the_marked_seam"
+    },
+    {
+      "from": "check_full_carrier_quotient_certificate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_carrier_quotient_certificate",
       "to": "python3"
     },
     {
@@ -8103,6 +8352,27 @@ export default defineMsdmdCollection({
       "to": "explicit_comparison_policy_layer"
     },
     {
+      "from": "edcm_full_carrier_attachment_evidence",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_full_carrier_attachment_evidence",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_full_carrier_attachment_evidence",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_full_carrier_attachment_evidence",
+      "to": "edcm_exact_coordinate_representation_boundary"
+    },
+    {
+      "from": "edcm_full_carrier_attachment_evidence",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_full_carrier_attachment_evidence",
+      "to": "edcm_partial_initiation_boundary"
+    },
+    {
       "from": "edcm_full_corpus_execution_gate",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -8367,6 +8637,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_exact_rational_transverse_envelope_experiment"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_full_carrier_attachment_evidence"
     },
     {
       "from": "foundations_public_surface",
@@ -9434,5 +9711,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "ucns"
+  "repo": "The-Interdependency/ucns"
 });

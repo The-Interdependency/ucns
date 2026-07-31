@@ -45,6 +45,8 @@ standing and provenance but does not canonize its own entries.
 | `OBS-3` | The initiation label is not a geometric Möbius transition. | negative-result | EDCM observation | module nonclaim and absence of carrier transition |
 | `MOTION-1` | Supplied assignment-and-motion trajectories can be retained with scoped completion and unresolved state. | implemented-candidate | EDCM evidence | `src/ucns/edcm_motion.py` schema `0.1.0` |
 | `MOTION-2` | The evidence schema does not derive assignment, motion, or completion laws. | represented-evidence | EDCM evidence | `EDCM_COMPLETION_MOTION_EVIDENCE.md` |
+| `IMPL-5` | Fourteen source-bound marked seams attach the typed Structural Null prestate to the exact root while retaining twist and motion receipts. | implemented-candidate | v0.13 minimum packet and root fiber | `src/ucns/initiation_boundary.py`; `PARTIAL_INITIATION_BOUNDARY_V013.md` |
+| `IMPL-6` | The signed-local affine map and inverse are real-continuous on the complete declared intervals, and the affine product map descends through the declared non-null quotient while commuting with the sheet involution. | represented-evidence | declared real non-null candidate | exact epsilon-delta and quotient certificates in `src/ucns/full_carrier_attachment.py`; analytic, not machine-checked; no total Structural Null relation |
 
 ## Empirical and historical evidence
 
@@ -52,6 +54,7 @@ standing and provenance but does not canonize its own entries.
 |---|---|---|---|---|
 | `EMP-1` | The repaired MultiWOZ 2.1 run processed 10,438 dialogues and 143,048 turns with zero carrier-unassigned occurrences under profile `0.2.0`. | empirical-result | one complete corpus | sealed EDCM PR #41 evidence |
 | `EMP-2` | MultiWOZ completeness does not establish universal Unicode carrier coverage or the missing geometry. | negative-result | claim boundary | profile and PR explicit nonclaims |
+| `EMP-3` | The corrected source-native MultiWOZ 2.1 stream reconciled all 10,438 dialogues and 143,048 turns and acquired UCNS v0.14.1 completion receipt `921ceacad026de1d884eec3e049b090246014706c937c062bd32f40bbff01f0c`. | empirical-result | one exact producer and corpus artifact | EDCM PR #44; `docs/evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json` |
 | `HIST-1` | The pinned a0-betatest epoch is the primary EDCM recovery specimen. | historical-evidence | recovery | commit `7af8debf6ef3905f01baff02b43d8c3bee16ccbc` |
 | `HIST-2` | The specimen retains seam events, lifted traversal, ordered composition, chirality evidence, recursive grain, disk stacking, and inscription. | historical-evidence | recovery | recovery manifest and reference |
 | `HIST-3` | Hash-derived lanes, fixed lane count, ordinary `2π` phase reduction, sine-sign chirality, cylinder-only geometry, coherence scalar, and factorization authority do not transfer. | rejected-pre-reset | current activation | `CANON.md`; recovery reference |

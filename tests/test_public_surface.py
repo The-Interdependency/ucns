@@ -76,6 +76,10 @@ def test_public_surface_is_bounded() -> None:
         "partial_initiation_exact_comparison_policy",
         "project_root_visible_state",
         "run_v013_partial_initiation_boundary_experiment",
+        "AffineContinuityCertificate",
+        "QuotientSeamCommutationCertificate",
+        "FullCarrierAttachmentReport",
+        "run_v015_full_carrier_attachment_experiment",
     ):
         assert expected in exported
 

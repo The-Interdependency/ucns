@@ -2,7 +2,7 @@
 # id: ucns_option_decision_registry
 #   module_name: options
 #   module_kind: schema
-#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, and unresolved-option registry
+#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, and unresolved-option registry
 #   owner: Erin Spencer
 #   public_surface: OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension
 #   internal_surface: _validate_registry
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_option_decisions.py
-#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, decisions, and explicit unresolved choices; no mathematical option selection
+#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
-#   unresolved: ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
+#   unresolved: arbitrary-element assignment, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.10.2"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.11.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -113,6 +113,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "edcm-source-normalization-none",
         "full-corpus-runs",
         "full-corpus-execution-gate",
+        "multiwoz-v0141-downstream-receipt",
         "ucns-completion-motion-root",
         "completion-scoped-to-declared-boundary",
         "trajectory-before-scalar",
@@ -121,6 +122,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "bounded-carrier-coordinate-admissibility",
         "exact-coordinate-representation-boundary",
         "partial-initiation-boundary",
+        "full-carrier-attachment-evidence",
     }
 )
 
@@ -160,6 +162,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
             "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
             "full_corpus_execution_schema": (
                 "ucns.edcm.full-corpus-execution/0.14.1"
+            ),
+            "full_carrier_attachment_schema": (
+                "ucns.edcm.full-carrier-attachment-evidence/0.15.0"
             ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
@@ -248,6 +253,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "carrier-coordinate-admissibility",
         "exact-coordinate-representation",
         "initiation-attachment",
+        "full-carrier-continuity-evidence",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -372,6 +378,41 @@ def _validate_registry(data: dict[str, Any]) -> None:
     }:
         raise OptionRegistryError(
             "initiation attachment choice standings are fixed"
+        )
+
+    continuity = dimension_by_id["full-carrier-continuity-evidence"]
+    if continuity.get("display_rule") != (
+        "display-analytic-and-unresolved-attachment-standings-together"
+    ):
+        raise OptionRegistryError(
+            "full-carrier continuity must retain mixed standings"
+        )
+    if continuity.get("display_order") != [
+        "analytic-affine-and-non-null-quotient-certificates",
+        "runtime-arbitrary-real-representation",
+        "total-structural-null-carrier-relationship",
+    ]:
+        raise OptionRegistryError(
+            "full-carrier continuity display order mismatch"
+        )
+    if continuity.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "full-carrier continuity evidence cannot select a candidate"
+        )
+    continuity_standings = {
+        choice.get("id"): choice.get("standing")
+        for choice in continuity.get("choices", ())
+        if isinstance(choice, dict)
+    }
+    if continuity_standings != {
+        "analytic-affine-and-non-null-quotient-certificates": (
+            "implemented-candidate"
+        ),
+        "runtime-arbitrary-real-representation": "unresolved",
+        "total-structural-null-carrier-relationship": "unresolved",
+    }:
+        raise OptionRegistryError(
+            "full-carrier continuity choice standings are fixed"
         )
 
     corpora = data.get("real_system_corpus_candidates")

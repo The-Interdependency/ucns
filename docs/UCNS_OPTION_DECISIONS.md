@@ -23,14 +23,18 @@ falsifiers without changing any option standing or adding runtime behavior.
 v0.13 implements one marked-seam candidate over the exact rational root and
 minimum source packet: typed Structural Null is an explicit disjoint prestate,
 all fourteen initiations retain source-provenance seams and twist receipts, and
-360-degree/720-degree motion appends history without selection. Arbitrary-real
-seam limits, arbitrary-element transverse assignment, full-carrier real
-continuity, canonical breadth, epicyclic geometry, completion, and
-higher-composition mathematics remain incomplete.
+360-degree/720-degree motion appends history without selection.
 v0.14 separately implements the full-corpus execution gate: post-run analysis
 receipts require iterator exhaustion, declared expected-count agreement, and
-matching exact source/reconstruction stream digests. No corpus admission,
-real-system run, carrier selection, or consumer activation follows.
+matching exact source/reconstruction stream digests. EDCM PR #44 records the
+first corrected source-native result against that gate: 10,438 MultiWOZ 2.1
+dialogues and 143,048 turns reconcile exactly with the UCNS v0.14.1 producer.
+v0.15 records universal analytic certificates for the complete declared real
+affine intervals and non-null quotient seam commutation, while retaining the
+v0.13 Structural Null attachment as partial and root-only. Arbitrary-element
+transverse assignment, the total Structural Null relationship, canonical
+breadth, epicyclic geometry, completion, and higher-composition mathematics
+remain incomplete. No carrier selection or consumer activation follows.
 
 ## Authority boundary
 
@@ -506,8 +510,10 @@ specifies the framed double cover, Möbius quotient, coordinate cylinder, and
 separating continuity obligations. v0.13 gives the missing doorway one bounded
 candidate form: a typed disjoint prestate, marked source seams, twist receipts,
 and non-erasing root motion. v0.14 prevents partial turn streams from opening
-post-run analysis, while leaving source-native adapters and actual complete
-corpus runs unresolved. RC01 and RC03 remain inconclusive, so executable
-arbitrary-real full-carrier continuity, arbitrary assignment, canonical
-breadth, epicyclic circle, disk, sphere, composition, and completion laws remain
-the living recovery boundary.
+post-run analysis; EDCM PR #44 supplies the exact source-native MultiWOZ receipt
+for that producer. v0.15 adds written analytic RC01 and non-null RC03
+certificates without rewriting v0.13's bounded executable verdicts. A runtime
+arbitrary-real representation is not required for that affine proof and is not
+claimed. Arbitrary observed-element assignment, a total Structural Null
+relationship, later corpus adapters, canonical breadth, epicyclic circle, disk,
+sphere, composition, and completion laws remain the living recovery boundary.
