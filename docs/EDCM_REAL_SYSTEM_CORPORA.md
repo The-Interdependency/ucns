@@ -3,9 +3,9 @@
 **Research authority:** Erin Spencer  
 **Recorded:** 2026-07-25  
 **Status:** candidate sources found; the first complete downstream MultiWOZ 2.1
-run exposed and repaired a SPACE-origin assignment defect; v0.14 now supplies a
-fail-closed generic execution receipt, while the source-native adapter and
-corrected complete MultiWOZ rerun remain downstream work
+run exposed and repaired a SPACE-origin assignment defect; EDCM PR #44 now
+records the corrected source-native run and exact UCNS v0.14.1 completion
+receipt; later corpus adapters and runs remain downstream work
 **Decision surface:** [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md)
 
 ## Purpose
@@ -42,12 +42,16 @@ alphabet failures, under the repaired profile. A new complete run must carry a
 new profile identity and supersession receipt. Non-SPACE unmapped code points
 remain retained and reported as positive coverage-failure evidence.
 
-The v0.14.1 full-corpus execution gate now prevents a prefix, iterator failure,
+The v0.14.1 full-corpus execution gate prevents a prefix, iterator failure,
 turn-count mismatch, or merely declared complete report from receiving a
 post-run analysis receipt. Receipt identity binds license, privacy, redaction,
-admission, adapter, source, and count standing. It does not retroactively
-receipt the historical run and does not establish that a source-native
-MultiWOZ adapter matches the archived source artifact. See
+admission, adapter, source, and count standing. The corrected EDCM PR #44 run
+uses a deterministic source-native adapter and reconciles all 10,438 dialogues
+and 143,048 turns against the archived artifact. Its exact report, receipt,
+source, producer, and publication identities are recorded in
+[`evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json`](evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json).
+The gate and receipt do not establish carrier geometry, measurement validity,
+or downstream activation. See
 [`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ## Candidate sources
@@ -223,7 +227,8 @@ No raw restricted corpus belongs in the UCNS repository.
 
 The first complete MultiWOZ 2.1 run did what the corpus program was meant to do:
 it exposed a boundary error that fixtures missed. The repaired profile now needs
-an immutable source-native full-corpus rerun and v0.14.1 completion receipt.
-After that, Molweni
-tests whether the same source-preserving profile retains graph and
-unresolved-reference evidence without flattening it.
+no rewritten historical result: EDCM PR #44 preserves the corrected immutable
+source-native full-corpus report and v0.14.1 completion receipt separately.
+Molweni is now the next queued corpus and tests whether the same
+source-preserving profile retains graph and unresolved-reference evidence
+without flattening it.

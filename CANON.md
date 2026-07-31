@@ -457,16 +457,17 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. execution or proof of the v0.12 arbitrary-real and complete signed-local
-    Möbius-to-cover continuity obligations beyond the v0.13 partial root
-    attachment, including seam-side real limits, arbitrary-element transverse
-    assignment, higher geometry, and completion;
+12. arbitrary-element transverse assignment and a total Structural Null
+    initiation relationship beyond the v0.15 analytic non-null certificates
+    and v0.13 partial root attachment, including higher geometry and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
     Möbius coordinate and higher-gonol composition laws are executable;
-15. source-native adapters, authenticated source custody, actual corrected
-    MultiWOZ and later complete corpus runs, and post-run falsifier execution;
+15. source-native adapters, authenticated source custody, complete runs, and
+    post-run falsifier execution for Molweni and later corpora. The exact
+    corrected MultiWOZ 2.1 obligation is closed by EDCM PR #44 and the pinned
+    UCNS v0.14.1 downstream receipt; its empirical standing does not transfer;
 16. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
     public-gonol algebra, or theorem claim.
 
@@ -547,11 +548,12 @@ noninjectivity. The v0.12 specification gives the real non-null topology a
 falsifiable shape. v0.13 now gives its doorway one bounded executable form:
 marked source seams and twist receipts attach the singular typed prestate to the
 exact rational root without choosing the whole building. v0.14 now prevents a
-partial corpus prefix from masquerading as a full execution receipt; it does
-not substitute a receipt for the missing source-native adapter or real run.
-Arbitrary-real
-seam-side continuity, arbitrary-element assignment, canonical breadth,
-epicyclic circle, disk, sphere, recursive composition, and completion conditions
-remain unrecovered. Real-system experiments may pressure those laws, but current
-metric projections may not circularly select the geometry that makes them
-appear valid.
+partial corpus prefix from masquerading as a full execution receipt. EDCM PR
+#44 records the corrected source-native MultiWOZ execution against that exact
+gate. v0.15 records a written universal affine and non-null quotient proof
+certificate while leaving v0.13's partial initiation standing unchanged.
+Arbitrary-element assignment, a total Structural Null relationship, canonical
+breadth, epicyclic circle, disk, sphere, recursive composition, and completion
+conditions remain unrecovered. Real-system experiments may pressure those laws,
+but current metric projections may not circularly select the geometry that
+makes them appear valid.

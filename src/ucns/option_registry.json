@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.10.2",
+  "schema_version": "1.11.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -14,6 +14,7 @@
     "completion_scope": "Completion closes a declared construction relative to its declared boundary and does not exhaust the underlying unknowable.",
     "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
     "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.1",
+    "full_carrier_attachment_schema": "ucns.edcm.full-carrier-attachment-evidence/0.15.0",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -179,6 +180,10 @@
       "statement": "v0.14.1 issues a post-run analysis receipt only from execution-generated evidence after the supplied admitted-corpus iterator is exhausted, the externally declared expected turn count matches, and exact source and reconstructed-observation stream digests agree. Receipt identity binds the complete authority-bearing manifest, including license, privacy, and redaction standing. Partial or merely declared execution remains explicit nonreceipt evidence and cannot select a carrier or activate EDCM or METAPAT."
     },
     {
+      "id": "multiwoz-v0141-downstream-receipt",
+      "statement": "EDCM PR #44 records the corrected source-native MultiWOZ 2.1 run against UCNS producer 868d80878c9ecd93ff30e91ca289122ded805a49: all 10,438 dialogues and 143,048 turns reconcile and receipt 921ceacad026de1d884eec3e049b090246014706c937c062bd32f40bbff01f0c is complete. This empirical standing does not select geometry, transfer proof, or activate EDCM or METAPAT."
+    },
+    {
       "id": "ucns-completion-motion-root",
       "statement": "UCNS assigns elements of an unknowable to completion through geometric motion; carrier, algebra, factorization, hashes, and scalars remain subordinate instruments or projections."
     },
@@ -209,6 +214,10 @@
     {
       "id": "partial-initiation-boundary",
       "statement": "v0.13.2 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It binds the actual exact RC comparator, includes native provenance in attachment identity, requires exact one-turn receipt displacements and partial-scope RC results, and rejects forged endpoints, trajectory substitution, verdict promotion, and boundary-status promotion while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
+    },
+    {
+      "id": "full-carrier-attachment-evidence",
+      "statement": "v0.15 records exact endpoint, inverse-composition, epsilon-delta, deck-equivariance, and sheet-commutation certificates for the complete declared real non-null affine candidate. The combined report retains v0.13 as partial root-only initiation evidence, labels the analytic proof not machine-checked, and leaves arbitrary-element assignment, the total Structural Null relationship, selection, EDCM activation, and METAPAT activation absent."
     }
   ],
   "current_profile": {
@@ -248,7 +257,7 @@
         {
           "id": "directed-twofold-branched-angular-cover",
           "standing": "implemented-candidate",
-          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension by showing that distinct sidecar states collide at the same actual directed-cover coordinate. v0.10 evaluates four explicit radial laws in actual LiftedCarrierPoint fields: signed local affine breadth is admissible on the declared 45-fiber rational domain, while three alternatives retain collision or motion-failure witnesses. v0.11 preserves the signed-local law and inverse as exact rational evidence while exhibiting binary64 breadth and lifted-turn collisions. No candidate is selected, and full-carrier real continuity, arbitrary-element assignment, higher geometry, and completion remain unresolved."
+          "evidence": "Current executable 720-degree lifted and 360-degree visible implementation. The v0.7 root-loop chart is exact on its declared domain. v0.9 corrects the attempted v0.8 transverse extension by showing that distinct sidecar states collide at the same actual directed-cover coordinate. v0.10 evaluates four explicit radial laws in actual LiftedCarrierPoint fields: signed local affine breadth is admissible on the declared 45-fiber rational domain, while three alternatives retain collision or motion-failure witnesses. v0.11 preserves the signed-local law and inverse as exact rational evidence while exhibiting binary64 breadth and lifted-turn collisions. v0.15 supplies analytic certificates for the complete declared real non-null affine intervals and quotient. No candidate is selected, and arbitrary-element assignment, a total Structural Null relationship, global C1/C2 equivalence, higher geometry, and completion remain unresolved."
         },
         {
           "id": "mobius-origin-hidden-zero",
@@ -338,6 +347,34 @@
         "marked-source-bound-partial-attachment",
         "intrinsic-derived-initiation-seam",
         "invariant-initiation-equivalence-class"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "full-carrier-continuity-evidence",
+      "question": "Which evidence standings are established for the declared real non-null carrier and its attachment to Structural Null?",
+      "choices": [
+        {
+          "id": "analytic-affine-and-non-null-quotient-certificates",
+          "standing": "implemented-candidate",
+          "evidence": "v0.15 records universal epsilon-delta moduli for B_R and its inverse plus exact deck and sheet equivariance for the non-null quotient. The derivation covers the complete declared real intervals without sampling and is explicitly not machine-checked."
+        },
+        {
+          "id": "runtime-arbitrary-real-representation",
+          "standing": "unresolved",
+          "evidence": "No runtime arbitrary-real object model is supplied. It is not substituted for, or required to impersonate, the written affine proof."
+        },
+        {
+          "id": "total-structural-null-carrier-relationship",
+          "standing": "unresolved",
+          "evidence": "v0.13 remains a source-bound partial relation to the exact root. No arbitrary observed-element assignment or total Structural Null topology is supplied."
+        }
+      ],
+      "display_rule": "display-analytic-and-unresolved-attachment-standings-together",
+      "display_order": [
+        "analytic-affine-and-non-null-quotient-certificates",
+        "runtime-arbitrary-real-representation",
+        "total-structural-null-carrier-relationship"
       ],
       "selection_effect": "none"
     },
@@ -676,6 +713,7 @@
     "Retain all four v0.10 carrier-coordinate candidates and their complete bounded evidence. The signed local affine radial law is admissible only on the declared exact-rational domain; this does not select a carrier, canonize faithful breadth, establish real continuity, or authorize downstream activation.",
     "Retain the v0.11 exact signed-local coordinate and every binary64 rendering together. The exact affine law and inverse hold over the declared rational interval, while explicit breadth and lifted-turn collisions prohibit binary64 LiftedCarrierPoint storage from serving as arbitrary-rational evidence identity.",
     "Retain the v0.13 marked source-bound partial attachment together with the unresolved intrinsic-seam and invariant-equivalence-class alternatives. Its typed disjoint prestate, fourteen twist receipts, and append-only root motion do not establish arbitrary-real seam limits, arbitrary-element transverse assignment, complete carrier continuity, or selection.",
+    "Retain the v0.15 exact analytic certificates for the complete declared real affine intervals and non-null quotient together with the unchanged v0.13 partial attachment standing. Written proof evidence does not create arbitrary-element assignment, a total Structural Null relationship, a machine-checked theorem, selection, or activation.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -684,6 +722,7 @@
     "Use ordered concatenation as the EDCM primary occurrence operation.",
     "Use one unit of support per complete speaker turn.",
     "Open post-run failure-seeking analysis only after iterator exhaustion, admitted turn-count agreement, and exact source/reconstruction stream-digest agreement; incomplete runs remain blocking evidence.",
+    "Record the EDCM PR #44 corrected MultiWOZ 2.1 completion receipt as exact downstream empirical evidence for UCNS producer 868d80878c9ecd93ff30e91ca289122ded805a49 without transferring geometry, proof, or activation standing.",
     "Begin EDCM equivalence with exact evidence and move toward projection only on an explicit evidence-backed sliding scale.",
     "Display all three M candidates without selecting one.",
     "Display all three B candidates without selecting one.",
@@ -702,7 +741,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "The v0.13 marked source-bound partial attachment joins the typed Structural Null prestate to the exact rational root over the minimum packet. Arbitrary-real seam-side continuity, arbitrary-element transverse assignment, canonical faithful breadth, higher geometry, and completion remain unresolved.",
+    "The v0.15 analytic certificates cover the complete declared real non-null affine intervals and quotient seam commutation without sampling. v0.13 remains the source-bound partial Structural Null attachment at the exact root; arbitrary-element assignment, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",
@@ -711,7 +750,7 @@
     "Graph and retained-layer contribution laws; more information is required.",
     "Evidence thresholds and loss accounting for the sliding scale from exact evidence toward projection.",
     "Interpretation and visualization of the three simultaneous M and three simultaneous B readouts.",
-    "Corpus-specific source-native adapters, authenticated custody, actual corrected full-corpus runs, and post-run falsifier implementations; v0.14 supplies only their fail-closed execution gate.",
+    "Source-native adapters, authenticated custody, complete runs, and post-run falsifier implementations for Molweni and later corpora. EDCM PR #44 closes the exact corrected MultiWOZ 2.1 receipt obligation only.",
     "Formal promotion and migration criteria for the EDCM observation profile after the Mobius and higher-gonol laws are executable.",
     "Typed payload operator registry and dispatch laws remain outside the active EDCM configuration."
   ],

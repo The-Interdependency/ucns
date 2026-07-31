@@ -84,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.10.2"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.11.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -101,6 +101,10 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     assert (
         project["full_corpus_execution_schema"]
         == "ucns.edcm.full-corpus-execution/0.14.1"
+    )
+    assert (
+        project["full_carrier_attachment_schema"]
+        == "ucns.edcm.full-carrier-attachment-evidence/0.15.0"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -155,6 +159,12 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "full-corpus-execution-gate" in decisions
     assert "iterator is exhausted" in decisions["full-corpus-execution-gate"]
     assert "cannot select a carrier" in decisions["full-corpus-execution-gate"]
+    assert "multiwoz-v0141-downstream-receipt" in decisions
+    assert "143,048 turns reconcile" in decisions[
+        "multiwoz-v0141-downstream-receipt"
+    ]
+    assert "full-carrier-attachment-evidence" in decisions
+    assert "epsilon-delta" in decisions["full-carrier-attachment-evidence"]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
     assert coordinate_dimension["selection_effect"] == "none"
@@ -198,6 +208,25 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         "marked-source-bound-partial-attachment": "implemented-candidate",
         "intrinsic-derived-initiation-seam": "unresolved",
         "invariant-initiation-equivalence-class": "unresolved",
+    }
+    continuity_dimension = option_dimension(
+        "full-carrier-continuity-evidence"
+    )
+    assert continuity_dimension["display_order"] == [
+        "analytic-affine-and-non-null-quotient-certificates",
+        "runtime-arbitrary-real-representation",
+        "total-structural-null-carrier-relationship",
+    ]
+    assert continuity_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in continuity_dimension["choices"]
+    } == {
+        "analytic-affine-and-non-null-quotient-certificates": (
+            "implemented-candidate"
+        ),
+        "runtime-arbitrary-real-representation": "unresolved",
+        "total-structural-null-carrier-relationship": "unresolved",
     }
 
     promoted_registry = deepcopy(registry)
