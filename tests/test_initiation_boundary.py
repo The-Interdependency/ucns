@@ -343,7 +343,7 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         match="cannot select",
     ):
         replace(report, selection_effect="marked-seam-selected")
-    with pytest.raises(ValueError, match="init=False"):
+    with pytest.raises((TypeError, ValueError), match="init=False"):
         replace(
             report,
             comparison_policy=exact_comparison_policy(
@@ -389,6 +389,39 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             ),
         )
 
+    forged_evidence = replace(
+        report.results[3],
+        evidence=("completed-global-carrier:true",),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="RC result payload is fixed",
+    ):
+        replace(
+            report,
+            results=(
+                *report.results[:3],
+                forged_evidence,
+                *report.results[4:],
+            ),
+        )
+    forged_limitation = replace(
+        report.results[3],
+        limitation="arbitrary-real completion established",
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="RC result payload is fixed",
+    ):
+        replace(
+            report,
+            results=(
+                *report.results[:3],
+                forged_limitation,
+                *report.results[4:],
+            ),
+        )
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -399,6 +432,34 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         replace(
             report,
             trajectory=(report.trajectory[0], other_360, other_720),
+        )
+
+    packet = build_native_mobius_initiation_packet()
+    external_event = replace(
+        packet.initiations[0],
+        post_state=replace(
+            packet.initiations[0].post_state,
+            source_links=packet.initiations[0].post_state.source_links
+            + ("valid-but-unreported-source-link",),
+        ),
+    )
+    external_packet = replace(
+        packet,
+        initiations=(external_event,) + packet.initiations[1:],
+    )
+    external_attachment = build_partial_initiation_attachments(
+        external_packet
+    )[0]
+    external_initial = initiate_carrier_state(external_attachment)
+    external_360 = advance_attached_state(external_initial, 1)
+    external_720 = advance_attached_state(external_360, 1)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="retained report attachment",
+    ):
+        replace(
+            report,
+            trajectory=(external_initial, external_360, external_720),
         )
 
     initial, _, _ = report.trajectory

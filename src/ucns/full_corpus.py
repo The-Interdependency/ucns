@@ -5,7 +5,7 @@
 #   summary: fail-closed EDCM corpus execution reports and completion receipts that require iterator exhaustion, declared turn-count agreement, and exact source reconstruction before post-run analysis
 #   owner: Erin Spencer
 #   public_surface: CorpusAdapterIdentity, AdmittedCorpusManifest, CorpusRunStatus, CorpusRunFailureKind, CorpusRunFailure, FullCorpusExecutionReport, FullCorpusCompletionReceipt, execute_admitted_corpus, issue_full_corpus_completion_receipt
-#   internal_surface: exact validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers
+#   internal_surface: exact profile-implementation validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers
 #   auth_boundary: admission authority remains external and is retained by admission_decision_id
 #   storage_boundary: raw corpus and per-turn observations remain in source or downstream custody; this bounded report retains counts and linked digests only
 #   network_boundary: none
@@ -34,7 +34,7 @@
 #
 # id: full_corpus_gate_requires_exact_stream_reconstruction
 #   given: every successfully processed speaker turn is observed
-#   then: length-prefixed source and reconstructed-observation stream digests agree before the report can complete
+#   then: the exact fixed profile implementation observes every turn and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
 #   class: evidence
 #   since: 2026-07-31
 #
@@ -449,9 +449,11 @@ def execute_admitted_corpus(
 
     if not isinstance(manifest, AdmittedCorpusManifest):
         raise FullCorpusError("manifest must be an AdmittedCorpusManifest")
-    active_profile = profile or EdcmWordGonolProfile()
-    if not isinstance(active_profile, EdcmWordGonolProfile):
-        raise FullCorpusError("profile must be an EdcmWordGonolProfile")
+    active_profile = EdcmWordGonolProfile() if profile is None else profile
+    if type(active_profile) is not EdcmWordGonolProfile:
+        raise FullCorpusError(
+            "profile must use the exact EdcmWordGonolProfile implementation"
+        )
 
     source_digest = _empty_stream_digest()
     observation_digest = _empty_stream_digest()

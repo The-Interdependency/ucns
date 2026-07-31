@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed partial scope, and honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent
+#   then: RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -910,6 +910,13 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "all trajectory states must retain one initiation attachment"
             )
+        retained_attachment_identities = tuple(
+            item.attachment_identity for item in self.attachments
+        )
+        if attachment_identities[0] not in retained_attachment_identities:
+            raise InitiationBoundaryError(
+                "trajectory must use one retained report attachment"
+            )
         if not policy.matches(
             after_360.motion_history,
             after_720.motion_history[:1],
@@ -1001,6 +1008,10 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "v0.13 RC verdict map is fixed and cannot promote an inconclusive result"
             )
+        if self.results != _expected_continuity_results():
+            raise InitiationBoundaryError(
+                "v0.13 RC result payload is fixed and cannot be reconstructed"
+            )
         if (
             self.coordinate_component_status
             != V013_COORDINATE_COMPONENT_STATUS
@@ -1050,31 +1061,20 @@ def _rc_result(
     )
 
 
-def run_v013_partial_initiation_boundary_experiment(
-) -> PartialInitiationBoundaryReport:
-    """Build the complete fixed v0.13 attachment and RC evidence packet."""
+def _expected_continuity_results(
+) -> tuple[ContinuityFalsifierResult, ...]:
+    """Build the complete fixed RC01-RC10 payload from canonical evidence."""
 
     packet = build_native_mobius_initiation_packet()
     attachments = build_partial_initiation_attachments(packet)
     initial = initiate_carrier_state(attachments[0])
     after_360 = advance_attached_state(initial, 1)
     after_720 = advance_attached_state(after_360, 1)
-
     sheet_first = signed_local_exact_coordinate(
         Fraction(1, 3),
         Fraction(2, 5),
     )
     sheet_second = exact_sheet_involution(sheet_first)
-
-    seam_first = view_marked_seam_at_cut(
-        attachments[0].seam,
-        Fraction(0),
-    )
-    seam_second = view_marked_seam_at_cut(
-        attachments[0].seam,
-        Fraction(1, 3),
-    )
-
     source_reconstruction = all(
         "".join(segment.raw_text for segment in witness.turn.segments)
         == witness.turn.raw_text
@@ -1084,7 +1084,7 @@ def run_v013_partial_initiation_boundary_experiment(
         item.event.event_id for item in attachments
     ) == tuple(item.event_id for item in packet.initiations)
 
-    results = (
+    return (
         _rc_result(
             "RC01",
             FalsifierVerdict.INCONCLUSIVE,
@@ -1191,6 +1191,34 @@ def run_v013_partial_initiation_boundary_experiment(
             "v0.13 adds experiment evidence only",
         ),
     )
+
+
+def run_v013_partial_initiation_boundary_experiment(
+) -> PartialInitiationBoundaryReport:
+    """Build the complete fixed v0.13 attachment and RC evidence packet."""
+
+    packet = build_native_mobius_initiation_packet()
+    attachments = build_partial_initiation_attachments(packet)
+    initial = initiate_carrier_state(attachments[0])
+    after_360 = advance_attached_state(initial, 1)
+    after_720 = advance_attached_state(after_360, 1)
+
+    sheet_first = signed_local_exact_coordinate(
+        Fraction(1, 3),
+        Fraction(2, 5),
+    )
+    sheet_second = exact_sheet_involution(sheet_first)
+
+    seam_first = view_marked_seam_at_cut(
+        attachments[0].seam,
+        Fraction(0),
+    )
+    seam_second = view_marked_seam_at_cut(
+        attachments[0].seam,
+        Fraction(1, 3),
+    )
+
+    results = _expected_continuity_results()
 
     return PartialInitiationBoundaryReport(
         attachments=attachments,
