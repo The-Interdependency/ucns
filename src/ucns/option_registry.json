@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.13.0",
+  "schema_version": "1.14.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -17,6 +17,7 @@
     "full_carrier_attachment_schema": "ucns.edcm.full-carrier-attachment-evidence/0.15.0",
     "assignment_admission_schema": "ucns.edcm.assignment-admission-boundary/0.16.0",
     "gonol_initiation_schema": "ucns.edcm.gonol-initiation-structural-null-boundary/0.17.0",
+    "explicit_geometric_assignment_schema": "ucns.edcm.explicit-geometric-assignment-boundary/0.18.0",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -228,6 +229,10 @@
     {
       "id": "gonol-initiation-structural-null-boundary",
       "statement": "v0.17 separates Structural Null from source SPACE manifestations, carrier position zero, directed-cover null, neutral M, algebraic zero, absent cells, and NA; only the singular superpositioned Structural Null may be the initiation prestate. Every v0.16 admitted occurrence receives exactly one ordered initiation outcome, an explicitly declared word gonol retains one source-bound Mobius-twist receipt without geometry, and the unchanged v0.13 root witness retains 360-degree local-frame change plus 720-degree local return without registered completion, selection, or consumer activation."
+    },
+    {
+      "id": "explicit-geometric-assignment-boundary",
+      "statement": "v0.18 makes the surviving signed-local exact circle-coordinate candidate executable for any explicitly initiated word occurrence when an independent exact rational coordinate proposal is supplied. It validates B(u)=1+u/2 and its inverse exactly, retains native two-turn frame parity and local side, keeps binary64 as a linked lossy rendering, and records one ordered assigned, unresolved, or rejected outcome per v0.17 occurrence. It does not derive proposal coordinates from source identity, select the candidate, establish total Structural Null topology or higher geometry, register completion, or activate EDCM or METAPAT."
     }
   ],
   "current_profile": {
@@ -446,6 +451,46 @@
         "explicit-structural-null-twist-and-tagged-outcome",
         "bounded-native-root-360-change-720-return",
         "zero-or-absence-as-structural-null-prestate",
+        "total-structural-null-carrier-topology"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "arbitrary-element-geometric-assignment",
+      "question": "What geometric-assignment evidence can v0.18 apply to explicitly initiated word occurrences without inventing the missing source-to-coordinate law?",
+      "choices": [
+        {
+          "id": "explicit-exact-coordinate-candidate-application",
+          "standing": "implemented-candidate",
+          "evidence": "v0.18 accepts an independent Fraction-valued signed-local and lifted-turn proposal for any explicitly initiated word occurrence, applies the surviving exact circle-coordinate candidate reversibly, retains frame parity and local side, and emits one candidate GeometricAssignment with no selection effect."
+        },
+        {
+          "id": "identity-or-projection-derived-geometry",
+          "standing": "rejected-pre-reset",
+          "evidence": "Content or subject digests, A0 Blake2 lanes, runtime identity, carrier position alone, and scalar projections may retain evidence in their own domains but cannot manufacture geometric assignment."
+        },
+        {
+          "id": "binary64-rendering-as-exact-assignment-identity",
+          "standing": "rejected-pre-reset",
+          "evidence": "The linked LiftedCarrierPoint rendering is lossy and non-injective over the arbitrary exact-rational domain, so it cannot replace exact coordinate evidence identity."
+        },
+        {
+          "id": "source-to-coordinate-derivation-law",
+          "standing": "unresolved",
+          "evidence": "No evidence-supported law yet derives the exact transverse and lifted-turn proposal from arbitrary admitted source evidence. Explicit input makes candidate application executable but is not a universal derivation."
+        },
+        {
+          "id": "total-structural-null-carrier-topology",
+          "standing": "unresolved",
+          "evidence": "The complete transition from singular Structural Null through arbitrary non-null carrier states, higher geometry, higher-gonol composition, and scoped completion remains unresolved."
+        }
+      ],
+      "display_rule": "display-explicit-input-and-unresolved-law-together",
+      "display_order": [
+        "explicit-exact-coordinate-candidate-application",
+        "identity-or-projection-derived-geometry",
+        "binary64-rendering-as-exact-assignment-identity",
+        "source-to-coordinate-derivation-law",
         "total-structural-null-carrier-topology"
       ],
       "selection_effect": "none"
@@ -815,6 +860,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
+    "The v0.18 boundary makes exact signed-local circle-candidate application executable over explicitly initiated word occurrences only when independent exact rational coordinate input is supplied. The law deriving those coordinates from arbitrary source evidence remains unresolved, as do total Structural Null topology, higher geometry, higher-gonol composition, scoped completion, canonical B, selection, and consumer activation.",
     "The v0.17 initiation boundary separates eight origin, zero, neutrality, and absence roles; gives every v0.16 admitted occurrence one tagged initiation outcome; and gives an explicitly declared word gonol one source-bound twist receipt from singular Structural Null. The retained 360-degree/720-degree root witness is bounded local-return evidence, not geometric assignment, total topology, or completion.",
     "The v0.16 assignment boundary admits arbitrary-domain occurrences through explicit adapters and gives each admitted occurrence one tagged evidence outcome. The v0.15 analytic certificates still cover the complete declared real non-null affine intervals and quotient seam commutation, while v0.13 remains the source-bound partial Structural Null attachment at the exact root. Arbitrary geometric assignment, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",
@@ -952,6 +998,6 @@
     },
     "out_of_alphabet_policy": "retain-and-report",
     "corpus_execution": "full-corpus",
-    "boundary": "This profile makes exact Unicode-scalar corpus observation executable, rejects surrogate code points, and assigns a pinned set of source-preserved SPACE manifestations to the carrier origin. Valid carrier-unassigned scalar witnesses remain exact evidence and do not become public-gonol members. v0.17 supplies a separate source-bound causal initiation receipt and tagged outcome boundary, but neither surface supplies the unresolved Mobius coordinate construction, total Structural Null topology, geometric assignment, or higher-gonol composition law."
+    "boundary": "This profile makes exact Unicode-scalar corpus observation executable, rejects surrogate code points, and assigns a pinned set of source-preserved SPACE manifestations to the carrier origin. Valid carrier-unassigned scalar witnesses remain exact evidence and do not become public-gonol members. v0.17 supplies a separate source-bound causal initiation receipt and tagged outcome boundary. v0.18 can apply the surviving exact signed-local circle candidate when independent exact rational coordinate input is supplied, but does not derive that input from source evidence or supply total Structural Null topology, higher geometry, higher-gonol composition, completion, selection, or activation."
   }
 }

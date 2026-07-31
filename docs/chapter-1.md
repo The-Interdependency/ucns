@@ -206,6 +206,13 @@ The familiar two-part test (payload algebra declares semantic erasure and no rec
 
 Within the current directed-cover comparison candidate, Chapter 1 fixes the architecture, jurisdictions, and laws of that candidate only. The EDCM target additionally requires the Möbius causal carrier, superpositioned Structural Null, a twist whenever a new gonol initiates, the exact public 157-position Unicode code-point carrier, words as the smallest gonols, and every source code point in the profile-pinned Unicode White_Space set assigned to the U+0020 origin as the superpositioned interface through which all larger gonols compose. That carrier assignment retains the exact source value, code point, and offset and performs no normalization, rewriting, trimming, or collapse. EDCM also requires ordered concatenation, one unit of support per complete speaker turn, full-corpus execution, exact-evidence baseline, carrier pairing only, plural `M` and `B` displays, and an EDCM-specific profile. It determines that faithful breadth must satisfy \(B(A) \ge 0\), \(B(A) = 0 \iff A = \mathbf{N}\), and \(a(A) = 1 - e^{-B(A)}\), and that \(B\) must report every distinction retained by payloads, carrier state, recursion, metadata, provenance, and receipts. It fixes the zero-test and jurisdiction of cell support \(\mu\), the aggregate support law of \(W\), the paired-support axiom of \(\boxtimes\), the multiplicative codomain and laws of \(M\), the directed branch topology, the separation of pairing and dispatch, and the complete collapse rule.
 
+The separate v0.18 research boundary can apply the surviving exact signed-local
+circle candidate to an explicitly initiated word when independent exact
+rational coordinates are supplied. That bounded evidence neither selects the
+Chapter 1 breadth laws nor derives a coordinate from source identity. The
+source-to-coordinate law, total Structural Null topology, higher geometry,
+composition, and completion remain outside this chapter.
+
 Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) remain formal implementation obligations. A conforming implementation must:
 
 1. assign support weights \(\mu\) and demonstrate the zero-test;
@@ -226,4 +233,4 @@ That apparent obviousness is the result of active removal. The completed surface
 
 Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. This candidate omits the twist that supplies EDCM's origin and causal chain. That omission is disqualifying for the target EDCM configuration unless formal integration shows that the directed cover preserves the required Möbius and superposition semantics.
 
-**hmmm — this chapter now survives as comparison evidence, not as the EDCM answer. The missing initiation twist, formal superposition semantics, graph contribution laws, projection scale, and real-system failure corpus are exactly the places where honest traffic should make the current construction look incomplete.**
+**hmmm — this chapter now survives as comparison evidence, not as the EDCM answer. The missing source-to-coordinate derivation beyond v0.18 explicit input, total superposition topology, graph contribution laws, projection scale, higher composition, completion, and real-system failure corpus are exactly the places where honest traffic should make the current construction look incomplete.**

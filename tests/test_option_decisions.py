@@ -84,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.13.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.14.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -113,6 +113,9 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     assert (
         project["gonol_initiation_schema"]
         == "ucns.edcm.gonol-initiation-structural-null-boundary/0.17.0"
+    )
+    assert project["explicit_geometric_assignment_schema"] == (
+        "ucns.edcm.explicit-geometric-assignment-boundary/0.18.0"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -180,6 +183,10 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "gonol-initiation-structural-null-boundary" in decisions
     assert "only the singular superpositioned Structural Null" in decisions[
         "gonol-initiation-structural-null-boundary"
+    ]
+    assert "explicit-geometric-assignment-boundary" in decisions
+    assert "independent exact rational coordinate proposal" in decisions[
+        "explicit-geometric-assignment-boundary"
     ]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
@@ -290,6 +297,34 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         ),
         "total-structural-null-carrier-topology": "unresolved",
     }
+    geometric_assignment_dimension = option_dimension(
+        "arbitrary-element-geometric-assignment"
+    )
+    assert geometric_assignment_dimension["display_rule"] == (
+        "display-explicit-input-and-unresolved-law-together"
+    )
+    assert geometric_assignment_dimension["display_order"] == [
+        "explicit-exact-coordinate-candidate-application",
+        "identity-or-projection-derived-geometry",
+        "binary64-rendering-as-exact-assignment-identity",
+        "source-to-coordinate-derivation-law",
+        "total-structural-null-carrier-topology",
+    ]
+    assert geometric_assignment_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in geometric_assignment_dimension["choices"]
+    } == {
+        "explicit-exact-coordinate-candidate-application": (
+            "implemented-candidate"
+        ),
+        "identity-or-projection-derived-geometry": "rejected-pre-reset",
+        "binary64-rendering-as-exact-assignment-identity": (
+            "rejected-pre-reset"
+        ),
+        "source-to-coordinate-derivation-law": "unresolved",
+        "total-structural-null-carrier-topology": "unresolved",
+    }
 
     promoted_registry = deepcopy(registry)
     promoted_attachment = next(
@@ -329,6 +364,21 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         match="gonol initiation choice standings are fixed",
     ):
         _validate_registry(promoted_initiation_registry)
+
+    promoted_geometric_assignment_registry = deepcopy(registry)
+    promoted_geometric_assignment = next(
+        dimension
+        for dimension in promoted_geometric_assignment_registry["dimensions"]
+        if dimension["id"] == "arbitrary-element-geometric-assignment"
+    )
+    promoted_geometric_assignment["choices"][3]["standing"] = (
+        "implemented-candidate"
+    )
+    with pytest.raises(
+        OptionRegistryError,
+        match="geometric assignment choice standings are fixed",
+    ):
+        _validate_registry(promoted_geometric_assignment_registry)
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:
