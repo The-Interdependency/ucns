@@ -1,6 +1,6 @@
 # UCNS–EDCM post-reset claims ledger
 
-> **Status:** v0.16 authority, assignment-admission evidence, analytic non-null certificates, partial-initiation evidence, and full-corpus execution ledger. It records standing; it does not promote any candidate.
+> **Status:** v0.17 authority, assignment-admission evidence, explicit gonol-initiation evidence, analytic non-null certificates, partial root-attachment evidence, and full-corpus execution ledger. It records standing; it does not promote any candidate.
 >
 > **Recovery boundary:** claims are evaluated against current UCNS `main`, the EDCM decision record, exact corpus evidence, and the primary A0 recovery specimen at `7af8debf6ef3905f01baff02b43d8c3bee16ccbc`.
 
@@ -42,6 +42,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `A9` | The corrected source-native MultiWOZ 2.1 run processed all 10,438 dialogues and 143,048 turns and acquired the exact UCNS v0.14.1 downstream completion receipt. | `implemented-evidence` | EDCM PR #44 and [`evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json`](evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json) bind the archive, adapter reconciliation, report, receipt, EDCM commits, UCNS producer `868d80878c9ecd93ff30e91ca289122ded805a49`, and receipt id. This empirical result does not select geometry, transfer proof, or activate either consumer. |
 | `A10` | Arbitrary-domain observed occurrences can enter assignment research through explicit named versioned adapters while retaining isolated subject evidence, source provenance, order, and multiplicity. | `implemented-evidence` | [`ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](ASSIGNMENT_ADMISSION_BOUNDARY_V016.md) and `src/ucns/assignment_boundary.py`. The subject digest is evidence identity only and supplies no geometric field. |
 | `A11` | Every explicitly admitted occurrence receives exactly one tagged assignment outcome: unresolved, explicit supplied candidate, or rejected mechanism. | `implemented-evidence` | The v0.16 trace fails closed on mixed tags and rejects digest, runtime hash, `repr`, object identity, and A0 Blake2 phase lanes as geometric derivations. Outcome totality is not total geometric assignment. |
+| `A12` | Every v0.16 admitted occurrence receives exactly one v0.17 gonol-initiation outcome; the declared word witness initiates explicitly from typed Structural Null through one Möbius-twist receipt while unresolved and rejected occurrences remain distinct. | `implemented-evidence` | [`GONOL_INITIATION_STRUCTURAL_NULL_V017.md`](GONOL_INITIATION_STRUCTURAL_NULL_V017.md) and `src/ucns/gonol_initiation.py`. The boundary separates Structural Null, source SPACE manifestation, carrier position zero, directed-cover null, neutral `M`, algebraic zero, absent cell, and `NA`. It supplies no transverse geometry, total Structural Null topology, higher-gonol composition, completion, selection, or activation. |
 
 ## 4. Motion and carrier claims
 
@@ -62,6 +63,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `M13` | The signed-local affine formula may serve as the non-null coordinate component of a real-continuous lifted Möbius relationship when the framed double cover, Möbius quotient, sheet involution, seam, and Structural Null attachment all satisfy the v0.12 obligations. | `conjecture` | [`FULL_CARRIER_CONTINUITY_SPEC_V012.md`](FULL_CARRIER_CONTINUITY_SPEC_V012.md) defines the candidate spaces, domain claims, and `RC01`–`RC10` falsifiers. v0.15 discharges the analytic non-null affine and quotient obligations, and v0.13 supplies a partial source-bound root attachment. No arbitrary-element assignment, total Structural Null relationship, carrier selection, EDCM activation, or METAPAT activation is supplied. |
 | `M14` | A marked source-provenance seam can attach the typed Structural Null prestate to the exact rational root coordinate for every minimum-packet word initiation while retaining twist and motion history. | `implemented-evidence` | [`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md) and `src/ucns/initiation_boundary.py`; fourteen partial edges retain exact causal manifestations and native post-state provenance, numeric cut movement cannot move seam identity, and two exact one-turn endpoint-validated motions restore local state without replacing either receipt. Schema `0.13.2` binds the genuine exact comparator and pins partial RC scope, verdict map, and boundary statuses. `RC01` and `RC03` remain inconclusive; no arbitrary-element transverse assignment, complete relationship, carrier selection, EDCM activation, or METAPAT activation follows. |
 | `M15` | The declared signed-local affine map is a real-continuous bijection on the complete closed intervals and descends continuously through the declared non-null quotient while commuting with the sheet involution. | `implemented-evidence` | [`FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md`](FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md) and `src/ucns/full_carrier_attachment.py` record exact endpoints, inverse compositions, epsilon-delta moduli, deck equivariance, and `B_R(-u)=2-B_R(u)`. Standing is `analytic-certificate-not-machine-checked`; the mixed-scope report leaves v0.13 unchanged and does not supply an arbitrary-real runtime, arbitrary-element assignment, total Structural Null relationship, carrier selection, EDCM activation, or METAPAT activation. |
+| `M16` | The v0.17 initiation receipt may cite the unchanged v0.13 native root-loop witness: one 360-degree advance changes local frame state and a second restores it at 720 degrees. | `implemented-evidence` | The v0.17 report embeds and validates the exact upstream root attachment without widening it. This is bounded source-linked motion evidence, not arbitrary geometry, completion, or proof of a total carrier relationship. |
 
 ## 5. Composition and retained-structure claims
 
@@ -96,14 +98,15 @@ Only a separate explicit authority decision can change a claim’s standing to c
 
 The following remain `unresolved` after the v0.13 partial initiation
 attachment, v0.14 full-corpus execution gate and receipt, v0.15 analytic
-non-null certificates, and v0.16 assignment-admission boundary:
+non-null certificates, v0.16 assignment-admission boundary, and v0.17
+explicit initiation boundary:
 
 1. the exact geometric element-assignment law and total Structural
    Null-to-carrier relationship beyond the adapter-admitted outcome boundary
    and marked root attachment;
 2. proof-assistant formalization if machine-checked theorem standing is later
    required;
-3. initiation and transition laws beyond the minimum witness and bounded exact-rational domain;
+3. initiation and transition laws beyond the admitted word witness, minimum packet, and bounded exact-rational root domain;
 4. canonical state equivalence beyond the C1 experiment candidate;
 5. real-valued continuity and arbitrary-element relationship maps between the direct carrier and directed cover;
 6. circle, epicycle, disk, and sphere transition laws;
@@ -139,9 +142,13 @@ post-run receipt or a declared-only report from impersonating execution; EDCM
 PR #44 now supplies the exact corrected MultiWOZ adapter reconciliation and
 receipt. v0.15 adds universal written analytic evidence for the full declared
 non-null affine and quotient relationship without rewriting v0.13's partial
-runtime scope. v0.16 now closes the prior admission question: arbitrary-domain
+runtime scope. v0.16 closes the prior admission question: arbitrary-domain
 occurrences enter through explicit adapters and each receives one exact tagged
-outcome without identity-derived geometry. It does not yet have arbitrary
-geometric assignment, a total Structural Null relationship, canonical breadth,
-recursive composition, scoped completion, or evidence that the exact candidate
-supplies the complete carrier.
+outcome without identity-derived geometry. v0.17 now makes the next bounded
+causal doorway executable: one admitted word moves from typed Structural Null
+through one explicit twist receipt, every admitted occurrence has one exclusive
+initiation outcome, invalid origin substitutions fail closed, and the unchanged
+v0.13 root witness retains 360-degree frame change and 720-degree local return.
+It does not yet have arbitrary geometric assignment, a total Structural Null
+topology, canonical breadth, recursive composition, scoped completion, or
+evidence that the exact candidate supplies the complete carrier.

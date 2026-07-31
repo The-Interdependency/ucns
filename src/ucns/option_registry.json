@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.12.0",
+  "schema_version": "1.13.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -16,6 +16,7 @@
     "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.1",
     "full_carrier_attachment_schema": "ucns.edcm.full-carrier-attachment-evidence/0.15.0",
     "assignment_admission_schema": "ucns.edcm.assignment-admission-boundary/0.16.0",
+    "gonol_initiation_schema": "ucns.edcm.gonol-initiation-structural-null-boundary/0.17.0",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -223,6 +224,10 @@
     {
       "id": "assignment-admission-boundary",
       "statement": "v0.16 admits arbitrary-domain observed occurrences only through explicit named versioned ContentAdapter evidence and records exactly one ordered outcome as unresolved, explicit supplied candidate, or rejected mechanism. Content digests, runtime hashes, repr values, object identities, and A0 Blake2 phase lanes cannot derive geometry. This total tagged evidence relation does not establish arbitrary geometric assignment or a total Structural Null relationship."
+    },
+    {
+      "id": "gonol-initiation-structural-null-boundary",
+      "statement": "v0.17 separates Structural Null from source SPACE manifestations, carrier position zero, directed-cover null, neutral M, algebraic zero, absent cells, and NA; only the singular superpositioned Structural Null may be the initiation prestate. Every v0.16 admitted occurrence receives exactly one ordered initiation outcome, an explicitly declared word gonol retains one source-bound Mobius-twist receipt without geometry, and the unchanged v0.13 root witness retains 360-degree local-frame change plus 720-degree local return without registered completion, selection, or consumer activation."
     }
   ],
   "current_profile": {
@@ -408,6 +413,40 @@
         "explicit-adapter-admission-and-tagged-outcome",
         "identity-derived-geometric-assignment",
         "arbitrary-element-geometric-assignment-law"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "gonol-initiation-evidence",
+      "question": "How may an admitted occurrence enter causal gonol-initiation evidence while Structural Null, neighboring zero roles, geometry, return, and completion remain distinct?",
+      "choices": [
+        {
+          "id": "explicit-structural-null-twist-and-tagged-outcome",
+          "standing": "implemented-candidate",
+          "evidence": "v0.17 gives every v0.16 admitted occurrence exactly one initiated, unresolved, or rejected-substitution outcome. An explicitly declared word gonol retains one source-bound boundary manifestation and one Mobius-twist receipt from the singular Structural Null prestate while geometric assignment remains absent."
+        },
+        {
+          "id": "bounded-native-root-360-change-720-return",
+          "standing": "implemented-candidate",
+          "evidence": "v0.17 retains the unchanged v0.13 source-bound native-root trajectory: one exact visible turn preserves the declared visible projection while changing local frame, and a second exact turn restores complete local state while both receipts survive. This is local return, not registered construction completion."
+        },
+        {
+          "id": "zero-or-absence-as-structural-null-prestate",
+          "standing": "rejected-pre-reset",
+          "evidence": "Source SPACE manifestation, carrier position zero, directed-cover null, neutral product character, algebraic zero, absent cell, and NA retain their own domain-qualified roles and cannot impersonate the singular Structural Null initiation prestate."
+        },
+        {
+          "id": "total-structural-null-carrier-topology",
+          "standing": "unresolved",
+          "evidence": "No total topology maps Structural Null to arbitrary non-null carrier states, and initiation evidence supplies no arbitrary geometric assignment."
+        }
+      ],
+      "display_rule": "separate-causal-initiation-from-geometry-and-completion",
+      "display_order": [
+        "explicit-structural-null-twist-and-tagged-outcome",
+        "bounded-native-root-360-change-720-return",
+        "zero-or-absence-as-structural-null-prestate",
+        "total-structural-null-carrier-topology"
       ],
       "selection_effect": "none"
     },
@@ -748,6 +787,7 @@
     "Retain the v0.13 marked source-bound partial attachment together with the unresolved intrinsic-seam and invariant-equivalence-class alternatives. Its typed disjoint prestate, fourteen twist receipts, and append-only root motion do not establish arbitrary-real seam limits, arbitrary-element transverse assignment, complete carrier continuity, or selection.",
     "Retain the v0.15 exact analytic certificates for the complete declared real affine intervals and non-null quotient together with the unchanged v0.13 partial attachment standing. Written proof evidence does not create arbitrary-element assignment, a total Structural Null relationship, a machine-checked theorem, selection, or activation.",
     "Retain the v0.16 explicit adapter admission and total tagged outcome relation over admitted occurrences. Evidence identity does not become geometry, and outcome totality does not become arbitrary geometric assignment or a total Structural Null relationship.",
+    "Retain the v0.17 domain-separated origin registry, total tagged initiation outcomes over v0.16 admissions, explicit one-receipt word-gonol twist evidence, and bounded native-root 360-degree/720-degree return witness. Causal initiation does not become geometry, local return does not become scoped completion, and no total Structural Null topology or consumer activation follows.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -775,6 +815,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
+    "The v0.17 initiation boundary separates eight origin, zero, neutrality, and absence roles; gives every v0.16 admitted occurrence one tagged initiation outcome; and gives an explicitly declared word gonol one source-bound twist receipt from singular Structural Null. The retained 360-degree/720-degree root witness is bounded local-return evidence, not geometric assignment, total topology, or completion.",
     "The v0.16 assignment boundary admits arbitrary-domain occurrences through explicit adapters and gives each admitted occurrence one tagged evidence outcome. The v0.15 analytic certificates still cover the complete declared real non-null affine intervals and quotient seam commutation, while v0.13 remains the source-bound partial Structural Null attachment at the exact root. Arbitrary geometric assignment, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
@@ -911,6 +952,6 @@
     },
     "out_of_alphabet_policy": "retain-and-report",
     "corpus_execution": "full-corpus",
-    "boundary": "This profile makes exact Unicode-scalar corpus observation executable, rejects surrogate code points, and assigns a pinned set of source-preserved SPACE manifestations to the carrier origin. Valid carrier-unassigned scalar witnesses remain exact evidence and do not become public-gonol members. The profile records the required Mobius initiation event but does not claim to supply the unresolved Mobius coordinate construction or higher-gonol composition law."
+    "boundary": "This profile makes exact Unicode-scalar corpus observation executable, rejects surrogate code points, and assigns a pinned set of source-preserved SPACE manifestations to the carrier origin. Valid carrier-unassigned scalar witnesses remain exact evidence and do not become public-gonol members. v0.17 supplies a separate source-bound causal initiation receipt and tagged outcome boundary, but neither surface supplies the unresolved Mobius coordinate construction, total Structural Null topology, geometric assignment, or higher-gonol composition law."
   }
 }

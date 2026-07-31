@@ -80,7 +80,13 @@ admitted occurrence one ordered tagged outcome: unresolved, explicit supplied
 candidate, or rejected mechanism. Evidence digests and the pinned A0 Blake2
 phase lanes cannot derive geometry. No law is selected, and arbitrary geometric
 assignment, the total Structural Null relationship, higher coordinates, and
-global C1/C2 equivalence remain open. Any eventual selection
+global C1/C2 equivalence remain open. v0.17 now separates Structural Null from
+seven neighboring zero, neutrality, source, coordinate, and absence roles;
+gives every v0.16 admission one tagged initiation outcome; and gives an
+explicitly declared word gonol one source-bound Möbius-twist receipt without a
+geometric coordinate. The unchanged native-root witness retains 360° local
+frame change and 720° local return while refusing to relabel return as scoped
+completion. Any eventual selection
 cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
@@ -159,6 +165,12 @@ seam representation, or convention:
    supplied candidate, or rejected outcome. The totality is evidentiary over
    admitted occurrences; it does not create coordinates or complete the
    Structural Null relation.
+10. The **gonol-initiation and Structural Null boundary** separates eight
+    domain-qualified origin, zero, neutrality, and absence roles; records one
+    initiated, unresolved, or rejected-substitution outcome for each v0.16
+    admission; permits exactly one source-bound twist receipt for an explicitly
+    declared word gonol; and retains bounded 360° frame change plus 720° local
+    return without geometry, completion, selection, or activation.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -201,6 +213,16 @@ the historical A0 Blake2 phase lanes remain an explicit rejection.
 
 See
 [`docs/ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](docs/ASSIGNMENT_ADMISSION_BOUNDARY_V016.md).
+
+The implemented **v0.17 gonol-initiation and Structural Null boundary** makes
+the decided causal doorway executable as evidence. Only the singular
+Structural Null may be the prestate; source SPACE manifestation, carrier
+position zero, directed-cover null, neutral `M`, algebraic zero, absent cell,
+and `NA` keep distinct roles. Initiation remains pre-geometric, and the retained
+720° root return is not construction completion.
+
+See
+[`docs/GONOL_INITIATION_STRUCTURAL_NULL_V017.md`](docs/GONOL_INITIATION_STRUCTURAL_NULL_V017.md).
 
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
@@ -566,9 +588,12 @@ quotient relationship without rewriting the partial initiation standing. The
 downstream EDCM PR #44 receipt closes the source-native MultiWOZ v0.14.1
 execution obligation for that exact corpus and producer. v0.16 closes
 adapter-gated occurrence admission and total tagged outcome evidence while
-retaining the negative result that evidence identity is not geometry. The next
-truth obligations are arbitrary-element geometric assignment and a total
-Structural Null relationship,
+retaining the negative result that evidence identity is not geometry. v0.17
+separates the singular initiation prestate from neighboring zero and absence
+roles, adds total tagged initiation outcomes, and preserves bounded 360°/720°
+root-return evidence without inventing geometry or completion. The next truth
+obligations are arbitrary-element geometric assignment and a total Structural
+Null topology,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
 A0-betatest specimen, higher-gonol composition, later source-native corpus
 adapters and complete runs beginning with Molweni, and evidence from failures

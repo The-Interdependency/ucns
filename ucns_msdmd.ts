@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.17 gonol-initiation and Structural Null evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, nonselecting v0.17 origin separation and gonol-initiation evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
-        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, and v0.16 assignment-admission boundary with current foundations and reproducible candidate-research infrastructure",
+        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, v0.16 assignment admission, and v0.17 gonol-initiation and Structural Null evidence with current foundations and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "geometric element-assignment law and total Structural Null relationship beyond the v0.16 admitted-evidence outcome boundary, v0.15 analytic non-null evidence, and v0.13 partial root evidence, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "geometric element-assignment law and total Structural Null topology beyond the v0.17 tagged initiation-evidence boundary, v0.16 admitted-evidence outcome boundary, v0.15 analytic non-null evidence, and v0.13 partial root evidence, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -2326,6 +2326,96 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "safety",
+        "given": "the v0.17 report joins origin separation, initiation outcomes, and root-return evidence",
+        "since": "2026-07-31",
+        "then": "arbitrary geometry, total Structural Null topology, scoped completion, carrier selection, EDCM activation, and METAPAT activation remain absent"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_does_not_assign_complete_select_or_activate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the v0.17 origin registry is constructed",
+        "since": "2026-07-31",
+        "then": "Structural Null, source SPACE manifestation, carrier position zero, directed-cover null, neutral M, algebraic zero, absent cell, and NA retain distinct domain-qualified roles and only Structural Null may be an initiation prestate"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_origin_roles_are_domain_separated"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "v0.16 admitted occurrences enter one v0.17 trace",
+        "since": "2026-07-31",
+        "then": "every occurrence retains exact order and receives exactly one initiated, unresolved, or rejected-substitution outcome with malformed combinations rejected"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_outcome_is_total_and_exclusive"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "SPACE text, carrier zero, directed-cover null, neutral M, algebraic zero, absent cell, or NA is proposed as the Structural Null prestate",
+        "since": "2026-07-31",
+        "then": "the proposal can be retained only as an explicit rejected substitution and cannot create an initiation receipt"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_rejects_zero_and_absence_substitutions"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "one v0.16 admitted word occurrence is initiated as a gonol",
+        "since": "2026-07-31",
+        "then": "exactly one source-bound boundary manifestation links the singular typed Structural Null prestate to an initiated non-null evidence state while geometric assignment remains absent"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_requires_explicit_structural_null_transition"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the unchanged v0.13 source-bound root trajectory is retained",
+        "since": "2026-07-31",
+        "then": "360 degrees preserve the visible projection while changing complete local state, 720 degrees restore complete local state, both receipts survive, and no construction completion is registered"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_root_return_is_bounded_and_noncompleting"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "fixed GI01-GI08 evidence construction and exact validation helpers",
+        "module_kind": "experiment",
+        "module_name": "gonol_initiation",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment",
+        "requires": "edcm_assignment_admission_boundary, edcm_partial_initiation_boundary",
+        "rollback": "remove this module, exports, tests, and v0.17 document while retaining v0.16 admission evidence and v0.13 bounded initiation evidence",
+        "rollout": "nonselecting v0.17 initiation-evidence boundary over admitted occurrences with bounded native-root return semantics; no arbitrary geometry, total Structural Null topology, scoped completion, EDCM activation, or METAPAT activation",
+        "since": "2026-07-31",
+        "storage_boundary": "none",
+        "summary": "separates Structural Null from neighboring zero and absence roles, records one total tagged initiation outcome per admitted occurrence, and retains bounded 360-degree/720-degree root-return evidence",
+        "tests": "tests/test_gonol_initiation.py",
+        "unresolved": "arbitrary observed-element geometric assignment, total Structural Null topology, intrinsic seam derivation, higher geometry, higher-gonol composition, scoped completion, canonical faithful breadth, and carrier selection",
+        "user_data_boundary": "v0.16 adapter evidence and exact source-bound Structural Null manifestations remain linked; neither evidence identity nor carrier position zero becomes geometry"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "edcm_gonol_initiation_structural_null_boundary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "correctness",
         "given": "an exact rational signed-local coordinate enters the declared sheet involution",
         "since": "2026-07-30",
@@ -2750,12 +2840,12 @@ export default defineMsdmdCollection({
         "owner": "Erin Spencer",
         "public_surface": "OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension",
         "rollback": "remove the registry surface without changing existing carrier or profile behavior",
-        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment-admission standing, decisions, and explicit unresolved choices; no mathematical option selection",
+        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol-initiation and Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection",
         "since": "2026-07-25",
         "storage_boundary": "packaged option_registry.json",
-        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, and unresolved-option registry",
+        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, gonol-initiation and Structural Null boundary, and unresolved-option registry",
         "tests": "tests/test_option_decisions.py",
-        "unresolved": "arbitrary-element geometric assignment beyond admitted evidence outcomes, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
+        "unresolved": "arbitrary-element geometric assignment beyond admitted and initiated evidence outcomes, total Structural Null topology, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/options.py",
@@ -4220,6 +4310,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_full_corpus.py",
       "id": "check_invalid_corpus_turn_fail_closed"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_word_gonol_requires_one_source_bound_structural_null_twist",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_requires_explicit_structural_null_transition",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_explicit_transition"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_v017_report_retains_unresolved_geometry_and_nonactivation",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_does_not_assign_complete_select_or_activate",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_nonactivation_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_origin_registry_separates_structural_null_from_neighboring_roles",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_origin_roles_are_domain_separated",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_origin_role_separation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_neighboring_zero_and_absence_roles_cannot_become_prestate",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_rejects_zero_and_absence_substitutions",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_rejected_substitutions"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_root_return_preserves_360_change_720_return_and_noncompletion",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_root_return_is_bounded_and_noncompleting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_root_return_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_initiation_trace_is_total_exclusive_ordered_and_occurrence_preserving",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_outcome_is_total_and_exclusive",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_total_outcome_relation"
     },
     {
       "block": "CHECKS",
@@ -6875,6 +7043,132 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_gonol_initiation_explicit_transition",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_explicit_transition",
+      "to": "self::test_word_gonol_requires_one_source_bound_structural_null_twist"
+    },
+    {
+      "from": "check_gonol_initiation_explicit_transition",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_explicit_transition",
+      "to": "gonol_initiation_requires_explicit_structural_null_transition"
+    },
+    {
+      "from": "check_gonol_initiation_explicit_transition",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_explicit_transition",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_nonactivation_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_nonactivation_boundary",
+      "to": "self::test_v017_report_retains_unresolved_geometry_and_nonactivation"
+    },
+    {
+      "from": "check_gonol_initiation_nonactivation_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_nonactivation_boundary",
+      "to": "gonol_initiation_does_not_assign_complete_select_or_activate"
+    },
+    {
+      "from": "check_gonol_initiation_nonactivation_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_nonactivation_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_origin_role_separation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_origin_role_separation",
+      "to": "self::test_origin_registry_separates_structural_null_from_neighboring_roles"
+    },
+    {
+      "from": "check_gonol_initiation_origin_role_separation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_origin_role_separation",
+      "to": "gonol_initiation_origin_roles_are_domain_separated"
+    },
+    {
+      "from": "check_gonol_initiation_origin_role_separation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_origin_role_separation",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_rejected_substitutions",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_rejected_substitutions",
+      "to": "self::test_neighboring_zero_and_absence_roles_cannot_become_prestate"
+    },
+    {
+      "from": "check_gonol_initiation_rejected_substitutions",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_rejected_substitutions",
+      "to": "gonol_initiation_rejects_zero_and_absence_substitutions"
+    },
+    {
+      "from": "check_gonol_initiation_rejected_substitutions",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_rejected_substitutions",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_root_return_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_root_return_boundary",
+      "to": "self::test_root_return_preserves_360_change_720_return_and_noncompletion"
+    },
+    {
+      "from": "check_gonol_initiation_root_return_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_root_return_boundary",
+      "to": "gonol_initiation_root_return_is_bounded_and_noncompleting"
+    },
+    {
+      "from": "check_gonol_initiation_root_return_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_root_return_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_total_outcome_relation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_total_outcome_relation",
+      "to": "self::test_initiation_trace_is_total_exclusive_ordered_and_occurrence_preserving"
+    },
+    {
+      "from": "check_gonol_initiation_total_outcome_relation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_total_outcome_relation",
+      "to": "gonol_initiation_outcome_is_total_and_exclusive"
+    },
+    {
+      "from": "check_gonol_initiation_total_outcome_relation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_total_outcome_relation",
+      "to": "python3"
+    },
+    {
       "from": "check_holdout_decision_guard",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -8709,6 +9003,27 @@ export default defineMsdmdCollection({
       "to": "edcm_word_gonol_profile"
     },
     {
+      "from": "edcm_gonol_initiation_structural_null_boundary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_gonol_initiation_structural_null_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_gonol_initiation_structural_null_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_gonol_initiation_structural_null_boundary",
+      "to": "edcm_assignment_admission_boundary"
+    },
+    {
+      "from": "edcm_gonol_initiation_structural_null_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_gonol_initiation_structural_null_boundary",
+      "to": "edcm_partial_initiation_boundary"
+    },
+    {
       "from": "edcm_metapat_ordered_occurrence_profile",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -8980,6 +9295,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_full_corpus_execution_gate"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_gonol_initiation_structural_null_boundary"
     },
     {
       "from": "foundations_public_surface",

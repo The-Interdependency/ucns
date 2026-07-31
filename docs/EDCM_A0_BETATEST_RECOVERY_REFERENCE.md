@@ -164,11 +164,14 @@ That suspension was epistemically safer than continuing the false lineage. But t
 
 Likewise, the current UCNS EDCM profile correctly preserves exact words, SPACE boundaries, speaker turns, and twist-initiation events, but it explicitly does not provide the Möbius coordinate or higher-gonol composition law.
 
-UCNS v0.16 closes the prior source-evidence admission obligation without
-changing that verdict. Arbitrary-domain occurrences enter through explicit
-named versioned adapters and receive one tagged unresolved, explicit supplied
-candidate, or rejected outcome. Evidence digests and the historical Blake2
-phase lanes remain incapable of deriving geometry.
+UCNS v0.16 closes the prior source-evidence admission obligation, and v0.17
+makes the next bounded causal step executable without changing that verdict.
+Arbitrary-domain occurrences enter through explicit named versioned adapters
+and receive one tagged assignment outcome; each then receives one exclusive
+initiation outcome. The declared word witness crosses from typed Structural
+Null through one exact source-bound twist receipt. Evidence digests, historical
+Blake2 phase lanes, and invalid zero or absence substitutions remain incapable
+of deriving geometry.
 
 Therefore:
 
@@ -178,6 +181,9 @@ current word-gonol profile
 
 v0.16 assignment admission
     = exact adapter-gated evidence and total tagged outcomes, not geometry
+
+v0.17 gonol initiation
+    = typed source-bound twist evidence and bounded root-loop return, not total topology or completion
 
 a0-betatest historical system
     = primary EDCM recovery reference
@@ -204,6 +210,10 @@ recovered UCNS
 
 ## hmmm
 
-The central unresolved object is no longer merely “the bridge.”
+The central unresolved object is no longer merely “the bridge,” nor the now
+explicit bounded initiation receipt.
 
-It is the exact law by which an assigned element enters an epicyclic circle, becomes disk or sphere structure across recursive scale, moves relative to other assignments, and registers completion without pretending that the unknowable itself has been exhausted.
+It is the exact law by which an initiated assigned element enters an epicyclic
+circle, becomes disk or sphere structure across recursive scale, moves relative
+to other assignments, and registers completion without pretending that the
+unknowable itself has been exhausted.

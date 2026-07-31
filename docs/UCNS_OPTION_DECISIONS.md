@@ -35,8 +35,14 @@ v0.13 Structural Null attachment as partial and root-only. v0.16 separates
 observed-element admission from geometric assignment: arbitrary-domain
 occurrences enter through explicit named versioned adapters and receive one
 ordered unresolved, explicit supplied candidate, or rejected outcome. Evidence
-digests and A0 Blake2 phase lanes cannot derive geometry. Arbitrary geometric
-assignment, the total Structural Null relationship, canonical breadth,
+digests and A0 Blake2 phase lanes cannot derive geometry. v0.17 separates the
+singular Structural Null prestate from source SPACE manifestation, carrier
+position zero, directed-cover null, neutral `M`, algebraic zero, absent cell,
+and `NA`; gives every v0.16 admission one ordered initiation outcome; and gives
+an explicitly declared word gonol exactly one source-bound twist receipt. The
+unchanged v0.13 native-root witness retains 360-degree local-frame change and
+720-degree local return without registered construction completion. Arbitrary
+geometric assignment, the total Structural Null topology, canonical breadth,
 epicyclic geometry, completion, and higher-composition mathematics remain
 incomplete. No carrier selection or consumer activation follows.
 
@@ -78,7 +84,10 @@ The exact geometric element-assignment law, Möbius coordinates outside the
 framed root loop, geometric transition law, and higher-gonol composition remain
 unresolved. v0.16 implements only adapter-gated admission and a total tagged
 outcome relation over admitted occurrences; that evidence totality is not
-geometric assignment totality. The current
+geometric assignment totality. v0.17 implements only domain-separated origin
+roles, a total tagged initiation-*outcome* relation over those admissions, and
+one explicit pre-geometric twist receipt for a declared word gonol; that causal
+evidence is not a total Structural Null topology. The current
 `ucns.edcm.completion-motion-evidence/0.1.0` surface retains supplied trajectory
 evidence while refusing to manufacture those laws.
 
@@ -332,6 +341,17 @@ candidate relation, or a named rejected mechanism. Content digest, runtime
 hash, `repr`, object identity, and the historical A0 Blake2 phase lanes remain
 incapable of deriving geometry.
 
+v0.17 adds a separate gonol-initiation evidence surface. It assigns stable
+domain-qualified roles to Structural Null, source SPACE manifestation, carrier
+position zero, directed-cover null, neutral product character, algebraic zero,
+absent cell, and `NA`; only the singular superpositioned Structural Null may be
+the initiation prestate. Every v0.16 admission receives one initiated,
+unresolved, or rejected-substitution outcome. An explicitly declared word gonol
+retains one source-bound Möbius-twist receipt but no geometric assignment. The
+root-return witness is the unchanged v0.13 source-bound candidate: 360 degrees
+preserve its visible projection while reversing local frame, and 720 degrees
+restore local state without registering construction completion.
+
 ## Choices still genuinely open
 
 ### Completion-motion geometry
@@ -533,3 +553,7 @@ tagged outcome per admitted occurrence without allowing evidence identity to
 become geometry. Arbitrary geometric assignment, a total Structural Null
 relationship, later corpus adapters, canonical breadth, epicyclic circle, disk,
 sphere, composition, and completion laws remain the living recovery boundary.
+v0.17 now makes the pre-geometric doorway and zero-separation boundary
+executable without widening it into total topology: only Structural Null may be
+the prestate, exactly one retained twist receipt may initiate a declared word,
+and 720-degree local return remains distinct from construction completion.
