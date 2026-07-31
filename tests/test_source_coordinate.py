@@ -7,6 +7,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_source_coordinate_prefix_requires_completion_binding
+#   proves: source_coordinate_law_uses_complete_ordered_source_address
+#   call: self::test_prefix_cannot_reuse_or_impersonate_complete_scope_binding
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_source_coordinate_scope_injectivity
 #   proves: source_coordinate_law_is_exact_and_scope_injective
 #   call: self::test_ordered_source_coordinate_is_exact_and_scope_injective
@@ -87,6 +95,7 @@ from ucns.source_coordinate import (
     SourceCoordinateEvidenceStanding,
     SourceCoordinateTrace,
     apply_source_coordinate_assignment,
+    bind_complete_ordered_source_scope,
     derive_ordered_source_coordinate,
     derive_source_coordinate,
     derive_source_coordinate_trace,
@@ -139,7 +148,7 @@ def test_derivation_retains_exact_upstream_identity() -> None:
     trace = report.demonstration_trace
     upstream = trace.upstream_trace
     first = upstream.outcomes[0]
-    derivation = derive_source_coordinate(upstream, first)
+    derivation = derive_source_coordinate(upstream, trace.scope_binding, first)
 
     assert derivation.upstream_trace is upstream
     assert derivation.upstream_outcome is first
@@ -153,7 +162,7 @@ def test_derivation_retains_exact_upstream_identity() -> None:
     with pytest.raises(SourceCoordinateError):
         replace(derivation, derived_from_content_or_digest=True)
     with pytest.raises(SourceCoordinateError):
-        derive_source_coordinate(upstream, upstream.outcomes[1])
+        derive_source_coordinate(upstream, trace.scope_binding, upstream.outcomes[1])
     with pytest.raises(SourceCoordinateError):
         replace(derivation, upstream_outcome=upstream.outcomes[1])
 
@@ -223,7 +232,34 @@ def test_trace_retains_total_ordered_outcomes_and_blockers() -> None:
         SourceCoordinateTrace(
             trace.trace_id,
             replace(upstream),
+            trace.scope_binding,
             trace.outcomes,
+        )
+
+
+def test_prefix_cannot_reuse_or_impersonate_complete_scope_binding() -> None:
+    report = run_v019_source_coordinate_derivation_experiment()
+    complete = report.demonstration_trace
+    upstream = complete.upstream_trace
+    prefix = GonolInitiationTrace(
+        "v019-test:prefix-trace",
+        upstream.outcomes[:1],
+    )
+
+    with pytest.raises(SourceCoordinateError, match="exact supplied trace"):
+        derive_source_coordinate_trace(prefix, complete.scope_binding)
+
+    with pytest.raises(SourceCoordinateError, match="cardinality"):
+        bind_complete_ordered_source_scope(
+            prefix,
+            authority_source="fixture://external-complete-scope-authority",
+            authority_receipt_id="fixture://external-complete-scope-receipt",
+            authority_evidence=("declared complete three-outcome source",),
+            source_scope_id=prefix.trace_id,
+            expected_cardinality=len(upstream.outcomes),
+            expected_outcome_ids=tuple(
+                outcome.outcome_id for outcome in upstream.outcomes
+            ),
         )
 
 
@@ -255,7 +291,18 @@ def test_equal_content_is_separate_and_report_remains_nonselecting() -> None:
         "v019-test:equal-content-trace",
         (first, initiated_second),
     )
-    derived = derive_source_coordinate_trace(equal_content_trace)
+    scope_binding = bind_complete_ordered_source_scope(
+        equal_content_trace,
+        authority_source="fixture://equal-content-complete-scope-authority",
+        authority_receipt_id="fixture://equal-content-complete-scope-receipt",
+        authority_evidence=("declared complete two-outcome source",),
+        source_scope_id=equal_content_trace.trace_id,
+        expected_cardinality=2,
+        expected_outcome_ids=tuple(
+            outcome.outcome_id for outcome in equal_content_trace.outcomes
+        ),
+    )
+    derived = derive_source_coordinate_trace(equal_content_trace, scope_binding)
     assert len(derived.assignments) == 2
     assert derived.assignments[0].derivation.address.local_transverse == Fraction(-1, 2)
     assert derived.assignments[1].derivation.address.local_transverse == Fraction(1, 2)

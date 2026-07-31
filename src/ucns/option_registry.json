@@ -237,7 +237,7 @@
     },
     {
       "id": "source-coordinate-derivation-boundary",
-      "statement": "v0.19 implements a named nonselected finite ordered-source candidate law: occurrence i in a complete scope of cardinality n receives exact p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. The law retains the exact v0.17 trace and outcome objects, preserves order and equal-content multiplicity, applies the v0.11 exact circle candidate reversibly, and records explicit blockers for unresolved or rejected initiation. Content identity, digests, A0 lanes, carrier position alone, scalar projections, and binary64 renderings derive no coordinate. Cross-scope and higher-gonol composition, canonical selection, total Structural Null topology, higher geometry, completion, EDCM activation, and METAPAT activation remain unresolved."
+      "statement": "v0.19 implements a named nonselected finite ordered-source candidate law: occurrence i in an authority-bound complete scope of cardinality n receives exact p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. The law retains the external completion binding plus exact v0.17 trace and outcome objects, preserves order and equal-content multiplicity, applies the v0.11 exact circle candidate reversibly, and records explicit blockers for unresolved or rejected initiation. Content identity, digests, A0 lanes, carrier position alone, scalar projections, binary64 renderings, and unbound tuple length derive no coordinate. Cross-scope and higher-gonol composition, canonical selection, total Structural Null topology, higher geometry, completion, EDCM activation, and METAPAT activation remain unresolved."
     }
   ],
   "current_profile": {
@@ -507,12 +507,12 @@
         {
           "id": "ordered-source-cell-midpoint-law",
           "standing": "implemented-candidate",
-          "evidence": "v0.19 maps occurrence i in one complete finite ordered scope of cardinality n to exact p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. It retains exact trace and outcome object identity, is injective within the declared scope, applies the v0.11 exact circle candidate, and records upstream blockers without hidden defaults."
+          "evidence": "v0.19 maps occurrence i in one authority-bound complete finite ordered scope of cardinality n to exact p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. It retains the external completion binding plus exact trace and outcome object identity, is injective within the declared scope, applies the v0.11 exact circle candidate, rejects unbound prefixes, and records upstream blockers without hidden defaults."
         },
         {
           "id": "content-identity-derived-geometry",
           "standing": "rejected-pre-reset",
-          "evidence": "Content and subject digests, runtime hash, repr, object identity, A0 Blake2 lanes, carrier position alone, scalar projections, and binary64 rendering are not inputs to the v0.19 law and cannot manufacture exact geometry."
+          "evidence": "Content and subject digests, runtime hash, repr, object identity, A0 Blake2 lanes, carrier position alone, scalar projections, binary64 rendering, and unbound tuple length are not inputs to the v0.19 law and cannot manufacture exact geometry."
         },
         {
           "id": "cross-scope-higher-gonol-composition-law",
@@ -899,7 +899,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "The v0.18 boundary makes explicit-input exact circle-candidate application executable. v0.19 adds the exact finite ordered-source midpoint derivation candidate. Its selection, cross-scope and higher-gonol composition, total Structural Null topology, higher geometry, scoped completion, canonical B, and consumer activation remain unresolved.",
+    "The v0.18 boundary makes explicit-input exact circle-candidate application executable. v0.19 adds the exact authority-bound finite ordered-source midpoint derivation candidate. Scope-authority authentication, selection, cross-scope and higher-gonol composition, total Structural Null topology, higher geometry, scoped completion, canonical B, and consumer activation remain unresolved.",
     "The v0.17 initiation boundary separates eight origin, zero, neutrality, and absence roles; gives every v0.16 admitted occurrence one tagged initiation outcome; and gives an explicitly declared word gonol one source-bound twist receipt from singular Structural Null. The retained 360-degree/720-degree root witness is bounded local-return evidence, not geometric assignment, total topology, or completion.",
     "The v0.16 assignment boundary admits arbitrary-domain occurrences through explicit adapters and gives each admitted occurrence one tagged evidence outcome. The v0.15 analytic certificates cover the complete declared real non-null affine intervals and quotient seam commutation, while v0.13 remains the source-bound partial Structural Null attachment at the exact root. v0.19 supplies one trace-local geometric derivation candidate, but selection, cross-scope composition, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",

@@ -2,17 +2,17 @@
 # id: edcm_source_coordinate_derivation_boundary
 #   module_name: source_coordinate
 #   module_kind: experiment
-#   summary: derives exact signed-local circle-candidate coordinates from complete finite ordered source-occurrence addresses while retaining exact upstream initiation identity and explicit blocked outcomes
+#   summary: derives exact signed-local circle-candidate coordinates from authority-bound complete finite ordered source-occurrence addresses while retaining exact upstream initiation identity and explicit blocked outcomes
 #   owner: Erin Spencer
-#   public_surface: OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment
+#   public_surface: CompleteOrderedSourceScopeBinding, OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, bind_complete_ordered_source_scope, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment
 #   internal_surface: fixed SC01-SC10 evidence construction and exact validation helpers
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
-#   user_data_boundary: exact v0.17 trace identity, source occurrence index, and complete finite scope cardinality derive coordinates; content, digests, runtime identity, carrier position, and projections do not
+#   user_data_boundary: an authority-bearing completion binding, exact v0.17 trace identity, source occurrence index, and declared complete finite scope cardinality derive coordinates; content, digests, runtime identity, carrier position, and projections do not
 #   admin_only: false
 #   tests: tests/test_source_coordinate.py
-#   rollout: nonselecting v0.19 ordered-source-address derivation candidate over explicitly initiated words with explicit blocked outcomes and no completion or activation
+#   rollout: nonselecting v0.19 ordered-source-address derivation candidate over authority-bound complete scopes and explicitly initiated words with explicit blocked outcomes and no construction completion or activation
 #   rollback: remove this module, exports, tests, and v0.19 document while retaining v0.18 explicit-input candidate application
 #   requires: edcm_explicit_geometric_assignment_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_exact_coordinate_representation_boundary
 #   since: 2026-07-31
@@ -21,8 +21,8 @@
 
 # === CONTRACTS ===
 # id: source_coordinate_law_uses_complete_ordered_source_address
-#   given: an occurrence index i in a complete finite ordered scope of cardinality n
-#   then: exact p=(2i+1)/(2n), u=2p-1, and t=2p derive only from the retained source address and invalid addresses fail closed
+#   given: an occurrence index i and an authority-bearing completion binding for a complete finite ordered scope of cardinality n
+#   then: exact p=(2i+1)/(2n), u=2p-1, and t=2p derive only from the bound source address and invalid, sampled, prefixed, or unbound addresses fail closed
 #   class: correctness
 #   since: 2026-07-31
 #
@@ -45,7 +45,7 @@
 #   since: 2026-07-31
 #
 # id: source_coordinate_outcomes_are_total_exclusive_and_ordered
-#   given: a complete v0.17 initiation trace enters v0.19
+#   given: an authority-bound complete v0.17 initiation trace enters v0.19
 #   then: every exact outcome appears once in order as derived-assigned, blocked-unresolved, or blocked-rejected with no prefix, reordering, deduplication, or fallback
 #   class: evidence
 #   since: 2026-07-31
@@ -59,10 +59,10 @@
 
 """Exact ordered-source coordinate derivation evidence for UCNS v0.19.
 
-For occurrence i in a complete finite ordered source scope of cardinality n,
-the candidate law assigns exact midpoint p=(2*i+1)/(2*n), then derives signed
-local transverse u=2*p-1 and lifted turns t=2*p. The map is exact and
-injective within its declared scope. It uses source address and cardinality,
+For occurrence i in an authority-bound complete finite ordered source scope of
+cardinality n, the candidate law assigns exact midpoint p=(2*i+1)/(2*n), then
+derives signed local transverse u=2*p-1 and lifted turns t=2*p. The map is exact
+and injective within its declared scope. It uses source address and cardinality,
 never content, digest, runtime identity, carrier position, projection, or
 binary64 rendering.
 
@@ -111,13 +111,31 @@ SOURCE_COORDINATE_LAW_VERSION = "0.19.0"
 SOURCE_COORDINATE_LAW_FORMULA = "p=(2*i+1)/(2*n); u=2*p-1; t=2*p"
 SOURCE_COORDINATE_CODE_REFERENCE = "src/ucns/source_coordinate.py:derive_ordered_source_coordinate"
 SOURCE_COORDINATE_LAW_STATUS = "implemented-exact-finite-ordered-scope-candidate"
+SOURCE_COORDINATE_SCOPE_COMPLETION_STATUS = "externally-authorized-complete-finite-ordered-scope"
 SOURCE_COORDINATE_ASSIGNMENT_STATUS = "source-address-derived-circle-candidate-assignment"
 SOURCE_COORDINATE_OUTCOME_RELATION_STATUS = "total-tagged-over-complete-v017-initiation-trace"
 ARBITRARY_SOURCE_ASSIGNMENT_STATUS = "partial-derived-for-initiated-word-outcomes-with-explicit-blockers"
 SOURCE_COORDINATE_HIGHER_GEOMETRY_STATUS = "unresolved-circle-entry-only"
 SOURCE_COORDINATE_FALSIFIER_IDS = tuple(f"SC{index:02d}" for index in range(1, 11))
+V019_DEMONSTRATION_SOURCE_SCOPE_ID = "ucns-v017-gonol-initiation-demonstration"
+V019_DEMONSTRATION_AUTHORITY_SOURCE = (
+    "src/ucns/gonol_initiation.py:run_v017_gonol_initiation_boundary_experiment"
+)
+V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID = (
+    "ucns.edcm.gonol-initiation-boundary/0.17.0:demonstration-complete-scope"
+)
+V019_DEMONSTRATION_AUTHORITY_EVIDENCE = (
+    "fixed-v017-demonstration-trace-with-three-ordered-outcomes",
+    "exact-trace-retained-through-v018-boundary-report",
+)
+V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS = (
+    "v016-demo:occurrence:0:gonol-initiation-outcome",
+    "v016-demo:occurrence:1:gonol-initiation-outcome",
+    "v016-demo:occurrence:2:gonol-initiation-outcome",
+)
 V019_HMMM = (
     "selection or canonization of the ordered-source midpoint law remains unresolved",
+    "cryptographic authentication of external scope-authority receipts remains unresolved",
     "cross-scope stability and higher-gonol composition are not supplied by a finite trace-local address law",
     "the total topology from singular Structural Null to arbitrary non-null carrier states remains unresolved",
     "circle-to-epicycle, epicycle-to-disk, disk-to-sphere, and recursive scale transitions remain unresolved",
@@ -168,6 +186,159 @@ def _local_side(local_transverse: Fraction) -> str:
     if local_transverse > 0:
         return "local-positive"
     return "local-root"
+
+
+def _scope_binding_evidence(
+    authority_source: str,
+    authority_receipt_id: str,
+    authority_evidence: tuple[str, ...],
+    source_scope_id: str,
+    expected_cardinality: int,
+    expected_outcome_ids: tuple[str, ...],
+) -> tuple[str, ...]:
+    return (
+        f"authority-source:{authority_source}",
+        f"authority-receipt:{authority_receipt_id}",
+        f"authority-evidence:{'|'.join(authority_evidence)}",
+        f"source-scope-id:{source_scope_id}",
+        f"expected-cardinality:{expected_cardinality}",
+        f"ordered-outcome-ids:{'|'.join(expected_outcome_ids)}",
+        "source-exhausted:true",
+        "sampling:false",
+        "prefix:false",
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class CompleteOrderedSourceScopeBinding:
+    """External completion claim binding one exact trace to its full scope."""
+
+    binding_id: str
+    upstream_trace: GonolInitiationTrace
+    authority_source: str
+    authority_receipt_id: str
+    authority_evidence: tuple[str, ...]
+    source_scope_id: str
+    expected_cardinality: int
+    expected_outcome_ids: tuple[str, ...]
+    evidence: tuple[str, ...]
+    source_exhausted: bool = True
+    sampling: bool = False
+    prefix: bool = False
+    status: str = SOURCE_COORDINATE_SCOPE_COMPLETION_STATUS
+    selection_effect: str = V019_SELECTION_EFFECT
+
+    def __post_init__(self) -> None:
+        _require_text(self.binding_id, "scope binding_id")
+        if not isinstance(self.upstream_trace, GonolInitiationTrace):
+            raise SourceCoordinateError("scope binding requires exact upstream trace")
+        _require_text(self.authority_source, "scope authority_source")
+        _require_text(self.authority_receipt_id, "scope authority_receipt_id")
+        if not isinstance(self.authority_evidence, tuple):
+            raise SourceCoordinateError("scope authority evidence must be a tuple")
+        _require_text_items(self.authority_evidence, "scope authority evidence")
+        _require_text(self.source_scope_id, "source_scope_id")
+        if (
+            not isinstance(self.expected_cardinality, int)
+            or isinstance(self.expected_cardinality, bool)
+            or self.expected_cardinality <= 0
+        ):
+            raise SourceCoordinateError("expected scope cardinality must be positive")
+        if not isinstance(self.expected_outcome_ids, tuple):
+            raise SourceCoordinateError("expected outcome ids must be an ordered tuple")
+        _require_text_items(self.expected_outcome_ids, "expected outcome ids")
+        if len(self.expected_outcome_ids) != self.expected_cardinality:
+            raise SourceCoordinateError("expected outcome ids must fill the declared scope")
+        if self.binding_id != (
+            f"{self.source_scope_id}:complete-source-scope-binding"
+        ):
+            raise SourceCoordinateError("scope binding id must derive from source scope")
+        if self.upstream_trace.trace_id != self.source_scope_id:
+            raise SourceCoordinateError("scope binding must name the exact trace scope")
+        if len(self.upstream_trace.outcomes) != self.expected_cardinality:
+            raise SourceCoordinateError(
+                "trace cardinality does not match external completion claim"
+            )
+        if tuple(
+            outcome.outcome_id for outcome in self.upstream_trace.outcomes
+        ) != self.expected_outcome_ids:
+            raise SourceCoordinateError(
+                "trace outcomes do not match the externally bound order"
+            )
+        if self.evidence != _scope_binding_evidence(
+            self.authority_source,
+            self.authority_receipt_id,
+            self.authority_evidence,
+            self.source_scope_id,
+            self.expected_cardinality,
+            self.expected_outcome_ids,
+        ):
+            raise SourceCoordinateError("scope completion evidence is fixed")
+        if (
+            self.source_exhausted is not True
+            or self.sampling is not False
+            or self.prefix is not False
+        ):
+            raise SourceCoordinateError(
+                "scope binding must prove exhaustion without sampling or prefixing"
+            )
+        if (
+            self.status != SOURCE_COORDINATE_SCOPE_COMPLETION_STATUS
+            or self.selection_effect != V019_SELECTION_EFFECT
+        ):
+            raise SourceCoordinateError("scope completion standing and nonselection are fixed")
+
+    @property
+    def evidence_identity(self) -> tuple[object, ...]:
+        return (
+            self.binding_id,
+            self.upstream_trace.trace_id,
+            self.authority_source,
+            self.authority_receipt_id,
+            self.authority_evidence,
+            self.source_scope_id,
+            self.expected_cardinality,
+            self.expected_outcome_ids,
+            self.evidence,
+            self.source_exhausted,
+            self.sampling,
+            self.prefix,
+            self.status,
+        )
+
+
+def bind_complete_ordered_source_scope(
+    upstream_trace: GonolInitiationTrace,
+    *,
+    authority_source: str,
+    authority_receipt_id: str,
+    authority_evidence: tuple[str, ...],
+    source_scope_id: str,
+    expected_cardinality: int,
+    expected_outcome_ids: tuple[str, ...],
+) -> CompleteOrderedSourceScopeBinding:
+    """Record an external full-scope claim; tuple length is not authority."""
+
+    if not isinstance(upstream_trace, GonolInitiationTrace):
+        raise TypeError("upstream_trace must be GonolInitiationTrace")
+    return CompleteOrderedSourceScopeBinding(
+        f"{source_scope_id}:complete-source-scope-binding",
+        upstream_trace,
+        authority_source,
+        authority_receipt_id,
+        authority_evidence,
+        source_scope_id,
+        expected_cardinality,
+        expected_outcome_ids,
+        _scope_binding_evidence(
+            authority_source,
+            authority_receipt_id,
+            authority_evidence,
+            source_scope_id,
+            expected_cardinality,
+            expected_outcome_ids,
+        ),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -280,11 +451,15 @@ def derive_ordered_source_coordinate(
 
 def _derivation_evidence(
     trace: GonolInitiationTrace,
+    scope_binding: CompleteOrderedSourceScopeBinding,
     outcome: GonolInitiationOutcome,
     address: OrderedSourceCoordinate,
 ) -> tuple[str, ...]:
     return (
         f"upstream-trace:{trace.trace_id}",
+        f"scope-binding:{scope_binding.binding_id}",
+        f"scope-authority:{scope_binding.authority_source}",
+        f"scope-authority-receipt:{scope_binding.authority_receipt_id}",
         f"upstream-outcome:{outcome.outcome_id}",
         f"source-address:{address.occurrence_index}/{address.scope_cardinality}",
         f"law:{SOURCE_COORDINATE_LAW_ID}/{SOURCE_COORDINATE_LAW_VERSION}",
@@ -298,6 +473,7 @@ def _derivation_evidence(
 class SourceCoordinateDerivation:
     derivation_id: str
     upstream_trace: GonolInitiationTrace
+    scope_binding: CompleteOrderedSourceScopeBinding
     upstream_outcome: GonolInitiationOutcome
     address: OrderedSourceCoordinate
     evidence: tuple[str, ...]
@@ -310,6 +486,10 @@ class SourceCoordinateDerivation:
         _require_text(self.derivation_id, "derivation_id")
         if not isinstance(self.upstream_trace, GonolInitiationTrace):
             raise SourceCoordinateError("derivation requires exact upstream trace")
+        if not isinstance(self.scope_binding, CompleteOrderedSourceScopeBinding):
+            raise SourceCoordinateError("derivation requires complete source scope binding")
+        if self.scope_binding.upstream_trace is not self.upstream_trace:
+            raise SourceCoordinateError("scope binding must retain the exact derivation trace")
         if not isinstance(self.upstream_outcome, GonolInitiationOutcome):
             raise SourceCoordinateError("derivation requires exact upstream outcome")
         if not isinstance(self.address, OrderedSourceCoordinate):
@@ -317,8 +497,8 @@ class SourceCoordinateDerivation:
         index = self.upstream_outcome.admission.occurrence_index
         if self.address.occurrence_index != index:
             raise SourceCoordinateError("address must retain occurrence index")
-        if self.address.scope_cardinality != len(self.upstream_trace.outcomes):
-            raise SourceCoordinateError("address must bind complete scope cardinality")
+        if self.address.scope_cardinality != self.scope_binding.expected_cardinality:
+            raise SourceCoordinateError("address must use externally bound complete cardinality")
         if self.upstream_trace.outcomes[index] is not self.upstream_outcome:
             raise SourceCoordinateError("derivation must retain exact upstream outcome object")
         if (
@@ -328,7 +508,12 @@ class SourceCoordinateDerivation:
             raise SourceCoordinateError("only an initiated word can derive geometry")
         if self.derivation_id != f"{self.upstream_outcome.outcome_id}:source-coordinate":
             raise SourceCoordinateError("derivation id must derive from upstream outcome")
-        if self.evidence != _derivation_evidence(self.upstream_trace, self.upstream_outcome, self.address):
+        if self.evidence != _derivation_evidence(
+            self.upstream_trace,
+            self.scope_binding,
+            self.upstream_outcome,
+            self.address,
+        ):
             raise SourceCoordinateError("derivation evidence is fixed")
         if not self.derived_from_source_occurrence_address or self.derived_from_content_or_digest:
             raise SourceCoordinateError("only source occurrence address may derive coordinates")
@@ -347,6 +532,7 @@ class SourceCoordinateDerivation:
         return (
             self.derivation_id,
             self.upstream_trace.trace_id,
+            self.scope_binding.evidence_identity,
             self.upstream_outcome.outcome_id,
             self.initiation.evidence_identity,
             self.address.exact_identity,
@@ -359,22 +545,28 @@ class SourceCoordinateDerivation:
 
 def derive_source_coordinate(
     upstream_trace: GonolInitiationTrace,
+    scope_binding: CompleteOrderedSourceScopeBinding,
     upstream_outcome: GonolInitiationOutcome,
 ) -> SourceCoordinateDerivation:
     if not isinstance(upstream_trace, GonolInitiationTrace):
         raise TypeError("upstream_trace must be GonolInitiationTrace")
+    if not isinstance(scope_binding, CompleteOrderedSourceScopeBinding):
+        raise TypeError("scope_binding must be CompleteOrderedSourceScopeBinding")
+    if scope_binding.upstream_trace is not upstream_trace:
+        raise SourceCoordinateError("scope binding must retain the exact supplied trace")
     if not isinstance(upstream_outcome, GonolInitiationOutcome):
         raise TypeError("upstream_outcome must be GonolInitiationOutcome")
     address = derive_ordered_source_coordinate(
         upstream_outcome.admission.occurrence_index,
-        len(upstream_trace.outcomes),
+        scope_binding.expected_cardinality,
     )
     return SourceCoordinateDerivation(
         f"{upstream_outcome.outcome_id}:source-coordinate",
         upstream_trace,
+        scope_binding,
         upstream_outcome,
         address,
-        _derivation_evidence(upstream_trace, upstream_outcome, address),
+        _derivation_evidence(upstream_trace, scope_binding, upstream_outcome, address),
     )
 
 
@@ -386,6 +578,12 @@ def _assignment_parameters(
     return (
         ("candidate-id", EXACT_COORDINATE_CANDIDATE_ID),
         ("source-trace-id", derivation.upstream_trace.trace_id),
+        ("source-scope-binding-id", derivation.scope_binding.binding_id),
+        ("source-scope-authority", derivation.scope_binding.authority_source),
+        (
+            "source-scope-authority-receipt",
+            derivation.scope_binding.authority_receipt_id,
+        ),
         ("source-occurrence-index", str(address.occurrence_index)),
         ("source-scope-cardinality", str(address.scope_cardinality)),
         ("source-position", _fraction_key(address.source_position)),
@@ -586,11 +784,12 @@ def _outcome_evidence(
 
 def _record_source_coordinate_outcome(
     trace: GonolInitiationTrace,
+    scope_binding: CompleteOrderedSourceScopeBinding,
     upstream: GonolInitiationOutcome,
 ) -> SourceCoordinateOutcome:
     if upstream.disposition is GonolInitiationDisposition.INITIATED:
         applied = apply_source_coordinate_assignment(
-            derive_source_coordinate(trace, upstream)
+            derive_source_coordinate(trace, scope_binding, upstream)
         )
         disposition = SourceCoordinateDisposition.DERIVED_ASSIGNED
     elif upstream.disposition is GonolInitiationDisposition.UNRESOLVED:
@@ -612,6 +811,7 @@ def _record_source_coordinate_outcome(
 class SourceCoordinateTrace:
     trace_id: str
     upstream_trace: GonolInitiationTrace
+    scope_binding: CompleteOrderedSourceScopeBinding
     outcomes: tuple[SourceCoordinateOutcome, ...]
     scope: str = SOURCE_COORDINATE_SCOPE
     outcome_relation_status: str = SOURCE_COORDINATE_OUTCOME_RELATION_STATUS
@@ -621,6 +821,10 @@ class SourceCoordinateTrace:
         _require_text(self.trace_id, "source-coordinate trace_id")
         if not isinstance(self.upstream_trace, GonolInitiationTrace):
             raise SourceCoordinateError("trace requires exact upstream trace")
+        if not isinstance(self.scope_binding, CompleteOrderedSourceScopeBinding):
+            raise SourceCoordinateError("trace requires complete source scope binding")
+        if self.scope_binding.upstream_trace is not self.upstream_trace:
+            raise SourceCoordinateError("scope binding must retain exact trace object")
         if not self.outcomes or len(self.outcomes) != len(self.upstream_trace.outcomes):
             raise SourceCoordinateError("trace must retain complete nonempty upstream")
         if (
@@ -647,6 +851,8 @@ class SourceCoordinateTrace:
             if applied is not None:
                 if applied.derivation.upstream_trace is not self.upstream_trace:
                     raise SourceCoordinateError("derivation must retain exact full trace")
+                if applied.derivation.scope_binding is not self.scope_binding:
+                    raise SourceCoordinateError("derivation must retain exact scope binding")
                 coordinate_id = applied.exact_coordinate.exact_identity
                 if coordinate_id in coordinate_ids:
                     raise SourceCoordinateError("derived coordinates must be injective")
@@ -662,19 +868,29 @@ class SourceCoordinateTrace:
 
     @property
     def has_total_outcome_evidence(self) -> bool:
-        return len(self.outcomes) == len(self.upstream_trace.outcomes)
+        return (
+            len(self.outcomes)
+            == len(self.upstream_trace.outcomes)
+            == self.scope_binding.expected_cardinality
+        )
 
 
 def derive_source_coordinate_trace(
     upstream_trace: GonolInitiationTrace,
+    scope_binding: CompleteOrderedSourceScopeBinding,
 ) -> SourceCoordinateTrace:
     if not isinstance(upstream_trace, GonolInitiationTrace):
         raise TypeError("upstream_trace must be GonolInitiationTrace")
+    if not isinstance(scope_binding, CompleteOrderedSourceScopeBinding):
+        raise TypeError("scope_binding must be CompleteOrderedSourceScopeBinding")
+    if scope_binding.upstream_trace is not upstream_trace:
+        raise SourceCoordinateError("scope binding must retain the exact supplied trace")
     return SourceCoordinateTrace(
         f"{upstream_trace.trace_id}:source-coordinate-trace",
         upstream_trace,
+        scope_binding,
         tuple(
-            _record_source_coordinate_outcome(upstream_trace, outcome)
+            _record_source_coordinate_outcome(upstream_trace, scope_binding, outcome)
             for outcome in upstream_trace.outcomes
         ),
     )
@@ -708,8 +924,11 @@ def _build_results(
             SourceCoordinateEvidenceStanding.EXACT_IMPLEMENTED_SUPPORTED,
             (
                 f"upstream-trace:{trace.upstream_trace.trace_id}",
-                f"scope-cardinality:{len(trace.upstream_trace.outcomes)}",
-                "address:occurrence-index+complete-scope-cardinality",
+                f"scope-binding:{trace.scope_binding.binding_id}",
+                f"scope-authority:{trace.scope_binding.authority_source}",
+                f"scope-authority-receipt:{trace.scope_binding.authority_receipt_id}",
+                f"scope-cardinality:{trace.scope_binding.expected_cardinality}",
+                "address:occurrence-index+authority-bound-complete-scope-cardinality",
             ),
             "the law is trace-local and does not establish cross-scope composition",
         ),
@@ -772,7 +991,8 @@ def _build_results(
             SourceCoordinateEvidenceStanding.EXACT_IMPLEMENTED_SUPPORTED,
             (
                 "upstream-object-identity:retained",
-                "prefixes-and-reordering:rejected",
+                "unbound-prefixes-and-reordering:rejected",
+                "scope-completion-binding:retained",
                 "equal-content-occurrences:addressed-separately",
             ),
             "source address preserves occurrence identity rather than content meaning",
@@ -836,6 +1056,20 @@ class SourceCoordinateBoundaryReport:
         exact_trace = self.upstream.upstream.demonstration_trace
         if self.demonstration_trace.upstream_trace is not exact_trace:
             raise SourceCoordinateError("report must retain exact v0.17 trace object")
+        binding = self.demonstration_trace.scope_binding
+        if (
+            binding.authority_source != V019_DEMONSTRATION_AUTHORITY_SOURCE
+            or binding.authority_receipt_id
+            != V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID
+            or binding.authority_evidence
+            != V019_DEMONSTRATION_AUTHORITY_EVIDENCE
+            or binding.source_scope_id != V019_DEMONSTRATION_SOURCE_SCOPE_ID
+            or binding.expected_cardinality
+            != len(V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS)
+            or binding.expected_outcome_ids
+            != V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS
+        ):
+            raise SourceCoordinateError("report must retain fixed demonstration scope authority")
         if not self.demonstration_trace.assignments:
             raise SourceCoordinateError("demonstration requires a derived assignment")
         if self.results != _build_results(self.demonstration_trace):
@@ -879,7 +1113,17 @@ class SourceCoordinateBoundaryReport:
 def run_v019_source_coordinate_derivation_experiment(
 ) -> SourceCoordinateBoundaryReport:
     upstream = run_v018_explicit_geometric_assignment_experiment()
-    trace = derive_source_coordinate_trace(upstream.upstream.demonstration_trace)
+    upstream_trace = upstream.upstream.demonstration_trace
+    scope_binding = bind_complete_ordered_source_scope(
+        upstream_trace,
+        authority_source=V019_DEMONSTRATION_AUTHORITY_SOURCE,
+        authority_receipt_id=V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID,
+        authority_evidence=V019_DEMONSTRATION_AUTHORITY_EVIDENCE,
+        source_scope_id=V019_DEMONSTRATION_SOURCE_SCOPE_ID,
+        expected_cardinality=len(V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS),
+        expected_outcome_ids=V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS,
+    )
+    trace = derive_source_coordinate_trace(upstream_trace, scope_binding)
     return SourceCoordinateBoundaryReport(
         upstream,
         trace,
@@ -898,12 +1142,14 @@ __all__ = [
     "SOURCE_COORDINATE_LAW_STATUS",
     "SOURCE_COORDINATE_LAW_VERSION",
     "SOURCE_COORDINATE_OUTCOME_RELATION_STATUS",
+    "SOURCE_COORDINATE_SCOPE_COMPLETION_STATUS",
     "SOURCE_COORDINATE_SCOPE",
     "V019_HMMM",
     "V019_SELECTION_EFFECT",
     "V019_SOURCE_COORDINATE_SCHEMA_ID",
     "V019_SOURCE_COORDINATE_SCHEMA_VERSION",
     "AppliedSourceCoordinateAssignment",
+    "CompleteOrderedSourceScopeBinding",
     "OrderedSourceCoordinate",
     "SourceCoordinateBoundaryReport",
     "SourceCoordinateDerivation",
@@ -914,6 +1160,7 @@ __all__ = [
     "SourceCoordinateOutcome",
     "SourceCoordinateTrace",
     "apply_source_coordinate_assignment",
+    "bind_complete_ordered_source_scope",
     "derive_ordered_source_coordinate",
     "derive_source_coordinate",
     "derive_source_coordinate_trace",

@@ -98,6 +98,8 @@ def test_public_surface_is_bounded() -> None:
         "GeometricAssignmentTrace",
         "ExplicitGeometricAssignmentBoundaryReport",
         "run_v018_explicit_geometric_assignment_experiment",
+        "CompleteOrderedSourceScopeBinding",
+        "bind_complete_ordered_source_scope",
         "OrderedSourceCoordinate",
         "SourceCoordinateDerivation",
         "AppliedSourceCoordinateAssignment",

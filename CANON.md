@@ -30,8 +30,9 @@ The current implementation can retain exact word evidence and externally
 supplied completion-motion trajectories. v0.18 can also apply the surviving
 exact signed-local circle candidate to an explicitly initiated word when
 independent exact rational coordinate input is supplied. v0.19 additionally
-implements one exact source-derived candidate over complete finite ordered
-traces: p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. That candidate is not
+implements one exact source-derived candidate over authority-bound complete
+finite ordered traces: p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. An unbound
+tuple length cannot supply n. That candidate is not
 selected and supplies no cross-scope or higher-gonol composition law. The total
 Structural Null topology and circle/epicycle/disk/sphere transitions remain
 unresolved. Their absence must stay explicit rather than being filled
@@ -179,8 +180,9 @@ This is explicit-input candidate application, not a universal source-to-
 coordinate law, total topology, higher geometry, completion, selection, or
 activation.
 v0.19 then derives the same exact circle-candidate inputs from the retained
-finite ordered source address. For occurrence i in complete scope cardinality
-n, the law fixes p=(2i+1)/(2n), u=2p-1, and t=2p. It retains exact v0.17 trace
+finite ordered source address. For occurrence i in authority-bound complete
+scope cardinality n, the law fixes p=(2i+1)/(2n), u=2p-1, and t=2p. It retains
+the completion binding plus exact v0.17 trace
 and outcome object identity, equal-content multiplicity, reversible exact
 application, explicit upstream blockers, and rendering loss. Source content,
 digests, runtime identity, A0 lanes, carrier position alone, and scalar
@@ -506,7 +508,8 @@ a complete relationship can become executable.
     declared-loss rendering, and refuses to relabel application as source-
     derived law, completion, selection, or activation.
 28. an ordered-source coordinate derivation boundary that maps occurrence i in
-    one complete finite ordered scope n to exact p=(2i+1)/(2n), u=2p-1, and
+    one authority-bound complete finite ordered scope n to exact
+    p=(2i+1)/(2n), u=2p-1, and
     lifted turns t=2p; retains exact upstream object identity and explicit
     blockers; applies the exact circle candidate; and leaves law selection,
     cross-scope and higher-gonol composition, total topology, higher geometry,
@@ -635,8 +638,9 @@ makes exact candidate application executable at that doorway when independent
 rational coordinate input is supplied. It preserves exact inverse, native
 frame, local side, occurrence identity, and rendering loss without claiming
 that the input was derived from the source. v0.19 supplies one exact
-finite-ordered-source midpoint derivation candidate while leaving its selection
-and cross-scope composition explicit. The total Structural Null relationship,
+authority-bound finite-ordered-source midpoint derivation candidate while
+leaving authority authentication, selection, and cross-scope composition
+explicit. The total Structural Null relationship,
 canonical breadth, epicyclic circle, disk, sphere, recursive composition, and
 completion conditions remain unrecovered.
 Real-system

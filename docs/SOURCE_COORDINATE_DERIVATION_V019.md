@@ -2,7 +2,8 @@
 
 **Status:** implemented, test-backed candidate law; nonselecting and
 trace-local. The package derives exact signed-local circle-candidate
-coordinates from complete finite ordered source-occurrence addresses. It does
+coordinates from authority-bound complete finite ordered source-occurrence
+addresses. It does
 not select this law, compose coordinates across scopes or higher gonols,
 complete the Structural Null topology, or activate EDCM or METAPAT.
 
@@ -24,8 +25,10 @@ source derivation. v0.19 asks the next bounded question:
 > structure while preserving complete scope, order, multiplicity, exact
 > initiation identity, blockers, rendering loss, and nonselection?
 
-Yes, within one complete finite ordered v0.17 trace. The candidate is the
-ordered-cell midpoint law.
+Yes, within one complete finite ordered v0.17 trace whose exhaustion,
+cardinality, and ordered outcome identities are carried by an explicit
+authority-bearing scope binding. The candidate is the ordered-cell midpoint
+law.
 
 ## Domain claims
 
@@ -35,11 +38,12 @@ ordered-cell midpoint law.
     term_id: ucns.edcm_assignment.ordered_source_cell_midpoint
     claiming_domain: UCNS EDCM source-coordinate research
     claimed_sense: exact coordinate input derived from one occurrence index and
-      the cardinality of its complete finite ordered initiation trace
-    scope: indices 0 <= i < n for complete finite n > 0
+      the authority-bound cardinality of its complete finite ordered initiation
+      trace
+    scope: indices 0 <= i < n for authority-bound complete finite n > 0
     claim_type: specialized
     authority_source: this specification and src/ucns/source_coordinate.py
-    status: implemented-candidate
+    status: provisional
     included_uses:
       - exact p=(2*i+1)/(2*n)
       - exact u=2*p-1
@@ -52,7 +56,16 @@ ordered-cell midpoint law.
       - semantic coordinate adequacy
       - canonical selection
       - higher geometry or completion
+    neighboring_terms:
+      - ucns.edcm_assignment.source_to_coordinate_candidate
+      - ucns.edcm_assignment.canonical_source_coordinate_law
+    known_collisions:
+      - midpoint coordinates inferred from an unbound or sampled tuple length
     effective_version: 0.19.0
+    supersedes: none
+    unresolved:
+      - comparative selection
+      - cross-scope and higher-gonol composition
 
 ### Source-to-coordinate candidate law
 
@@ -62,10 +75,10 @@ ordered-cell midpoint law.
     claimed_sense: a named falsifiable rule that maps retained source structure
       to exact coordinate input and records explicit failure when prerequisites
       are absent
-    scope: complete finite v0.17 initiation traces
+    scope: authority-bound complete finite v0.17 initiation traces
     claim_type: native
     authority_source: source_coordinate.py and SC01-SC10
-    status: implemented-candidate
+    status: provisional
     included_uses:
       - exact source-address derivation
       - exact v0.17 trace and outcome object linkage
@@ -82,6 +95,10 @@ ordered-cell midpoint law.
     known_collisions:
       - one implemented candidate described as the universal selected law
     effective_version: 0.19.0
+    supersedes: none
+    unresolved:
+      - comparative selection
+      - cross-scope stability and higher-gonol composition
 
 ### Canonical source-coordinate law
 
@@ -90,11 +107,21 @@ ordered-cell midpoint law.
     claiming_domain: UCNS canonization
     claimed_sense: a separately selected law with evidence for its scope,
       alternatives, information loss, rollback, migration, and composition
-    status: unresolved
+    scope: future UCNS EDCM source-coordinate selection decisions
+    claim_type: provisional
+    authority_source: hmmm; no selection authority decision exists
+    status: proposed
     included_uses:
       - future explicit selection decision
     excluded_uses:
       - automatic promotion from implementation or passing tests
+    neighboring_terms:
+      - ucns.edcm_assignment.ordered_source_cell_midpoint
+      - ucns.edcm_assignment.source_to_coordinate_candidate
+    known_collisions:
+      - provisional midpoint candidate described as selected canon
+    effective_version: hmmm
+    supersedes: none
     unresolved:
       - cross-scope stability
       - higher-gonol composition
@@ -107,8 +134,8 @@ composition gaps remain open.
 
 ## Exact law
 
-For a complete finite ordered scope containing n occurrences, occurrence i
-with 0 <= i < n receives:
+For an authority-bound complete finite ordered scope containing n occurrences,
+occurrence i with 0 <= i < n receives:
 
     p_i = (2*i + 1) / (2*n)
     u_i = 2*p_i - 1 = (2*i + 1 - n) / n
@@ -129,7 +156,10 @@ exact coordinate identity is injective over the declared ordered scope.
 The inputs are structural:
 
 - exact occurrence index already retained by v0.16 and v0.17;
-- exact complete scope cardinality from the retained v0.17 trace;
+- an authority-bearing completion binding that independently declares source
+  identity, receipt identity, supporting evidence, exhaustion, scope identity,
+  cardinality, and ordered outcome identities;
+- exact complete scope cardinality from that binding rather than tuple length;
 - exact upstream trace and outcome objects;
 - explicit initiated-word standing.
 
@@ -141,14 +171,16 @@ The following are not inputs:
 - A0 Blake2 phase lanes;
 - public-gonol carrier position alone;
 - scalar metric projection;
-- binary64 rendering.
+- binary64 rendering; and
+- the supplied trace tuple length without a matching completion binding.
 
 Equal-content occurrences therefore remain distinct because their occurrence
 addresses differ, not because their content is hashed into geometry.
 
 ## Work graph
 
-    complete finite ordered v0.17 trace
+    authority-bearing complete-scope binding
+      -> exact complete finite ordered v0.17 trace
       -> exact upstream outcome at occurrence i
          -> initiated word
             -> p=(2*i+1)/(2*n)
@@ -162,14 +194,18 @@ addresses differ, not because their content is hashed into geometry.
             -> blocked-rejected
       -> one complete ordered v0.19 outcome trace
 
-No prefix can stand in for the authority-bearing trace. Every result retains
-the exact upstream outcome object at its original index.
+No rewrapped prefix can reuse the complete-scope binding: the binding retains
+the exact trace object, external authority and receipt identities, supporting
+evidence, declared cardinality, and exact ordered outcome identities. A
+distinct scope requires a distinct authority claim; tuple length alone never
+supplies completion. Every result retains the binding and the exact upstream
+outcome object at its original index.
 
 ## SC01-SC10 falsifiers
 
 | ID | Obligation | Falsified when |
 |---|---|---|
-| SC01 | complete ordered source address | index or scope cardinality is absent, invalid, or taken from a prefix |
+| SC01 | authority-bound complete ordered source address | the completion binding is absent or mismatched, or index/cardinality is invalid or taken from an unbound prefix |
 | SC02 | exact fixed law | midpoint, transverse, lifted-turn formula, version, or code reference changes |
 | SC03 | within-scope injectivity | two distinct indices in one scope receive the same exact coordinate |
 | SC04 | reversible exact application | B(u), inverse, frame, side, or assignment law identity diverges |
@@ -207,8 +243,8 @@ v0.19 claims:
 
 - a concrete source-to-coordinate candidate is executable;
 - its finite ordered-scope formula is exact and injective;
-- complete source scope, order, multiplicity, initiation identity, and blockers
-  remain recoverable;
+- completion authority, complete source scope, order, multiplicity, initiation
+  identity, and blockers remain recoverable;
 - the exact signed-local circle candidate is applied reversibly; and
 - rendering and selection firewalls remain active.
 
@@ -230,3 +266,5 @@ cardinality changes every midpoint. That is visible evidence, not something to
 hide. Cross-scope stability and higher-gonol composition therefore remain the
 next geometric obligations. Candidate selection also requires separate
 evidence, alternatives, rollback, and migration.
+Authentication of external scope authority is not supplied by this in-memory
+binding and remains a separate producer/transport obligation.
