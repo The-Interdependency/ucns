@@ -2,7 +2,7 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-26  
-**Updated:** 2026-07-29
+**Updated:** 2026-07-30
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
 **Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
@@ -20,9 +20,13 @@ exact inverse and records explicit binary64 breadth and lifted-turn collisions,
 so float points remain linked renderings rather than arbitrary-rational
 identity. v0.12 specifies the real non-null quotient topology and continuity
 falsifiers without changing any option standing or adding runtime behavior.
-Arbitrary assignment, Structural Null attachment, full-carrier real continuity,
-canonical breadth, epicyclic geometry, completion, and higher-composition
-mathematics remain incomplete.
+v0.13 implements one marked-seam candidate over the exact rational root and
+minimum source packet: typed Structural Null is an explicit disjoint prestate,
+all fourteen initiations retain source-provenance seams and twist receipts, and
+360-degree/720-degree motion appends history without selection. Arbitrary-real
+seam limits, arbitrary-element transverse assignment, full-carrier real
+continuity, canonical breadth, epicyclic geometry, completion, and
+higher-composition mathematics remain incomplete.
 
 ## Authority boundary
 
@@ -205,6 +209,27 @@ selection:        none
 This schema implements recoverable evidence identity, not the missing
 completion-motion algorithm. See
 [`EDCM_COMPLETION_MOTION_EVIDENCE.md`](EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
+## Implemented partial initiation boundary
+
+```text
+schema:           ucns.edcm.partial-initiation-boundary/0.13.0
+scope:            fixed nine-witness / fourteen-initiation packet
+Structural Null:  explicit disjoint typed prestate
+seam:             marked source-provenance candidate
+attachment:       partial relation to exact root u=0, B=1, t=0
+twist:            retained source-bound receipt
+motion:           360 change, 720 local return, append-only history
+RC packet:        RC01-RC10; arbitrary-real obligations remain inconclusive
+selection:        none
+EDCM activation:  inactive
+METAPAT:          inactive
+```
+
+This surface executes one of the three v0.12 seam alternatives without
+selecting it. Numeric coordinate cuts are movable views and cannot define or
+move hidden zero. The other seam alternatives remain recoverable. See
+[`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
 
 ## Unicode and glyph normalization
 
@@ -450,7 +475,9 @@ candidate survives bounded actual-cover materialization without acquiring
 selection authority. v0.11 preserves its exact rational law and inverse while
 recording that binary64 cannot carry its arbitrary-rational identity. v0.12
 specifies the framed double cover, Möbius quotient, coordinate cylinder, and
-separating continuity obligations while leaving the seam and Structural Null
-attachment honest. Executable full-carrier continuity, arbitrary assignment,
-canonical breadth, epicyclic circle, disk, sphere, composition, and completion
-laws remain the living recovery boundary.
+separating continuity obligations. v0.13 gives the missing doorway one bounded
+candidate form: a typed disjoint prestate, marked source seams, twist receipts,
+and non-erasing root motion. RC01 and RC03 remain inconclusive, so executable
+arbitrary-real full-carrier continuity, arbitrary assignment, canonical
+breadth, epicyclic circle, disk, sphere, composition, and completion laws remain
+the living recovery boundary.

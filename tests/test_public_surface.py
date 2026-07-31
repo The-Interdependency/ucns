@@ -63,6 +63,11 @@ def test_public_surface_is_bounded() -> None:
         "Binary64CollisionWitness",
         "ExactCoordinateBoundaryReport",
         "run_v011_exact_coordinate_boundary_experiment",
+        "MarkedInitiationSeam",
+        "TwistReceipt",
+        "PartialInitiationAttachment",
+        "PartialInitiationBoundaryReport",
+        "run_v013_partial_initiation_boundary_experiment",
     ):
         assert expected in exported
 
