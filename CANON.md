@@ -142,6 +142,16 @@ analysis receipt requires exhaustion of the supplied admitted-corpus iterator,
 agreement with the externally declared expected turn count, and matching exact
 source/reconstruction stream digests. It does not admit a corpus, claim that a
 real-system run occurred, satisfy a carrier falsifier, or activate a consumer.
+v0.15 records exact analytic certificates for the complete declared real
+non-null affine intervals and quotient while retaining v0.13 as partial
+root-only Structural Null evidence. v0.16 then separates observed-element
+admission from geometric assignment: arbitrary-domain occurrences enter only
+through explicit named versioned adapters and each admitted occurrence receives
+one ordered outcome—unresolved, explicit supplied candidate, or rejected
+mechanism. Content digests, runtime hashes, `repr`, object identity, and the A0
+Blake2 phase lanes do not derive geometry. Outcome totality over admitted
+evidence does not establish arbitrary geometric assignment or a total
+Structural Null relationship.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -442,6 +452,12 @@ a complete relationship can become executable.
     distinguishes exhaustion from interruption, requires expected-count and
     exact stream-digest agreement, and issues only a post-run analysis receipt
     with no selection or activation effect.
+24. a full-carrier attachment evidence package that records universal affine
+    epsilon-delta and non-null quotient commutation certificates while retaining
+    the partial root attachment and non-machine-checked standing; and
+25. an assignment-admission boundary that content-adapts arbitrary-domain
+    occurrences, preserves exact order and multiplicity, and records one total
+    tagged evidence outcome without deriving or selecting geometry.
 
 Still unresolved and not promoted:
 
@@ -457,9 +473,10 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. arbitrary-element transverse assignment and a total Structural Null
-    initiation relationship beyond the v0.15 analytic non-null certificates
-    and v0.13 partial root attachment, including higher geometry and completion;
+12. arbitrary-element geometric assignment and a total Structural Null
+    initiation relationship beyond the v0.16 admitted-evidence outcome
+    boundary, v0.15 analytic non-null certificates, and v0.13 partial root
+    attachment, including higher geometry and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -552,8 +569,10 @@ partial corpus prefix from masquerading as a full execution receipt. EDCM PR
 #44 records the corrected source-native MultiWOZ execution against that exact
 gate. v0.15 records a written universal affine and non-null quotient proof
 certificate while leaving v0.13's partial initiation standing unchanged.
-Arbitrary-element assignment, a total Structural Null relationship, canonical
-breadth, epicyclic circle, disk, sphere, recursive composition, and completion
-conditions remain unrecovered. Real-system experiments may pressure those laws,
-but current metric projections may not circularly select the geometry that
-makes them appear valid.
+v0.16 closes the prior admission question with explicit adapters, ordered
+occurrence identities, and total tagged evidence outcomes while rejecting
+identity-derived geometry. Arbitrary geometric assignment, a total Structural
+Null relationship, canonical breadth, epicyclic circle, disk, sphere, recursive
+composition, and completion conditions remain unrecovered. Real-system
+experiments may pressure those laws, but current metric projections may not
+circularly select the geometry that makes them appear valid.

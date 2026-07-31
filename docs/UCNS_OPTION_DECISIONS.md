@@ -31,10 +31,14 @@ first corrected source-native result against that gate: 10,438 MultiWOZ 2.1
 dialogues and 143,048 turns reconcile exactly with the UCNS v0.14.1 producer.
 v0.15 records universal analytic certificates for the complete declared real
 affine intervals and non-null quotient seam commutation, while retaining the
-v0.13 Structural Null attachment as partial and root-only. Arbitrary-element
-transverse assignment, the total Structural Null relationship, canonical
-breadth, epicyclic geometry, completion, and higher-composition mathematics
-remain incomplete. No carrier selection or consumer activation follows.
+v0.13 Structural Null attachment as partial and root-only. v0.16 separates
+observed-element admission from geometric assignment: arbitrary-domain
+occurrences enter through explicit named versioned adapters and receive one
+ordered unresolved, explicit supplied candidate, or rejected outcome. Evidence
+digests and A0 Blake2 phase lanes cannot derive geometry. Arbitrary geometric
+assignment, the total Structural Null relationship, canonical breadth,
+epicyclic geometry, completion, and higher-composition mathematics remain
+incomplete. No carrier selection or consumer activation follows.
 
 ## Authority boundary
 
@@ -70,9 +74,11 @@ instruments or projections.
 Completion closes only the declared construction relative to its declared
 boundary. It does not imply epistemic exhaustion of the underlying unknowable.
 
-The exact element-assignment law, Möbius coordinates outside the framed root
-loop, geometric transition law, and higher-gonol composition remain unresolved.
-The current
+The exact geometric element-assignment law, Möbius coordinates outside the
+framed root loop, geometric transition law, and higher-gonol composition remain
+unresolved. v0.16 implements only adapter-gated admission and a total tagged
+outcome relation over admitted occurrences; that evidence totality is not
+geometric assignment totality. The current
 `ucns.edcm.completion-motion-evidence/0.1.0` surface retains supplied trajectory
 evidence while refusing to manufacture those laws.
 
@@ -318,6 +324,14 @@ interval, but proves by two fixed collisions that binary64
 candidate is selected, and arbitrary-element, full-carrier real-continuous,
 higher-geometric, and completion extension or incompatibility remains open.
 
+v0.16 adds a separate assignment-admission evidence surface. A named versioned
+`ContentAdapter` and isolated `SubjectRecord` admit one arbitrary-domain source
+occurrence while retaining source, grain, order, multiplicity, and provenance.
+Every admission receives exactly one outcome: unresolved, an explicit supplied
+candidate relation, or a named rejected mechanism. Content digest, runtime
+hash, `repr`, object identity, and the historical A0 Blake2 phase lanes remain
+incapable of deriving geometry.
+
 ## Choices still genuinely open
 
 ### Completion-motion geometry
@@ -514,6 +528,8 @@ post-run analysis; EDCM PR #44 supplies the exact source-native MultiWOZ receipt
 for that producer. v0.15 adds written analytic RC01 and non-null RC03
 certificates without rewriting v0.13's bounded executable verdicts. A runtime
 arbitrary-real representation is not required for that affine proof and is not
-claimed. Arbitrary observed-element assignment, a total Structural Null
+claimed. v0.16 closes adapter-gated observed-element admission and records one
+tagged outcome per admitted occurrence without allowing evidence identity to
+become geometry. Arbitrary geometric assignment, a total Structural Null
 relationship, later corpus adapters, canonical breadth, epicyclic circle, disk,
 sphere, composition, and completion laws remain the living recovery boundary.

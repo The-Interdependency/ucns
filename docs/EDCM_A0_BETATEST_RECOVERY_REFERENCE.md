@@ -164,11 +164,20 @@ That suspension was epistemically safer than continuing the false lineage. But t
 
 Likewise, the current UCNS EDCM profile correctly preserves exact words, SPACE boundaries, speaker turns, and twist-initiation events, but it explicitly does not provide the Möbius coordinate or higher-gonol composition law.
 
+UCNS v0.16 closes the prior source-evidence admission obligation without
+changing that verdict. Arbitrary-domain occurrences enter through explicit
+named versioned adapters and receive one tagged unresolved, explicit supplied
+candidate, or rejected outcome. Evidence digests and the historical Blake2
+phase lanes remain incapable of deriving geometry.
+
 Therefore:
 
 ```text
 current word-gonol profile
     = exact observation floor
+
+v0.16 assignment admission
+    = exact adapter-gated evidence and total tagged outcomes, not geometry
 
 a0-betatest historical system
     = primary EDCM recovery reference

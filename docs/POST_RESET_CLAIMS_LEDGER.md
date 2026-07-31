@@ -1,6 +1,6 @@
 # UCNS–EDCM post-reset claims ledger
 
-> **Status:** v0.15 authority, carrier evidence, analytic non-null certificates, partial-initiation evidence, and full-corpus execution ledger. It records standing; it does not promote any candidate.
+> **Status:** v0.16 authority, assignment-admission evidence, analytic non-null certificates, partial-initiation evidence, and full-corpus execution ledger. It records standing; it does not promote any candidate.
 >
 > **Recovery boundary:** claims are evaluated against current UCNS `main`, the EDCM decision record, exact corpus evidence, and the primary A0 recovery specimen at `7af8debf6ef3905f01baff02b43d8c3bee16ccbc`.
 
@@ -40,6 +40,8 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `A7` | Exact full-corpus execution is required; sampling cannot establish the profile result. | `decided-constraint` | Corpus evidence contract. Current corpus admission and coverage remain dataset-specific. |
 | `A8` | Post-run failure-seeking analysis requires a complete execution receipt proving exhaustion of the supplied admitted-corpus stream, expected-turn-count agreement, and exact source/reconstruction digest agreement. | `implemented-evidence` | [`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md) and `src/ucns/full_corpus.py`. The gate does not admit a source, authenticate custody, claim an actual real-system run, satisfy a carrier falsifier, or activate EDCM or METAPAT. |
 | `A9` | The corrected source-native MultiWOZ 2.1 run processed all 10,438 dialogues and 143,048 turns and acquired the exact UCNS v0.14.1 downstream completion receipt. | `implemented-evidence` | EDCM PR #44 and [`evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json`](evidence/EDCM_MULTIWOZ_V0141_HANDOFF.json) bind the archive, adapter reconciliation, report, receipt, EDCM commits, UCNS producer `868d80878c9ecd93ff30e91ca289122ded805a49`, and receipt id. This empirical result does not select geometry, transfer proof, or activate either consumer. |
+| `A10` | Arbitrary-domain observed occurrences can enter assignment research through explicit named versioned adapters while retaining isolated subject evidence, source provenance, order, and multiplicity. | `implemented-evidence` | [`ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](ASSIGNMENT_ADMISSION_BOUNDARY_V016.md) and `src/ucns/assignment_boundary.py`. The subject digest is evidence identity only and supplies no geometric field. |
+| `A11` | Every explicitly admitted occurrence receives exactly one tagged assignment outcome: unresolved, explicit supplied candidate, or rejected mechanism. | `implemented-evidence` | The v0.16 trace fails closed on mixed tags and rejects digest, runtime hash, `repr`, object identity, and A0 Blake2 phase lanes as geometric derivations. Outcome totality is not total geometric assignment. |
 
 ## 4. Motion and carrier claims
 
@@ -93,11 +95,12 @@ Only a separate explicit authority decision can change a claim’s standing to c
 ## 8. Open obligations
 
 The following remain `unresolved` after the v0.13 partial initiation
-attachment, v0.14 full-corpus execution gate and receipt, and v0.15 analytic
-non-null certificates:
+attachment, v0.14 full-corpus execution gate and receipt, v0.15 analytic
+non-null certificates, and v0.16 assignment-admission boundary:
 
-1. the exact element-assignment law and total Structural Null-to-carrier
-   relationship beyond the marked root attachment;
+1. the exact geometric element-assignment law and total Structural
+   Null-to-carrier relationship beyond the adapter-admitted outcome boundary
+   and marked root attachment;
 2. proof-assistant formalization if machine-checked theorem standing is later
    required;
 3. initiation and transition laws beyond the minimum witness and bounded exact-rational domain;
@@ -136,7 +139,9 @@ post-run receipt or a declared-only report from impersonating execution; EDCM
 PR #44 now supplies the exact corrected MultiWOZ adapter reconciliation and
 receipt. v0.15 adds universal written analytic evidence for the full declared
 non-null affine and quotient relationship without rewriting v0.13's partial
-runtime scope. It does not yet have arbitrary-element transverse assignment, a
-total Structural Null relationship, canonical breadth, recursive composition,
-scoped completion, or evidence that the exact candidate supplies the complete
-carrier.
+runtime scope. v0.16 now closes the prior admission question: arbitrary-domain
+occurrences enter through explicit adapters and each receives one exact tagged
+outcome without identity-derived geometry. It does not yet have arbitrary
+geometric assignment, a total Structural Null relationship, canonical breadth,
+recursive composition, scoped completion, or evidence that the exact candidate
+supplies the complete carrier.

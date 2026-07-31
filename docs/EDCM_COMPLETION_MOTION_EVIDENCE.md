@@ -109,8 +109,10 @@ This slice does not define:
 
 ## hmmm
 
-The evidence container is now executable. The next load-bearing object remains
-the exact assignment and transition law: how an exact word enters an epicyclic
-circle, acquires orientation and sidedness through the Möbius initiation,
-becomes disk or sphere structure across recursive scale, moves relative to
-other assignments, and registers scoped completion.
+The evidence container is executable, and v0.16 now makes arbitrary-domain
+occurrence admission plus one tagged assignment outcome executable. Admission
+is not geometry. The next load-bearing object remains the exact assignment and
+transition law: how an exact word enters an epicyclic circle, acquires
+orientation and sidedness through the Möbius initiation, becomes disk or sphere
+structure across recursive scale, moves relative to other assignments, and
+registers scoped completion.
