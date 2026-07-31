@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.9.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.10.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -112,6 +112,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "edcm-space-origin-assignment",
         "edcm-source-normalization-none",
         "full-corpus-runs",
+        "full-corpus-execution-gate",
         "ucns-completion-motion-root",
         "completion-scoped-to-declared-boundary",
         "trajectory-before-scalar",
@@ -157,6 +158,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
             "boundary and does not exhaust the underlying unknowable."
         ),
         "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+        "full_corpus_execution_schema": (
+            "ucns.edcm.full-corpus-execution/0.14.0"
+        ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
     }

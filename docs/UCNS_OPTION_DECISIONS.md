@@ -2,7 +2,7 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-26  
-**Updated:** 2026-07-30
+**Updated:** 2026-07-31
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
 **Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
@@ -27,6 +27,10 @@ all fourteen initiations retain source-provenance seams and twist receipts, and
 seam limits, arbitrary-element transverse assignment, full-carrier real
 continuity, canonical breadth, epicyclic geometry, completion, and
 higher-composition mathematics remain incomplete.
+v0.14 separately implements the full-corpus execution gate: post-run analysis
+receipts require iterator exhaustion, declared expected-count agreement, and
+matching exact source/reconstruction stream digests. No corpus admission,
+real-system run, carrier selection, or consumer activation follows.
 
 ## Authority boundary
 
@@ -230,6 +234,26 @@ This surface executes one of the three v0.12 seam alternatives without
 selecting it. Numeric coordinate cuts are movable views and cannot define or
 move hidden zero. The other seam alternatives remain recoverable. See
 [`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
+
+## Implemented full-corpus execution gate
+
+```text
+schema:           ucns.edcm.full-corpus-execution/0.14.0
+scope:            EDCM admitted-corpus execution evidence
+manifest:         source, count, license/privacy/redaction, adapter, admission
+completion:       iterator exhaustion + count match + exact digest match
+partial failure:  stopping index and stable failure class retained
+gate effect:      post-run failure-seeking analysis only
+real corpus run:  none claimed by this implementation
+selection:        none
+EDCM activation:  inactive
+METAPAT:          inactive
+```
+
+The gate proves execution completeness only relative to the externally admitted
+manifest and supplied turn stream. It does not verify source-artifact custody,
+replace per-turn evidence, or satisfy a carrier or metric falsifier. See
+[`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ## Unicode and glyph normalization
 
@@ -477,7 +501,9 @@ recording that binary64 cannot carry its arbitrary-rational identity. v0.12
 specifies the framed double cover, Möbius quotient, coordinate cylinder, and
 separating continuity obligations. v0.13 gives the missing doorway one bounded
 candidate form: a typed disjoint prestate, marked source seams, twist receipts,
-and non-erasing root motion. RC01 and RC03 remain inconclusive, so executable
+and non-erasing root motion. v0.14 prevents partial turn streams from opening
+post-run analysis, while leaving source-native adapters and actual complete
+corpus runs unresolved. RC01 and RC03 remain inconclusive, so executable
 arbitrary-real full-carrier continuity, arbitrary assignment, canonical
 breadth, epicyclic circle, disk, sphere, composition, and completion laws remain
 the living recovery boundary.

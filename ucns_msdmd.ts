@@ -1173,13 +1173,13 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation, completion-motion, and v0.14 full-corpus execution evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
-        "summary": "exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure",
+        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, and full-corpus execution evidence, current foundations, and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
         "unresolved": "element-assignment law, arbitrary-real seam-side limits and full-carrier relationship beyond the v0.13 partial root attachment, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
@@ -2074,6 +2074,85 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/experiments.py",
       "id": "reproducible_witness_experiment_pipeline"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every successfully processed speaker turn is observed",
+        "since": "2026-07-31",
+        "then": "length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "full_corpus_gate_requires_exact_stream_reconstruction"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an admitted corpus iterable is executed through the exact EDCM profile",
+        "since": "2026-07-31",
+        "then": "a complete report requires iterator exhaustion and exact agreement with the manifest's expected turn count"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "full_corpus_gate_requires_exhaustion_and_turn_count"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a corpus is declared for EDCM execution",
+        "since": "2026-07-31",
+        "then": "source version and digest, expected turn count, license, privacy and redaction treatment, adapter identity, and external admission decision remain explicit"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "full_corpus_manifest_pins_admission_identity"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a full-corpus completion receipt is issued",
+        "since": "2026-07-31",
+        "then": "it opens only failure-seeking post-run analysis and cannot select a carrier, validate EDCM measurement, activate EDCM, or activate METAPAT"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "full_corpus_receipt_has_no_selection_or_activation_effect"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "iteration, observation, reconstruction, or expected-count agreement fails",
+        "since": "2026-07-31",
+        "then": "the exact stopping index and failure class remain visible and no post-run completion receipt can be issued"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "incomplete_corpus_run_fails_closed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "admission authority remains external and is retained by admission_decision_id",
+        "internal_surface": "exact validation, length-prefixed turn-stream hashing, incomplete-report construction, and receipt identity helpers",
+        "module_kind": "experiment",
+        "module_name": "full_corpus",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "CorpusAdapterIdentity, AdmittedCorpusManifest, CorpusRunStatus, CorpusRunFailureKind, CorpusRunFailure, FullCorpusExecutionReport, FullCorpusCompletionReceipt, execute_admitted_corpus, issue_full_corpus_completion_receipt",
+        "requires": "edcm_word_gonol_profile",
+        "rollback": "remove this module, its exports, tests, and v0.14 document while retaining the full-corpus authority decision and v0.13 carrier evidence",
+        "rollout": "explicit UCNS-only v0.14 execution gate; no corpus is admitted by this module, no real-system run is claimed, and no carrier, EDCM, or METAPAT activation follows",
+        "since": "2026-07-31",
+        "storage_boundary": "raw corpus and per-turn observations remain in source or downstream custody; this bounded report retains counts and linked digests only",
+        "summary": "fail-closed EDCM corpus execution reports and completion receipts that require iterator exhaustion, declared turn-count agreement, and exact source reconstruction before post-run analysis",
+        "tests": "tests/test_full_corpus.py",
+        "unresolved": "source-native corpus adapters, authenticated source custody, actual corrected MultiWOZ and later corpus runs, post-run falsifier implementations, completion-motion trajectories, and EDCM-scoped selection",
+        "user_data_boundary": "exact source text enters the fixed EDCM profile without normalization; the report retains no raw text and cannot replace source or trajectory custody"
+      },
+      "file": "src/ucns/full_corpus.py",
+      "id": "edcm_full_corpus_execution_gate"
     },
     {
       "block": "CONTRACTS",
@@ -3751,6 +3830,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_experiments.py",
       "id": "check_separate_authorship_records"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_exact_stream_digest_is_stable_across_equivalent_iterables",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_corpus_gate_requires_exact_stream_reconstruction",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_full_corpus_exact_reconstruction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_complete_run_exhausts_every_turn_and_matches_expected_count",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_corpus_gate_requires_exhaustion_and_turn_count",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_full_corpus_exhaustion_and_count_gate"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_manifest_pins_source_adapter_and_admission_boundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_corpus_manifest_pins_admission_identity",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_full_corpus_manifest_identity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_completion_receipt_opens_analysis_only",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "full_corpus_receipt_has_no_selection_or_activation_effect",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_full_corpus_receipt_nonactivation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_partial_iteration_and_count_mismatch_cannot_issue_receipts",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "incomplete_corpus_run_fails_closed",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_incomplete_corpus_fail_closed"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_invalid_turn_records_exact_stopping_boundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "incomplete_corpus_run_fails_closed",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_full_corpus.py",
+      "id": "check_invalid_corpus_turn_fail_closed"
     },
     {
       "block": "CHECKS",
@@ -6077,6 +6234,48 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_full_corpus_exact_reconstruction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exact_reconstruction",
+      "to": "self::test_exact_stream_digest_is_stable_across_equivalent_iterables"
+    },
+    {
+      "from": "check_full_corpus_exact_reconstruction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exact_reconstruction",
+      "to": "full_corpus_gate_requires_exact_stream_reconstruction"
+    },
+    {
+      "from": "check_full_corpus_exact_reconstruction",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exact_reconstruction",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_corpus_exhaustion_and_count_gate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exhaustion_and_count_gate",
+      "to": "self::test_complete_run_exhausts_every_turn_and_matches_expected_count"
+    },
+    {
+      "from": "check_full_corpus_exhaustion_and_count_gate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exhaustion_and_count_gate",
+      "to": "full_corpus_gate_requires_exhaustion_and_turn_count"
+    },
+    {
+      "from": "check_full_corpus_exhaustion_and_count_gate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_exhaustion_and_count_gate",
+      "to": "python3"
+    },
+    {
       "from": "check_full_corpus_iteration",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -6089,6 +6288,48 @@ export default defineMsdmdCollection({
       "source_block": "CHECKS",
       "source_id": "check_full_corpus_iteration",
       "to": "edcm_alphabet_failure_is_positive_evidence"
+    },
+    {
+      "from": "check_full_corpus_manifest_identity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_manifest_identity",
+      "to": "self::test_manifest_pins_source_adapter_and_admission_boundary"
+    },
+    {
+      "from": "check_full_corpus_manifest_identity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_manifest_identity",
+      "to": "full_corpus_manifest_pins_admission_identity"
+    },
+    {
+      "from": "check_full_corpus_manifest_identity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_manifest_identity",
+      "to": "python3"
+    },
+    {
+      "from": "check_full_corpus_receipt_nonactivation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_receipt_nonactivation",
+      "to": "self::test_completion_receipt_opens_analysis_only"
+    },
+    {
+      "from": "check_full_corpus_receipt_nonactivation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_receipt_nonactivation",
+      "to": "full_corpus_receipt_has_no_selection_or_activation_effect"
+    },
+    {
+      "from": "check_full_corpus_receipt_nonactivation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_full_corpus_receipt_nonactivation",
+      "to": "python3"
     },
     {
       "from": "check_holdout_decision_guard",
@@ -6112,6 +6353,27 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_incomplete_corpus_fail_closed",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_incomplete_corpus_fail_closed",
+      "to": "self::test_partial_iteration_and_count_mismatch_cannot_issue_receipts"
+    },
+    {
+      "from": "check_incomplete_corpus_fail_closed",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_incomplete_corpus_fail_closed",
+      "to": "incomplete_corpus_run_fails_closed"
+    },
+    {
+      "from": "check_incomplete_corpus_fail_closed",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_incomplete_corpus_fail_closed",
+      "to": "python3"
+    },
+    {
       "from": "check_initial_product_multiplicativity",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -6130,6 +6392,27 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_initial_product_multiplicativity",
+      "to": "python3"
+    },
+    {
+      "from": "check_invalid_corpus_turn_fail_closed",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_invalid_corpus_turn_fail_closed",
+      "to": "self::test_invalid_turn_records_exact_stopping_boundary"
+    },
+    {
+      "from": "check_invalid_corpus_turn_fail_closed",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_invalid_corpus_turn_fail_closed",
+      "to": "incomplete_corpus_run_fails_closed"
+    },
+    {
+      "from": "check_invalid_corpus_turn_fail_closed",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_invalid_corpus_turn_fail_closed",
       "to": "python3"
     },
     {
@@ -7820,6 +8103,20 @@ export default defineMsdmdCollection({
       "to": "explicit_comparison_policy_layer"
     },
     {
+      "from": "edcm_full_corpus_execution_gate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_full_corpus_execution_gate",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_full_corpus_execution_gate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_full_corpus_execution_gate",
+      "to": "edcm_word_gonol_profile"
+    },
+    {
       "from": "edcm_metapat_ordered_occurrence_profile",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -8070,6 +8367,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_exact_rational_transverse_envelope_experiment"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_full_corpus_execution_gate"
     },
     {
       "from": "foundations_public_surface",

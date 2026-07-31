@@ -1,6 +1,6 @@
 # UCNS–EDCM post-reset claims ledger
 
-> **Status:** v0.13 authority, evidence, and partial-initiation ledger. It records standing; it does not promote any candidate.
+> **Status:** v0.14 authority, carrier evidence, partial-initiation evidence, and full-corpus execution-gate ledger. It records standing; it does not promote any candidate.
 >
 > **Recovery boundary:** claims are evaluated against current UCNS `main`, the EDCM decision record, exact corpus evidence, and the primary A0 recovery specimen at `7af8debf6ef3905f01baff02b43d8c3bee16ccbc`.
 
@@ -38,6 +38,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `A5` | Every new word gonol records a Möbius initiation event. | `implemented-evidence` | The observation profile records the event label. The v0.6 C1 candidate adds a typed Structural Null pre-state, exact causal boundary, and framed root-loop post-state for the minimum witness domain; general element assignment remains unresolved. |
 | `A6` | One complete speaker turn contributes one unit of support. | `implemented-evidence` | Current EDCM profile. Token, word, and trajectory counts do not change that support unit. |
 | `A7` | Exact full-corpus execution is required; sampling cannot establish the profile result. | `decided-constraint` | Corpus evidence contract. Current corpus admission and coverage remain dataset-specific. |
+| `A8` | Post-run failure-seeking analysis requires a complete execution receipt proving exhaustion of the supplied admitted-corpus stream, expected-turn-count agreement, and exact source/reconstruction digest agreement. | `implemented-evidence` | [`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md) and `src/ucns/full_corpus.py`. The gate does not admit a source, authenticate custody, claim an actual real-system run, satisfy a carrier falsifier, or activate EDCM or METAPAT. |
 
 ## 4. Motion and carrier claims
 
@@ -90,7 +91,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 ## 8. Open obligations
 
 The following remain `unresolved` after the v0.13 partial initiation
-attachment:
+attachment and v0.14 full-corpus execution gate:
 
 1. executable evidence or proof for the arbitrary-real complete signed-local
    relationship, especially seam-side limits and extension beyond the marked
@@ -103,7 +104,9 @@ attachment:
 7. higher-gonol composition and recursive scale transition;
 8. scoped completion conditions and receipts;
 9. canonical structural equivalence, `M`, and `B`; and
-10. any binding from complete motion evidence to EDCM scalar projections.
+10. any binding from complete motion evidence to EDCM scalar projections; and
+11. source-native adapters, authenticated source custody, corrected complete
+    MultiWOZ execution, later corpus runs, and their post-run falsifier reports.
 
 ## 9. Usage guidance
 
@@ -121,7 +124,10 @@ candidate failures; and an exact-coordinate boundary that preserves the affine
 law and inverse while exposing binary64 breadth and turn collisions. v0.12 now
 specifies the real quotient candidate and its separating falsifiers. v0.13
 implements one bounded doorway: typed disjoint prestate, source-provenance
-marked seams, twist receipts, and non-erasing root motion. It does not yet have
+marked seams, twist receipts, and non-erasing root motion. v0.14's gate now
+prevents an incomplete supplied turn stream from acquiring a
+post-run receipt, but it is not itself the missing MultiWOZ adapter or rerun. It
+does not yet have
 arbitrary-real seam-side continuity, a full real-continuous relationship,
 arbitrary-element transverse assignment, canonical breadth, recursive
 composition, scoped completion, or evidence that the exact candidate supplies

@@ -1,8 +1,8 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.9.0",
+  "schema_version": "1.10.0",
   "authority": "Erin Spencer",
-  "recorded_on": "2026-07-30",
+  "recorded_on": "2026-07-31",
   "identifier": {
     "value": "UCNS",
     "canonical_expansion": null,
@@ -13,6 +13,7 @@
     "system_root": "UCNS assigns elements of an unknowable to completion through geometric motion.",
     "completion_scope": "Completion closes a declared construction relative to its declared boundary and does not exhaust the underlying unknowable.",
     "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+    "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.0",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -172,6 +173,10 @@
     {
       "id": "full-corpus-runs",
       "statement": "EDCM configuration experiments run every turn in each admitted corpus. Sampling and holdout partitioning do not define the current execution protocol."
+    },
+    {
+      "id": "full-corpus-execution-gate",
+      "statement": "v0.14 issues a post-run analysis receipt only after the supplied admitted-corpus iterator is exhausted, the externally declared expected turn count matches, and exact source and reconstructed-observation stream digests agree. Partial execution remains explicit evidence and cannot select a carrier or activate EDCM or METAPAT."
     },
     {
       "id": "ucns-completion-motion-root",
@@ -678,6 +683,7 @@
     "Apply no normalization or folding to authoritative source text; retain and report every non-SPACE out-of-alphabet code point.",
     "Use ordered concatenation as the EDCM primary occurrence operation.",
     "Use one unit of support per complete speaker turn.",
+    "Open post-run failure-seeking analysis only after iterator exhaustion, admitted turn-count agreement, and exact source/reconstruction stream-digest agreement; incomplete runs remain blocking evidence.",
     "Begin EDCM equivalence with exact evidence and move toward projection only on an explicit evidence-backed sliding scale.",
     "Display all three M candidates without selecting one.",
     "Display all three B candidates without selecting one.",
@@ -705,7 +711,7 @@
     "Graph and retained-layer contribution laws; more information is required.",
     "Evidence thresholds and loss accounting for the sliding scale from exact evidence toward projection.",
     "Interpretation and visualization of the three simultaneous M and three simultaneous B readouts.",
-    "Corpus-specific license, consent, provenance, redaction, and deterministic full-corpus adapters.",
+    "Corpus-specific source-native adapters, authenticated custody, actual corrected full-corpus runs, and post-run falsifier implementations; v0.14 supplies only their fail-closed execution gate.",
     "Formal promotion and migration criteria for the EDCM observation profile after the Mobius and higher-gonol laws are executable.",
     "Typed payload operator registry and dispatch laws remain outside the active EDCM configuration."
   ],
