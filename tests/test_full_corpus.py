@@ -192,6 +192,28 @@ def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
             profile=SplitWordProfile(),
         )
 
+    class BehaviorOverridingStr(str):
+        def __iter__(self):  # type: ignore[no-untyped-def]
+            return iter("AB")
+
+        def __len__(self) -> int:
+            return 2
+
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
+    substituted = execute_admitted_corpus(
+        _manifest(),
+        (("user", BehaviorOverridingStr("A B")),),
+    )
+    assert substituted.status is CorpusRunStatus.INCOMPLETE
+    assert substituted.failure is not None
+    assert substituted.failure.kind is CorpusRunFailureKind.TURN_OBSERVATION_ERROR
+    assert substituted.failure.exception_type == "FullCorpusError"
+
 
 def test_partial_iteration_and_count_mismatch_cannot_issue_receipts() -> None:
     def broken_turn_stream():

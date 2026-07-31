@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use canonical built-in payload and container types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent
+#   then: RC01 through RC10 use canonical built-in payload, container, receipt-link, witness, and report-authority types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -102,6 +102,7 @@ from .direct_mobius import (
 from .exact_coordinate import (
     Binary64CollisionWitness,
     ExactCarrierCoordinate,
+    ExactCoordinateProvenance,
     binary64_collision_witnesses,
     signed_local_exact_coordinate,
 )
@@ -198,6 +199,15 @@ def _require_exact_string_tuple_tree(value: object, field: str) -> None:
     raise InitiationBoundaryError(
         f"{field} must contain only exact built-in tuple and str values"
     )
+
+
+def _canonical_sheet_witness(
+) -> tuple[ExactCarrierCoordinate, ExactCarrierCoordinate]:
+    first = signed_local_exact_coordinate(
+        Fraction(1, 3),
+        Fraction(2, 5),
+    )
+    return first, exact_sheet_involution(first)
 
 
 def _fraction_key(value: Fraction) -> str:
@@ -381,6 +391,26 @@ class TwistReceipt:
     selection_effect: str = V013_SELECTION_EFFECT
 
     def __post_init__(self) -> None:
+        authority_text = (
+            self.receipt_id,
+            self.relation_id,
+            self.relation_version,
+            self.law_id,
+            self.law_version,
+            self.scope,
+            self.selection_effect,
+        )
+        if any(type(item) is not str for item in authority_text):
+            raise InitiationBoundaryError(
+                "twist receipt authority fields must use exact built-in str values"
+            )
+        if type(self.source_links) is not tuple or any(
+            type(item) is not str for item in self.source_links
+        ):
+            raise InitiationBoundaryError(
+                "twist receipt source_links must be an exact tuple of "
+                "built-in str values"
+            )
         _require_text(self.receipt_id, "receipt_id")
         if self.pre_state is not STRUCTURAL_NULL_ORIGIN:
             raise InitiationBoundaryError(
@@ -881,6 +911,27 @@ class PartialInitiationBoundaryReport:
         policy = partial_initiation_exact_comparison_policy()
         object.__setattr__(self, "comparison_policy", policy)
         _validate_comparison_policy(policy)
+        authority_text = (
+            self.schema_id,
+            self.schema_version,
+            self.coordinate_component_status,
+            self.seam_status,
+            self.structural_null_topology_status,
+            self.complete_relationship_status,
+            self.selection_effect,
+            self.edcm_activation,
+            self.metapat_activation,
+        )
+        if any(type(item) is not str for item in authority_text):
+            raise InitiationBoundaryError(
+                "v0.13 authority fields must use exact built-in str values"
+            )
+        if type(self.hmmm) is not tuple or any(
+            type(item) is not str for item in self.hmmm
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 hmmm must be an exact tuple of built-in str values"
+            )
         if type(self.results) is not tuple or any(
             type(item) is not ContinuityFalsifierResult
             for item in self.results
@@ -1014,6 +1065,52 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "720 motion must restore complete local state"
             )
+        if type(self.sheet_witness) is not tuple or any(
+            type(item) is not ExactCarrierCoordinate
+            for item in self.sheet_witness
+        ):
+            raise InitiationBoundaryError(
+                "sheet witness must be an exact tuple of "
+                "ExactCarrierCoordinate values"
+            )
+        if len(self.sheet_witness) != 2:
+            raise InitiationBoundaryError(
+                "sheet witness must retain exactly two coordinates"
+            )
+        for coordinate in self.sheet_witness:
+            if (
+                type(coordinate.local_transverse) is not Fraction
+                or type(coordinate.breadth) is not Fraction
+                or type(coordinate.lifted_turns) is not Fraction
+                or type(coordinate.provenance) is not ExactCoordinateProvenance
+                or type(coordinate.status) is not str
+                or type(coordinate.selection_effect) is not str
+                or any(
+                    type(value) is not str
+                    for value in (
+                        coordinate.provenance.source_schema_id,
+                        coordinate.provenance.source_schema_version,
+                        coordinate.provenance.source_candidate_id,
+                        coordinate.provenance.source_candidate_version,
+                        coordinate.provenance.law_id,
+                        coordinate.provenance.law_version,
+                        coordinate.provenance.formula,
+                        coordinate.provenance.code_reference,
+                        coordinate.provenance.scope,
+                        coordinate.provenance.selection_effect,
+                    )
+                )
+            ):
+                raise InitiationBoundaryError(
+                    "sheet witness coordinates must use exact canonical types"
+                )
+        if not policy.matches(
+            self.sheet_witness,
+            _canonical_sheet_witness(),
+        ):
+            raise InitiationBoundaryError(
+                "sheet witness must retain the fixed RC02 evidence pair"
+            )
         first_sheet, second_sheet = self.sheet_witness
         if not policy.matches(
             exact_sheet_involution(first_sheet),
@@ -1142,11 +1239,7 @@ def _expected_continuity_results(
     initial = initiate_carrier_state(attachments[0])
     after_360 = advance_attached_state(initial, 1)
     after_720 = advance_attached_state(after_360, 1)
-    sheet_first = signed_local_exact_coordinate(
-        Fraction(1, 3),
-        Fraction(2, 5),
-    )
-    sheet_second = exact_sheet_involution(sheet_first)
+    sheet_first, sheet_second = _canonical_sheet_witness()
     source_reconstruction = all(
         "".join(segment.raw_text for segment in witness.turn.segments)
         == witness.turn.raw_text
@@ -1275,11 +1368,7 @@ def run_v013_partial_initiation_boundary_experiment(
     after_360 = advance_attached_state(initial, 1)
     after_720 = advance_attached_state(after_360, 1)
 
-    sheet_first = signed_local_exact_coordinate(
-        Fraction(1, 3),
-        Fraction(2, 5),
-    )
-    sheet_second = exact_sheet_involution(sheet_first)
+    sheet_first, sheet_second = _canonical_sheet_witness()
 
     seam_first = view_marked_seam_at_cut(
         attachments[0].seam,

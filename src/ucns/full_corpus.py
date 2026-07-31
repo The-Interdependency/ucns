@@ -34,7 +34,7 @@
 #
 # id: full_corpus_gate_requires_exact_stream_reconstruction
 #   given: every successfully processed speaker turn is observed
-#   then: the exact fixed profile implementation observes every turn and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
+#   then: the exact fixed profile implementation observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
 #   class: evidence
 #   since: 2026-07-31
 #
@@ -144,10 +144,10 @@ def _turn_stream_record(
     text: str,
 ) -> bytes:
     _require_nonnegative_int(turn_index, "turn_index")
-    if not isinstance(speaker_id, str):
-        raise FullCorpusError("speaker_id must be text")
-    if not isinstance(text, str):
-        raise FullCorpusError("turn text must be text")
+    if type(speaker_id) is not str:
+        raise FullCorpusError("speaker_id must be exact built-in text")
+    if type(text) is not str:
+        raise FullCorpusError("turn text must be exact built-in text")
     return b"".join(
         (
             turn_index.to_bytes(8, "big", signed=False),
@@ -507,7 +507,7 @@ def execute_admitted_corpus(
 
         turn_index = processed_turn_count
         try:
-            if not isinstance(turn, tuple) or len(turn) != 2:
+            if type(turn) is not tuple or len(turn) != 2:
                 raise FullCorpusError(
                     "each admitted corpus turn must be a (speaker_id, text) tuple"
                 )

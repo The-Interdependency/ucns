@@ -304,9 +304,15 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         def __eq__(self, other: object) -> bool:
             return True
 
+        def __ne__(self, other: object) -> bool:
+            return False
+
     class AlwaysEqualTuple(tuple):
         def __eq__(self, other: object) -> bool:
             return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
 
     assert report.schema_id == V013_INITIATION_BOUNDARY_SCHEMA_ID
     assert report.schema_version == V013_INITIATION_BOUNDARY_SCHEMA_VERSION
@@ -467,6 +473,17 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     ):
         replace(report, results=overloaded_results)
 
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="authority fields must use exact built-in str values",
+    ):
+        replace(report, selection_effect=AlwaysEqualStr("selected"))
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="hmmm must be an exact tuple of built-in str values",
+    ):
+        replace(report, hmmm=AlwaysEqualTuple(("all-complete",)))
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -507,16 +524,23 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             trajectory=(external_initial, external_360, external_720),
         )
 
-    overloaded_source_links = (
-        packet.initiations[0].post_state.source_links[:1]
-        + (AlwaysEqualStr("word:forged-external-link"),)
-        + packet.initiations[0].post_state.source_links[2:]
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="source_links must be an exact tuple of built-in str values",
+    ):
+        replace(
+            report.attachments[0].twist_receipt,
+            source_links=AlwaysEqualTuple(("forged:global-completion",)),
+        )
+
+    overloaded_parent_observation_ids = (
+        AlwaysEqualStr("turn:forged-external-parent"),
     )
     overloaded_event = replace(
         packet.initiations[0],
         post_state=replace(
             packet.initiations[0].post_state,
-            source_links=overloaded_source_links,
+            parent_observation_ids=overloaded_parent_observation_ids,
         ),
     )
     overloaded_packet = replace(
@@ -552,4 +576,18 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         replace(
             report,
             trajectory=(initial, after_1080, after_1440),
+        )
+
+    other_sheet_first = signed_local_exact_coordinate(
+        Fraction(4, 5),
+        Fraction(7, 9),
+    )
+    other_sheet_second = exact_sheet_involution(other_sheet_first)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="fixed RC02 evidence pair",
+    ):
+        replace(
+            report,
+            sheet_witness=(other_sheet_first, other_sheet_second),
         )

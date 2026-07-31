@@ -2250,7 +2250,7 @@ export default defineMsdmdCollection({
         "class": "evidence",
         "given": "every successfully processed speaker turn is observed",
         "since": "2026-07-31",
-        "then": "the exact fixed profile implementation observes every turn and length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
+        "then": "the exact fixed profile implementation observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
       },
       "file": "src/ucns/full_corpus.py",
       "id": "full_corpus_gate_requires_exact_stream_reconstruction"
@@ -2441,7 +2441,7 @@ export default defineMsdmdCollection({
         "class": "safety",
         "given": "the v0.13 report is produced",
         "since": "2026-07-30",
-        "then": "RC01 through RC10 use canonical built-in payload and container types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent"
+        "then": "RC01 through RC10 use canonical built-in payload, container, receipt-link, witness, and report-authority types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_report_executes_rc_packet_without_selection"
@@ -10362,5 +10362,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "ucns"
+  "repo": "The-Interdependency/ucns"
 });
