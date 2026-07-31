@@ -1211,6 +1211,26 @@ class PartialInitiationBoundaryReport:
                 raise InitiationBoundaryError(
                     "trajectory states must retain exact attachment values"
                 )
+            if type(state.attachment.twist_receipt) is not TwistReceipt:
+                raise InitiationBoundaryError(
+                    "trajectory attachments must retain exact twist receipts"
+                )
+            _require_exact_event_types(
+                state.attachment.event,
+                "trajectory attachment event",
+            )
+            _require_exact_seam_types(
+                state.attachment.seam,
+                "trajectory attachment seam",
+            )
+            _require_exact_coordinate_types(
+                state.attachment.twist_receipt.post_coordinate,
+                "trajectory attachment twist coordinate",
+            )
+            _require_exact_native_state_types(
+                state.attachment.twist_receipt.post_native_state,
+                "trajectory attachment twist native state",
+            )
             _require_exact_coordinate_types(
                 state.coordinate,
                 "trajectory coordinate",

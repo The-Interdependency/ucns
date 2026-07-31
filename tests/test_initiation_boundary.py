@@ -540,6 +540,22 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             attachments=(forged_seam_attachment, *report.attachments[1:]),
         )
 
+    forged_seam_initial = initiate_carrier_state(forged_seam_attachment)
+    forged_seam_360 = advance_attached_state(forged_seam_initial, 1)
+    forged_seam_720 = advance_attached_state(forged_seam_360, 1)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="trajectory attachment seam must use exact canonical seam",
+    ):
+        replace(
+            report,
+            trajectory=(
+                forged_seam_initial,
+                forged_seam_360,
+                forged_seam_720,
+            ),
+        )
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
