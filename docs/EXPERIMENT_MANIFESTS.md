@@ -22,6 +22,12 @@ runtime hash, `repr`, or object identity to derive a geometric assignment.
 v0.17 consumes v0.16 admission identity for ordering and provenance only; its
 typed initiation receipt does not turn that digest into a Structural Null
 prestate, geometric coordinate, orientation, or completion law.
+v0.18 accepts independent exact rational coordinate input only after explicit
+initiation. The proposal records `derived_from_evidence_identity = false`; the
+subject digest remains linked provenance and cannot populate transverse,
+lifted-turn, frame, side, or assignment-law fields. Equal-content occurrences
+may therefore retain equal digests and receive distinct explicit proposals
+without deduplication or hidden derivation.
 
 JSON, text, and bytes adapters are supplied as conveniences. Domain objects require domain adapters.
 

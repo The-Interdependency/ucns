@@ -31,6 +31,7 @@ pretending to derive it.
 ```text
 exact EdcmWordGonol
   -> externally supplied geometric assignment
+     or v0.18 explicit-input exact circle-candidate assignment
   -> externally supplied motion receipt
   -> ordered recursive / epicyclic parentage
   -> completion effect relative to HmmmBoundary
@@ -94,10 +95,10 @@ those unstable aliases here.
 
 ## Current nonclaims
 
-This slice does not define:
+This slice and the v0.18 candidate-application boundary do not define:
 
-- the law assigning an observed element to geometry;
-- formal Möbius coordinates;
+- the law deriving geometric coordinates from arbitrary observed evidence;
+- selected or canonical Möbius coordinates;
 - the 720-degree orientation and return law;
 - circle-to-epicycle, epicycle-to-disk, disk-to-sphere, or recursive scale
   transitions;
@@ -113,8 +114,11 @@ The evidence container is executable. v0.16 makes arbitrary-domain occurrence
 admission plus one tagged assignment outcome executable, and v0.17 makes one
 bounded typed Structural Null-to-word twist receipt executable while retaining
 360-degree local frame change and 720-degree root-loop return from v0.13.
-Neither admission nor initiation is geometry. The next load-bearing object
-remains the exact assignment and transition law: how an initiated exact word
-enters an epicyclic circle, acquires arbitrary orientation and sidedness,
+v0.18 can now apply the surviving exact signed-local circle candidate when
+independent exact rational coordinate input is supplied. This makes candidate
+application executable but does not make the proposal source-derived or
+selected. The next load-bearing object remains the derivation and transition
+law: how an initiated exact word lawfully receives its coordinate, enters an
+epicyclic circle, acquires general orientation and sidedness,
 becomes disk or sphere structure across recursive scale, moves relative to
 other assignments, and registers scoped completion.

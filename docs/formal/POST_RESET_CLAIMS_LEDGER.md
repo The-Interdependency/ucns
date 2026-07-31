@@ -49,6 +49,7 @@ standing and provenance but does not canonize its own entries.
 | `IMPL-6` | The signed-local affine map and inverse are real-continuous on the complete declared intervals, and the affine product map descends through the declared non-null quotient while commuting with the sheet involution. | represented-evidence | declared real non-null candidate | exact epsilon-delta and quotient certificates in `src/ucns/full_carrier_attachment.py`; analytic, not machine-checked; no total Structural Null relation |
 | `IMPL-7` | Arbitrary-domain observed occurrences can be admitted through explicit content adapters and each admitted occurrence receives exactly one ordered tagged assignment outcome. | implemented-candidate | adapter-admitted assignment evidence only | `src/ucns/assignment_boundary.py`; `ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`; outcome totality is not geometric assignment totality |
 | `IMPL-8` | Every v0.16 admitted occurrence receives one exclusive initiation outcome; the declared word witness crosses from typed Structural Null through one explicit Möbius-twist receipt, while unresolved and rejected occurrences stay distinct. | implemented-candidate | v0.17 admitted word-initiation evidence only | `src/ucns/gonol_initiation.py`; `GONOL_INITIATION_STRUCTURAL_NULL_V017.md`; no transverse geometry, total Structural Null topology, composition, completion, selection, or activation |
+| `IMPL-9` | The surviving signed-local exact circle candidate can be applied reversibly to any explicitly initiated word occurrence for which independent exact rational coordinate input is supplied. | implemented-candidate | v0.18 explicit-input candidate application only | `src/ucns/explicit_geometric_assignment.py`; `EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md`; no source-to-coordinate derivation, total topology, higher geometry, completion, selection, or activation |
 
 ## Empirical and historical evidence
 
@@ -71,6 +72,7 @@ standing and provenance but does not canonize its own entries.
 | `NEG-4` | A standard Möbius band alone does not supply UCNS Structural Null, source initiation, hidden zero, or scoped completion. | negative-result | candidate terminology | missing required additional structure |
 | `NEG-5` | Content digest, runtime hash, `repr`, object identity, and A0 Blake2 phase lanes cannot derive a universal geometric assignment. | negative-result | v0.16 assignment admission | exact identity-bearing evidence remains separate from geometry; the A0 prototype mechanism is explicitly rejected |
 | `NEG-6` | Source SPACE manifestation, carrier position zero, directed-cover null, neutral `M`, algebraic zero, absent cell, and `NA` cannot substitute for the singular Structural Null prestate. | negative-result | v0.17 gonol initiation | typed origin-role registry and fail-closed substitution witnesses |
+| `NEG-7` | Binary64 rendering, carrier position alone, scalar projection, and historical A0 lanes cannot replace independently supplied exact coordinate evidence or derive v0.18 geometry. | negative-result | v0.18 explicit candidate application | exact rational identity, rendering-collision witnesses, and named rejected-mechanism outcomes |
 
 These results exclude only the stated shortcuts. They do not choose between a
 direct pointed Möbius carrier, a faithfully augmented chart, and formal
@@ -84,7 +86,7 @@ incompatibility.
 | `OPEN-2` | source-to-gonol initiation relation through the twist beyond the v0.17 admitted word witness | unresolved | generalized relation or partial function with failure behavior |
 | `OPEN-3` | orientation/sidedness transformation after 360 degrees beyond the bounded v0.13 root witness retained by v0.17 | unresolved | generalized state space, transport law, and two-lap return proof |
 | `OPEN-4` | direct Möbius carrier versus augmented chart versus incompatibility | unresolved | preservation map or separating proof |
-| `OPEN-5` | element-to-circle/epicycle/disk/sphere assignment law | unresolved | v0.16 closes adapter admission and tagged failure behavior only; closure still requires a formal geometric assignment law and falsifiers |
+| `OPEN-5` | source-to-coordinate derivation and element-to-circle/epicycle/disk/sphere assignment law | unresolved | v0.18 closes explicit-input exact circle-candidate application and tagged failure behavior only; closure still requires a formal source-derived geometric law and falsifiers |
 | `OPEN-6` | transition laws across geometry and recursive scale | unresolved | typed transitions and non-completion receipts |
 | `OPEN-7` | higher-gonol composition above words | unresolved | SPACE-preserving composition law |
 | `OPEN-8` | scoped completion condition | unresolved | construction-specific condition and registration proof |
@@ -109,7 +111,8 @@ laws, evidence, alternatives, information loss, rollback, and migration.
 ## hmmm
 
 The ledger closes the false equivalence between “implemented” and “answered.”
-The current cover, v0.16 assignment-admission outcomes, and v0.17 bounded
-Structural Null-to-word initiation receipt are implemented. The arbitrary
-geometric assignment, total Structural Null topology, higher-scale initiation,
-and completion questions remain alive.
+The current cover, v0.16 assignment-admission outcomes, v0.17 bounded
+Structural Null-to-word initiation receipt, and v0.18 explicit-input exact
+circle-candidate application are implemented. The source-to-coordinate
+derivation, total Structural Null topology, higher-scale geometry and
+composition, and completion questions remain alive.

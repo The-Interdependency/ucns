@@ -27,11 +27,13 @@ boundary. It does not claim that the underlying unknowable has been
 epistemically exhausted.
 
 The current implementation can retain exact word evidence and externally
-supplied completion-motion trajectories. The law that assigns an element to
-geometry, the formal Möbius coordinates, the circle/epicycle/disk/sphere
-transition law, and higher-gonol composition remain unresolved. Their absence
-must stay explicit rather than being filled by a hash, ordinary `2π` angle,
-Fourier phase, factorization, or scalar proxy.
+supplied completion-motion trajectories. v0.18 can also apply the surviving
+exact signed-local circle candidate to an explicitly initiated word when
+independent exact rational coordinate input is supplied. The law that derives
+that input from arbitrary source evidence, the total Structural Null topology,
+the circle/epicycle/disk/sphere transition law, and higher-gonol composition
+remain unresolved. Their absence must stay explicit rather than being filled
+by a hash, ordinary `2π` angle, Fourier phase, factorization, or scalar proxy.
 
 The authoritative decision surface and open choices are recorded in
 [`docs/UCNS_OPTION_DECISIONS.md`](docs/UCNS_OPTION_DECISIONS.md) and the packaged
@@ -163,6 +165,17 @@ preserve the declared visible projection while changing local frame, and 720
 degrees restore complete local state without registering construction
 completion. No total Structural Null topology, assignment law, selection, or
 consumer activation follows.
+v0.18 then joins that explicitly initiated word evidence to the surviving
+v0.11 signed-local circle candidate without inventing the missing derivation.
+Any explicitly initiated word may receive a candidate assignment when a caller
+supplies independent exact rational local-transverse and lifted-turn input. The
+boundary validates `B(u)=1+u/2`, its exact inverse, native two-turn frame
+parity, local side, ordered exclusive outcomes, and linked lossy binary64
+rendering. Source content, digests, runtime identity, carrier position, scalar
+projection, and historical A0 Blake2 lanes still cannot manufacture geometry.
+This is explicit-input candidate application, not a universal source-to-
+coordinate law, total topology, higher geometry, completion, selection, or
+activation.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -475,6 +488,12 @@ a complete relationship can become executable.
     source-bound twist receipt for an explicitly declared word gonol; and
     retains bounded 360-degree local-frame change plus 720-degree local return
     without geometric assignment, completion, selection, or activation.
+27. an explicit geometric-assignment boundary that applies the surviving exact
+    signed-local circle candidate to any explicitly initiated word with an
+    independently supplied rational proposal, retains exact inverse, native
+    frame, local side, occurrence identity, exclusive ordered outcomes, and
+    declared-loss rendering, and refuses to relabel application as source-
+    derived law, completion, selection, or activation.
 
 Still unresolved and not promoted:
 
@@ -490,11 +509,11 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. arbitrary-element geometric assignment and a total Structural Null
-    topology beyond the v0.17 tagged initiation-evidence boundary, v0.16
-    admitted-evidence outcome boundary, v0.15 analytic non-null certificates,
-    and v0.13 partial root attachment, including higher geometry and
-    completion;
+12. the source-to-coordinate derivation law and a total Structural Null
+    topology beyond the v0.18 explicit-input candidate-application boundary,
+    v0.17 tagged initiation-evidence boundary, v0.16 admitted-evidence outcome
+    boundary, v0.15 analytic non-null certificates, and v0.13 partial root
+    attachment, including higher geometry and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -589,13 +608,18 @@ gate. v0.15 records a written universal affine and non-null quotient proof
 certificate while leaving v0.13's partial initiation standing unchanged.
 v0.16 closes the prior admission question with explicit adapters, ordered
 occurrence identities, and total tagged evidence outcomes while rejecting
-identity-derived geometry. Arbitrary geometric assignment, a total Structural
-Null relationship, canonical breadth, epicyclic circle, disk, sphere, recursive
-composition, and completion conditions remain unrecovered. v0.17 now makes the
+identity-derived geometry. v0.17 now makes the
 causal doorway explicit over admitted evidence: only singular Structural Null
 may be the prestate, an explicitly declared word receives exactly one
 source-bound twist receipt, and the bounded native-root witness distinguishes
 360-degree local-frame change from 720-degree local return. That evidence is
-not a total topology, geometric placement, or completion receipt. Real-system
+not a total topology, geometric placement, or completion receipt. v0.18 now
+makes exact candidate application executable at that doorway when independent
+rational coordinate input is supplied. It preserves exact inverse, native
+frame, local side, occurrence identity, and rendering loss without claiming
+that the input was derived from the source. The source-to-coordinate law, total
+Structural Null relationship, canonical breadth, epicyclic circle, disk,
+sphere, recursive composition, and completion conditions remain unrecovered.
+Real-system
 experiments may pressure those laws, but current metric projections may not
 circularly select the geometry that makes them appear valid.

@@ -164,14 +164,16 @@ That suspension was epistemically safer than continuing the false lineage. But t
 
 Likewise, the current UCNS EDCM profile correctly preserves exact words, SPACE boundaries, speaker turns, and twist-initiation events, but it explicitly does not provide the Möbius coordinate or higher-gonol composition law.
 
-UCNS v0.16 closes the prior source-evidence admission obligation, and v0.17
-makes the next bounded causal step executable without changing that verdict.
+UCNS v0.16 closes the prior source-evidence admission obligation, v0.17 makes
+the next bounded causal step executable, and v0.18 makes explicit-input exact
+circle-candidate application executable without changing the broader verdict.
 Arbitrary-domain occurrences enter through explicit named versioned adapters
 and receive one tagged assignment outcome; each then receives one exclusive
 initiation outcome. The declared word witness crosses from typed Structural
 Null through one exact source-bound twist receipt. Evidence digests, historical
 Blake2 phase lanes, and invalid zero or absence substitutions remain incapable
-of deriving geometry.
+of deriving geometry. An independent exact rational proposal may now be applied
+reversibly, but the proposal is not thereby derived from its source occurrence.
 
 Therefore:
 
@@ -184,6 +186,9 @@ v0.16 assignment admission
 
 v0.17 gonol initiation
     = typed source-bound twist evidence and bounded root-loop return, not total topology or completion
+
+v0.18 explicit geometric assignment
+    = exact signed-local circle-candidate application with independent input, not a source-to-coordinate law
 
 a0-betatest historical system
     = primary EDCM recovery reference
@@ -200,7 +205,7 @@ recovered UCNS
 1. Freeze the relevant a0-betatest epoch and its component files as a recovery packet.
 2. State the completion-motion root before discussing object constructors or algebra.
 3. Extract the invariants shared by the gonal, phase field, inscription, grain ladder, and disk stack.
-4. Define the unknown or unknowable boundary and what constitutes an element assignment.
+4. Define the unknown or unknowable boundary and derive the source-to-coordinate element-assignment law beyond explicit input.
 5. Define circle, epicycle, disk, and sphere transitions.
 6. Define how orientation and the 720-degree twist affect motion and return.
 7. Define completion as a registered geometric condition.
@@ -211,9 +216,10 @@ recovered UCNS
 ## hmmm
 
 The central unresolved object is no longer merely “the bridge,” nor the now
-explicit bounded initiation receipt.
+explicit bounded initiation receipt, nor explicit-input candidate application.
 
-It is the exact law by which an initiated assigned element enters an epicyclic
-circle, becomes disk or sphere structure across recursive scale, moves relative
-to other assignments, and registers completion without pretending that the
+It is the exact law by which an initiated element lawfully receives its
+coordinate, enters an epicyclic circle, becomes disk or sphere structure across
+recursive scale, moves relative to other assignments, and registers completion
+without pretending that the
 unknowable itself has been exhausted.

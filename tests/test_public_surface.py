@@ -92,6 +92,12 @@ def test_public_surface_is_bounded() -> None:
         "RootLoopReturnWitness",
         "GonolInitiationBoundaryReport",
         "run_v017_gonol_initiation_boundary_experiment",
+        "ExplicitCoordinateProposal",
+        "AppliedGeometricAssignment",
+        "GeometricAssignmentOutcome",
+        "GeometricAssignmentTrace",
+        "ExplicitGeometricAssignmentBoundaryReport",
+        "run_v018_explicit_geometric_assignment_experiment",
     ):
         assert expected in exported
 
