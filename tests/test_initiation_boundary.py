@@ -518,6 +518,28 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             trajectory=(forged_initial, *report.trajectory[1:]),
         )
 
+    forged_seam = replace(
+        report.attachments[0].seam,
+        selection_effect=AlwaysEqualStr("selected"),
+    )
+    forged_seam_twist = replace(
+        report.attachments[0].twist_receipt,
+        seam=forged_seam,
+    )
+    forged_seam_attachment = replace(
+        report.attachments[0],
+        seam=forged_seam,
+        twist_receipt=forged_seam_twist,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment seam must use exact canonical seam field types",
+    ):
+        replace(
+            report,
+            attachments=(forged_seam_attachment, *report.attachments[1:]),
+        )
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -586,7 +608,7 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     )[0]
     with pytest.raises(
         InitiationBoundaryError,
-        match="attachment twist native state must use exact canonical",
+        match="attachment event must use exact canonical native-state",
     ):
         replace(
             report,

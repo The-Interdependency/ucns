@@ -97,6 +97,7 @@ from .direct_mobius import (
     NativeMobiusInitiationPacket,
     NativeMobiusState,
     StructuralNullIdentity,
+    StructuralNullKind,
     StructuralNullManifestation,
     build_native_mobius_initiation_packet,
 )
@@ -304,6 +305,79 @@ def _require_exact_native_state_types(
         raise InitiationBoundaryError(
             f"{field} must use exact canonical native-state field types"
         )
+
+
+def _require_exact_manifestation_types(
+    manifestation: object,
+    field: str,
+) -> None:
+    if type(manifestation) is not StructuralNullManifestation:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact StructuralNullManifestation"
+        )
+    if (
+        type(manifestation.manifestation_id) is not str
+        or type(manifestation.witness_id) is not str
+        or type(manifestation.kind) is not StructuralNullKind
+        or (
+            manifestation.source_offset is not None
+            and type(manifestation.source_offset) is not int
+        )
+        or (
+            manifestation.source_value is not None
+            and type(manifestation.source_value) is not str
+        )
+        or manifestation.origin is not STRUCTURAL_NULL_ORIGIN
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical manifestation field types"
+        )
+
+
+def _require_exact_seam_types(
+    seam: object,
+    field: str,
+) -> None:
+    if type(seam) is not MarkedInitiationSeam:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact MarkedInitiationSeam"
+        )
+    if (
+        type(seam.seam_id) is not str
+        or type(seam.event_id) is not str
+        or type(seam.witness_id) is not str
+        or type(seam.word_index) is not int
+        or type(seam.source_start) is not int
+        or type(seam.topology) is not StructuralNullTopologyKind
+        or type(seam.policy_id) is not str
+        or type(seam.policy_version) is not str
+        or type(seam.selection_effect) is not str
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical seam field types"
+        )
+    _require_exact_manifestation_types(seam.manifestation, field)
+
+
+def _require_exact_event_types(
+    event: object,
+    field: str,
+) -> None:
+    if type(event) is not MobiusInitiationEvent:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact MobiusInitiationEvent"
+        )
+    if (
+        type(event.event_id) is not str
+        or type(event.witness_id) is not str
+        or type(event.word_index) is not int
+        or type(event.source_start) is not int
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical event field types"
+        )
+    _require_exact_manifestation_types(event.boundary, field)
+    _require_exact_native_state_types(event.post_state, field)
 
 
 def _fraction_key(value: Fraction) -> str:
@@ -1073,6 +1147,14 @@ class PartialInitiationBoundaryReport:
                 raise InitiationBoundaryError(
                     "v0.13 attachments must use exact nested evidence types"
                 )
+            _require_exact_event_types(
+                attachment.event,
+                "attachment event",
+            )
+            _require_exact_seam_types(
+                attachment.seam,
+                "attachment seam",
+            )
             _require_exact_coordinate_types(
                 attachment.twist_receipt.post_coordinate,
                 "attachment twist coordinate",
@@ -1267,13 +1349,13 @@ class PartialInitiationBoundaryReport:
             )
         for view in self.seam_views:
             if (
-                type(view.seam) is not MarkedInitiationSeam
-                or type(view.coordinate_cut_turns) is not Fraction
+                type(view.coordinate_cut_turns) is not Fraction
                 or type(view.status) is not str
             ):
                 raise InitiationBoundaryError(
                     "seam_views must use exact canonical field types"
                 )
+            _require_exact_seam_types(view.seam, "seam view")
             _require_exact_string_tuple_tree(
                 view.structural_seam_identity,
                 "seam view structural identity",
