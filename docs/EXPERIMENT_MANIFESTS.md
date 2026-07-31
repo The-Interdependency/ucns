@@ -17,6 +17,9 @@ A `SubjectRecord` contains the untouched subject and a digest derived from:
 - adapter-produced bytes;
 - a UCNS subject-domain prefix.
 
+The digest identifies evidence only. v0.16 explicitly prohibits using it,
+runtime hash, `repr`, or object identity to derive a geometric assignment.
+
 JSON, text, and bytes adapters are supplied as conveniences. Domain objects require domain adapters.
 
 ## Witness corpora

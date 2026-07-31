@@ -2,7 +2,7 @@
 # id: ucns_option_decision_registry
 #   module_name: options
 #   module_kind: schema
-#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, and unresolved-option registry
+#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, and unresolved-option registry
 #   owner: Erin Spencer
 #   public_surface: OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension
 #   internal_surface: _validate_registry
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_option_decisions.py
-#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, decisions, and explicit unresolved choices; no mathematical option selection
+#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment-admission standing, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
-#   unresolved: arbitrary-element assignment, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
+#   unresolved: arbitrary-element geometric assignment beyond admitted evidence outcomes, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.11.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.12.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -123,6 +123,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "exact-coordinate-representation-boundary",
         "partial-initiation-boundary",
         "full-carrier-attachment-evidence",
+        "assignment-admission-boundary",
     }
 )
 
@@ -159,13 +160,16 @@ def _validate_registry(data: dict[str, Any]) -> None:
             "Completion closes a declared construction relative to its declared "
             "boundary and does not exhaust the underlying unknowable."
         ),
-            "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
-            "full_corpus_execution_schema": (
-                "ucns.edcm.full-corpus-execution/0.14.1"
-            ),
-            "full_carrier_attachment_schema": (
-                "ucns.edcm.full-carrier-attachment-evidence/0.15.0"
-            ),
+        "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+        "full_corpus_execution_schema": (
+            "ucns.edcm.full-corpus-execution/0.14.1"
+        ),
+        "full_carrier_attachment_schema": (
+            "ucns.edcm.full-carrier-attachment-evidence/0.15.0"
+        ),
+        "assignment_admission_schema": (
+            "ucns.edcm.assignment-admission-boundary/0.16.0"
+        ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
     }
@@ -254,6 +258,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "exact-coordinate-representation",
         "initiation-attachment",
         "full-carrier-continuity-evidence",
+        "assignment-admission-evidence",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -413,6 +418,41 @@ def _validate_registry(data: dict[str, Any]) -> None:
     }:
         raise OptionRegistryError(
             "full-carrier continuity choice standings are fixed"
+        )
+
+    assignment = dimension_by_id["assignment-admission-evidence"]
+    if assignment.get("display_rule") != (
+        "separate-admission-outcomes-from-geometric-success"
+    ):
+        raise OptionRegistryError(
+            "assignment admission must remain separate from geometric success"
+        )
+    if assignment.get("display_order") != [
+        "explicit-adapter-admission-and-tagged-outcome",
+        "identity-derived-geometric-assignment",
+        "arbitrary-element-geometric-assignment-law",
+    ]:
+        raise OptionRegistryError(
+            "assignment admission display order mismatch"
+        )
+    if assignment.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "assignment admission evidence cannot select geometry"
+        )
+    assignment_standings = {
+        choice.get("id"): choice.get("standing")
+        for choice in assignment.get("choices", ())
+        if isinstance(choice, dict)
+    }
+    if assignment_standings != {
+        "explicit-adapter-admission-and-tagged-outcome": (
+            "implemented-candidate"
+        ),
+        "identity-derived-geometric-assignment": "rejected-pre-reset",
+        "arbitrary-element-geometric-assignment-law": "unresolved",
+    }:
+        raise OptionRegistryError(
+            "assignment admission choice standings are fixed"
         )
 
     corpora = data.get("real_system_corpus_candidates")

@@ -84,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.11.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.12.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -105,6 +105,10 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     assert (
         project["full_carrier_attachment_schema"]
         == "ucns.edcm.full-carrier-attachment-evidence/0.15.0"
+    )
+    assert (
+        project["assignment_admission_schema"]
+        == "ucns.edcm.assignment-admission-boundary/0.16.0"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -165,6 +169,10 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     ]
     assert "full-carrier-attachment-evidence" in decisions
     assert "epsilon-delta" in decisions["full-carrier-attachment-evidence"]
+    assert "assignment-admission-boundary" in decisions
+    assert "exactly one ordered outcome" in decisions[
+        "assignment-admission-boundary"
+    ]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
     assert coordinate_dimension["selection_effect"] == "none"
@@ -228,6 +236,26 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         "runtime-arbitrary-real-representation": "unresolved",
         "total-structural-null-carrier-relationship": "unresolved",
     }
+    assignment_dimension = option_dimension("assignment-admission-evidence")
+    assert assignment_dimension["display_rule"] == (
+        "separate-admission-outcomes-from-geometric-success"
+    )
+    assert assignment_dimension["display_order"] == [
+        "explicit-adapter-admission-and-tagged-outcome",
+        "identity-derived-geometric-assignment",
+        "arbitrary-element-geometric-assignment-law",
+    ]
+    assert assignment_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in assignment_dimension["choices"]
+    } == {
+        "explicit-adapter-admission-and-tagged-outcome": (
+            "implemented-candidate"
+        ),
+        "identity-derived-geometric-assignment": "rejected-pre-reset",
+        "arbitrary-element-geometric-assignment-law": "unresolved",
+    }
 
     promoted_registry = deepcopy(registry)
     promoted_attachment = next(
@@ -241,6 +269,19 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         match="choice standings are fixed",
     ):
         _validate_registry(promoted_registry)
+
+    promoted_assignment_registry = deepcopy(registry)
+    promoted_assignment = next(
+        dimension
+        for dimension in promoted_assignment_registry["dimensions"]
+        if dimension["id"] == "assignment-admission-evidence"
+    )
+    promoted_assignment["choices"][2]["standing"] = "implemented-candidate"
+    with pytest.raises(
+        OptionRegistryError,
+        match="assignment admission choice standings are fixed",
+    ):
+        _validate_registry(promoted_assignment_registry)
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:

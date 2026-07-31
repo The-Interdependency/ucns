@@ -80,6 +80,11 @@ def test_public_surface_is_bounded() -> None:
         "QuotientSeamCommutationCertificate",
         "FullCarrierAttachmentReport",
         "run_v015_full_carrier_attachment_experiment",
+        "ObservedElementAdmission",
+        "AssignmentOutcomeReceipt",
+        "AssignmentAdmissionTrace",
+        "AssignmentAdmissionBoundaryReport",
+        "run_v016_assignment_admission_boundary_experiment",
     ):
         assert expected in exported
 

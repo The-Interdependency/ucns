@@ -183,7 +183,32 @@ Every visible, radial, or scalar output must link to the complete trajectory and
 
 A projection is falsified as faithful if two complete states that differ on a required distinction produce the same sole identity without a retained source link and loss declaration.
 
-## 8. Candidate report shape
+## 8. v0.16 assignment-admission addendum
+
+The v0.16 boundary adds `AA01`–`AA07` before a universal assignment candidate
+exists. These falsifiers govern evidence admission and outcome honesty; they do
+not discharge `F03`, `F04`, or `F06`–`F14` for a geometric carrier.
+
+- `AA01` fails when an arbitrary-domain subject enters without a named,
+  versioned `ContentAdapter`, isolated snapshot, and adapter code reference.
+- `AA02` fails when equal-content occurrences are deduplicated, sorted,
+  reordered, flattened, or merged.
+- `AA03` fails when an admitted occurrence has zero or multiple assignment
+  outcome tags, or when unresolved, supplied, and rejected states overlap.
+- `AA04` fails when content digest, runtime hash, `repr`, or object identity
+  supplies any transverse, angular, radial, orientation, or sidedness field.
+- `AA05` fails when the pinned A0 Blake2 lanes, fixed lane count, ordinary
+  `2π` phase, or sine-sign chirality is promoted as the recovered assignment
+  law.
+- `AA06` fails when an explicitly supplied candidate relation becomes derived,
+  canonical, selected, or silently defaulted.
+- `AA07` fails when total tagged outcomes over admitted evidence are relabeled
+  as total geometric assignment or a total Structural Null relationship.
+
+See [`ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](ASSIGNMENT_ADMISSION_BOUNDARY_V016.md)
+for the exact standing and executable report.
+
+## 9. Candidate report shape
 
 A v0.5 report is grouped by witness and carrier relationship. Each falsifier record contains:
 
@@ -200,13 +225,13 @@ A v0.5 report is grouped by witness and carrier relationship. Each falsifier rec
 
 The aggregate report lists all three relationship candidates. It has no `selected_candidate`, `best_candidate`, implicit default, or canonicalization field.
 
-## 9. Admission rule
+## 10. Admission rule
 
 A candidate is **admitted for implementation review** only when every applicable falsifier is `supported` or accompanied by an explicitly accepted unresolved obligation. Any `falsified` result remains blocking for the exact claim it contradicts. Any exception remains visible.
 
 Admission authorizes neither runtime deployment nor canonization. The next authority decision may retain, narrow, reject, or request more evidence from any candidate.
 
-## 10. Usage guidance
+## 11. Usage guidance
 
 Use these falsifiers before designing canonical coordinates, higher-gonol composition, completion conditions, metric formulas, or EDCM bindings. Future executable tests should cite the falsifier IDs and preserve their complete report packets through the evaluator laboratory and experiment-manifest infrastructure.
 

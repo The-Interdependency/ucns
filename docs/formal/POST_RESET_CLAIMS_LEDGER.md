@@ -47,6 +47,7 @@ standing and provenance but does not canonize its own entries.
 | `MOTION-2` | The evidence schema does not derive assignment, motion, or completion laws. | represented-evidence | EDCM evidence | `EDCM_COMPLETION_MOTION_EVIDENCE.md` |
 | `IMPL-5` | Fourteen source-bound marked seams attach the typed Structural Null prestate to the exact root while retaining twist and motion receipts. | implemented-candidate | v0.13 minimum packet and root fiber | `src/ucns/initiation_boundary.py`; `PARTIAL_INITIATION_BOUNDARY_V013.md` |
 | `IMPL-6` | The signed-local affine map and inverse are real-continuous on the complete declared intervals, and the affine product map descends through the declared non-null quotient while commuting with the sheet involution. | represented-evidence | declared real non-null candidate | exact epsilon-delta and quotient certificates in `src/ucns/full_carrier_attachment.py`; analytic, not machine-checked; no total Structural Null relation |
+| `IMPL-7` | Arbitrary-domain observed occurrences can be admitted through explicit content adapters and each admitted occurrence receives exactly one ordered tagged assignment outcome. | implemented-candidate | adapter-admitted assignment evidence only | `src/ucns/assignment_boundary.py`; `ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`; outcome totality is not geometric assignment totality |
 
 ## Empirical and historical evidence
 
@@ -67,6 +68,7 @@ standing and provenance but does not canonize its own entries.
 | `NEG-2` | A movable angle-zero coordinate cannot by itself establish hidden zero or an intrinsic seam. | negative-result | carrier candidates | coordinate reparameterization leaves the bare cover unchanged while moving the claimed origin |
 | `NEG-3` | Two-lap periodicity alone does not establish Möbius initiation. | negative-result | carrier candidates | direct comparison of implemented state with EDCM decided constraints |
 | `NEG-4` | A standard Möbius band alone does not supply UCNS Structural Null, source initiation, hidden zero, or scoped completion. | negative-result | candidate terminology | missing required additional structure |
+| `NEG-5` | Content digest, runtime hash, `repr`, object identity, and A0 Blake2 phase lanes cannot derive a universal geometric assignment. | negative-result | v0.16 assignment admission | exact identity-bearing evidence remains separate from geometry; the A0 prototype mechanism is explicitly rejected |
 
 These results exclude only the stated shortcuts. They do not choose between a
 direct pointed Möbius carrier, a faithfully augmented chart, and formal
@@ -80,7 +82,7 @@ incompatibility.
 | `OPEN-2` | source-to-gonol initiation relation through the twist | unresolved | exact relation or partial function with failure behavior |
 | `OPEN-3` | orientation/sidedness transformation after 360 degrees | unresolved | state space, transport law, and two-lap return proof |
 | `OPEN-4` | direct Möbius carrier versus augmented chart versus incompatibility | unresolved | preservation map or separating proof |
-| `OPEN-5` | element-to-circle/epicycle/disk/sphere assignment law | unresolved | formal assignment law and falsifiers |
+| `OPEN-5` | element-to-circle/epicycle/disk/sphere assignment law | unresolved | v0.16 closes adapter admission and tagged failure behavior only; closure still requires a formal geometric assignment law and falsifiers |
 | `OPEN-6` | transition laws across geometry and recursive scale | unresolved | typed transitions and non-completion receipts |
 | `OPEN-7` | higher-gonol composition above words | unresolved | SPACE-preserving composition law |
 | `OPEN-8` | scoped completion condition | unresolved | construction-specific condition and registration proof |
@@ -105,4 +107,5 @@ laws, evidence, alternatives, information loss, rollback, and migration.
 ## hmmm
 
 The ledger closes the false equivalence between “implemented” and “answered.”
-The current cover is implemented; the Möbius initiation question remains alive.
+The current cover and v0.16 assignment-admission outcomes are implemented; the
+geometric assignment and Möbius initiation questions remain alive.

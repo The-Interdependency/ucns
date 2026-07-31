@@ -1173,19 +1173,109 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
-        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, and bounded full-carrier attachment evidence, current foundations, and reproducible candidate-research infrastructure",
+        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, and v0.16 assignment-admission boundary with current foundations and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "element-assignment law and total Structural Null relationship beyond the v0.15 analytic non-null and partial root evidence, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "geometric element-assignment law and total Structural Null relationship beyond the v0.16 admitted-evidence outcome boundary, v0.15 analytic non-null evidence, and v0.13 partial root evidence, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
       "id": "foundations_public_surface"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "equal-content occurrences enter one admission trace",
+        "since": "2026-07-31",
+        "then": "each occurrence retains its own admission and receipt identity in exact input order even when subject digests are equal"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "assignment_admission_preserves_occurrence_order_and_multiplicity"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "an arbitrary-domain observed element is admitted for assignment research",
+        "since": "2026-07-31",
+        "then": "a named versioned ContentAdapter creates an isolated SubjectRecord and its digest is labeled evidence identity only, never a geometric coordinate"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "assignment_admission_requires_explicit_domain_adapter"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "the v0.16 report joins admission evidence to the v0.15 carrier report",
+        "since": "2026-07-31",
+        "then": "arbitrary-element geometry, the total Structural Null relationship, carrier selection, EDCM activation, and METAPAT activation remain absent"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "assignment_boundary_does_not_complete_initiation_or_activate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "content digest, runtime hash, repr, object identity, or the historical A0 Blake2 phase lanes are proposed as a universal assignment law",
+        "since": "2026-07-31",
+        "then": "the mechanism can be retained only as an explicit rejected outcome and supplies no GeometricAssignment"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "assignment_identity_mechanisms_cannot_derive_geometry"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an explicitly admitted occurrence reaches the v0.16 assignment boundary",
+        "since": "2026-07-31",
+        "then": "exactly one tagged outcome is recorded as unresolved, explicit supplied candidate, or rejected mechanism and invalid combinations fail closed"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "assignment_outcome_is_total_and_exclusive_over_admitted_evidence"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a caller supplies an explicit GeometricAssignment for one admitted occurrence",
+        "since": "2026-07-31",
+        "then": "the exact relation, law identity, standing, orientation, sidedness, parameters, and evidence remain linked without derivation, selection, or canonical promotion"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "supplied_assignment_remains_candidate_evidence"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "fixed AA01-AA07 evidence construction and exact validation helpers",
+        "module_kind": "experiment",
+        "module_name": "assignment_boundary",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "ObservedElementAdmission, AssignmentOutcomeReceipt, AssignmentAdmissionTrace, AssignmentAdmissionBoundaryReport, AssignmentDisposition, RejectedAssignmentMechanism, AssignmentFalsifierResult, AssignmentEvidenceStanding, admit_observed_element, record_assignment_outcome, run_v016_assignment_admission_boundary_experiment",
+        "requires": "reproducible_witness_experiment_pipeline, edcm_completion_motion_evidence, edcm_full_carrier_attachment_evidence",
+        "rollback": "remove this module, exports, tests, and v0.16 document while retaining v0.15 carrier evidence and the reusable ContentAdapter/SubjectRecord infrastructure",
+        "rollout": "nonselecting v0.16 admission and assignment-outcome evidence over explicitly adapted occurrences; no universal assignment law, total Structural Null relationship, EDCM activation, or METAPAT activation",
+        "since": "2026-07-31",
+        "storage_boundary": "none",
+        "summary": "admits arbitrary-domain observed-element occurrences through explicit content adapters and records one total tagged assignment outcome without deriving geometry from evidence identity",
+        "tests": "tests/test_assignment_boundary.py",
+        "unresolved": "arbitrary observed-element geometric assignment, total Structural Null initiation relationship, circle-epicycle-disk-sphere transitions, higher-gonol composition, scoped completion, canonical faithful breadth, and carrier selection",
+        "user_data_boundary": "adapter-produced bytes and an isolated subject snapshot remain exact evidence; their digest never becomes a geometric coordinate"
+      },
+      "file": "src/ucns/assignment_boundary.py",
+      "id": "edcm_assignment_admission_boundary"
     },
     {
       "block": "CONTRACTS",
@@ -2660,12 +2750,12 @@ export default defineMsdmdCollection({
         "owner": "Erin Spencer",
         "public_surface": "OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension",
         "rollback": "remove the registry surface without changing existing carrier or profile behavior",
-        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, decisions, and explicit unresolved choices; no mathematical option selection",
+        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment-admission standing, decisions, and explicit unresolved choices; no mathematical option selection",
         "since": "2026-07-25",
         "storage_boundary": "packaged option_registry.json",
-        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, and unresolved-option registry",
+        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, and unresolved-option registry",
         "tests": "tests/test_option_decisions.py",
-        "unresolved": "arbitrary-element assignment, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
+        "unresolved": "arbitrary-element geometric assignment beyond admitted evidence outcomes, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/options.py",
@@ -3154,6 +3244,84 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/traversal.py",
       "id": "cycle_safe_traversal_policy"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_admission_requires_adapter_and_keeps_digest_out_of_geometry",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "assignment_admission_requires_explicit_domain_adapter",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_admission_explicit_adapter"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_trace_preserves_equal_content_as_distinct_ordered_occurrences",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "assignment_admission_preserves_occurrence_order_and_multiplicity",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_admission_occurrence_preservation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_v016_report_retains_upstream_and_unresolved_geometry",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "assignment_boundary_does_not_complete_initiation_or_activate",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_boundary_nonactivation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_identity_derived_mechanisms_are_rejected_without_geometry",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "assignment_identity_mechanisms_cannot_derive_geometry",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_identity_mechanism_rejection"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_outcome_partition_is_total_exclusive_and_fail_closed",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "assignment_outcome_is_total_and_exclusive_over_admitted_evidence",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_outcome_partition"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_supplied_candidate_is_retained_without_derivation_or_selection",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "supplied_assignment_remains_candidate_evidence",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_assignment_boundary.py",
+      "id": "check_assignment_supplied_candidate_evidence"
     },
     {
       "block": "CHECKS",
@@ -5228,6 +5396,132 @@ export default defineMsdmdCollection({
       "source_block": "CHECKS",
       "source_id": "check_archived_schema_rejection",
       "to": "post_reset_bridge_is_exact_and_fail_closed"
+    },
+    {
+      "from": "check_assignment_admission_explicit_adapter",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_explicit_adapter",
+      "to": "self::test_admission_requires_adapter_and_keeps_digest_out_of_geometry"
+    },
+    {
+      "from": "check_assignment_admission_explicit_adapter",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_explicit_adapter",
+      "to": "assignment_admission_requires_explicit_domain_adapter"
+    },
+    {
+      "from": "check_assignment_admission_explicit_adapter",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_explicit_adapter",
+      "to": "python3"
+    },
+    {
+      "from": "check_assignment_admission_occurrence_preservation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_occurrence_preservation",
+      "to": "self::test_trace_preserves_equal_content_as_distinct_ordered_occurrences"
+    },
+    {
+      "from": "check_assignment_admission_occurrence_preservation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_occurrence_preservation",
+      "to": "assignment_admission_preserves_occurrence_order_and_multiplicity"
+    },
+    {
+      "from": "check_assignment_admission_occurrence_preservation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_admission_occurrence_preservation",
+      "to": "python3"
+    },
+    {
+      "from": "check_assignment_boundary_nonactivation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_boundary_nonactivation",
+      "to": "self::test_v016_report_retains_upstream_and_unresolved_geometry"
+    },
+    {
+      "from": "check_assignment_boundary_nonactivation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_boundary_nonactivation",
+      "to": "assignment_boundary_does_not_complete_initiation_or_activate"
+    },
+    {
+      "from": "check_assignment_boundary_nonactivation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_boundary_nonactivation",
+      "to": "python3"
+    },
+    {
+      "from": "check_assignment_identity_mechanism_rejection",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_identity_mechanism_rejection",
+      "to": "self::test_identity_derived_mechanisms_are_rejected_without_geometry"
+    },
+    {
+      "from": "check_assignment_identity_mechanism_rejection",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_identity_mechanism_rejection",
+      "to": "assignment_identity_mechanisms_cannot_derive_geometry"
+    },
+    {
+      "from": "check_assignment_identity_mechanism_rejection",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_identity_mechanism_rejection",
+      "to": "python3"
+    },
+    {
+      "from": "check_assignment_outcome_partition",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_outcome_partition",
+      "to": "self::test_outcome_partition_is_total_exclusive_and_fail_closed"
+    },
+    {
+      "from": "check_assignment_outcome_partition",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_outcome_partition",
+      "to": "assignment_outcome_is_total_and_exclusive_over_admitted_evidence"
+    },
+    {
+      "from": "check_assignment_outcome_partition",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_outcome_partition",
+      "to": "python3"
+    },
+    {
+      "from": "check_assignment_supplied_candidate_evidence",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_supplied_candidate_evidence",
+      "to": "self::test_supplied_candidate_is_retained_without_derivation_or_selection"
+    },
+    {
+      "from": "check_assignment_supplied_candidate_evidence",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_supplied_candidate_evidence",
+      "to": "supplied_assignment_remains_candidate_evidence"
+    },
+    {
+      "from": "check_assignment_supplied_candidate_evidence",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_assignment_supplied_candidate_evidence",
+      "to": "python3"
     },
     {
       "from": "check_bridge_round_trip",
@@ -8268,6 +8562,34 @@ export default defineMsdmdCollection({
       "to": "ucns_canonical"
     },
     {
+      "from": "edcm_assignment_admission_boundary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_assignment_admission_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_assignment_admission_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_assignment_admission_boundary",
+      "to": "edcm_completion_motion_evidence"
+    },
+    {
+      "from": "edcm_assignment_admission_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_assignment_admission_boundary",
+      "to": "edcm_full_carrier_attachment_evidence"
+    },
+    {
+      "from": "edcm_assignment_admission_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_assignment_admission_boundary",
+      "to": "reproducible_witness_experiment_pipeline"
+    },
+    {
       "from": "edcm_carrier_coordinate_admissibility_experiment",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -8609,6 +8931,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "directed_carrier_floor"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_assignment_admission_boundary"
     },
     {
       "from": "foundations_public_surface",

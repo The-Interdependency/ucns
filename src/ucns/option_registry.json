@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.11.0",
+  "schema_version": "1.12.0",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -15,6 +15,7 @@
     "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
     "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.1",
     "full_carrier_attachment_schema": "ucns.edcm.full-carrier-attachment-evidence/0.15.0",
+    "assignment_admission_schema": "ucns.edcm.assignment-admission-boundary/0.16.0",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -218,6 +219,10 @@
     {
       "id": "full-carrier-attachment-evidence",
       "statement": "v0.15 records exact endpoint, inverse-composition, epsilon-delta, deck-equivariance, and sheet-commutation certificates for the complete declared real non-null affine candidate. The combined report retains v0.13 as partial root-only initiation evidence, labels the analytic proof not machine-checked, and leaves arbitrary-element assignment, the total Structural Null relationship, selection, EDCM activation, and METAPAT activation absent."
+    },
+    {
+      "id": "assignment-admission-boundary",
+      "statement": "v0.16 admits arbitrary-domain observed occurrences only through explicit named versioned ContentAdapter evidence and records exactly one ordered outcome as unresolved, explicit supplied candidate, or rejected mechanism. Content digests, runtime hashes, repr values, object identities, and A0 Blake2 phase lanes cannot derive geometry. This total tagged evidence relation does not establish arbitrary geometric assignment or a total Structural Null relationship."
     }
   ],
   "current_profile": {
@@ -375,6 +380,34 @@
         "analytic-affine-and-non-null-quotient-certificates",
         "runtime-arbitrary-real-representation",
         "total-structural-null-carrier-relationship"
+      ],
+      "selection_effect": "none"
+    },
+    {
+      "id": "assignment-admission-evidence",
+      "question": "How may arbitrary-domain observed occurrences enter assignment research while the geometric assignment law remains unresolved?",
+      "choices": [
+        {
+          "id": "explicit-adapter-admission-and-tagged-outcome",
+          "standing": "implemented-candidate",
+          "evidence": "v0.16 requires a named versioned ContentAdapter and isolated SubjectRecord, preserves ordered repeated occurrences, and records exactly one unresolved, explicit supplied candidate, or rejected outcome per admitted occurrence. Evidence identity never derives geometry."
+        },
+        {
+          "id": "identity-derived-geometric-assignment",
+          "standing": "rejected-pre-reset",
+          "evidence": "Content digest, runtime hash, repr, object identity, and the pinned A0 Blake2 phase lanes may identify evidence or historical mechanisms but cannot serve as a universal geometric assignment law."
+        },
+        {
+          "id": "arbitrary-element-geometric-assignment-law",
+          "standing": "unresolved",
+          "evidence": "No derived law yet maps arbitrary admitted occurrences to circle, epicycle, disk, or sphere relations with the required orientation, sidedness, motion, and authority."
+        }
+      ],
+      "display_rule": "separate-admission-outcomes-from-geometric-success",
+      "display_order": [
+        "explicit-adapter-admission-and-tagged-outcome",
+        "identity-derived-geometric-assignment",
+        "arbitrary-element-geometric-assignment-law"
       ],
       "selection_effect": "none"
     },
@@ -714,6 +747,7 @@
     "Retain the v0.11 exact signed-local coordinate and every binary64 rendering together. The exact affine law and inverse hold over the declared rational interval, while explicit breadth and lifted-turn collisions prohibit binary64 LiftedCarrierPoint storage from serving as arbitrary-rational evidence identity.",
     "Retain the v0.13 marked source-bound partial attachment together with the unresolved intrinsic-seam and invariant-equivalence-class alternatives. Its typed disjoint prestate, fourteen twist receipts, and append-only root motion do not establish arbitrary-real seam limits, arbitrary-element transverse assignment, complete carrier continuity, or selection.",
     "Retain the v0.15 exact analytic certificates for the complete declared real affine intervals and non-null quotient together with the unchanged v0.13 partial attachment standing. Written proof evidence does not create arbitrary-element assignment, a total Structural Null relationship, a machine-checked theorem, selection, or activation.",
+    "Retain the v0.16 explicit adapter admission and total tagged outcome relation over admitted occurrences. Evidence identity does not become geometry, and outcome totality does not become arbitrary geometric assignment or a total Structural Null relationship.",
     "Use the word as the smallest gonol and build every larger gonol from word gonols.",
     "Assign every profile-pinned Unicode White_Space manifestation to the U+0020 carrier origin while preserving its exact source code point, offset, and reconstruction.",
     "Use the exact source-provenance public 157-position Unicode code-point fixture.",
@@ -741,7 +775,7 @@
     "Do not expect scalar support to replace a graph."
   ],
   "hmmm": [
-    "The v0.15 analytic certificates cover the complete declared real non-null affine intervals and quotient seam commutation without sampling. v0.13 remains the source-bound partial Structural Null attachment at the exact root; arbitrary-element assignment, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
+    "The v0.16 assignment boundary admits arbitrary-domain occurrences through explicit adapters and gives each admitted occurrence one tagged evidence outcome. The v0.15 analytic certificates still cover the complete declared real non-null affine intervals and quotient seam commutation, while v0.13 remains the source-bound partial Structural Null attachment at the exact root. Arbitrary geometric assignment, a total Structural Null relationship, canonical faithful breadth, higher geometry, and completion remain unresolved.",
     "Intrinsic or invariant-equivalence-class seam construction beyond the implemented marked candidate.",
     "The lawful composition relation by which word gonols build phrase, turn, dialogue, and higher gonols without flattening source-preserved SPACE manifestations.",
     "Whether non-SPACE out-of-alphabet code points require a named escape, another carrier, or remain explicit coverage failures.",

@@ -74,9 +74,13 @@ dialogues and 143,048 turns reconcile exactly against UCNS producer commit
 `868d80878c9ecd93ff30e91ca289122ded805a49`. v0.15 then records exact
 epsilon-delta and quotient-equivariance certificates for the complete declared
 real non-null candidate while retaining the v0.13 Structural Null attachment
-as partial and root-only. No law is selected, and arbitrary-element assignment,
-the total Structural Null relationship, higher coordinates, and global C1/C2
-equivalence remain open. Any eventual selection
+as partial and root-only. v0.16 now admits arbitrary-domain observed
+occurrences through explicit named versioned content adapters and gives every
+admitted occurrence one ordered tagged outcome: unresolved, explicit supplied
+candidate, or rejected mechanism. Evidence digests and the pinned A0 Blake2
+phase lanes cannot derive geometry. No law is selected, and arbitrary geometric
+assignment, the total Structural Null relationship, higher coordinates, and
+global C1/C2 equivalence remain open. Any eventual selection
 cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
@@ -149,6 +153,12 @@ seam representation, or convention:
    `analytic-certificate-not-machine-checked`, and the combined report keeps
    arbitrary-element assignment and the total Structural Null relationship
    unresolved.
+9. The **assignment-admission boundary** admits arbitrary-domain occurrences
+   only through named versioned adapters, preserves isolated subject evidence,
+   order, and multiplicity, and records exactly one unresolved, explicit
+   supplied candidate, or rejected outcome. The totality is evidentiary over
+   admitted occurrences; it does not create coordinates or complete the
+   Structural Null relation.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -181,6 +191,16 @@ source-bound root attachments.
 
 See
 [`docs/FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md`](docs/FULL_CARRIER_ATTACHMENT_EVIDENCE_V015.md).
+
+The implemented **v0.16 assignment-admission boundary** closes the prior
+source-evidence admission obligation without fabricating the missing law.
+`ContentAdapter` and `SubjectRecord` carry exact evidence identity; their
+digest cannot populate geometric fields. Equal content remains distinct
+ordered occurrences, every admission receives one exclusive outcome tag, and
+the historical A0 Blake2 phase lanes remain an explicit rejection.
+
+See
+[`docs/ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](docs/ASSIGNMENT_ADMISSION_BOUNDARY_V016.md).
 
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
@@ -544,9 +564,11 @@ twist receipts, and append-only root motion are executable. v0.15 supplies the
 written analytic proof certificate for the full declared non-null affine and
 quotient relationship without rewriting the partial initiation standing. The
 downstream EDCM PR #44 receipt closes the source-native MultiWOZ v0.14.1
-execution obligation for that exact corpus and producer. The next truth
-obligations are arbitrary-element transverse assignment and a total Structural
-Null relationship,
+execution obligation for that exact corpus and producer. v0.16 closes
+adapter-gated occurrence admission and total tagged outcome evidence while
+retaining the negative result that evidence identity is not geometry. The next
+truth obligations are arbitrary-element geometric assignment and a total
+Structural Null relationship,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
 A0-betatest specimen, higher-gonol composition, later source-native corpus
 adapters and complete runs beginning with Molweni, and evidence from failures
