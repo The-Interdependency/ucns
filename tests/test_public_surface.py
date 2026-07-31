@@ -85,6 +85,13 @@ def test_public_surface_is_bounded() -> None:
         "AssignmentAdmissionTrace",
         "AssignmentAdmissionBoundaryReport",
         "run_v016_assignment_admission_boundary_experiment",
+        "OriginTermRecord",
+        "GonolInitiationReceipt",
+        "GonolInitiationOutcome",
+        "GonolInitiationTrace",
+        "RootLoopReturnWitness",
+        "GonolInitiationBoundaryReport",
+        "run_v017_gonol_initiation_boundary_experiment",
     ):
         assert expected in exported
 

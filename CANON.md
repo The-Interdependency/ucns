@@ -152,6 +152,17 @@ mechanism. Content digests, runtime hashes, `repr`, object identity, and the A0
 Blake2 phase lanes do not derive geometry. Outcome totality over admitted
 evidence does not establish arbitrary geometric assignment or a total
 Structural Null relationship.
+v0.17 then makes the decided initiation semantics explicit without widening
+that claim. It separates the singular Structural Null prestate from source
+SPACE manifestations, carrier position zero, the directed-cover null, neutral
+`M`, algebraic zero, absent cells, and `NA`; gives every v0.16 admitted
+occurrence one ordered initiation outcome; and permits an explicitly declared
+word gonol exactly one source-bound Möbius-twist receipt with geometry still
+absent. It also retains the unchanged v0.13 native-root witness: 360 degrees
+preserve the declared visible projection while changing local frame, and 720
+degrees restore complete local state without registering construction
+completion. No total Structural Null topology, assignment law, selection, or
+consumer activation follows.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -458,6 +469,12 @@ a complete relationship can become executable.
 25. an assignment-admission boundary that content-adapts arbitrary-domain
     occurrences, preserves exact order and multiplicity, and records one total
     tagged evidence outcome without deriving or selecting geometry.
+26. a gonol-initiation and Structural Null boundary that separates eight origin,
+    zero, neutrality, and absence roles; records one total tagged initiation
+    outcome over every v0.16 admitted occurrence; permits exactly one
+    source-bound twist receipt for an explicitly declared word gonol; and
+    retains bounded 360-degree local-frame change plus 720-degree local return
+    without geometric assignment, completion, selection, or activation.
 
 Still unresolved and not promoted:
 
@@ -474,9 +491,10 @@ Still unresolved and not promoted:
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
 12. arbitrary-element geometric assignment and a total Structural Null
-    initiation relationship beyond the v0.16 admitted-evidence outcome
-    boundary, v0.15 analytic non-null certificates, and v0.13 partial root
-    attachment, including higher geometry and completion;
+    topology beyond the v0.17 tagged initiation-evidence boundary, v0.16
+    admitted-evidence outcome boundary, v0.15 analytic non-null certificates,
+    and v0.13 partial root attachment, including higher geometry and
+    completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -573,6 +591,11 @@ v0.16 closes the prior admission question with explicit adapters, ordered
 occurrence identities, and total tagged evidence outcomes while rejecting
 identity-derived geometry. Arbitrary geometric assignment, a total Structural
 Null relationship, canonical breadth, epicyclic circle, disk, sphere, recursive
-composition, and completion conditions remain unrecovered. Real-system
+composition, and completion conditions remain unrecovered. v0.17 now makes the
+causal doorway explicit over admitted evidence: only singular Structural Null
+may be the prestate, an explicitly declared word receives exactly one
+source-bound twist receipt, and the bounded native-root witness distinguishes
+360-degree local-frame change from 720-degree local return. That evidence is
+not a total topology, geometric placement, or completion receipt. Real-system
 experiments may pressure those laws, but current metric projections may not
 circularly select the geometry that makes them appear valid.

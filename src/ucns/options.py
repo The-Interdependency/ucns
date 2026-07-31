@@ -2,7 +2,7 @@
 # id: ucns_option_decision_registry
 #   module_name: options
 #   module_kind: schema
-#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, and unresolved-option registry
+#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission boundary, gonol-initiation and Structural Null boundary, and unresolved-option registry
 #   owner: Erin Spencer
 #   public_surface: OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension
 #   internal_surface: _validate_registry
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_option_decisions.py
-#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment-admission standing, decisions, and explicit unresolved choices; no mathematical option selection
+#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol-initiation and Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
-#   unresolved: arbitrary-element geometric assignment beyond admitted evidence outcomes, total Structural Null relationship, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
+#   unresolved: arbitrary-element geometric assignment beyond admitted and initiated evidence outcomes, total Structural Null topology, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.12.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.13.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -124,6 +124,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "partial-initiation-boundary",
         "full-carrier-attachment-evidence",
         "assignment-admission-boundary",
+        "gonol-initiation-structural-null-boundary",
     }
 )
 
@@ -169,6 +170,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
         ),
         "assignment_admission_schema": (
             "ucns.edcm.assignment-admission-boundary/0.16.0"
+        ),
+        "gonol_initiation_schema": (
+            "ucns.edcm.gonol-initiation-structural-null-boundary/0.17.0"
         ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
@@ -259,6 +263,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "initiation-attachment",
         "full-carrier-continuity-evidence",
         "assignment-admission-evidence",
+        "gonol-initiation-evidence",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -453,6 +458,47 @@ def _validate_registry(data: dict[str, Any]) -> None:
     }:
         raise OptionRegistryError(
             "assignment admission choice standings are fixed"
+        )
+
+    initiation = dimension_by_id["gonol-initiation-evidence"]
+    if initiation.get("display_rule") != (
+        "separate-causal-initiation-from-geometry-and-completion"
+    ):
+        raise OptionRegistryError(
+            "gonol initiation must remain separate from geometry and completion"
+        )
+    if initiation.get("display_order") != [
+        "explicit-structural-null-twist-and-tagged-outcome",
+        "bounded-native-root-360-change-720-return",
+        "zero-or-absence-as-structural-null-prestate",
+        "total-structural-null-carrier-topology",
+    ]:
+        raise OptionRegistryError(
+            "gonol initiation display order mismatch"
+        )
+    if initiation.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "gonol initiation evidence cannot select geometry"
+        )
+    initiation_standings = {
+        choice.get("id"): choice.get("standing")
+        for choice in initiation.get("choices", ())
+        if isinstance(choice, dict)
+    }
+    if initiation_standings != {
+        "explicit-structural-null-twist-and-tagged-outcome": (
+            "implemented-candidate"
+        ),
+        "bounded-native-root-360-change-720-return": (
+            "implemented-candidate"
+        ),
+        "zero-or-absence-as-structural-null-prestate": (
+            "rejected-pre-reset"
+        ),
+        "total-structural-null-carrier-topology": "unresolved",
+    }:
+        raise OptionRegistryError(
+            "gonol initiation choice standings are fixed"
         )
 
     corpora = data.get("real_system_corpus_candidates")

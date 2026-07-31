@@ -208,7 +208,38 @@ not discharge `F03`, `F04`, or `F06`–`F14` for a geometric carrier.
 See [`ASSIGNMENT_ADMISSION_BOUNDARY_V016.md`](ASSIGNMENT_ADMISSION_BOUNDARY_V016.md)
 for the exact standing and executable report.
 
-## 9. Candidate report shape
+## 9. v0.17 gonol-initiation addendum
+
+The v0.17 boundary adds `GI01`–`GI08` over occurrences already admitted by
+v0.16. These falsifiers make a typed Structural Null-to-word transition
+inspectable without pretending that initiation supplies transverse geometry or
+a total carrier topology.
+
+- `GI01` fails when Structural Null is substituted with source SPACE text,
+  carrier position zero, directed-cover null, neutral `M = 1`, algebraic zero,
+  absent cell, or `NA`.
+- `GI02` fails when a declared word gonol initiates without both the singular
+  typed prestate and an exact source-bound boundary manifestation.
+- `GI03` fails when an initiated word has zero or multiple twist receipts, or
+  when its receipt loses the admission or boundary link.
+- `GI04` fails when an admitted occurrence has no initiation tag, multiple
+  tags, reordered identity, or a malformed outcome combination.
+- `GI05` fails when the retained v0.13 root projection changes, or its complete
+  local frame does not change, after one exact visible turn.
+- `GI06` fails when two exact turns do not restore local root state, when
+  trajectory history is erased, or when local return is relabeled as scoped
+  completion.
+- `GI07` fails when any non-Structural-Null origin role is accepted as the
+  initiation prestate.
+- `GI08` remains unresolved until initiation is connected to a lawful arbitrary
+  geometric assignment and total Structural Null topology; relabeling bounded
+  receipt evidence as that closure is itself a boundary violation.
+
+See
+[`GONOL_INITIATION_STRUCTURAL_NULL_V017.md`](GONOL_INITIATION_STRUCTURAL_NULL_V017.md)
+for exact scope and executable standing.
+
+## 10. Candidate report shape
 
 A v0.5 report is grouped by witness and carrier relationship. Each falsifier record contains:
 
@@ -225,16 +256,19 @@ A v0.5 report is grouped by witness and carrier relationship. Each falsifier rec
 
 The aggregate report lists all three relationship candidates. It has no `selected_candidate`, `best_candidate`, implicit default, or canonicalization field.
 
-## 10. Admission rule
+## 11. Admission rule
 
 A candidate is **admitted for implementation review** only when every applicable falsifier is `supported` or accompanied by an explicitly accepted unresolved obligation. Any `falsified` result remains blocking for the exact claim it contradicts. Any exception remains visible.
 
 Admission authorizes neither runtime deployment nor canonization. The next authority decision may retain, narrow, reject, or request more evidence from any candidate.
 
-## 11. Usage guidance
+## 12. Usage guidance
 
 Use these falsifiers before designing canonical coordinates, higher-gonol composition, completion conditions, metric formulas, or EDCM bindings. Future executable tests should cite the falsifier IDs and preserve their complete report packets through the evaluator laboratory and experiment-manifest infrastructure.
 
 ## hmmm
 
-The most useful v0.5 result may be a small counterexample. If a repeated SPACE, a first-word initiation, or a 360° state pair breaks an alleged chart, that is not a failed release—it is the evidence that prevents UCNS from canonizing the wrong relationship.
+The most useful result may be a small counterexample. If a repeated SPACE, an
+invalid zero substitution, a first-word initiation, or a 360° state pair breaks
+an alleged relationship, that is not a failed release—it is the evidence that
+prevents UCNS from canonizing the wrong relationship.

@@ -19,6 +19,9 @@ A `SubjectRecord` contains the untouched subject and a digest derived from:
 
 The digest identifies evidence only. v0.16 explicitly prohibits using it,
 runtime hash, `repr`, or object identity to derive a geometric assignment.
+v0.17 consumes v0.16 admission identity for ordering and provenance only; its
+typed initiation receipt does not turn that digest into a Structural Null
+prestate, geometric coordinate, orientation, or completion law.
 
 JSON, text, and bytes adapters are supplied as conveniences. Domain objects require domain adapters.
 
