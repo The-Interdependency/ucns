@@ -131,6 +131,11 @@ each through a twist receipt to the exact rational root coordinate, and retains
 two successive motion receipts across 360-degree change and 720-degree local
 return. Arbitrary-real seam limits, transverse element assignment, completion,
 carrier selection, and consumer activation remain absent.
+v0.14 adds a separate fail-closed full-corpus execution gate. A post-run
+analysis receipt requires exhaustion of the supplied admitted-corpus iterator,
+agreement with the externally declared expected turn count, and matching exact
+source/reconstruction stream digests. It does not admit a corpus, claim that a
+real-system run occurred, satisfy a carrier falsifier, or activate a consumer.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -426,6 +431,11 @@ a complete relationship can become executable.
     and append-only 360-degree/720-degree motion history, executes
     `RC01`–`RC10` with bounded or inconclusive verdicts, and has no selection or
     activation effect.
+23. a fail-closed full-corpus execution gate that retains explicit external
+    admission and adapter identity, consumes every supplied speaker turn,
+    distinguishes exhaustion from interruption, requires expected-count and
+    exact stream-digest agreement, and issues only a post-run analysis receipt
+    with no selection or activation effect.
 
 Still unresolved and not promoted:
 
@@ -449,7 +459,9 @@ Still unresolved and not promoted:
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
     Möbius coordinate and higher-gonol composition laws are executable;
-15. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+15. source-native adapters, authenticated source custody, actual corrected
+    MultiWOZ and later complete corpus runs, and post-run falsifier execution;
+16. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
     public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
@@ -528,7 +540,10 @@ survive beyond the finite grid, while binary64 materialization records its own
 noninjectivity. The v0.12 specification gives the real non-null topology a
 falsifiable shape. v0.13 now gives its doorway one bounded executable form:
 marked source seams and twist receipts attach the singular typed prestate to the
-exact rational root without choosing the whole building. Arbitrary-real
+exact rational root without choosing the whole building. v0.14 now prevents a
+partial corpus prefix from masquerading as a full execution receipt; it does
+not substitute a receipt for the missing source-native adapter or real run.
+Arbitrary-real
 seam-side continuity, arbitrary-element assignment, canonical breadth,
 epicyclic circle, disk, sphere, recursive composition, and completion conditions
 remain unrecovered. Real-system experiments may pressure those laws, but current

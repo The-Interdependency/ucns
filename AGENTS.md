@@ -64,6 +64,10 @@ Rules:
 - Run every turn of each admitted EDCM corpus. Seek incompleteness and worst-case
   behavior in post-run comparison and surfacing, not by sampling the execution.
   Never transfer an EDCM selection into universal UCNS canon.
+- Do not run post-run EDCM falsifier analysis or admission from a corpus prefix.
+  Require a v0.14 full-corpus completion receipt bound to the real external
+  admission manifest; synthetic or fixture manifests cannot receipt a claimed
+  real-system run.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.

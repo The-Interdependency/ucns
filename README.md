@@ -60,7 +60,11 @@ attachment candidate: the typed Structural Null prestate reaches the exact
 rational root through fourteen source-provenance marked seams and twist
 receipts, and two successive turns restore local state without erasing motion
 history. Arbitrary-real seam limits and arbitrary-element transverse assignment
-remain open. No law is selected, and full-carrier real continuity, higher
+remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
+post-run analysis requires supplied-stream exhaustion, externally declared
+turn-count agreement, and exact source/reconstruction stream-digest agreement.
+It does not claim a real-system run or activate EDCM. No law is selected, and
+full-carrier real continuity, higher
 coordinates, and global C1/C2 equivalence remain open. Any eventual selection
 cannot become universal UCNS canon or transfer proof or measurement validity.
 
@@ -144,6 +148,17 @@ continuity or arbitrary-element assignment.
 
 See
 [`docs/PARTIAL_INITIATION_BOUNDARY_V013.md`](docs/PARTIAL_INITIATION_BOUNDARY_V013.md).
+
+The implemented **v0.14 full-corpus execution gate** consumes every supplied
+turn, retains exact incomplete-run stopping evidence, and issues a receipt only
+after iterator exhaustion, admitted expected-count agreement, and exact
+source/reconstruction stream-digest agreement. The receipt opens
+failure-seeking post-run analysis only; it does not admit a corpus, authenticate
+source custody, satisfy a falsifier, select a carrier, or activate EDCM or
+METAPAT.
+
+See
+[`docs/FULL_CORPUS_EXECUTION_GATE_V014.md`](docs/FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 The directed-cover comparison candidate provides:
 
@@ -241,6 +256,21 @@ This schema makes trajectory retention executable without fabricating the
 unresolved element-assignment, transverse-Möbius, geometric-transition,
 higher-gonol, completion, or metric laws. See
 [`docs/EDCM_COMPLETION_MOTION_EVIDENCE.md`](docs/EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
+### EDCM full-corpus execution evidence
+
+- explicit source version/digest, expected count, license, privacy, redaction,
+  adapter, and external admission identity;
+- complete consumption of the supplied corpus iterator;
+- exact turn-stream reconstruction digest agreement;
+- incomplete-run stopping index and stable failure class;
+- post-run analysis receipt only after all completion invariants hold; and
+- no source-admission, carrier-selection, metric-validity, EDCM-activation, or
+  METAPAT-activation effect.
+
+This gate does not replace source-native adapters, raw corpus custody, per-turn
+trajectory evidence, or actual real-system runs. See
+[`docs/FULL_CORPUS_EXECUTION_GATE_V014.md`](docs/FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ### Native direct-Möbius root-loop candidate
 
@@ -477,7 +507,8 @@ twist receipts, and append-only root motion are executable while arbitrary-real
 limits remain inconclusive. The next truth obligations are arbitrary-real
 full-carrier attachment evidence, arbitrary-element transverse assignment,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
-A0-betatest specimen, a deterministic full-MultiWOZ adapter and run receipt,
+A0-betatest specimen, a deterministic source-native MultiWOZ adapter and
+corrected v0.14-gated complete run,
 higher-gonol composition, and evidence from failures surfaced across complete
 corpora—without allowing present metric projections to select the geometry that
 validates them.
