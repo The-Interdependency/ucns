@@ -3,8 +3,9 @@
 **Research authority:** Erin Spencer  
 **Recorded:** 2026-07-25  
 **Status:** candidate sources found; the first complete downstream MultiWOZ 2.1
-run exposed and repaired a SPACE-origin assignment defect; corrected rerun
-evidence remains downstream work
+run exposed and repaired a SPACE-origin assignment defect; v0.14 now supplies a
+fail-closed generic execution receipt, while the source-native adapter and
+corrected complete MultiWOZ rerun remain downstream work
 **Decision surface:** [`UCNS_OPTION_DECISIONS.md`](UCNS_OPTION_DECISIONS.md)
 
 ## Purpose
@@ -40,6 +41,14 @@ reconstruction. These 4,094 occurrences are therefore SPACE boundaries, not
 alphabet failures, under the repaired profile. A new complete run must carry a
 new profile identity and supersession receipt. Non-SPACE unmapped code points
 remain retained and reported as positive coverage-failure evidence.
+
+The v0.14.1 full-corpus execution gate now prevents a prefix, iterator failure,
+turn-count mismatch, or merely declared complete report from receiving a
+post-run analysis receipt. Receipt identity binds license, privacy, redaction,
+admission, adapter, source, and count standing. It does not retroactively
+receipt the historical run and does not establish that a source-native
+MultiWOZ adapter matches the archived source artifact. See
+[`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ## Candidate sources
 
@@ -201,6 +210,8 @@ A corpus is not admitted merely because it is downloadable. Admission requires:
 - deterministic conversion into the EDCM-specific word-gonol profile;
 - exact speaker-turn count before and after conversion;
 - a full-run completion or explicit incomplete-run receipt;
+- iterator exhaustion, expected-turn-count agreement, and exact
+  source/reconstruction stream-digest agreement before post-run analysis;
 - exact non-SPACE out-of-alphabet and SPACE-origin boundary coverage totals;
 - no source-text normalization or sampled execution;
 - outcome-label provenance only when a separate predictive study uses labels;
@@ -212,6 +223,7 @@ No raw restricted corpus belongs in the UCNS repository.
 
 The first complete MultiWOZ 2.1 run did what the corpus program was meant to do:
 it exposed a boundary error that fixtures missed. The repaired profile now needs
-an immutable full-corpus rerun and supersession receipt. After that, Molweni
+an immutable source-native full-corpus rerun and v0.14.1 completion receipt.
+After that, Molweni
 tests whether the same source-preserving profile retains graph and
 unresolved-reference evidence without flattening it.

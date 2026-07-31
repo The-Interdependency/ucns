@@ -124,6 +124,24 @@ ordinary real-continuous affine coordinate component from the complete carrier
 claim. It defines the framed double cover, Möbius quotient, coordinate cylinder,
 sheet involution, and falsifiers without supplying the topology that attaches
 Structural Null, hidden-zero initiation, exact source, or completion.
+v0.13 supplies one bounded attachment candidate without closing that broader
+claim. It treats Structural Null as an explicit disjoint typed prestate, gives
+all fourteen minimum-packet initiations source-provenance marked seams, links
+each through a twist receipt to the exact rational root coordinate, and retains
+two successive motion receipts across 360-degree change and 720-degree local
+return. Its `0.13.2` schema binds the actual exact comparator, pins partial RC
+scope and exact one-turn displacements, makes native source provenance part of
+attachment identity, and rejects endpoint, trajectory, verdict, or
+boundary-status substitution.
+Arbitrary-real seam limits, transverse element assignment, completion, carrier
+selection, and consumer activation remain absent.
+v0.14 adds a separate fail-closed full-corpus execution gate. Its `0.14.1`
+receipt requires module-executed evidence and binds the complete
+license/privacy/redaction-bearing manifest. A post-run
+analysis receipt requires exhaustion of the supplied admitted-corpus iterator,
+agreement with the externally declared expected turn count, and matching exact
+source/reconstruction stream digests. It does not admit a corpus, claim that a
+real-system run occurred, satisfy a carrier falsifier, or activate a consumer.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -413,6 +431,18 @@ adds no twenty-second implemented surface. It records the candidate quotient
 topology, domain-qualified meanings, and `RC01`–`RC10` falsifiers needed before
 a complete relationship can become executable.
 
+22. a partial initiation-boundary experiment that attaches the typed
+    Structural Null prestate to the exact rational root fiber through fourteen
+    source-provenance marked seams and twist receipts, preserves exact source
+    and append-only 360-degree/720-degree motion history, executes
+    `RC01`–`RC10` with bounded or inconclusive verdicts, and has no selection or
+    activation effect.
+23. a fail-closed full-corpus execution gate that retains explicit external
+    admission and adapter identity, consumes every supplied speaker turn,
+    distinguishes exhaustion from interruption, requires expected-count and
+    exact stream-digest agreement, and issues only a post-run analysis receipt
+    with no selection or activation effect.
+
 Still unresolved and not promoted:
 
 1. the recovered assignment-to-completion motion algorithm;
@@ -427,15 +457,17 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. execution or proof of the v0.12 complete signed-local
-    Möbius-to-cover continuity obligations, including Structural Null
-    attachment, seam provenance, arbitrary-element assignment, higher geometry,
-    and completion;
+12. execution or proof of the v0.12 arbitrary-real and complete signed-local
+    Möbius-to-cover continuity obligations beyond the v0.13 partial root
+    attachment, including seam-side real limits, arbitrary-element transverse
+    assignment, higher geometry, and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
     Möbius coordinate and higher-gonol composition laws are executable;
-15. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
+15. source-native adapters, authenticated source custody, actual corrected
+    MultiWOZ and later complete corpus runs, and post-run falsifier execution;
+16. a complete `UCNSObject`, factorization, general encoding, embedding, codec,
     public-gonol algebra, or theorem claim.
 
 The useful cell, `W`, pairing, pruning, and collapse candidates were selectively
@@ -481,11 +513,16 @@ beyond the finite stress grid, but its current binary64 rendering does not.
 v0.12 specifies the real affine and quotient candidate and makes the remaining
 gap sharper: the non-null coordinate component can be smooth while the seam,
 Structural Null attachment, causal initiation, and retained source relationship
-remain absent. None of these results establishes a global embedding, selects a
-carrier, or canonizes breadth. Whether the directed cover implements, embeds,
-parameterizes, or conflicts with the Möbius construction as a complete
-real-continuous relationship remains unresolved, and the cover cannot erase the
-decided causal semantics.
+remain absent. v0.13 then implements one marked-seam alternative over the
+minimum packet: the typed prestate, exact causal manifestation, twist receipt,
+root coordinate, and append-only motion history are linked without treating a
+numeric cut as hidden zero. RC01 and RC03 remain inconclusive because the
+runtime does not represent arbitrary-real continuity or seam-side limits. None
+of these results establishes a global embedding, selects a carrier, or
+canonizes breadth. Whether the directed cover implements, embeds, parameterizes,
+or conflicts with the Möbius construction as a complete real-continuous
+relationship remains unresolved, and the cover cannot erase the decided causal
+semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -507,9 +544,14 @@ One signed-local radial law now survives a bounded actual-cover admissibility
 experiment without becoming selected. Its exact rational law and inverse now
 survive beyond the finite grid, while binary64 materialization records its own
 noninjectivity. The v0.12 specification gives the real non-null topology a
-falsifiable shape but does not manufacture the missing initiation attachment.
-Executable full-carrier continuity, arbitrary-element assignment, canonical
-breadth, epicyclic circle, disk, sphere, recursive composition, and completion
-conditions remain unrecovered. Real-system experiments may pressure those laws,
-but current metric projections may not circularly select the geometry that
-makes them appear valid.
+falsifiable shape. v0.13 now gives its doorway one bounded executable form:
+marked source seams and twist receipts attach the singular typed prestate to the
+exact rational root without choosing the whole building. v0.14 now prevents a
+partial corpus prefix from masquerading as a full execution receipt; it does
+not substitute a receipt for the missing source-native adapter or real run.
+Arbitrary-real
+seam-side continuity, arbitrary-element assignment, canonical breadth,
+epicyclic circle, disk, sphere, recursive composition, and completion conditions
+remain unrecovered. Real-system experiments may pressure those laws, but current
+metric projections may not circularly select the geometry that makes them
+appear valid.

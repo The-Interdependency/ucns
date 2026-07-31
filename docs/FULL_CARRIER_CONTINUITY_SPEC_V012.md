@@ -266,6 +266,52 @@ The motion path `[u,t] -> [u,t+1]` and the sheet involution `D` are distinct
 operations. Conflating them would erase the difference between local-frame and
 global-side transverse descriptions.
 
+## Named visible projection
+
+`RC04` uses exactly one versioned projection:
+
+```text
+projection:       ucns.edcm.root-visible-projection/0.13.1
+domain:           source-linked InitiatedCarrierState values on the exact root fiber
+codomain:         RootVisibleProjection
+retained:         attachment identity, native source links, parent observations,
+                  source candidate, exact local transverse value, exact breadth,
+                  and lifted turns modulo one visible turn
+discarded:        native local frame, whole lifted-turn count, and append-only
+                  motion history
+equality:         ucns.edcm.v013-rc-exact/0.13.2
+code reference:   ucns.comparison:exact_comparison_policy
+```
+
+For a state `x` with exact coordinate `(u,B,t)`, the projection is
+
+\[
+V_{0.13.1}(x)=
+(\operatorname{attachment}(x),\operatorname{source}(x),
+\operatorname{parents}(x),\operatorname{candidate}(x),u,B,t\bmod 1).
+\]
+
+The attachment, source, and parent fields are retained links rather than
+normalized or hashed substitutes. Two projected values are comparable for
+`RC04` only when they retain the same attachment identity. Visible equality
+therefore cannot silently switch source trajectories. Equality after one turn
+does not imply equality of complete local state because the declared discarded
+fields contain the native frame and whole lifted representative.
+
+## Named comparison policy
+
+The executable `RC01`–`RC10` packet binds
+`ucns.edcm.v013-rc-exact/0.13.2`, an exact `ComparisonPolicy` implemented by
+`ucns.comparison:exact_comparison_policy`. Callers cannot replace its
+comparator. It applies exact equality to typed
+states, `Fraction` coordinates, ordered tuples, verdicts, and evidence
+identities. It supplies no tolerance, binary64 approximation, interval
+substitution, symbolic rewrite, or arbitrary-real limit oracle.
+
+When the required representation is absent—especially arbitrary-real
+continuity or seam-side limits—the result is `inconclusive`. The policy cannot
+convert missing structure, failure, or unknown standing into equality or zero.
+
 ## Transition obligations
 
 For an admitted non-null state `x=[u,t]_2`:
@@ -346,8 +392,8 @@ claim even though the affine non-null coordinate component is continuous.
 | `RC10` | the report has no selection or activation effect | documentation alone selects C1/C2/C3, canonical `B`, EDCM, or METAPAT |
 
 Every falsifier requires named source and target spaces, map identity, version,
-comparison semantics, witness provenance, and an `hmmm` result when required
-structure has not been supplied.
+the pinned exact comparison policy above, witness provenance, and an `hmmm`
+result when required structure has not been supplied.
 
 ## Current classification
 
@@ -369,6 +415,23 @@ The v0.12 specification narrows the next implementation target: the unresolved
 work is not continuity of the affine formula by itself. It is the faithful
 attachment of causal initiation and retained evidence to the non-null
 topological candidate.
+
+## v0.13 partial implementation
+
+v0.13 implements one bounded response to that target. It represents Structural
+Null as a disjoint typed marked prestate and attaches every v0.6 minimum-packet
+word initiation to the exact v0.11 root coordinate through a source-provenance
+marked seam and twist receipt. Two successive visible turns retain separate
+motion receipts while restoring complete local state.
+
+The executable report supports `RC02` and `RC04`–`RC10` on its declared exact
+rational root and minimum-packet scope. `RC01` and `RC03` remain inconclusive
+because arbitrary-real runtime continuity and seam-side limits are not
+represented. The result does not assign arbitrary elements to transverse
+coordinates or establish a complete carrier relationship.
+
+See
+[`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
 
 ## Reproduction boundary
 

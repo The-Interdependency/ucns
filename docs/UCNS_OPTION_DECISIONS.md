@@ -2,7 +2,7 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-07-26  
-**Updated:** 2026-07-29
+**Updated:** 2026-07-31
 **Machine surface:** `src/ucns/option_registry.json`  
 **EDCM profile:** `src/ucns/edcm.py`  
 **Recovery reference:** [`EDCM_A0_BETATEST_RECOVERY_REFERENCE.md`](EDCM_A0_BETATEST_RECOVERY_REFERENCE.md)  
@@ -20,9 +20,17 @@ exact inverse and records explicit binary64 breadth and lifted-turn collisions,
 so float points remain linked renderings rather than arbitrary-rational
 identity. v0.12 specifies the real non-null quotient topology and continuity
 falsifiers without changing any option standing or adding runtime behavior.
-Arbitrary assignment, Structural Null attachment, full-carrier real continuity,
-canonical breadth, epicyclic geometry, completion, and higher-composition
-mathematics remain incomplete.
+v0.13 implements one marked-seam candidate over the exact rational root and
+minimum source packet: typed Structural Null is an explicit disjoint prestate,
+all fourteen initiations retain source-provenance seams and twist receipts, and
+360-degree/720-degree motion appends history without selection. Arbitrary-real
+seam limits, arbitrary-element transverse assignment, full-carrier real
+continuity, canonical breadth, epicyclic geometry, completion, and
+higher-composition mathematics remain incomplete.
+v0.14 separately implements the full-corpus execution gate: post-run analysis
+receipts require iterator exhaustion, declared expected-count agreement, and
+matching exact source/reconstruction stream digests. No corpus admission,
+real-system run, carrier selection, or consumer activation follows.
 
 ## Authority boundary
 
@@ -205,6 +213,51 @@ selection:        none
 This schema implements recoverable evidence identity, not the missing
 completion-motion algorithm. See
 [`EDCM_COMPLETION_MOTION_EVIDENCE.md`](EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
+## Implemented partial initiation boundary
+
+```text
+schema:           ucns.edcm.partial-initiation-boundary/0.13.2
+scope:            fixed nine-witness / fourteen-initiation packet
+Structural Null:  explicit disjoint typed prestate
+seam:             marked source-provenance candidate
+attachment:       partial relation to exact root u=0, B=1, t=0
+twist:            retained source-bound receipt
+visible:          source-linked root projection/0.13.1 with declared loss
+comparison:       constructor-bound exact RC policy/0.13.2
+motion:           exact one-turn, endpoint-validated 360 change and 720 return
+RC packet:        RC01-RC10 pinned to partial scope; arbitrary-real obligations remain inconclusive
+selection:        none
+EDCM activation:  inactive
+METAPAT:          inactive
+```
+
+This surface executes one of the three v0.12 seam alternatives without
+selecting it. Numeric coordinate cuts are movable views and cannot define or
+move hidden zero. The other seam alternatives remain recoverable. See
+[`PARTIAL_INITIATION_BOUNDARY_V013.md`](PARTIAL_INITIATION_BOUNDARY_V013.md).
+
+## Implemented full-corpus execution gate
+
+```text
+schema:           ucns.edcm.full-corpus-execution/0.14.1
+scope:            EDCM admitted-corpus execution evidence
+manifest:         source, count, license/privacy/redaction, adapter, admission
+completion:       iterator exhaustion + count match + exact digest match
+execution proof:  receipt requires module-executed report capability
+receipt identity: complete manifest custody fields + profile, digests, counts
+partial failure:  stopping index and stable failure class retained
+gate effect:      post-run failure-seeking analysis only
+real corpus run:  none claimed by this implementation
+selection:        none
+EDCM activation:  inactive
+METAPAT:          inactive
+```
+
+The gate proves execution completeness only relative to the externally admitted
+manifest and supplied turn stream. It does not verify source-artifact custody,
+replace per-turn evidence, or satisfy a carrier or metric falsifier. See
+[`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ## Unicode and glyph normalization
 
@@ -450,7 +503,11 @@ candidate survives bounded actual-cover materialization without acquiring
 selection authority. v0.11 preserves its exact rational law and inverse while
 recording that binary64 cannot carry its arbitrary-rational identity. v0.12
 specifies the framed double cover, Möbius quotient, coordinate cylinder, and
-separating continuity obligations while leaving the seam and Structural Null
-attachment honest. Executable full-carrier continuity, arbitrary assignment,
-canonical breadth, epicyclic circle, disk, sphere, composition, and completion
-laws remain the living recovery boundary.
+separating continuity obligations. v0.13 gives the missing doorway one bounded
+candidate form: a typed disjoint prestate, marked source seams, twist receipts,
+and non-erasing root motion. v0.14 prevents partial turn streams from opening
+post-run analysis, while leaving source-native adapters and actual complete
+corpus runs unresolved. RC01 and RC03 remain inconclusive, so executable
+arbitrary-real full-carrier continuity, arbitrary assignment, canonical
+breadth, epicyclic circle, disk, sphere, composition, and completion laws remain
+the living recovery boundary.

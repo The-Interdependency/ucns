@@ -2,9 +2,9 @@
 # id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports the UCNS decision registry, EDCM word-gonol and completion-motion evidence profiles, current foundations, and reproducible candidate-research infrastructure
+#   summary: exports the UCNS decision registry, EDCM word-gonol, completion-motion, and full-corpus execution evidence, current foundations, and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
-#   public_surface: option decisions, EDCM observation and completion-motion evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
+#   public_surface: option decisions, EDCM observation, completion-motion, and v0.14 full-corpus execution evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
@@ -12,11 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_public_surface.py and all source-specific test modules
-#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, compatibility profile, and research infrastructure
+#   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: element-assignment law, real-continuous full-carrier relationship beyond the v0.11 exact-rational representation boundary, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: element-assignment law, arbitrary-real seam-side limits and full-carrier relationship beyond the v0.13 partial root attachment, arbitrary-element assignment, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -247,6 +247,25 @@ from .edcm_motion import (
     SourceProvenance,
     record_word_motion,
 )
+from .full_corpus import (
+    POST_RUN_GATE_CLOSED,
+    POST_RUN_GATE_OPEN,
+    V014_FULL_CORPUS_EDCM_ACTIVATION,
+    V014_FULL_CORPUS_METAPAT_ACTIVATION,
+    V014_FULL_CORPUS_SCHEMA_ID,
+    V014_FULL_CORPUS_SCHEMA_VERSION,
+    V014_FULL_CORPUS_SELECTION_EFFECT,
+    AdmittedCorpusManifest,
+    CorpusAdapterIdentity,
+    CorpusRunFailure,
+    CorpusRunFailureKind,
+    CorpusRunStatus,
+    FullCorpusCompletionReceipt,
+    FullCorpusError,
+    FullCorpusExecutionReport,
+    execute_admitted_corpus,
+    issue_full_corpus_completion_receipt,
+)
 from .mobius_experiment import (
     BREADTH_CANDIDATE_IDS,
     FALSIFIER_IDS,
@@ -412,6 +431,51 @@ from .exact_coordinate import (
     run_v011_exact_coordinate_boundary_experiment,
     signed_local_exact_coordinate,
 )
+from .initiation_boundary import (
+    MARKED_SEAM_POLICY_ID,
+    MARKED_SEAM_POLICY_VERSION,
+    PARTIAL_INITIATION_RELATION_ID,
+    PARTIAL_INITIATION_RELATION_VERSION,
+    PARTIAL_INITIATION_SCOPE,
+    RC_COMPARISON_POLICY_CODE_REFERENCE,
+    RC_COMPARISON_POLICY_NAME,
+    RC_COMPARISON_POLICY_VERSION,
+    RC_EXPECTED_VERDICTS,
+    RC_FALSIFIER_IDS,
+    ROOT_VISIBLE_PROJECTION_ID,
+    ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS,
+    ROOT_VISIBLE_PROJECTION_VERSION,
+    SEAM_COORDINATE_VIEW_STATUS,
+    TWIST_RECEIPT_LAW_ID,
+    TWIST_RECEIPT_LAW_VERSION,
+    V013_COMPLETE_RELATIONSHIP_STATUS,
+    V013_COORDINATE_COMPONENT_STATUS,
+    V013_HMMM,
+    V013_INITIATION_BOUNDARY_SCHEMA_ID,
+    V013_INITIATION_BOUNDARY_SCHEMA_VERSION,
+    V013_SEAM_STATUS,
+    V013_SELECTION_EFFECT,
+    V013_STRUCTURAL_NULL_TOPOLOGY_STATUS,
+    CarrierMotionReceipt,
+    ContinuityFalsifierResult,
+    InitiatedCarrierState,
+    InitiationBoundaryError,
+    MarkedInitiationSeam,
+    PartialInitiationAttachment,
+    PartialInitiationBoundaryReport,
+    RootVisibleProjection,
+    SeamCoordinateView,
+    StructuralNullTopologyKind,
+    TwistReceipt,
+    advance_attached_state,
+    build_partial_initiation_attachments,
+    exact_sheet_involution,
+    initiate_carrier_state,
+    partial_initiation_exact_comparison_policy,
+    project_root_visible_state,
+    run_v013_partial_initiation_boundary_experiment,
+    view_marked_seam_at_cut,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -501,6 +565,15 @@ __all__ = [
     "EvidenceStatus", "GeometricAssignment", "GeometryKind", "HmmmBoundary",
     "LawStanding", "MotionStep", "ObservedElement", "ScalarProjection",
     "SourceProvenance", "record_word_motion",
+    "POST_RUN_GATE_CLOSED", "POST_RUN_GATE_OPEN",
+    "V014_FULL_CORPUS_EDCM_ACTIVATION",
+    "V014_FULL_CORPUS_METAPAT_ACTIVATION",
+    "V014_FULL_CORPUS_SCHEMA_ID", "V014_FULL_CORPUS_SCHEMA_VERSION",
+    "V014_FULL_CORPUS_SELECTION_EFFECT", "AdmittedCorpusManifest",
+    "CorpusAdapterIdentity", "CorpusRunFailure", "CorpusRunFailureKind",
+    "CorpusRunStatus", "FullCorpusCompletionReceipt", "FullCorpusError",
+    "FullCorpusExecutionReport", "execute_admitted_corpus",
+    "issue_full_corpus_completion_receipt",
     "BREADTH_CANDIDATE_IDS", "FALSIFIER_IDS", "MINIMUM_WITNESS_TEXTS",
     "PRODUCT_CANDIDATE_IDS", "REQUIRED_COMMUTATION_LABELS",
     "REQUIRED_MAP_DISTINCTIONS", "V05_EXPERIMENT_SCHEMA_ID",
@@ -587,6 +660,32 @@ __all__ = [
     "recover_signed_local_transverse", "render_exact_coordinate_binary64",
     "run_v011_exact_coordinate_boundary_experiment",
     "signed_local_exact_coordinate",
+    "MARKED_SEAM_POLICY_ID", "MARKED_SEAM_POLICY_VERSION",
+    "PARTIAL_INITIATION_RELATION_ID",
+    "PARTIAL_INITIATION_RELATION_VERSION", "PARTIAL_INITIATION_SCOPE",
+    "RC_COMPARISON_POLICY_CODE_REFERENCE", "RC_COMPARISON_POLICY_NAME",
+    "RC_COMPARISON_POLICY_VERSION", "RC_EXPECTED_VERDICTS",
+    "RC_FALSIFIER_IDS", "ROOT_VISIBLE_PROJECTION_ID",
+    "ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS",
+    "ROOT_VISIBLE_PROJECTION_VERSION", "SEAM_COORDINATE_VIEW_STATUS",
+    "TWIST_RECEIPT_LAW_ID", "TWIST_RECEIPT_LAW_VERSION",
+    "V013_COMPLETE_RELATIONSHIP_STATUS",
+    "V013_COORDINATE_COMPONENT_STATUS", "V013_HMMM",
+    "V013_INITIATION_BOUNDARY_SCHEMA_ID",
+    "V013_INITIATION_BOUNDARY_SCHEMA_VERSION", "V013_SEAM_STATUS",
+    "V013_SELECTION_EFFECT", "V013_STRUCTURAL_NULL_TOPOLOGY_STATUS",
+    "CarrierMotionReceipt", "ContinuityFalsifierResult",
+    "InitiatedCarrierState", "InitiationBoundaryError",
+    "MarkedInitiationSeam", "PartialInitiationAttachment",
+    "PartialInitiationBoundaryReport", "RootVisibleProjection",
+    "SeamCoordinateView",
+    "StructuralNullTopologyKind", "TwistReceipt",
+    "advance_attached_state", "build_partial_initiation_attachments",
+    "exact_sheet_involution", "initiate_carrier_state",
+    "partial_initiation_exact_comparison_policy",
+    "project_root_visible_state",
+    "run_v013_partial_initiation_boundary_experiment",
+    "view_marked_seam_at_cut",
     "BRIDGE_SCHEMA_ID",
     "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",

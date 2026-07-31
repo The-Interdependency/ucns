@@ -56,6 +56,8 @@
 #   cleanup: none
 # === END CHECKS ===
 
+from copy import deepcopy
+
 import pytest
 
 from ucns import (
@@ -74,6 +76,7 @@ from ucns import (
     load_option_registry,
     option_dimension,
 )
+from ucns.options import _validate_registry
 
 
 def test_ucns_identifier_has_no_canonical_expansion() -> None:
@@ -81,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.8.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.10.2"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -94,6 +97,10 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     assert (
         project["motion_evidence_schema"]
         == "ucns.edcm.completion-motion-evidence/0.1.0"
+    )
+    assert (
+        project["full_corpus_execution_schema"]
+        == "ucns.edcm.full-corpus-execution/0.14.1"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -141,6 +148,13 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "lossy binary64 renderings" in decisions[
         "exact-coordinate-representation-boundary"
     ]
+    assert "partial-initiation-boundary" in decisions
+    assert "fourteen minimum-packet word initiations" in decisions[
+        "partial-initiation-boundary"
+    ]
+    assert "full-corpus-execution-gate" in decisions
+    assert "iterator is exhausted" in decisions["full-corpus-execution-gate"]
+    assert "cannot select a carrier" in decisions["full-corpus-execution-gate"]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
     assert coordinate_dimension["selection_effect"] == "none"
@@ -167,6 +181,37 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert {
         choice["standing"] for choice in representation_dimension["choices"]
     } == {"experiment-candidate"}
+    attachment_dimension = option_dimension("initiation-attachment")
+    assert attachment_dimension["display_rule"] == (
+        "preserve-all-seam-alternatives"
+    )
+    assert attachment_dimension["display_order"] == [
+        "marked-source-bound-partial-attachment",
+        "intrinsic-derived-initiation-seam",
+        "invariant-initiation-equivalence-class",
+    ]
+    assert attachment_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in attachment_dimension["choices"]
+    } == {
+        "marked-source-bound-partial-attachment": "implemented-candidate",
+        "intrinsic-derived-initiation-seam": "unresolved",
+        "invariant-initiation-equivalence-class": "unresolved",
+    }
+
+    promoted_registry = deepcopy(registry)
+    promoted_attachment = next(
+        dimension
+        for dimension in promoted_registry["dimensions"]
+        if dimension["id"] == "initiation-attachment"
+    )
+    promoted_attachment["choices"][0]["standing"] = "decided-constraint"
+    with pytest.raises(
+        OptionRegistryError,
+        match="choice standings are fixed",
+    ):
+        _validate_registry(promoted_registry)
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:

@@ -55,10 +55,23 @@ domain. v0.12 now specifies, without adding runtime behavior, the real
 product-quotient topology and falsifiers required to extend that candidate into
 a complete carrier relationship. It separates the continuous affine non-null
 component from the still-unresolved seam, Structural Null attachment, causal
-initiation, and arbitrary-element assignment. No law is selected, and
-full-carrier real continuity, higher coordinates, and global C1/C2 equivalence
-remain open. Any eventual selection cannot become universal UCNS canon or
-transfer proof or measurement validity.
+initiation, and arbitrary-element assignment. v0.13 implements one bounded
+attachment candidate: the typed Structural Null prestate reaches the exact
+rational root through fourteen source-provenance marked seams and twist
+receipts, and two successive turns restore local state without erasing motion
+history. Its `0.13.2` hardening binds the actual exact comparator, pins each RC
+result to the partial scope, includes native provenance in attachment identity,
+requires exact one-turn endpoint-validated receipts, and rejects trajectory,
+verdict, or boundary-status substitution. Arbitrary-real seam limits and arbitrary-element transverse
+assignment remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
+post-run analysis requires supplied-stream exhaustion, externally declared
+turn-count agreement, and exact source/reconstruction stream-digest agreement.
+Its `0.14.1` receipts additionally require module-executed evidence and bind
+license, privacy, redaction, and every other manifest authority field. It does
+not claim a real-system run or activate EDCM. No law is selected, and
+full-carrier real continuity, higher
+coordinates, and global C1/C2 equivalence remain open. Any eventual selection
+cannot become universal UCNS canon or transfer proof or measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -77,10 +90,10 @@ dimension has a hidden global default.
 
 ## Current implemented carrier candidates and relationship evidence
 
-The repository retains two implemented carrier candidates, one bounded
-relationship experiment, one corrective envelope experiment, and one bounded
-coordinate-admissibility experiment without selecting a carrier, coordinate
-law, or convention:
+The repository retains two implemented carrier candidates and an ordered
+lineage of bounded relationship, envelope, coordinate, representation, and
+initiation-attachment experiments without selecting a carrier, coordinate law,
+seam representation, or convention:
 
 1. The **directed twofold branched angular cover** remains executable comparison
    evidence. It is not an eligible EDCM target unless an explicit reversible map
@@ -115,6 +128,14 @@ law, or convention:
    and lifted-turn witnesses collide in binary64. Exact-law evidence therefore
    survives without pretending the float representation is arbitrary-rational
    or selected.
+7. The **partial initiation boundary** represents Structural Null as an
+   explicit disjoint typed prestate and attaches all fourteen minimum-packet
+   word initiations to the exact root coordinate through marked source seams and
+   twist receipts. Numeric coordinate cuts remain nonauthoritative views.
+   The source-linked visible projection and exact comparison policy are pinned;
+   successive endpoint-validated 360° motions append history while producing
+   360° local change and 720° local return. `RC01` and `RC03` remain
+   inconclusive.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -125,6 +146,30 @@ It adds no implemented carrier surface or activation.
 
 See
 [`docs/FULL_CARRIER_CONTINUITY_SPEC_V012.md`](docs/FULL_CARRIER_CONTINUITY_SPEC_V012.md).
+
+The implemented **v0.13 partial initiation boundary** executes one marked-seam
+alternative without selecting it. It supplies an explicit partial topology,
+source-bound initiation edges, twist receipts, exact quotient compatibility,
+and bounded `RC01`–`RC10` results. The `0.13.2` report schema prevents
+comparator, scope, provenance, displacement, trajectory, verdict, and
+boundary-status substitution. It does not
+establish arbitrary-real continuity or arbitrary-element assignment.
+
+See
+[`docs/PARTIAL_INITIATION_BOUNDARY_V013.md`](docs/PARTIAL_INITIATION_BOUNDARY_V013.md).
+
+The implemented **v0.14 full-corpus execution gate** consumes every supplied
+turn, retains exact incomplete-run stopping evidence, and issues a receipt only
+after iterator exhaustion, admitted expected-count agreement, and exact
+source/reconstruction stream-digest agreement. Schema `0.14.1` rejects
+merely declared complete reports and binds the complete custody-bearing
+manifest into receipt identity. The receipt opens
+failure-seeking post-run analysis only; it does not admit a corpus, authenticate
+source custody, satisfy a falsifier, select a carrier, or activate EDCM or
+METAPAT.
+
+See
+[`docs/FULL_CORPUS_EXECUTION_GATE_V014.md`](docs/FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 The directed-cover comparison candidate provides:
 
@@ -222,6 +267,21 @@ This schema makes trajectory retention executable without fabricating the
 unresolved element-assignment, transverse-Möbius, geometric-transition,
 higher-gonol, completion, or metric laws. See
 [`docs/EDCM_COMPLETION_MOTION_EVIDENCE.md`](docs/EDCM_COMPLETION_MOTION_EVIDENCE.md).
+
+### EDCM full-corpus execution evidence
+
+- explicit source version/digest, expected count, license, privacy, redaction,
+  adapter, and external admission identity;
+- complete consumption of the supplied corpus iterator;
+- exact turn-stream reconstruction digest agreement;
+- incomplete-run stopping index and stable failure class;
+- post-run analysis receipt only after all completion invariants hold; and
+- no source-admission, carrier-selection, metric-validity, EDCM-activation, or
+  METAPAT-activation effect.
+
+This gate does not replace source-native adapters, raw corpus custody, per-turn
+trajectory evidence, or actual real-system runs. See
+[`docs/FULL_CORPUS_EXECUTION_GATE_V014.md`](docs/FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ### Native direct-Möbius root-loop candidate
 
@@ -452,10 +512,14 @@ signed-local route into actual cover fields without selecting it. v0.11
 preserves that route exactly over the rational transverse interval and records
 why binary64 cannot carry its arbitrary-rational identity. v0.12 specifies the
 real topological candidate and demonstrates why smooth affine coordinates alone
-cannot supply the seam or Structural Null initiation. The next truth obligations
-are executable full-carrier attachment evidence, arbitrary-element assignment,
+cannot supply the seam or Structural Null initiation. v0.13 now builds the
+bounded door without mistaking it for the whole carrier: marked source seams,
+twist receipts, and append-only root motion are executable while arbitrary-real
+limits remain inconclusive. The next truth obligations are arbitrary-real
+full-carrier attachment evidence, arbitrary-element transverse assignment,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
-A0-betatest specimen, a deterministic full-MultiWOZ adapter and run receipt,
+A0-betatest specimen, a deterministic source-native MultiWOZ adapter and
+corrected v0.14-gated complete run,
 higher-gonol composition, and evidence from failures surfaced across complete
 corpora—without allowing present metric projections to select the geometry that
 validates them.

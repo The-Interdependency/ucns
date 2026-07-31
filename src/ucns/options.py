@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.8.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.10.2"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -112,6 +112,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "edcm-space-origin-assignment",
         "edcm-source-normalization-none",
         "full-corpus-runs",
+        "full-corpus-execution-gate",
         "ucns-completion-motion-root",
         "completion-scoped-to-declared-boundary",
         "trajectory-before-scalar",
@@ -119,6 +120,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "exact-rational-transverse-envelope-correction",
         "bounded-carrier-coordinate-admissibility",
         "exact-coordinate-representation-boundary",
+        "partial-initiation-boundary",
     }
 )
 
@@ -155,7 +157,10 @@ def _validate_registry(data: dict[str, Any]) -> None:
             "Completion closes a declared construction relative to its declared "
             "boundary and does not exhaust the underlying unknowable."
         ),
-        "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+            "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
+            "full_corpus_execution_schema": (
+                "ucns.edcm.full-corpus-execution/0.14.1"
+            ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
     }
@@ -242,6 +247,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "carrier-model",
         "carrier-coordinate-admissibility",
         "exact-coordinate-representation",
+        "initiation-attachment",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -335,6 +341,37 @@ def _validate_registry(data: dict[str, Any]) -> None:
     if representation.get("selection_effect") != "none":
         raise OptionRegistryError(
             "exact-coordinate representation cannot select a candidate"
+        )
+
+    attachment = dimension_by_id["initiation-attachment"]
+    if attachment.get("display_rule") != "preserve-all-seam-alternatives":
+        raise OptionRegistryError(
+            "initiation attachment must preserve all seam alternatives"
+        )
+    if attachment.get("display_order") != [
+        "marked-source-bound-partial-attachment",
+        "intrinsic-derived-initiation-seam",
+        "invariant-initiation-equivalence-class",
+    ]:
+        raise OptionRegistryError(
+            "initiation attachment display order mismatch"
+        )
+    if attachment.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "initiation attachment cannot select a candidate"
+        )
+    attachment_standings = {
+        choice.get("id"): choice.get("standing")
+        for choice in attachment.get("choices", ())
+        if isinstance(choice, dict)
+    }
+    if attachment_standings != {
+        "marked-source-bound-partial-attachment": "implemented-candidate",
+        "intrinsic-derived-initiation-seam": "unresolved",
+        "invariant-initiation-equivalence-class": "unresolved",
+    }:
+        raise OptionRegistryError(
+            "initiation attachment choice standings are fixed"
         )
 
     corpora = data.get("real_system_corpus_candidates")

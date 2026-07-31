@@ -36,6 +36,11 @@ def test_public_surface_is_bounded() -> None:
         "EdcmCompletionTrace",
         "HmmmBoundary",
         "ScalarProjection",
+        "AdmittedCorpusManifest",
+        "FullCorpusExecutionReport",
+        "FullCorpusCompletionReceipt",
+        "execute_admitted_corpus",
+        "issue_full_corpus_completion_receipt",
         "CarrierExperimentReport",
         "CarrierRelationship",
         "FalsifierVerdict",
@@ -63,6 +68,14 @@ def test_public_surface_is_bounded() -> None:
         "Binary64CollisionWitness",
         "ExactCoordinateBoundaryReport",
         "run_v011_exact_coordinate_boundary_experiment",
+        "MarkedInitiationSeam",
+        "TwistReceipt",
+        "PartialInitiationAttachment",
+        "PartialInitiationBoundaryReport",
+        "RootVisibleProjection",
+        "partial_initiation_exact_comparison_policy",
+        "project_root_visible_state",
+        "run_v013_partial_initiation_boundary_experiment",
     ):
         assert expected in exported
 
