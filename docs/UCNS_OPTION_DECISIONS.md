@@ -381,6 +381,10 @@ applies the exact circle candidate reversibly, and preserves the completion
 binding plus unresolved or rejected initiation as explicit blockers. The
 v0.17 producer derives the receipt, cardinality, and ordered outcome ids from
 its exact validated authority report; callers cannot supply them inline.
+The report also binds the fixed full three-admission/three-outcome producer
+declaration, so consistently truncated v0.16 and v0.17 report layers cannot
+mint a smaller scope. Additional scopes require new versioned producer-owned
+declarations.
 Content, digests, runtime identity, A0 lanes, carrier position alone, scalar
 projections, binary64 renderings, and an unbound tuple length are not
 derivation inputs. The

@@ -6,7 +6,7 @@
 #   owner: Erin Spencer
 #   public_surface: CompleteOrderedSourceScopeBinding, OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, bind_complete_ordered_source_scope, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment
 #   internal_surface: fixed SC01-SC10 evidence construction and exact validation helpers
-#   auth_boundary: complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact authority-report trace; callers cannot supply authority fields, cardinality, or outcome ids inline
+#   auth_boundary: complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact fixed full authority-report trace; callers cannot supply authority fields, cardinality, outcome ids, or consistently truncated report layers inline
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: a producer-issued completion receipt, exact v0.17 authority report and trace identity, source occurrence index, and report-derived complete finite scope cardinality derive coordinates; content, caller-supplied authority fields, digests, runtime identity, carrier position, and projections do not
@@ -95,6 +95,8 @@ from .explicit_geometric_assignment import (
 )
 from .gonol_initiation import (
     TOTAL_STRUCTURAL_NULL_TOPOLOGY_STATUS,
+    V017_DEMONSTRATION_EXPECTED_OUTCOME_IDS,
+    V017_DEMONSTRATION_TRACE_ID,
     GonolInitiationDisposition,
     GonolInitiationOutcome,
     GonolInitiationReceipt,
@@ -119,11 +121,9 @@ SOURCE_COORDINATE_OUTCOME_RELATION_STATUS = "total-tagged-over-complete-v017-ini
 ARBITRARY_SOURCE_ASSIGNMENT_STATUS = "partial-derived-for-initiated-word-outcomes-with-explicit-blockers"
 SOURCE_COORDINATE_HIGHER_GEOMETRY_STATUS = "unresolved-circle-entry-only"
 SOURCE_COORDINATE_FALSIFIER_IDS = tuple(f"SC{index:02d}" for index in range(1, 11))
-V019_DEMONSTRATION_SOURCE_SCOPE_ID = "ucns-v017-gonol-initiation-demonstration"
+V019_DEMONSTRATION_SOURCE_SCOPE_ID = V017_DEMONSTRATION_TRACE_ID
 V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS = (
-    "v016-demo:occurrence:0:gonol-initiation-outcome",
-    "v016-demo:occurrence:1:gonol-initiation-outcome",
-    "v016-demo:occurrence:2:gonol-initiation-outcome",
+    V017_DEMONSTRATION_EXPECTED_OUTCOME_IDS
 )
 V019_HMMM = (
     "selection or canonization of the ordered-source midpoint law remains unresolved",

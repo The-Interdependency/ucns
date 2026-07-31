@@ -29,7 +29,9 @@ Yes, within one complete finite ordered v0.17 trace whose exhaustion,
 cardinality, and ordered outcome identities are carried by a producer-issued
 receipt derived from the exact validated v0.17 authority report. Callers cannot
 mint those authority fields inline. The candidate is the ordered-cell midpoint
-law.
+law. The current trace-level issuer is intentionally limited to the fixed full
+three-outcome v0.17 producer demonstration. Another source scope requires a new
+versioned producer-owned declaration rather than a caller-constructed report.
 
 ## Domain claims
 
@@ -160,6 +162,8 @@ The inputs are structural:
 - a v0.17 producer-issued exhaustion receipt derived from the exact validated
   authority report, including source identity, receipt identity, exhaustion,
   scope identity, cardinality, and ordered outcome identities;
+- the producer-owned fixed declaration of all three v0.17 demonstration
+  admission ids and outcome ids;
 - exact complete scope cardinality from that binding rather than tuple length;
 - exact upstream trace and outcome objects;
 - explicit initiated-word standing.
@@ -203,8 +207,11 @@ the exact trace object and a receipt that the v0.17 producer derives from its
 exact validated report, including the report-backed cardinality and ordered
 outcome identities. A rewrapped prefix cannot be made into that authority
 report, and the binding API accepts no caller-authored authority strings,
-cardinality, or outcome ids. A distinct scope requires a distinct validated
-producer report and receipt; tuple length alone never supplies completion.
+cardinality, or outcome ids. Consistently truncating both the v0.16 and v0.17
+report layers also fails because the v0.17 authority report validates the fixed
+full producer-owned three-admission/three-outcome declaration. A distinct scope
+requires a new versioned producer declaration and receipt; tuple length alone
+never supplies completion.
 Every result retains the binding and the exact upstream outcome object at its
 original index.
 
@@ -281,4 +288,6 @@ evidence, alternatives, rollback, and migration.
 The in-process receipt verifies the exact v0.17 producer report and prevents
 callers from self-reporting scope fields. Trust in external producers and
 cryptographic authentication across storage or transport remain separate
-obligations.
+obligations. The current issuer supports only the fixed v0.17 demonstration;
+general producer enrollment is not silently inferred from constructible report
+objects.

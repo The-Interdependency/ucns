@@ -61,6 +61,7 @@ from fractions import Fraction
 
 import pytest
 
+from ucns.assignment_boundary import AssignmentAdmissionTrace
 from ucns.direct_mobius import (
     NativeMobiusFrame,
     StructuralNullKind,
@@ -258,9 +259,26 @@ def test_prefix_cannot_reuse_or_impersonate_complete_scope_binding() -> None:
     with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
         issue_gonol_initiation_scope_completion_receipt(prefix)  # type: ignore[arg-type]
 
-    with pytest.raises(GonolInitiationError, match="exact v0.16 admitted"):
+    with pytest.raises(GonolInitiationError, match="fixed full producer scope"):
         replace(
             authority_receipt.authority_report,
+            demonstration_trace=prefix,
+        )
+
+    authority_report = authority_receipt.authority_report
+    upstream_report = authority_report.upstream
+    upstream_prefix = AssignmentAdmissionTrace(
+        upstream_report.demonstration_trace.trace_id,
+        upstream_report.demonstration_trace.outcomes[:1],
+    )
+    truncated_upstream_report = replace(
+        upstream_report,
+        demonstration_trace=upstream_prefix,
+    )
+    with pytest.raises(GonolInitiationError, match="fixed full producer scope"):
+        replace(
+            authority_report,
+            upstream=truncated_upstream_report,
             demonstration_trace=prefix,
         )
 

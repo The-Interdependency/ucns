@@ -6,7 +6,7 @@
 #   owner: Erin Spencer
 #   public_surface: OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, GonolInitiationScopeCompletionReceipt, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, issue_gonol_initiation_scope_completion_receipt, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment
 #   internal_surface: fixed GI01-GI08 evidence construction and exact validation helpers
-#   auth_boundary: the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report and derives all receipt fields from that report; producer trust and external transport authentication remain outside this module
+#   auth_boundary: the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report whose trace, three admissions, and three outcomes match the fixed producer-owned demonstration declaration; it derives all receipt fields from that report while external transport authentication remains outside this module
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: v0.16 adapter evidence and exact source-bound Structural Null manifestations remain linked; neither evidence identity nor carrier position zero becomes geometry
@@ -57,8 +57,8 @@
 #   since: 2026-07-31
 #
 # id: gonol_initiation_scope_receipt_is_producer_issued
-#   given: the exact validated v0.17 authority report is supplied to the scope-exhaustion issuer
-#   then: receipt scope, cardinality, ordered outcome ids, and identity derive from that report while prefixes, sampling, construction completion, and selection remain absent
+#   given: the exact validated v0.17 authority report matching the fixed full producer-owned demonstration scope is supplied to the scope-exhaustion issuer
+#   then: receipt scope, cardinality, ordered outcome ids, and identity derive from that report while consistent multi-layer prefixes, sampling, construction completion, and selection remain absent
 #   class: evidence
 #   since: 2026-07-31
 # === END CONTRACTS ===
@@ -131,6 +131,14 @@ GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_VERSION = "0.19.0"
 GONOL_INITIATION_SCOPE_AUTHORITY_SOURCE = (
     "src/ucns/gonol_initiation.py:"
     "issue_gonol_initiation_scope_completion_receipt"
+)
+V017_DEMONSTRATION_TRACE_ID = "ucns-v017-gonol-initiation-demonstration"
+V017_DEMONSTRATION_EXPECTED_ADMISSION_IDS = tuple(
+    f"v016-demo:occurrence:{index}" for index in range(3)
+)
+V017_DEMONSTRATION_EXPECTED_OUTCOME_IDS = tuple(
+    f"{admission_id}:gonol-initiation-outcome"
+    for admission_id in V017_DEMONSTRATION_EXPECTED_ADMISSION_IDS
 )
 
 GONOL_INITIATION_FALSIFIER_IDS = tuple(
@@ -865,6 +873,21 @@ class GonolInitiationBoundaryReport:
             outcome.admission
             for outcome in self.upstream.demonstration_trace.outcomes
         )
+        if (
+            self.demonstration_trace.trace_id != V017_DEMONSTRATION_TRACE_ID
+            or tuple(
+                admission.admission_id for admission in upstream_admissions
+            )
+            != V017_DEMONSTRATION_EXPECTED_ADMISSION_IDS
+            or tuple(
+                outcome.outcome_id
+                for outcome in self.demonstration_trace.outcomes
+            )
+            != V017_DEMONSTRATION_EXPECTED_OUTCOME_IDS
+        ):
+            raise GonolInitiationError(
+                "v0.17 authority report must retain the fixed full producer scope"
+            )
         if tuple(
             outcome.admission for outcome in self.demonstration_trace.outcomes
         ) != upstream_admissions:
@@ -1145,7 +1168,7 @@ def _demonstration_trace(
         ),
     )
     return GonolInitiationTrace(
-        trace_id="ucns-v017-gonol-initiation-demonstration",
+        trace_id=V017_DEMONSTRATION_TRACE_ID,
         outcomes=outcomes,
     )
 
@@ -1183,6 +1206,9 @@ __all__ = [
     "V017_GONOL_INITIATION_SCHEMA_VERSION",
     "V017_HMMM",
     "V017_SELECTION_EFFECT",
+    "V017_DEMONSTRATION_TRACE_ID",
+    "V017_DEMONSTRATION_EXPECTED_ADMISSION_IDS",
+    "V017_DEMONSTRATION_EXPECTED_OUTCOME_IDS",
     "GonolInitiationBoundaryReport",
     "GonolInitiationDisposition",
     "GonolInitiationError",

@@ -95,9 +95,9 @@ outcomes, and linked lossy rendering. This is explicit-input candidate
 application only: the law deriving coordinates from arbitrary source evidence,
 total Structural Null topology, higher geometry, completion, selection, and
 activation remain unresolved.
-v0.19 now supplies one transparent source-to-coordinate candidate over
-authority-bound complete finite ordered initiation traces. Occurrence i in the
-producer-receipted scope cardinality n receives
+v0.19 now supplies one transparent source-to-coordinate candidate and applies
+it over the fixed full producer-owned v0.17 demonstration trace. Occurrence i
+in the producer-receipted scope cardinality n receives
 the exact midpoint p=(2i+1)/(2n), local transverse u=2p-1, and lifted turns
 t=2p. The law preserves exact upstream object identity, order, equal-content
 multiplicity, reversible circle-candidate application, explicit completion
@@ -106,6 +106,8 @@ digest, caller-supplied authority strings, or an unbound tuple length as
 geometry. Candidate
 selection, cross-scope and higher-gonol composition, total Structural Null
 topology, higher geometry, completion, and activation remain unresolved.
+Additional source scopes require new versioned producer-owned declarations;
+constructible report prefixes cannot create them.
 Any eventual selection cannot become universal UCNS canon or transfer proof or
 measurement validity.
 

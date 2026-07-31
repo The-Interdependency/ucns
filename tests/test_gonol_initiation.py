@@ -62,6 +62,7 @@ import pytest
 
 from ucns.assignment_boundary import (
     ARBITRARY_GEOMETRIC_ASSIGNMENT_STATUS,
+    AssignmentAdmissionTrace,
     admit_observed_element,
 )
 from ucns.direct_mobius import (
@@ -271,6 +272,25 @@ def test_scope_completion_receipt_derives_only_from_exact_authority_report() -> 
     with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
         issue_gonol_initiation_scope_completion_receipt(  # type: ignore[arg-type]
             report.demonstration_trace
+        )
+
+    upstream_prefix = AssignmentAdmissionTrace(
+        report.upstream.demonstration_trace.trace_id,
+        report.upstream.demonstration_trace.outcomes[:1],
+    )
+    truncated_upstream = replace(
+        report.upstream,
+        demonstration_trace=upstream_prefix,
+    )
+    initiation_prefix = GonolInitiationTrace(
+        report.demonstration_trace.trace_id,
+        report.demonstration_trace.outcomes[:1],
+    )
+    with pytest.raises(GonolInitiationError, match="fixed full producer scope"):
+        replace(
+            report,
+            upstream=truncated_upstream,
+            demonstration_trace=initiation_prefix,
         )
 
 

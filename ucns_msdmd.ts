@@ -2483,9 +2483,9 @@ export default defineMsdmdCollection({
       "block": "CONTRACTS",
       "fields": {
         "class": "evidence",
-        "given": "the exact validated v0.17 authority report is supplied to the scope-exhaustion issuer",
+        "given": "the exact validated v0.17 authority report matching the fixed full producer-owned demonstration scope is supplied to the scope-exhaustion issuer",
         "since": "2026-07-31",
-        "then": "receipt scope, cardinality, ordered outcome ids, and identity derive from that report while prefixes, sampling, construction completion, and selection remain absent"
+        "then": "receipt scope, cardinality, ordered outcome ids, and identity derive from that report while consistent multi-layer prefixes, sampling, construction completion, and selection remain absent"
       },
       "file": "src/ucns/gonol_initiation.py",
       "id": "gonol_initiation_scope_receipt_is_producer_issued"
@@ -2494,7 +2494,7 @@ export default defineMsdmdCollection({
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
-        "auth_boundary": "the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report and derives all receipt fields from that report; producer trust and external transport authentication remain outside this module",
+        "auth_boundary": "the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report whose trace, three admissions, and three outcomes match the fixed producer-owned demonstration declaration; it derives all receipt fields from that report while external transport authentication remains outside this module",
         "internal_surface": "fixed GI01-GI08 evidence construction and exact validation helpers",
         "module_kind": "experiment",
         "module_name": "gonol_initiation",
@@ -3225,7 +3225,7 @@ export default defineMsdmdCollection({
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
-        "auth_boundary": "complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact authority-report trace; callers cannot supply authority fields, cardinality, or outcome ids inline",
+        "auth_boundary": "complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact fixed full authority-report trace; callers cannot supply authority fields, cardinality, outcome ids, or consistently truncated report layers inline",
         "internal_surface": "fixed SC01-SC10 evidence construction and exact validation helpers",
         "module_kind": "experiment",
         "module_name": "source_coordinate",
