@@ -2250,7 +2250,7 @@ export default defineMsdmdCollection({
         "class": "evidence",
         "given": "every successfully processed speaker turn is observed",
         "since": "2026-07-31",
-        "then": "the exact fixed profile implementation observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
+        "then": "the exact fixed profile implementation with canonical authority fields observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete"
       },
       "file": "src/ucns/full_corpus.py",
       "id": "full_corpus_gate_requires_exact_stream_reconstruction"

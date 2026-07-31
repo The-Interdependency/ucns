@@ -205,6 +205,19 @@ def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
         def __ne__(self, other: object) -> bool:
             return False
 
+    forged_profile = EdcmWordGonolProfile(
+        profile_id=BehaviorOverridingStr("forged-profile"),
+    )
+    with pytest.raises(
+        FullCorpusError,
+        match="profile authority fields and options must be exact and canonical",
+    ):
+        execute_admitted_corpus(
+            _manifest(),
+            _turns(),
+            profile=forged_profile,
+        )
+
     substituted = execute_admitted_corpus(
         _manifest(),
         (("user", BehaviorOverridingStr("A B")),),

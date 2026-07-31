@@ -484,6 +484,40 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     ):
         replace(report, hmmm=AlwaysEqualTuple(("all-complete",)))
 
+    forged_root_coordinate = replace(
+        report.attachments[0].twist_receipt.post_coordinate,
+        selection_effect=AlwaysEqualStr("selected"),
+    )
+    forged_twist = replace(
+        report.attachments[0].twist_receipt,
+        post_coordinate=forged_root_coordinate,
+    )
+    forged_attachment = replace(
+        report.attachments[0],
+        twist_receipt=forged_twist,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment twist coordinate must use exact canonical",
+    ):
+        replace(
+            report,
+            attachments=(forged_attachment, *report.attachments[1:]),
+        )
+
+    forged_initial = replace(
+        report.trajectory[0],
+        coordinate=forged_root_coordinate,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="trajectory coordinate must use exact canonical",
+    ):
+        replace(
+            report,
+            trajectory=(forged_initial, *report.trajectory[1:]),
+        )
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -552,7 +586,7 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     )[0]
     with pytest.raises(
         InitiationBoundaryError,
-        match="attachment identities must contain only exact built-in",
+        match="attachment twist native state must use exact canonical",
     ):
         replace(
             report,

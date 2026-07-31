@@ -34,7 +34,7 @@
 #
 # id: full_corpus_gate_requires_exact_stream_reconstruction
 #   given: every successfully processed speaker turn is observed
-#   then: the exact fixed profile implementation observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
+#   then: the exact fixed profile implementation with canonical authority fields observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
 #   class: evidence
 #   since: 2026-07-31
 #
@@ -73,6 +73,7 @@ from typing import Iterable
 
 from .edcm import (
     EDCM_PROFILE_ID,
+    EDCM_PROFILE_OPTIONS,
     EDCM_PROFILE_SCOPE,
     EDCM_PROFILE_VERSION,
     EdcmTurnObservation,
@@ -453,6 +454,25 @@ def execute_admitted_corpus(
     if type(active_profile) is not EdcmWordGonolProfile:
         raise FullCorpusError(
             "profile must use the exact EdcmWordGonolProfile implementation"
+        )
+    if (
+        type(active_profile.profile_id) is not str
+        or type(active_profile.version) is not str
+        or type(active_profile.scope) is not str
+        or type(active_profile.options) is not tuple
+        or any(
+            type(option) is not tuple
+            or len(option) != 2
+            or any(type(value) is not str for value in option)
+            for option in active_profile.options
+        )
+        or active_profile.profile_id != EDCM_PROFILE_ID
+        or active_profile.version != EDCM_PROFILE_VERSION
+        or active_profile.scope != EDCM_PROFILE_SCOPE
+        or active_profile.options != EDCM_PROFILE_OPTIONS
+    ):
+        raise FullCorpusError(
+            "profile authority fields and options must be exact and canonical"
         )
 
     source_digest = _empty_stream_digest()

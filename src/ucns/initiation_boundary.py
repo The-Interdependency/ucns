@@ -280,6 +280,32 @@ def _require_exact_binary64_rendering_types(
         )
 
 
+def _require_exact_native_state_types(
+    state: object,
+    field: str,
+) -> None:
+    if type(state) is not NativeMobiusState:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact NativeMobiusState"
+        )
+    if (
+        type(state.phase_turns) is not Fraction
+        or type(state.frame) is not NativeMobiusFrame
+        or type(state.source_links) is not tuple
+        or any(type(value) is not str for value in state.source_links)
+        or type(state.parent_observation_ids) is not tuple
+        or any(
+            type(value) is not str
+            for value in state.parent_observation_ids
+        )
+        or type(state.initiation_event_id) is not str
+        or type(state.completion_scope) is not str
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical native-state field types"
+        )
+
+
 def _fraction_key(value: Fraction) -> str:
     return f"{value.numerator}/{value.denominator}"
 
@@ -1038,6 +1064,27 @@ class PartialInitiationBoundaryReport:
                 "v0.13 attachments must be an exact tuple of "
                 "PartialInitiationAttachment values"
             )
+        for attachment in self.attachments:
+            if (
+                type(attachment.event) is not MobiusInitiationEvent
+                or type(attachment.seam) is not MarkedInitiationSeam
+                or type(attachment.twist_receipt) is not TwistReceipt
+            ):
+                raise InitiationBoundaryError(
+                    "v0.13 attachments must use exact nested evidence types"
+                )
+            _require_exact_coordinate_types(
+                attachment.twist_receipt.post_coordinate,
+                "attachment twist coordinate",
+            )
+            _require_exact_native_state_types(
+                attachment.twist_receipt.post_native_state,
+                "attachment twist native state",
+            )
+            _require_exact_native_state_types(
+                attachment.event.post_state,
+                "attachment event native state",
+            )
         retained_attachment_identities = tuple(
             item.attachment_identity for item in self.attachments
         )
@@ -1078,6 +1125,18 @@ class PartialInitiationBoundaryReport:
             )
         initial, after_360, after_720 = self.trajectory
         for state in self.trajectory:
+            if type(state.attachment) is not PartialInitiationAttachment:
+                raise InitiationBoundaryError(
+                    "trajectory states must retain exact attachment values"
+                )
+            _require_exact_coordinate_types(
+                state.coordinate,
+                "trajectory coordinate",
+            )
+            _require_exact_native_state_types(
+                state.native_state,
+                "trajectory native state",
+            )
             if type(state.motion_history) is not tuple or any(
                 type(receipt) is not CarrierMotionReceipt
                 for receipt in state.motion_history
