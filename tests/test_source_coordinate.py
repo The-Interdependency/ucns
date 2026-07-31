@@ -74,8 +74,10 @@ from ucns.exact_coordinate import (
 )
 from ucns.gonol_initiation import (
     GonolInitiationDisposition,
+    GonolInitiationError,
     GonolInitiationTrace,
     initiate_word_gonol,
+    issue_gonol_initiation_scope_completion_receipt,
     record_gonol_initiation_outcome,
 )
 from ucns.source_coordinate import (
@@ -242,24 +244,34 @@ def test_prefix_cannot_reuse_or_impersonate_complete_scope_binding() -> None:
     complete = report.demonstration_trace
     upstream = complete.upstream_trace
     prefix = GonolInitiationTrace(
-        "v019-test:prefix-trace",
+        upstream.trace_id,
         upstream.outcomes[:1],
     )
+    authority_receipt = complete.scope_binding.authority_receipt
 
     with pytest.raises(SourceCoordinateError, match="exact supplied trace"):
         derive_source_coordinate_trace(prefix, complete.scope_binding)
 
-    with pytest.raises(SourceCoordinateError, match="cardinality"):
-        bind_complete_ordered_source_scope(
-            prefix,
-            authority_source="fixture://external-complete-scope-authority",
-            authority_receipt_id="fixture://external-complete-scope-receipt",
-            authority_evidence=("declared complete three-outcome source",),
-            source_scope_id=prefix.trace_id,
-            expected_cardinality=len(upstream.outcomes),
-            expected_outcome_ids=tuple(
-                outcome.outcome_id for outcome in upstream.outcomes
-            ),
+    with pytest.raises(SourceCoordinateError, match="exact supplied trace"):
+        bind_complete_ordered_source_scope(prefix, authority_receipt)
+
+    with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
+        issue_gonol_initiation_scope_completion_receipt(prefix)  # type: ignore[arg-type]
+
+    with pytest.raises(GonolInitiationError, match="exact v0.16 admitted"):
+        replace(
+            authority_receipt.authority_report,
+            demonstration_trace=prefix,
+        )
+
+    with pytest.raises(
+        GonolInitiationError,
+        match="exact authority report",
+    ):
+        replace(
+            authority_receipt,
+            expected_cardinality=1,
+            expected_outcome_ids=(upstream.outcomes[0].outcome_id,),
         )
 
 
@@ -291,25 +303,15 @@ def test_equal_content_is_separate_and_report_remains_nonselecting() -> None:
         "v019-test:equal-content-trace",
         (first, initiated_second),
     )
-    scope_binding = bind_complete_ordered_source_scope(
-        equal_content_trace,
-        authority_source="fixture://equal-content-complete-scope-authority",
-        authority_receipt_id="fixture://equal-content-complete-scope-receipt",
-        authority_evidence=("declared complete two-outcome source",),
-        source_scope_id=equal_content_trace.trace_id,
-        expected_cardinality=2,
-        expected_outcome_ids=tuple(
-            outcome.outcome_id for outcome in equal_content_trace.outcomes
-        ),
-    )
-    derived = derive_source_coordinate_trace(equal_content_trace, scope_binding)
-    assert len(derived.assignments) == 2
-    assert derived.assignments[0].derivation.address.local_transverse == Fraction(-1, 2)
-    assert derived.assignments[1].derivation.address.local_transverse == Fraction(1, 2)
-    assert (
-        derived.assignments[0].exact_coordinate.exact_identity
-        != derived.assignments[1].exact_coordinate.exact_identity
-    )
+    with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
+        issue_gonol_initiation_scope_completion_receipt(  # type: ignore[arg-type]
+            equal_content_trace
+        )
+    first_address = derive_ordered_source_coordinate(0, 2)
+    second_address = derive_ordered_source_coordinate(1, 2)
+    assert first_address.local_transverse == Fraction(-1, 2)
+    assert second_address.local_transverse == Fraction(1, 2)
+    assert first_address.exact_identity != second_address.exact_identity
 
     assert report.schema_id == V019_SOURCE_COORDINATE_SCHEMA_ID
     assert report.schema_version == V019_SOURCE_COORDINATE_SCHEMA_VERSION

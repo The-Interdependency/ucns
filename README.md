@@ -97,12 +97,13 @@ total Structural Null topology, higher geometry, completion, selection, and
 activation remain unresolved.
 v0.19 now supplies one transparent source-to-coordinate candidate over
 authority-bound complete finite ordered initiation traces. Occurrence i in the
-externally declared scope cardinality n receives
+producer-receipted scope cardinality n receives
 the exact midpoint p=(2i+1)/(2n), local transverse u=2p-1, and lifted turns
 t=2p. The law preserves exact upstream object identity, order, equal-content
 multiplicity, reversible circle-candidate application, explicit completion
 authority, and unresolved or rejected blockers. It does not use content,
-digest, or an unbound tuple length as geometry. Candidate
+digest, caller-supplied authority strings, or an unbound tuple length as
+geometry. Candidate
 selection, cross-scope and higher-gonol composition, total Structural Null
 topology, higher geometry, completion, and activation remain unresolved.
 Any eventual selection cannot become universal UCNS canon or transfer proof or
@@ -272,7 +273,9 @@ See
 The implemented **v0.19 ordered-source coordinate derivation boundary** makes
 one source-derived candidate executable. It maps an authority-bound exact
 ordered address (i,n) to the rational cell midpoint p=(2i+1)/(2n), then to
-u=2p-1 and t=2p. Unbound tuple length cannot supply n.
+u=2p-1 and t=2p. The v0.17 producer issues the scope-exhaustion receipt from
+its exact validated report; callers cannot mint n or ordered outcome ids
+inline. Unbound tuple length cannot supply n.
 Equal-content occurrences remain separate by address, exact upstream
 initiation identity survives, and unresolved or rejected initiations remain
 blocked rather than receiving a fallback. Content identity, A0 lanes, scalar
@@ -653,8 +656,9 @@ root-return evidence without inventing geometry or completion. v0.18 applies
 the surviving exact signed-local circle candidate when independent rational
 coordinate input is supplied, while refusing to call that input source-derived.
 v0.19 implements the exact authority-bound finite ordered-source midpoint
-derivation candidate without selecting it. The next truth obligations are
-scope-authority authentication, candidate selection,
+derivation candidate without selecting it. Its in-process receipt is verified
+against the exact v0.17 authority report. The next truth obligations are
+external producer trust and transport authentication, candidate selection,
 cross-scope and higher-gonol coordinate composition, and a total Structural
 Null topology,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned

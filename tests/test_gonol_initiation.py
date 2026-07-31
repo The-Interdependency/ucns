@@ -46,6 +46,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_gonol_initiation_scope_receipt_authority
+#   proves: gonol_initiation_scope_receipt_is_producer_issued
+#   call: self::test_scope_completion_receipt_derives_only_from_exact_authority_report
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
@@ -67,6 +75,8 @@ from ucns.experiments import text_content_adapter
 from ucns.gonol_initiation import (
     GONOL_INITIATION_FALSIFIER_IDS,
     GONOL_INITIATION_OUTCOME_RELATION_STATUS,
+    GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_ID,
+    GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_VERSION,
     INITIATED_WORD_STATE_STATUS,
     ROOT_LOOP_COMPLETION_STATUS,
     TOTAL_STRUCTURAL_NULL_TOPOLOGY_STATUS,
@@ -81,6 +91,7 @@ from ucns.gonol_initiation import (
     RejectedOriginSubstitution,
     build_root_loop_return_witness,
     initiate_word_gonol,
+    issue_gonol_initiation_scope_completion_receipt,
     origin_term_registry,
     record_gonol_initiation_outcome,
     run_v017_gonol_initiation_boundary_experiment,
@@ -225,6 +236,42 @@ def test_initiation_trace_is_total_exclusive_ordered_and_occurrence_preserving()
         )
     with pytest.raises(GonolInitiationError, match="contiguous input order"):
         GonolInitiationTrace("fixture:reordered", outcomes[::-1])
+
+
+def test_scope_completion_receipt_derives_only_from_exact_authority_report() -> None:
+    report = run_v017_gonol_initiation_boundary_experiment()
+    receipt = issue_gonol_initiation_scope_completion_receipt(report)
+
+    assert receipt.authority_report is report
+    assert receipt.upstream_trace is report.demonstration_trace
+    assert receipt.schema_id == GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_ID
+    assert (
+        receipt.schema_version
+        == GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_VERSION
+        == "0.19.0"
+    )
+    assert receipt.receipt_id == (
+        "348630d808d88b6ea922b0e50d4cbbb87b3523225c7683791f3c2e6223bd6ba7"
+    )
+    assert receipt.source_scope_id == report.demonstration_trace.trace_id
+    assert receipt.expected_cardinality == len(
+        report.upstream.demonstration_trace.outcomes
+    )
+    assert receipt.expected_outcome_ids == tuple(
+        outcome.outcome_id for outcome in report.demonstration_trace.outcomes
+    )
+    assert receipt.source_exhausted is True
+    assert receipt.sampling is False
+    assert receipt.prefix is False
+    assert receipt.construction_completion_registered is False
+    assert receipt.selection_effect == "none"
+
+    with pytest.raises(GonolInitiationError, match="exact authority report"):
+        replace(receipt, expected_cardinality=1)
+    with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
+        issue_gonol_initiation_scope_completion_receipt(  # type: ignore[arg-type]
+            report.demonstration_trace
+        )
 
 
 def test_root_return_preserves_360_change_720_return_and_noncompletion() -> None:

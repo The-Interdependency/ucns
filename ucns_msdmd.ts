@@ -2480,16 +2480,27 @@ export default defineMsdmdCollection({
       "id": "gonol_initiation_root_return_is_bounded_and_noncompleting"
     },
     {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the exact validated v0.17 authority report is supplied to the scope-exhaustion issuer",
+        "since": "2026-07-31",
+        "then": "receipt scope, cardinality, ordered outcome ids, and identity derive from that report while prefixes, sampling, construction completion, and selection remain absent"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_scope_receipt_is_producer_issued"
+    },
+    {
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
-        "auth_boundary": "none",
+        "auth_boundary": "the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report and derives all receipt fields from that report; producer trust and external transport authentication remain outside this module",
         "internal_surface": "fixed GI01-GI08 evidence construction and exact validation helpers",
         "module_kind": "experiment",
         "module_name": "gonol_initiation",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment",
+        "public_surface": "OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, GonolInitiationScopeCompletionReceipt, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, issue_gonol_initiation_scope_completion_receipt, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment",
         "requires": "edcm_assignment_admission_boundary, edcm_partial_initiation_boundary",
         "rollback": "remove this module, exports, tests, and v0.17 document while retaining v0.16 admission evidence and v0.13 bounded initiation evidence",
         "rollout": "nonselecting v0.17 initiation-evidence boundary over admitted occurrences with bounded native-root return semantics; no arbitrary geometry, total Structural Null topology, scoped completion, EDCM activation, or METAPAT activation",
@@ -3214,7 +3225,7 @@ export default defineMsdmdCollection({
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
-        "auth_boundary": "none",
+        "auth_boundary": "complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact authority-report trace; callers cannot supply authority fields, cardinality, or outcome ids inline",
         "internal_surface": "fixed SC01-SC10 evidence construction and exact validation helpers",
         "module_kind": "experiment",
         "module_name": "source_coordinate",
@@ -3229,7 +3240,7 @@ export default defineMsdmdCollection({
         "summary": "derives exact signed-local circle-candidate coordinates from authority-bound complete finite ordered source-occurrence addresses while retaining exact upstream initiation identity and explicit blocked outcomes",
         "tests": "tests/test_source_coordinate.py",
         "unresolved": "canonical law selection, cross-scope and higher-gonol composition, total Structural Null topology, higher geometry, completion, faithful breadth, and consumer activation",
-        "user_data_boundary": "an authority-bearing completion binding, exact v0.17 trace identity, source occurrence index, and declared complete finite scope cardinality derive coordinates; content, digests, runtime identity, carrier position, and projections do not"
+        "user_data_boundary": "a producer-issued completion receipt, exact v0.17 authority report and trace identity, source occurrence index, and report-derived complete finite scope cardinality derive coordinates; content, caller-supplied authority fields, digests, runtime identity, carrier position, and projections do not"
       },
       "file": "src/ucns/source_coordinate.py",
       "id": "edcm_source_coordinate_derivation_boundary"
@@ -4633,6 +4644,19 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_gonol_initiation.py",
       "id": "check_gonol_initiation_root_return_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_scope_completion_receipt_derives_only_from_exact_authority_report",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_scope_receipt_is_producer_issued",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_scope_receipt_authority"
     },
     {
       "block": "CHECKS",
@@ -7620,6 +7644,27 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_gonol_initiation_root_return_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
+      "to": "self::test_scope_completion_receipt_derives_only_from_exact_authority_report"
+    },
+    {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
+      "to": "gonol_initiation_scope_receipt_is_producer_issued"
+    },
+    {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
       "to": "python3"
     },
     {

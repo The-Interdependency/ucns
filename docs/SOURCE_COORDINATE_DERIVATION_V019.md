@@ -26,8 +26,9 @@ source derivation. v0.19 asks the next bounded question:
 > initiation identity, blockers, rendering loss, and nonselection?
 
 Yes, within one complete finite ordered v0.17 trace whose exhaustion,
-cardinality, and ordered outcome identities are carried by an explicit
-authority-bearing scope binding. The candidate is the ordered-cell midpoint
+cardinality, and ordered outcome identities are carried by a producer-issued
+receipt derived from the exact validated v0.17 authority report. Callers cannot
+mint those authority fields inline. The candidate is the ordered-cell midpoint
 law.
 
 ## Domain claims
@@ -40,7 +41,7 @@ law.
     claimed_sense: exact coordinate input derived from one occurrence index and
       the authority-bound cardinality of its complete finite ordered initiation
       trace
-    scope: indices 0 <= i < n for authority-bound complete finite n > 0
+    scope: indices 0 <= i < n for producer-receipted complete finite n > 0
     claim_type: specialized
     authority_source: this specification and src/ucns/source_coordinate.py
     status: provisional
@@ -75,7 +76,7 @@ law.
     claimed_sense: a named falsifiable rule that maps retained source structure
       to exact coordinate input and records explicit failure when prerequisites
       are absent
-    scope: authority-bound complete finite v0.17 initiation traces
+    scope: producer-receipted complete finite v0.17 initiation traces
     claim_type: native
     authority_source: source_coordinate.py and SC01-SC10
     status: provisional
@@ -156,9 +157,9 @@ exact coordinate identity is injective over the declared ordered scope.
 The inputs are structural:
 
 - exact occurrence index already retained by v0.16 and v0.17;
-- an authority-bearing completion binding that independently declares source
-  identity, receipt identity, supporting evidence, exhaustion, scope identity,
-  cardinality, and ordered outcome identities;
+- a v0.17 producer-issued exhaustion receipt derived from the exact validated
+  authority report, including source identity, receipt identity, exhaustion,
+  scope identity, cardinality, and ordered outcome identities;
 - exact complete scope cardinality from that binding rather than tuple length;
 - exact upstream trace and outcome objects;
 - explicit initiated-word standing.
@@ -172,6 +173,7 @@ The following are not inputs:
 - public-gonol carrier position alone;
 - scalar metric projection;
 - binary64 rendering; and
+- caller-supplied authority strings, cardinality, or ordered outcome ids; and
 - the supplied trace tuple length without a matching completion binding.
 
 Equal-content occurrences therefore remain distinct because their occurrence
@@ -179,7 +181,9 @@ addresses differ, not because their content is hashed into geometry.
 
 ## Work graph
 
-    authority-bearing complete-scope binding
+    exact validated v0.17 authority report
+      -> producer-issued trace-exhaustion receipt
+      -> complete-scope binding
       -> exact complete finite ordered v0.17 trace
       -> exact upstream outcome at occurrence i
          -> initiated word
@@ -195,11 +199,14 @@ addresses differ, not because their content is hashed into geometry.
       -> one complete ordered v0.19 outcome trace
 
 No rewrapped prefix can reuse the complete-scope binding: the binding retains
-the exact trace object, external authority and receipt identities, supporting
-evidence, declared cardinality, and exact ordered outcome identities. A
-distinct scope requires a distinct authority claim; tuple length alone never
-supplies completion. Every result retains the binding and the exact upstream
-outcome object at its original index.
+the exact trace object and a receipt that the v0.17 producer derives from its
+exact validated report, including the report-backed cardinality and ordered
+outcome identities. A rewrapped prefix cannot be made into that authority
+report, and the binding API accepts no caller-authored authority strings,
+cardinality, or outcome ids. A distinct scope requires a distinct validated
+producer report and receipt; tuple length alone never supplies completion.
+Every result retains the binding and the exact upstream outcome object at its
+original index.
 
 ## SC01-SC10 falsifiers
 
@@ -225,6 +232,9 @@ results. SC09 and SC10 remain unresolved.
 The fixed v0.17 trace has cardinality three. Its initiated first occurrence has
 i=0 and therefore:
 
+    producer scope receipt id =
+      348630d808d88b6ea922b0e50d4cbbb87b3523225c7683791f3c2e6223bd6ba7
+
     p = 1/6
     u = -2/3
     t = 1/3
@@ -245,6 +255,8 @@ v0.19 claims:
 - its finite ordered-scope formula is exact and injective;
 - completion authority, complete source scope, order, multiplicity, initiation
   identity, and blockers remain recoverable;
+- the concrete receipt is issued and verified against the exact in-process
+  v0.17 producer report rather than self-reported binding fields;
 - the exact signed-local circle candidate is applied reversibly; and
 - rendering and selection firewalls remain active.
 
@@ -266,5 +278,7 @@ cardinality changes every midpoint. That is visible evidence, not something to
 hide. Cross-scope stability and higher-gonol composition therefore remain the
 next geometric obligations. Candidate selection also requires separate
 evidence, alternatives, rollback, and migration.
-Authentication of external scope authority is not supplied by this in-memory
-binding and remains a separate producer/transport obligation.
+The in-process receipt verifies the exact v0.17 producer report and prevents
+callers from self-reporting scope fields. Trust in external producers and
+cryptographic authentication across storage or transport remain separate
+obligations.

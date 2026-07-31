@@ -6,10 +6,10 @@
 #   owner: Erin Spencer
 #   public_surface: CompleteOrderedSourceScopeBinding, OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, bind_complete_ordered_source_scope, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment
 #   internal_surface: fixed SC01-SC10 evidence construction and exact validation helpers
-#   auth_boundary: none
+#   auth_boundary: complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact authority-report trace; callers cannot supply authority fields, cardinality, or outcome ids inline
 #   storage_boundary: none
 #   network_boundary: none
-#   user_data_boundary: an authority-bearing completion binding, exact v0.17 trace identity, source occurrence index, and declared complete finite scope cardinality derive coordinates; content, digests, runtime identity, carrier position, and projections do not
+#   user_data_boundary: a producer-issued completion receipt, exact v0.17 authority report and trace identity, source occurrence index, and report-derived complete finite scope cardinality derive coordinates; content, caller-supplied authority fields, digests, runtime identity, carrier position, and projections do not
 #   admin_only: false
 #   tests: tests/test_source_coordinate.py
 #   rollout: nonselecting v0.19 ordered-source-address derivation candidate over authority-bound complete scopes and explicitly initiated words with explicit blocked outcomes and no construction completion or activation
@@ -98,7 +98,9 @@ from .gonol_initiation import (
     GonolInitiationDisposition,
     GonolInitiationOutcome,
     GonolInitiationReceipt,
+    GonolInitiationScopeCompletionReceipt,
     GonolInitiationTrace,
+    issue_gonol_initiation_scope_completion_receipt,
 )
 
 
@@ -118,16 +120,6 @@ ARBITRARY_SOURCE_ASSIGNMENT_STATUS = "partial-derived-for-initiated-word-outcome
 SOURCE_COORDINATE_HIGHER_GEOMETRY_STATUS = "unresolved-circle-entry-only"
 SOURCE_COORDINATE_FALSIFIER_IDS = tuple(f"SC{index:02d}" for index in range(1, 11))
 V019_DEMONSTRATION_SOURCE_SCOPE_ID = "ucns-v017-gonol-initiation-demonstration"
-V019_DEMONSTRATION_AUTHORITY_SOURCE = (
-    "src/ucns/gonol_initiation.py:run_v017_gonol_initiation_boundary_experiment"
-)
-V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID = (
-    "ucns.edcm.gonol-initiation-boundary/0.17.0:demonstration-complete-scope"
-)
-V019_DEMONSTRATION_AUTHORITY_EVIDENCE = (
-    "fixed-v017-demonstration-trace-with-three-ordered-outcomes",
-    "exact-trace-retained-through-v018-boundary-report",
-)
 V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS = (
     "v016-demo:occurrence:0:gonol-initiation-outcome",
     "v016-demo:occurrence:1:gonol-initiation-outcome",
@@ -135,7 +127,7 @@ V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS = (
 )
 V019_HMMM = (
     "selection or canonization of the ordered-source midpoint law remains unresolved",
-    "cryptographic authentication of external scope-authority receipts remains unresolved",
+    "producer trust and cryptographic transport authentication beyond the exact in-process v0.17 authority report remain unresolved",
     "cross-scope stability and higher-gonol composition are not supplied by a finite trace-local address law",
     "the total topology from singular Structural Null to arbitrary non-null carrier states remains unresolved",
     "circle-to-epicycle, epicycle-to-disk, disk-to-sphere, and recursive scale transitions remain unresolved",
@@ -189,20 +181,17 @@ def _local_side(local_transverse: Fraction) -> str:
 
 
 def _scope_binding_evidence(
-    authority_source: str,
-    authority_receipt_id: str,
-    authority_evidence: tuple[str, ...],
-    source_scope_id: str,
-    expected_cardinality: int,
-    expected_outcome_ids: tuple[str, ...],
+    authority_receipt: GonolInitiationScopeCompletionReceipt,
 ) -> tuple[str, ...]:
     return (
-        f"authority-source:{authority_source}",
-        f"authority-receipt:{authority_receipt_id}",
-        f"authority-evidence:{'|'.join(authority_evidence)}",
-        f"source-scope-id:{source_scope_id}",
-        f"expected-cardinality:{expected_cardinality}",
-        f"ordered-outcome-ids:{'|'.join(expected_outcome_ids)}",
+        f"authority-source:{authority_receipt.authority_source}",
+        f"authority-receipt:{authority_receipt.receipt_id}",
+        f"authority-receipt-schema:{authority_receipt.schema_id}/"
+        f"{authority_receipt.schema_version}",
+        "authority-report-trace-object:exact",
+        f"source-scope-id:{authority_receipt.source_scope_id}",
+        f"expected-cardinality:{authority_receipt.expected_cardinality}",
+        f"ordered-outcome-ids:{'|'.join(authority_receipt.expected_outcome_ids)}",
         "source-exhausted:true",
         "sampling:false",
         "prefix:false",
@@ -211,16 +200,11 @@ def _scope_binding_evidence(
 
 @dataclass(frozen=True, slots=True)
 class CompleteOrderedSourceScopeBinding:
-    """External completion claim binding one exact trace to its full scope."""
+    """Producer-receipted binding of one exact trace to its full scope."""
 
     binding_id: str
     upstream_trace: GonolInitiationTrace
-    authority_source: str
-    authority_receipt_id: str
-    authority_evidence: tuple[str, ...]
-    source_scope_id: str
-    expected_cardinality: int
-    expected_outcome_ids: tuple[str, ...]
+    authority_receipt: GonolInitiationScopeCompletionReceipt
     evidence: tuple[str, ...]
     source_exhausted: bool = True
     sampling: bool = False
@@ -232,47 +216,35 @@ class CompleteOrderedSourceScopeBinding:
         _require_text(self.binding_id, "scope binding_id")
         if not isinstance(self.upstream_trace, GonolInitiationTrace):
             raise SourceCoordinateError("scope binding requires exact upstream trace")
-        _require_text(self.authority_source, "scope authority_source")
-        _require_text(self.authority_receipt_id, "scope authority_receipt_id")
-        if not isinstance(self.authority_evidence, tuple):
-            raise SourceCoordinateError("scope authority evidence must be a tuple")
-        _require_text_items(self.authority_evidence, "scope authority evidence")
-        _require_text(self.source_scope_id, "source_scope_id")
-        if (
-            not isinstance(self.expected_cardinality, int)
-            or isinstance(self.expected_cardinality, bool)
-            or self.expected_cardinality <= 0
+        if not isinstance(
+            self.authority_receipt,
+            GonolInitiationScopeCompletionReceipt,
         ):
-            raise SourceCoordinateError("expected scope cardinality must be positive")
-        if not isinstance(self.expected_outcome_ids, tuple):
-            raise SourceCoordinateError("expected outcome ids must be an ordered tuple")
-        _require_text_items(self.expected_outcome_ids, "expected outcome ids")
-        if len(self.expected_outcome_ids) != self.expected_cardinality:
-            raise SourceCoordinateError("expected outcome ids must fill the declared scope")
+            raise SourceCoordinateError(
+                "scope binding requires a producer-issued authority receipt"
+            )
+        receipt = self.authority_receipt
+        if receipt.upstream_trace is not self.upstream_trace:
+            raise SourceCoordinateError(
+                "authority receipt must retain the exact supplied trace"
+            )
         if self.binding_id != (
-            f"{self.source_scope_id}:complete-source-scope-binding"
+            f"{receipt.source_scope_id}:complete-source-scope-binding"
         ):
             raise SourceCoordinateError("scope binding id must derive from source scope")
-        if self.upstream_trace.trace_id != self.source_scope_id:
+        if self.upstream_trace.trace_id != receipt.source_scope_id:
             raise SourceCoordinateError("scope binding must name the exact trace scope")
-        if len(self.upstream_trace.outcomes) != self.expected_cardinality:
+        if len(self.upstream_trace.outcomes) != receipt.expected_cardinality:
             raise SourceCoordinateError(
-                "trace cardinality does not match external completion claim"
+                "trace cardinality does not match producer-issued receipt"
             )
         if tuple(
             outcome.outcome_id for outcome in self.upstream_trace.outcomes
-        ) != self.expected_outcome_ids:
+        ) != receipt.expected_outcome_ids:
             raise SourceCoordinateError(
-                "trace outcomes do not match the externally bound order"
+                "trace outcomes do not match the producer-receipted order"
             )
-        if self.evidence != _scope_binding_evidence(
-            self.authority_source,
-            self.authority_receipt_id,
-            self.authority_evidence,
-            self.source_scope_id,
-            self.expected_cardinality,
-            self.expected_outcome_ids,
-        ):
+        if self.evidence != _scope_binding_evidence(receipt):
             raise SourceCoordinateError("scope completion evidence is fixed")
         if (
             self.source_exhausted is not True
@@ -293,12 +265,7 @@ class CompleteOrderedSourceScopeBinding:
         return (
             self.binding_id,
             self.upstream_trace.trace_id,
-            self.authority_source,
-            self.authority_receipt_id,
-            self.authority_evidence,
-            self.source_scope_id,
-            self.expected_cardinality,
-            self.expected_outcome_ids,
+            self.authority_receipt.evidence_identity,
             self.evidence,
             self.source_exhausted,
             self.sampling,
@@ -306,38 +273,51 @@ class CompleteOrderedSourceScopeBinding:
             self.status,
         )
 
+    @property
+    def authority_source(self) -> str:
+        return self.authority_receipt.authority_source
+
+    @property
+    def authority_receipt_id(self) -> str:
+        return self.authority_receipt.receipt_id
+
+    @property
+    def authority_evidence(self) -> tuple[str, ...]:
+        return self.authority_receipt.evidence
+
+    @property
+    def source_scope_id(self) -> str:
+        return self.authority_receipt.source_scope_id
+
+    @property
+    def expected_cardinality(self) -> int:
+        return self.authority_receipt.expected_cardinality
+
+    @property
+    def expected_outcome_ids(self) -> tuple[str, ...]:
+        return self.authority_receipt.expected_outcome_ids
+
 
 def bind_complete_ordered_source_scope(
     upstream_trace: GonolInitiationTrace,
-    *,
-    authority_source: str,
-    authority_receipt_id: str,
-    authority_evidence: tuple[str, ...],
-    source_scope_id: str,
-    expected_cardinality: int,
-    expected_outcome_ids: tuple[str, ...],
+    authority_receipt: GonolInitiationScopeCompletionReceipt,
 ) -> CompleteOrderedSourceScopeBinding:
-    """Record an external full-scope claim; tuple length is not authority."""
+    """Bind only a producer-receipted full scope; tuple length is not authority."""
 
     if not isinstance(upstream_trace, GonolInitiationTrace):
         raise TypeError("upstream_trace must be GonolInitiationTrace")
+    if not isinstance(
+        authority_receipt,
+        GonolInitiationScopeCompletionReceipt,
+    ):
+        raise TypeError(
+            "authority_receipt must be GonolInitiationScopeCompletionReceipt"
+        )
     return CompleteOrderedSourceScopeBinding(
-        f"{source_scope_id}:complete-source-scope-binding",
+        f"{authority_receipt.source_scope_id}:complete-source-scope-binding",
         upstream_trace,
-        authority_source,
-        authority_receipt_id,
-        authority_evidence,
-        source_scope_id,
-        expected_cardinality,
-        expected_outcome_ids,
-        _scope_binding_evidence(
-            authority_source,
-            authority_receipt_id,
-            authority_evidence,
-            source_scope_id,
-            expected_cardinality,
-            expected_outcome_ids,
-        ),
+        authority_receipt,
+        _scope_binding_evidence(authority_receipt),
     )
 
 
@@ -1058,11 +1038,9 @@ class SourceCoordinateBoundaryReport:
             raise SourceCoordinateError("report must retain exact v0.17 trace object")
         binding = self.demonstration_trace.scope_binding
         if (
-            binding.authority_source != V019_DEMONSTRATION_AUTHORITY_SOURCE
-            or binding.authority_receipt_id
-            != V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID
-            or binding.authority_evidence
-            != V019_DEMONSTRATION_AUTHORITY_EVIDENCE
+            binding.authority_receipt.authority_report is not self.upstream.upstream
+            or binding.authority_receipt.upstream_trace
+            is not self.upstream.upstream.demonstration_trace
             or binding.source_scope_id != V019_DEMONSTRATION_SOURCE_SCOPE_ID
             or binding.expected_cardinality
             != len(V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS)
@@ -1113,15 +1091,14 @@ class SourceCoordinateBoundaryReport:
 def run_v019_source_coordinate_derivation_experiment(
 ) -> SourceCoordinateBoundaryReport:
     upstream = run_v018_explicit_geometric_assignment_experiment()
-    upstream_trace = upstream.upstream.demonstration_trace
+    authority_report = upstream.upstream
+    upstream_trace = authority_report.demonstration_trace
+    authority_receipt = issue_gonol_initiation_scope_completion_receipt(
+        authority_report
+    )
     scope_binding = bind_complete_ordered_source_scope(
         upstream_trace,
-        authority_source=V019_DEMONSTRATION_AUTHORITY_SOURCE,
-        authority_receipt_id=V019_DEMONSTRATION_AUTHORITY_RECEIPT_ID,
-        authority_evidence=V019_DEMONSTRATION_AUTHORITY_EVIDENCE,
-        source_scope_id=V019_DEMONSTRATION_SOURCE_SCOPE_ID,
-        expected_cardinality=len(V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS),
-        expected_outcome_ids=V019_DEMONSTRATION_EXPECTED_OUTCOME_IDS,
+        authority_receipt,
     )
     trace = derive_source_coordinate_trace(upstream_trace, scope_binding)
     return SourceCoordinateBoundaryReport(
