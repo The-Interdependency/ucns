@@ -2,7 +2,7 @@
 # id: foundations_public_surface
 #   module_name: ucns public surface
 #   module_kind: schema
-#   summary: exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, v0.16 assignment admission, v0.17 gonol initiation, and v0.18 explicit exact-coordinate candidate application with current foundations and reproducible candidate-research infrastructure
+#   summary: exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit exact-coordinate application, and v0.19 ordered-source coordinate derivation with current foundations and reproducible candidate-research infrastructure
 #   owner: Erin Spencer
 #   public_surface: option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.17 gonol-initiation and Structural Null evidence, v0.18 explicit geometric-assignment evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__
 #   internal_surface: none
@@ -14,9 +14,9 @@
 #   tests: tests/test_public_surface.py and all source-specific test modules
 #   rollout: importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, nonselecting v0.17 origin separation and gonol-initiation evidence, nonselecting v0.18 explicit-input exact circle-candidate application, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure
 #   rollback: remove completion-motion and downstream profile exports while preserving foundations and research surfaces
-#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_explicit_geometric_assignment_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
+#   requires: ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_explicit_geometric_assignment_boundary, edcm_source_coordinate_derivation_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families
 #   since: 2026-07-21
-#   unresolved: source-to-coordinate derivation law and total Structural Null topology beyond v0.18 explicit-input candidate application, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
+#   unresolved: selection and cross-scope composition of the v0.19 source-coordinate candidate, total Structural Null topology, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -587,6 +587,38 @@ from .explicit_geometric_assignment import (
     record_geometric_assignment_outcome,
     run_v018_explicit_geometric_assignment_experiment,
 )
+from .source_coordinate import (
+    ARBITRARY_SOURCE_ASSIGNMENT_STATUS,
+    SOURCE_COORDINATE_ASSIGNMENT_STATUS,
+    SOURCE_COORDINATE_CODE_REFERENCE,
+    SOURCE_COORDINATE_FALSIFIER_IDS,
+    SOURCE_COORDINATE_HIGHER_GEOMETRY_STATUS,
+    SOURCE_COORDINATE_LAW_FORMULA,
+    SOURCE_COORDINATE_LAW_ID,
+    SOURCE_COORDINATE_LAW_STATUS,
+    SOURCE_COORDINATE_LAW_VERSION,
+    SOURCE_COORDINATE_OUTCOME_RELATION_STATUS,
+    SOURCE_COORDINATE_SCOPE,
+    V019_HMMM,
+    V019_SELECTION_EFFECT,
+    V019_SOURCE_COORDINATE_SCHEMA_ID,
+    V019_SOURCE_COORDINATE_SCHEMA_VERSION,
+    AppliedSourceCoordinateAssignment,
+    OrderedSourceCoordinate,
+    SourceCoordinateBoundaryReport,
+    SourceCoordinateDerivation,
+    SourceCoordinateDisposition,
+    SourceCoordinateError,
+    SourceCoordinateEvidenceStanding,
+    SourceCoordinateFalsifierResult,
+    SourceCoordinateOutcome,
+    SourceCoordinateTrace,
+    apply_source_coordinate_assignment,
+    derive_ordered_source_coordinate,
+    derive_source_coordinate,
+    derive_source_coordinate_trace,
+    run_v019_source_coordinate_derivation_experiment,
+)
 from .bridge import (
     BRIDGE_SCHEMA_ID,
     BRIDGE_SCHEMA_VERSION,
@@ -855,6 +887,29 @@ __all__ = [
     "apply_explicit_geometric_assignment", "propose_explicit_coordinate",
     "record_geometric_assignment_outcome",
     "run_v018_explicit_geometric_assignment_experiment",
+    "ARBITRARY_SOURCE_ASSIGNMENT_STATUS",
+    "SOURCE_COORDINATE_ASSIGNMENT_STATUS",
+    "SOURCE_COORDINATE_CODE_REFERENCE",
+    "SOURCE_COORDINATE_FALSIFIER_IDS",
+    "SOURCE_COORDINATE_HIGHER_GEOMETRY_STATUS",
+    "SOURCE_COORDINATE_LAW_FORMULA",
+    "SOURCE_COORDINATE_LAW_ID",
+    "SOURCE_COORDINATE_LAW_STATUS",
+    "SOURCE_COORDINATE_LAW_VERSION",
+    "SOURCE_COORDINATE_OUTCOME_RELATION_STATUS",
+    "SOURCE_COORDINATE_SCOPE",
+    "V019_HMMM", "V019_SELECTION_EFFECT",
+    "V019_SOURCE_COORDINATE_SCHEMA_ID",
+    "V019_SOURCE_COORDINATE_SCHEMA_VERSION",
+    "AppliedSourceCoordinateAssignment", "OrderedSourceCoordinate",
+    "SourceCoordinateBoundaryReport", "SourceCoordinateDerivation",
+    "SourceCoordinateDisposition", "SourceCoordinateError",
+    "SourceCoordinateEvidenceStanding", "SourceCoordinateFalsifierResult",
+    "SourceCoordinateOutcome", "SourceCoordinateTrace",
+    "apply_source_coordinate_assignment",
+    "derive_ordered_source_coordinate", "derive_source_coordinate",
+    "derive_source_coordinate_trace",
+    "run_v019_source_coordinate_derivation_experiment",
     "BRIDGE_SCHEMA_ID",
     "BRIDGE_SCHEMA_VERSION", "PRODUCER_EPOCH",
     "PROFILE_ID", "PROFILE_VERSION", "BridgeCell", "BridgeValidationError",

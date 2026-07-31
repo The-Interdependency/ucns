@@ -274,7 +274,37 @@ See
 [`EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md`](EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md)
 for exact scope and executable standing.
 
-## 11. Candidate report shape
+## 11. v0.19 source-coordinate derivation addendum
+
+The v0.19 boundary adds SC01-SC10 over the complete exact v0.17 trace. These
+falsifiers distinguish a concrete finite ordered-source law from identity
+shortcuts, prefixes, lossy rendering, silent fallback, and premature
+canonization.
+
+- SC01 fails when occurrence index or complete scope cardinality is absent,
+  invalid, or taken from a partial trace.
+- SC02 fails when p=(2i+1)/(2n), u=2p-1, t=2p, the law version, or its code
+  reference changes.
+- SC03 fails when two distinct indices in one declared scope receive the same
+  exact coordinate identity.
+- SC04 fails when exact B(u)=1+u/2, its inverse, native frame, local side, or
+  candidate assignment identity diverges.
+- SC05 fails when an upstream outcome is omitted, duplicated, reordered, or
+  assigned multiple derived or blocked tags.
+- SC06 fails when content, digest, runtime identity, A0 lanes, carrier position
+  alone, or scalar projection creates geometry.
+- SC07 fails when copied, substituted, prefixed, or reordered upstream objects
+  are accepted as the authority-bearing trace.
+- SC08 fails when binary64 rendering replaces exact rational identity.
+- SC09 remains unresolved until a separate selection and cross-scope
+  composition decision exists; implementation alone cannot promote the law.
+- SC10 remains unresolved until total Structural Null topology, higher
+  geometry, scoped completion, and consumer activation exist.
+
+See SOURCE_COORDINATE_DERIVATION_V019.md for exact scope and executable
+standing.
+
+## 12. Candidate report shape
 
 A v0.5 report is grouped by witness and carrier relationship. Each falsifier record contains:
 
@@ -291,13 +321,13 @@ A v0.5 report is grouped by witness and carrier relationship. Each falsifier rec
 
 The aggregate report lists all three relationship candidates. It has no `selected_candidate`, `best_candidate`, implicit default, or canonicalization field.
 
-## 12. Admission rule
+## 13. Admission rule
 
 A candidate is **admitted for implementation review** only when every applicable falsifier is `supported` or accompanied by an explicitly accepted unresolved obligation. Any `falsified` result remains blocking for the exact claim it contradicts. Any exception remains visible.
 
 Admission authorizes neither runtime deployment nor canonization. The next authority decision may retain, narrow, reject, or request more evidence from any candidate.
 
-## 13. Usage guidance
+## 14. Usage guidance
 
 Use these falsifiers before designing canonical coordinates, higher-gonol composition, completion conditions, metric formulas, or EDCM bindings. Future executable tests should cite the falsifier IDs and preserve their complete report packets through the evaluator laboratory and experiment-manifest infrastructure.
 

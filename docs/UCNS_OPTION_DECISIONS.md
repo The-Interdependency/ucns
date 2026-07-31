@@ -372,6 +372,17 @@ cannot supply coordinate input. The source-to-coordinate derivation law, total
 Structural Null topology, higher geometry, composition, completion, selection,
 and activation remain unresolved.
 
+v0.19 adds a separate ordered-source coordinate derivation surface. In one
+complete finite ordered trace, occurrence i of cardinality n receives exact
+p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. The law retains exact v0.17 trace
+and outcome objects, separates equal-content occurrences by source address,
+applies the exact circle candidate reversibly, and preserves unresolved or
+rejected initiation as explicit blockers. Content, digests, runtime identity,
+A0 lanes, carrier position alone, scalar projections, and binary64 renderings
+are not derivation inputs. The law is an implemented candidate. Its selection,
+cross-scope and higher-gonol composition, total Structural Null topology,
+higher geometry, completion, and consumer activation remain open.
+
 ## Choices still genuinely open
 
 ### Completion-motion geometry

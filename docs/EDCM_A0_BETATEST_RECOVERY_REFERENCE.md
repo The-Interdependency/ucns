@@ -164,16 +164,21 @@ That suspension was epistemically safer than continuing the false lineage. But t
 
 Likewise, the current UCNS EDCM profile correctly preserves exact words, SPACE boundaries, speaker turns, and twist-initiation events, but it explicitly does not provide the Möbius coordinate or higher-gonol composition law.
 
-UCNS v0.16 closes the prior source-evidence admission obligation, v0.17 makes
-the next bounded causal step executable, and v0.18 makes explicit-input exact
-circle-candidate application executable without changing the broader verdict.
+UCNS v0.16 closes source-evidence admission, v0.17 makes the bounded causal step
+executable, v0.18 makes explicit-input exact circle-candidate application
+executable, and v0.19 supplies one exact finite ordered-source derivation
+candidate without changing the broader verdict.
 Arbitrary-domain occurrences enter through explicit named versioned adapters
 and receive one tagged assignment outcome; each then receives one exclusive
 initiation outcome. The declared word witness crosses from typed Structural
 Null through one exact source-bound twist receipt. Evidence digests, historical
 Blake2 phase lanes, and invalid zero or absence substitutions remain incapable
 of deriving geometry. An independent exact rational proposal may now be applied
-reversibly, but the proposal is not thereby derived from its source occurrence.
+reversibly. v0.19 separately derives p=(2i+1)/(2n), u=2p-1, and t=2p from the
+exact occurrence index and complete finite trace cardinality. Content and
+digest remain unused. The midpoint law is not selected and supplies no
+cross-scope or higher-gonol composition, total topology, higher geometry, or
+completion.
 
 Therefore:
 
@@ -190,6 +195,9 @@ v0.17 gonol initiation
 v0.18 explicit geometric assignment
     = exact signed-local circle-candidate application with independent input, not a source-to-coordinate law
 
+v0.19 ordered-source coordinate derivation
+    = exact finite trace-local midpoint law candidate, not selected or cross-scope composition
+
 a0-betatest historical system
     = primary EDCM recovery reference
 
@@ -205,7 +213,7 @@ recovered UCNS
 1. Freeze the relevant a0-betatest epoch and its component files as a recovery packet.
 2. State the completion-motion root before discussing object constructors or algebra.
 3. Extract the invariants shared by the gonal, phase field, inscription, grain ladder, and disk stack.
-4. Define the unknown or unknowable boundary and derive the source-to-coordinate element-assignment law beyond explicit input.
+4. Compare and select source-coordinate candidates beyond the v0.19 finite trace-local midpoint law, including cross-scope and higher-gonol composition.
 5. Define circle, epicycle, disk, and sphere transitions.
 6. Define how orientation and the 720-degree twist affect motion and return.
 7. Define completion as a registered geometric condition.

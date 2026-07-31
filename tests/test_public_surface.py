@@ -98,6 +98,13 @@ def test_public_surface_is_bounded() -> None:
         "GeometricAssignmentTrace",
         "ExplicitGeometricAssignmentBoundaryReport",
         "run_v018_explicit_geometric_assignment_experiment",
+        "OrderedSourceCoordinate",
+        "SourceCoordinateDerivation",
+        "AppliedSourceCoordinateAssignment",
+        "SourceCoordinateOutcome",
+        "SourceCoordinateTrace",
+        "SourceCoordinateBoundaryReport",
+        "run_v019_source_coordinate_derivation_experiment",
     ):
         assert expected in exported
 

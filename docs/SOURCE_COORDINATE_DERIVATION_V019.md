@@ -1,0 +1,232 @@
+# UCNS v0.19 ordered-source coordinate derivation boundary
+
+**Status:** implemented, test-backed candidate law; nonselecting and
+trace-local. The package derives exact signed-local circle-candidate
+coordinates from complete finite ordered source-occurrence addresses. It does
+not select this law, compose coordinates across scopes or higher gonols,
+complete the Structural Null topology, or activate EDCM or METAPAT.
+
+**Depends on:**
+
+- EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md;
+- GONOL_INITIATION_STRUCTURAL_NULL_V017.md;
+- ASSIGNMENT_ADMISSION_BOUNDARY_V016.md;
+- EXACT_COORDINATE_BOUNDARY_V011.md; and
+- EDCM_A0_BETATEST_RECOVERY_REFERENCE.md.
+
+## Question
+
+v0.18 proved that an independently supplied exact rational proposal can enter
+the surviving signed-local circle candidate without being confused with
+source derivation. v0.19 asks the next bounded question:
+
+> Can one transparent rule derive exact coordinate input from retained source
+> structure while preserving complete scope, order, multiplicity, exact
+> initiation identity, blockers, rendering loss, and nonselection?
+
+Yes, within one complete finite ordered v0.17 trace. The candidate is the
+ordered-cell midpoint law.
+
+## Domain claims
+
+### Ordered-source cell midpoint
+
+    surface_form: ordered-source cell midpoint coordinate
+    term_id: ucns.edcm_assignment.ordered_source_cell_midpoint
+    claiming_domain: UCNS EDCM source-coordinate research
+    claimed_sense: exact coordinate input derived from one occurrence index and
+      the cardinality of its complete finite ordered initiation trace
+    scope: indices 0 <= i < n for complete finite n > 0
+    claim_type: specialized
+    authority_source: this specification and src/ucns/source_coordinate.py
+    status: implemented-candidate
+    included_uses:
+      - exact p=(2*i+1)/(2*n)
+      - exact u=2*p-1
+      - exact lifted turns t=2*p
+      - order and multiplicity preservation
+      - explicit upstream blockers
+    excluded_uses:
+      - source content or digest as geometry
+      - cross-scope or higher-gonol composition
+      - semantic coordinate adequacy
+      - canonical selection
+      - higher geometry or completion
+    effective_version: 0.19.0
+
+### Source-to-coordinate candidate law
+
+    surface_form: source-to-coordinate candidate law
+    term_id: ucns.edcm_assignment.source_to_coordinate_candidate
+    claiming_domain: UCNS EDCM assignment and motion
+    claimed_sense: a named falsifiable rule that maps retained source structure
+      to exact coordinate input and records explicit failure when prerequisites
+      are absent
+    scope: complete finite v0.17 initiation traces
+    claim_type: native
+    authority_source: source_coordinate.py and SC01-SC10
+    status: implemented-candidate
+    included_uses:
+      - exact source-address derivation
+      - exact v0.17 trace and outcome object linkage
+      - exact v0.11 circle-candidate application
+      - unresolved and rejected upstream blockers
+    excluded_uses:
+      - selected or canonical law
+      - arbitrary infinite scope
+      - trace-prefix execution
+      - transfer of EDCM measurement validity
+    neighboring_terms:
+      - ucns.edcm_assignment.explicit_coordinate_candidate_application
+      - ucns.edcm_assignment.canonical_source_coordinate_law
+    known_collisions:
+      - one implemented candidate described as the universal selected law
+    effective_version: 0.19.0
+
+### Canonical source-coordinate law
+
+    surface_form: canonical source-coordinate law
+    term_id: ucns.edcm_assignment.canonical_source_coordinate_law
+    claiming_domain: UCNS canonization
+    claimed_sense: a separately selected law with evidence for its scope,
+      alternatives, information loss, rollback, migration, and composition
+    status: unresolved
+    included_uses:
+      - future explicit selection decision
+    excluded_uses:
+      - automatic promotion from implementation or passing tests
+    unresolved:
+      - cross-scope stability
+      - higher-gonol composition
+      - external evidence
+      - migration and rollback
+
+The phrase source-to-coordinate law is therefore qualified as candidate in
+v0.19. The source derivation gap has an executable proposal; the selection and
+composition gaps remain open.
+
+## Exact law
+
+For a complete finite ordered scope containing n occurrences, occurrence i
+with 0 <= i < n receives:
+
+    p_i = (2*i + 1) / (2*n)
+    u_i = 2*p_i - 1 = (2*i + 1 - n) / n
+    t_i = 2*p_i = (2*i + 1) / n
+    B_i = 1 + u_i/2
+
+All arithmetic is Fraction-valued.
+
+The source midpoint p lies strictly in (0,1), local transverse u lies strictly
+in (-1,1), and lifted turns t lie strictly in (0,2). Native frame is positive
+for t < 1 and reversed for t >= 1. Local side is the sign of u.
+
+Within a fixed n, distinct indices have distinct p, u, and t. Therefore the
+exact coordinate identity is injective over the declared ordered scope.
+
+## Why this source evidence is admissible
+
+The inputs are structural:
+
+- exact occurrence index already retained by v0.16 and v0.17;
+- exact complete scope cardinality from the retained v0.17 trace;
+- exact upstream trace and outcome objects;
+- explicit initiated-word standing.
+
+The following are not inputs:
+
+- raw source content;
+- content or subject digest;
+- runtime hash, repr, or object identity;
+- A0 Blake2 phase lanes;
+- public-gonol carrier position alone;
+- scalar metric projection;
+- binary64 rendering.
+
+Equal-content occurrences therefore remain distinct because their occurrence
+addresses differ, not because their content is hashed into geometry.
+
+## Work graph
+
+    complete finite ordered v0.17 trace
+      -> exact upstream outcome at occurrence i
+         -> initiated word
+            -> p=(2*i+1)/(2*n)
+            -> u=2*p-1 and t=2*p
+            -> v0.11 exact signed-local circle candidate
+            -> candidate GeometricAssignment
+            -> linked declared-loss binary64 rendering
+         -> unresolved initiation
+            -> blocked-unresolved
+         -> rejected initiation
+            -> blocked-rejected
+      -> one complete ordered v0.19 outcome trace
+
+No prefix can stand in for the authority-bearing trace. Every result retains
+the exact upstream outcome object at its original index.
+
+## SC01-SC10 falsifiers
+
+| ID | Obligation | Falsified when |
+|---|---|---|
+| SC01 | complete ordered source address | index or scope cardinality is absent, invalid, or taken from a prefix |
+| SC02 | exact fixed law | midpoint, transverse, lifted-turn formula, version, or code reference changes |
+| SC03 | within-scope injectivity | two distinct indices in one scope receive the same exact coordinate |
+| SC04 | reversible exact application | B(u), inverse, frame, side, or assignment law identity diverges |
+| SC05 | total exclusive outcomes | an upstream outcome is omitted, duplicated, reordered, or given multiple tags |
+| SC06 | identity shortcuts remain negative | content, digest, runtime identity, A0 lanes, carrier position, or projection creates geometry |
+| SC07 | exact upstream identity | a copied, substituted, prefixed, or reordered upstream graph is accepted |
+| SC08 | rendering firewall | binary64 replaces exact rational identity |
+| SC09 | nonselection | implementation is described as canonical or selected, or cross-scope composition is assumed |
+| SC10 | broader incompletion | derivation is relabeled as total topology, higher geometry, completion, or consumer activation |
+
+SC01-SC03, SC05, and SC07 have exact implemented support. SC04 retains the
+bounded upstream exact circle candidate. SC06 and SC08 are supported negative
+results. SC09 and SC10 remain unresolved.
+
+## Demonstration
+
+The fixed v0.17 trace has cardinality three. Its initiated first occurrence has
+i=0 and therefore:
+
+    p = 1/6
+    u = -2/3
+    t = 1/3
+    B = 2/3
+    frame = positive-local-frame
+    side = local-negative
+
+The second upstream outcome remains blocked-unresolved. The third remains
+blocked-rejected. The v0.18 hand-authored value u=1/3 remains a separate
+nonselected application witness and is not silently rewritten as source
+derivation.
+
+## Claims and nonclaims
+
+v0.19 claims:
+
+- a concrete source-to-coordinate candidate is executable;
+- its finite ordered-scope formula is exact and injective;
+- complete source scope, order, multiplicity, initiation identity, and blockers
+  remain recoverable;
+- the exact signed-local circle candidate is applied reversibly; and
+- rendering and selection firewalls remain active.
+
+v0.19 does not claim:
+
+- that the midpoint law is selected, canonical, or semantically ideal;
+- cross-turn, cross-corpus, or higher-gonol coordinate stability;
+- total Structural Null topology;
+- epicycle, disk, sphere, or recursive scale transitions;
+- scoped completion;
+- canonical faithful breadth;
+- EDCM or METAPAT activation; or
+- universal UCNS authority transfer.
+
+## hmmm
+
+The candidate supplies an exact trace-local answer, but a change in scope
+cardinality changes every midpoint. That is visible evidence, not something to
+hide. Cross-scope stability and higher-gonol composition therefore remain the
+next geometric obligations. Candidate selection also requires separate
+evidence, alternatives, rollback, and migration.
