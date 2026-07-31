@@ -6,7 +6,7 @@
 #   owner: Erin Spencer
 #   public_surface: OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, GonolInitiationScopeCompletionReceipt, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, issue_gonol_initiation_scope_completion_receipt, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment
 #   internal_surface: fixed GI01-GI08 evidence construction and exact validation helpers
-#   auth_boundary: the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report whose trace, three admissions, and three outcomes match the fixed producer-owned demonstration declaration; it derives all receipt fields from that report while external transport authentication remains outside this module
+#   auth_boundary: the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report whose full v0.16 admission trace and every ordered v0.17 disposition, admission evidence identity, initiation receipt, rejection, evidence tuple, and trace field match the fixed producer-owned demonstration; receipt identity binds that complete evidence while external transport authentication remains outside this module
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: v0.16 adapter evidence and exact source-bound Structural Null manifestations remain linked; neither evidence identity nor carrier position zero becomes geometry
@@ -58,7 +58,7 @@
 #
 # id: gonol_initiation_scope_receipt_is_producer_issued
 #   given: the exact validated v0.17 authority report matching the fixed full producer-owned demonstration scope is supplied to the scope-exhaustion issuer
-#   then: receipt scope, cardinality, ordered outcome ids, and identity derive from that report while consistent multi-layer prefixes, sampling, construction completion, and selection remain absent
+#   then: receipt scope, cardinality, full ordered outcome evidence digest, and identity derive from that report while consistent multi-layer prefixes, id-preserving outcome changes, sampling, construction completion, and selection remain absent
 #   class: evidence
 #   since: 2026-07-31
 # === END CONTRACTS ===
@@ -496,6 +496,28 @@ class GonolInitiationOutcome:
                     "rejected outcome requires a named origin substitution"
                 )
 
+    @property
+    def evidence_identity(self) -> tuple[object, ...]:
+        """Retain disposition, admission, receipt, rejection, and evidence."""
+
+        return (
+            self.outcome_id,
+            self.admission.evidence_identity,
+            self.disposition.value,
+            self.evidence,
+            (
+                self.initiation.evidence_identity
+                if self.initiation is not None
+                else None
+            ),
+            (
+                self.rejected_substitution.value
+                if self.rejected_substitution is not None
+                else None
+            ),
+            self.selection_effect,
+        )
+
 
 def record_gonol_initiation_outcome(
     admission: ObservedElementAdmission,
@@ -597,6 +619,18 @@ class GonolInitiationTrace:
     def subject_digests(self) -> tuple[str, ...]:
         return tuple(
             outcome.admission.subject_record.digest for outcome in self.outcomes
+        )
+
+    @property
+    def evidence_identity(self) -> tuple[object, ...]:
+        """Return the complete ordered outcome evidence identity."""
+
+        return (
+            self.trace_id,
+            tuple(outcome.evidence_identity for outcome in self.outcomes),
+            self.scope,
+            self.outcome_relation_status,
+            self.selection_effect,
         )
 
 
@@ -869,6 +903,19 @@ class GonolInitiationBoundaryReport:
             raise GonolInitiationError(
                 "v0.17 report requires an initiation trace"
             )
+        expected_upstream = run_v016_assignment_admission_boundary_experiment()
+        if (
+            self.upstream.demonstration_trace
+            != expected_upstream.demonstration_trace
+        ):
+            raise GonolInitiationError(
+                "v0.17 authority report must retain the exact full producer admission trace"
+            )
+        expected_demonstration_trace = _demonstration_trace(expected_upstream)
+        if self.demonstration_trace != expected_demonstration_trace:
+            raise GonolInitiationError(
+                "v0.17 authority report must retain every full producer outcome"
+            )
         upstream_admissions = tuple(
             outcome.admission
             for outcome in self.upstream.demonstration_trace.outcomes
@@ -949,6 +996,17 @@ class GonolInitiationBoundaryReport:
         )
 
 
+def _trace_evidence_sha256(trace: GonolInitiationTrace) -> str:
+    return sha256(
+        json.dumps(
+            trace.evidence_identity,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+
+
 def _scope_completion_receipt_id(
     report: GonolInitiationBoundaryReport,
 ) -> str:
@@ -963,6 +1021,7 @@ def _scope_completion_receipt_id(
         "expected_outcome_ids": [
             outcome.outcome_id for outcome in trace.outcomes
         ],
+        "expected_trace_evidence_sha256": _trace_evidence_sha256(trace),
         "receipt_schema_id": (
             GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_ID
         ),
@@ -991,6 +1050,7 @@ class GonolInitiationScopeCompletionReceipt:
     source_scope_id: str
     expected_cardinality: int
     expected_outcome_ids: tuple[str, ...]
+    expected_trace_evidence_sha256: str
     evidence: tuple[str, ...]
     schema_id: str = GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_ID
     schema_version: str = GONOL_INITIATION_SCOPE_COMPLETION_RECEIPT_SCHEMA_VERSION
@@ -1028,6 +1088,7 @@ class GonolInitiationScopeCompletionReceipt:
         expected_outcome_ids = tuple(
             outcome.outcome_id for outcome in exact_trace.outcomes
         )
+        expected_trace_evidence_sha256 = _trace_evidence_sha256(exact_trace)
         expected_evidence = (
             f"authority-report:{self.authority_report.schema_id}/"
             f"{self.authority_report.schema_version}",
@@ -1036,6 +1097,7 @@ class GonolInitiationScopeCompletionReceipt:
             f"source-scope-id:{exact_trace.trace_id}",
             f"expected-cardinality:{len(authority_admissions)}",
             f"ordered-outcome-ids:{'|'.join(expected_outcome_ids)}",
+            f"trace-evidence-sha256:{expected_trace_evidence_sha256}",
             "source-exhausted:true",
             "sampling:false",
             "prefix:false",
@@ -1046,6 +1108,8 @@ class GonolInitiationScopeCompletionReceipt:
             or self.source_scope_id != exact_trace.trace_id
             or self.expected_cardinality != len(authority_admissions)
             or self.expected_outcome_ids != expected_outcome_ids
+            or self.expected_trace_evidence_sha256
+            != expected_trace_evidence_sha256
             or self.evidence != expected_evidence
         ):
             raise GonolInitiationError(
@@ -1077,6 +1141,7 @@ class GonolInitiationScopeCompletionReceipt:
             self.source_scope_id,
             self.expected_cardinality,
             self.expected_outcome_ids,
+            self.expected_trace_evidence_sha256,
             self.evidence,
             self.schema_id,
             self.schema_version,
@@ -1101,6 +1166,7 @@ def issue_gonol_initiation_scope_completion_receipt(
     expected_outcome_ids = tuple(
         outcome.outcome_id for outcome in trace.outcomes
     )
+    expected_trace_evidence_sha256 = _trace_evidence_sha256(trace)
     evidence = (
         f"authority-report:{report.schema_id}/{report.schema_version}",
         f"authority-source:{GONOL_INITIATION_SCOPE_AUTHORITY_SOURCE}",
@@ -1108,6 +1174,7 @@ def issue_gonol_initiation_scope_completion_receipt(
         f"source-scope-id:{trace.trace_id}",
         f"expected-cardinality:{expected_cardinality}",
         f"ordered-outcome-ids:{'|'.join(expected_outcome_ids)}",
+        f"trace-evidence-sha256:{expected_trace_evidence_sha256}",
         "source-exhausted:true",
         "sampling:false",
         "prefix:false",
@@ -1120,6 +1187,7 @@ def issue_gonol_initiation_scope_completion_receipt(
         source_scope_id=trace.trace_id,
         expected_cardinality=expected_cardinality,
         expected_outcome_ids=expected_outcome_ids,
+        expected_trace_evidence_sha256=expected_trace_evidence_sha256,
         evidence=evidence,
     )
 

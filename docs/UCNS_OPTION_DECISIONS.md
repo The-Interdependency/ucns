@@ -385,6 +385,10 @@ The report also binds the fixed full three-admission/three-outcome producer
 declaration, so consistently truncated v0.16 and v0.17 report layers cannot
 mint a smaller scope. Additional scopes require new versioned producer-owned
 declarations.
+Receipt identity additionally binds the exact full v0.16 admission trace and
+every ordered v0.17 disposition, evidence tuple, initiation receipt, and
+rejected substitution, so preserving ids while moving initiation does not
+preserve authority.
 Content, digests, runtime identity, A0 lanes, carrier position alone, scalar
 projections, binary64 renderings, and an unbound tuple length are not
 derivation inputs. The

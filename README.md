@@ -657,10 +657,11 @@ roles, adds total tagged initiation outcomes, and preserves bounded 360°/720°
 root-return evidence without inventing geometry or completion. v0.18 applies
 the surviving exact signed-local circle candidate when independent rational
 coordinate input is supplied, while refusing to call that input source-derived.
-v0.19 implements the exact authority-bound finite ordered-source midpoint
-derivation candidate without selecting it. Its in-process receipt is verified
-against the exact v0.17 authority report. The next truth obligations are
-external producer trust and transport authentication, candidate selection,
+v0.19 implements the exact finite ordered-source midpoint derivation candidate
+over the fixed full producer-owned v0.17 demonstration without selecting it.
+Its in-process receipt binds the exact full admission trace and complete ordered
+outcome evidence identities. The next truth obligations are additional
+versioned producer scopes, external transport authentication, candidate selection,
 cross-scope and higher-gonol coordinate composition, and a total Structural
 Null topology,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned

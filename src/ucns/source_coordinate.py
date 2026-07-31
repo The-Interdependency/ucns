@@ -6,7 +6,7 @@
 #   owner: Erin Spencer
 #   public_surface: CompleteOrderedSourceScopeBinding, OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, bind_complete_ordered_source_scope, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment
 #   internal_surface: fixed SC01-SC10 evidence construction and exact validation helpers
-#   auth_boundary: complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact fixed full authority-report trace; callers cannot supply authority fields, cardinality, outcome ids, or consistently truncated report layers inline
+#   auth_boundary: complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact fixed full authority-report trace and its complete ordered outcome evidence digest; callers cannot supply authority fields, cardinality, outcome ids, outcome contents, or consistently truncated report layers inline
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: a producer-issued completion receipt, exact v0.17 authority report and trace identity, source occurrence index, and report-derived complete finite scope cardinality derive coordinates; content, caller-supplied authority fields, digests, runtime identity, carrier position, and projections do not
@@ -192,6 +192,8 @@ def _scope_binding_evidence(
         f"source-scope-id:{authority_receipt.source_scope_id}",
         f"expected-cardinality:{authority_receipt.expected_cardinality}",
         f"ordered-outcome-ids:{'|'.join(authority_receipt.expected_outcome_ids)}",
+        "trace-evidence-sha256:"
+        f"{authority_receipt.expected_trace_evidence_sha256}",
         "source-exhausted:true",
         "sampling:false",
         "prefix:false",

@@ -164,6 +164,9 @@ The inputs are structural:
   scope identity, cardinality, and ordered outcome identities;
 - the producer-owned fixed declaration of all three v0.17 demonstration
   admission ids and outcome ids;
+- the exact full v0.16 admission trace and complete ordered v0.17 outcome
+  evidence identities, including dispositions, evidence tuples, initiation
+  receipts, and rejected substitutions;
 - exact complete scope cardinality from that binding rather than tuple length;
 - exact upstream trace and outcome objects;
 - explicit initiated-word standing.
@@ -209,7 +212,9 @@ outcome identities. A rewrapped prefix cannot be made into that authority
 report, and the binding API accepts no caller-authored authority strings,
 cardinality, or outcome ids. Consistently truncating both the v0.16 and v0.17
 report layers also fails because the v0.17 authority report validates the fixed
-full producer-owned three-admission/three-outcome declaration. A distinct scope
+full producer-owned admission trace and exact complete outcomes, not their ids
+alone. Moving initiation to a different occurrence, altering evidence, or
+changing a blocker therefore changes or invalidates the receipt. A distinct scope
 requires a new versioned producer declaration and receipt; tuple length alone
 never supplies completion.
 Every result retains the binding and the exact upstream outcome object at its
@@ -240,7 +245,9 @@ The fixed v0.17 trace has cardinality three. Its initiated first occurrence has
 i=0 and therefore:
 
     producer scope receipt id =
-      348630d808d88b6ea922b0e50d4cbbb87b3523225c7683791f3c2e6223bd6ba7
+      dae7f32a36dc0203854e4d95dc649557b3a335f4c01201ee31fa7510683f728b
+    complete ordered trace evidence SHA-256 =
+      f28fadda197c8d3492b2fe0f0999198aeca7a62bb7836b8cbdfad348a8428cbf
 
     p = 1/6
     u = -2/3
@@ -263,7 +270,8 @@ v0.19 claims:
 - completion authority, complete source scope, order, multiplicity, initiation
   identity, and blockers remain recoverable;
 - the concrete receipt is issued and verified against the exact in-process
-  v0.17 producer report rather than self-reported binding fields;
+  v0.17 producer report and complete ordered outcome evidence rather than
+  self-reported binding fields or ids alone;
 - the exact signed-local circle candidate is applied reversibly; and
 - rendering and selection firewalls remain active.
 

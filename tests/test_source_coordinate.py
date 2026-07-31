@@ -259,7 +259,7 @@ def test_prefix_cannot_reuse_or_impersonate_complete_scope_binding() -> None:
     with pytest.raises(TypeError, match="GonolInitiationBoundaryReport"):
         issue_gonol_initiation_scope_completion_receipt(prefix)  # type: ignore[arg-type]
 
-    with pytest.raises(GonolInitiationError, match="fixed full producer scope"):
+    with pytest.raises(GonolInitiationError, match="every full producer outcome"):
         replace(
             authority_receipt.authority_report,
             demonstration_trace=prefix,
@@ -275,7 +275,10 @@ def test_prefix_cannot_reuse_or_impersonate_complete_scope_binding() -> None:
         upstream_report,
         demonstration_trace=upstream_prefix,
     )
-    with pytest.raises(GonolInitiationError, match="fixed full producer scope"):
+    with pytest.raises(
+        GonolInitiationError,
+        match="exact full producer admission trace",
+    ):
         replace(
             authority_report,
             upstream=truncated_upstream_report,
