@@ -40,7 +40,7 @@
 #
 # id: partial_initiation_motion_preserves_360_720_and_history
 #   given: an attached root state advances by two successive visible turns
-#   then: the versioned source-linked visible projection returns after one turn while complete local state changes, two turns restore local state, and both endpoint-validated motion receipts remain appended
+#   then: the versioned source-linked visible projection returns after one exact turn while complete local state changes, a second exact turn restores local state, and both endpoint-validated motion receipts remain appended
 #   class: correctness
 #   since: 2026-07-30
 #
@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use the pinned exact ComparisonPolicy and fixed honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent
+#   then: RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed partial scope, and honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -80,7 +80,7 @@ or breadth law, establish completion, or activate EDCM or METAPAT.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from fractions import Fraction
 
@@ -111,7 +111,7 @@ from .mobius_experiment import FalsifierVerdict
 V013_INITIATION_BOUNDARY_SCHEMA_ID = (
     "ucns.edcm.partial-initiation-boundary"
 )
-V013_INITIATION_BOUNDARY_SCHEMA_VERSION = "0.13.1"
+V013_INITIATION_BOUNDARY_SCHEMA_VERSION = "0.13.2"
 V013_SELECTION_EFFECT = "none"
 
 PARTIAL_INITIATION_SCOPE = (
@@ -134,7 +134,7 @@ ROOT_VISIBLE_PROJECTION_INFORMATION_LOSS = (
     "append-only-motion-history",
 )
 RC_COMPARISON_POLICY_NAME = "ucns.edcm.v013-rc-exact"
-RC_COMPARISON_POLICY_VERSION = "0.13.1"
+RC_COMPARISON_POLICY_VERSION = "0.13.2"
 RC_COMPARISON_POLICY_CODE_REFERENCE = (
     "ucns.comparison:exact_comparison_policy"
 )
@@ -826,7 +826,12 @@ class PartialInitiationBoundaryReport:
     seam_views: tuple[SeamCoordinateView, SeamCoordinateView]
     binary64_witnesses: tuple[Binary64CollisionWitness, ...]
     results: tuple[ContinuityFalsifierResult, ...]
-    comparison_policy: ComparisonPolicy
+    comparison_policy: ComparisonPolicy = field(
+        default_factory=partial_initiation_exact_comparison_policy,
+        init=False,
+        repr=False,
+        compare=False,
+    )
     schema_id: str = V013_INITIATION_BOUNDARY_SCHEMA_ID
     schema_version: str = V013_INITIATION_BOUNDARY_SCHEMA_VERSION
     coordinate_component_status: str = V013_COORDINATE_COMPONENT_STATUS
@@ -841,8 +846,9 @@ class PartialInitiationBoundaryReport:
     hmmm: tuple[str, ...] = V013_HMMM
 
     def __post_init__(self) -> None:
-        _validate_comparison_policy(self.comparison_policy)
-        policy = self.comparison_policy
+        policy = partial_initiation_exact_comparison_policy()
+        object.__setattr__(self, "comparison_policy", policy)
+        _validate_comparison_policy(policy)
         if (
             self.schema_id != V013_INITIATION_BOUNDARY_SCHEMA_ID
             or self.schema_version != V013_INITIATION_BOUNDARY_SCHEMA_VERSION
@@ -882,6 +888,14 @@ class PartialInitiationBoundaryReport:
         if len(after_720.motion_history) != 2:
             raise InitiationBoundaryError(
                 "720 state must retain both motion receipts"
+            )
+        if (
+            after_360.motion_history[0].motion_turns != Fraction(1)
+            or after_720.motion_history[0].motion_turns != Fraction(1)
+            or after_720.motion_history[1].motion_turns != Fraction(1)
+        ):
+            raise InitiationBoundaryError(
+                "360 and 720 trajectory receipts must each advance one exact turn"
             )
         attachment_identities = tuple(
             item.attachment.attachment_identity for item in self.trajectory
@@ -969,6 +983,13 @@ class PartialInitiationBoundaryReport:
         if tuple(item.falsifier_id for item in self.results) != RC_FALSIFIER_IDS:
             raise InitiationBoundaryError(
                 "v0.13 must report RC01 through RC10 in order"
+            )
+        if any(
+            item.scope != PARTIAL_INITIATION_SCOPE
+            for item in self.results
+        ):
+            raise InitiationBoundaryError(
+                "every v0.13 RC result must retain the partial initiation scope"
             )
         if not policy.matches(
             tuple(
@@ -1178,7 +1199,6 @@ def run_v013_partial_initiation_boundary_experiment(
         seam_views=(seam_first, seam_second),
         binary64_witnesses=binary64_collision_witnesses(),
         results=results,
-        comparison_policy=partial_initiation_exact_comparison_policy(),
     )
 
 

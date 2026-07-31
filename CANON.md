@@ -129,12 +129,15 @@ claim. It treats Structural Null as an explicit disjoint typed prestate, gives
 all fourteen minimum-packet initiations source-provenance marked seams, links
 each through a twist receipt to the exact rational root coordinate, and retains
 two successive motion receipts across 360-degree change and 720-degree local
-return. Its `0.13.1` schema pins the source-linked visible projection and exact
-comparison policy, makes native source provenance part of attachment identity,
-and rejects endpoint, trajectory, verdict, or boundary-status substitution.
+return. Its `0.13.2` schema binds the actual exact comparator, pins partial RC
+scope and exact one-turn displacements, makes native source provenance part of
+attachment identity, and rejects endpoint, trajectory, verdict, or
+boundary-status substitution.
 Arbitrary-real seam limits, transverse element assignment, completion, carrier
 selection, and consumer activation remain absent.
-v0.14 adds a separate fail-closed full-corpus execution gate. A post-run
+v0.14 adds a separate fail-closed full-corpus execution gate. Its `0.14.1`
+receipt requires module-executed evidence and binds the complete
+license/privacy/redaction-bearing manifest. A post-run
 analysis receipt requires exhaustion of the supplied admitted-corpus iterator,
 agreement with the externally declared expected turn count, and matching exact
 source/reconstruction stream digests. It does not admit a corpus, claim that a

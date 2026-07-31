@@ -2,7 +2,7 @@
 
 **Status:** implemented, test-backed experiment evidence over the fixed
 minimum source packet and exact rational root fiber; report schema hardened at
-`0.13.1`. No carrier, seam representation, coordinate law, faithful-breadth
+`0.13.2`. No carrier, seam representation, coordinate law, faithful-breadth
 evaluator, EDCM profile, or METAPAT profile is selected.
 
 **Predecessor:** the documentation-only
@@ -48,7 +48,7 @@ neighboring_terms:
   - ucns.coordinate.angular_cut
 known_collisions:
   - ordinary visualization cut
-effective_version: 0.13.1
+effective_version: 0.13.2
 supersedes: none
 unresolved:
   - whether an intrinsic or invariant-equivalence-class seam later replaces or coexists with the marked candidate
@@ -81,7 +81,7 @@ neighboring_terms:
   - ucns.carrier_relation.real_continuity
 known_collisions:
   - complete full-carrier attachment
-effective_version: 0.13.1
+effective_version: 0.13.2
 supersedes: none
 unresolved:
   - extension beyond the exact root fiber and minimum packet
@@ -189,13 +189,16 @@ It explicitly discards native local frame, whole lifted-turn count, and motion
 history. The discarded fields remain in complete local state and the
 trajectory; they are not erased from evidence.
 
-The complete RC packet uses the exact named policy
-`ucns.edcm.v013-rc-exact/0.13.1`, implemented by
-`ucns.comparison:exact_comparison_policy`. No tolerance, binary64
+The complete RC packet binds a constructor-owned instance of the exact named
+policy `ucns.edcm.v013-rc-exact/0.13.2`, implemented by
+`ucns.comparison:exact_comparison_policy`; caller-supplied comparators are not
+accepted. No tolerance, binary64
 approximation, symbolic substitution, or arbitrary-real limit rule is hidden
 inside the report. Missing arbitrary-real structure remains `inconclusive`.
-The expected verdict map and all boundary-status values are fixed by the report
-schema; reconstructing a report cannot promote them.
+Every RC result remains pinned to the partial-initiation scope, every declared
+360°/720° receipt advances exactly one turn, and the expected verdict map and
+all boundary-status values are fixed by the report schema. Reconstructing a
+report cannot widen or promote them.
 
 ## Exact quotient witness
 

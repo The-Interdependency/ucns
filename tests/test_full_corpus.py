@@ -59,6 +59,7 @@ from ucns.full_corpus import (
     CorpusAdapterIdentity,
     CorpusRunFailureKind,
     CorpusRunStatus,
+    FullCorpusExecutionReport,
     FullCorpusError,
     execute_admitted_corpus,
     issue_full_corpus_completion_receipt,
@@ -102,6 +103,19 @@ def test_manifest_pins_source_adapter_and_admission_boundary() -> None:
     assert manifest.license_id == "CC-BY-4.0-fixture"
     assert manifest.privacy_treatment == "synthetic-no-personal-data"
     assert manifest.redaction_policy == "none-synthetic-source"
+    assert manifest.evidence_identity == (
+        "fixture-dialogue-corpus",
+        "2026-07-31",
+        "a" * 64,
+        "4",
+        "CC-BY-4.0-fixture",
+        "synthetic-no-personal-data",
+        "none-synthetic-source",
+        "fixture-admission/1",
+        "fixture-turn-adapter",
+        "1.0.0",
+        "tests.test_full_corpus:_turns",
+    )
 
     with pytest.raises(FullCorpusError, match="SHA-256"):
         replace(manifest, source_artifact_sha256="not-a-digest")
@@ -234,6 +248,47 @@ def test_completion_receipt_opens_analysis_only() -> None:
     assert receipt.metapat_activation == "inactive"
     assert len(receipt.receipt_id) == 64
     assert receipt.receipt_id == repeated.receipt_id
+
+    declared_only = FullCorpusExecutionReport(
+        manifest=report.manifest,
+        status=report.status,
+        iterator_exhausted=report.iterator_exhausted,
+        processed_turn_count=report.processed_turn_count,
+        exact_source_stream_sha256=report.exact_source_stream_sha256,
+        exact_observation_stream_sha256=(
+            report.exact_observation_stream_sha256
+        ),
+        word_gonol_count=report.word_gonol_count,
+        space_boundary_count=report.space_boundary_count,
+        carrier_unassigned_count=report.carrier_unassigned_count,
+        failure=report.failure,
+    )
+    assert declared_only.eligible_for_post_run_analysis is False
+    assert declared_only.post_run_gate == POST_RUN_GATE_CLOSED
+    with pytest.raises(
+        FullCorpusError,
+        match="execution-generated run evidence",
+    ):
+        issue_full_corpus_completion_receipt(declared_only)
+
+    custody_variants = (
+        ("license_id", "review-distinct-license"),
+        ("privacy_treatment", "review-distinct-privacy"),
+        ("redaction_policy", "review-distinct-redaction"),
+    )
+    for field_name, value in custody_variants:
+        variant_manifest = replace(
+            _manifest(),
+            **{field_name: value},
+        )
+        variant_report = execute_admitted_corpus(
+            variant_manifest,
+            _turns(),
+        )
+        variant_receipt = issue_full_corpus_completion_receipt(
+            variant_report
+        )
+        assert variant_receipt.receipt_id != receipt.receipt_id
 
     with pytest.raises(FullCorpusError, match="cannot select"):
         replace(receipt, selection_effect="select-carrier")

@@ -59,14 +59,16 @@ initiation, and arbitrary-element assignment. v0.13 implements one bounded
 attachment candidate: the typed Structural Null prestate reaches the exact
 rational root through fourteen source-provenance marked seams and twist
 receipts, and two successive turns restore local state without erasing motion
-history. Its `0.13.1` hardening pins the source-linked visible projection and
-exact comparison policy, includes native provenance in attachment identity,
-and rejects forged receipt endpoints, trajectory switches, verdicts, or
-boundary statuses. Arbitrary-real seam limits and arbitrary-element transverse
+history. Its `0.13.2` hardening binds the actual exact comparator, pins each RC
+result to the partial scope, includes native provenance in attachment identity,
+requires exact one-turn endpoint-validated receipts, and rejects trajectory,
+verdict, or boundary-status substitution. Arbitrary-real seam limits and arbitrary-element transverse
 assignment remain open. v0.14 adds a separate fail-closed full-corpus execution gate:
 post-run analysis requires supplied-stream exhaustion, externally declared
 turn-count agreement, and exact source/reconstruction stream-digest agreement.
-It does not claim a real-system run or activate EDCM. No law is selected, and
+Its `0.14.1` receipts additionally require module-executed evidence and bind
+license, privacy, redaction, and every other manifest authority field. It does
+not claim a real-system run or activate EDCM. No law is selected, and
 full-carrier real continuity, higher
 coordinates, and global C1/C2 equivalence remain open. Any eventual selection
 cannot become universal UCNS canon or transfer proof or measurement validity.
@@ -148,8 +150,9 @@ See
 The implemented **v0.13 partial initiation boundary** executes one marked-seam
 alternative without selecting it. It supplies an explicit partial topology,
 source-bound initiation edges, twist receipts, exact quotient compatibility,
-and bounded `RC01`–`RC10` results. The `0.13.1` report schema prevents
-provenance, trajectory, verdict, and boundary-status substitution. It does not
+and bounded `RC01`–`RC10` results. The `0.13.2` report schema prevents
+comparator, scope, provenance, displacement, trajectory, verdict, and
+boundary-status substitution. It does not
 establish arbitrary-real continuity or arbitrary-element assignment.
 
 See
@@ -158,7 +161,9 @@ See
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
 after iterator exhaustion, admitted expected-count agreement, and exact
-source/reconstruction stream-digest agreement. The receipt opens
+source/reconstruction stream-digest agreement. Schema `0.14.1` rejects
+merely declared complete reports and binds the complete custody-bearing
+manifest into receipt identity. The receipt opens
 failure-seeking post-run analysis only; it does not admit a corpus, authenticate
 source custody, satisfy a falsifier, select a carrier, or activate EDCM or
 METAPAT.

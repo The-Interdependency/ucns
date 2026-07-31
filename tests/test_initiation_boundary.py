@@ -305,6 +305,8 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     assert report.comparison_policy.name == RC_COMPARISON_POLICY_NAME
     assert report.comparison_policy.version == RC_COMPARISON_POLICY_VERSION
     assert report.comparison_policy.mode is ComparisonMode.EXACT
+    assert report.comparison_policy.matches(("same",), ("same",))
+    assert not report.comparison_policy.matches(("left",), ("right",))
     assert len(report.attachments) == 14
     assert len(report.binary64_witnesses) == 2
     assert tuple(item.falsifier_id for item in report.results) == (
@@ -341,14 +343,11 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         match="cannot select",
     ):
         replace(report, selection_effect="marked-seam-selected")
-    with pytest.raises(
-        InitiationBoundaryError,
-        match="policy name is fixed",
-    ):
+    with pytest.raises(ValueError, match="init=False"):
         replace(
             report,
             comparison_policy=exact_comparison_policy(
-                name="review-unpinned-policy",
+                name=RC_COMPARISON_POLICY_NAME,
                 version=RC_COMPARISON_POLICY_VERSION,
             ),
         )
@@ -373,6 +372,22 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             report,
             complete_relationship_status="completed-global-relationship",
         )
+    widened_rc02 = replace(
+        report.results[1],
+        scope="arbitrary-real-complete-global-carrier",
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="partial initiation scope",
+    ):
+        replace(
+            report,
+            results=(
+                report.results[0],
+                widened_rc02,
+                *report.results[2:],
+            ),
+        )
 
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
@@ -386,14 +401,14 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             trajectory=(report.trajectory[0], other_360, other_720),
         )
 
-    initial, after_360, _ = report.trajectory
-    alternate_first = advance_attached_state(initial, -1)
-    alternate_720 = advance_attached_state(alternate_first, 3)
+    initial, _, _ = report.trajectory
+    after_1080 = advance_attached_state(initial, 3)
+    after_1440 = advance_attached_state(after_1080, 1)
     with pytest.raises(
         InitiationBoundaryError,
-        match="histories must extend",
+        match="one exact turn",
     ):
         replace(
             report,
-            trajectory=(initial, after_360, alternate_720),
+            trajectory=(initial, after_1080, after_1440),
         )

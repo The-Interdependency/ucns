@@ -42,10 +42,12 @@ alphabet failures, under the repaired profile. A new complete run must carry a
 new profile identity and supersession receipt. Non-SPACE unmapped code points
 remain retained and reported as positive coverage-failure evidence.
 
-The v0.14 full-corpus execution gate now prevents a prefix, iterator failure,
-or turn-count mismatch from receiving a post-run analysis receipt. It does not
-retroactively receipt the historical run and does not establish that a
-source-native MultiWOZ adapter matches the archived source artifact. See
+The v0.14.1 full-corpus execution gate now prevents a prefix, iterator failure,
+turn-count mismatch, or merely declared complete report from receiving a
+post-run analysis receipt. Receipt identity binds license, privacy, redaction,
+admission, adapter, source, and count standing. It does not retroactively
+receipt the historical run and does not establish that a source-native
+MultiWOZ adapter matches the archived source artifact. See
 [`FULL_CORPUS_EXECUTION_GATE_V014.md`](FULL_CORPUS_EXECUTION_GATE_V014.md).
 
 ## Candidate sources
@@ -221,7 +223,7 @@ No raw restricted corpus belongs in the UCNS repository.
 
 The first complete MultiWOZ 2.1 run did what the corpus program was meant to do:
 it exposed a boundary error that fixtures missed. The repaired profile now needs
-an immutable source-native full-corpus rerun and v0.14 completion receipt. After
-that, Molweni
+an immutable source-native full-corpus rerun and v0.14.1 completion receipt.
+After that, Molweni
 tests whether the same source-preserving profile retains graph and
 unresolved-reference evidence without flattening it.

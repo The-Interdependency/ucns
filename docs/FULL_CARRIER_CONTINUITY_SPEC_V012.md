@@ -279,7 +279,7 @@ retained:         attachment identity, native source links, parent observations,
                   and lifted turns modulo one visible turn
 discarded:        native local frame, whole lifted-turn count, and append-only
                   motion history
-equality:         ucns.edcm.v013-rc-exact/0.13.1
+equality:         ucns.edcm.v013-rc-exact/0.13.2
 code reference:   ucns.comparison:exact_comparison_policy
 ```
 
@@ -300,9 +300,10 @@ fields contain the native frame and whole lifted representative.
 
 ## Named comparison policy
 
-The executable `RC01`–`RC10` packet uses
-`ucns.edcm.v013-rc-exact/0.13.1`, an exact `ComparisonPolicy` implemented by
-`ucns.comparison:exact_comparison_policy`. It applies exact equality to typed
+The executable `RC01`–`RC10` packet binds
+`ucns.edcm.v013-rc-exact/0.13.2`, an exact `ComparisonPolicy` implemented by
+`ucns.comparison:exact_comparison_policy`. Callers cannot replace its
+comparator. It applies exact equality to typed
 states, `Fraction` coordinates, ordered tuples, verdicts, and evidence
 identities. It supplies no tolerance, binary64 approximation, interval
 substitution, symbolic rewrite, or arbitrary-real limit oracle.

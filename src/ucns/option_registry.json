@@ -1,6 +1,6 @@
 {
   "schema_id": "ucns.option-registry",
-  "schema_version": "1.10.1",
+  "schema_version": "1.10.2",
   "authority": "Erin Spencer",
   "recorded_on": "2026-07-31",
   "identifier": {
@@ -13,7 +13,7 @@
     "system_root": "UCNS assigns elements of an unknowable to completion through geometric motion.",
     "completion_scope": "Completion closes a declared construction relative to its declared boundary and does not exhaust the underlying unknowable.",
     "motion_evidence_schema": "ucns.edcm.completion-motion-evidence/0.1.0",
-    "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.0",
+    "full_corpus_execution_schema": "ucns.edcm.full-corpus-execution/0.14.1",
     "trajectory_identity": "complete-assignment-and-motion-trajectory",
     "scalar_projection_policy": "optional-declared-loss-with-source-link",
     "objective": "Expose UCNS choices and determine an EDCM-scoped ideal option configuration against real systems.",
@@ -176,7 +176,7 @@
     },
     {
       "id": "full-corpus-execution-gate",
-      "statement": "v0.14 issues a post-run analysis receipt only after the supplied admitted-corpus iterator is exhausted, the externally declared expected turn count matches, and exact source and reconstructed-observation stream digests agree. Partial execution remains explicit evidence and cannot select a carrier or activate EDCM or METAPAT."
+      "statement": "v0.14.1 issues a post-run analysis receipt only from execution-generated evidence after the supplied admitted-corpus iterator is exhausted, the externally declared expected turn count matches, and exact source and reconstructed-observation stream digests agree. Receipt identity binds the complete authority-bearing manifest, including license, privacy, and redaction standing. Partial or merely declared execution remains explicit nonreceipt evidence and cannot select a carrier or activate EDCM or METAPAT."
     },
     {
       "id": "ucns-completion-motion-root",
@@ -208,7 +208,7 @@
     },
     {
       "id": "partial-initiation-boundary",
-      "statement": "v0.13.1 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It pins the source-linked visible projection and exact RC comparison policy, includes native provenance in attachment identity, and rejects forged receipt endpoints, trajectory substitution, verdict promotion, and boundary-status promotion while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
+      "statement": "v0.13.2 represents Structural Null as an explicit disjoint typed prestate and attaches all fourteen minimum-packet word initiations to the exact rational root through source-provenance marked seams and twist receipts. It binds the actual exact RC comparator, includes native provenance in attachment identity, requires exact one-turn receipt displacements and partial-scope RC results, and rejects forged endpoints, trajectory substitution, verdict promotion, and boundary-status promotion while leaving arbitrary-real seam limits, arbitrary-element transverse assignment, carrier selection, EDCM activation, and METAPAT activation absent."
     }
   ],
   "current_profile": {

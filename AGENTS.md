@@ -57,10 +57,10 @@ Rules:
   evidence until ratified; scalar metrics are optional declared-loss projections
   that must retain a link to the complete source observation.
 - For the v0.13 initiation boundary, retain native source links and parent
-  observations in attachment identity, use only the named source-linked visible
-  projection and exact RC comparison policy, validate every motion-receipt
-  endpoint and history prefix, and reject reconstructed verdict or boundary
-  promotion.
+  observations in attachment identity, bind the real named exact comparator,
+  pin every RC result to partial scope, require exact one-turn displacement,
+  validate every motion-receipt endpoint and history prefix, and reject
+  reconstructed verdict or boundary promotion.
 - Scope every completion receipt to its declared construction boundary. A
   completed construction cannot claim epistemic exhaustion of the underlying
   unknowable.
@@ -70,9 +70,10 @@ Rules:
   behavior in post-run comparison and surfacing, not by sampling the execution.
   Never transfer an EDCM selection into universal UCNS canon.
 - Do not run post-run EDCM falsifier analysis or admission from a corpus prefix.
-  Require a v0.14 full-corpus completion receipt bound to the real external
-  admission manifest; synthetic or fixture manifests cannot receipt a claimed
-  real-system run.
+  Require a v0.14 full-corpus completion receipt created from module-executed
+  evidence and bound to every authority-bearing field of the real external
+  admission manifest; synthetic, fixture, or merely declared reports cannot
+  receipt a claimed real-system run.
 - Preserve the fail-closed cell zero-test: finite `mu = 0` only for a field-empty
   absent cell; finite `mu > 0` requires retained distinction.
 - Treat aggregate support `W` as established only for the current cell carrier.

@@ -217,16 +217,16 @@ completion-motion algorithm. See
 ## Implemented partial initiation boundary
 
 ```text
-schema:           ucns.edcm.partial-initiation-boundary/0.13.1
+schema:           ucns.edcm.partial-initiation-boundary/0.13.2
 scope:            fixed nine-witness / fourteen-initiation packet
 Structural Null:  explicit disjoint typed prestate
 seam:             marked source-provenance candidate
 attachment:       partial relation to exact root u=0, B=1, t=0
 twist:            retained source-bound receipt
 visible:          source-linked root projection/0.13.1 with declared loss
-comparison:       named exact RC policy/0.13.1
-motion:           endpoint-validated 360 change, 720 local return, append-only history
-RC packet:        RC01-RC10; arbitrary-real obligations remain inconclusive
+comparison:       constructor-bound exact RC policy/0.13.2
+motion:           exact one-turn, endpoint-validated 360 change and 720 return
+RC packet:        RC01-RC10 pinned to partial scope; arbitrary-real obligations remain inconclusive
 selection:        none
 EDCM activation:  inactive
 METAPAT:          inactive
@@ -240,10 +240,12 @@ move hidden zero. The other seam alternatives remain recoverable. See
 ## Implemented full-corpus execution gate
 
 ```text
-schema:           ucns.edcm.full-corpus-execution/0.14.0
+schema:           ucns.edcm.full-corpus-execution/0.14.1
 scope:            EDCM admitted-corpus execution evidence
 manifest:         source, count, license/privacy/redaction, adapter, admission
 completion:       iterator exhaustion + count match + exact digest match
+execution proof:  receipt requires module-executed report capability
+receipt identity: complete manifest custody fields + profile, digests, counts
 partial failure:  stopping index and stable failure class retained
 gate effect:      post-run failure-seeking analysis only
 real corpus run:  none claimed by this implementation

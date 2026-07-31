@@ -5,7 +5,7 @@
 #   summary: fail-closed EDCM corpus execution reports and completion receipts that require iterator exhaustion, declared turn-count agreement, and exact source reconstruction before post-run analysis
 #   owner: Erin Spencer
 #   public_surface: CorpusAdapterIdentity, AdmittedCorpusManifest, CorpusRunStatus, CorpusRunFailureKind, CorpusRunFailure, FullCorpusExecutionReport, FullCorpusCompletionReceipt, execute_admitted_corpus, issue_full_corpus_completion_receipt
-#   internal_surface: exact validation, length-prefixed turn-stream hashing, incomplete-report construction, and receipt identity helpers
+#   internal_surface: exact validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers
 #   auth_boundary: admission authority remains external and is retained by admission_decision_id
 #   storage_boundary: raw corpus and per-turn observations remain in source or downstream custody; this bounded report retains counts and linked digests only
 #   network_boundary: none
@@ -46,7 +46,7 @@
 #
 # id: full_corpus_receipt_has_no_selection_or_activation_effect
 #   given: a full-corpus completion receipt is issued
-#   then: it opens only failure-seeking post-run analysis and cannot select a carrier, validate EDCM measurement, activate EDCM, or activate METAPAT
+#   then: it requires module-executed evidence, binds every authority-bearing manifest field, opens only failure-seeking post-run analysis, and cannot select a carrier, validate EDCM measurement, activate EDCM, or activate METAPAT
 #   class: doctrine
 #   since: 2026-07-31
 # === END CONTRACTS ===
@@ -65,7 +65,7 @@ completion-motion trajectories remain in their declared custody systems.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from hashlib import sha256
 import string
@@ -81,7 +81,7 @@ from .edcm import (
 
 
 V014_FULL_CORPUS_SCHEMA_ID = "ucns.edcm.full-corpus-execution"
-V014_FULL_CORPUS_SCHEMA_VERSION = "0.14.0"
+V014_FULL_CORPUS_SCHEMA_VERSION = "0.14.1"
 V014_FULL_CORPUS_SELECTION_EFFECT = "none"
 V014_FULL_CORPUS_EDCM_ACTIVATION = "inactive"
 V014_FULL_CORPUS_METAPAT_ACTIVATION = "inactive"
@@ -89,7 +89,8 @@ POST_RUN_GATE_OPEN = "open-for-failure-seeking-analysis-only"
 POST_RUN_GATE_CLOSED = "closed-incomplete-corpus-execution"
 
 _TURN_STREAM_DOMAIN = b"ucns.edcm.exact-turn-stream.v1\x00"
-_RECEIPT_DOMAIN = b"ucns.edcm.full-corpus-receipt.v014\x00"
+_RECEIPT_DOMAIN = b"ucns.edcm.full-corpus-receipt.v0141\x00"
+_EXECUTED_RUN_CAPABILITY = object()
 _HEX_DIGITS = frozenset(string.hexdigits)
 
 
@@ -196,6 +197,24 @@ class AdmittedCorpusManifest:
         if not isinstance(self.adapter, CorpusAdapterIdentity):
             raise FullCorpusError("adapter must be a CorpusAdapterIdentity")
 
+    @property
+    def evidence_identity(self) -> tuple[str, ...]:
+        """Return every authority-bearing manifest field in declared order."""
+
+        return (
+            self.corpus_id,
+            self.corpus_version,
+            self.source_artifact_sha256,
+            str(self.expected_turn_count),
+            self.license_id,
+            self.privacy_treatment,
+            self.redaction_policy,
+            self.admission_decision_id,
+            self.adapter.adapter_id,
+            self.adapter.adapter_version,
+            self.adapter.code_reference,
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class CorpusRunFailure:
@@ -237,6 +256,12 @@ class FullCorpusExecutionReport:
     selection_effect: str = V014_FULL_CORPUS_SELECTION_EFFECT
     edcm_activation: str = V014_FULL_CORPUS_EDCM_ACTIVATION
     metapat_activation: str = V014_FULL_CORPUS_METAPAT_ACTIVATION
+    _execution_capability: object | None = field(
+        default=None,
+        init=False,
+        repr=False,
+        compare=False,
+    )
 
     def __post_init__(self) -> None:
         if not isinstance(self.manifest, AdmittedCorpusManifest):
@@ -299,13 +324,16 @@ class FullCorpusExecutionReport:
 
     @property
     def post_run_gate(self) -> str:
-        if self.status is CorpusRunStatus.COMPLETE:
+        if self.eligible_for_post_run_analysis:
             return POST_RUN_GATE_OPEN
         return POST_RUN_GATE_CLOSED
 
     @property
     def eligible_for_post_run_analysis(self) -> bool:
-        return self.status is CorpusRunStatus.COMPLETE
+        return (
+            self.status is CorpusRunStatus.COMPLETE
+            and self._execution_capability is _EXECUTED_RUN_CAPABILITY
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -321,6 +349,10 @@ class FullCorpusCompletionReceipt:
     def __post_init__(self) -> None:
         if not isinstance(self.report, FullCorpusExecutionReport):
             raise FullCorpusError("receipt report must be a FullCorpusExecutionReport")
+        if self.report._execution_capability is not _EXECUTED_RUN_CAPABILITY:
+            raise FullCorpusError(
+                "completion receipt requires execution-generated run evidence"
+            )
         if not self.report.eligible_for_post_run_analysis:
             raise FullCorpusError(
                 "an incomplete corpus report cannot issue a completion receipt"
@@ -340,16 +372,21 @@ class FullCorpusCompletionReceipt:
         values = (
             V014_FULL_CORPUS_SCHEMA_ID,
             V014_FULL_CORPUS_SCHEMA_VERSION,
-            manifest.corpus_id,
-            manifest.corpus_version,
-            manifest.source_artifact_sha256,
-            str(manifest.expected_turn_count),
-            manifest.admission_decision_id,
-            manifest.adapter.adapter_id,
-            manifest.adapter.adapter_version,
-            manifest.adapter.code_reference,
+            *manifest.evidence_identity,
+            self.report.profile_id,
+            self.report.profile_version,
+            self.report.profile_scope,
+            self.report.status.value,
+            str(self.report.iterator_exhausted).lower(),
             self.report.exact_source_stream_sha256,
+            self.report.exact_observation_stream_sha256,
             str(self.report.processed_turn_count),
+            str(self.report.word_gonol_count),
+            str(self.report.space_boundary_count),
+            str(self.report.carrier_unassigned_count),
+            self.report.selection_effect,
+            self.report.edcm_activation,
+            self.report.metapat_activation,
         )
         digest = sha256(_RECEIPT_DOMAIN)
         for value in values:
@@ -361,6 +398,19 @@ def _empty_stream_digest():
     digest = sha256()
     digest.update(_TURN_STREAM_DOMAIN)
     return digest
+
+
+def _bind_executed_run(
+    report: FullCorpusExecutionReport,
+) -> FullCorpusExecutionReport:
+    """Bind module-created evidence to the exact execution path."""
+
+    object.__setattr__(
+        report,
+        "_execution_capability",
+        _EXECUTED_RUN_CAPABILITY,
+    )
+    return report
 
 
 def _incomplete_report(
@@ -375,7 +425,7 @@ def _incomplete_report(
     carrier_unassigned_count: int,
     failure: CorpusRunFailure,
 ) -> FullCorpusExecutionReport:
-    return FullCorpusExecutionReport(
+    return _bind_executed_run(FullCorpusExecutionReport(
         manifest=manifest,
         status=CorpusRunStatus.INCOMPLETE,
         iterator_exhausted=iterator_exhausted,
@@ -386,7 +436,7 @@ def _incomplete_report(
         space_boundary_count=space_boundary_count,
         carrier_unassigned_count=carrier_unassigned_count,
         failure=failure,
-    )
+    ))
 
 
 def execute_admitted_corpus(
@@ -556,7 +606,7 @@ def execute_admitted_corpus(
             ),
         )
 
-    return FullCorpusExecutionReport(
+    return _bind_executed_run(FullCorpusExecutionReport(
         manifest=manifest,
         status=CorpusRunStatus.COMPLETE,
         iterator_exhausted=True,
@@ -567,7 +617,7 @@ def execute_admitted_corpus(
         space_boundary_count=space_boundary_count,
         carrier_unassigned_count=carrier_unassigned_count,
         failure=None,
-    )
+    ))
 
 
 def issue_full_corpus_completion_receipt(

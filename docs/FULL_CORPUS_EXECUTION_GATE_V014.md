@@ -1,8 +1,9 @@
 # UCNS–EDCM v0.14 full-corpus execution gate
 
-**Status:** implemented, test-backed procedural evidence. No real-system corpus
-is admitted or executed by this module, no post-run falsifier is satisfied by
-the gate alone, and no carrier, EDCM, or METAPAT activation follows.
+**Status:** implemented, test-backed procedural evidence; report schema
+`0.14.1`. No real-system corpus is admitted or executed by this module, no
+post-run falsifier is satisfied by the gate alone, and no carrier, EDCM, or
+METAPAT activation follows.
 
 **Predecessor:** the v0.13
 [`partial initiation boundary`](PARTIAL_INITIATION_BOUNDARY_V013.md).
@@ -61,6 +62,12 @@ speaker, order, multiplicity, SPACE manifestation, and turn boundary. The fixed
 EDCM profile continues to reject surrogate code points and perform no
 normalization.
 
+Only `execute_admitted_corpus()` binds the returned report to the module's
+executed-run capability. A publicly constructed report with declared
+`complete`, exhaustion, counts, and matching digest strings remains ineligible
+for post-run analysis and cannot issue a receipt. Reconstructing or replacing a
+report also drops that capability.
+
 ## Incomplete-run evidence
 
 An incomplete report distinguishes:
@@ -78,6 +85,14 @@ empty, or passing result.
 `issue_full_corpus_completion_receipt()` rejects every incomplete report.
 
 ## Receipt authority
+
+The receipt identity binds the complete ordered manifest evidence identity:
+corpus/version, source digest, expected count, license, privacy treatment,
+redaction policy, admission decision, and adapter identity/version/code
+reference. It also binds the fixed profile identity, both stream digests, all
+reported counts, and inactive selection/activation standing. Distinct custody
+or redaction declarations therefore produce distinct receipt identities even
+when the supplied turn stream is otherwise identical.
 
 A valid receipt opens only:
 
@@ -108,6 +123,8 @@ mathematical, measurement, and authority claims.
 | iterator exhaustion check | implemented |
 | admitted expected-count agreement | implemented |
 | exact source/reconstruction stream digest agreement | implemented |
+| execution-generated report capability | implemented; public declarations alone remain closed |
+| license/privacy/redaction-bound receipt identity | implemented |
 | incomplete-run stopping receipt | implemented |
 | gate before post-run analysis | implemented |
 | source-native MultiWOZ adapter | unresolved |

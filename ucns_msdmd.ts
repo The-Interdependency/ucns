@@ -2114,7 +2114,7 @@ export default defineMsdmdCollection({
         "class": "doctrine",
         "given": "a full-corpus completion receipt is issued",
         "since": "2026-07-31",
-        "then": "it opens only failure-seeking post-run analysis and cannot select a carrier, validate EDCM measurement, activate EDCM, or activate METAPAT"
+        "then": "it requires module-executed evidence, binds every authority-bearing manifest field, opens only failure-seeking post-run analysis, and cannot select a carrier, validate EDCM measurement, activate EDCM, or activate METAPAT"
       },
       "file": "src/ucns/full_corpus.py",
       "id": "full_corpus_receipt_has_no_selection_or_activation_effect"
@@ -2135,7 +2135,7 @@ export default defineMsdmdCollection({
       "fields": {
         "admin_only": "false",
         "auth_boundary": "admission authority remains external and is retained by admission_decision_id",
-        "internal_surface": "exact validation, length-prefixed turn-stream hashing, incomplete-report construction, and receipt identity helpers",
+        "internal_surface": "exact validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers",
         "module_kind": "experiment",
         "module_name": "full_corpus",
         "network_boundary": "none",
@@ -2171,7 +2171,7 @@ export default defineMsdmdCollection({
         "class": "correctness",
         "given": "an attached root state advances by two successive visible turns",
         "since": "2026-07-30",
-        "then": "the versioned source-linked visible projection returns after one turn while complete local state changes, two turns restore local state, and both endpoint-validated motion receipts remain appended"
+        "then": "the versioned source-linked visible projection returns after one exact turn while complete local state changes, a second exact turn restores local state, and both endpoint-validated motion receipts remain appended"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_motion_preserves_360_720_and_history"
@@ -2182,7 +2182,7 @@ export default defineMsdmdCollection({
         "class": "safety",
         "given": "the v0.13 report is produced",
         "since": "2026-07-30",
-        "then": "RC01 through RC10 use the pinned exact ComparisonPolicy and fixed honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent"
+        "then": "RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed partial scope, and honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_report_executes_rc_packet_without_selection"

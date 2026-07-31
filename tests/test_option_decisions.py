@@ -56,6 +56,8 @@
 #   cleanup: none
 # === END CHECKS ===
 
+from copy import deepcopy
+
 import pytest
 
 from ucns import (
@@ -74,6 +76,7 @@ from ucns import (
     load_option_registry,
     option_dimension,
 )
+from ucns.options import _validate_registry
 
 
 def test_ucns_identifier_has_no_canonical_expansion() -> None:
@@ -81,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.10.1"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.10.2"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -97,7 +100,7 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     )
     assert (
         project["full_corpus_execution_schema"]
-        == "ucns.edcm.full-corpus-execution/0.14.0"
+        == "ucns.edcm.full-corpus-execution/0.14.1"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -196,6 +199,19 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         "intrinsic-derived-initiation-seam": "unresolved",
         "invariant-initiation-equivalence-class": "unresolved",
     }
+
+    promoted_registry = deepcopy(registry)
+    promoted_attachment = next(
+        dimension
+        for dimension in promoted_registry["dimensions"]
+        if dimension["id"] == "initiation-attachment"
+    )
+    promoted_attachment["choices"][0]["standing"] = "decided-constraint"
+    with pytest.raises(
+        OptionRegistryError,
+        match="choice standings are fixed",
+    ):
+        _validate_registry(promoted_registry)
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:
