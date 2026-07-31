@@ -1,6 +1,6 @@
 # UCNS–EDCM post-reset claims ledger
 
-> **Status:** v0.11 authority and evidence ledger. It records standing; it does not promote any candidate.
+> **Status:** v0.12 authority, evidence, and proposed-continuity ledger. It records standing; it does not promote any candidate.
 >
 > **Recovery boundary:** claims are evaluated against current UCNS `main`, the EDCM decision record, exact corpus evidence, and the primary A0 recovery specimen at `7af8debf6ef3905f01baff02b43d8c3bee16ccbc`.
 
@@ -55,6 +55,7 @@ Only a separate explicit authority decision can change a claim’s standing to c
 | `M10` | Exact local-frame `u` and global-side `εu` descriptions form a reversible transverse sidecar envelope over the v0.7 root chart, not a transverse directed-cover embedding. | `implemented-evidence` | [`EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md`](EXACT_RATIONAL_TRANSVERSE_ENVELOPE_V09.md) and `src/ucns/transverse_envelope.py`; the named exact policy validates 45 rational stress fibers across all initiation/convention/transition identities, while 28 collision witnesses show that distinct sidecars share one actual cover coordinate. F12/F13 remain v0.7-only and no convention is selected. |
 | `M11` | Four declared radial laws can be evaluated as actual `LiftedCarrierPoint` coordinates without selecting one; signed local affine breadth is admissible on the bounded v0.10 domain. | `implemented-evidence` | [`CARRIER_COORDINATE_ADMISSIBILITY_V010.md`](CARRIER_COORDINATE_ADMISSIBILITY_V010.md) and `src/ucns/carrier_coordinate.py`; 5,040 images and 20,160 motion rows show signed local affine breadth is injective, zero-restricting, convention-invariant, and motion-commuting over 45 materialized rational fibers. Constant and unsigned laws retain 1,848 collision links; signed global retains 2,464 motion failures. The result is finite, nonselecting, and not canonical `B`. |
 | `M12` | The signed-local affine candidate has an exact rational coordinate and inverse on the declared transverse interval, while binary64 `LiftedCarrierPoint` materialization is not injective over that arbitrary-rational domain. | `implemented-evidence` | [`EXACT_COORDINATE_BOUNDARY_V011.md`](EXACT_COORDINATE_BOUNDARY_V011.md) and `src/ucns/exact_coordinate.py`; exact `Fraction` records retain upstream/law provenance and recover `u=2*(B-1)`. One breadth witness and one lifted-turn witness retain distinct exact coordinates with the same actual binary64 identity. Float points remain lossy renderings; no carrier, canonical `B`, full real-continuous relation, EDCM, or METAPAT selection follows. |
+| `M13` | The signed-local affine formula may serve as the non-null coordinate component of a real-continuous lifted Möbius relationship when the framed double cover, Möbius quotient, sheet involution, seam, and Structural Null attachment all satisfy the v0.12 obligations. | `conjecture` | [`FULL_CARRIER_CONTINUITY_SPEC_V012.md`](FULL_CARRIER_CONTINUITY_SPEC_V012.md) defines the candidate spaces, narrow affine continuity observation, domain claims, and `RC01`–`RC10` falsifiers. No arbitrary-real runtime representation, Structural Null topology, source-bound general initiation relation, carrier selection, EDCM activation, or METAPAT activation is supplied. |
 
 ## 5. Composition and retained-structure claims
 
@@ -87,9 +88,13 @@ Only a separate explicit authority decision can change a claim’s standing to c
 
 ## 8. Open obligations
 
-The following remain `unresolved` after the v0.11 exact-coordinate boundary:
+The following remain `unresolved` after the v0.12 documentation-only
+continuity specification:
 
-1. real continuity of the complete signed-local relationship beyond the exact-rational coordinate evidence and lossy binary64 rendering;
+1. executable evidence or proof for the complete signed-local relationship,
+   especially seam provenance, Structural Null topology, causal initiation,
+   source retention, and quotient compatibility beyond the non-null affine
+   component;
 2. the exact element-assignment law;
 3. initiation and transition laws beyond the minimum witness and bounded exact-rational domain;
 4. canonical state equivalence beyond the C1 experiment candidate;
@@ -113,7 +118,9 @@ corrected exact-rational transverse envelope that preserves two descriptions
 while exposing its own cover-coordinate collisions; and a bounded coordinate
 experiment that admits signed local affine breadth while retaining three
 candidate failures; and an exact-coordinate boundary that preserves the affine
-law and inverse while exposing binary64 breadth and turn collisions. It does
-not yet have a full real-continuous relationship, arbitrary-element assignment,
-canonical breadth, recursive composition, scoped completion, or evidence that
-the exact candidate supplies the complete carrier.
+law and inverse while exposing binary64 breadth and turn collisions. v0.12 now
+specifies the real quotient candidate and its separating falsifiers. It does not
+yet have the topology attaching Structural Null and causal initiation, a full
+real-continuous relationship, arbitrary-element assignment, canonical breadth,
+recursive composition, scoped completion, or evidence that the exact candidate
+supplies the complete carrier.

@@ -18,9 +18,11 @@ local affine breadth is admissible on that bounded domain without selection.
 v0.11 preserves that candidate as exact rational coordinate evidence with an
 exact inverse and records explicit binary64 breadth and lifted-turn collisions,
 so float points remain linked renderings rather than arbitrary-rational
-identity. Arbitrary assignment, full-carrier real continuity, canonical
-breadth, epicyclic geometry, completion, and higher-composition mathematics
-remain incomplete.
+identity. v0.12 specifies the real non-null quotient topology and continuity
+falsifiers without changing any option standing or adding runtime behavior.
+Arbitrary assignment, Structural Null attachment, full-carrier real continuity,
+canonical breadth, epicyclic geometry, completion, and higher-composition
+mathematics remain incomplete.
 
 ## Authority boundary
 
@@ -446,7 +448,9 @@ analogy. The attempted transverse extension is retained as exact envelope
 algebra plus a concrete nonembedding witness. The v0.10 signed-local radial
 candidate survives bounded actual-cover materialization without acquiring
 selection authority. v0.11 preserves its exact rational law and inverse while
-recording that binary64 cannot carry its arbitrary-rational identity.
-Full-carrier real continuity, arbitrary assignment, canonical breadth,
-epicyclic circle, disk, sphere, composition, and completion laws remain the
-living recovery boundary.
+recording that binary64 cannot carry its arbitrary-rational identity. v0.12
+specifies the framed double cover, Möbius quotient, coordinate cylinder, and
+separating continuity obligations while leaving the seam and Structural Null
+attachment honest. Executable full-carrier continuity, arbitrary assignment,
+canonical breadth, epicyclic circle, disk, sphere, composition, and completion
+laws remain the living recovery boundary.

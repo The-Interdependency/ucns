@@ -119,7 +119,11 @@ binary64 `LiftedCarrierPoint` materialization is not injective over the
 arbitrary exact-rational domain and must remain a linked rendering. No carrier,
 convention, or faithful-breadth law is selected, and full-carrier real
 continuity, arbitrary-element, higher-geometric, and completion mapping remains
-unresolved.
+unresolved. The documentation-only v0.12 specification now separates the
+ordinary real-continuous affine coordinate component from the complete carrier
+claim. It defines the framed double cover, Möbius quotient, coordinate cylinder,
+sheet involution, and falsifiers without supplying the topology that attaches
+Structural Null, hidden-zero initiation, exact source, or completion.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -404,6 +408,11 @@ Implemented and test-backed infrastructure:
     and records explicit breadth and lifted-turn collisions without selection
     or downstream activation.
 
+The v0.12 full-carrier real-continuity specification is documentation-only. It
+adds no twenty-second implemented surface. It records the candidate quotient
+topology, domain-qualified meanings, and `RC01`–`RC10` falsifiers needed before
+a complete relationship can become executable.
+
 Still unresolved and not promoted:
 
 1. the recovered assignment-to-completion motion algorithm;
@@ -418,9 +427,10 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. real continuity of the complete signed-local Möbius-to-cover relationship
-    beyond the v0.11 exact-rational representation boundary, arbitrary-element
-    assignment, higher geometry, and completion;
+12. execution or proof of the v0.12 complete signed-local
+    Möbius-to-cover continuity obligations, including Structural Null
+    attachment, seam provenance, arbitrary-element assignment, higher geometry,
+    and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -468,11 +478,14 @@ specific failures. v0.11 then gives the signed-local law an exact rational
 coordinate record and inverse while retaining two separating witnesses showing
 that the float carrier representation collides. The exact law therefore extends
 beyond the finite stress grid, but its current binary64 rendering does not.
-Neither result establishes a global embedding, selects a carrier, or canonizes
-breadth. Whether the directed cover implements, embeds, parameterizes, or
-conflicts with the Möbius construction as a complete real-continuous
-relationship remains unresolved, and the cover cannot erase the decided causal
-semantics.
+v0.12 specifies the real affine and quotient candidate and makes the remaining
+gap sharper: the non-null coordinate component can be smooth while the seam,
+Structural Null attachment, causal initiation, and retained source relationship
+remain absent. None of these results establishes a global embedding, selects a
+carrier, or canonizes breadth. Whether the directed cover implements, embeds,
+parameterizes, or conflicts with the Möbius construction as a complete
+real-continuous relationship remains unresolved, and the cover cannot erase the
+decided causal semantics.
 
 EDCM additionally fixes words as the smallest gonols and every source code point
 in the profile-pinned Unicode White_Space set as a source-preserved
@@ -493,8 +506,10 @@ transverse envelope now records its own failure to embed in the actual cover.
 One signed-local radial law now survives a bounded actual-cover admissibility
 experiment without becoming selected. Its exact rational law and inverse now
 survive beyond the finite grid, while binary64 materialization records its own
-noninjectivity. Full-carrier real continuity, arbitrary-element assignment,
-canonical breadth, epicyclic circle, disk, sphere, recursive composition, and
-completion conditions remain unrecovered. Real-system experiments may pressure
-those laws, but current metric projections may not circularly select the
-geometry that makes them appear valid.
+noninjectivity. The v0.12 specification gives the real non-null topology a
+falsifiable shape but does not manufacture the missing initiation attachment.
+Executable full-carrier continuity, arbitrary-element assignment, canonical
+breadth, epicyclic circle, disk, sphere, recursive composition, and completion
+conditions remain unrecovered. Real-system experiments may pressure those laws,
+but current metric projections may not circularly select the geometry that
+makes them appear valid.
