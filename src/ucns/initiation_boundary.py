@@ -84,6 +84,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from fractions import Fraction
 
+from .carrier import LiftedCarrierPoint
 from .comparison import (
     ComparisonMode,
     ComparisonPolicy,
@@ -100,6 +101,8 @@ from .direct_mobius import (
     build_native_mobius_initiation_packet,
 )
 from .exact_coordinate import (
+    Binary64CarrierRendering,
+    Binary64CollisionKind,
     Binary64CollisionWitness,
     ExactCarrierCoordinate,
     ExactCoordinateProvenance,
@@ -208,6 +211,73 @@ def _canonical_sheet_witness(
         Fraction(2, 5),
     )
     return first, exact_sheet_involution(first)
+
+
+def _require_exact_coordinate_types(
+    coordinate: object,
+    field: str,
+) -> None:
+    if type(coordinate) is not ExactCarrierCoordinate:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact ExactCarrierCoordinate"
+        )
+    if (
+        type(coordinate.local_transverse) is not Fraction
+        or type(coordinate.breadth) is not Fraction
+        or type(coordinate.lifted_turns) is not Fraction
+        or type(coordinate.provenance) is not ExactCoordinateProvenance
+        or type(coordinate.status) is not str
+        or type(coordinate.selection_effect) is not str
+        or any(
+            type(value) is not str
+            for value in (
+                coordinate.provenance.source_schema_id,
+                coordinate.provenance.source_schema_version,
+                coordinate.provenance.source_candidate_id,
+                coordinate.provenance.source_candidate_version,
+                coordinate.provenance.law_id,
+                coordinate.provenance.law_version,
+                coordinate.provenance.formula,
+                coordinate.provenance.code_reference,
+                coordinate.provenance.scope,
+                coordinate.provenance.selection_effect,
+            )
+        )
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical coordinate field types"
+        )
+
+
+def _require_exact_binary64_rendering_types(
+    rendering: object,
+    field: str,
+) -> None:
+    if type(rendering) is not Binary64CarrierRendering:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact Binary64CarrierRendering"
+        )
+    _require_exact_coordinate_types(rendering.exact_coordinate, field)
+    if (
+        type(rendering.actual_point) is not LiftedCarrierPoint
+        or type(rendering.actual_point.breadth) is not float
+        or type(rendering.actual_point.angle) is not float
+        or any(
+            type(value) is not str
+            for value in (
+                rendering.rendering_policy_id,
+                rendering.rendering_policy_version,
+                rendering.code_reference,
+                rendering.status,
+                rendering.selection_effect,
+            )
+        )
+        or type(rendering.information_loss) is not tuple
+        or any(type(value) is not str for value in rendering.information_loss)
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical rendering field types"
+        )
 
 
 def _fraction_key(value: Fraction) -> str:
@@ -581,11 +651,18 @@ class CarrierMotionReceipt:
     after_coordinate_identity: tuple[tuple[str, str], ...]
 
     def __post_init__(self) -> None:
+        if type(self.step_index) is not int:
+            raise InitiationBoundaryError(
+                "motion receipt step_index must be an exact int"
+            )
         if self.step_index < 0:
             raise InitiationBoundaryError(
                 "motion receipt step_index must be nonnegative"
             )
-        _require_fraction(self.motion_turns, "motion_turns")
+        if type(self.motion_turns) is not Fraction:
+            raise InitiationBoundaryError(
+                "motion receipt turns must be an exact Fraction"
+            )
         if self.motion_turns == 0:
             raise InitiationBoundaryError(
                 "motion receipt must retain a nonzero displacement"
@@ -594,6 +671,10 @@ class CarrierMotionReceipt:
             raise InitiationBoundaryError(
                 "motion receipt must link its initiation attachment"
             )
+        _require_exact_string_tuple_tree(
+            self.attachment_id,
+            "motion receipt attachment_id",
+        )
         for value, field in (
             (self.before_native_key, "before_native_key"),
             (self.after_native_key, "after_native_key"),
@@ -604,6 +685,10 @@ class CarrierMotionReceipt:
                 raise InitiationBoundaryError(
                     f"{field} must retain complete state evidence"
                 )
+            _require_exact_string_tuple_tree(
+                value,
+                f"motion receipt {field}",
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -992,6 +1077,15 @@ class PartialInitiationBoundaryReport:
                 "v0.13 trajectory must retain initial, 360, and 720 states"
             )
         initial, after_360, after_720 = self.trajectory
+        for state in self.trajectory:
+            if type(state.motion_history) is not tuple or any(
+                type(receipt) is not CarrierMotionReceipt
+                for receipt in state.motion_history
+            ):
+                raise InitiationBoundaryError(
+                    "trajectory motion_history must be an exact tuple of "
+                    "CarrierMotionReceipt values"
+                )
         if initial.motion_history:
             raise InitiationBoundaryError(
                 "initial trajectory state cannot contain motion receipts"
@@ -1078,32 +1172,7 @@ class PartialInitiationBoundaryReport:
                 "sheet witness must retain exactly two coordinates"
             )
         for coordinate in self.sheet_witness:
-            if (
-                type(coordinate.local_transverse) is not Fraction
-                or type(coordinate.breadth) is not Fraction
-                or type(coordinate.lifted_turns) is not Fraction
-                or type(coordinate.provenance) is not ExactCoordinateProvenance
-                or type(coordinate.status) is not str
-                or type(coordinate.selection_effect) is not str
-                or any(
-                    type(value) is not str
-                    for value in (
-                        coordinate.provenance.source_schema_id,
-                        coordinate.provenance.source_schema_version,
-                        coordinate.provenance.source_candidate_id,
-                        coordinate.provenance.source_candidate_version,
-                        coordinate.provenance.law_id,
-                        coordinate.provenance.law_version,
-                        coordinate.provenance.formula,
-                        coordinate.provenance.code_reference,
-                        coordinate.provenance.scope,
-                        coordinate.provenance.selection_effect,
-                    )
-                )
-            ):
-                raise InitiationBoundaryError(
-                    "sheet witness coordinates must use exact canonical types"
-                )
+            _require_exact_coordinate_types(coordinate, "sheet witness")
         if not policy.matches(
             self.sheet_witness,
             _canonical_sheet_witness(),
@@ -1126,6 +1195,30 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "sheet involution must square to identity"
             )
+        if type(self.seam_views) is not tuple or any(
+            type(item) is not SeamCoordinateView
+            for item in self.seam_views
+        ):
+            raise InitiationBoundaryError(
+                "seam_views must be an exact tuple of SeamCoordinateView values"
+            )
+        if len(self.seam_views) != 2:
+            raise InitiationBoundaryError(
+                "seam_views must retain exactly two coordinate views"
+            )
+        for view in self.seam_views:
+            if (
+                type(view.seam) is not MarkedInitiationSeam
+                or type(view.coordinate_cut_turns) is not Fraction
+                or type(view.status) is not str
+            ):
+                raise InitiationBoundaryError(
+                    "seam_views must use exact canonical field types"
+                )
+            _require_exact_string_tuple_tree(
+                view.structural_seam_identity,
+                "seam view structural identity",
+            )
         first_view, second_view = self.seam_views
         if not policy.matches(
             first_view.structural_seam_identity,
@@ -1140,6 +1233,32 @@ class PartialInitiationBoundaryReport:
         ):
             raise InitiationBoundaryError(
                 "seam-cut witness requires distinct numeric views"
+            )
+        if type(self.binary64_witnesses) is not tuple or any(
+            type(item) is not Binary64CollisionWitness
+            for item in self.binary64_witnesses
+        ):
+            raise InitiationBoundaryError(
+                "binary64_witnesses must be an exact tuple of "
+                "Binary64CollisionWitness values"
+            )
+        for witness in self.binary64_witnesses:
+            if (
+                type(witness.witness_id) is not str
+                or type(witness.kind) is not Binary64CollisionKind
+                or type(witness.exact_difference) is not str
+                or type(witness.conclusion) is not str
+            ):
+                raise InitiationBoundaryError(
+                    "binary64 witnesses must use exact authority field types"
+                )
+            _require_exact_binary64_rendering_types(
+                witness.first,
+                "binary64 witness first rendering",
+            )
+            _require_exact_binary64_rendering_types(
+                witness.second,
+                "binary64 witness second rendering",
             )
         if not policy.matches(
             tuple(

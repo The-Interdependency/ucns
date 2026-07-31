@@ -550,19 +550,15 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     overloaded_attachment = build_partial_initiation_attachments(
         overloaded_packet
     )[0]
-    overloaded_initial = initiate_carrier_state(overloaded_attachment)
-    overloaded_360 = advance_attached_state(overloaded_initial, 1)
-    overloaded_720 = advance_attached_state(overloaded_360, 1)
     with pytest.raises(
         InitiationBoundaryError,
         match="attachment identities must contain only exact built-in",
     ):
         replace(
             report,
-            trajectory=(
-                overloaded_initial,
-                overloaded_360,
-                overloaded_720,
+            attachments=(
+                overloaded_attachment,
+                *report.attachments[1:],
             ),
         )
 
@@ -590,4 +586,42 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         replace(
             report,
             sheet_witness=(other_sheet_first, other_sheet_second),
+        )
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment_id must contain only exact built-in",
+    ):
+        replace(
+            report.trajectory[1].motion_history[0],
+            attachment_id=AlwaysEqualTuple(("forged:attachment",)),
+        )
+
+    forged_collision = replace(
+        report.binary64_witnesses[0],
+        conclusion=AlwaysEqualStr("forged:global-injective"),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="binary64 witnesses must use exact authority field types",
+    ):
+        replace(
+            report,
+            binary64_witnesses=(
+                forged_collision,
+                report.binary64_witnesses[1],
+            ),
+        )
+
+    forged_view = replace(
+        report.seam_views[0],
+        status=AlwaysEqualStr("authoritative-coordinate-cut"),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="seam_views must use exact canonical field types",
+    ):
+        replace(
+            report,
+            seam_views=(forged_view, report.seam_views[1]),
         )
