@@ -300,6 +300,10 @@ def test_exact_sheet_involution_matches_signed_local_quotient() -> None:
 def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     report = run_v013_partial_initiation_boundary_experiment()
 
+    class AlwaysEqualStr(str):
+        def __eq__(self, other: object) -> bool:
+            return True
+
     assert report.schema_id == V013_INITIATION_BOUNDARY_SCHEMA_ID
     assert report.schema_version == V013_INITIATION_BOUNDARY_SCHEMA_VERSION
     assert report.comparison_policy.name == RC_COMPARISON_POLICY_NAME
@@ -419,6 +423,25 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
                 *report.results[:3],
                 forged_limitation,
                 *report.results[4:],
+            ),
+        )
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="evidence must be an exact tuple of built-in str values",
+    ):
+        replace(
+            report.results[3],
+            evidence=(AlwaysEqualStr("completed-global-carrier:true"),),
+        )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="limitation must be exact built-in str",
+    ):
+        replace(
+            report.results[3],
+            limitation=AlwaysEqualStr(
+                "arbitrary-real completion established"
             ),
         )
 

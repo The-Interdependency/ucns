@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent
+#   then: RC01 through RC10 use canonical built-in payload types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -800,18 +800,36 @@ class ContinuityFalsifierResult:
     limitation: str
 
     def __post_init__(self) -> None:
+        if type(self.falsifier_id) is not str:
+            raise InitiationBoundaryError(
+                "continuity falsifier id must be exact built-in str"
+            )
         if self.falsifier_id not in RC_FALSIFIER_IDS:
             raise InitiationBoundaryError(
                 "unknown continuity falsifier id"
             )
-        if not isinstance(self.verdict, FalsifierVerdict):
+        if type(self.verdict) is not FalsifierVerdict:
             raise InitiationBoundaryError(
-                "continuity verdict must use the declared vocabulary"
+                "continuity verdict must be an exact FalsifierVerdict"
+            )
+        if type(self.scope) is not str:
+            raise InitiationBoundaryError(
+                "continuity scope must be exact built-in str"
             )
         _require_text(self.scope, "scope")
+        if type(self.evidence) is not tuple or any(
+            type(item) is not str for item in self.evidence
+        ):
+            raise InitiationBoundaryError(
+                "continuity evidence must be an exact tuple of built-in str values"
+            )
         if not self.evidence or any(not item.strip() for item in self.evidence):
             raise InitiationBoundaryError(
                 "continuity falsifier must retain evidence"
+            )
+        if type(self.limitation) is not str:
+            raise InitiationBoundaryError(
+                "continuity limitation must be exact built-in str"
             )
         _require_text(self.limitation, "limitation")
 
@@ -913,7 +931,10 @@ class PartialInitiationBoundaryReport:
         retained_attachment_identities = tuple(
             item.attachment_identity for item in self.attachments
         )
-        if attachment_identities[0] not in retained_attachment_identities:
+        if not any(
+            policy.matches(attachment_identities[0], retained_identity)
+            for retained_identity in retained_attachment_identities
+        ):
             raise InitiationBoundaryError(
                 "trajectory must use one retained report attachment"
             )

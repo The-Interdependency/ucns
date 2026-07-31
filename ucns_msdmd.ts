@@ -2441,7 +2441,7 @@ export default defineMsdmdCollection({
         "class": "safety",
         "given": "the v0.13 report is produced",
         "since": "2026-07-30",
-        "then": "RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent"
+        "then": "RC01 through RC10 use canonical built-in payload types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while the trajectory belongs to one retained report attachment and consumer activation remains absent"
       },
       "file": "src/ucns/initiation_boundary.py",
       "id": "partial_initiation_report_executes_rc_packet_without_selection"

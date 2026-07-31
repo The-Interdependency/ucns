@@ -150,21 +150,6 @@ def test_complete_run_exhausts_every_turn_and_matches_expected_count() -> None:
     with pytest.raises(FullCorpusError, match="requires exhaustion"):
         replace(report, iterator_exhausted=False)
 
-    class SplitWordProfile(EdcmWordGonolProfile):
-        def observe_turn(self, **kwargs):  # type: ignore[no-untyped-def]
-            raise AssertionError("custom observation implementation must not run")
-
-    with pytest.raises(
-        FullCorpusError,
-        match="exact EdcmWordGonolProfile implementation",
-    ):
-        execute_admitted_corpus(
-            _manifest(),
-            _turns(),
-            profile=SplitWordProfile(),
-        )
-
-
 def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
     list_report = execute_admitted_corpus(_manifest(), _turns())
     generator_report = execute_admitted_corpus(
@@ -192,6 +177,20 @@ def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
         changed_report.exact_source_stream_sha256
         != list_report.exact_source_stream_sha256
     )
+
+    class SplitWordProfile(EdcmWordGonolProfile):
+        def observe_turn(self, **kwargs):  # type: ignore[no-untyped-def]
+            raise AssertionError("custom observation implementation must not run")
+
+    with pytest.raises(
+        FullCorpusError,
+        match="exact EdcmWordGonolProfile implementation",
+    ):
+        execute_admitted_corpus(
+            _manifest(),
+            _turns(),
+            profile=SplitWordProfile(),
+        )
 
 
 def test_partial_iteration_and_count_mismatch_cannot_issue_receipts() -> None:
