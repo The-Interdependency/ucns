@@ -1008,7 +1008,10 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "v0.13 RC verdict map is fixed and cannot promote an inconclusive result"
             )
-        if self.results != _expected_continuity_results():
+        if not policy.matches(
+            self.results,
+            _expected_continuity_results(),
+        ):
             raise InitiationBoundaryError(
                 "v0.13 RC result payload is fixed and cannot be reconstructed"
             )
