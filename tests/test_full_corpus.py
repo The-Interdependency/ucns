@@ -52,6 +52,7 @@ from dataclasses import replace
 
 import pytest
 
+from ucns.edcm import EdcmWordGonolProfile
 from ucns.full_corpus import (
     POST_RUN_GATE_CLOSED,
     POST_RUN_GATE_OPEN,
@@ -149,7 +150,6 @@ def test_complete_run_exhausts_every_turn_and_matches_expected_count() -> None:
     with pytest.raises(FullCorpusError, match="requires exhaustion"):
         replace(report, iterator_exhausted=False)
 
-
 def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
     list_report = execute_admitted_corpus(_manifest(), _turns())
     generator_report = execute_admitted_corpus(
@@ -177,6 +177,55 @@ def test_exact_stream_digest_is_stable_across_equivalent_iterables() -> None:
         changed_report.exact_source_stream_sha256
         != list_report.exact_source_stream_sha256
     )
+
+    class SplitWordProfile(EdcmWordGonolProfile):
+        def observe_turn(self, **kwargs):  # type: ignore[no-untyped-def]
+            raise AssertionError("custom observation implementation must not run")
+
+    with pytest.raises(
+        FullCorpusError,
+        match="exact EdcmWordGonolProfile implementation",
+    ):
+        execute_admitted_corpus(
+            _manifest(),
+            _turns(),
+            profile=SplitWordProfile(),
+        )
+
+    class BehaviorOverridingStr(str):
+        def __iter__(self):  # type: ignore[no-untyped-def]
+            return iter("AB")
+
+        def __len__(self) -> int:
+            return 2
+
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
+    forged_profile = EdcmWordGonolProfile(
+        profile_id=BehaviorOverridingStr("forged-profile"),
+    )
+    with pytest.raises(
+        FullCorpusError,
+        match="profile authority fields and options must be exact and canonical",
+    ):
+        execute_admitted_corpus(
+            _manifest(),
+            _turns(),
+            profile=forged_profile,
+        )
+
+    substituted = execute_admitted_corpus(
+        _manifest(),
+        (("user", BehaviorOverridingStr("A B")),),
+    )
+    assert substituted.status is CorpusRunStatus.INCOMPLETE
+    assert substituted.failure is not None
+    assert substituted.failure.kind is CorpusRunFailureKind.TURN_OBSERVATION_ERROR
+    assert substituted.failure.exception_type == "FullCorpusError"
 
 
 def test_partial_iteration_and_count_mismatch_cannot_issue_receipts() -> None:

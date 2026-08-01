@@ -300,6 +300,20 @@ def test_exact_sheet_involution_matches_signed_local_quotient() -> None:
 def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
     report = run_v013_partial_initiation_boundary_experiment()
 
+    class AlwaysEqualStr(str):
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
+    class AlwaysEqualTuple(tuple):
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
     assert report.schema_id == V013_INITIATION_BOUNDARY_SCHEMA_ID
     assert report.schema_version == V013_INITIATION_BOUNDARY_SCHEMA_VERSION
     assert report.comparison_policy.name == RC_COMPARISON_POLICY_NAME
@@ -343,7 +357,7 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         match="cannot select",
     ):
         replace(report, selection_effect="marked-seam-selected")
-    with pytest.raises(ValueError, match="init=False"):
+    with pytest.raises((TypeError, ValueError), match="init=False"):
         replace(
             report,
             comparison_policy=exact_comparison_policy(
@@ -389,6 +403,159 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             ),
         )
 
+    forged_evidence = replace(
+        report.results[3],
+        evidence=("completed-global-carrier:true",),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="RC result payload is fixed",
+    ):
+        replace(
+            report,
+            results=(
+                *report.results[:3],
+                forged_evidence,
+                *report.results[4:],
+            ),
+        )
+    forged_limitation = replace(
+        report.results[3],
+        limitation="arbitrary-real completion established",
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="RC result payload is fixed",
+    ):
+        replace(
+            report,
+            results=(
+                *report.results[:3],
+                forged_limitation,
+                *report.results[4:],
+            ),
+        )
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="evidence must be an exact tuple of built-in str values",
+    ):
+        replace(
+            report.results[3],
+            evidence=(AlwaysEqualStr("completed-global-carrier:true"),),
+        )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="limitation must be exact built-in str",
+    ):
+        replace(
+            report.results[3],
+            limitation=AlwaysEqualStr(
+                "arbitrary-real completion established"
+            ),
+        )
+
+    forged_result = replace(
+        report.results[3],
+        evidence=("completed-global-carrier:true",),
+        limitation="arbitrary-real completion established",
+    )
+    overloaded_results = AlwaysEqualTuple(
+        (
+            *report.results[:3],
+            forged_result,
+            *report.results[4:],
+        )
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="results must be an exact tuple",
+    ):
+        replace(report, results=overloaded_results)
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="authority fields must use exact built-in str values",
+    ):
+        replace(report, selection_effect=AlwaysEqualStr("selected"))
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="hmmm must be an exact tuple of built-in str values",
+    ):
+        replace(report, hmmm=AlwaysEqualTuple(("all-complete",)))
+
+    forged_root_coordinate = replace(
+        report.attachments[0].twist_receipt.post_coordinate,
+        selection_effect=AlwaysEqualStr("selected"),
+    )
+    forged_twist = replace(
+        report.attachments[0].twist_receipt,
+        post_coordinate=forged_root_coordinate,
+    )
+    forged_attachment = replace(
+        report.attachments[0],
+        twist_receipt=forged_twist,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment twist coordinate must use exact canonical",
+    ):
+        replace(
+            report,
+            attachments=(forged_attachment, *report.attachments[1:]),
+        )
+
+    forged_initial = replace(
+        report.trajectory[0],
+        coordinate=forged_root_coordinate,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="trajectory coordinate must use exact canonical",
+    ):
+        replace(
+            report,
+            trajectory=(forged_initial, *report.trajectory[1:]),
+        )
+
+    forged_seam = replace(
+        report.attachments[0].seam,
+        selection_effect=AlwaysEqualStr("selected"),
+    )
+    forged_seam_twist = replace(
+        report.attachments[0].twist_receipt,
+        seam=forged_seam,
+    )
+    forged_seam_attachment = replace(
+        report.attachments[0],
+        seam=forged_seam,
+        twist_receipt=forged_seam_twist,
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment seam must use exact canonical seam field types",
+    ):
+        replace(
+            report,
+            attachments=(forged_seam_attachment, *report.attachments[1:]),
+        )
+
+    forged_seam_initial = initiate_carrier_state(forged_seam_attachment)
+    forged_seam_360 = advance_attached_state(forged_seam_initial, 1)
+    forged_seam_720 = advance_attached_state(forged_seam_360, 1)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="trajectory attachment seam must use exact canonical seam",
+    ):
+        replace(
+            report,
+            trajectory=(
+                forged_seam_initial,
+                forged_seam_360,
+                forged_seam_720,
+            ),
+        )
+
     other_initial = initiate_carrier_state(report.attachments[1])
     other_360 = advance_attached_state(other_initial, 1)
     other_720 = advance_attached_state(other_360, 1)
@@ -401,6 +568,72 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
             trajectory=(report.trajectory[0], other_360, other_720),
         )
 
+    packet = build_native_mobius_initiation_packet()
+    external_event = replace(
+        packet.initiations[0],
+        post_state=replace(
+            packet.initiations[0].post_state,
+            source_links=packet.initiations[0].post_state.source_links
+            + ("valid-but-unreported-source-link",),
+        ),
+    )
+    external_packet = replace(
+        packet,
+        initiations=(external_event,) + packet.initiations[1:],
+    )
+    external_attachment = build_partial_initiation_attachments(
+        external_packet
+    )[0]
+    external_initial = initiate_carrier_state(external_attachment)
+    external_360 = advance_attached_state(external_initial, 1)
+    external_720 = advance_attached_state(external_360, 1)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="retained report attachment",
+    ):
+        replace(
+            report,
+            trajectory=(external_initial, external_360, external_720),
+        )
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="source_links must be an exact tuple of built-in str values",
+    ):
+        replace(
+            report.attachments[0].twist_receipt,
+            source_links=AlwaysEqualTuple(("forged:global-completion",)),
+        )
+
+    overloaded_parent_observation_ids = (
+        AlwaysEqualStr("turn:forged-external-parent"),
+    )
+    overloaded_event = replace(
+        packet.initiations[0],
+        post_state=replace(
+            packet.initiations[0].post_state,
+            parent_observation_ids=overloaded_parent_observation_ids,
+        ),
+    )
+    overloaded_packet = replace(
+        packet,
+        initiations=(overloaded_event,) + packet.initiations[1:],
+    )
+    overloaded_attachment = build_partial_initiation_attachments(
+        overloaded_packet
+    )[0]
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment event must use exact canonical native-state",
+    ):
+        replace(
+            report,
+            attachments=(
+                overloaded_attachment,
+                *report.attachments[1:],
+            ),
+        )
+
     initial, _, _ = report.trajectory
     after_1080 = advance_attached_state(initial, 3)
     after_1440 = advance_attached_state(after_1080, 1)
@@ -411,4 +644,56 @@ def test_v013_report_is_complete_bounded_and_nonselecting() -> None:
         replace(
             report,
             trajectory=(initial, after_1080, after_1440),
+        )
+
+    other_sheet_first = signed_local_exact_coordinate(
+        Fraction(4, 5),
+        Fraction(7, 9),
+    )
+    other_sheet_second = exact_sheet_involution(other_sheet_first)
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="fixed RC02 evidence pair",
+    ):
+        replace(
+            report,
+            sheet_witness=(other_sheet_first, other_sheet_second),
+        )
+
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="attachment_id must contain only exact built-in",
+    ):
+        replace(
+            report.trajectory[1].motion_history[0],
+            attachment_id=AlwaysEqualTuple(("forged:attachment",)),
+        )
+
+    forged_collision = replace(
+        report.binary64_witnesses[0],
+        conclusion=AlwaysEqualStr("forged:global-injective"),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="binary64 witnesses must use exact authority field types",
+    ):
+        replace(
+            report,
+            binary64_witnesses=(
+                forged_collision,
+                report.binary64_witnesses[1],
+            ),
+        )
+
+    forged_view = replace(
+        report.seam_views[0],
+        status=AlwaysEqualStr("authoritative-coordinate-cut"),
+    )
+    with pytest.raises(
+        InitiationBoundaryError,
+        match="seam_views must use exact canonical field types",
+    ):
+        replace(
+            report,
+            seam_views=(forged_view, report.seam_views[1]),
         )

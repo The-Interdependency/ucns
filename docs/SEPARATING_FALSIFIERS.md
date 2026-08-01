@@ -239,7 +239,42 @@ See
 [`GONOL_INITIATION_STRUCTURAL_NULL_V017.md`](GONOL_INITIATION_STRUCTURAL_NULL_V017.md)
 for exact scope and executable standing.
 
-## 10. Candidate report shape
+## 10. v0.18 explicit geometric-assignment addendum
+
+The v0.18 boundary adds `GA01`–`GA09` over the v0.17 initiation outcomes. These
+falsifiers make exact signed-local circle-candidate application inspectable
+when independent rational coordinate input is supplied. They do not establish
+the missing law that derives that input from arbitrary source evidence.
+
+- `GA01` fails when candidate assignment loses or substitutes the exact v0.17
+  initiation receipt, admission, word-gonol, boundary, or twist identity.
+- `GA02` fails when the coordinate proposal is not exact `Fraction` evidence,
+  is outside the signed-local domain, or claims derivation from evidence
+  identity.
+- `GA03` fails when `B(u)=1+u/2`, `u=2*(B-1)`, normalized lifted turns,
+  candidate id, or candidate standing is altered.
+- `GA04` fails when native two-turn frame parity or sign-derived local side is
+  changed.
+- `GA05` fails when a v0.17 outcome has no v0.18 tag, multiple tags, reordered
+  identity, deduplication, or a malformed assigned/unresolved/rejected
+  combination.
+- `GA06` fails when binary64 rendering replaces exact rational identity or
+  loses its linked source and declared information loss.
+- `GA07` fails when digest, A0 phase lanes, runtime identity, carrier position
+  alone, scalar projection, or invalid upstream state creates an applied
+  assignment.
+- `GA08` remains unresolved until an evidence-supported source-to-coordinate
+  law derives exact proposal values; relabeling explicit input as derivation is
+  a boundary violation.
+- `GA09` remains unresolved until total Structural Null topology, higher
+  geometry, composition, scoped completion, and activation exist; relabeling
+  circle entry as any of those is a boundary violation.
+
+See
+[`EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md`](EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md)
+for exact scope and executable standing.
+
+## 11. Candidate report shape
 
 A v0.5 report is grouped by witness and carrier relationship. Each falsifier record contains:
 
@@ -256,19 +291,20 @@ A v0.5 report is grouped by witness and carrier relationship. Each falsifier rec
 
 The aggregate report lists all three relationship candidates. It has no `selected_candidate`, `best_candidate`, implicit default, or canonicalization field.
 
-## 11. Admission rule
+## 12. Admission rule
 
 A candidate is **admitted for implementation review** only when every applicable falsifier is `supported` or accompanied by an explicitly accepted unresolved obligation. Any `falsified` result remains blocking for the exact claim it contradicts. Any exception remains visible.
 
 Admission authorizes neither runtime deployment nor canonization. The next authority decision may retain, narrow, reject, or request more evidence from any candidate.
 
-## 12. Usage guidance
+## 13. Usage guidance
 
 Use these falsifiers before designing canonical coordinates, higher-gonol composition, completion conditions, metric formulas, or EDCM bindings. Future executable tests should cite the falsifier IDs and preserve their complete report packets through the evaluator laboratory and experiment-manifest infrastructure.
 
 ## hmmm
 
 The most useful result may be a small counterexample. If a repeated SPACE, an
-invalid zero substitution, a first-word initiation, or a 360° state pair breaks
+invalid zero substitution, a first-word initiation, an explicit coordinate
+proposal, or a 360° state pair breaks
 an alleged relationship, that is not a failed release—it is the evidence that
 prevents UCNS from canonizing the wrong relationship.

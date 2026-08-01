@@ -52,7 +52,7 @@
 #
 # id: partial_initiation_report_executes_rc_packet_without_selection
 #   given: the v0.13 report is produced
-#   then: RC01 through RC10 use the constructor-bound exact ComparisonPolicy, fixed partial scope, and honest verdict/status map while one attachment and extending trajectory history are retained and consumer activation remains absent
+#   then: RC01 through RC10 use canonical built-in payload, container, receipt-link, witness, and report-authority types and the constructor-bound exact ComparisonPolicy over fixed complete result payloads and partial scope, while canonical attachment identities bind the trajectory to one retained report attachment and consumer activation remains absent
 #   class: safety
 #   since: 2026-07-30
 # === END CONTRACTS ===
@@ -84,6 +84,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from fractions import Fraction
 
+from .carrier import LiftedCarrierPoint
 from .comparison import (
     ComparisonMode,
     ComparisonPolicy,
@@ -96,12 +97,16 @@ from .direct_mobius import (
     NativeMobiusInitiationPacket,
     NativeMobiusState,
     StructuralNullIdentity,
+    StructuralNullKind,
     StructuralNullManifestation,
     build_native_mobius_initiation_packet,
 )
 from .exact_coordinate import (
+    Binary64CarrierRendering,
+    Binary64CollisionKind,
     Binary64CollisionWitness,
     ExactCarrierCoordinate,
+    ExactCoordinateProvenance,
     binary64_collision_witnesses,
     signed_local_exact_coordinate,
 )
@@ -184,6 +189,195 @@ def _require_text(value: str, field: str) -> None:
 def _require_fraction(value: Fraction, field: str) -> None:
     if not isinstance(value, Fraction):
         raise InitiationBoundaryError(f"{field} must be an exact Fraction")
+
+
+def _require_exact_string_tuple_tree(value: object, field: str) -> None:
+    """Reject equality-overloading values from authority-bearing identities."""
+
+    if type(value) is str:
+        return
+    if type(value) is tuple:
+        for item in value:
+            _require_exact_string_tuple_tree(item, field)
+        return
+    raise InitiationBoundaryError(
+        f"{field} must contain only exact built-in tuple and str values"
+    )
+
+
+def _canonical_sheet_witness(
+) -> tuple[ExactCarrierCoordinate, ExactCarrierCoordinate]:
+    first = signed_local_exact_coordinate(
+        Fraction(1, 3),
+        Fraction(2, 5),
+    )
+    return first, exact_sheet_involution(first)
+
+
+def _require_exact_coordinate_types(
+    coordinate: object,
+    field: str,
+) -> None:
+    if type(coordinate) is not ExactCarrierCoordinate:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact ExactCarrierCoordinate"
+        )
+    if (
+        type(coordinate.local_transverse) is not Fraction
+        or type(coordinate.breadth) is not Fraction
+        or type(coordinate.lifted_turns) is not Fraction
+        or type(coordinate.provenance) is not ExactCoordinateProvenance
+        or type(coordinate.status) is not str
+        or type(coordinate.selection_effect) is not str
+        or any(
+            type(value) is not str
+            for value in (
+                coordinate.provenance.source_schema_id,
+                coordinate.provenance.source_schema_version,
+                coordinate.provenance.source_candidate_id,
+                coordinate.provenance.source_candidate_version,
+                coordinate.provenance.law_id,
+                coordinate.provenance.law_version,
+                coordinate.provenance.formula,
+                coordinate.provenance.code_reference,
+                coordinate.provenance.scope,
+                coordinate.provenance.selection_effect,
+            )
+        )
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical coordinate field types"
+        )
+
+
+def _require_exact_binary64_rendering_types(
+    rendering: object,
+    field: str,
+) -> None:
+    if type(rendering) is not Binary64CarrierRendering:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact Binary64CarrierRendering"
+        )
+    _require_exact_coordinate_types(rendering.exact_coordinate, field)
+    if (
+        type(rendering.actual_point) is not LiftedCarrierPoint
+        or type(rendering.actual_point.breadth) is not float
+        or type(rendering.actual_point.angle) is not float
+        or any(
+            type(value) is not str
+            for value in (
+                rendering.rendering_policy_id,
+                rendering.rendering_policy_version,
+                rendering.code_reference,
+                rendering.status,
+                rendering.selection_effect,
+            )
+        )
+        or type(rendering.information_loss) is not tuple
+        or any(type(value) is not str for value in rendering.information_loss)
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical rendering field types"
+        )
+
+
+def _require_exact_native_state_types(
+    state: object,
+    field: str,
+) -> None:
+    if type(state) is not NativeMobiusState:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact NativeMobiusState"
+        )
+    if (
+        type(state.phase_turns) is not Fraction
+        or type(state.frame) is not NativeMobiusFrame
+        or type(state.source_links) is not tuple
+        or any(type(value) is not str for value in state.source_links)
+        or type(state.parent_observation_ids) is not tuple
+        or any(
+            type(value) is not str
+            for value in state.parent_observation_ids
+        )
+        or type(state.initiation_event_id) is not str
+        or type(state.completion_scope) is not str
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical native-state field types"
+        )
+
+
+def _require_exact_manifestation_types(
+    manifestation: object,
+    field: str,
+) -> None:
+    if type(manifestation) is not StructuralNullManifestation:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact StructuralNullManifestation"
+        )
+    if (
+        type(manifestation.manifestation_id) is not str
+        or type(manifestation.witness_id) is not str
+        or type(manifestation.kind) is not StructuralNullKind
+        or (
+            manifestation.source_offset is not None
+            and type(manifestation.source_offset) is not int
+        )
+        or (
+            manifestation.source_value is not None
+            and type(manifestation.source_value) is not str
+        )
+        or manifestation.origin is not STRUCTURAL_NULL_ORIGIN
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical manifestation field types"
+        )
+
+
+def _require_exact_seam_types(
+    seam: object,
+    field: str,
+) -> None:
+    if type(seam) is not MarkedInitiationSeam:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact MarkedInitiationSeam"
+        )
+    if (
+        type(seam.seam_id) is not str
+        or type(seam.event_id) is not str
+        or type(seam.witness_id) is not str
+        or type(seam.word_index) is not int
+        or type(seam.source_start) is not int
+        or type(seam.topology) is not StructuralNullTopologyKind
+        or type(seam.policy_id) is not str
+        or type(seam.policy_version) is not str
+        or type(seam.selection_effect) is not str
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical seam field types"
+        )
+    _require_exact_manifestation_types(seam.manifestation, field)
+
+
+def _require_exact_event_types(
+    event: object,
+    field: str,
+) -> None:
+    if type(event) is not MobiusInitiationEvent:
+        raise InitiationBoundaryError(
+            f"{field} must use an exact MobiusInitiationEvent"
+        )
+    if (
+        type(event.event_id) is not str
+        or type(event.witness_id) is not str
+        or type(event.word_index) is not int
+        or type(event.source_start) is not int
+    ):
+        raise InitiationBoundaryError(
+            f"{field} must use exact canonical event field types"
+        )
+    _require_exact_manifestation_types(event.boundary, field)
+    _require_exact_native_state_types(event.post_state, field)
 
 
 def _fraction_key(value: Fraction) -> str:
@@ -367,6 +561,26 @@ class TwistReceipt:
     selection_effect: str = V013_SELECTION_EFFECT
 
     def __post_init__(self) -> None:
+        authority_text = (
+            self.receipt_id,
+            self.relation_id,
+            self.relation_version,
+            self.law_id,
+            self.law_version,
+            self.scope,
+            self.selection_effect,
+        )
+        if any(type(item) is not str for item in authority_text):
+            raise InitiationBoundaryError(
+                "twist receipt authority fields must use exact built-in str values"
+            )
+        if type(self.source_links) is not tuple or any(
+            type(item) is not str for item in self.source_links
+        ):
+            raise InitiationBoundaryError(
+                "twist receipt source_links must be an exact tuple of "
+                "built-in str values"
+            )
         _require_text(self.receipt_id, "receipt_id")
         if self.pre_state is not STRUCTURAL_NULL_ORIGIN:
             raise InitiationBoundaryError(
@@ -537,11 +751,18 @@ class CarrierMotionReceipt:
     after_coordinate_identity: tuple[tuple[str, str], ...]
 
     def __post_init__(self) -> None:
+        if type(self.step_index) is not int:
+            raise InitiationBoundaryError(
+                "motion receipt step_index must be an exact int"
+            )
         if self.step_index < 0:
             raise InitiationBoundaryError(
                 "motion receipt step_index must be nonnegative"
             )
-        _require_fraction(self.motion_turns, "motion_turns")
+        if type(self.motion_turns) is not Fraction:
+            raise InitiationBoundaryError(
+                "motion receipt turns must be an exact Fraction"
+            )
         if self.motion_turns == 0:
             raise InitiationBoundaryError(
                 "motion receipt must retain a nonzero displacement"
@@ -550,6 +771,10 @@ class CarrierMotionReceipt:
             raise InitiationBoundaryError(
                 "motion receipt must link its initiation attachment"
             )
+        _require_exact_string_tuple_tree(
+            self.attachment_id,
+            "motion receipt attachment_id",
+        )
         for value, field in (
             (self.before_native_key, "before_native_key"),
             (self.after_native_key, "after_native_key"),
@@ -560,6 +785,10 @@ class CarrierMotionReceipt:
                 raise InitiationBoundaryError(
                     f"{field} must retain complete state evidence"
                 )
+            _require_exact_string_tuple_tree(
+                value,
+                f"motion receipt {field}",
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -800,18 +1029,36 @@ class ContinuityFalsifierResult:
     limitation: str
 
     def __post_init__(self) -> None:
+        if type(self.falsifier_id) is not str:
+            raise InitiationBoundaryError(
+                "continuity falsifier id must be exact built-in str"
+            )
         if self.falsifier_id not in RC_FALSIFIER_IDS:
             raise InitiationBoundaryError(
                 "unknown continuity falsifier id"
             )
-        if not isinstance(self.verdict, FalsifierVerdict):
+        if type(self.verdict) is not FalsifierVerdict:
             raise InitiationBoundaryError(
-                "continuity verdict must use the declared vocabulary"
+                "continuity verdict must be an exact FalsifierVerdict"
+            )
+        if type(self.scope) is not str:
+            raise InitiationBoundaryError(
+                "continuity scope must be exact built-in str"
             )
         _require_text(self.scope, "scope")
+        if type(self.evidence) is not tuple or any(
+            type(item) is not str for item in self.evidence
+        ):
+            raise InitiationBoundaryError(
+                "continuity evidence must be an exact tuple of built-in str values"
+            )
         if not self.evidence or any(not item.strip() for item in self.evidence):
             raise InitiationBoundaryError(
                 "continuity falsifier must retain evidence"
+            )
+        if type(self.limitation) is not str:
+            raise InitiationBoundaryError(
+                "continuity limitation must be exact built-in str"
             )
         _require_text(self.limitation, "limitation")
 
@@ -849,11 +1096,85 @@ class PartialInitiationBoundaryReport:
         policy = partial_initiation_exact_comparison_policy()
         object.__setattr__(self, "comparison_policy", policy)
         _validate_comparison_policy(policy)
+        authority_text = (
+            self.schema_id,
+            self.schema_version,
+            self.coordinate_component_status,
+            self.seam_status,
+            self.structural_null_topology_status,
+            self.complete_relationship_status,
+            self.selection_effect,
+            self.edcm_activation,
+            self.metapat_activation,
+        )
+        if any(type(item) is not str for item in authority_text):
+            raise InitiationBoundaryError(
+                "v0.13 authority fields must use exact built-in str values"
+            )
+        if type(self.hmmm) is not tuple or any(
+            type(item) is not str for item in self.hmmm
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 hmmm must be an exact tuple of built-in str values"
+            )
+        if type(self.results) is not tuple or any(
+            type(item) is not ContinuityFalsifierResult
+            for item in self.results
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 results must be an exact tuple of "
+                "ContinuityFalsifierResult values"
+            )
         if (
             self.schema_id != V013_INITIATION_BOUNDARY_SCHEMA_ID
             or self.schema_version != V013_INITIATION_BOUNDARY_SCHEMA_VERSION
         ):
             raise InitiationBoundaryError("v0.13 schema identity mismatch")
+        if type(self.attachments) is not tuple or any(
+            type(item) is not PartialInitiationAttachment
+            for item in self.attachments
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 attachments must be an exact tuple of "
+                "PartialInitiationAttachment values"
+            )
+        for attachment in self.attachments:
+            if (
+                type(attachment.event) is not MobiusInitiationEvent
+                or type(attachment.seam) is not MarkedInitiationSeam
+                or type(attachment.twist_receipt) is not TwistReceipt
+            ):
+                raise InitiationBoundaryError(
+                    "v0.13 attachments must use exact nested evidence types"
+                )
+            _require_exact_event_types(
+                attachment.event,
+                "attachment event",
+            )
+            _require_exact_seam_types(
+                attachment.seam,
+                "attachment seam",
+            )
+            _require_exact_coordinate_types(
+                attachment.twist_receipt.post_coordinate,
+                "attachment twist coordinate",
+            )
+            _require_exact_native_state_types(
+                attachment.twist_receipt.post_native_state,
+                "attachment twist native state",
+            )
+            _require_exact_native_state_types(
+                attachment.event.post_state,
+                "attachment event native state",
+            )
+        retained_attachment_identities = tuple(
+            item.attachment_identity for item in self.attachments
+        )
+        for identity in retained_attachment_identities:
+            _require_exact_string_tuple_tree(
+                identity,
+                "v0.13 attachment identities",
+            )
         if len(self.attachments) != 14:
             raise InitiationBoundaryError(
                 "v0.13 must retain all fourteen minimum-packet initiations"
@@ -872,11 +1193,60 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "v0.13 must retain the fixed minimum-packet attachments"
             )
+        if type(self.trajectory) is not tuple or any(
+            type(item) is not InitiatedCarrierState
+            for item in self.trajectory
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 trajectory must be an exact tuple of "
+                "InitiatedCarrierState values"
+            )
         if len(self.trajectory) != 3:
             raise InitiationBoundaryError(
                 "v0.13 trajectory must retain initial, 360, and 720 states"
             )
         initial, after_360, after_720 = self.trajectory
+        for state in self.trajectory:
+            if type(state.attachment) is not PartialInitiationAttachment:
+                raise InitiationBoundaryError(
+                    "trajectory states must retain exact attachment values"
+                )
+            if type(state.attachment.twist_receipt) is not TwistReceipt:
+                raise InitiationBoundaryError(
+                    "trajectory attachments must retain exact twist receipts"
+                )
+            _require_exact_event_types(
+                state.attachment.event,
+                "trajectory attachment event",
+            )
+            _require_exact_seam_types(
+                state.attachment.seam,
+                "trajectory attachment seam",
+            )
+            _require_exact_coordinate_types(
+                state.attachment.twist_receipt.post_coordinate,
+                "trajectory attachment twist coordinate",
+            )
+            _require_exact_native_state_types(
+                state.attachment.twist_receipt.post_native_state,
+                "trajectory attachment twist native state",
+            )
+            _require_exact_coordinate_types(
+                state.coordinate,
+                "trajectory coordinate",
+            )
+            _require_exact_native_state_types(
+                state.native_state,
+                "trajectory native state",
+            )
+            if type(state.motion_history) is not tuple or any(
+                type(receipt) is not CarrierMotionReceipt
+                for receipt in state.motion_history
+            ):
+                raise InitiationBoundaryError(
+                    "trajectory motion_history must be an exact tuple of "
+                    "CarrierMotionReceipt values"
+                )
         if initial.motion_history:
             raise InitiationBoundaryError(
                 "initial trajectory state cannot contain motion receipts"
@@ -900,6 +1270,11 @@ class PartialInitiationBoundaryReport:
         attachment_identities = tuple(
             item.attachment.attachment_identity for item in self.trajectory
         )
+        for identity in attachment_identities:
+            _require_exact_string_tuple_tree(
+                identity,
+                "v0.13 attachment identities",
+            )
         if not (
             policy.matches(attachment_identities[0], attachment_identities[1])
             and policy.matches(
@@ -909,6 +1284,13 @@ class PartialInitiationBoundaryReport:
         ):
             raise InitiationBoundaryError(
                 "all trajectory states must retain one initiation attachment"
+            )
+        if not any(
+            policy.matches(attachment_identities[0], retained_identity)
+            for retained_identity in retained_attachment_identities
+        ):
+            raise InitiationBoundaryError(
+                "trajectory must use one retained report attachment"
             )
         if not policy.matches(
             after_360.motion_history,
@@ -938,6 +1320,27 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "720 motion must restore complete local state"
             )
+        if type(self.sheet_witness) is not tuple or any(
+            type(item) is not ExactCarrierCoordinate
+            for item in self.sheet_witness
+        ):
+            raise InitiationBoundaryError(
+                "sheet witness must be an exact tuple of "
+                "ExactCarrierCoordinate values"
+            )
+        if len(self.sheet_witness) != 2:
+            raise InitiationBoundaryError(
+                "sheet witness must retain exactly two coordinates"
+            )
+        for coordinate in self.sheet_witness:
+            _require_exact_coordinate_types(coordinate, "sheet witness")
+        if not policy.matches(
+            self.sheet_witness,
+            _canonical_sheet_witness(),
+        ):
+            raise InitiationBoundaryError(
+                "sheet witness must retain the fixed RC02 evidence pair"
+            )
         first_sheet, second_sheet = self.sheet_witness
         if not policy.matches(
             exact_sheet_involution(first_sheet),
@@ -953,6 +1356,30 @@ class PartialInitiationBoundaryReport:
             raise InitiationBoundaryError(
                 "sheet involution must square to identity"
             )
+        if type(self.seam_views) is not tuple or any(
+            type(item) is not SeamCoordinateView
+            for item in self.seam_views
+        ):
+            raise InitiationBoundaryError(
+                "seam_views must be an exact tuple of SeamCoordinateView values"
+            )
+        if len(self.seam_views) != 2:
+            raise InitiationBoundaryError(
+                "seam_views must retain exactly two coordinate views"
+            )
+        for view in self.seam_views:
+            if (
+                type(view.coordinate_cut_turns) is not Fraction
+                or type(view.status) is not str
+            ):
+                raise InitiationBoundaryError(
+                    "seam_views must use exact canonical field types"
+                )
+            _require_exact_seam_types(view.seam, "seam view")
+            _require_exact_string_tuple_tree(
+                view.structural_seam_identity,
+                "seam view structural identity",
+            )
         first_view, second_view = self.seam_views
         if not policy.matches(
             first_view.structural_seam_identity,
@@ -967,6 +1394,32 @@ class PartialInitiationBoundaryReport:
         ):
             raise InitiationBoundaryError(
                 "seam-cut witness requires distinct numeric views"
+            )
+        if type(self.binary64_witnesses) is not tuple or any(
+            type(item) is not Binary64CollisionWitness
+            for item in self.binary64_witnesses
+        ):
+            raise InitiationBoundaryError(
+                "binary64_witnesses must be an exact tuple of "
+                "Binary64CollisionWitness values"
+            )
+        for witness in self.binary64_witnesses:
+            if (
+                type(witness.witness_id) is not str
+                or type(witness.kind) is not Binary64CollisionKind
+                or type(witness.exact_difference) is not str
+                or type(witness.conclusion) is not str
+            ):
+                raise InitiationBoundaryError(
+                    "binary64 witnesses must use exact authority field types"
+                )
+            _require_exact_binary64_rendering_types(
+                witness.first,
+                "binary64 witness first rendering",
+            )
+            _require_exact_binary64_rendering_types(
+                witness.second,
+                "binary64 witness second rendering",
             )
         if not policy.matches(
             tuple(
@@ -1000,6 +1453,13 @@ class PartialInitiationBoundaryReport:
         ):
             raise InitiationBoundaryError(
                 "v0.13 RC verdict map is fixed and cannot promote an inconclusive result"
+            )
+        if not policy.matches(
+            self.results,
+            _expected_continuity_results(),
+        ):
+            raise InitiationBoundaryError(
+                "v0.13 RC result payload is fixed and cannot be reconstructed"
             )
         if (
             self.coordinate_component_status
@@ -1050,31 +1510,16 @@ def _rc_result(
     )
 
 
-def run_v013_partial_initiation_boundary_experiment(
-) -> PartialInitiationBoundaryReport:
-    """Build the complete fixed v0.13 attachment and RC evidence packet."""
+def _expected_continuity_results(
+) -> tuple[ContinuityFalsifierResult, ...]:
+    """Build the complete fixed RC01-RC10 payload from canonical evidence."""
 
     packet = build_native_mobius_initiation_packet()
     attachments = build_partial_initiation_attachments(packet)
     initial = initiate_carrier_state(attachments[0])
     after_360 = advance_attached_state(initial, 1)
     after_720 = advance_attached_state(after_360, 1)
-
-    sheet_first = signed_local_exact_coordinate(
-        Fraction(1, 3),
-        Fraction(2, 5),
-    )
-    sheet_second = exact_sheet_involution(sheet_first)
-
-    seam_first = view_marked_seam_at_cut(
-        attachments[0].seam,
-        Fraction(0),
-    )
-    seam_second = view_marked_seam_at_cut(
-        attachments[0].seam,
-        Fraction(1, 3),
-    )
-
+    sheet_first, sheet_second = _canonical_sheet_witness()
     source_reconstruction = all(
         "".join(segment.raw_text for segment in witness.turn.segments)
         == witness.turn.raw_text
@@ -1084,7 +1529,7 @@ def run_v013_partial_initiation_boundary_experiment(
         item.event.event_id for item in attachments
     ) == tuple(item.event_id for item in packet.initiations)
 
-    results = (
+    return (
         _rc_result(
             "RC01",
             FalsifierVerdict.INCONCLUSIVE,
@@ -1191,6 +1636,30 @@ def run_v013_partial_initiation_boundary_experiment(
             "v0.13 adds experiment evidence only",
         ),
     )
+
+
+def run_v013_partial_initiation_boundary_experiment(
+) -> PartialInitiationBoundaryReport:
+    """Build the complete fixed v0.13 attachment and RC evidence packet."""
+
+    packet = build_native_mobius_initiation_packet()
+    attachments = build_partial_initiation_attachments(packet)
+    initial = initiate_carrier_state(attachments[0])
+    after_360 = advance_attached_state(initial, 1)
+    after_720 = advance_attached_state(after_360, 1)
+
+    sheet_first, sheet_second = _canonical_sheet_witness()
+
+    seam_first = view_marked_seam_at_cut(
+        attachments[0].seam,
+        Fraction(0),
+    )
+    seam_second = view_marked_seam_at_cut(
+        attachments[0].seam,
+        Fraction(1, 3),
+    )
+
+    results = _expected_continuity_results()
 
     return PartialInitiationBoundaryReport(
         attachments=attachments,

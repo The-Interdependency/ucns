@@ -42,7 +42,12 @@ and `NA`; gives every v0.16 admission one ordered initiation outcome; and gives
 an explicitly declared word gonol exactly one source-bound twist receipt. The
 unchanged v0.13 native-root witness retains 360-degree local-frame change and
 720-degree local return without registered construction completion. Arbitrary
-geometric assignment, the total Structural Null topology, canonical breadth,
+geometric assignment derivation still remains incomplete. v0.18 now applies
+the surviving exact signed-local circle candidate to any explicitly initiated
+word when independent exact rational coordinates are supplied. It preserves
+exact inverse, native frame, local side, ordered tagged outcomes, and linked
+lossy rendering without deriving geometry from evidence identity. The source-
+to-coordinate law, total Structural Null topology, canonical breadth,
 epicyclic geometry, completion, and higher-composition mathematics remain
 incomplete. No carrier selection or consumer activation follows.
 
@@ -88,6 +93,8 @@ geometric assignment totality. v0.17 implements only domain-separated origin
 roles, a total tagged initiation-*outcome* relation over those admissions, and
 one explicit pre-geometric twist receipt for a declared word gonol; that causal
 evidence is not a total Structural Null topology. The current
+v0.18 surface implements explicit-input exact circle-candidate application but
+does not derive its proposal from source evidence. The current
 `ucns.edcm.completion-motion-evidence/0.1.0` surface retains supplied trajectory
 evidence while refusing to manufacture those laws.
 
@@ -352,6 +359,19 @@ root-return witness is the unchanged v0.13 source-bound candidate: 360 degrees
 preserve its visible projection while reversing local frame, and 720 degrees
 restore local state without registering construction completion.
 
+v0.18 adds a separate explicit geometric-assignment evidence surface. Any
+explicitly initiated word occurrence may receive the surviving signed-local
+exact circle candidate when an independent `Fraction`-valued local-transverse
+and lifted-turn proposal is supplied. The relation validates
+`B(u)=1+u/2`, exact inverse recovery, normalized two-turn frame parity, local
+side, one candidate `GeometricAssignment`, and a linked declared-loss binary64
+rendering. Each v0.17 outcome remains ordered and receives exactly one assigned,
+unresolved, or rejected v0.18 outcome. Content digest, A0 Blake2 lanes, runtime
+identity, carrier position alone, scalar projection, and rendering identity
+cannot supply coordinate input. The source-to-coordinate derivation law, total
+Structural Null topology, higher geometry, composition, completion, selection,
+and activation remain unresolved.
+
 ## Choices still genuinely open
 
 ### Completion-motion geometry
@@ -550,10 +570,15 @@ certificates without rewriting v0.13's bounded executable verdicts. A runtime
 arbitrary-real representation is not required for that affine proof and is not
 claimed. v0.16 closes adapter-gated observed-element admission and records one
 tagged outcome per admitted occurrence without allowing evidence identity to
-become geometry. Arbitrary geometric assignment, a total Structural Null
+become geometry. Arbitrary source-derived geometric assignment, a total Structural Null
 relationship, later corpus adapters, canonical breadth, epicyclic circle, disk,
 sphere, composition, and completion laws remain the living recovery boundary.
 v0.17 now makes the pre-geometric doorway and zero-separation boundary
 executable without widening it into total topology: only Structural Null may be
 the prestate, exactly one retained twist receipt may initiate a declared word,
 and 720-degree local return remains distinct from construction completion.
+v0.18 now makes exact signed-local circle-candidate application executable at
+that doorway when an independent rational proposal is supplied. The proposal
+remains explicit input rather than a source-derived result; the law that would
+derive it, total topology, higher geometry, composition, and completion remain
+the living boundary.

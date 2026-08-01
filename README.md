@@ -78,16 +78,25 @@ as partial and root-only. v0.16 now admits arbitrary-domain observed
 occurrences through explicit named versioned content adapters and gives every
 admitted occurrence one ordered tagged outcome: unresolved, explicit supplied
 candidate, or rejected mechanism. Evidence digests and the pinned A0 Blake2
-phase lanes cannot derive geometry. No law is selected, and arbitrary geometric
-assignment, the total Structural Null relationship, higher coordinates, and
-global C1/C2 equivalence remain open. v0.17 now separates Structural Null from
+phase lanes cannot derive geometry. No law is selected, and arbitrary source-
+derived geometric assignment, the total Structural Null relationship, higher
+coordinates, and global C1/C2 equivalence remain open. v0.17 now separates Structural Null from
 seven neighboring zero, neutrality, source, coordinate, and absence roles;
 gives every v0.16 admission one tagged initiation outcome; and gives an
 explicitly declared word gonol one source-bound Möbius-twist receipt without a
 geometric coordinate. The unchanged native-root witness retains 360° local
 frame change and 720° local return while refusing to relabel return as scoped
-completion. Any eventual selection
-cannot become universal UCNS canon or transfer proof or measurement validity.
+completion.
+v0.18 now applies the surviving exact signed-local circle candidate to any
+explicitly initiated word occurrence when independent exact rational
+coordinate input is supplied. It retains exact inverse recovery, native
+two-turn frame parity, local side, occurrence identity, exclusive ordered
+outcomes, and linked lossy rendering. This is explicit-input candidate
+application only: the law deriving coordinates from arbitrary source evidence,
+total Structural Null topology, higher geometry, completion, selection, and
+activation remain unresolved.
+Any eventual selection cannot become universal UCNS canon or transfer proof or
+measurement validity.
 
 The previous implementation, specifications, tests, formal work, and
 experiments remain preserved under [`archive/`](archive/) with complete Git
@@ -157,8 +166,8 @@ seam representation, or convention:
    quotient-descent and sheet-commutation certificate for non-null `RC03`.
    Exact coefficients replace sampling. The proof standing remains
    `analytic-certificate-not-machine-checked`, and the combined report keeps
-   arbitrary-element assignment and the total Structural Null relationship
-   unresolved.
+   source-derived arbitrary-element assignment and the total Structural Null
+   relationship unresolved.
 9. The **assignment-admission boundary** admits arbitrary-domain occurrences
    only through named versioned adapters, preserves isolated subject evidence,
    order, and multiplicity, and records exactly one unresolved, explicit
@@ -171,6 +180,12 @@ seam representation, or convention:
     admission; permits exactly one source-bound twist receipt for an explicitly
     declared word gonol; and retains bounded 360° frame change plus 720° local
     return without geometry, completion, selection, or activation.
+11. The **explicit geometric-assignment boundary** accepts an independent exact
+    rational local-transverse and lifted-turn proposal for any explicitly
+    initiated word occurrence, applies the surviving signed-local circle
+    candidate reversibly, preserves frame and side, and records one assigned,
+    unresolved, or rejected outcome. Source identity and lossy rendering cannot
+    derive geometry, and the candidate remains nonselected.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -223,6 +238,19 @@ and `NA` keep distinct roles. Initiation remains pre-geometric, and the retained
 
 See
 [`docs/GONOL_INITIATION_STRUCTURAL_NULL_V017.md`](docs/GONOL_INITIATION_STRUCTURAL_NULL_V017.md).
+
+The implemented **v0.18 explicit geometric-assignment boundary** makes the next
+candidate relation executable without claiming a universal law. An explicitly
+initiated word plus an independent `Fraction`-valued proposal yields the exact
+signed-local circle coordinate, exact inverse, native frame, local side, one
+candidate `GeometricAssignment`, and a linked declared-loss binary64 rendering.
+Equal-content occurrences remain distinct and may receive distinct proposals;
+their digest never determines geometry. The source-to-coordinate derivation,
+total Structural Null topology, higher geometry, composition, completion,
+selection, and activation remain unresolved.
+
+See
+[`docs/EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md`](docs/EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md).
 
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
@@ -591,9 +619,11 @@ adapter-gated occurrence admission and total tagged outcome evidence while
 retaining the negative result that evidence identity is not geometry. v0.17
 separates the singular initiation prestate from neighboring zero and absence
 roles, adds total tagged initiation outcomes, and preserves bounded 360°/720°
-root-return evidence without inventing geometry or completion. The next truth
-obligations are arbitrary-element geometric assignment and a total Structural
-Null topology,
+root-return evidence without inventing geometry or completion. v0.18 applies
+the surviving exact signed-local circle candidate when independent rational
+coordinate input is supplied, while refusing to call that input source-derived.
+The next truth obligations are the arbitrary-source-to-coordinate derivation
+law and a total Structural Null topology,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
 A0-betatest specimen, higher-gonol composition, later source-native corpus
 adapters and complete runs beginning with Molweni, and evidence from failures

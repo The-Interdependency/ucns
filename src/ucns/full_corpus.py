@@ -5,7 +5,7 @@
 #   summary: fail-closed EDCM corpus execution reports and completion receipts that require iterator exhaustion, declared turn-count agreement, and exact source reconstruction before post-run analysis
 #   owner: Erin Spencer
 #   public_surface: CorpusAdapterIdentity, AdmittedCorpusManifest, CorpusRunStatus, CorpusRunFailureKind, CorpusRunFailure, FullCorpusExecutionReport, FullCorpusCompletionReceipt, execute_admitted_corpus, issue_full_corpus_completion_receipt
-#   internal_surface: exact validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers
+#   internal_surface: exact profile-implementation validation, length-prefixed turn-stream hashing, executed-run capability binding, incomplete-report construction, and complete manifest-bound receipt identity helpers
 #   auth_boundary: admission authority remains external and is retained by admission_decision_id
 #   storage_boundary: raw corpus and per-turn observations remain in source or downstream custody; this bounded report retains counts and linked digests only
 #   network_boundary: none
@@ -34,7 +34,7 @@
 #
 # id: full_corpus_gate_requires_exact_stream_reconstruction
 #   given: every successfully processed speaker turn is observed
-#   then: length-prefixed source and reconstructed-observation stream digests agree before the report can complete
+#   then: the exact fixed profile implementation with canonical authority fields observes exact built-in turn tuples, speaker ids, and text values and length-prefixed source and reconstructed-observation stream digests agree before the report can complete
 #   class: evidence
 #   since: 2026-07-31
 #
@@ -73,6 +73,7 @@ from typing import Iterable
 
 from .edcm import (
     EDCM_PROFILE_ID,
+    EDCM_PROFILE_OPTIONS,
     EDCM_PROFILE_SCOPE,
     EDCM_PROFILE_VERSION,
     EdcmTurnObservation,
@@ -144,10 +145,10 @@ def _turn_stream_record(
     text: str,
 ) -> bytes:
     _require_nonnegative_int(turn_index, "turn_index")
-    if not isinstance(speaker_id, str):
-        raise FullCorpusError("speaker_id must be text")
-    if not isinstance(text, str):
-        raise FullCorpusError("turn text must be text")
+    if type(speaker_id) is not str:
+        raise FullCorpusError("speaker_id must be exact built-in text")
+    if type(text) is not str:
+        raise FullCorpusError("turn text must be exact built-in text")
     return b"".join(
         (
             turn_index.to_bytes(8, "big", signed=False),
@@ -449,9 +450,30 @@ def execute_admitted_corpus(
 
     if not isinstance(manifest, AdmittedCorpusManifest):
         raise FullCorpusError("manifest must be an AdmittedCorpusManifest")
-    active_profile = profile or EdcmWordGonolProfile()
-    if not isinstance(active_profile, EdcmWordGonolProfile):
-        raise FullCorpusError("profile must be an EdcmWordGonolProfile")
+    active_profile = EdcmWordGonolProfile() if profile is None else profile
+    if type(active_profile) is not EdcmWordGonolProfile:
+        raise FullCorpusError(
+            "profile must use the exact EdcmWordGonolProfile implementation"
+        )
+    if (
+        type(active_profile.profile_id) is not str
+        or type(active_profile.version) is not str
+        or type(active_profile.scope) is not str
+        or type(active_profile.options) is not tuple
+        or any(
+            type(option) is not tuple
+            or len(option) != 2
+            or any(type(value) is not str for value in option)
+            for option in active_profile.options
+        )
+        or active_profile.profile_id != EDCM_PROFILE_ID
+        or active_profile.version != EDCM_PROFILE_VERSION
+        or active_profile.scope != EDCM_PROFILE_SCOPE
+        or active_profile.options != EDCM_PROFILE_OPTIONS
+    ):
+        raise FullCorpusError(
+            "profile authority fields and options must be exact and canonical"
+        )
 
     source_digest = _empty_stream_digest()
     observation_digest = _empty_stream_digest()
@@ -505,7 +527,7 @@ def execute_admitted_corpus(
 
         turn_index = processed_turn_count
         try:
-            if not isinstance(turn, tuple) or len(turn) != 2:
+            if type(turn) is not tuple or len(turn) != 2:
                 raise FullCorpusError(
                     "each admitted corpus turn must be a (speaker_id, text) tuple"
                 )
