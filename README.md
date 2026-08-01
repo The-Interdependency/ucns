@@ -95,6 +95,19 @@ outcomes, and linked lossy rendering. This is explicit-input candidate
 application only: the law deriving coordinates from arbitrary source evidence,
 total Structural Null topology, higher geometry, completion, selection, and
 activation remain unresolved.
+v0.19 now supplies one transparent source-to-coordinate candidate and applies
+it over the fixed full producer-owned v0.17 demonstration trace. Occurrence i
+in the producer-receipted scope cardinality n receives
+the exact midpoint p=(2i+1)/(2n), local transverse u=2p-1, and lifted turns
+t=2p. The law preserves exact upstream object identity, order, equal-content
+multiplicity, reversible circle-candidate application, explicit completion
+authority, and unresolved or rejected blockers. It does not use content,
+digest, caller-supplied authority strings, or an unbound tuple length as
+geometry. Candidate
+selection, cross-scope and higher-gonol composition, total Structural Null
+topology, higher geometry, completion, and activation remain unresolved.
+Additional source scopes require new versioned producer-owned declarations;
+constructible report prefixes cannot create them.
 Any eventual selection cannot become universal UCNS canon or transfer proof or
 measurement validity.
 
@@ -186,6 +199,13 @@ seam representation, or convention:
     candidate reversibly, preserves frame and side, and records one assigned,
     unresolved, or rejected outcome. Source identity and lossy rendering cannot
     derive geometry, and the candidate remains nonselected.
+12. The **ordered-source coordinate derivation boundary** derives exact
+    p=(2i+1)/(2n), u=2p-1, and t=2p from one occurrence address in its complete
+    finite ordered trace; retains exact v0.17 trace and outcome identity;
+    applies the exact circle candidate; and records blocked upstream outcomes.
+    The law is an implemented candidate with no selection effect. Cross-scope
+    and higher-gonol composition, total topology, higher geometry, completion,
+    and activation remain open.
 
 The documentation-only **v0.12 full-carrier real-continuity specification**
 defines the framed two-turn cylinder, Möbius quotient, signed-local coordinate
@@ -251,6 +271,21 @@ selection, and activation remain unresolved.
 
 See
 [`docs/EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md`](docs/EXPLICIT_GEOMETRIC_ASSIGNMENT_BOUNDARY_V018.md).
+
+The implemented **v0.19 ordered-source coordinate derivation boundary** makes
+one source-derived candidate executable. It maps an authority-bound exact
+ordered address (i,n) to the rational cell midpoint p=(2i+1)/(2n), then to
+u=2p-1 and t=2p. The v0.17 producer issues the scope-exhaustion receipt from
+its exact validated report; callers cannot mint n or ordered outcome ids
+inline. Unbound tuple length cannot supply n.
+Equal-content occurrences remain separate by address, exact upstream
+initiation identity survives, and unresolved or rejected initiations remain
+blocked rather than receiving a fallback. Content identity, A0 lanes, scalar
+projections, and binary64 rendering do not generate geometry. The candidate is
+not selected and supplies no cross-scope composition, higher geometry, total
+Structural Null topology, completion, or consumer activation.
+
+See docs/SOURCE_COORDINATE_DERIVATION_V019.md.
 
 The implemented **v0.14 full-corpus execution gate** consumes every supplied
 turn, retains exact incomplete-run stopping evidence, and issues a receipt only
@@ -622,8 +657,13 @@ roles, adds total tagged initiation outcomes, and preserves bounded 360°/720°
 root-return evidence without inventing geometry or completion. v0.18 applies
 the surviving exact signed-local circle candidate when independent rational
 coordinate input is supplied, while refusing to call that input source-derived.
-The next truth obligations are the arbitrary-source-to-coordinate derivation
-law and a total Structural Null topology,
+v0.19 implements the exact finite ordered-source midpoint derivation candidate
+over the fixed full producer-owned v0.17 demonstration without selecting it.
+Its in-process receipt binds the exact full admission trace and complete ordered
+outcome evidence identities. The next truth obligations are additional
+versioned producer scopes, external transport authentication, candidate selection,
+cross-scope and higher-gonol coordinate composition, and a total Structural
+Null topology,
 reconstruction of circle/epicycle/disk/sphere transition laws from the pinned
 A0-betatest specimen, higher-gonol composition, later source-native corpus
 adapters and complete runs beginning with Molweni, and evidence from failures

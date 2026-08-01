@@ -84,7 +84,7 @@ def test_ucns_identifier_has_no_canonical_expansion() -> None:
     assert OPTION_REGISTRY_SCHEMA_ID == "ucns.option-registry"
     assert UCNS_IDENTIFIER == registry["identifier"]["value"] == "UCNS"
     assert registry["identifier"]["canonical_expansion"] is None
-    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.14.0"
+    assert OPTION_REGISTRY_SCHEMA_VERSION == registry["schema_version"] == "1.15.0"
 
 
 def test_completion_motion_root_scope_and_projection_firewall() -> None:
@@ -116,6 +116,9 @@ def test_completion_motion_root_scope_and_projection_firewall() -> None:
     )
     assert project["explicit_geometric_assignment_schema"] == (
         "ucns.edcm.explicit-geometric-assignment-boundary/0.18.0"
+    )
+    assert project["source_coordinate_derivation_schema"] == (
+        "ucns.edcm.source-coordinate-derivation-boundary/0.19.0"
     )
     assert project["trajectory_identity"] == "complete-assignment-and-motion-trajectory"
     assert (
@@ -187,6 +190,10 @@ def test_option_dimensions_have_no_hidden_default() -> None:
     assert "explicit-geometric-assignment-boundary" in decisions
     assert "independent exact rational coordinate proposal" in decisions[
         "explicit-geometric-assignment-boundary"
+    ]
+    assert "source-coordinate-derivation-boundary" in decisions
+    assert "p=(2i+1)/(2n)" in decisions[
+        "source-coordinate-derivation-boundary"
     ]
     coordinate_dimension = option_dimension("carrier-coordinate-admissibility")
     assert coordinate_dimension["display_rule"] == "display-all-four"
@@ -325,6 +332,28 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         "source-to-coordinate-derivation-law": "unresolved",
         "total-structural-null-carrier-topology": "unresolved",
     }
+    source_coordinate_dimension = option_dimension(
+        "source-coordinate-derivation"
+    )
+    assert source_coordinate_dimension["display_rule"] == (
+        "display-derived-candidate-and-open-boundaries-together"
+    )
+    assert source_coordinate_dimension["display_order"] == [
+        "ordered-source-cell-midpoint-law",
+        "content-identity-derived-geometry",
+        "cross-scope-higher-gonol-composition-law",
+        "canonical-source-coordinate-law",
+    ]
+    assert source_coordinate_dimension["selection_effect"] == "none"
+    assert {
+        choice["id"]: choice["standing"]
+        for choice in source_coordinate_dimension["choices"]
+    } == {
+        "ordered-source-cell-midpoint-law": "implemented-candidate",
+        "content-identity-derived-geometry": "rejected-pre-reset",
+        "cross-scope-higher-gonol-composition-law": "unresolved",
+        "canonical-source-coordinate-law": "unresolved",
+    }
 
     promoted_registry = deepcopy(registry)
     promoted_attachment = next(
@@ -379,6 +408,21 @@ def test_option_dimensions_have_no_hidden_default() -> None:
         match="geometric assignment choice standings are fixed",
     ):
         _validate_registry(promoted_geometric_assignment_registry)
+
+    promoted_source_coordinate_registry = deepcopy(registry)
+    promoted_source_coordinate = next(
+        dimension
+        for dimension in promoted_source_coordinate_registry["dimensions"]
+        if dimension["id"] == "source-coordinate-derivation"
+    )
+    promoted_source_coordinate["choices"][3]["standing"] = (
+        "decided-constraint"
+    )
+    with pytest.raises(
+        OptionRegistryError,
+        match="source-coordinate derivation choice standings are fixed",
+    ):
+        _validate_registry(promoted_source_coordinate_registry)
 
 
 def test_edcm_selection_project_is_scoped_and_non_transferring() -> None:
