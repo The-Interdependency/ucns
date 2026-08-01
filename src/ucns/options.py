@@ -2,7 +2,7 @@
 # id: ucns_option_decision_registry
 #   module_name: options
 #   module_kind: schema
-#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission, gonol-initiation, explicit geometric-assignment, Structural Null, and unresolved-option boundaries
+#   summary: loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission, gonol-initiation, explicit geometric-assignment, ordered-source coordinate derivation, Structural Null, and unresolved-option boundaries
 #   owner: Erin Spencer
 #   public_surface: OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension
 #   internal_surface: _validate_registry
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_option_decisions.py
-#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit-input exact candidate application, Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection
+#   rollout: authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit-input application, v0.19 ordered-source derivation candidate, Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection
 #   rollback: remove the registry surface without changing existing carrier or profile behavior
 #   since: 2026-07-25
-#   unresolved: the law deriving exact assignment coordinates from arbitrary source evidence, total Structural Null topology, higher geometry and composition, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
+#   unresolved: selection and cross-scope composition of the v0.19 derivation candidate, total Structural Null topology, higher geometry and composition, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -69,7 +69,7 @@ import json
 from typing import Any
 
 OPTION_REGISTRY_SCHEMA_ID = "ucns.option-registry"
-OPTION_REGISTRY_SCHEMA_VERSION = "1.14.0"
+OPTION_REGISTRY_SCHEMA_VERSION = "1.15.0"
 UCNS_IDENTIFIER = "UCNS"
 
 STANDING_VALUES = frozenset(
@@ -126,6 +126,7 @@ REQUIRED_DECISION_IDS = frozenset(
         "assignment-admission-boundary",
         "gonol-initiation-structural-null-boundary",
         "explicit-geometric-assignment-boundary",
+        "source-coordinate-derivation-boundary",
     }
 )
 
@@ -177,6 +178,9 @@ def _validate_registry(data: dict[str, Any]) -> None:
         ),
         "explicit_geometric_assignment_schema": (
             "ucns.edcm.explicit-geometric-assignment-boundary/0.18.0"
+        ),
+        "source_coordinate_derivation_schema": (
+            "ucns.edcm.source-coordinate-derivation-boundary/0.19.0"
         ),
         "trajectory_identity": "complete-assignment-and-motion-trajectory",
         "scalar_projection_policy": "optional-declared-loss-with-source-link",
@@ -269,6 +273,7 @@ def _validate_registry(data: dict[str, Any]) -> None:
         "assignment-admission-evidence",
         "gonol-initiation-evidence",
         "arbitrary-element-geometric-assignment",
+        "source-coordinate-derivation",
         "origin-semantics",
         "occurrence-structure",
         "support-assignment",
@@ -547,6 +552,41 @@ def _validate_registry(data: dict[str, Any]) -> None:
     }:
         raise OptionRegistryError(
             "geometric assignment choice standings are fixed"
+        )
+
+    source_coordinate = dimension_by_id["source-coordinate-derivation"]
+    if source_coordinate.get("display_rule") != (
+        "display-derived-candidate-and-open-boundaries-together"
+    ):
+        raise OptionRegistryError(
+            "source-coordinate derivation must retain candidate and open boundaries"
+        )
+    if source_coordinate.get("display_order") != [
+        "ordered-source-cell-midpoint-law",
+        "content-identity-derived-geometry",
+        "cross-scope-higher-gonol-composition-law",
+        "canonical-source-coordinate-law",
+    ]:
+        raise OptionRegistryError(
+            "source-coordinate derivation display order mismatch"
+        )
+    if source_coordinate.get("selection_effect") != "none":
+        raise OptionRegistryError(
+            "source-coordinate derivation cannot select geometry"
+        )
+    source_coordinate_standings = {
+        choice.get("id"): choice.get("standing")
+        for choice in source_coordinate.get("choices", ())
+        if isinstance(choice, dict)
+    }
+    if source_coordinate_standings != {
+        "ordered-source-cell-midpoint-law": "implemented-candidate",
+        "content-identity-derived-geometry": "rejected-pre-reset",
+        "cross-scope-higher-gonol-composition-law": "unresolved",
+        "canonical-source-coordinate-law": "unresolved",
+    }:
+        raise OptionRegistryError(
+            "source-coordinate derivation choice standings are fixed"
         )
 
     corpora = data.get("real_system_corpus_candidates")
