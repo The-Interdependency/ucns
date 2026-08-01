@@ -28,6 +28,14 @@ subject digest remains linked provenance and cannot populate transverse,
 lifted-turn, frame, side, or assignment-law fields. Equal-content occurrences
 may therefore retain equal digests and receive distinct explicit proposals
 without deduplication or hidden derivation.
+v0.19 derives a candidate coordinate from structural source address rather
+than evidence identity. The only law inputs are the exact occurrence index and
+the cardinality of its complete finite ordered v0.17 trace. The derivation
+retains the exact trace and outcome objects and records that content and digest
+were unused. Equal-content occurrences therefore receive distinct coordinates
+when their ordered addresses differ. Prefixes, reordered traces, and copied
+upstream graphs cannot substitute for the authority-bearing trace. Binary64
+remains a linked rendering, and the law remains nonselected.
 
 JSON, text, and bytes adapters are supplied as conveniences. Domain objects require domain adapters.
 

@@ -29,10 +29,15 @@ epistemically exhausted.
 The current implementation can retain exact word evidence and externally
 supplied completion-motion trajectories. v0.18 can also apply the surviving
 exact signed-local circle candidate to an explicitly initiated word when
-independent exact rational coordinate input is supplied. The law that derives
-that input from arbitrary source evidence, the total Structural Null topology,
-the circle/epicycle/disk/sphere transition law, and higher-gonol composition
-remain unresolved. Their absence must stay explicit rather than being filled
+independent exact rational coordinate input is supplied. v0.19 additionally
+implements the exact finite ordered-address formula p=(2i+1)/(2n), u=2p-1,
+and lifted turns t=2p. Its trace-level source derivation is evidenced only over
+the fixed full producer-owned three-outcome v0.17 demonstration, whose receipt
+binds every complete outcome evidence identity. An unbound tuple length or a
+caller-constructed scope cannot supply n. That candidate is not
+selected and supplies no cross-scope or higher-gonol composition law. The total
+Structural Null topology and circle/epicycle/disk/sphere transitions remain
+unresolved. Their absence must stay explicit rather than being filled
 by a hash, ordinary `2π` angle, Fourier phase, factorization, or scalar proxy.
 
 The authoritative decision surface and open choices are recorded in
@@ -176,6 +181,17 @@ projection, and historical A0 Blake2 lanes still cannot manufacture geometry.
 This is explicit-input candidate application, not a universal source-to-
 coordinate law, total topology, higher geometry, completion, selection, or
 activation.
+v0.19 then derives the same exact circle-candidate inputs from the retained
+finite ordered source address of the fixed full producer-owned v0.17
+demonstration. For occurrence i in its receipted scope cardinality n, the law
+fixes p=(2i+1)/(2n), u=2p-1, and t=2p. It retains the completion binding plus
+the exact v0.16 admission trace and complete v0.17 outcome evidence identities,
+equal-content multiplicity, reversible exact
+application, explicit upstream blockers, and rendering loss. Source content,
+digests, runtime identity, A0 lanes, carrier position alone, and scalar
+projections are not law inputs. Implementation does not select the law or
+establish cross-scope composition, total topology, higher geometry, completion,
+or activation.
 
 For EDCM, **Structural Null** is the singular superpositioned space, and the
 twist occurs when a new gonol initiates. The formal transition, identity law, and
@@ -494,6 +510,15 @@ a complete relationship can become executable.
     frame, local side, occurrence identity, exclusive ordered outcomes, and
     declared-loss rendering, and refuses to relabel application as source-
     derived law, completion, selection, or activation.
+28. an ordered-source coordinate derivation boundary that maps occurrence i in
+    the fixed full producer-owned three-outcome v0.17 demonstration scope n to exact
+    p=(2i+1)/(2n), u=2p-1, and
+    lifted turns t=2p; binds the exact v0.16 admission trace and complete v0.17
+    outcome evidence identities, retains explicit blockers, applies the exact
+    circle candidate, and requires a new versioned producer declaration for
+    any additional scope, while law selection,
+    cross-scope and higher-gonol composition, total topology, higher geometry,
+    completion, and activation unresolved.
 
 Still unresolved and not promoted:
 
@@ -509,11 +534,11 @@ Still unresolved and not promoted:
 9. external holdout custody and independent candidate calibration;
 10. canonical recursive identity, sharing, and fixed-point laws;
 11. typed payload dispatch;
-12. the source-to-coordinate derivation law and a total Structural Null
-    topology beyond the v0.18 explicit-input candidate-application boundary,
-    v0.17 tagged initiation-evidence boundary, v0.16 admitted-evidence outcome
-    boundary, v0.15 analytic non-null certificates, and v0.13 partial root
-    attachment, including higher geometry and completion;
+12. selection, external grounding, cross-scope stability, and higher-gonol
+    composition for the v0.19 source-coordinate candidate, plus a total
+    Structural Null topology beyond the v0.18 explicit-input, v0.17 initiation,
+    v0.16 admission, v0.15 analytic non-null, and v0.13 partial-root
+    boundaries, including higher geometry and completion;
 13. the law assigning exact observed elements to epicyclic geometry and the
     circle/epicycle/disk/sphere transition laws across recursive scale;
 14. formal promotion and migration of the EDCM observation profile after the
@@ -617,9 +642,13 @@ not a total topology, geometric placement, or completion receipt. v0.18 now
 makes exact candidate application executable at that doorway when independent
 rational coordinate input is supplied. It preserves exact inverse, native
 frame, local side, occurrence identity, and rendering loss without claiming
-that the input was derived from the source. The source-to-coordinate law, total
-Structural Null relationship, canonical breadth, epicyclic circle, disk,
-sphere, recursive composition, and completion conditions remain unrecovered.
+that the input was derived from the source. v0.19 supplies one exact
+finite-ordered-source midpoint derivation candidate over the fixed full
+producer-owned v0.17 demonstration while leaving additional producer-scope
+enrollment, transport authentication, selection, and cross-scope composition
+explicit. The total Structural Null relationship,
+canonical breadth, epicyclic circle, disk, sphere, recursive composition, and
+completion conditions remain unrecovered.
 Real-system
 experiments may pressure those laws, but current metric projections may not
 circularly select the geometry that makes them appear valid.

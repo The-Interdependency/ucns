@@ -89,8 +89,10 @@ def test_public_surface_is_bounded() -> None:
         "GonolInitiationReceipt",
         "GonolInitiationOutcome",
         "GonolInitiationTrace",
+        "GonolInitiationScopeCompletionReceipt",
         "RootLoopReturnWitness",
         "GonolInitiationBoundaryReport",
+        "issue_gonol_initiation_scope_completion_receipt",
         "run_v017_gonol_initiation_boundary_experiment",
         "ExplicitCoordinateProposal",
         "AppliedGeometricAssignment",
@@ -98,6 +100,15 @@ def test_public_surface_is_bounded() -> None:
         "GeometricAssignmentTrace",
         "ExplicitGeometricAssignmentBoundaryReport",
         "run_v018_explicit_geometric_assignment_experiment",
+        "CompleteOrderedSourceScopeBinding",
+        "bind_complete_ordered_source_scope",
+        "OrderedSourceCoordinate",
+        "SourceCoordinateDerivation",
+        "AppliedSourceCoordinateAssignment",
+        "SourceCoordinateOutcome",
+        "SourceCoordinateTrace",
+        "SourceCoordinateBoundaryReport",
+        "run_v019_source_coordinate_derivation_experiment",
     ):
         assert expected in exported
 

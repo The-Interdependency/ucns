@@ -1173,15 +1173,15 @@ export default defineMsdmdCollection({
         "module_name": "ucns public surface",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.17 gonol-initiation and Structural Null evidence, v0.18 explicit geometric-assignment evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
-        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_explicit_geometric_assignment_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
+        "public_surface": "option decisions, EDCM observation, completion-motion, v0.14 full-corpus execution evidence, v0.15 full-carrier attachment evidence, v0.16 assignment-admission evidence, v0.17 gonol-initiation and Structural Null evidence, v0.18 explicit geometric-assignment evidence, v0.19 authority-bound ordered source-coordinate derivation evidence, v0.5 carrier experiment, v0.6 native direct-Mobius candidate, v0.7 bounded root-loop cover chart, v0.9 exact-rational transverse-envelope repair, v0.10 bounded carrier-coordinate admissibility experiment, v0.11 exact-coordinate representation boundary, v0.13 partial initiation boundary, carrier, structure, policy, envelope, comparison, traversal, laboratory, layer-pairing, experiment, candidate, and bounded downstream profile names listed in __all__",
+        "requires": "ucns_option_decision_registry, edcm_word_gonol_profile, edcm_completion_motion_evidence, edcm_full_corpus_execution_gate, edcm_full_carrier_attachment_evidence, edcm_assignment_admission_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_explicit_geometric_assignment_boundary, edcm_source_coordinate_derivation_boundary, edcm_mobius_carrier_experiment, edcm_native_direct_mobius_candidate, edcm_root_loop_cover_chart_candidate, edcm_exact_rational_transverse_envelope_experiment, edcm_carrier_coordinate_admissibility_experiment, edcm_exact_coordinate_representation_boundary, edcm_partial_initiation_boundary, directed_carrier_floor, structural_cell_support_floor, structural_choice_policy_layer, retained_structure_envelope, explicit_comparison_policy_layer, cycle_safe_traversal_policy, evaluator_candidate_laboratory, retained_layer_pairing_laboratory, reproducible_witness_experiment_pipeline, first_competing_evaluator_candidate_families",
         "rollback": "remove completion-motion and downstream profile exports while preserving foundations and research surfaces",
-        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, nonselecting v0.17 origin separation and gonol-initiation evidence, nonselecting v0.18 explicit-input exact circle-candidate application, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
+        "rollout": "importable decisions, exact EDCM word-gonol observation profile, trajectory-first completion-motion evidence, fail-closed v0.14 full-corpus execution receipts, nonselecting v0.15 analytic and bounded attachment evidence, nonselecting v0.16 assignment-admission evidence, nonselecting v0.17 origin separation and gonol-initiation evidence, nonselecting v0.18 explicit-input exact circle-candidate application, nonselecting v0.19 authority-bound ordered source-coordinate derivation, candidate-neutral v0.5 carrier experiment, nonselecting v0.6 direct-Mobius candidate, nonselecting v0.7 bounded root-loop chart, nonselecting v0.9 exact-rational transverse-envelope repair, nonselecting v0.10 bounded carrier-coordinate admissibility experiment, nonselecting v0.11 exact-coordinate representation boundary, nonselecting v0.13 partial initiation boundary, compatibility profile, and research infrastructure",
         "since": "2026-07-21",
         "storage_boundary": "none",
-        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, v0.16 assignment admission, v0.17 gonol initiation, and v0.18 explicit exact-coordinate candidate application with current foundations and reproducible candidate-research infrastructure",
+        "summary": "exports the UCNS decision registry, EDCM word-gonol, completion-motion, full-corpus execution, bounded full-carrier evidence, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit exact-coordinate application, and v0.19 ordered-source coordinate derivation with current foundations and reproducible candidate-research infrastructure",
         "tests": "tests/test_public_surface.py and all source-specific test modules",
-        "unresolved": "source-to-coordinate derivation law and total Structural Null topology beyond v0.18 explicit-input candidate application, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
+        "unresolved": "selection and cross-scope composition of the v0.19 source-coordinate candidate, total Structural Null topology, proof-assistant formalization, circle-epicycle-disk-sphere transitions, higher-gonol composition, non-SPACE out-of-alphabet treatment, canonical structural equivalence, canonical M, canonical B, complete UCNS object",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/__init__.py",
@@ -2480,16 +2480,27 @@ export default defineMsdmdCollection({
       "id": "gonol_initiation_root_return_is_bounded_and_noncompleting"
     },
     {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the exact validated v0.17 authority report matching the fixed full producer-owned demonstration scope is supplied to the scope-exhaustion issuer",
+        "since": "2026-07-31",
+        "then": "receipt scope, cardinality, full ordered outcome evidence digest, and identity derive from that report while consistent multi-layer prefixes, id-preserving outcome changes, sampling, construction completion, and selection remain absent"
+      },
+      "file": "src/ucns/gonol_initiation.py",
+      "id": "gonol_initiation_scope_receipt_is_producer_issued"
+    },
+    {
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
-        "auth_boundary": "none",
+        "auth_boundary": "the in-process scope-exhaustion issuer accepts only an exact validated v0.17 authority report whose full v0.16 admission trace and every ordered v0.17 disposition, admission evidence identity, initiation receipt, rejection, evidence tuple, and trace field match the fixed producer-owned demonstration; receipt identity binds that complete evidence while external transport authentication remains outside this module",
         "internal_surface": "fixed GI01-GI08 evidence construction and exact validation helpers",
         "module_kind": "experiment",
         "module_name": "gonol_initiation",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment",
+        "public_surface": "OriginRole, OriginTermRecord, GonolInitiationReceipt, GonolInitiationOutcome, GonolInitiationTrace, GonolInitiationScopeCompletionReceipt, RootLoopReturnWitness, GonolInitiationBoundaryReport, GonolInitiationDisposition, RejectedOriginSubstitution, GonolInitiationEvidenceStanding, GonolInitiationFalsifierResult, origin_term_registry, initiate_word_gonol, record_gonol_initiation_outcome, issue_gonol_initiation_scope_completion_receipt, build_root_loop_return_witness, run_v017_gonol_initiation_boundary_experiment",
         "requires": "edcm_assignment_admission_boundary, edcm_partial_initiation_boundary",
         "rollback": "remove this module, exports, tests, and v0.17 document while retaining v0.16 admission evidence and v0.13 bounded initiation evidence",
         "rollout": "nonselecting v0.17 initiation-evidence boundary over admitted occurrences with bounded native-root return semantics; no arbitrary geometry, total Structural Null topology, scoped completion, EDCM activation, or METAPAT activation",
@@ -2930,12 +2941,12 @@ export default defineMsdmdCollection({
         "owner": "Erin Spencer",
         "public_surface": "OPTION_REGISTRY_SCHEMA_ID, OPTION_REGISTRY_SCHEMA_VERSION, UCNS_IDENTIFIER, OptionRegistryError, load_option_registry, option_dimension",
         "rollback": "remove the registry surface without changing existing carrier or profile behavior",
-        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit-input exact candidate application, Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection",
+        "rollout": "authoritative completion-motion root, scoped completion, trajectory identity, exact MultiWOZ receipt standing, v0.15 mixed carrier-evidence scopes, v0.16 assignment admission, v0.17 gonol initiation, v0.18 explicit-input application, v0.19 ordered-source derivation candidate, Structural Null standing, decisions, and explicit unresolved choices; no mathematical option selection",
         "since": "2026-07-25",
         "storage_boundary": "packaged option_registry.json",
-        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission, gonol-initiation, explicit geometric-assignment, Structural Null, and unresolved-option boundaries",
+        "summary": "loads and validates the authoritative UCNS completion-motion root, EDCM decisions, external receipt standing, analytic carrier evidence, assignment-admission, gonol-initiation, explicit geometric-assignment, ordered-source coordinate derivation, Structural Null, and unresolved-option boundaries",
         "tests": "tests/test_option_decisions.py",
-        "unresolved": "the law deriving exact assignment coordinates from arbitrary source evidence, total Structural Null topology, higher geometry and composition, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
+        "unresolved": "selection and cross-scope composition of the v0.19 derivation candidate, total Structural Null topology, higher geometry and composition, later corpus runs, ideal EDCM-scoped configuration, non-SPACE alphabet expansion or escape, and the option dimensions marked required-evaluation or unresolved",
         "user_data_boundary": "none"
       },
       "file": "src/ucns/options.py",
@@ -3143,6 +3154,96 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/root_loop_chart.py",
       "id": "edcm_root_loop_cover_chart_candidate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "one valid source-coordinate derivation is applied",
+        "since": "2026-07-31",
+        "then": "exact candidate and inverse, native frame, local side, GeometricAssignment, and declared-loss rendering remain mutually consistent"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_assignment_applies_exact_candidate_reversibly"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "one initiated v0.17 outcome receives a derived coordinate",
+        "since": "2026-07-31",
+        "then": "the exact upstream trace and outcome objects, admission, initiation, boundary, source address, law identity, formula, and code reference remain linked"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_derivation_retains_exact_initiation_identity"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "distinct occurrence indices in the same declared finite scope",
+        "since": "2026-07-31",
+        "then": "their exact source positions, transverse values, lifted turns, and coordinate identities remain distinct without binary64 conversion"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_law_is_exact_and_scope_injective"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "v0.19 evidence is reported",
+        "since": "2026-07-31",
+        "then": "digests, runtime identity, A0 lanes, carrier position, projections, and renderings derive no coordinate while selection, higher geometry, completion, and activation remain absent"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_law_rejects_identity_shortcuts_and_nonselection"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an occurrence index i and an authority-bearing completion binding for a complete finite ordered scope of cardinality n",
+        "since": "2026-07-31",
+        "then": "exact p=(2i+1)/(2n), u=2p-1, and t=2p derive only from the bound source address and invalid, sampled, prefixed, or unbound addresses fail closed"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_law_uses_complete_ordered_source_address"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "an authority-bound complete v0.17 initiation trace enters v0.19",
+        "since": "2026-07-31",
+        "then": "every exact outcome appears once in order as derived-assigned, blocked-unresolved, or blocked-rejected with no prefix, reordering, deduplication, or fallback"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "source_coordinate_outcomes_are_total_exclusive_and_ordered"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "complete-scope binding requires a producer-issued v0.17 exhaustion receipt over the exact fixed full authority-report trace and its complete ordered outcome evidence digest; callers cannot supply authority fields, cardinality, outcome ids, outcome contents, or consistently truncated report layers inline",
+        "internal_surface": "fixed SC01-SC10 evidence construction and exact validation helpers",
+        "module_kind": "experiment",
+        "module_name": "source_coordinate",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "CompleteOrderedSourceScopeBinding, OrderedSourceCoordinate, SourceCoordinateDerivation, AppliedSourceCoordinateAssignment, SourceCoordinateOutcome, SourceCoordinateTrace, SourceCoordinateBoundaryReport, SourceCoordinateDisposition, SourceCoordinateEvidenceStanding, SourceCoordinateFalsifierResult, bind_complete_ordered_source_scope, derive_ordered_source_coordinate, derive_source_coordinate, apply_source_coordinate_assignment, derive_source_coordinate_trace, run_v019_source_coordinate_derivation_experiment",
+        "requires": "edcm_explicit_geometric_assignment_boundary, edcm_gonol_initiation_structural_null_boundary, edcm_exact_coordinate_representation_boundary",
+        "rollback": "remove this module, exports, tests, and v0.19 document while retaining v0.18 explicit-input candidate application",
+        "rollout": "nonselecting v0.19 ordered-source-address derivation candidate over authority-bound complete scopes and explicitly initiated words with explicit blocked outcomes and no construction completion or activation",
+        "since": "2026-07-31",
+        "storage_boundary": "none",
+        "summary": "derives exact signed-local circle-candidate coordinates from authority-bound complete finite ordered source-occurrence addresses while retaining exact upstream initiation identity and explicit blocked outcomes",
+        "tests": "tests/test_source_coordinate.py",
+        "unresolved": "canonical law selection, cross-scope and higher-gonol composition, total Structural Null topology, higher geometry, completion, faithful breadth, and consumer activation",
+        "user_data_boundary": "a producer-issued completion receipt, exact v0.17 authority report and trace identity, source occurrence index, and report-derived complete finite scope cardinality derive coordinates; content, caller-supplied authority fields, digests, runtime identity, carrier position, and projections do not"
+      },
+      "file": "src/ucns/source_coordinate.py",
+      "id": "edcm_source_coordinate_derivation_boundary"
     },
     {
       "block": "CONTRACTS",
@@ -4547,6 +4648,19 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_scope_completion_receipt_derives_only_from_exact_authority_report",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "gonol_initiation_scope_receipt_is_producer_issued",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_gonol_initiation.py",
+      "id": "check_gonol_initiation_scope_receipt_authority"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_initiation_trace_is_total_exclusive_ordered_and_occurrence_preserving",
         "cleanup": "none",
         "mutates": "none",
@@ -5330,6 +5444,97 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_skill_lib_contracts.py",
       "id": "check_repository_contract_graph"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_ordered_source_coordinate_uses_exact_complete_address",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_law_uses_complete_ordered_source_address",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_complete_ordered_address"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_source_coordinate_assignment_is_exact_and_reversible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_assignment_applies_exact_candidate_reversibly",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_exact_assignment"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_equal_content_is_separate_and_report_remains_nonselecting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_law_rejects_identity_shortcuts_and_nonselection",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_negative_and_nonselection"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_prefix_cannot_reuse_or_impersonate_complete_scope_binding",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_law_uses_complete_ordered_source_address",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_prefix_requires_completion_binding"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_ordered_source_coordinate_is_exact_and_scope_injective",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_law_is_exact_and_scope_injective",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_scope_injectivity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_trace_retains_total_ordered_outcomes_and_blockers",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_outcomes_are_total_exclusive_and_ordered",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_total_outcomes"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_derivation_retains_exact_upstream_identity",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "source_coordinate_derivation_retains_exact_initiation_identity",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_source_coordinate.py",
+      "id": "check_source_coordinate_upstream_identity"
     },
     {
       "block": "CHECKS",
@@ -7442,6 +7647,27 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
+      "to": "self::test_scope_completion_receipt_derives_only_from_exact_authority_report"
+    },
+    {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
+      "to": "gonol_initiation_scope_receipt_is_producer_issued"
+    },
+    {
+      "from": "check_gonol_initiation_scope_receipt_authority",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_gonol_initiation_scope_receipt_authority",
+      "to": "python3"
+    },
+    {
       "from": "check_gonol_initiation_total_outcome_relation",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -8398,6 +8624,153 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_shared_identity_reference",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_complete_ordered_address",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_complete_ordered_address",
+      "to": "self::test_ordered_source_coordinate_uses_exact_complete_address"
+    },
+    {
+      "from": "check_source_coordinate_complete_ordered_address",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_complete_ordered_address",
+      "to": "source_coordinate_law_uses_complete_ordered_source_address"
+    },
+    {
+      "from": "check_source_coordinate_complete_ordered_address",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_complete_ordered_address",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_exact_assignment",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_exact_assignment",
+      "to": "self::test_source_coordinate_assignment_is_exact_and_reversible"
+    },
+    {
+      "from": "check_source_coordinate_exact_assignment",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_exact_assignment",
+      "to": "source_coordinate_assignment_applies_exact_candidate_reversibly"
+    },
+    {
+      "from": "check_source_coordinate_exact_assignment",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_exact_assignment",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_negative_and_nonselection",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_negative_and_nonselection",
+      "to": "self::test_equal_content_is_separate_and_report_remains_nonselecting"
+    },
+    {
+      "from": "check_source_coordinate_negative_and_nonselection",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_negative_and_nonselection",
+      "to": "source_coordinate_law_rejects_identity_shortcuts_and_nonselection"
+    },
+    {
+      "from": "check_source_coordinate_negative_and_nonselection",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_negative_and_nonselection",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_prefix_requires_completion_binding",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_prefix_requires_completion_binding",
+      "to": "self::test_prefix_cannot_reuse_or_impersonate_complete_scope_binding"
+    },
+    {
+      "from": "check_source_coordinate_prefix_requires_completion_binding",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_prefix_requires_completion_binding",
+      "to": "source_coordinate_law_uses_complete_ordered_source_address"
+    },
+    {
+      "from": "check_source_coordinate_prefix_requires_completion_binding",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_prefix_requires_completion_binding",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_scope_injectivity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_scope_injectivity",
+      "to": "self::test_ordered_source_coordinate_is_exact_and_scope_injective"
+    },
+    {
+      "from": "check_source_coordinate_scope_injectivity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_scope_injectivity",
+      "to": "source_coordinate_law_is_exact_and_scope_injective"
+    },
+    {
+      "from": "check_source_coordinate_scope_injectivity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_scope_injectivity",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_total_outcomes",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_total_outcomes",
+      "to": "self::test_trace_retains_total_ordered_outcomes_and_blockers"
+    },
+    {
+      "from": "check_source_coordinate_total_outcomes",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_total_outcomes",
+      "to": "source_coordinate_outcomes_are_total_exclusive_and_ordered"
+    },
+    {
+      "from": "check_source_coordinate_total_outcomes",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_total_outcomes",
+      "to": "python3"
+    },
+    {
+      "from": "check_source_coordinate_upstream_identity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_upstream_identity",
+      "to": "self::test_derivation_retains_exact_upstream_identity"
+    },
+    {
+      "from": "check_source_coordinate_upstream_identity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_upstream_identity",
+      "to": "source_coordinate_derivation_retains_exact_initiation_identity"
+    },
+    {
+      "from": "check_source_coordinate_upstream_identity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_source_coordinate_upstream_identity",
       "to": "python3"
     },
     {
@@ -9465,6 +9838,34 @@ export default defineMsdmdCollection({
       "to": "edcm_native_direct_mobius_candidate"
     },
     {
+      "from": "edcm_source_coordinate_derivation_boundary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_source_coordinate_derivation_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_source_coordinate_derivation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_source_coordinate_derivation_boundary",
+      "to": "edcm_exact_coordinate_representation_boundary"
+    },
+    {
+      "from": "edcm_source_coordinate_derivation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_source_coordinate_derivation_boundary",
+      "to": "edcm_explicit_geometric_assignment_boundary"
+    },
+    {
+      "from": "edcm_source_coordinate_derivation_boundary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_source_coordinate_derivation_boundary",
+      "to": "edcm_gonol_initiation_structural_null_boundary"
+    },
+    {
       "from": "edcm_word_gonol_profile",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -9652,6 +10053,13 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "foundations_public_surface",
       "to": "edcm_root_loop_cover_chart_candidate"
+    },
+    {
+      "from": "foundations_public_surface",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "foundations_public_surface",
+      "to": "edcm_source_coordinate_derivation_boundary"
     },
     {
       "from": "foundations_public_surface",

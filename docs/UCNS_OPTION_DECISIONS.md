@@ -372,6 +372,30 @@ cannot supply coordinate input. The source-to-coordinate derivation law, total
 Structural Null topology, higher geometry, composition, completion, selection,
 and activation remain unresolved.
 
+v0.19 adds a separate ordered-source coordinate derivation surface. In one
+authority-bound complete finite ordered trace, occurrence i of producer-
+receipted cardinality n receives exact
+p=(2i+1)/(2n), u=2p-1, and lifted turns t=2p. The law retains exact v0.17 trace
+and outcome objects, separates equal-content occurrences by source address,
+applies the exact circle candidate reversibly, and preserves the completion
+binding plus unresolved or rejected initiation as explicit blockers. The
+v0.17 producer derives the receipt, cardinality, and ordered outcome ids from
+its exact validated authority report; callers cannot supply them inline.
+The report also binds the fixed full three-admission/three-outcome producer
+declaration, so consistently truncated v0.16 and v0.17 report layers cannot
+mint a smaller scope. Additional scopes require new versioned producer-owned
+declarations.
+Receipt identity additionally binds the exact full v0.16 admission trace and
+every ordered v0.17 disposition, evidence tuple, initiation receipt, and
+rejected substitution, so preserving ids while moving initiation does not
+preserve authority.
+Content, digests, runtime identity, A0 lanes, carrier position alone, scalar
+projections, binary64 renderings, and an unbound tuple length are not
+derivation inputs. The
+law is an implemented candidate. Its selection,
+cross-scope and higher-gonol composition, total Structural Null topology,
+higher geometry, completion, and consumer activation remain open.
+
 ## Choices still genuinely open
 
 ### Completion-motion geometry

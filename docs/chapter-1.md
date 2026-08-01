@@ -210,8 +210,10 @@ The separate v0.18 research boundary can apply the surviving exact signed-local
 circle candidate to an explicitly initiated word when independent exact
 rational coordinates are supplied. That bounded evidence neither selects the
 Chapter 1 breadth laws nor derives a coordinate from source identity. The
-source-to-coordinate law, total Structural Null topology, higher geometry,
-composition, and completion remain outside this chapter.
+v0.19 separately derives one exact trace-local midpoint candidate from ordered
+source address. Candidate selection, cross-scope and higher-gonol composition,
+total Structural Null topology, higher geometry, and completion remain outside
+this chapter.
 
 Canonical evaluators or primitive assignments for \(\mu\), \(M\), and \(B\) remain formal implementation obligations. A conforming implementation must:
 
@@ -233,4 +235,4 @@ That apparent obviousness is the result of active removal. The completed surface
 
 Those models were not removed for lack of imaginative power. They were removed because they imposed distinctions the carrier does not possess or erased distinctions it retains. The subtractive process is invisible in the final axiomatic structure; it is nevertheless the reason the structure can now carry weight. This candidate omits the twist that supplies EDCM's origin and causal chain. That omission is disqualifying for the target EDCM configuration unless formal integration shows that the directed cover preserves the required Möbius and superposition semantics.
 
-**hmmm — this chapter now survives as comparison evidence, not as the EDCM answer. The missing source-to-coordinate derivation beyond v0.18 explicit input, total superposition topology, graph contribution laws, projection scale, higher composition, completion, and real-system failure corpus are exactly the places where honest traffic should make the current construction look incomplete.**
+**hmmm — this chapter now survives as comparison evidence, not as the EDCM answer. Selection and cross-scope composition beyond the v0.19 trace-local coordinate candidate, total superposition topology, graph contribution laws, projection scale, higher composition, completion, and real-system failure corpora are exactly the places where honest traffic should make the current construction look incomplete.**
