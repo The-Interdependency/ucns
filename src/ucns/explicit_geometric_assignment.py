@@ -266,9 +266,12 @@ class ExplicitCoordinateProposal:
             raise ExplicitGeometricAssignmentError(
                 "coordinate input must remain independent experiment evidence"
             )
-        if self.derived_from_evidence_identity:
+        if (
+            type(self.derived_from_evidence_identity) is not bool
+            or self.derived_from_evidence_identity is not False
+        ):
             raise ExplicitGeometricAssignmentError(
-                "evidence identity cannot derive geometric coordinate input"
+                "derived_from_evidence_identity must be the exact false boolean"
             )
         if self.scope != EXPLICIT_GEOMETRIC_ASSIGNMENT_SCOPE:
             raise ExplicitGeometricAssignmentError(
@@ -556,11 +559,11 @@ class GeometricAssignmentOutcome:
                 raise ExplicitGeometricAssignmentError(
                     "geometric assignment requires an initiated upstream word"
                 )
-            if self.upstream.initiation != (
+            if self.upstream.initiation is not (
                 self.applied_assignment.proposal.initiation
             ):
                 raise ExplicitGeometricAssignmentError(
-                    "applied assignment must retain the upstream initiation receipt"
+                    "applied assignment must retain the exact upstream initiation receipt"
                 )
             if self.rejected_mechanism is not None:
                 raise ExplicitGeometricAssignmentError(
@@ -863,6 +866,14 @@ class ExplicitGeometricAssignmentBoundaryReport:
     hmmm: tuple[str, ...] = V018_HMMM
 
     def __post_init__(self) -> None:
+        if type(self.results) is not tuple or any(
+            type(result) is not GeometricAssignmentFalsifierResult
+            for result in self.results
+        ):
+            raise ExplicitGeometricAssignmentError(
+                "v0.18 results must be an exact tuple of "
+                "GeometricAssignmentFalsifierResult values"
+            )
         if not isinstance(self.upstream, GonolInitiationBoundaryReport):
             raise ExplicitGeometricAssignmentError(
                 "v0.18 report requires the exact v0.17 upstream report"

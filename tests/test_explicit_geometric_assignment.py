@@ -83,6 +83,7 @@ from ucns.explicit_geometric_assignment import (
     ExplicitGeometricAssignmentError,
     GeometricAssignmentDisposition,
     GeometricAssignmentEvidenceStanding,
+    GeometricAssignmentFalsifierResult,
     GeometricAssignmentTrace,
     RejectedGeometricAssignmentMechanism,
     apply_explicit_geometric_assignment,
@@ -159,11 +160,15 @@ def test_proposal_requires_initiated_word_and_independent_exact_input() -> None:
             lifted_turns=Fraction(0),
             evidence=("invalid missing initiation",),
         )
-    with pytest.raises(
-        ExplicitGeometricAssignmentError,
-        match="evidence identity cannot derive",
-    ):
-        replace(proposal, derived_from_evidence_identity=True)
+    for invalid_flag in (True, None, 0):
+        with pytest.raises(
+            ExplicitGeometricAssignmentError,
+            match="exact false boolean",
+        ):
+            replace(
+                proposal,
+                derived_from_evidence_identity=invalid_flag,  # type: ignore[arg-type]
+            )
     with pytest.raises(
         ExplicitGeometricAssignmentError,
         match=r"normalized to \[0, 2\)",
@@ -350,6 +355,31 @@ def test_trace_is_total_exclusive_ordered_and_occurrence_preserving() -> None:
             outcomes[:1],
         )
 
+    upstream_with_equal_receipt = _initiated_outcome(0)
+    assert upstream_with_equal_receipt.initiation is not None
+    equal_but_distinct_initiation = replace(
+        upstream_with_equal_receipt.initiation
+    )
+    assert equal_but_distinct_initiation == upstream_with_equal_receipt.initiation
+    assert equal_but_distinct_initiation is not upstream_with_equal_receipt.initiation
+    spliced_proposal = propose_explicit_coordinate(
+        equal_but_distinct_initiation,
+        local_transverse=Fraction(0),
+        lifted_turns=Fraction(0),
+        evidence=("equal-value but distinct initiation graph",),
+    )
+    with pytest.raises(
+        ExplicitGeometricAssignmentError,
+        match="exact upstream initiation receipt",
+    ):
+        record_geometric_assignment_outcome(
+            upstream_with_equal_receipt,
+            applied_assignment=apply_explicit_geometric_assignment(
+                spliced_proposal
+            ),
+            evidence=("reject equal-value evidence-graph splice",),
+        )
+
 
 def test_rejected_mechanisms_never_create_an_applied_assignment() -> None:
     upstream = _initiated_outcome(0)
@@ -380,6 +410,22 @@ def test_rejected_mechanisms_never_create_an_applied_assignment() -> None:
 def test_v018_report_retains_unresolved_law_and_nonactivation() -> None:
     report = run_v018_explicit_geometric_assignment_experiment()
 
+    class AlwaysEqualTuple(tuple):
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
+    class AlwaysEqualFalsifierResult(GeometricAssignmentFalsifierResult):
+        __slots__ = ()
+
+        def __eq__(self, other: object) -> bool:
+            return True
+
+        def __ne__(self, other: object) -> bool:
+            return False
+
     assert report.schema_id == V018_EXPLICIT_GEOMETRIC_ASSIGNMENT_SCHEMA_ID
     assert report.schema_version == V018_EXPLICIT_GEOMETRIC_ASSIGNMENT_SCHEMA_VERSION
     assert report.explicit_candidate_application_status == EXPLICIT_ASSIGNMENT_STATUS
@@ -404,6 +450,44 @@ def test_v018_report_retains_unresolved_law_and_nonactivation() -> None:
     assert report.metapat_activation == "inactive"
     assert any("deriving exact" in item for item in report.hmmm)
     assert any("higher-gonol composition" in item for item in report.hmmm)
+
+    promoted_results = AlwaysEqualTuple(
+        report.results[:7]
+        + (
+            replace(
+                report.results[7],
+                standing=(
+                    GeometricAssignmentEvidenceStanding.EXACT_IMPLEMENTED_SUPPORTED
+                ),
+            ),
+            replace(
+                report.results[8],
+                standing=(
+                    GeometricAssignmentEvidenceStanding.EXACT_IMPLEMENTED_SUPPORTED
+                ),
+            ),
+        )
+    )
+    with pytest.raises(
+        ExplicitGeometricAssignmentError,
+        match="exact tuple",
+    ):
+        replace(report, results=promoted_results)
+
+    overloaded_result = AlwaysEqualFalsifierResult(
+        report.results[0].falsifier_id,
+        report.results[0].standing,
+        report.results[0].evidence,
+        report.results[0].limitation,
+    )
+    with pytest.raises(
+        ExplicitGeometricAssignmentError,
+        match="exact tuple",
+    ):
+        replace(
+            report,
+            results=(overloaded_result,) + report.results[1:],
+        )
 
     with pytest.raises(ExplicitGeometricAssignmentError, match="activate EDCM"):
         replace(report, edcm_activation="active")
