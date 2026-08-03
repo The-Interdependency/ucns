@@ -126,6 +126,14 @@ access boundaries are recorded in
 [`docs/EDCM_REAL_SYSTEM_CORPORA.md`](docs/EDCM_REAL_SYSTEM_CORPORA.md). No option
 dimension has a hidden global default.
 
+The authority-declared, option-preserving display proposal for the one-, two-,
+three-, and seven-gonol primitive range is recorded in
+[`docs/GONOL_RELATIONSHIP_DISPLAY_V1.md`](docs/GONOL_RELATIONSHIP_DISPLAY_V1.md),
+with a machine contract, receipt schema, and cross-repository stack manifest.
+Its registry integration, continuous Möbius geometry, seven-gonol construction,
+and embedding law remain explicit `hmmm`; publication of the proposal does not
+select them.
+
 ## Current implemented carrier candidates and relationship evidence
 
 The repository retains two implemented carrier candidates and an ordered
