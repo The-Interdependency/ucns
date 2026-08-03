@@ -100,6 +100,12 @@
     "origin_token": " ",
     "digit_zero_position": 139,
     "normalization": "none-preserve-source",
+    "space_manifestation_code_points": [
+      "U+0009", "U+000A", "U+000B", "U+000C", "U+000D", "U+0020", "U+0085", "U+00A0",
+      "U+1680", "U+2000", "U+2001", "U+2002", "U+2003", "U+2004", "U+2005", "U+2006",
+      "U+2007", "U+2008", "U+2009", "U+200A", "U+2028", "U+2029", "U+202F", "U+205F", "U+3000"
+    ],
+    "space_semantics": "source-preserved boundary and superpositioned nesting interface; not a word-gonol vertex",
     "occurrence_address_vector": ["source_ordinal", "unicode_scalar_value", "carrier_position_or_null"],
     "vector_standing": "identity-and-address-evidence-not-geometric-embedding",
     "tokens": [
