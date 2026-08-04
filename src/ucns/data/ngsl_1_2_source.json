@@ -1,0 +1,32 @@
+{
+  "schema_id": "ucns.lexical-source/0.1.0",
+  "collection_id": "ngsl-1.2-general-english-2809",
+  "title": "New General Service List 1.2 — word-only lexical floor",
+  "creators": [
+    "Charles Browne",
+    "Brent Culligan",
+    "Joseph Phillips"
+  ],
+  "license": "CC BY-SA 4.0",
+  "official_source": "https://www.newgeneralservicelist.com/new-general-service-list",
+  "word_count": 2809,
+  "word_file": "ngsl_1_2_words.txt",
+  "acquisition": {
+    "mirror_repository": "uigywnkiub/english-of-avail",
+    "mirror_commit": "05f9e92d570feaa1f6fd4d3145151b49afab93d5",
+    "mirror_path": "dictionary/NGSL_1.2/NGSL_1.2_alphabetized_description.txt",
+    "mirror_git_blob": "4a89f46ae6461d121f9bcc30a07e23af04cf40a5",
+    "target_git_blob": "81b1ac81086e3f7a2963e5d07a0a2ad9291887bb"
+  },
+  "identity_policy": {
+    "word_identity": "exact ordered Unicode scalar sequence",
+    "normalization": "none",
+    "case_folding": "none",
+    "duplicate_policy": "reject exact duplicate spellings",
+    "source_rank_retained": false,
+    "frequency_retained": false,
+    "serialization_order": "Unicode casefold key, then exact code-point tuple; ordering has no semantic standing"
+  },
+  "standing": "source-admitted candidate",
+  "hmmm": "Reconcile the exact packaged spellings against an independently downloaded official NGSL 1.2 file and freeze that official file checksum before canonical promotion."
+}
