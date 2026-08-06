@@ -11,6 +11,8 @@
   "official_source": "https://www.newgeneralservicelist.com/new-general-service-list",
   "word_count": 2809,
   "word_file": "ngsl_1_2_words.txt",
+  "attribution_file": "NGSL_1_2_ATTRIBUTION.txt",
+  "attribution_sha256": "3497532cecce55237e2e58ba09b542f98813ea1d6ac4dfbe59a6003b25e59e6f",
   "acquisition": {
     "mirror_repository": "uigywnkiub/english-of-avail",
     "mirror_commit": "05f9e92d570feaa1f6fd4d3145151b49afab93d5",
@@ -27,6 +29,11 @@
     "frequency_retained": false,
     "serialization_order": "Unicode casefold key, then exact code-point tuple; ordering has no semantic standing"
   },
-  "standing": "source-admitted candidate",
+  "file_serialization": {
+    "encoding": "UTF-8",
+    "line_separator": "LF",
+    "terminal_newline": true
+  },
+  "standing": "source-admitted-candidate",
   "hmmm": "Reconcile the exact packaged spellings against an independently downloaded official NGSL 1.2 file and freeze that official file checksum before canonical promotion."
 }

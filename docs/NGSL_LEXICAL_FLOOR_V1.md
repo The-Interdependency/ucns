@@ -1,93 +1,129 @@
-# NGSL 1.2 lexical floor v0.1
+# NGSL 1.2 lexical floor v0.2
 
 **Authority:** Erin Spencer  
-**Recorded:** 2026-08-04  
-**Status:** executable first assignment; source-admitted candidate  
+**Recorded:** 2026-08-06  
+**Status:** executable source-admitted candidate  
 **Selection effect:** none
 
-This slice admits one word-only collection of 2,809 general-English spellings,
-applies the existing UCNS glyph canon, creates one word gonol per exact glyph
-sequence, and opens a character-derived projection potential. Affixiation and
-compounding begin as orthographic candidate layers. Definitions attach later as
-plural context-sourced senses.
+This slice admits the 2,809-word NGSL 1.2 collection as a word-only candidate
+lexical floor. It applies the existing Public Gonol glyph assignments, creates
+one word gonol per exact ordered glyph sequence, and exposes an occurrence-
+addressed character-relationship potential. Affixiation, compounding, and
+context-derived definitions remain separate append-only layers.
 
-## Decisions
+## Fixed boundaries
 
-1. **Source order has no semantic purpose.** Frequency rank and source row order
-   are excluded from word-gonol identity. The text file uses deterministic
-   Unicode casefold ordering with an exact code-point tie-break only so builds
-   and snapshots reproduce byte-for-byte.
+1. **One fixed carrier.** The lexical floor activates addresses on the existing
+   157-position Public Gonol carrier. It does not introduce a 26-, 27-, or
+   2,809-based replacement radix and does not renumber existing addresses.
 
-2. **One spelling, one word gonol.** Exact duplicate spellings fail admission.
-   Each retained spelling has one exact ordered glyph tuple and one deterministic
-   gonol identity. Definitions never create another copy of the word.
+2. **One exact spelling, one word gonol.** Case, glyph order, and multiplicity
+   remain authoritative. Exact duplicate spellings fail admission. Source rank,
+   frequency, and serialization position do not enter identity.
 
-3. **Glyph law is inherited, not rebuilt.** Each Unicode scalar occurrence uses
-   the carrier assignment already implemented by `src/ucns/edcm.py`. No
-   normalization, case folding, glyph replacement, or source-order rank enters
-   identity.
+3. **SPACE remains the nesting boundary.** Every public word-construction path
+   rejects the profile-pinned Unicode SPACE manifestations. A caller cannot use
+   the direct word identifier or dataclass constructor to smuggle a boundary
+   into one word gonol. A glyph without a Public Gonol carrier assignment also
+   fails admission rather than being silently coerced.
 
-4. **The hyperspace is initially potential.** It can project exact character
-   relationships between any two retained word gonols: shared glyphs, common
-   prefix and suffix lengths, containment, and edit distance. This is not yet
-   the deep-recursion hyperdimensional embedding and does not imply semantic or
-   morphological relation.
+4. **Source custody is executable.** The JSON source record, attribution notice,
+   exact word bytes, terminal-newline policy, Git blob, byte SHA-256, ordered
+   word-sequence digest, source standing, and unresolved official-checksum
+   boundary produce one immutable `LexicalSourceReceipt`.
 
-5. **Metadata is append-only and snapshotted.** The layer sequence is:
+5. **Relationships retain occurrences.** A character relationship stores every
+   matching left/right occurrence pair with both offsets. The optional glyph-
+   type set view is explicitly identified by Unicode scalar value and records
+   that occurrence order, multiplicity, and pairing were lost.
 
-   1. word-only source;
-   2. glyph definitions;
-   3. unique word gonols;
-   4. character-relationship hyperspace potential;
-   5. affixiation candidates;
-   6. compound candidates;
-   7. context-derived definitions.
+6. **Layers are immutable and authority-bound.** The hyperspace index and
+   definition mapping are read-only defensive copies. Relationship, morphology,
+   definition, source, and snapshot standings reject caller promotion.
 
-   `snapshot_layers()` emits a parent-linked digest boundary after every layer.
-   Later metadata cannot rewrite an earlier snapshot.
+7. **Snapshots remain source-linked.** Every current layer records the same
+   source-receipt identity, exact producer, ordered parent, item count, content
+   digest, fixed standing, and required `hmmm`. Altering the source, standing,
+   unresolved boundary, or parent chain fails validation.
+
+## Current layer sequence
+
+1. source-receipted word-only collection;
+2. fixed-carrier glyph definitions;
+3. unique exact word gonols;
+4. occurrence-addressed character-relationship potential;
+5. orthographic affixiation candidates;
+6. orthographic compound candidates;
+7. plural context-sourced definitions.
+
+Later metadata cannot rewrite an earlier source object or snapshot.
 
 ## Affixiation
 
 An affixiation candidate exists when one retained word can be produced by adding
-a nonempty prefix or suffix to another retained word. The result is
-`orthographic-candidate`, not attested morphology. It does not establish
-allomorphy, historical derivation, morpheme identity, or meaning.
+one nonempty prefix or suffix to another retained word. The candidate binds the
+exact base and derived word-gonol identities. Its standing remains
+`orthographic-candidate`; it does not establish morpheme authority, allomorphy,
+historical derivation, or meaning.
 
 ## Compounding
 
-A compound candidate exists when one retained word can be divided at an exact
-glyph boundary into two other retained words. It is likewise
-`orthographic-candidate` until separately attested.
+A compound candidate exists when one retained word divides at an exact glyph
+boundary into two other retained words. The candidate binds all three exact word-
+gonol identities and remains `orthographic-candidate` until independently
+attested.
 
 ## Definitions
 
-Definitions are keyed to the existing word-gonol identity. Each sense must retain
-a context identity and source identity. Many senses may attach to one word gonol;
-the source word itself remains singular.
+Definitions attach to an existing word-gonol identity. Every sense retains a
+context identity, exact definition text, source identity, and fixed
+`context-sourced-definition` standing. Multiple senses may coexist; the source
+word gonol remains singular.
 
-## Files
+## Source and attribution files
 
-- `src/ucns/data/ngsl_1_2_words.txt` — word strings only.
-- `src/ucns/data/ngsl_1_2_source.json` — separate provenance and admission policy.
-- `src/ucns/lexical_floor.py` — gonols, projection potential, layers, and snapshots.
-- `tests/test_lexical_floor.py` — collection, identity, candidate, definition, and
-  snapshot boundaries.
+- `src/ucns/data/ngsl_1_2_words.txt` — exact word strings only.
+- `src/ucns/data/ngsl_1_2_source.json` — acquisition, identity, serialization,
+  attribution digest, standing, and custody boundary.
+- `src/ucns/data/NGSL_1_2_ATTRIBUTION.txt` — packaged creator, source, license,
+  transformation, non-endorsement, and unresolved-custody notice.
+
+The data record declares CC BY-SA 4.0 for NGSL 1.2. This notice addresses the
+packaged lexical artifact; it does not manufacture a repository-wide software
+license or resolve the repository's broader licensing policy.
+
+## Verification surface
+
+The test slice exercises:
+
+- exact source receipt and tamper rejection;
+- direct and indirect SPACE-boundary bypasses;
+- unassigned-glyph rejection;
+- unique exact word-gonol identities;
+- occurrence multiplicity and address retention;
+- explicit loss in the glyph-type set projection;
+- immutable indexes and definition layers;
+- candidate-identity and standing substitution attacks; and
+- source, parent, standing, and unresolved-boundary snapshot attacks.
 
 ## Nonclaims
 
 This slice does not provide:
 
+- an independently custodied official NGSL checksum;
 - a canonical linguistic affix inventory;
 - adjudicated compound-word status;
 - a definitions corpus;
 - a semantic metric;
-- geometric coordinates for lexical relations;
+- geometric coordinates for lexical relationships;
+- the seven-gonol construction or pairing plan;
 - deep-recursion hyperdimensional embedding; or
 - EDCM measurement activation.
 
 ## hmmm
 
-The 2,809 spellings are now an executable candidate lexical floor. Independent
-reconciliation against an official NGSL 1.2 download, attested morphology,
-context-corpus custody, and the law that embeds these retained relationships into
-UCNS deep recursion remain living boundaries.
+The 2,809 spellings can now enter one source-bound, occurrence-preserving lexical
+producer without crossing SPACE or laundering a lossy set view into exact
+evidence. Official-source checksum custody, attested morphology, context-corpus
+custody, selector-role interrogation, and the law that embeds retained relations
+into UCNS deep recursion remain living boundaries.
