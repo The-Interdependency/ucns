@@ -1,13 +1,18 @@
 {
   "schema": "the-interdependency.repository-plan-report",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "repository": "The-Interdependency/ucns",
-  "report_role": "repo-owned input to the skill-lib interdependent-work-graph portfolio plan",
+  "contract": {
+    "repository": "The-Interdependency/skill-lib",
+    "path": "interdependent-work-graph/repository-plan-report.schema.json",
+    "version": "1.0.0",
+    "commit": "4be3a145b2754893039bb2c1893e060d15a6616b"
+  },
   "source": {
     "branch": "main",
     "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
     "generated_at": "2026-08-07",
-    "note": "This report describes the cited source commit. The report commit itself is not treated as UCNS mathematical evidence."
+    "note": "This report describes the cited UCNS main commit. The report commit itself is coordination metadata and is not treated as UCNS mathematical evidence."
   },
   "authority": {
     "owns": [
@@ -19,7 +24,7 @@
     ],
     "does_not_own": [
       "EDCM measurement validity or empirical result authority",
-      "metapat semantic or pattern-selection authority outside UCNS-owned representations",
+      "METAPAT semantic authority outside UCNS-owned representations",
       "a0 application orchestration or runtime authority",
       "skill-lib organization-wide build and cross-repository workflow doctrine"
     ],
@@ -31,19 +36,19 @@
     ]
   },
   "portfolio_role": {
-    "summary": "Provide the option-preserving relational/geometric carrier and recursive representation layer used by the wider Interdependency stack without collapsing unresolved choices into defaults.",
+    "summary": "Provide the option-preserving relational and geometric carrier plus recursive representation layer used by the wider Interdependency stack without collapsing unresolved choices into defaults.",
     "upstream_contract": "UCNS owns its definitions, candidate geometry, provenance, and scoped evidence.",
     "downstream_contract": "Consumers pin exact UCNS identities and may project or measure UCNS outputs only within their own authority boundaries.",
     "reports_to": {
       "repository": "The-Interdependency/skill-lib",
       "skill": "interdependent-work-graph",
-      "relation": "machine-readable repo-owned plan/status input; no authority transfer"
+      "relation": "repo-owned mathematical and representation plan/status input; no authority transfer"
     }
   },
   "status": {
     "state": "active research and implementation",
+    "current_claim": "UCNS currently supports bounded candidate-scoped representation and evidence while preserving unresolved construction choices explicitly; no candidate is promoted to universal canon by implementation success.",
     "current_definition": "UCNS assigns elements of an unknowable to completion through a geometric-motion algorithm of epicyclic circles, spheres, and disks; completion is relative to a declared construction boundary.",
-    "current_maximum_claim": "bounded, candidate-scoped representation and evidence; unresolved choices remain explicit",
     "latest_main_milestone": {
       "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
       "description": "merged gonol relationship display specification v1 with option-preserving display semantics"
@@ -79,15 +84,15 @@
   "active_frontier": [
     "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
     "connect gonol relationship displays to explicit registry choices without selecting unresolved geometry by presentation convenience",
-    "extend bounded word-gonol/root-loop evidence toward cross-scope and higher-gonol composition",
-    "retain exact source/provenance identity across recursive and geometric assignment",
-    "provide machine-consumable UCNS status to the cross-repository portfolio plan while keeping UCNS authority local"
+    "extend bounded word-gonol and root-loop evidence toward cross-scope and higher-gonol composition",
+    "retain exact source and provenance identity across recursive and geometric assignment",
+    "keep the repo-owned portfolio report current without transferring UCNS authority to the aggregator"
   ],
   "next_actions": [
     {
       "action": "define and validate the machine path from option registry choices into gonol relationship display receipts",
       "owner": "The-Interdependency/ucns",
-      "dependency": "none beyond current UCNS source and declared display contract"
+      "dependency": "current UCNS source and declared display contract"
     },
     {
       "action": "specify and pressure-test continuous Mobius geometry and embedding behavior for the display proposal",
@@ -98,12 +103,10 @@
       "action": "define higher-gonol and cross-scope composition candidates without promoting a candidate to canon",
       "owner": "The-Interdependency/ucns",
       "dependency": "current bounded word-gonol and ordered-source candidate evidence"
-    },
-    {
-      "action": "consume the eventual skill-lib portfolio-plan contract once its schema is frozen, replacing this provisional report schema without changing UCNS-owned claims",
-      "owner": "The-Interdependency/ucns + The-Interdependency/skill-lib",
-      "dependency": "skill-lib portfolio-plan schema revision"
     }
+  ],
+  "blocked": [
+    "selection or activation of a universal carrier/completion law is blocked on evidence-bearing decisions for the still-open topology, composition, and completion boundaries"
   ],
   "cross_repository_relations": [
     {
@@ -116,6 +119,12 @@
       "relation": "downstream measurement and experimental consumer of explicitly pinned UCNS producer evidence",
       "authority_transfer": false,
       "measurement_status_transfer": false
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "relation": "separate semantic authority that may issue exact semantic constraints or authorizations consumed by UCNS integrations",
+      "authority_transfer": false,
+      "proof_status_transfer": false
     },
     {
       "repository": "The-Interdependency/a0-betatest",
@@ -133,7 +142,6 @@
     "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md"
   },
   "hmmm": [
-    "skill-lib portfolio-plan projection schema is not yet frozen; this repository report is a provisional, explicitly versioned equivalent",
     "registry integration for gonol relationship display v1",
     "continuous Mobius geometry for gonol relationship displays",
     "seven-gonol construction and embedding law",
