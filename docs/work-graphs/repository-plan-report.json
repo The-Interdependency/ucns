@@ -1,0 +1,154 @@
+{
+  "schema": "the-interdependency.repository-plan-report",
+  "version": "1.0.0",
+  "repository": "The-Interdependency/ucns",
+  "contract": {
+    "repository": "The-Interdependency/skill-lib",
+    "path": "interdependent-work-graph/repository-plan-report.schema.json",
+    "version": "1.0.0",
+    "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
+  },
+  "source": {
+    "branch": "main",
+    "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
+    "generated_at": "2026-08-07",
+    "note": "This report describes the cited UCNS main commit. The report commit itself is coordination metadata and is not treated as UCNS mathematical evidence."
+  },
+  "authority": {
+    "owns": [
+      "UCNS system definition and option-preserving construction semantics",
+      "UCNS mathematical and geometric representation candidates",
+      "UCNS proof/status evidence for its own declared scopes",
+      "UCNS carrier, gonol, motion, recursion, nesting, and completion-relative boundaries",
+      "UCNS producer-side machine contracts and provenance for UCNS-owned artifacts"
+    ],
+    "does_not_own": [
+      "EDCM measurement validity or empirical result authority",
+      "METAPAT semantic authority outside UCNS-owned representations",
+      "a0 application orchestration or runtime authority",
+      "skill-lib organization-wide build and cross-repository workflow doctrine"
+    ],
+    "non_transfer": [
+      "implemented candidate status does not confer canon",
+      "fixture or test success does not confer theorem status",
+      "cross-repository consumption does not transfer mathematical authority",
+      "UCNS carrier evidence does not establish EDCM measurement validity"
+    ]
+  },
+  "portfolio_role": {
+    "summary": "Provide the option-preserving relational and geometric carrier plus recursive representation layer used by the wider Interdependency stack without collapsing unresolved choices into defaults.",
+    "upstream_contract": "UCNS owns its definitions, candidate geometry, provenance, and scoped evidence.",
+    "downstream_contract": "Consumers pin exact UCNS identities and may project or measure UCNS outputs only within their own authority boundaries.",
+    "reports_to": {
+      "repository": "The-Interdependency/skill-lib",
+      "skill": "interdependent-work-graph",
+      "relation": "repo-owned mathematical and representation plan/status input; no authority transfer"
+    }
+  },
+  "status": {
+    "state": "active research and implementation",
+    "current_claim": "UCNS currently supports bounded candidate-scoped representation and evidence while preserving unresolved construction choices explicitly; no candidate is promoted to universal canon by implementation success.",
+    "current_definition": "UCNS assigns elements of an unknowable to completion through a geometric-motion algorithm of epicyclic circles, spheres, and disks; completion is relative to a declared construction boundary.",
+    "latest_main_milestone": {
+      "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
+      "description": "merged gonol relationship display specification v1 with option-preserving display semantics"
+    }
+  },
+  "delivered": [
+    {
+      "surface": "definition-first restart",
+      "status": "current project basis",
+      "boundary": "implemented instruments and projections may not replace the assignment-and-motion system definition"
+    },
+    {
+      "surface": "bounded carrier and relationship experiment lineage through v0.19",
+      "status": "implemented candidate evidence",
+      "boundary": "candidate selection, universal canon, total topology, higher geometry, completion, and activation are not implied"
+    },
+    {
+      "surface": "full-corpus execution and evidence gates",
+      "status": "implemented producer-side evidence infrastructure",
+      "boundary": "reconciliation and execution receipts do not establish measurement validity"
+    },
+    {
+      "surface": "ordered-source coordinate derivation candidate",
+      "status": "implemented candidate",
+      "boundary": "cross-scope and higher-gonol composition remain unresolved"
+    },
+    {
+      "surface": "gonol relationship display v1",
+      "status": "authority-declared option-preserving proposal",
+      "boundary": "registry integration, continuous Mobius geometry, seven-gonol construction, and embedding law remain hmmm"
+    }
+  ],
+  "active_frontier": [
+    "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
+    "connect gonol relationship displays to explicit registry choices without selecting unresolved geometry by presentation convenience",
+    "extend bounded word-gonol and root-loop evidence toward cross-scope and higher-gonol composition",
+    "retain exact source and provenance identity across recursive and geometric assignment",
+    "keep the repo-owned portfolio report current without transferring UCNS authority to the aggregator"
+  ],
+  "next_actions": [
+    {
+      "action": "define and validate the machine path from option registry choices into gonol relationship display receipts",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "current UCNS source and declared display contract"
+    },
+    {
+      "action": "specify and pressure-test continuous Mobius geometry and embedding behavior for the display proposal",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "must preserve current option and provenance boundaries"
+    },
+    {
+      "action": "define higher-gonol and cross-scope composition candidates without promoting a candidate to canon",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "current bounded word-gonol and ordered-source candidate evidence"
+    }
+  ],
+  "blocked": [
+    "selection or activation of a universal carrier/completion law is blocked on evidence-bearing decisions for the still-open topology, composition, and completion boundaries"
+  ],
+  "cross_repository_relations": [
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "relation": "build/evidence doctrine and cross-repository coordination source",
+      "authority_transfer": false
+    },
+    {
+      "repository": "The-Interdependency/edcm",
+      "relation": "downstream measurement and experimental consumer of explicitly pinned UCNS producer evidence",
+      "authority_transfer": false,
+      "measurement_status_transfer": false
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "relation": "separate semantic authority that may issue exact semantic constraints or authorizations consumed by UCNS integrations",
+      "authority_transfer": false,
+      "proof_status_transfer": false
+    },
+    {
+      "repository": "The-Interdependency/a0-betatest",
+      "relation": "historical recovery specimen for the closest surviving executable EDCM-oriented UCNS system shape",
+      "authority_transfer": false,
+      "active_producer": false
+    }
+  ],
+  "machine_entrypoints": {
+    "repo_report": "docs/work-graphs/repository-plan-report.json",
+    "stack_manifest": "STACK_MANIFEST.json",
+    "option_registry": "src/ucns/option_registry.json",
+    "option_decisions": "docs/UCNS_OPTION_DECISIONS.md",
+    "system_overview": "README.md",
+    "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md"
+  },
+  "hmmm": [
+    "registry integration for gonol relationship display v1",
+    "continuous Mobius geometry for gonol relationship displays",
+    "seven-gonol construction and embedding law",
+    "cross-scope and higher-gonol composition",
+    "total Structural Null topology",
+    "higher geometry",
+    "completion law beyond declared bounded candidates",
+    "candidate selection and activation"
+  ]
+}
