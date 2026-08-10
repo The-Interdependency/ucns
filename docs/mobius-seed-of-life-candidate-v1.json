@@ -1,0 +1,111 @@
+{
+  "authority_boundary": {
+    "authority_transfer": "none",
+    "metapat_may_consume": "commit-pinned-invariants-for-a-separately-proved-spectral-argument",
+    "ucns_owns": "geometry-and-invariant-receipts"
+  },
+  "bands": [
+    {
+      "band_id": "M0",
+      "center_hex": {"q": 0, "r": 0},
+      "chirality": "deosil",
+      "frame": "positive-local-frame",
+      "lifted_phase_turns": "0/1",
+      "role": "central-monad"
+    },
+    {
+      "band_id": "M1",
+      "center_hex": {"q": 1, "r": 0},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "1/1",
+      "role": "first-outer-dyad"
+    },
+    {
+      "band_id": "M2",
+      "center_hex": {"q": 0, "r": 1},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "7/6",
+      "role": "subsequent-outer-band"
+    },
+    {
+      "band_id": "M3",
+      "center_hex": {"q": -1, "r": 1},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "4/3",
+      "role": "subsequent-outer-band"
+    },
+    {
+      "band_id": "M4",
+      "center_hex": {"q": -1, "r": 0},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "3/2",
+      "role": "subsequent-outer-band"
+    },
+    {
+      "band_id": "M5",
+      "center_hex": {"q": 0, "r": -1},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "5/3",
+      "role": "subsequent-outer-band"
+    },
+    {
+      "band_id": "M6",
+      "center_hex": {"q": 1, "r": -1},
+      "chirality": "widdershins",
+      "frame": "reversed-local-frame",
+      "lifted_phase_turns": "11/6",
+      "role": "subsequent-outer-band"
+    }
+  ],
+  "candidate_assumptions": {
+    "chirality_schedule": "candidate-rendering-convention-central-deosil-outer-widdershins",
+    "pair_order": "candidate-alternating-order-at-each-projected-vesica-event",
+    "phase_schedule": "candidate-sixfold-increment-on-the-reversed-half-of-the-two-turn-cycle"
+  },
+  "hmmm": "exact construction receipt implemented; global embedding and zeta bridge remain living proof obligations",
+  "invariants": {
+    "band_count": 7,
+    "boundary_crossing_obligation_count": 48,
+    "centerline_occurrence_count": 39,
+    "central_projected_occurrence_count": 15,
+    "complete_pair_count": 21,
+    "coordinate_multiplicity_spectrum": [15, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1],
+    "opposite_tangency_pair_count": 3,
+    "secondary_overlap_pair_count": 6,
+    "unique_projected_coordinate_count": 13,
+    "vesica_adjacent_pair_count": 12
+  },
+  "parameters": {
+    "half_width": "1/6",
+    "outer_phase_step_turns": "1/6",
+    "phase_period_turns": "2/1",
+    "radius": "1/1"
+  },
+  "producer": {
+    "detailed_manifest_sha256": "d9864b2cecfa317259979cf129e8c86cd927266f1188141afd7cf52a04d9dc44",
+    "function": "build_mobius_seed_of_life_candidate",
+    "module": "ucns.mobius_seed"
+  },
+  "schema_id": "ucns.mobius-seed-of-life-contract",
+  "schema_version": "0.1.0",
+  "selection_effect": "none",
+  "source": {
+    "path": "docs/source/INTERSECTING_MOBIUS_STRIPS_AND_QUANTUM_GEOMETRY.md",
+    "title": "Intersecting Möbius Strips and Quantum Geometry"
+  },
+  "unresolved": [
+    "smooth-three-dimensional-embedding",
+    "exact-four-boundary-crossing-realization-for-every-adjacent-pair",
+    "crossing-transversality",
+    "physical-interpretation",
+    "spectral-operator",
+    "zeta-zero-correspondence",
+    "critical-line-theorem",
+    "proof-assistant-formalization"
+  ]
+}
