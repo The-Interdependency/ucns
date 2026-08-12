@@ -1,3 +1,38 @@
+# === MODULE_BUILD ===
+# id: ucns_prime_phase_lift_model
+#   module_name: prime_phase_lift_model
+#   module_kind: experiment
+#   summary: defines the typed exact phase, lift, event-semantic, geometric, and derived pair-link readouts for the P7-first witness
+#   owner: Erin Spencer
+#   public_surface: EventSemantic, PhaseLaw, LiftOccurrence, LiftHypernode, PairLinkReadout, PrimePhaseLiftCandidate, PhaseLiftError
+#   internal_surface: exact modular phase helpers, height-gap calculation, component and cycle-rank readouts
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_phase_lift.py
+#   rollout: typed research model; projected coincidence remains distinct from physical contact
+#   rollback: remove with the complete prime phase-and-lift witness
+#   requires: ucns_prime_phase_lift_data, ucns_prime_primitives_p7_p5
+#   since: 2026-08-11
+#   unresolved: smooth lift replacement, whole-ribbon disjointness, tangent regularization, ambient isotopy
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_phase_lift_model_preserves_event_semantics
+#   given: a lifted projected event is represented
+#   then: projected coincidence and strict braid order remain typed separately and no physical contact is inferred
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_phase_lift_model_derives_links_after_global_lift
+#   given: pair readouts are requested from a complete phase-and-lift candidate
+#   then: link readouts are derived from the globally fixed occurrence heights rather than used as construction inputs
+#   class: evidence
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
 """Data model and geometric readouts for the P7-first phase-and-lift witness."""
 
 from __future__ import annotations

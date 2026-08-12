@@ -5,8 +5,15 @@
 #   summary: solves P7 globally with an exact seam-compatible phase law and finite-field lift over all thirteen hypernodes, then applies the same protocol independently to P5
 #   owner: Erin Spencer
 #   public_surface: EventSemantic, PhaseLaw, LiftOccurrence, LiftHypernode, PairLinkReadout, PrimePhaseLiftCandidate, select_phase_law, build_prime_seven_phase_lift, build_prime_five_phase_lift, phase_lift_family_certificate, write_phase_lift_family_certificate
+#   internal_surface: exact phase-law search, finite-field lane assignment, deterministic certificate serialization
+#   auth_boundary: none
+#   storage_boundary: caller-supplied local path only through write_phase_lift_family_certificate
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
 #   tests: tests/test_prime_phase_lift.py
 #   rollout: nonselecting P7-first witness; pair and triad readouts follow the global solution
+#   rollback: remove this module with prime_phase_lift_data, prime_phase_lift_model, their test, document, and generated certificate
 #   requires: ucns_prime_primitives_p7_p5
 #   since: 2026-08-11
 #   unresolved: smooth lift replacement, whole-ribbon disjointness, tangent regularization, boundary topology, ambient isotopy, spectral operator, zeta correspondence
