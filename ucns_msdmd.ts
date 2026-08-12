@@ -3113,6 +3113,96 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "evidence",
+        "given": "all six spokes are rigid copies while the center retains one chirality",
+        "since": "2026-08-10",
+        "then": "they demand six distinct center phases modulo one half turn"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_center_needs_six_phase_channels_for_six_spokes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the certificate is serialized",
+        "since": "2026-08-10",
+        "then": "selection effect is none and the obstruction remains bounded to its declared assumptions"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_global_compatibility_certificate_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "two wheel-W7 structural pairs share a band and each is a rigid copy of the certified quarter-turn anti-chiral vesica",
+        "since": "2026-08-10",
+        "then": "all four orientation combinations demand different chirality-phase states at the shared band"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the same occurrences at one event are declared both physically equal and strictly height-separated",
+        "since": "2026-08-10",
+        "then": "delta-z equals zero contradicts delta-z nonzero"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the pinned PR-174 phase/chirality schedule is compared with both exact rigid-copy orientations",
+        "since": "2026-08-10",
+        "then": "zero of twelve structural pairs inherit the complete local certificate"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "each band has one chirality and one constant surface phase modulo one half turn",
+        "since": "2026-08-10",
+        "then": "compatible certified pairs form a matching and W7 has maximum matching size three"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_single_state_certified_capacity_is_three"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact half-turn phase quotient, rigid-rotation transport, W7 cut and matching enumeration, pinned PR-174 comparison",
+        "module_kind": "experiment",
+        "module_name": "mobius_global_compatibility",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "EdgeOrientation, SurfacePhaseState, StructuralEdge, CertifiedEdgeCopy, CompatibilityBoundary, surface_phase, build_structural_edges, certified_edge_copies, pinned_pr174_assignment, edge_inherits_certificate, contact_and_strict_braid_compatible, prove_global_compatibility_boundary, write_global_compatibility_certificate",
+        "requires": "ucns_mobius_vesica_continuation, ucns_mobius_seed_of_life_candidate",
+        "rollback": "remove this module, its test, documentation, and generated certificate",
+        "rollout": "stacked nonselecting UCNS obstruction certificate; does not alter PR 174 or PR 175",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local path only",
+        "summary": "proves the single-state phase/chirality capacity and contact-versus-braid boundary for assembling the certified Mobius Vesica across the twelve structural Seed-of-Life pairs",
+        "tests": "tests/test_mobius_global_compatibility.py",
+        "unresolved": "nonconstant phase fields, recursive or multichannel carriers, other local dyad families, simultaneous surface embedding, complete lift equations, spectral operator, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "ucns_mobius_seed_global_compatibility"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "doctrine",
         "given": "a receipt or OBJ realization is emitted",
         "since": "2026-08-10",
@@ -5446,6 +5536,123 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_mobius_experiment.py",
       "id": "check_v05_minimum_witness_packet"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_center_spokes_require_six_distinct_surface_phases",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_center_needs_six_phase_channels_for_six_spokes",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_center_six_phase_channels"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_physical_contact_and_strict_braid_are_same_event_exclusive",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_contact_braid_exclusivity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rigid_rotation_phase_transport_matches_direct_surface_rotation",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_direct_rotation_agreement"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generated_certificate_is_deterministic_nonselecting_and_bounded",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "mobius_seed_global_compatibility_certificate_is_nonselecting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_global_certificate_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_oriented_incident_edge_states_are_incompatible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_incident_dyad_state_incompatibility"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_pinned_pr174_schedule_inherits_zero_complete_local_certificates",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_pr174_zero_inheritance"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rigid_rotation_transport_is_exact_on_representative_spokes",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_rigid_rotation_transport"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_compatible_certified_pairs_have_exact_maximum_capacity_three",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_single_state_certified_capacity_is_three",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_single_state_capacity_three"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_surface_phase_uses_the_unlabelled_half_turn_quotient",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_surface_phase_quotient"
     },
     {
       "block": "CHECKS",
@@ -8641,6 +8848,69 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "self::test_center_spokes_require_six_distinct_surface_phases"
+    },
+    {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "mobius_seed_center_needs_six_phase_channels_for_six_spokes"
+    },
+    {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "self::test_physical_contact_and_strict_braid_are_same_event_exclusive"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "self::test_rigid_rotation_phase_transport_matches_direct_surface_rotation"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "python3"
+    },
+    {
       "from": "check_mobius_seed_dyad_phase_schedule",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -8662,6 +8932,48 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "self::test_generated_certificate_is_deterministic_nonselecting_and_bounded"
+    },
+    {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "mobius_seed_global_compatibility_certificate_is_nonselecting"
+    },
+    {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "self::test_all_oriented_incident_edge_states_are_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "python3"
+    },
+    {
       "from": "check_mobius_seed_null_void",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -8680,6 +8992,27 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_mobius_seed_null_void",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
+      "to": "self::test_pinned_pr174_schedule_inherits_zero_complete_local_certificates"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
+      "to": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
       "to": "python3"
     },
     {
@@ -8722,6 +9055,69 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_mobius_seed_proof_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "self::test_rigid_rotation_transport_is_exact_on_representative_spokes"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "self::test_compatible_certified_pairs_have_exact_maximum_capacity_three"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "mobius_seed_single_state_certified_capacity_is_three"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
+      "to": "self::test_surface_phase_uses_the_unlabelled_half_turn_quotient"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
       "to": "python3"
     },
     {
@@ -11964,6 +12360,27 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_mobius",
       "to": "none"
+    },
+    {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "ucns_mobius_seed_of_life_candidate"
+    },
+    {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "ucns_mobius_vesica_continuation"
     },
     {
       "from": "ucns_mobius_seed_of_life_candidate",
