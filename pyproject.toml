@@ -9,6 +9,7 @@ description = "Option-preserving UCNS carrier and candidate-research floor"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name = "Erin Spencer"}]
+dependencies = ["mpmath>=1.3", "numpy>=1.24"]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Programming Language :: Python :: 3",
