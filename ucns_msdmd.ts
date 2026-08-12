@@ -2776,6 +2776,117 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "doctrine",
+        "given": "character decomposition finds a retained base or two retained component words",
+        "since": "2026-08-04",
+        "then": "the result is constructor-bound to exact word identities and labeled orthographic-candidate until independently attested; it never rewrites the word gonol"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "affixiation_and_compounding_are_candidate_layers"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "definitions are added to retained word gonols",
+        "since": "2026-08-06",
+        "then": "multiple senses may coexist with distinct context and source identity, authority standing is fixed, and the returned layer cannot be mutated in place"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "definitions_are_context_plural_and_immutable"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "words, glyphs, gonols, hyperspace potential, affixiation, compounding, or definitions are materialized",
+        "since": "2026-08-06",
+        "then": "the exact ordered snapshot chain records the source receipt, producer, parent, count, digest, fixed standing, and unresolved boundary; a changed source or parent fails validation"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "every_added_layer_has_a_source_bound_snapshot"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the source collection is serialized",
+        "since": "2026-08-04",
+        "then": "deterministic casefold-plus-exact-codepoint order supports reproducible builds but contributes no rank, frequency, meaning, or gonol identity"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_order_is_serialization_only"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a source spelling is converted to a word gonol",
+        "since": "2026-08-04",
+        "then": "each exact Unicode scalar occurrence uses the existing EDCM carrier assignment and retains its value, position, multiplicity, and order"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_reuses_canonical_glyph_assignment"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the packaged NGSL source metadata and word file are loaded",
+        "since": "2026-08-06",
+        "then": "exact schema, collection, attribution notice, serialization, count, Git blob, byte digests, word-sequence digest, and unresolved custody boundary are retained in one immutable source receipt"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_source_receipt_binds_packaged_bytes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any public word-gonol construction path is used",
+        "since": "2026-08-04",
+        "then": "the word is nonempty, contains only assigned Unicode scalars, contains no profile-pinned SPACE manifestation, preserves exact case and order, and cannot duplicate another exact spelling in one floor"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_words_are_unique_exact_glyph_sets"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "two word gonols are compared",
+        "since": "2026-08-06",
+        "then": "exact cross-word glyph occurrence addresses, prefix, suffix, containment, and edit distance are retained; any glyph-type set view names its identity policy and information loss; no semantic, morphological, geometric, or embedding standing follows"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_canonical_digest, _word_sort_key, _edit_distance, _load_source_bundle, _git_blob_sha1",
+        "module_kind": "domain",
+        "module_name": "lexical_floor",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "GlyphDefinition, LexicalSourceReceipt, LexicalWordGonol, SharedGlyphOccurrence, GlyphTypeSetProjection, CharacterRelationship, LexicalHyperspacePotential, AffixiationCandidate, CompoundCandidate, DefinitionSense, LexicalLayerSnapshot, load_ngsl_source_receipt, load_ngsl_words, define_glyphs, create_word_gonols, create_hyperspace_potential, derive_affixiation_candidates, derive_compound_candidates, create_definition_layer, snapshot_layers, validate_snapshot_chain, word_gonol_id",
+        "rollback": "remove this module and packaged NGSL artifacts without altering the existing EDCM word-gonol profile",
+        "rollout": "experimental lexical-floor producer; no hyperdimensional embedding or linguistic canon selection",
+        "since": "2026-08-04",
+        "storage_boundary": "packaged immutable text and JSON source evidence; caller-selected snapshot output",
+        "summary": "source-bound NGSL word gonols, occurrence-addressed character relationships, layered affixiation, compounding, contextual definitions, and immutable snapshots",
+        "tests": "tests/test_lexical_floor.py",
+        "unresolved": "independent official-source checksum custody, attested affix authority, compound adjudication, contextual definition custody, and the deep-recursion hyperdimensional embedding law",
+        "user_data_boundary": "no user data; exact source spellings remain unchanged and definitions require explicit context and source identity"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "ngsl_lexical_floor"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "safety",
         "given": "a report is produced before metric laws are selected",
         "since": "2026-07-29",
@@ -2862,6 +2973,96 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/mobius_experiment.py",
       "id": "edcm_mobius_carrier_experiment"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a receipt or OBJ realization is emitted",
+        "since": "2026-08-10",
+        "then": "the artifact records selection effect none and explicitly denies zeta proof, electron ontology, Pauli-derived geometry, verified linking, and canonical UCNS completion"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the default seven-band schedule is inspected",
+        "since": "2026-08-10",
+        "then": "the central band and first outer band have opposite chirality and half-turn seam displacement while the six outer seam phases advance by one twelfth turn"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "coincident projected occurrences are lifted into three dimensions",
+        "since": "2026-08-10",
+        "then": "every incident band has a distinct exact lift height, the six outer strands occupy nonzero one-two-three lane pairs at the center, and exact origin exclusion plus compactness preserves a positive three-dimensional void"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_lift_preserves_null_as_nonvertex_void"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the default Mobius Seed of Life candidate is constructed",
+        "since": "2026-08-10",
+        "then": "seven equal-radius operands, all twenty-one unordered pairs, thirteen unique projection nodes, twelve structural vesicas, six incidental secants, and three incidental tangencies are retained without hidden pair deletion"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_projection_is_exact_and_pair_complete"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "either projected crossing of each structural vesica is inspected",
+        "since": "2026-08-10",
+        "then": "the exact lift-height difference is nonzero at both events and changes sign between them without claiming physical contact or a verified boundary-edge intersection"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_structural_pairs_have_alternating_braid_order"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any default band surface point is advanced one or two carrier turns",
+        "since": "2026-08-10",
+        "then": "one turn equals the seam-identified point at reversed breadth and two turns restore the complete sampled point"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_surface_obeys_360_seam_and_720_return"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact sextant trigonometry, incidence construction, candidate validation, deterministic OBJ serialization",
+        "module_kind": "experiment",
+        "module_name": "mobius_seed",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "Qsqrt3, ExactPoint2, Point3, BandSlot, TwistChirality, PairStanding, NodeStanding, ProjectionNode, PairProjectionEvent, PairRelation, MobiusBandSpec, MobiusSeedOfLife, build_mobius_seed_of_life",
+        "requires": "ucns_gonol_relationship_display_v1, edcm_native_direct_mobius_candidate",
+        "rollback": "remove this module, its tests, and MOBIUS_SEED_OF_LIFE_V1 documents without altering arity-one, arity-two, or arity-three relationship-display primitives",
+        "rollout": "explicit UCNS-only implemented candidate; selection effect none; no canonical seven-gonol composition, zeta proof, physical-model validation, EDCM activation, or METAPAT activation",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local paths only through write_obj and write_receipt",
+        "summary": "constructs the seven-band Mobius Seed of Life as an exact projection ledger plus a deterministic nonselecting three-dimensional braid-lift candidate",
+        "tests": "tests/test_mobius_seed.py",
+        "unresolved": "smooth boundary-edge intersection realization, pairwise linking matrix, ambient-isotopy lock proof, canonical seven-gonol composition, spectral operator, zeta-zero correspondence, proof-assistant formalization",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "ucns_mobius_seed_of_life_candidate"
     },
     {
       "block": "CONTRACTS",
@@ -4908,6 +5109,39 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_source_word_and_glyph_boundaries",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "lexical_floor_source_receipt_binds_packaged_bytes, lexical_floor_words_are_unique_exact_glyph_sets, lexical_floor_order_is_serialization_only, lexical_floor_reuses_canonical_glyph_assignment"
+      },
+      "file": "tests/test_lexical_floor.py",
+      "id": "lexical_floor_source_and_word_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_projection_candidate_and_definition_boundaries",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding, affixiation_and_compounding_are_candidate_layers, definitions_are_context_plural_and_immutable"
+      },
+      "file": "tests/test_lexical_floor_layers.py",
+      "id": "lexical_floor_layer_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_snapshot_chain_is_source_bound_and_fail_closed",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "every_added_layer_has_a_source_bound_snapshot"
+      },
+      "file": "tests/test_lexical_floor_snapshots.py",
+      "id": "lexical_floor_snapshot_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_chart_map_success_and_round_trip_failure_separate_c2_from_c3",
         "cleanup": "none",
         "mutates": "none",
@@ -5008,6 +5242,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_mobius_experiment.py",
       "id": "check_v05_minimum_witness_packet"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_every_structural_pair_reverses_over_under_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_structural_pairs_have_alternating_braid_order",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_braid_order"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_dyad_is_anti_aligned_and_outer_phases_increment",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_dyad_phase_schedule"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_null_lift_has_six_distinct_nonzero_lanes_and_origin_margin",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_lift_preserves_null_as_nonvertex_void",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_null_void"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_projection_retains_exact_seed_nodes_and_all_pairs",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_projection_is_exact_and_pair_complete",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_projection_pair_completion"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_and_obj_are_deterministic_nonselecting_candidates",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_proof_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_each_surface_obeys_mobius_seam_and_two_turn_return",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_surface_obeys_360_seam_and_720_return",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_surface_quotient"
     },
     {
       "block": "CHECKS",
@@ -7948,6 +8260,132 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "self::test_every_structural_pair_reverses_over_under_order"
+    },
+    {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "mobius_seed_structural_pairs_have_alternating_braid_order"
+    },
+    {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "self::test_dyad_is_anti_aligned_and_outer_phases_increment"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "self::test_null_lift_has_six_distinct_nonzero_lanes_and_origin_margin"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "mobius_seed_lift_preserves_null_as_nonvertex_void"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "self::test_projection_retains_exact_seed_nodes_and_all_pairs"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "mobius_seed_projection_is_exact_and_pair_complete"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "self::test_receipt_and_obj_are_deterministic_nonselecting_candidates"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "self::test_each_surface_obeys_mobius_seam_and_two_turn_return"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "mobius_seed_surface_obeys_360_seam_and_720_return"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "python3"
+    },
+    {
       "from": "check_no_source_normalization",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -9418,6 +9856,83 @@ export default defineMsdmdCollection({
       "to": "edcm_word_is_the_smallest_gonol"
     },
     {
+      "from": "lexical_floor_layer_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "self::test_projection_candidate_and_definition_boundaries"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "affixiation_and_compounding_are_candidate_layers"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "definitions_are_context_plural_and_immutable"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding"
+    },
+    {
+      "from": "lexical_floor_snapshot_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_snapshot_check",
+      "to": "self::test_snapshot_chain_is_source_bound_and_fail_closed"
+    },
+    {
+      "from": "lexical_floor_snapshot_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_snapshot_check",
+      "to": "every_added_layer_has_a_source_bound_snapshot"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "self::test_source_word_and_glyph_boundaries"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_order_is_serialization_only"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_reuses_canonical_glyph_assignment"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_source_receipt_binds_packaged_bytes"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_words_are_unique_exact_glyph_sets"
+    },
+    {
       "from": "addition_boundary",
       "kind": "calls",
       "source_block": "CONTRACTS",
@@ -10181,6 +10696,13 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "ngsl_lexical_floor",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ngsl_lexical_floor",
+      "to": "Erin Spencer"
+    },
+    {
       "from": "reproducible_witness_experiment_pipeline",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -10832,6 +11354,27 @@ export default defineMsdmdCollection({
       "to": "none"
     },
     {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "edcm_native_direct_mobius_candidate"
+    },
+    {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "ucns_gonol_relationship_display_v1"
+    },
+    {
       "from": "ucns_native_cache",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -11092,5 +11635,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "The-Interdependency/ucns"
+  "repo": "ucns"
 });
