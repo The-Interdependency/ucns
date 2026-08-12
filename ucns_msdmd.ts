@@ -2776,6 +2776,253 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "doctrine",
+        "given": "character decomposition finds a retained base or two retained component words",
+        "since": "2026-08-04",
+        "then": "the result is constructor-bound to exact word identities and labeled orthographic-candidate until independently attested; it never rewrites the word gonol"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "affixiation_and_compounding_are_candidate_layers"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "definitions are added to retained word gonols",
+        "since": "2026-08-06",
+        "then": "multiple senses may coexist with distinct context and source identity, authority standing is fixed, and the returned layer cannot be mutated in place"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "definitions_are_context_plural_and_immutable"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "words, glyphs, gonols, hyperspace potential, affixiation, compounding, or definitions are materialized",
+        "since": "2026-08-06",
+        "then": "the exact ordered snapshot chain records the source receipt, producer, parent, count, digest, fixed standing, and unresolved boundary; a changed source or parent fails validation"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "every_added_layer_has_a_source_bound_snapshot"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the source collection is serialized",
+        "since": "2026-08-04",
+        "then": "deterministic casefold-plus-exact-codepoint order supports reproducible builds but contributes no rank, frequency, meaning, or gonol identity"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_order_is_serialization_only"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a source spelling is converted to a word gonol",
+        "since": "2026-08-04",
+        "then": "each exact Unicode scalar occurrence uses the existing EDCM carrier assignment and retains its value, position, multiplicity, and order"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_reuses_canonical_glyph_assignment"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the packaged NGSL source metadata and word file are loaded",
+        "since": "2026-08-06",
+        "then": "exact schema, collection, attribution notice, serialization, count, Git blob, byte digests, word-sequence digest, and unresolved custody boundary are retained in one immutable source receipt"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_source_receipt_binds_packaged_bytes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any public word-gonol construction path is used",
+        "since": "2026-08-04",
+        "then": "the word is nonempty, contains only assigned Unicode scalars, contains no profile-pinned SPACE manifestation, preserves exact case and order, and cannot duplicate another exact spelling in one floor"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_floor_words_are_unique_exact_glyph_sets"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "two word gonols are compared",
+        "since": "2026-08-06",
+        "then": "exact cross-word glyph occurrence addresses, prefix, suffix, containment, and edit distance are retained; any glyph-type set view names its identity policy and information loss; no semantic, morphological, geometric, or embedding standing follows"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_canonical_digest, _word_sort_key, _edit_distance, _load_source_bundle, _git_blob_sha1",
+        "module_kind": "domain",
+        "module_name": "lexical_floor",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "GlyphDefinition, LexicalSourceReceipt, LexicalWordGonol, SharedGlyphOccurrence, GlyphTypeSetProjection, CharacterRelationship, LexicalHyperspacePotential, AffixiationCandidate, CompoundCandidate, DefinitionSense, LexicalLayerSnapshot, load_ngsl_source_receipt, load_ngsl_words, define_glyphs, create_word_gonols, create_hyperspace_potential, derive_affixiation_candidates, derive_compound_candidates, create_definition_layer, snapshot_layers, validate_snapshot_chain, word_gonol_id",
+        "rollback": "remove this module and packaged NGSL artifacts without altering the existing EDCM word-gonol profile",
+        "rollout": "experimental lexical-floor producer; no hyperdimensional embedding or linguistic canon selection",
+        "since": "2026-08-04",
+        "storage_boundary": "packaged immutable text and JSON source evidence; caller-selected snapshot output",
+        "summary": "source-bound NGSL word gonols, occurrence-addressed character relationships, layered affixiation, compounding, contextual definitions, and immutable snapshots",
+        "tests": "tests/test_lexical_floor.py",
+        "unresolved": "independent official-source checksum custody, attested affix authority, compound adjudication, contextual definition custody, and the deep-recursion hyperdimensional embedding law",
+        "user_data_boundary": "no user data; exact source spellings remain unchanged and definitions require explicit context and source identity"
+      },
+      "file": "src/ucns/lexical_floor.py",
+      "id": "ngsl_lexical_floor"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the exact quarter-turn height equation is split into its two trigonometric branches",
+        "since": "2026-08-10",
+        "then": "the difference branch is rejected by the exact modulus contradiction two times radius not equal center separation"
+      },
+      "file": "src/ucns/mobius_certificates.py",
+      "id": "mobius_vesica_alternate_height_branch_is_obstructed"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a machine receipt is serialized",
+        "since": "2026-08-10",
+        "then": "it records selection effect none and denies electron ontology, Pauli derivation, whole-surface classification, link proof, spectral correspondence, and Riemann-hypothesis proof"
+      },
+      "file": "src/ucns/mobius_certificates.py",
+      "id": "mobius_vesica_certificate_is_nonselecting_and_zeta_firewalled"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a certificate is emitted",
+        "since": "2026-08-10",
+        "then": "physical boundary contacts, centerline contacts, projected crossings, and the unresolved full surface-intersection locus remain distinct fields"
+      },
+      "file": "src/ucns/mobius_certificates.py",
+      "id": "mobius_vesica_contact_semantics_are_not_flattened"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the normalized radius-one, separation-one, half-width-one-hundredth, opposite-chirality, quarter-turn dyad is constructed",
+        "since": "2026-08-10",
+        "then": "exact Sturm arithmetic proves two roots of the boundary-contact cubic in minus one to one and each root induces two distinct physical contacts, for exactly four"
+      },
+      "file": "src/ucns/mobius_certificates.py",
+      "id": "mobius_vesica_sturm_proves_four_physical_boundary_contacts"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "rational polynomial arithmetic, branch obstruction, deterministic witness realization, payload hashing",
+        "module_kind": "experiment",
+        "module_name": "mobius_certificates",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "RationalInterval, SturmCertificate, BoundaryContactWitness, MobiusVesicaCertificate, sturm_sequence, count_real_roots, isolate_real_roots, certify_mobius_vesica, write_default_certificate",
+        "requires": "ucns_mobius_vesica_exact_embedding",
+        "rollback": "remove with mobius_vesica and mobius_continuation without changing the seven-band candidate",
+        "rollout": "exact certificate for the normalized circular-ribbon quarter-turn family only; selection effect none",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local paths only through write_default_certificate",
+        "summary": "certifies the canonical Mobius Vesica centerline count, physical boundary-contact count, quotient return, null clearance, and proof firewall using exact rational Sturm arithmetic plus residual witnesses",
+        "tests": "tests/test_mobius_vesica_exact.py",
+        "unresolved": "full surface-pair intersection locus, general-phase classification, arbitrary-perturbation stability, linking, ambient isotopy, zeta operator",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_certificates.py",
+      "id": "ucns_mobius_vesica_certificates"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the standard circular family has opposite chirality, phase pair zero and one half, and width below one half",
+        "since": "2026-08-10",
+        "then": "exact branch equations admit zero physical boundary contacts"
+      },
+      "file": "src/ucns/mobius_continuation.py",
+      "id": "mobius_vesica_half_turn_phase_has_exact_contact_obstruction"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the Seed-of-Life wheel relation graph is requested",
+        "since": "2026-08-10",
+        "then": "six center-to-ring and six adjacent-ring rigid placements are emitted, each preserving the local two-plus-four certificate in isolation"
+      },
+      "file": "src/ucns/mobius_continuation.py",
+      "id": "mobius_vesica_rigid_placements_cover_seed_structural_pairs"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the exact quarter-turn dyad is compared with the current PR-174 half-turn first dyad",
+        "since": "2026-08-10",
+        "then": "chirality and width matches are retained, phase mismatch is explicit, and the four-contact certificate is not transferred"
+      },
+      "file": "src/ucns/mobius_continuation.py",
+      "id": "mobius_vesica_seed_phase_mismatch_blocks_certificate_inheritance"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "a sequence of rational widths strictly between zero and one half is requested at quarter-turn phase",
+        "since": "2026-08-10",
+        "then": "every stage is independently Sturm-certified rather than inheriting a sampled contact count"
+      },
+      "file": "src/ucns/mobius_continuation.py",
+      "id": "mobius_vesica_width_continuation_recertifies_each_stage"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact width stages, half-turn obstruction, rigid pair placement, deterministic combined receipt",
+        "module_kind": "experiment",
+        "module_name": "mobius_continuation",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "ContinuationStage, PhaseStage, SeedDyadComparison, VesicaPlacement, MobiusVesicaContinuationEngine, build_default_continuation_report, build_artifact_payload, write_default_artifact",
+        "requires": "ucns_mobius_vesica_certificates, ucns_mobius_seed_of_life_candidate",
+        "rollback": "remove with mobius_vesica and mobius_certificates",
+        "rollout": "research continuation only; does not rewrite PR 174 phase law or select the seven-band candidate",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local paths only through write_default_artifact",
+        "summary": "continues the exact Mobius Vesica across rational widths, replicates it into the twelve rigid Seed-of-Life pair placements, and firewalls the quarter-turn certificate from the current half-turn seed phase",
+        "tests": "tests/test_mobius_vesica_exact.py",
+        "unresolved": "general phase classification, compatible seven-band global phase assignment, simultaneous twelve-pair realization, link invariants, spectral bridge",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_continuation.py",
+      "id": "ucns_mobius_vesica_continuation"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "safety",
         "given": "a report is produced before metric laws are selected",
         "since": "2026-07-29",
@@ -2862,6 +3109,254 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/mobius_experiment.py",
       "id": "edcm_mobius_carrier_experiment"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "all six spokes are rigid copies while the center retains one chirality",
+        "since": "2026-08-10",
+        "then": "they demand six distinct center phases modulo one half turn"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_center_needs_six_phase_channels_for_six_spokes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the certificate is serialized",
+        "since": "2026-08-10",
+        "then": "selection effect is none and the obstruction remains bounded to its declared assumptions"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_global_compatibility_certificate_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "two wheel-W7 structural pairs share a band and each is a rigid copy of the certified quarter-turn anti-chiral vesica",
+        "since": "2026-08-10",
+        "then": "all four orientation combinations demand different chirality-phase states at the shared band"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the same occurrences at one event are declared both physically equal and strictly height-separated",
+        "since": "2026-08-10",
+        "then": "delta-z equals zero contradicts delta-z nonzero"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the pinned PR-174 phase/chirality schedule is compared with both exact rigid-copy orientations",
+        "since": "2026-08-10",
+        "then": "zero of twelve structural pairs inherit the complete local certificate"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "each band has one chirality and one constant surface phase modulo one half turn",
+        "since": "2026-08-10",
+        "then": "compatible certified pairs form a matching and W7 has maximum matching size three"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "mobius_seed_single_state_certified_capacity_is_three"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact half-turn phase quotient, rigid-rotation transport, W7 cut and matching enumeration, pinned PR-174 comparison",
+        "module_kind": "experiment",
+        "module_name": "mobius_global_compatibility",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "EdgeOrientation, SurfacePhaseState, StructuralEdge, CertifiedEdgeCopy, CompatibilityBoundary, surface_phase, build_structural_edges, certified_edge_copies, pinned_pr174_assignment, edge_inherits_certificate, contact_and_strict_braid_compatible, prove_global_compatibility_boundary, write_global_compatibility_certificate",
+        "requires": "ucns_mobius_vesica_continuation, ucns_mobius_seed_of_life_candidate",
+        "rollback": "remove this module, its test, documentation, and generated certificate",
+        "rollout": "stacked nonselecting UCNS obstruction certificate; does not alter PR 174 or PR 175",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local path only",
+        "summary": "proves the single-state phase/chirality capacity and contact-versus-braid boundary for assembling the certified Mobius Vesica across the twelve structural Seed-of-Life pairs",
+        "tests": "tests/test_mobius_global_compatibility.py",
+        "unresolved": "nonconstant phase fields, recursive or multichannel carriers, other local dyad families, simultaneous surface embedding, complete lift equations, spectral operator, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_global_compatibility.py",
+      "id": "ucns_mobius_seed_global_compatibility"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a receipt or OBJ realization is emitted",
+        "since": "2026-08-10",
+        "then": "the artifact records selection effect none and explicitly denies zeta proof, electron ontology, Pauli-derived geometry, verified linking, and canonical UCNS completion"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the default seven-band schedule is inspected",
+        "since": "2026-08-10",
+        "then": "the central band and first outer band have opposite chirality and half-turn seam displacement while the six outer seam phases advance by one twelfth turn"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "coincident projected occurrences are lifted into three dimensions",
+        "since": "2026-08-10",
+        "then": "every incident band has a distinct exact lift height, the six outer strands occupy nonzero one-two-three lane pairs at the center, and exact origin exclusion plus compactness preserves a positive three-dimensional void"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_lift_preserves_null_as_nonvertex_void"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the default Mobius Seed of Life candidate is constructed",
+        "since": "2026-08-10",
+        "then": "seven equal-radius operands, all twenty-one unordered pairs, thirteen unique projection nodes, twelve structural vesicas, six incidental secants, and three incidental tangencies are retained without hidden pair deletion"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_projection_is_exact_and_pair_complete"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "either projected crossing of each structural vesica is inspected",
+        "since": "2026-08-10",
+        "then": "the exact lift-height difference is nonzero at both events and changes sign between them without claiming physical contact or a verified boundary-edge intersection"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_structural_pairs_have_alternating_braid_order"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any default band surface point is advanced one or two carrier turns",
+        "since": "2026-08-10",
+        "then": "one turn equals the seam-identified point at reversed breadth and two turns restore the complete sampled point"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "mobius_seed_surface_obeys_360_seam_and_720_return"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact sextant trigonometry, incidence construction, candidate validation, deterministic OBJ serialization",
+        "module_kind": "experiment",
+        "module_name": "mobius_seed",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "Qsqrt3, ExactPoint2, Point3, BandSlot, TwistChirality, PairStanding, NodeStanding, ProjectionNode, PairProjectionEvent, PairRelation, MobiusBandSpec, MobiusSeedOfLife, build_mobius_seed_of_life",
+        "requires": "ucns_gonol_relationship_display_v1, edcm_native_direct_mobius_candidate",
+        "rollback": "remove this module, its tests, and MOBIUS_SEED_OF_LIFE_V1 documents without altering arity-one, arity-two, or arity-three relationship-display primitives",
+        "rollout": "explicit UCNS-only implemented candidate; selection effect none; no canonical seven-gonol composition, zeta proof, physical-model validation, EDCM activation, or METAPAT activation",
+        "since": "2026-08-10",
+        "storage_boundary": "caller-supplied local paths only through write_obj and write_receipt",
+        "summary": "constructs the seven-band Mobius Seed of Life as an exact projection ledger plus a deterministic nonselecting three-dimensional braid-lift candidate",
+        "tests": "tests/test_mobius_seed.py",
+        "unresolved": "smooth boundary-edge intersection realization, pairwise linking matrix, ambient-isotopy lock proof, canonical seven-gonol composition, spectral operator, zeta-zero correspondence, proof-assistant formalization",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_seed.py",
+      "id": "ucns_mobius_seed_of_life_candidate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the canonical equal-radius vesica embedding is constructed",
+        "since": "2026-08-10",
+        "then": "the two circular centerlines meet at exactly two exact points, zero plus or minus sqrt(3)/2 in the projection plane"
+      },
+      "file": "src/ucns/mobius_vesica.py",
+      "id": "mobius_vesica_has_exact_two_centerline_contacts"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "radius one, center separation one, and half width one hundredth",
+        "since": "2026-08-10",
+        "then": "the origin is excluded from both individual bands by an exact lower clearance bound of forty-nine hundredths"
+      },
+      "file": "src/ucns/mobius_vesica.py",
+      "id": "mobius_vesica_null_origin_has_positive_clearance"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "either band is evaluated at any admissible breadth",
+        "since": "2026-08-10",
+        "then": "one carrier turn reverses breadth under the quotient and two turns restore the full point"
+      },
+      "file": "src/ucns/mobius_vesica.py",
+      "id": "mobius_vesica_obeys_one_turn_seam_and_two_turn_return"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the source note is used to define the dyad research target",
+        "since": "2026-08-10",
+        "then": "two centerline contacts and four physical continuous-boundary contacts remain explicit hypotheses to prove or falsify without being replaced by projected or abstract events"
+      },
+      "file": "src/ucns/mobius_vesica.py",
+      "id": "mobius_vesica_preserves_source_claims_as_testable_geometry"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact vesica parameters, circular ribbon frame, quotient validation, boundary-contact polynomial",
+        "module_kind": "experiment",
+        "module_name": "mobius_vesica",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "VesicaBand, TwistChirality, Point3, CenterlineContact, MobiusBandEmbedding, MobiusVesicaParameters, MobiusVesica, build_mobius_vesica",
+        "requires": "ucns_mobius_seed_of_life_candidate",
+        "rollback": "remove this module, mobius_certificates, mobius_continuation, their tests, documentation, and generated receipt",
+        "rollout": "UCNS-only exact candidate; selection effect none; does not alter the seven-band candidate or select a canonical zeta operator",
+        "since": "2026-08-10",
+        "storage_boundary": "none",
+        "summary": "defines the canonical two-band Mobius Vesica Piscis embedding whose centerlines meet twice and whose single continuous boundaries admit an exact four-contact certificate",
+        "tests": "tests/test_mobius_vesica_exact.py",
+        "unresolved": "full pair-surface intersection set, arbitrary-perturbation stability, linking data, ambient-isotopy class, seven-band phase reconciliation, spectral operator, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mobius_vesica.py",
+      "id": "ucns_mobius_vesica_exact_embedding"
     },
     {
       "block": "CONTRACTS",
@@ -4908,6 +5403,39 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_source_word_and_glyph_boundaries",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "lexical_floor_source_receipt_binds_packaged_bytes, lexical_floor_words_are_unique_exact_glyph_sets, lexical_floor_order_is_serialization_only, lexical_floor_reuses_canonical_glyph_assignment"
+      },
+      "file": "tests/test_lexical_floor.py",
+      "id": "lexical_floor_source_and_word_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_projection_candidate_and_definition_boundaries",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding, affixiation_and_compounding_are_candidate_layers, definitions_are_context_plural_and_immutable"
+      },
+      "file": "tests/test_lexical_floor_layers.py",
+      "id": "lexical_floor_layer_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_snapshot_chain_is_source_bound_and_fail_closed",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "every_added_layer_has_a_source_bound_snapshot"
+      },
+      "file": "tests/test_lexical_floor_snapshots.py",
+      "id": "lexical_floor_snapshot_check"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_chart_map_success_and_round_trip_failure_separate_c2_from_c3",
         "cleanup": "none",
         "mutates": "none",
@@ -5008,6 +5536,357 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_mobius_experiment.py",
       "id": "check_v05_minimum_witness_packet"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_center_spokes_require_six_distinct_surface_phases",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_center_needs_six_phase_channels_for_six_spokes",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_center_six_phase_channels"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_physical_contact_and_strict_braid_are_same_event_exclusive",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_contact_braid_exclusivity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rigid_rotation_phase_transport_matches_direct_surface_rotation",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_direct_rotation_agreement"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generated_certificate_is_deterministic_nonselecting_and_bounded",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "mobius_seed_global_compatibility_certificate_is_nonselecting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_global_certificate_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_oriented_incident_edge_states_are_incompatible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_incident_dyad_state_incompatibility"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_pinned_pr174_schedule_inherits_zero_complete_local_certificates",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_pr174_zero_inheritance"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rigid_rotation_transport_is_exact_on_representative_spokes",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_rigid_rotation_transport"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_compatible_certified_pairs_have_exact_maximum_capacity_three",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_single_state_certified_capacity_is_three",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_single_state_capacity_three"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_surface_phase_uses_the_unlabelled_half_turn_quotient",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_incident_certified_dyads_are_state_incompatible",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_global_compatibility.py",
+      "id": "check_mobius_seed_surface_phase_quotient"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_every_structural_pair_reverses_over_under_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_structural_pairs_have_alternating_braid_order",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_braid_order"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_dyad_is_anti_aligned_and_outer_phases_increment",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_dyad_phase_schedule"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_null_lift_has_six_distinct_nonzero_lanes_and_origin_margin",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_lift_preserves_null_as_nonvertex_void",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_null_void"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_projection_retains_exact_seed_nodes_and_all_pairs",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_projection_is_exact_and_pair_complete",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_projection_pair_completion"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_and_obj_are_deterministic_nonselecting_candidates",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_proof_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_each_surface_obeys_mobius_seam_and_two_turn_return",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_seed_surface_obeys_360_seam_and_720_return",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_seed.py",
+      "id": "check_mobius_seed_surface_quotient"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_alternate_height_branch_is_obstructed",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_alternate_branch_obstruction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_centerlines_have_exactly_two_contacts_and_positive_null_clearance",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_has_exact_two_centerline_contacts",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_centerline_contacts"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_contact_semantics_and_global_surface_boundary_remain_distinct",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_contact_semantics_are_not_flattened",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_contact_semantics"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_sturm_proves_four_physical_boundary_contacts",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_four_boundary_contacts"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_half_turn_phase_has_exact_contact_obstruction",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_half_turn_obstruction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_centerlines_have_exactly_two_contacts_and_positive_null_clearance",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_null_origin_has_positive_clearance",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_null_clearance"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_each_band_obeys_one_turn_seam_and_two_turn_return",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_obeys_one_turn_seam_and_two_turn_return",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_quotient_return"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_combined_receipt_is_deterministic_nonselecting_and_firewalled",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "mobius_vesica_certificate_is_nonselecting_and_zeta_firewalled",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_receipt_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_seed_phase_mismatch_blocks_certificate_inheritance",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_seed_phase_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_preserves_source_claims_as_testable_geometry",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_source_claims"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_rigid_placement_plan_covers_all_twelve_structural_pairs",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_rigid_placements_cover_seed_structural_pairs",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_structural_placements"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_width_continuation_recertifies_four_contacts_at_every_stage",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "mobius_vesica_width_continuation_recertifies_each_stage",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_mobius_vesica_exact.py",
+      "id": "check_mobius_vesica_width_continuation"
     },
     {
       "block": "CHECKS",
@@ -7948,6 +8827,573 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "self::test_every_structural_pair_reverses_over_under_order"
+    },
+    {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "mobius_seed_structural_pairs_have_alternating_braid_order"
+    },
+    {
+      "from": "check_mobius_seed_braid_order",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_braid_order",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "self::test_center_spokes_require_six_distinct_surface_phases"
+    },
+    {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "mobius_seed_center_needs_six_phase_channels_for_six_spokes"
+    },
+    {
+      "from": "check_mobius_seed_center_six_phase_channels",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_center_six_phase_channels",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "self::test_physical_contact_and_strict_braid_are_same_event_exclusive"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "mobius_seed_physical_contact_and_strict_braid_are_event_exclusive"
+    },
+    {
+      "from": "check_mobius_seed_contact_braid_exclusivity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_contact_braid_exclusivity",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "self::test_rigid_rotation_phase_transport_matches_direct_surface_rotation"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_direct_rotation_agreement",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_direct_rotation_agreement",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "self::test_dyad_is_anti_aligned_and_outer_phases_increment"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "mobius_seed_dyad_is_anti_aligned_and_outer_phase_is_incremental"
+    },
+    {
+      "from": "check_mobius_seed_dyad_phase_schedule",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_dyad_phase_schedule",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "self::test_generated_certificate_is_deterministic_nonselecting_and_bounded"
+    },
+    {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "mobius_seed_global_compatibility_certificate_is_nonselecting"
+    },
+    {
+      "from": "check_mobius_seed_global_certificate_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_global_certificate_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "self::test_all_oriented_incident_edge_states_are_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_incident_dyad_state_incompatibility",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "self::test_null_lift_has_six_distinct_nonzero_lanes_and_origin_margin"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "mobius_seed_lift_preserves_null_as_nonvertex_void"
+    },
+    {
+      "from": "check_mobius_seed_null_void",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_null_void",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
+      "to": "self::test_pinned_pr174_schedule_inherits_zero_complete_local_certificates"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
+      "to": "mobius_seed_pr174_inherits_no_exact_rigid_vesica_pairs"
+    },
+    {
+      "from": "check_mobius_seed_pr174_zero_inheritance",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_pr174_zero_inheritance",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "self::test_projection_retains_exact_seed_nodes_and_all_pairs"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "mobius_seed_projection_is_exact_and_pair_complete"
+    },
+    {
+      "from": "check_mobius_seed_projection_pair_completion",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_projection_pair_completion",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "self::test_receipt_and_obj_are_deterministic_nonselecting_candidates"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "mobius_seed_candidate_is_nonselecting_and_proof_firewalled"
+    },
+    {
+      "from": "check_mobius_seed_proof_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_proof_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "self::test_rigid_rotation_transport_is_exact_on_representative_spokes"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_rigid_rotation_transport",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_rigid_rotation_transport",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "self::test_compatible_certified_pairs_have_exact_maximum_capacity_three"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "mobius_seed_single_state_certified_capacity_is_three"
+    },
+    {
+      "from": "check_mobius_seed_single_state_capacity_three",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_single_state_capacity_three",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
+      "to": "self::test_surface_phase_uses_the_unlabelled_half_turn_quotient"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
+      "to": "mobius_seed_incident_certified_dyads_are_state_incompatible"
+    },
+    {
+      "from": "check_mobius_seed_surface_phase_quotient",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_phase_quotient",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "self::test_each_surface_obeys_mobius_seam_and_two_turn_return"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "mobius_seed_surface_obeys_360_seam_and_720_return"
+    },
+    {
+      "from": "check_mobius_seed_surface_quotient",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_seed_surface_quotient",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_alternate_branch_obstruction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_alternate_branch_obstruction",
+      "to": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts"
+    },
+    {
+      "from": "check_mobius_vesica_alternate_branch_obstruction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_alternate_branch_obstruction",
+      "to": "mobius_vesica_alternate_height_branch_is_obstructed"
+    },
+    {
+      "from": "check_mobius_vesica_alternate_branch_obstruction",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_alternate_branch_obstruction",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_centerline_contacts",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_centerline_contacts",
+      "to": "self::test_centerlines_have_exactly_two_contacts_and_positive_null_clearance"
+    },
+    {
+      "from": "check_mobius_vesica_centerline_contacts",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_centerline_contacts",
+      "to": "mobius_vesica_has_exact_two_centerline_contacts"
+    },
+    {
+      "from": "check_mobius_vesica_centerline_contacts",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_centerline_contacts",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_contact_semantics",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_contact_semantics",
+      "to": "self::test_contact_semantics_and_global_surface_boundary_remain_distinct"
+    },
+    {
+      "from": "check_mobius_vesica_contact_semantics",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_contact_semantics",
+      "to": "mobius_vesica_contact_semantics_are_not_flattened"
+    },
+    {
+      "from": "check_mobius_vesica_contact_semantics",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_contact_semantics",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_four_boundary_contacts",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_four_boundary_contacts",
+      "to": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts"
+    },
+    {
+      "from": "check_mobius_vesica_four_boundary_contacts",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_four_boundary_contacts",
+      "to": "mobius_vesica_sturm_proves_four_physical_boundary_contacts"
+    },
+    {
+      "from": "check_mobius_vesica_four_boundary_contacts",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_four_boundary_contacts",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_half_turn_obstruction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_half_turn_obstruction",
+      "to": "self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate"
+    },
+    {
+      "from": "check_mobius_vesica_half_turn_obstruction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_half_turn_obstruction",
+      "to": "mobius_vesica_half_turn_phase_has_exact_contact_obstruction"
+    },
+    {
+      "from": "check_mobius_vesica_half_turn_obstruction",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_half_turn_obstruction",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_null_clearance",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_null_clearance",
+      "to": "self::test_centerlines_have_exactly_two_contacts_and_positive_null_clearance"
+    },
+    {
+      "from": "check_mobius_vesica_null_clearance",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_null_clearance",
+      "to": "mobius_vesica_null_origin_has_positive_clearance"
+    },
+    {
+      "from": "check_mobius_vesica_null_clearance",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_null_clearance",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_quotient_return",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_quotient_return",
+      "to": "self::test_each_band_obeys_one_turn_seam_and_two_turn_return"
+    },
+    {
+      "from": "check_mobius_vesica_quotient_return",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_quotient_return",
+      "to": "mobius_vesica_obeys_one_turn_seam_and_two_turn_return"
+    },
+    {
+      "from": "check_mobius_vesica_quotient_return",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_quotient_return",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_receipt_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_receipt_firewall",
+      "to": "self::test_combined_receipt_is_deterministic_nonselecting_and_firewalled"
+    },
+    {
+      "from": "check_mobius_vesica_receipt_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_receipt_firewall",
+      "to": "mobius_vesica_certificate_is_nonselecting_and_zeta_firewalled"
+    },
+    {
+      "from": "check_mobius_vesica_receipt_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_receipt_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_seed_phase_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_seed_phase_firewall",
+      "to": "self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate"
+    },
+    {
+      "from": "check_mobius_vesica_seed_phase_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_seed_phase_firewall",
+      "to": "mobius_vesica_seed_phase_mismatch_blocks_certificate_inheritance"
+    },
+    {
+      "from": "check_mobius_vesica_seed_phase_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_seed_phase_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_source_claims",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_source_claims",
+      "to": "self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts"
+    },
+    {
+      "from": "check_mobius_vesica_source_claims",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_source_claims",
+      "to": "mobius_vesica_preserves_source_claims_as_testable_geometry"
+    },
+    {
+      "from": "check_mobius_vesica_source_claims",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_source_claims",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_structural_placements",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_structural_placements",
+      "to": "self::test_rigid_placement_plan_covers_all_twelve_structural_pairs"
+    },
+    {
+      "from": "check_mobius_vesica_structural_placements",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_structural_placements",
+      "to": "mobius_vesica_rigid_placements_cover_seed_structural_pairs"
+    },
+    {
+      "from": "check_mobius_vesica_structural_placements",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_structural_placements",
+      "to": "python3"
+    },
+    {
+      "from": "check_mobius_vesica_width_continuation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_width_continuation",
+      "to": "self::test_width_continuation_recertifies_four_contacts_at_every_stage"
+    },
+    {
+      "from": "check_mobius_vesica_width_continuation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_width_continuation",
+      "to": "mobius_vesica_width_continuation_recertifies_each_stage"
+    },
+    {
+      "from": "check_mobius_vesica_width_continuation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_mobius_vesica_width_continuation",
+      "to": "python3"
+    },
+    {
       "from": "check_no_source_normalization",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -9418,6 +10864,83 @@ export default defineMsdmdCollection({
       "to": "edcm_word_is_the_smallest_gonol"
     },
     {
+      "from": "lexical_floor_layer_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "self::test_projection_candidate_and_definition_boundaries"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "affixiation_and_compounding_are_candidate_layers"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "definitions_are_context_plural_and_immutable"
+    },
+    {
+      "from": "lexical_floor_layer_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_layer_check",
+      "to": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding"
+    },
+    {
+      "from": "lexical_floor_snapshot_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_snapshot_check",
+      "to": "self::test_snapshot_chain_is_source_bound_and_fail_closed"
+    },
+    {
+      "from": "lexical_floor_snapshot_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_snapshot_check",
+      "to": "every_added_layer_has_a_source_bound_snapshot"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "self::test_source_word_and_glyph_boundaries"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_order_is_serialization_only"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_reuses_canonical_glyph_assignment"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_source_receipt_binds_packaged_bytes"
+    },
+    {
+      "from": "lexical_floor_source_and_word_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "lexical_floor_source_and_word_check",
+      "to": "lexical_floor_words_are_unique_exact_glyph_sets"
+    },
+    {
       "from": "addition_boundary",
       "kind": "calls",
       "source_block": "CONTRACTS",
@@ -10181,6 +11704,13 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "ngsl_lexical_floor",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ngsl_lexical_floor",
+      "to": "Erin Spencer"
+    },
+    {
       "from": "reproducible_witness_experiment_pipeline",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -10832,6 +12362,97 @@ export default defineMsdmdCollection({
       "to": "none"
     },
     {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "ucns_mobius_seed_of_life_candidate"
+    },
+    {
+      "from": "ucns_mobius_seed_global_compatibility",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_global_compatibility",
+      "to": "ucns_mobius_vesica_continuation"
+    },
+    {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "edcm_native_direct_mobius_candidate"
+    },
+    {
+      "from": "ucns_mobius_seed_of_life_candidate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_seed_of_life_candidate",
+      "to": "ucns_gonol_relationship_display_v1"
+    },
+    {
+      "from": "ucns_mobius_vesica_certificates",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_certificates",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_vesica_certificates",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_certificates",
+      "to": "ucns_mobius_vesica_exact_embedding"
+    },
+    {
+      "from": "ucns_mobius_vesica_continuation",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_continuation",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_vesica_continuation",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_continuation",
+      "to": "ucns_mobius_seed_of_life_candidate"
+    },
+    {
+      "from": "ucns_mobius_vesica_continuation",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_continuation",
+      "to": "ucns_mobius_vesica_certificates"
+    },
+    {
+      "from": "ucns_mobius_vesica_exact_embedding",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_exact_embedding",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mobius_vesica_exact_embedding",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mobius_vesica_exact_embedding",
+      "to": "ucns_mobius_seed_of_life_candidate"
+    },
+    {
       "from": "ucns_native_cache",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -11092,5 +12713,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "The-Interdependency/ucns"
+  "repo": "ucns"
 });
