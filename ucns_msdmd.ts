@@ -3519,6 +3519,96 @@ export default defineMsdmdCollection({
       "block": "CONTRACTS",
       "fields": {
         "class": "doctrine",
+        "given": "arithmetic primality and UCNS primitive standing are evaluated",
+        "since": "2026-08-11",
+        "then": "the predicates remain separate and two remains arithmetic-prime"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_arithmetic_geometry_firewall"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "P5 is constructed directly from one center plus four outer carriers",
+        "since": "2026-08-11",
+        "then": "ten pairs, eighteen projected pair events, and arity spectrum two-twelve four-one reconcile exactly"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_p5_direct_exact_signature"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "P7 is constructed directly from one center plus six outer carriers",
+        "since": "2026-08-11",
+        "then": "twenty-one pairs, thirty-nine projected pair events, and arity spectrum two-six three-six six-one reconcile exactly"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_p7_direct_exact_signature"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "P7 spoke and adjacent-rim separations are measured",
+        "since": "2026-08-11",
+        "then": "all twelve structural edges are unit-vesica relations and q equals six is the unique equal-spoke-rim ring order"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_p7_uniform_structural_relation"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "dyadic and triadic readouts are reported",
+        "since": "2026-08-11",
+        "then": "they are derived restrictions and never treated as construction lineage"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_restrictions_follow_construction"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "K2 is tested under a closure axiom requiring a nontrivial relational cycle",
+        "since": "2026-08-11",
+        "then": "its cycle rank is zero and it conditionally fails closed-primitive standing without changing arithmetic primality"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "prime_two_cycle_boundary"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact pair-distance ledgers, hypernode reconciliation, restriction counts, deterministic hashing",
+        "module_kind": "experiment",
+        "module_name": "prime_primitives",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "RelationKind, Hypernode, PrimePrimitive, is_arithmetic_prime, cycle_rank, dyadic_boundary, build_prime_seven, build_prime_five, family_certificate",
+        "requires": "none",
+        "rollback": "remove this module, its test, and documentation",
+        "rollout": "nonselecting P7-first research artifact; lower-prime forms are restrictions, not construction parts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "constructs P7 first and P5 second as direct exact projected carrier complexes, preserves n-ary hypernodes, and separates arithmetic primality from UCNS closed-primitive standing",
+        "tests": "tests/test_prime_primitives.py",
+        "unresolved": "P2 ontology, P3 artifact, smooth M\u00f6bius lift, phase field, physical event semantics, braid topology, spectral operator, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_primitives.py",
+      "id": "ucns_prime_primitives_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
         "given": "a current-root Carrier is bound to the EDCM/METAPAT profile",
         "since": "2026-07-23",
         "then": "order, multiplicity, occurrence identity, sidedness, algebraic zero, and retained evidence remain explicit without projection"
@@ -6030,6 +6120,84 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_policy.py",
       "id": "check_unknown_policy_failure"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_arithmetic_and_geometry_are_separate",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_arithmetic_geometry_firewall",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_arithmetic_geometry_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_p5_exact_signature",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p5_direct_exact_signature",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_p5_direct_signature"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_p7_exact_signature",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p7_direct_exact_signature",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_p7_direct_signature"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_p7_uniform_relation_and_uniqueness",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p7_uniform_structural_relation",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_p7_uniform_relation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_restrictions_are_readouts_not_parts",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_restrictions_follow_construction",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_restrictions_after_construction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_two_cycle_boundary_is_conditional",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_two_cycle_boundary",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_primitives.py",
+      "id": "check_prime_two_cycle_boundary"
     },
     {
       "block": "CHECKS",
@@ -9674,6 +9842,132 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_prime_arithmetic_geometry_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_arithmetic_geometry_firewall",
+      "to": "self::test_arithmetic_and_geometry_are_separate"
+    },
+    {
+      "from": "check_prime_arithmetic_geometry_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_arithmetic_geometry_firewall",
+      "to": "prime_arithmetic_geometry_firewall"
+    },
+    {
+      "from": "check_prime_arithmetic_geometry_firewall",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_arithmetic_geometry_firewall",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_p5_direct_signature",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p5_direct_signature",
+      "to": "self::test_p5_exact_signature"
+    },
+    {
+      "from": "check_prime_p5_direct_signature",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p5_direct_signature",
+      "to": "prime_p5_direct_exact_signature"
+    },
+    {
+      "from": "check_prime_p5_direct_signature",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p5_direct_signature",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_p7_direct_signature",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_direct_signature",
+      "to": "self::test_p7_exact_signature"
+    },
+    {
+      "from": "check_prime_p7_direct_signature",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_direct_signature",
+      "to": "prime_p7_direct_exact_signature"
+    },
+    {
+      "from": "check_prime_p7_direct_signature",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_direct_signature",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_p7_uniform_relation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_uniform_relation",
+      "to": "self::test_p7_uniform_relation_and_uniqueness"
+    },
+    {
+      "from": "check_prime_p7_uniform_relation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_uniform_relation",
+      "to": "prime_p7_uniform_structural_relation"
+    },
+    {
+      "from": "check_prime_p7_uniform_relation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_uniform_relation",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_restrictions_after_construction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_restrictions_after_construction",
+      "to": "self::test_restrictions_are_readouts_not_parts"
+    },
+    {
+      "from": "check_prime_restrictions_after_construction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_restrictions_after_construction",
+      "to": "prime_restrictions_follow_construction"
+    },
+    {
+      "from": "check_prime_restrictions_after_construction",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_restrictions_after_construction",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_two_cycle_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_two_cycle_boundary",
+      "to": "self::test_two_cycle_boundary_is_conditional"
+    },
+    {
+      "from": "check_prime_two_cycle_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_two_cycle_boundary",
+      "to": "prime_two_cycle_boundary"
+    },
+    {
+      "from": "check_prime_two_cycle_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_two_cycle_boundary",
+      "to": "python3"
+    },
+    {
       "from": "check_profile_identity_binding",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -12514,6 +12808,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_payload_system",
       "to": "ucns_canonical"
+    },
+    {
+      "from": "ucns_prime_primitives_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_primitives_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_primitives_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_primitives_p7_p5",
+      "to": "none"
     },
     {
       "from": "ucns_public_gonol",
