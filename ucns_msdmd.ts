@@ -3801,6 +3801,118 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "correctness",
+        "given": "centerline separation exceeds nine hundredths and ribbon half-width is one hundredth",
+        "since": "2026-08-11",
+        "then": "the complete finite-width ribbons have pairwise separation greater than seven hundredths by the triangle inequality"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_are_globally_disjoint_at_declared_width"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every unordered pair of P7 or P5 carriers is subdivided over the complete parameter torus",
+        "since": "2026-08-11",
+        "then": "a deterministic Lipschitz certificate establishes centerline separation greater than nine hundredths under the declared binary64 roundoff boundary"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_have_global_centerline_margin"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "regular secant readouts and tangent regularizations are combined",
+        "since": "2026-08-11",
+        "then": "every pair receives an integer linking number and matrix rank, nullity, determinant, and nonzero-link graph readouts are derived"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_issue_complete_linking_matrix"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "any carrier and admissible breadth",
+        "since": "2026-08-11",
+        "then": "the smoothed surface obeys one-turn breadth reversal and two-turn return"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_obey_mobius_return"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family certificate is built",
+        "since": "2026-08-11",
+        "then": "P7 is certified first and P5 is independently processed second under the same smoothing and separation protocol"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_p7_precedes_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the piecewise-linear P7 or P5 lift knots are replaced",
+        "since": "2026-08-11",
+        "then": "one periodic C-infinity field per carrier reproduces every exact event height without overshoot"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_preserve_all_event_lanes"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family receipt is serialized",
+        "since": "2026-08-11",
+        "then": "it records the numerical proof boundary and claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a projected pair is externally tangent",
+        "since": "2026-08-11",
+        "then": "a one-hundredth outward pair-specific isotopy remains inside the global clearance, makes the projected circles disjoint, and certifies linking number zero"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "prime_smooth_ribbons_regularize_tangent_pairs"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "flat C-infinity interpolation, exact derivative majorant, binary64 Lipschitz subdivision, pair-specific tangent isotopy, rational matrix rank",
+        "module_kind": "experiment",
+        "module_name": "prime_smooth_ribbons",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "SmoothPeriodicField, SmoothPrimeRibbon, PairSeparationCertificate, TangentRegularization, LinkingMatrixCertificate, SmoothRibbonCertificate, flat_step, flat_step_derivative, build_smooth_prime_seven, build_smooth_prime_five, certify_smooth_prime_seven, certify_smooth_prime_five, smooth_ribbon_family_certificate, write_smooth_ribbon_family_certificate, render_smooth_centerline_obj, render_smooth_ribbon_obj",
+        "requires": "ucns_prime_phase_lift_p7_p5",
+        "rollback": "remove this module, its test, documentation, generated certificate, and generated meshes",
+        "rollout": "P7 first, P5 same-protocol comparison second; selection effect none; does not alter prior phase or lift receipts",
+        "since": "2026-08-11",
+        "storage_boundary": "caller-supplied local paths only through writer functions",
+        "summary": "replaces the P7-first piecewise-linear lift by a C-infinity event-preserving field, certifies global finite-width ribbon separation by deterministic Lipschitz subdivision, regularizes tangent projections, and applies the same protocol to P5 second",
+        "tests": "tests/test_prime_smooth_ribbons.py",
+        "unresolved": "formal interval or proof-assistant replay, whole-link ambient isotopy, higher-order link invariants, boundary-link invariants, spectral operator, prime-power law, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_smooth_ribbons.py",
+      "id": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "doctrine",
         "given": "a current-root Carrier is bound to the EDCM/METAPAT profile",
         "since": "2026-07-23",
@@ -6534,6 +6646,110 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_prime_primitives.py",
       "id": "check_prime_two_cycle_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_complete_parameter_tori_certify_nine_hundredths_centerline_margin",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_have_global_centerline_margin",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_centerline_margin"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_flat_step_fields_are_c_infinity_bounded_and_event_preserving",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_preserve_all_event_lanes",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_event_lanes"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_triangle_inequality_certifies_seven_hundredths_ribbon_margin",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_are_globally_disjoint_at_declared_width",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_finite_width_disjointness"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_complete_pairwise_linking_matrices_have_expected_invariants",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_issue_complete_linking_matrix",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_linking_matrix"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_smoothed_surfaces_obey_one_turn_reversal_and_two_turn_return",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_obey_mobius_return",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_mobius_return"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_receipt_preserves_p7_first_p5_second_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_p7_precedes_p5",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_p7_first"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_and_smooth_meshes_are_deterministic_and_firewalled",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_smooth_ribbons_receipt_is_nonselecting",
+        "requires": "python3",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_tangent_pairs_receive_clearance_preserving_zero_link_regularizations",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_smooth_ribbons_regularize_tangent_pairs",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_smooth_ribbons.py",
+      "id": "check_prime_smooth_ribbons_tangent_regularization"
     },
     {
       "block": "CHECKS",
@@ -10514,6 +10730,174 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_prime_smooth_ribbons_centerline_margin",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_centerline_margin",
+      "to": "self::test_complete_parameter_tori_certify_nine_hundredths_centerline_margin"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_centerline_margin",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_centerline_margin",
+      "to": "prime_smooth_ribbons_have_global_centerline_margin"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_centerline_margin",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_centerline_margin",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_event_lanes",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_event_lanes",
+      "to": "self::test_flat_step_fields_are_c_infinity_bounded_and_event_preserving"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_event_lanes",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_event_lanes",
+      "to": "prime_smooth_ribbons_preserve_all_event_lanes"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_event_lanes",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_event_lanes",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "to": "self::test_triangle_inequality_certifies_seven_hundredths_ribbon_margin"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "to": "prime_smooth_ribbons_are_globally_disjoint_at_declared_width"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_finite_width_disjointness",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_linking_matrix",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_linking_matrix",
+      "to": "self::test_complete_pairwise_linking_matrices_have_expected_invariants"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_linking_matrix",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_linking_matrix",
+      "to": "prime_smooth_ribbons_issue_complete_linking_matrix"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_linking_matrix",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_linking_matrix",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_mobius_return",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_mobius_return",
+      "to": "self::test_smoothed_surfaces_obey_one_turn_reversal_and_two_turn_return"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_mobius_return",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_mobius_return",
+      "to": "prime_smooth_ribbons_obey_mobius_return"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_mobius_return",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_mobius_return",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_p7_first",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_p7_first",
+      "to": "self::test_family_receipt_preserves_p7_first_p5_second_order"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_p7_first",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_p7_first",
+      "to": "prime_smooth_ribbons_p7_precedes_p5"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_p7_first",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_p7_first",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_receipt",
+      "to": "self::test_receipt_and_smooth_meshes_are_deterministic_and_firewalled"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_receipt",
+      "to": "prime_smooth_ribbons_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_tangent_regularization",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_tangent_regularization",
+      "to": "self::test_tangent_pairs_receive_clearance_preserving_zero_link_regularizations"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_tangent_regularization",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_tangent_regularization",
+      "to": "prime_smooth_ribbons_regularize_tangent_pairs"
+    },
+    {
+      "from": "check_prime_smooth_ribbons_tangent_regularization",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_smooth_ribbons_tangent_regularization",
+      "to": "python3"
+    },
+    {
       "from": "check_prime_two_cycle_boundary",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -13438,6 +13822,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_prime_primitives_p7_p5",
       "to": "none"
+    },
+    {
+      "from": "ucns_prime_smooth_ribbons_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_smooth_ribbons_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_smooth_ribbons_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_smooth_ribbons_p7_p5",
+      "to": "ucns_prime_phase_lift_p7_p5"
     },
     {
       "from": "ucns_public_gonol",
