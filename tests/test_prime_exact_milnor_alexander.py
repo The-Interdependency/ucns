@@ -209,7 +209,7 @@ def test_family_receipt_is_deterministic_bounded_and_nonselecting(tmp_path) -> N
     assert first["selection_effect"] == "none"
     assert first["exact_milnor"]["borromean_braid"]["gate_passed"] is True
     assert first["exact_milnor"]["all_five_exact_zero"] is True
-    assert first["preregistered_phase_selector"]["p7"]["selected]["boundary_meridional_degree"] == 7
+    assert first["preregistered_phase_selector"]["p7"]["selected"]["boundary_meridional_degree"] == 7
     assert first["preregistered_phase_selector"]["p5"]["selected"]["boundary_meridional_degree"] == -5
     assert any("not a complete" in item for item in first["nonclaims"])
     assert any("Riemann" in item for item in first["nonclaims"])
