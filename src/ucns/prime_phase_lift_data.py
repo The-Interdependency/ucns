@@ -1,3 +1,32 @@
+# === MODULE_BUILD ===
+# id: ucns_prime_phase_lift_data
+#   module_name: prime_phase_lift_data
+#   module_kind: experiment
+#   summary: stores the exact P7 and P5 occurrence-turn, carrier-residue, node-generator, and projected-center ledgers consumed by the phase-and-lift witness
+#   owner: Erin Spencer
+#   public_surface: P7_TURNS, P5_TURNS, P7_CARRIER_RESIDUES, P5_CARRIER_RESIDUES, P7_NODE_GENERATORS, P5_NODE_GENERATORS, P7_CENTERS, P5_CENTERS
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_phase_lift.py
+#   rollout: exact static research ledger; selection effect none
+#   rollback: remove with the complete prime phase-and-lift witness
+#   requires: ucns_prime_primitives_p7_p5
+#   since: 2026-08-11
+#   unresolved: independently derived ledgers beyond the frozen P7/P5 construction
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_phase_lift_data_covers_every_p7_p5_hypernode
+#   given: the P7 and P5 phase-and-lift candidates consume their frozen ledgers
+#   then: every primitive hypernode occurrence resolves to an exact carrier turn, residue lane, generator, and projected center
+#   class: evidence
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
 # Exact occurrence, residue, generator, and center ledgers for the P7-first phase lift.
 
 from fractions import Fraction

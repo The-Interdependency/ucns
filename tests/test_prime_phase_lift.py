@@ -15,6 +15,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_prime_phase_lift_data_coverage
+#   proves: prime_phase_lift_data_covers_every_p7_p5_hypernode
+#   call: self::test_every_hypernode_has_distinct_phase_and_height
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_prime_phase_lift_hypernodes
 #   proves: prime_phase_lift_resolves_every_hypernode
 #   call: self::test_every_hypernode_has_distinct_phase_and_height
@@ -31,9 +39,25 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_prime_phase_lift_model_event_semantics
+#   proves: prime_phase_lift_model_preserves_event_semantics
+#   call: self::test_projected_pair_events_are_strictly_height_separated
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_prime_phase_lift_disjoint_centerlines
 #   proves: prime_phase_lift_centerlines_are_disjoint
 #   call: self::test_projected_pair_events_are_strictly_height_separated
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_prime_phase_lift_model_derived_links
+#   proves: prime_phase_lift_model_derives_links_after_global_lift
+#   call: self::test_link_readouts_follow_global_lift
 #   requires: python3
 #   timeout: 10
 #   mutates: none

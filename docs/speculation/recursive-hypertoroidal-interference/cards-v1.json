@@ -1,0 +1,203 @@
+{
+  "schema_id": "ucns.speculative-publication.recursive-hypertoroidal-cards",
+  "schema_version": "0.1.0",
+  "authority": "Erin Spencer",
+  "recorded_on": "2026-08-11",
+  "record_status": "speculative-publication",
+  "selection_effect": "none",
+  "title": "Recursive Hypertoroidal Interference and Triadic Scale Closure",
+  "subtitle": "A–J textbook companion cards",
+  "jurisdiction": {
+    "repository_role": "UCNS publication and provenance; no geometric selection",
+    "exact_geometry_thread": "separate and unaffected",
+    "website_role": "commit-pinned display consumer; no authority transfer"
+  },
+  "source_note": {
+    "path": "SOURCE_NOTE.txt",
+    "sha256": "dc3a94ca5070ffff8f2a246f48db77192b08f521e721bc7c2a011aa05ddeb9a1",
+    "standing": "originating speculative note"
+  },
+  "archive": {
+    "high_resolution_png_deck": {
+      "drive_file_id": "1Pz4PWIMJoTRmX0yPyVBBI4bwX73_Qmky",
+      "sha256": "4ee07bffe3b47bedc687d54d74c5a2f3e2ab832c856693f12f3dfa84e918e0cd",
+      "standing": "archival generated imagery; image-contained text is not canonical prose"
+    },
+    "textbook_markdown": {
+      "drive_file_id": "1IsmoIgbw_vGiC6Mae_7zc11fPjC9_tNo",
+      "sha256": "f203a191ba5563483b519679d777899fadc780ef1d04e2d24976b5f3bbc9ab73",
+      "standing": "full speculative textbook with process footnotes"
+    }
+  },
+  "cards": [
+    {
+      "letter": "A",
+      "title": "Hypertorus and Filling",
+      "section": "pure-geometry",
+      "standing": "candidate geometry",
+      "summary": "An n-dimensional hypertorus can be treated as the boundary of an (n+1)-dimensional toroidal filling. A warped metric may enlarge proper interior volume while the visible boundary geometry remains fixed.",
+      "points": [
+        "Hypertorus: Tⁿ = (S¹)ⁿ.",
+        "The filling is bulk; the hypertorus is its boundary.",
+        "Boundary hyperarea and proper bulk volume must remain separate quantities."
+      ],
+      "equations": ["Tⁿ = (S¹)ⁿ", "∂Mⁿ⁺¹ = Tⁿ"],
+      "key": "The boundary is what is observed; depth is where additional structure becomes possible."
+    },
+    {
+      "letter": "B",
+      "title": "Scale as a Geometric Direction",
+      "section": "pure-geometry",
+      "standing": "candidate geometry",
+      "summary": "Treat scale as an additional coordinate indexing torus fibers. A monodromy or transition map can expand some directions while contracting others, relating larger, current, and smaller scales without flattening them.",
+      "points": [
+        "Each scale is a retained fiber, not a replacement for another.",
+        "Structure maps relate adjacent or recurrent scale states.",
+        "Reciprocal expansion and contraction can preserve a whole while redistributing internal scale."
+      ],
+      "equations": ["Tⁿ ↪ 𝓑ⁿ⁺¹ → Iσ", "G(σ+L) = AᵀG(σ)A"],
+      "key": "Scale becomes geometry when transitions between scales are explicit maps."
+    },
+    {
+      "letter": "C",
+      "title": "Möbius Transport",
+      "section": "pure-geometry",
+      "standing": "established topology used as a prototype",
+      "summary": "A Möbius traversal can return to the same visible carrier position after one circuit while reversing a retained transverse frame. Two circuits restore the complete framed state.",
+      "points": [
+        "One turn: visible return with transverse-frame reversal.",
+        "Two turns: complete framed return.",
+        "Transport holonomy is not chirality, metric polarity, or moral value."
+      ],
+      "equations": ["Ψ(γ·p) = −Ψ(p)", "Ψ(γ²·p) = Ψ(p)"],
+      "key": "Identity may be preserved by completing a transformation cycle rather than remaining unchanged."
+    },
+    {
+      "letter": "D",
+      "title": "Seven-Band Möbius Seed Candidate",
+      "section": "pure-geometry",
+      "standing": "speculative construction target",
+      "summary": "One central band and six surrounding bands form a proposed three-dimensional relational object. The visual study retains all pairs while distinguishing twelve intended structural relations from incidental relations.",
+      "points": [
+        "Seven bands: one central and six surrounding.",
+        "Twelve candidate structural relations: six inner and six outer.",
+        "All twenty-one unordered band pairs remain represented.",
+        "Thirteen candidate projection nodes remain occurrence-addressed.",
+        "The first dyad is anti-aligned; later phases shift incrementally."
+      ],
+      "equations": ["7 operands + complete relation field → A₈", "C(7,2) = 21"],
+      "key": "The eighth is not another band; it is the relational closure produced by the seven together."
+    },
+    {
+      "letter": "E",
+      "title": "Ternary Occurrence States",
+      "section": "pure-geometry",
+      "standing": "candidate relation language",
+      "summary": "Assign −1, 0, or +1 only to a named axis at a specific occurrence. Retain magnitude and evidence, and keep neutral zero distinct from missing evidence and branch conflict.",
+      "points": [
+        "+1 and −1 name opposed polarities only after an axis is declared.",
+        "0 is a present neutral or balanced state.",
+        "NA means required evidence is absent or inapplicable.",
+        "Conflict retains incompatible nonzero reports instead of averaging them to zero."
+      ],
+      "equations": ["Qₚ = Σᵢ mᵢsᵢ", "Tₚ = Σᵢ<ⱼ mᵢmⱼ 1[sᵢsⱼ = −1]"],
+      "key": "Net balance and active opposition are different quantities: zero ≠ NA ≠ conflict."
+    },
+    {
+      "letter": "F",
+      "title": "Triadic Scale Closure",
+      "section": "pure-geometry",
+      "standing": "candidate stability architecture",
+      "summary": "Three nested scale roles form the first complete preservation loop: originating dynamics, externalized effective identity, and a higher-scale relational context capable of returning constraints downward.",
+      "points": [
+        "S₀ generates the originating dynamics.",
+        "S₁ externalizes selected scale-dependent variables.",
+        "S₂ represents the larger continuation conditions.",
+        "Constraints return S₂ → S₁ → S₀.",
+        "The preserved invariant may survive while microstate details change."
+      ],
+      "equations": ["S₀ → S₁ → S₂ → S₁ → S₀", "I₀(x₀(t+Δt)) ≈ I₀(x₀(t))"],
+      "key": "Preserved identity is distributed across nested scales."
+    },
+    {
+      "letter": "G",
+      "title": "Emergence of the Macro World",
+      "section": "application",
+      "standing": "physical speculation",
+      "summary": "Phase-bearing fields on multiply connected spaces may self-interfere, couple, and form persistent composites. The perceived macro world is hypothesized as cross-scale stability rather than static substance.",
+      "points": [
+        "Phase-bearing fields recur and interfere.",
+        "Some coupled modes may stabilize through topology, nonlinearity, gravity, or environmental selection.",
+        "Stable lower-scale aggregates become constituents at larger scales.",
+        "Classical appearance requires persistence and repeated external record, not interference alone."
+      ],
+      "equations": ["field → interference → coupled modes → composites → macro observables"],
+      "key": "Geometry supplies a grammar of recurrence; dynamics must still decide what endures."
+    },
+    {
+      "letter": "H",
+      "title": "Nested Self-Modeling",
+      "section": "application",
+      "standing": "stability and cognition speculation",
+      "summary": "A scale may preserve itself by forming an internal model of continuation conditions, externalizing that model at another scale, and receiving higher-scale constraints in return.",
+      "points": [
+        "Passive persistence is not yet self-modeling.",
+        "A model must causally change recovery or continuation behavior.",
+        "Externalization is compression into an effective higher-scale property, not verbatim copying.",
+        "Counterfactual perturbation distinguishes a causal model from a correlated trace."
+      ],
+      "equations": ["xₖ → mₖ → xₖ₊₁ → cₖ → xₖ"],
+      "key": "Stability strengthens when representation participates in cross-scale error correction."
+    },
+    {
+      "letter": "I",
+      "title": "Three Triadic Domains",
+      "section": "application",
+      "standing": "self-relative application framework",
+      "summary": "Three triads organize being, time, and relation. Their parenthesized terms form the enacted center where identity, continuity, and boundary are simultaneously actualized.",
+      "points": [
+        "Being: mind (body) soul.",
+        "Time: past (present) future.",
+        "Relation: other (self) environment.",
+        "Enacted center: body–present–self."
+      ],
+      "equations": ["self-preservation = identity closure ∩ temporal closure ∩ relational closure"],
+      "key": "The triads are an application built on the geometry, not part of the geometry itself."
+    },
+    {
+      "letter": "J",
+      "title": "Application Firewall",
+      "section": "application",
+      "standing": "research discipline",
+      "summary": "Geometry, measurement, interpretation, physical ontology, and metaphysics remain separate authority layers. A resemblance may motivate a test but cannot transfer proof or validity.",
+      "points": [
+        "Möbius transport ≠ electron ontology.",
+        "Field interference ≠ matter.",
+        "Seven-to-one aggregation ≠ EDCM identity.",
+        "Runtime representation ≠ PTCNA canon.",
+        "Spectral resemblance ≠ zeta proof."
+      ],
+      "equations": ["correspondence ≠ identity", "correlation ≠ causation"],
+      "key": "Keep every bridge explicit, versioned, falsifiable, and reversible."
+    }
+  ],
+  "consumer_contract": [
+    "pin the exact UCNS commit, path, Git blob, and SHA-256 of this manifest",
+    "display each card letter, title, section, standing, summary, points, equations, and key statement",
+    "show the speculative standing and exact-geometry separation above the card deck",
+    "make image-contained text supplementary rather than the only accessible source",
+    "do not transfer geometry, proof, measurement, PTCNA, EDCM, METAPAT, physical, or metaphysical authority"
+  ],
+  "nonclaims": [
+    "not exact or canonical UCNS geometry",
+    "not established quantum or cosmological physics",
+    "not EDCM measurement validity or PTCNA integration authority",
+    "not METAPAT ontology authority",
+    "not a proof of the Riemann hypothesis or any zeta-function theorem"
+  ],
+  "hmmm": [
+    "the high-resolution generated PNG deck is retained in archival storage while the repository and website use accessible selectable card text",
+    "the website edition preserves the original deck hashes and provenance without treating image-contained wording as authority",
+    "the exact mathematical geometry remains assigned to its separate research thread"
+  ]
+}
