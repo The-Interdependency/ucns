@@ -6,7 +6,7 @@ results into a complete link classification or a prime-emergence claim.
 
 | item | #181 | #182 | #183 before reconciliation | preserved where | action |
 |---|---|---|---|---|---|
-| outward interval separation replay | readable implementation and certificate | independent replay summary | compressed wrapper | `prime_interval_replay.py`, interval tests and certificates | retain #181 commits in #183 |
+| outward interval separation replay | readable implementation and certificate | independent replay summary | corrupt compressed wrapper | `prime_interval_replay.py` behind the explicit `prime_interval_boundaries.py` compatibility adapter | retain #181 computation and the recovered #183 API separately |
 | single two-turn ribbon boundaries | readable construction | summary evidence | compressed wrapper | `prime_interval_boundary_links.py` and boundary-link document | retain #181 commits in #183 |
 | complete boundary/mixed linking matrices | readable exact readout | not primary | compressed wrapper | `prime_boundary_link_invariants.py` and tests | retain #181 commits in #183 |
 | fixed generic projection | readable construction | independently checked | compressed wrapper | `prime_generic_diagram.py` plus both validation paths | retain both methods |
@@ -30,8 +30,25 @@ wheel gate pass on its exact repaired head. Until then, #181 and #182 remain
 open evidence sources. When closure is justified, their comments must cite the
 terminal SHAs above and this ledger; no branch deletion is required.
 
-## hmmm
+## Interval-boundary source recovery and compatibility
 
-The combined readable and compressed surfaces currently fail the skill-lib
-contract audit. The consolidation is therefore preserved locally but is not
-yet an evidence-complete GitHub successor.
+The legacy `prime_interval_boundaries.py` public surface was characterized from
+the provenance-pinned readable recovery whose SHA-256 is
+`6a79463856ea0171d7d29881fdb7e66780fab29779ff1c5fd1b71eaae7f9fc3c`
+(905 lines, 35,535 bytes). The repaired module preserves those recovered names,
+types, payload fields, and OBJ entry points, but delegates interval replay and
+boundary-link computation to the readable #181 modules.
+
+New compatibility behavior is kept explicit: readable pair-certificate
+payloads receive adapter digests because #181 does not expose #183 leaf-ledger
+hashes, and the recovered #183 own-core linking orientation is the negative of
+the readable #181 convention. Neither translation is represented as recovered
+mathematical evidence. The corrupt compressed payload is no longer executed.
+
+The exact Milnor/Alexander publication wrapper is likewise checked in as its
+readable implementation. Its phase-lift input is cached once per prime during
+the frozen selector sweep; this changes neither candidate order nor outputs and
+prevents repeated reconstruction from obscuring the filesystem validation
+witness. The preregistration document typo repair restores the already-pinned
+`f8f1a6eae5de2c8235a576266a140c93492554248c2756d838845a19240b23cc`
+document digest without changing the frozen protocol.

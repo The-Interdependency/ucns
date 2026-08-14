@@ -1,6 +1,950 @@
-# Compact executable publication wrapper.
-# The canonical readable source is preserved in the signed research packet and strict patch.
-# This wrapper expands the byte-exact validated implementation at import time.
-import base64 as _b64, zlib as _zlib
-_SOURCE_ZLIB_B64 = "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"
-exec(compile(_zlib.decompress(_b64.b64decode(_SOURCE_ZLIB_B64)).decode("utf-8"), __file__, "exec"), globals(), globals())
+# === MODULE_BUILD ===
+# id: ucns_prime_interval_boundaries_p7_p5
+#   module_name: prime_interval_boundaries
+#   module_kind: experiment
+#   summary: replays the P7-first smooth-ribbon separation certificate with outward interval endpoints, extracts each Möbius strip's single two-turn boundary curve, and derives exact boundary-cable and mixed core-boundary invariants before P5 comparison
+#   owner: Erin Spencer
+#   public_surface: IntervalPairReplay, IntervalReplayCertificate, BoundaryComponentCertificate, BoundaryInvariantCertificate, replay_prime_seven_intervals, replay_prime_five_intervals, certify_prime_seven_boundaries, certify_prime_five_boundaries, interval_boundary_family_certificate, write_interval_boundary_family_certificate, render_boundary_obj, render_core_boundary_obj
+#   internal_surface: recovered legacy types and payloads over readable PR 181 interval and boundary certificates
+#   auth_boundary: none
+#   storage_boundary: caller-supplied local paths only through writer functions
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_interval_boundaries.py
+#   rollout: P7 first, P5 same-protocol comparison second; selection effect none; does not alter prior smooth-ribbon receipts
+#   rollback: remove this module, its test, documentation, generated certificate, and boundary exports
+#   requires: ucns_prime_smooth_ribbons_p7_p5, mpmath>=1.3
+#   since: 2026-08-11
+#   unresolved: independently verified interval kernel, proof-assistant replay, Milnor invariants of algebraically split triples, multivariable Alexander polynomial of the complete boundary link, ambient isotopy, spectral operator, prime-power law, zeta correspondence
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_interval_replay_uses_outward_endpoints
+#   given: every complete pair-parameter torus is recursively covered
+#   then: high-precision interval point values and interval speed majorants certify the same nine-hundredths centerline target without a binary64 subtraction heuristic
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_boundary_curve_is_single_two_turn_component
+#   given: one finite-width Möbius ribbon is restricted to positive half-width
+#   then: its boundary closes only after two carrier turns and retracts with longitudinal degree two
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_boundary_cable_winding_is_derived_from_phase
+#   given: the selected phase law is evaluated over the two-turn boundary traversal
+#   then: the center boundary has cable class two-seven and each outer boundary has cable class two-one in the declared framing
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_boundary_linking_scales_by_four
+#   given: boundary components retract to degree-two traversals of their cores inside pairwise-disjoint ribbons
+#   then: every inter-ribbon boundary linking number is four times the corresponding core linking number
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_mixed_core_boundary_matrix_is_complete
+#   given: core-core, core-boundary, and boundary-boundary linking laws are combined
+#   then: a complete two-p by two-p integer matrix and exact rank and determinant are issued
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_higher_order_boundary_is_explicit
+#   given: triples of boundary components are classified by pairwise support
+#   then: algebraically split triples are enumerated while Milnor and complete-link invariants remain explicitly unresolved
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_interval_boundaries_p7_precedes_p5
+#   given: the family certificate is built
+#   then: P7 interval and boundary invariants are completed before the same protocol is applied independently to P5
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_interval_boundary_compact_receipt_is_nonselecting
+#   given: the family receipt is serialized
+#   then: it records the interval-kernel boundary and claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof
+#   class: doctrine
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
+"""Outward interval replay and Möbius-boundary invariants for P7 first.
+
+The preceding smooth-ribbon artifact used deterministic binary64 Lipschitz
+subdivision with a declared guard.  This module replays the same subdivision
+using ``mpmath.iv`` point intervals and interval speed majorants at 80 decimal
+digits.  Exact rational boxes drive the recursion; accepted lower endpoints are
+outward interval endpoints rather than guarded binary64 samples.
+
+Each Möbius strip has one boundary component.  In the declared parameterization
+that boundary is ``B_i(t)=X_i(t,w)`` for ``0<=t<2``.  Retraction to the core has
+longitudinal degree two.  The meridional winding is ``1+2*omega_i`` where
+``omega_i`` is the integer phase winding.  Hence the selected center boundary
+is a ``(2,7)`` cable and each outer boundary is a ``(2,1)`` cable.
+
+The interval backend is computer-assisted evidence.  It is not an independently
+verified interval kernel or proof-assistant replay.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from fractions import Fraction
+from functools import lru_cache
+import hashlib
+import itertools
+import json
+import math
+from pathlib import Path
+from typing import Iterable, Mapping, Sequence
+
+import mpmath
+from mpmath import iv
+
+from .prime_smooth_ribbons import (
+    CENTERLINE_SEPARATION_TARGET,
+    HALF_WIDTH,
+    RIBBON_SEPARATION_LOWER_BOUND,
+    SmoothPrimeRibbon,
+    build_smooth_prime_five,
+    build_smooth_prime_seven,
+    certify_smooth_prime_five,
+    certify_smooth_prime_seven,
+)
+from .prime_interval_replay import (
+    IntervalPairCertificate as ReadableIntervalPairCertificate,
+    IntervalSeparationCertificate as ReadableIntervalSeparationCertificate,
+    replay_interval_separation,
+)
+from .prime_boundary_link_invariants import (
+    BoundaryComponentInvariant as ReadableBoundaryComponentInvariant,
+    build_boundary_link_certificate,
+)
+
+SCHEMA_ID = "ucns.prime-interval-boundaries"
+SCHEMA_VERSION = "0.1.0"
+SOURCE_NAME = "Möbius Strips and Quantum Geometry.txt"
+SOURCE_SHA256 = "dc3a94ca5070ffff8f2a246f48db77192b08f521e721bc7c2a011aa05ddeb9a1"
+SOURCE_LINES = (5, 6, 13, 14, 15, 16, 17)
+INTERVAL_DPS = 80
+INTERVAL_BACKEND = "mpmath.iv"
+INTERVAL_MAX_DEPTH = 28
+INTERVAL_MAX_BOXES_PER_PAIR = 100_000
+BOUNDARY_PERIOD_TURNS = Fraction(2)
+RECOVERED_LEGACY_SOURCE_SHA256 = "6a79463856ea0171d7d29881fdb7e66780fab29779ff1c5fd1b71eaae7f9fc3c"
+
+
+class IntervalBoundaryError(ValueError):
+    """Raised when interval replay or boundary extraction leaves its boundary."""
+
+
+def fraction_text(value: Fraction) -> str:
+    return str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
+
+
+def _iv_fraction(value: Fraction | int) -> object:
+    item = value if isinstance(value, Fraction) else Fraction(value)
+    return iv.mpf(item.numerator) / item.denominator
+
+
+def _point_endpoint_text(value: object, *, lower: bool = True) -> str:
+    endpoint = value.a if lower else value.b
+    text = str(endpoint)
+    if text.startswith("[") and text.endswith("]"):
+        text = text[1:-1].split(",", 1)[0 if lower else -1].strip()
+    return text
+
+
+def _point_endpoint_float(value: object, *, lower: bool = True) -> float:
+    return float(value.a if lower else value.b)
+
+
+def _flat_step_point_interval(value: Fraction) -> object:
+    if value <= 0:
+        return iv.mpf(0)
+    if value >= 1:
+        return iv.mpf(1)
+    x = _iv_fraction(value)
+    left = iv.exp(-1 / x)
+    right = iv.exp(-1 / (1 - x))
+    return left / (left + right)
+
+
+def _field_point_interval(ribbon: SmoothPrimeRibbon, carrier: str, turn: Fraction) -> object:
+    field = ribbon.field(carrier)
+    target = turn % 1
+    for index, segment in enumerate(field.segments):
+        adjusted = target
+        if index == len(field.segments) - 1 and adjusted < segment.left_turn:
+            adjusted += 1
+        if segment.left_turn <= adjusted <= segment.right_turn:
+            if adjusted == segment.left_turn:
+                return _iv_fraction(segment.left_value)
+            if adjusted == segment.right_turn:
+                return _iv_fraction(segment.right_value)
+            local = (adjusted - segment.left_turn) / segment.turn_width
+            return (
+                _iv_fraction(segment.left_value)
+                + _iv_fraction(segment.right_value - segment.left_value)
+                * _flat_step_point_interval(local)
+            )
+    raise AssertionError("interval field segment search failed")
+
+
+def _exact_center(prime: int, carrier: str) -> tuple[object, object]:
+    zero = _iv_fraction(0)
+    one = _iv_fraction(1)
+    half = _iv_fraction(Fraction(1, 2))
+    if prime == 5:
+        centers = {
+            "C": (zero, zero),
+            "R0": (one, zero),
+            "R1": (zero, one),
+            "R2": (-one, zero),
+            "R3": (zero, -one),
+        }
+        return centers[carrier]
+    if prime != 7:
+        raise IntervalBoundaryError("only P7 and P5 are currently supported")
+    root_three_half = iv.sqrt(_iv_fraction(3)) / 2
+    centers = {
+        "C": (zero, zero),
+        "R0": (one, zero),
+        "R1": (half, root_three_half),
+        "R2": (-half, root_three_half),
+        "R3": (-one, zero),
+        "R4": (-half, -root_three_half),
+        "R5": (half, -root_three_half),
+    }
+    return centers[carrier]
+
+
+def _centerline_point_interval(
+    ribbon: SmoothPrimeRibbon,
+    carrier: str,
+    turn: Fraction,
+) -> tuple[object, object, object]:
+    center_x, center_y = _exact_center(ribbon.prime, carrier)
+    angle = 2 * iv.pi * _iv_fraction(turn)
+    return (
+        center_x + iv.cos(angle),
+        center_y + iv.sin(angle),
+        _field_point_interval(ribbon, carrier, turn),
+    )
+
+
+def _speed_interval(ribbon: SmoothPrimeRibbon, carrier: str) -> object:
+    derivative = _iv_fraction(ribbon.field(carrier).maximum_derivative_bound)
+    return iv.sqrt((2 * iv.pi) ** 2 + derivative**2)
+
+
+def _distance_interval(
+    left: Sequence[object],
+    right: Sequence[object],
+) -> object:
+    return iv.sqrt(sum((a - b) ** 2 for a, b in zip(left, right)))
+
+
+@dataclass(frozen=True, slots=True)
+class IntervalPairReplay:
+    left: str
+    right: str
+    target: Fraction
+    boxes_evaluated: int
+    accepted_leaf_boxes: int
+    maximum_depth: int
+    minimum_lower_endpoint: str
+    minimum_lower_endpoint_binary64: float
+    leaf_ledger_sha256: str
+
+    @property
+    def pair_id(self) -> str:
+        return f"{self.left}::{self.right}"
+
+    @property
+    def certified(self) -> bool:
+        return self.minimum_lower_endpoint_binary64 > float(self.target)
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "pair_id": self.pair_id,
+            "target": fraction_text(self.target),
+            "certified": self.certified,
+            "boxes_evaluated": self.boxes_evaluated,
+            "accepted_leaf_boxes": self.accepted_leaf_boxes,
+            "maximum_depth": self.maximum_depth,
+            "minimum_outward_lower_endpoint": self.minimum_lower_endpoint,
+            "minimum_outward_lower_endpoint_binary64_for_display": self.minimum_lower_endpoint_binary64,
+            "accepted_leaf_ledger_sha256": self.leaf_ledger_sha256,
+        }
+
+
+def _replay_pair(
+    ribbon: SmoothPrimeRibbon,
+    left: str,
+    right: str,
+    *,
+    target: Fraction = CENTERLINE_SEPARATION_TARGET,
+) -> IntervalPairReplay:
+    left_speed = _speed_interval(ribbon, left)
+    right_speed = _speed_interval(ribbon, right)
+    target_interval = _iv_fraction(target)
+    pending: list[tuple[Fraction, Fraction, Fraction, Fraction, int]] = [
+        (Fraction(0), Fraction(1), Fraction(0), Fraction(1), 0)
+    ]
+    boxes = 0
+    leaves = 0
+    maximum_depth = 0
+    minimum_value: object | None = None
+    digest = hashlib.sha256()
+
+    while pending:
+        left_a, left_b, right_a, right_b, depth = pending.pop()
+        boxes += 1
+        maximum_depth = max(maximum_depth, depth)
+        if boxes > INTERVAL_MAX_BOXES_PER_PAIR:
+            raise IntervalBoundaryError(f"interval replay exceeded box budget for {left}::{right}")
+        left_mid = (left_a + left_b) / 2
+        right_mid = (right_a + right_b) / 2
+        sample_distance = _distance_interval(
+            _centerline_point_interval(ribbon, left, left_mid),
+            _centerline_point_interval(ribbon, right, right_mid),
+        )
+        radius = (
+            left_speed * _iv_fraction((left_b - left_a) / 2)
+            + right_speed * _iv_fraction((right_b - right_a) / 2)
+        )
+        lower_bound = sample_distance - radius
+        if lower_bound.a > target_interval.b:
+            leaves += 1
+            if minimum_value is None or lower_bound.a < minimum_value.a:
+                minimum_value = lower_bound
+            row = "|".join(
+                (
+                    fraction_text(left_a),
+                    fraction_text(left_b),
+                    fraction_text(right_a),
+                    fraction_text(right_b),
+                    str(depth),
+                    _point_endpoint_text(lower_bound),
+                )
+            )
+            digest.update((row + "\n").encode("ascii"))
+            continue
+        if depth >= INTERVAL_MAX_DEPTH:
+            raise IntervalBoundaryError(
+                f"interval replay failed at depth {depth} for {left}::{right}"
+            )
+        left_contribution = left_speed.b * _iv_fraction(left_b - left_a)
+        right_contribution = right_speed.b * _iv_fraction(right_b - right_a)
+        if left_contribution >= right_contribution:
+            midpoint = (left_a + left_b) / 2
+            pending.append((left_a, midpoint, right_a, right_b, depth + 1))
+            pending.append((midpoint, left_b, right_a, right_b, depth + 1))
+        else:
+            midpoint = (right_a + right_b) / 2
+            pending.append((left_a, left_b, right_a, midpoint, depth + 1))
+            pending.append((left_a, left_b, midpoint, right_b, depth + 1))
+
+    if minimum_value is None:
+        raise IntervalBoundaryError("interval replay produced no accepted leaves")
+    return IntervalPairReplay(
+        left=left,
+        right=right,
+        target=target,
+        boxes_evaluated=boxes,
+        accepted_leaf_boxes=leaves,
+        maximum_depth=maximum_depth,
+        minimum_lower_endpoint=_point_endpoint_text(minimum_value),
+        minimum_lower_endpoint_binary64=_point_endpoint_float(minimum_value),
+        leaf_ledger_sha256=digest.hexdigest(),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class IntervalReplayCertificate:
+    prime: int
+    pair_replays: tuple[IntervalPairReplay, ...]
+
+    @property
+    def all_pairs_certified(self) -> bool:
+        return all(item.certified for item in self.pair_replays)
+
+    @property
+    def total_boxes_evaluated(self) -> int:
+        return sum(item.boxes_evaluated for item in self.pair_replays)
+
+    @property
+    def maximum_depth(self) -> int:
+        return max(item.maximum_depth for item in self.pair_replays)
+
+    @property
+    def minimum_lower_endpoint_binary64(self) -> float:
+        return min(item.minimum_lower_endpoint_binary64 for item in self.pair_replays)
+
+    @property
+    def global_leaf_ledger_sha256(self) -> str:
+        digest = hashlib.sha256()
+        for item in self.pair_replays:
+            digest.update(f"{item.pair_id}:{item.leaf_ledger_sha256}\n".encode("ascii"))
+        return digest.hexdigest()
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "prime": self.prime,
+            "backend": {
+                "name": INTERVAL_BACKEND,
+                "mpmath_version": mpmath.__version__,
+                "decimal_digits": INTERVAL_DPS,
+                "standing": "outward interval endpoints; software kernel not independently verified",
+            },
+            "target": fraction_text(CENTERLINE_SEPARATION_TARGET),
+            "all_pairs_certified": self.all_pairs_certified,
+            "pair_count": len(self.pair_replays),
+            "total_boxes_evaluated": self.total_boxes_evaluated,
+            "maximum_depth": self.maximum_depth,
+            "minimum_outward_lower_endpoint_binary64_for_display": self.minimum_lower_endpoint_binary64,
+            "global_accepted_leaf_ledger_sha256": self.global_leaf_ledger_sha256,
+            "pair_replays": [item.as_dict() for item in self.pair_replays],
+            "finite_width_consequence": {
+                "ribbon_half_width": fraction_text(HALF_WIDTH),
+                "ribbon_separation_lower_bound": fraction_text(RIBBON_SEPARATION_LOWER_BOUND),
+                "derivation": "centerline target minus two ribbon half-widths",
+            },
+            "compatibility": {
+                "implementation": "readable PR #181 interval replay",
+                "legacy_source_sha256": RECOVERED_LEGACY_SOURCE_SHA256,
+                "ledger_digest": "adapter digest over readable pair certificates; not the legacy leaf ledger",
+            },
+        }
+
+
+def _adapt_pair(item: ReadableIntervalPairCertificate) -> IntervalPairReplay:
+    evidence = json.dumps(item.as_dict(), sort_keys=True, separators=(",", ":"))
+    return IntervalPairReplay(
+        left=item.left,
+        right=item.right,
+        target=item.target,
+        boxes_evaluated=item.boxes_evaluated,
+        accepted_leaf_boxes=item.certified_leaf_boxes,
+        maximum_depth=item.maximum_depth,
+        minimum_lower_endpoint=item.minimum_leaf_lower_bound_decimal,
+        minimum_lower_endpoint_binary64=item.minimum_leaf_lower_bound,
+        leaf_ledger_sha256=hashlib.sha256(("pr181-adapter:" + evidence).encode("utf-8")).hexdigest(),
+    )
+
+
+def _adapt_replay(readable: ReadableIntervalSeparationCertificate) -> IntervalReplayCertificate:
+    certificate = IntervalReplayCertificate(
+        readable.prime,
+        tuple(_adapt_pair(item) for item in readable.pair_certificates),
+    )
+    if not certificate.all_pairs_certified:
+        raise IntervalBoundaryError("not every pair was interval-certified")
+    return certificate
+
+
+@lru_cache(maxsize=1)
+def replay_prime_seven_intervals() -> IntervalReplayCertificate:
+    return _adapt_replay(replay_interval_separation(build_smooth_prime_seven()))
+
+
+@lru_cache(maxsize=1)
+def replay_prime_five_intervals() -> IntervalReplayCertificate:
+    return _adapt_replay(replay_interval_separation(build_smooth_prime_five()))
+
+
+def _integer_rank(matrix: Sequence[Sequence[int]]) -> int:
+    rows = [[Fraction(value) for value in row] for row in matrix]
+    if not rows:
+        return 0
+    row_count = len(rows)
+    column_count = len(rows[0])
+    rank = 0
+    for column in range(column_count):
+        pivot = next((index for index in range(rank, row_count) if rows[index][column]), None)
+        if pivot is None:
+            continue
+        rows[rank], rows[pivot] = rows[pivot], rows[rank]
+        pivot_value = rows[rank][column]
+        rows[rank] = [value / pivot_value for value in rows[rank]]
+        for index in range(row_count):
+            if index == rank or rows[index][column] == 0:
+                continue
+            factor = rows[index][column]
+            rows[index] = [a - factor * b for a, b in zip(rows[index], rows[rank])]
+        rank += 1
+        if rank == row_count:
+            break
+    return rank
+
+
+def _bareiss_determinant(matrix: Sequence[Sequence[int]]) -> int:
+    values = [list(map(int, row)) for row in matrix]
+    size = len(values)
+    if any(len(row) != size for row in values):
+        raise IntervalBoundaryError("determinant requires a square matrix")
+    if size == 0:
+        return 1
+    sign = 1
+    denominator = 1
+    for pivot_index in range(size - 1):
+        pivot_row = next(
+            (row for row in range(pivot_index, size) if values[row][pivot_index]),
+            None,
+        )
+        if pivot_row is None:
+            return 0
+        if pivot_row != pivot_index:
+            values[pivot_index], values[pivot_row] = values[pivot_row], values[pivot_index]
+            sign *= -1
+        pivot = values[pivot_index][pivot_index]
+        for row in range(pivot_index + 1, size):
+            for column in range(pivot_index + 1, size):
+                numerator = values[row][column] * pivot - values[row][pivot_index] * values[pivot_index][column]
+                if numerator % denominator:
+                    raise IntervalBoundaryError("Bareiss division was not exact")
+                values[row][column] = numerator // denominator
+        denominator = pivot
+        for row in range(pivot_index + 1, size):
+            values[row][pivot_index] = 0
+    return sign * values[-1][-1]
+
+
+def _factor_integer(value: int) -> dict[str, int]:
+    number = abs(int(value))
+    factors: dict[str, int] = {}
+    divisor = 2
+    while divisor * divisor <= number:
+        while number % divisor == 0:
+            factors[str(divisor)] = factors.get(str(divisor), 0) + 1
+            number //= divisor
+        divisor += 1 if divisor == 2 else 2
+    if number > 1:
+        factors[str(number)] = factors.get(str(number), 0) + 1
+    return factors
+
+
+def _matrix_value_counts(matrix: Sequence[Sequence[int]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row_index, row in enumerate(matrix):
+        for column_index in range(row_index + 1, len(row)):
+            key = str(row[column_index])
+            counts[key] = counts.get(key, 0) + 1
+    return {key: counts[key] for key in sorted(counts, key=int)}
+
+
+def _alexander_torus_two_q(q: int) -> str:
+    q = abs(int(q))
+    if q == 1:
+        return "1"
+    genus = (q - 1) // 2
+    pieces: list[str] = []
+    sign = 1
+    for exponent in range(genus, -genus - 1, -1):
+        term = (
+            "1"
+            if exponent == 0
+            else "t"
+            if exponent == 1
+            else "t^-1"
+            if exponent == -1
+            else f"t^{exponent}"
+        )
+        if not pieces:
+            pieces.append(term if sign > 0 else f"-{term}")
+        else:
+            pieces.append((" + " if sign > 0 else " - ") + term)
+        sign *= -1
+    return "".join(pieces)
+
+
+@dataclass(frozen=True, slots=True)
+class BoundaryComponentCertificate:
+    carrier: str
+    longitudinal_degree: int
+    meridional_degree: int
+    natural_core_boundary_linking: int
+    knot_type: str
+    alexander_polynomial: str
+    determinant: int
+    seifert_genus: int
+    crossing_number: int
+    is_unknot: bool
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "carrier": self.carrier,
+            "boundary_period_turns": fraction_text(BOUNDARY_PERIOD_TURNS),
+            "cable_class": [self.longitudinal_degree, self.meridional_degree],
+            "natural_orientation_core_boundary_linking": self.natural_core_boundary_linking,
+            "knot_type_in_declared_ribbon_framing": self.knot_type,
+            "is_unknot": self.is_unknot,
+            "alexander_polynomial": self.alexander_polynomial,
+            "determinant": self.determinant,
+            "seifert_genus": self.seifert_genus,
+            "crossing_number": self.crossing_number,
+        }
+
+
+def _boundary_component(ribbon: SmoothPrimeRibbon, carrier: str) -> BoundaryComponentCertificate:
+    winding = ribbon.base.phase_law.center_winding if carrier == "C" else 0
+    meridional = 1 + 2 * winding
+    is_unknot = abs(meridional) == 1
+    return BoundaryComponentCertificate(
+        carrier=carrier,
+        longitudinal_degree=2,
+        meridional_degree=meridional,
+        natural_core_boundary_linking=-meridional,
+        knot_type=f"T(2,{meridional})",
+        alexander_polynomial=_alexander_torus_two_q(meridional),
+        determinant=abs(meridional),
+        seifert_genus=(abs(meridional) - 1) // 2,
+        crossing_number=0 if is_unknot else abs(meridional),
+        is_unknot=is_unknot,
+    )
+
+
+def _adapt_boundary_component(
+    item: ReadableBoundaryComponentInvariant,
+) -> BoundaryComponentCertificate:
+    """Translate the recovered legacy orientation and field names explicitly."""
+    return BoundaryComponentCertificate(
+        carrier=item.carrier,
+        longitudinal_degree=item.longitudinal_winding,
+        meridional_degree=item.meridional_winding,
+        natural_core_boundary_linking=-item.core_boundary_linking,
+        knot_type=f"T(2,{item.meridional_winding})",
+        alexander_polynomial=_alexander_torus_two_q(item.meridional_winding),
+        determinant=item.determinant,
+        seifert_genus=item.genus,
+        crossing_number=item.crossing_number,
+        is_unknot=abs(item.meridional_winding) == 1,
+    )
+
+
+def _scaled_matrix(matrix: Sequence[Sequence[int]], scale: int) -> tuple[tuple[int, ...], ...]:
+    return tuple(tuple(scale * int(value) for value in row) for row in matrix)
+
+
+def _mixed_matrix(
+    core_matrix: Sequence[Sequence[int]],
+    components: Sequence[BoundaryComponentCertificate],
+) -> tuple[tuple[int, ...], ...]:
+    size = len(core_matrix)
+    cross = []
+    for row in range(size):
+        cross.append(
+            [
+                components[row].natural_core_boundary_linking
+                if row == column
+                else 2 * int(core_matrix[row][column])
+                for column in range(size)
+            ]
+        )
+    boundary = _scaled_matrix(core_matrix, 4)
+    full = []
+    for row in range(size):
+        full.append(tuple(int(value) for value in core_matrix[row]) + tuple(cross[row]))
+    for row in range(size):
+        full.append(tuple(cross[column][row] for column in range(size)) + tuple(boundary[row]))
+    return tuple(full)
+
+
+def _triple_census(
+    order: Sequence[str],
+    matrix: Sequence[Sequence[int]],
+) -> dict[str, object]:
+    support_counts = {0: 0, 1: 0, 2: 0, 3: 0}
+    algebraically_split: list[tuple[str, str, str]] = []
+    for indices in itertools.combinations(range(len(order)), 3):
+        support = sum(
+            matrix[left][right] != 0
+            for left, right in itertools.combinations(indices, 2)
+        )
+        support_counts[support] += 1
+        if support == 0:
+            algebraically_split.append(tuple(order[index] for index in indices))
+    return {
+        "pairwise_nonzero_edge_count_distribution": {
+            str(key): support_counts[key] for key in sorted(support_counts)
+        },
+        "algebraically_split_triple_count": len(algebraically_split),
+        "algebraically_split_triples": [list(item) for item in algebraically_split],
+        "milnor_mu123_standing": (
+            "not computed; these triples are the exact candidates for a link-group or C-complex calculation"
+        ),
+    }
+
+
+@dataclass(frozen=True, slots=True)
+class BoundaryInvariantCertificate:
+    prime: int
+    carrier_order: tuple[str, ...]
+    components: tuple[BoundaryComponentCertificate, ...]
+    core_linking_matrix: tuple[tuple[int, ...], ...]
+    boundary_linking_matrix: tuple[tuple[int, ...], ...]
+    mixed_core_boundary_matrix: tuple[tuple[int, ...], ...]
+    interval_replay: IntervalReplayCertificate
+
+    @property
+    def boundary_rank(self) -> int:
+        return _integer_rank(self.boundary_linking_matrix)
+
+    @property
+    def boundary_nullity(self) -> int:
+        return len(self.boundary_linking_matrix) - self.boundary_rank
+
+    @property
+    def boundary_determinant(self) -> int:
+        return _bareiss_determinant(self.boundary_linking_matrix)
+
+    @property
+    def mixed_rank(self) -> int:
+        return _integer_rank(self.mixed_core_boundary_matrix)
+
+    @property
+    def mixed_nullity(self) -> int:
+        return len(self.mixed_core_boundary_matrix) - self.mixed_rank
+
+    @property
+    def mixed_determinant(self) -> int:
+        return _bareiss_determinant(self.mixed_core_boundary_matrix)
+
+    @property
+    def payload(self) -> dict[str, object]:
+        result: dict[str, object] = {
+            "prime": self.prime,
+            "carrier_order": list(self.carrier_order),
+            "interval_replay": self.interval_replay.as_dict(),
+            "boundary_extraction": {
+                "boundary_components": self.prime,
+                "one_component_per_mobius_ribbon": True,
+                "parameterization": "B_i(t)=X_i(t,+w), 0<=t<2",
+                "one_turn_relation": "B_i(t+1)=X_i(t,-w)",
+                "two_turn_closure": "B_i(t+2)=B_i(t)",
+                "components": [item.as_dict() for item in self.components],
+            },
+            "boundary_linking": {
+                "theorem": "[B_i]=2[C_i] in the complement of every other disjoint ribbon, so lk(B_i,B_j)=4*lk(C_i,C_j)",
+                "matrix": [list(row) for row in self.boundary_linking_matrix],
+                "value_counts": _matrix_value_counts(self.boundary_linking_matrix),
+                "rank_over_Q": self.boundary_rank,
+                "nullity_over_Q": self.boundary_nullity,
+                "determinant": self.boundary_determinant,
+                "technical_boundary_link_status": (
+                    "not a boundary link in the knot-theoretic sense because some pairwise linking numbers are nonzero"
+                ),
+            },
+            "mixed_core_boundary_link": {
+                "component_order": [
+                    *(f"core:{item}" for item in self.carrier_order),
+                    *(f"boundary:{item}" for item in self.carrier_order),
+                ],
+                "orientation_convention": (
+                    "core and boundary parameters increase; self core-boundary links are -(1+2*phase winding)"
+                ),
+                "off_diagonal_laws": {
+                    "core_i_boundary_j": "2*lk(core_i,core_j), i!=j",
+                    "boundary_i_boundary_j": "4*lk(core_i,core_j), i!=j",
+                },
+                "matrix": [list(row) for row in self.mixed_core_boundary_matrix],
+                "rank_over_Q": self.mixed_rank,
+                "nullity_over_Q": self.mixed_nullity,
+                "determinant": self.mixed_determinant,
+                "absolute_determinant_factorization": _factor_integer(self.mixed_determinant),
+            },
+            "higher_order_boundary": _triple_census(
+                self.carrier_order,
+                self.boundary_linking_matrix,
+            ),
+            "compatibility": {
+                "implementation": "readable PR #181 boundary-link certificate",
+                "legacy_source_sha256": RECOVERED_LEGACY_SOURCE_SHA256,
+                "orientation_adapter": "legacy own-core linking is the negative of the readable certificate convention",
+            },
+            "nonclaims": [
+                "not an independently verified interval kernel or proof-assistant replay",
+                "not a computation of Milnor triple invariants",
+                "not a multivariable Alexander polynomial of the complete boundary link",
+                "not a complete ambient-isotopy classification",
+                "not an arithmetic redefinition of primality",
+                "not an electron ontology or Pauli-exclusion derivation",
+                "not a spectral operator, prime-power law, zeta-zero correspondence, or proof of the Riemann hypothesis",
+            ],
+        }
+        canonical = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        result["payload_sha256"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        return result
+
+
+def _certify_boundaries(
+    ribbon: SmoothPrimeRibbon,
+    interval_replay: IntervalReplayCertificate,
+) -> BoundaryInvariantCertificate:
+    readable = build_boundary_link_certificate(ribbon)
+    core = readable.core_matrix.matrix
+    components = tuple(_adapt_boundary_component(item) for item in readable.components)
+    boundary = readable.boundary_matrix.matrix
+    mixed = _mixed_matrix(core, components)
+    certificate = BoundaryInvariantCertificate(
+        prime=ribbon.prime,
+        carrier_order=ribbon.carriers,
+        components=components,
+        core_linking_matrix=core,
+        boundary_linking_matrix=boundary,
+        mixed_core_boundary_matrix=mixed,
+        interval_replay=interval_replay,
+    )
+    if certificate.mixed_rank != 2 * ribbon.prime:
+        raise IntervalBoundaryError("mixed core-boundary matrix unexpectedly singular")
+    return certificate
+
+
+@lru_cache(maxsize=1)
+def certify_prime_seven_boundaries() -> BoundaryInvariantCertificate:
+    return _certify_boundaries(
+        build_smooth_prime_seven(),
+        replay_prime_seven_intervals(),
+    )
+
+
+@lru_cache(maxsize=1)
+def certify_prime_five_boundaries() -> BoundaryInvariantCertificate:
+    return _certify_boundaries(
+        build_smooth_prime_five(),
+        replay_prime_five_intervals(),
+    )
+
+
+@lru_cache(maxsize=1)
+def interval_boundary_family_certificate() -> dict[str, object]:
+    p7 = certify_prime_seven_boundaries()
+    p5 = certify_prime_five_boundaries()
+    result: dict[str, object] = {
+        "schema_id": f"{SCHEMA_ID}.family",
+        "schema_version": SCHEMA_VERSION,
+        "authority": "Erin Spencer",
+        "recorded_on": "2026-08-11",
+        "selection_effect": "none",
+        "research_order": [7, 5],
+        "source": {
+            "name": SOURCE_NAME,
+            "sha256": SOURCE_SHA256,
+            "line_basis": list(SOURCE_LINES),
+        },
+        "p7": p7.payload,
+        "p5": p5.payload,
+        "comparison": {
+            "same_protocol": True,
+            "p7_center_boundary_knot": p7.components[0].knot_type,
+            "p5_center_boundary_knot": p5.components[0].knot_type,
+            "p7_boundary_link_rank": p7.boundary_rank,
+            "p5_boundary_link_rank": p5.boundary_rank,
+            "p7_mixed_absolute_determinant": abs(p7.mixed_determinant),
+            "p5_mixed_absolute_determinant": abs(p5.mixed_determinant),
+            "standing": "P5 is independently reconstructed and processed only after P7",
+        },
+        "next": [
+            "replay the interval certificate in an independently verified kernel or proof assistant",
+            "compute Milnor invariants for the enumerated algebraically split triples",
+            "compute a multivariable Alexander or equivalent complete-link invariant",
+            "only then define a spectral object",
+        ],
+        "nonclaims": [
+            "no arithmetic redefinition",
+            "no complete ambient-isotopy classification",
+            "no zeta theorem",
+            "no proof of the Riemann hypothesis",
+        ],
+    }
+    canonical = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    result["payload_sha256"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    return result
+
+
+def write_interval_boundary_family_certificate(
+    path: str | Path,
+    *,
+    indent: int = 2,
+) -> Path:
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps(
+            interval_boundary_family_certificate(),
+            indent=indent,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return output
+
+
+def render_boundary_obj(
+    ribbon: SmoothPrimeRibbon,
+    *,
+    samples_per_boundary: int = 512,
+) -> str:
+    if isinstance(samples_per_boundary, bool) or samples_per_boundary < 32:
+        raise IntervalBoundaryError("samples_per_boundary must be an integer >= 32")
+    lines = [
+        f"# P{ribbon.prime} continuous Möbius boundary curves",
+        "# one boundary component per ribbon; each uses a two-turn parameter domain",
+        f"# interval-derived ribbon separation lower bound {fraction_text(RIBBON_SEPARATION_LOWER_BOUND)}",
+    ]
+    vertex_offset = 1
+    for carrier in ribbon.carriers:
+        component = _boundary_component(ribbon, carrier)
+        lines.append(
+            f"# {carrier} cable T(2,{component.meridional_degree}) core-boundary linking {component.natural_core_boundary_linking}"
+        )
+        indices = []
+        for index in range(samples_per_boundary):
+            turn = Fraction(2 * index, samples_per_boundary)
+            x, y, z = ribbon.surface_point(carrier, turn, ribbon.half_width)
+            lines.append(f"v {x:.17g} {y:.17g} {z:.17g}")
+            indices.append(vertex_offset + index)
+        lines.append("l " + " ".join(map(str, (*indices, indices[0]))))
+        vertex_offset += samples_per_boundary
+    return "\n".join(lines) + "\n"
+
+
+def render_core_boundary_obj(
+    ribbon: SmoothPrimeRibbon,
+    *,
+    core_samples: int = 256,
+    boundary_samples: int = 512,
+) -> str:
+    if min(core_samples, boundary_samples) < 32:
+        raise IntervalBoundaryError("core and boundary samples must be >= 32")
+    lines = [
+        f"# P{ribbon.prime} cores and one-component Möbius boundaries",
+        "# core objects precede boundary objects",
+    ]
+    vertex_offset = 1
+    for carrier in ribbon.carriers:
+        indices = []
+        for index in range(core_samples):
+            turn = Fraction(index, core_samples)
+            x, y, z = ribbon.centerline_point(carrier, turn)
+            lines.append(f"v {x:.17g} {y:.17g} {z:.17g}")
+            indices.append(vertex_offset + index)
+        lines.append("l " + " ".join(map(str, (*indices, indices[0]))))
+        vertex_offset += core_samples
+    boundary_text = render_boundary_obj(
+        ribbon,
+        samples_per_boundary=boundary_samples,
+    ).splitlines()
+    boundary_vertices = [line for line in boundary_text if line.startswith("v ")]
+    boundary_groups = [line for line in boundary_text if line.startswith("l ")]
+    for line in boundary_vertices:
+        lines.append(line)
+    for group in boundary_groups:
+        raw = [int(value) for value in group.split()[1:]]
+        adjusted = [value + vertex_offset - 1 for value in raw]
+        lines.append("l " + " ".join(map(str, adjusted)))
+    return "\n".join(lines) + "\n"

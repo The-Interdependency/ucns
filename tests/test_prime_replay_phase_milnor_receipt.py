@@ -30,6 +30,14 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+# id: check_prime_replay_data_receipt
+#   proves: prime_replay_data_is_receipt_witnessed
+#   call: self::test_receipt_is_deterministic_and_nonselecting
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # === END CHECKS ===
 
 from ucns.prime_replay_phase_milnor_receipt import SPLIT_TRIPLES, boundary_knot, build_receipt, validate_receipt

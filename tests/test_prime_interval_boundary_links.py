@@ -70,6 +70,46 @@
 #   timeout: 60
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
+# id: check_prime_boundary_helper_facade
+#   proves: prime_boundary_helper_is_facade_witnessed
+#   call: self::test_boundary_and_mixed_linking_blocks_follow_cable_homology
+#   requires: python3, sympy
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: check_prime_generic_helper_facade
+#   proves: prime_generic_helper_is_facade_witnessed
+#   call: self::test_generic_diagram_and_length_three_milnor_profile
+#   requires: python3, mpmath
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: check_prime_interval_common_facade
+#   proves: prime_interval_common_is_facade_witnessed
+#   call: self::test_outward_interval_replay_covers_every_pair
+#   requires: python3, mpmath
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: check_prime_interval_replay_helper_facade
+#   proves: prime_interval_replay_helper_is_facade_witnessed
+#   call: self::test_outward_interval_replay_covers_every_pair
+#   requires: python3, mpmath
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: check_prime_milnor_helper_facade
+#   proves: prime_milnor_helper_is_facade_witnessed
+#   call: self::test_generic_diagram_and_length_three_milnor_profile
+#   requires: python3, mpmath
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
 # === END CHECKS ===
 
 from fractions import Fraction

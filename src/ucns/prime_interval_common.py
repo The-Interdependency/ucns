@@ -1,3 +1,34 @@
+# === MODULE_BUILD ===
+# id: ucns_prime_interval_common
+#   module_name: prime_interval_common
+#   module_kind: experiment
+#   summary: shared constants and dependency guards for readable interval and boundary research
+#   owner: Erin Spencer
+#   public_surface: internal readable implementation used through the declared facade
+#   internal_surface: module implementation
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_interval_boundary_links.py
+#   rollout: readable implementation; authority remains with the facade contracts
+#   rollback: remove only with the owning consolidated research layer
+#   requires: ucns_prime_smooth_ribbons_p7_p5
+#   since: 2026-08-11
+#   unresolved: see owning facade contracts and research document
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# Internal helper: behavioral obligations are declared by the owning facade and witnessed by its tests.
+# id: prime_interval_common_is_facade_witnessed
+#   given: the owning facade invokes this readable helper
+#   then: the helper behavior is exercised through the named facade test without becoming a separate certificate
+#   class: evidence
+#   since: 2026-08-11
+#
+# === END CONTRACTS ===
+
 """Shared constants and dependency boundaries for interval and link research."""
 from __future__ import annotations
 

@@ -121,7 +121,7 @@ The complete fingerprint, rather than one favorable character, is the primary P7
 
 ## Stopping and failure rules
 
-- A nonintegral Magnus ceefficient is a failure of diagram or longitude construction.
+- A nonintegral Magnus coefficient is a failure of diagram or longitude construction.
 - Failure to recover Borromean `|mu|=1` blocks P7 Milnor claims.
 - A selector tie is retained as a tie; no new criterion may be added after evaluation.
 - Selection of a boundary degree other than `7` is accepted.

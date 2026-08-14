@@ -5,6 +5,12 @@
 #   summary: freezes the independent P7/P5 interval replay, phase-winding sensitivity, and length-three P7 Milnor audit while preserving the executable reference packet as the producing evidence
 #   owner: Erin Spencer
 #   public_surface: boundary_knot, validate_receipt, build_receipt
+#   internal_surface: immutable base receipt validation and deterministic payload hashing
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
 #   tests: tests/test_prime_replay_phase_milnor_receipt.py
 #   rollout: compact GitHub publication surface; selection effect none
 #   rollback: remove this module, its test, documents, and generated summary

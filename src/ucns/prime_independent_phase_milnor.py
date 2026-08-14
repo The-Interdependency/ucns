@@ -1,3 +1,62 @@
+# === MODULE_BUILD ===
+# id: ucns_prime_independent_phase_milnor
+#   module_name: prime_independent_phase_milnor
+#   module_kind: experiment
+#   summary: compact executable representation of the independent interval replay, phase sensitivity, and numerical Milnor extraction
+#   owner: Erin Spencer
+#   public_surface: independent MPFR replay, phase sensitivity report, Fourier Milnor estimate, P7 triple resolution
+#   internal_surface: zlib-compressed byte-exact validated readable implementation
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_independent_phase_milnor.py
+#   rollout: independent replay and negative-result evidence; numerical extraction is not promoted to exact computation
+#   rollback: remove with its tests and independent research documents
+#   requires: ucns_mpfr_interval, ucns_prime_smooth_ribbons_p7_p5
+#   since: 2026-08-11
+#   unresolved: analytic proof of all numerical zero resolutions
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_phase_sensitivity_separates_selection_from_emergence
+#   given: every equal-gap phase alternative is enumerated
+#   then: the selected winding is identified without treating it as prime-specific emergence
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_phase_sensitivity_torus_seven_is_not_forced
+#   given: P7 and P5 maximum-gap candidates are compared
+#   then: their shared knot-degree alternatives preserve the negative result that T two-seven is not forced by prime alone
+#   class: falsifier
+#   since: 2026-08-11
+#
+# id: prime_milnor_fourier_benchmark_recovers_borromean
+#   given: the numerical Fourier extractor is benchmarked
+#   then: it converges to the declared Borromean value under the recorded convention
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_milnor_p7_split_triples_resolve_numerically_to_zero
+#   given: the five split P7 triples are evaluated across increasing resolutions
+#   then: every estimate converges numerically toward zero
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_milnor_exactness_boundary_is_preserved
+#   given: numerical estimates resolve near integers
+#   then: numerical resolution is not represented as an exact theorem
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_independent_phase_milnor_receipt_is_nonselecting
+#   given: independent replay findings are summarized
+#   then: negative and numerical results retain explicit nonclaims
+#   class: doctrine
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
 # Compact executable publication wrapper.
 # The canonical readable source is preserved in the signed research packet and strict patch.
 # This wrapper expands the byte-exact validated implementation at import time.

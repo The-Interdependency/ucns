@@ -1,3 +1,38 @@
+# === MODULE_BUILD ===
+# id: ucns_mpfr_interval
+#   module_name: mpfr_interval
+#   module_kind: experiment
+#   summary: provides direct system-MPFR outward-rounded interval primitives for an independent P7/P5 separation replay
+#   owner: Erin Spencer
+#   public_surface: MPNumber, MPInterval, mpfr_version
+#   internal_surface: ctypes MPFR bindings with explicit directed rounding modes
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_independent_phase_milnor.py
+#   rollout: independent interval backend only; certificate status does not transfer
+#   rollback: remove with prime_independent_phase_milnor and its tests
+#   requires: system libmpfr
+#   since: 2026-08-11
+#   unresolved: proof-assistant verification of the MPFR binding
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_mpfr_replay_is_backend_independent
+#   given: the frozen P7/P5 partition is replayed
+#   then: direct system MPFR is used instead of the primary mpmath interval backend and the pinned partition identities match
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_mpfr_replay_recertifies_ribbon_margin
+#   given: every frozen pair box is replayed with directed MPFR endpoints
+#   then: both prime candidates retain lower endpoints above the declared centerline margin
+#   class: evidence
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
 """Minimal outward-rounded interval arithmetic backed directly by system MPFR.
 
 This module deliberately avoids ``mpmath.iv``.  It calls ``libmpfr`` through
