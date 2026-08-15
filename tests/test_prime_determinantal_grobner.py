@@ -64,4 +64,5 @@ def test_independent_replay_is_exact():
     for p in (7,5): assert _receipt(p)["independent_replay"]=={"canonical_basis_equal":True,"mutual_reduction":True}
 def test_result_document_preserves_research_boundary():
     text=(ROOT/"docs/UCNS_P7_P5_DETERMINANTAL_GROEBNER_RESULTS.md").read_text()
+    assert "direct-minor audit pending" in text
     assert "rational-Laurent" in text and "does not" in text and "Length-four Milnor" in text

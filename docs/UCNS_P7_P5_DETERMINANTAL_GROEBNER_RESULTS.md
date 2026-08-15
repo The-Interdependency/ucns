@@ -1,11 +1,16 @@
 # P7/P5 complete rational-Laurent determinantal ideals
 
+**Status:** provisional computation receipts; preregistered direct-minor audit pending
+
 **Protocol identity:** `7841af162698efb823db79b70ef7b99a5ac53d27e2bbb318f97f36aecae515b4`
 
 ## Result
 
-The preregistered complete computations succeeded and independent exact
-Buchberger replay returned the same canonical reduced lex bases.
+Complete compound-family computation succeeded and independent exact Buchberger
+replay returned the same canonical reduced lex bases. The protocol is not yet
+closed: its frozen SHA-selected direct full-minor audit set has not been run.
+Until that audit passes, these are provisional computation receipts rather than
+completed protocol certificates.
 
 | case | all subset pairs | nonzero products | normalized generators | reduced basis |
 |---|---:|---:|---:|---:|
@@ -30,8 +35,9 @@ multivariable basis recorded coefficient-for-coefficient in its receipt.
 
 ## Boundary
 
-These are complete reduced bases after scalar extension to `QQ` and localization
-at component variables. The result does not establish an integral-Laurent strong
+Conditional on the pending direct-minor audit, these are complete reduced bases
+after scalar extension to `QQ` and localization at component variables. The
+current result does not establish an integral-Laurent strong
 basis or integer torsion. It does not select a phase law, classify ambient
 isotopy, force a prime, define a spectral object, support a zeta correspondence,
 or escalate theorem status.
