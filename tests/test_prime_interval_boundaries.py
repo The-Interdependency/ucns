@@ -55,13 +55,21 @@
 #   mutates: none
 #   cleanup: none
 #
-# id: check_prime_interval_boundary_receipt
-#   proves: prime_interval_boundary_receipt_is_nonselecting
+# id: check_prime_interval_boundary_compact_receipt
+#   proves: prime_interval_boundary_compact_receipt_is_nonselecting
 #   call: self::test_receipt_and_boundary_exports_are_deterministic_and_firewalled
 #   requires: python3, mpmath
 #   timeout: 40
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
+#
+# id: check_prime_legacy_readable_adapter
+#   proves: prime_interval_replay_uses_outward_endpoints
+#   call: self::test_legacy_surface_is_an_explicit_adapter_over_readable_evidence
+#   requires: python3, mpmath, sympy
+#   timeout: 40
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from fractions import Fraction
@@ -85,6 +93,20 @@ from ucns.prime_smooth_ribbons import (
     build_smooth_prime_five,
     build_smooth_prime_seven,
 )
+from ucns.prime_interval_boundary_links import certify_interval_boundary_prime_seven
+
+
+def test_legacy_surface_is_an_explicit_adapter_over_readable_evidence() -> None:
+    legacy = certify_prime_seven_boundaries()
+    readable = certify_interval_boundary_prime_seven()
+
+    assert legacy.interval_replay.total_boxes_evaluated == readable.interval_separation.total_boxes_evaluated
+    assert legacy.core_linking_matrix == readable.boundary_link.core_matrix.matrix
+    assert legacy.boundary_linking_matrix == readable.boundary_link.boundary_matrix.matrix
+    assert legacy.components[0].natural_core_boundary_linking == -readable.boundary_link.components[0].core_boundary_linking
+    compatibility = legacy.payload["compatibility"]
+    assert compatibility["implementation"] == "readable PR #181 boundary-link certificate"
+    assert compatibility["legacy_source_sha256"] == "6a79463856ea0171d7d29881fdb7e66780fab29779ff1c5fd1b71eaae7f9fc3c"
 
 
 def test_interval_replay_closes_every_complete_parameter_torus() -> None:

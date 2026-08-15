@@ -16,9 +16,9 @@ jobs:
       matrix:
         python-version: ["3.10", "3.12"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Checkout pinned skill-lib authority
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/skill-lib
           ref: 2b24be24947223b86440f59f1bd9766130f9cc11
@@ -33,13 +33,13 @@ jobs:
             doctrine
             tools/check_consumer_drift.py
           sparse-checkout-cone-mode: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install verification dependencies
         run: python -m pip install --upgrade pip pytest build twine
       - name: Install package
-        run: python -m pip install -e .
+        run: python -m pip install -e ".[test]"
       - name: Check vendored skill-lib drift
         run: >-
           python .skill-lib-canon/tools/check_consumer_drift.py .

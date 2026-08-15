@@ -1,6 +1,1486 @@
-# Compact executable publication wrapper.
-# The canonical readable source is preserved in the signed research packet and strict patch.
-# This wrapper expands the byte-exact validated implementation at import time.
-import base64 as _b64, zlib as _zlib
-_SOURCE_ZLIB_B64 = "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"
-exec(compile(_zlib.decompress(_b64.b64decode(_SOURCE_ZLIB_B64)).decode("utf-8"), __file__, "exec"), globals(), globals())
+# === MODULE_BUILD ===
+# id: ucns_prime_exact_milnor_alexander_p7_p5
+#   module_name: prime_exact_milnor_alexander
+#   module_kind: experiment
+#   summary: generically resolves the P7/P5 centerline diagrams, replaces the five numerical Milnor-zero candidates with exact degree-two Magnus coefficients, freezes and evaluates a prime-character Fox-Alexander phase selector, and issues whole-link rank fingerprints
+#   owner: Erin Spencer
+#   public_surface: DiagramCrossing, GenericLinkDiagram, MilnorIntegerCertificate, FoxRankFingerprint, PhaseSelectorResult, build_generic_prime_seven_diagram, build_generic_prime_five_diagram, exact_p7_milnor_certificates, fox_rank_fingerprint, common_field_fox_rank_fingerprint, evaluate_preregistered_phase_selector, exact_milnor_alexander_family_certificate, write_exact_milnor_alexander_family_certificate
+#   internal_surface: fixed planar translations, high-precision circle intersections, Wirtinger arcs, degree-two Magnus algebra, finite-field Fox derivatives, exact rational phase-lift energy
+#   auth_boundary: none
+#   storage_boundary: caller-supplied local paths only through writer functions
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_prime_exact_milnor_alexander.py
+#   rollout: P7 first, P5 same-protocol comparison second; preregistration SHA-256 frozen before evaluation; selection effect none
+#   rollback: remove this module, its tests, documentation, preregistration, and generated certificate
+#   requires: ucns_prime_independent_phase_milnor_p7_p5, mpmath>=1.3
+#   since: 2026-08-11
+#   unresolved: proof-assistant replay of diagram signs, full multivariable Alexander polynomial, ambient-isotopy classification, higher Milnor invariants, spectral operator, prime-power law, zeta correspondence
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: prime_generic_diagram_is_fixed_before_invariants
+#   given: the P7 or P5 diagram is constructed
+#   then: every component uses the preregistered rational planar translation and the straight-line isotopy remains inside the prior seven-hundredths ribbon clearance
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_generic_diagram_preserves_pairwise_linking
+#   given: all generic double crossings are signed
+#   then: their half-sums reproduce the previously certified complete P7 and P5 pairwise linking matrices
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_magnus_benchmark_recovers_borromean_integer
+#   given: the closure of the braid sigma-one sigma-two-inverse cubed is evaluated
+#   then: the degree-two preferred-longitude Magnus coefficient has absolute value one
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_p7_five_milnor_candidates_are_exact_zero_in_diagram
+#   given: the five pairwise-zero P7 triples are evaluated in the fixed generic diagram
+#   then: every degree-two Magnus coefficient is exactly the integer zero
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_phase_selector_matches_frozen_preregistration
+#   given: the phase selector is evaluated
+#   then: its document hash equals the preregistered hash and no post-evaluation criterion is added
+#   class: doctrine
+#   since: 2026-08-11
+#
+# id: prime_phase_selector_uses_whole_link_character
+#   given: an admissible phase law is scored
+#   then: the score uses maximum phase gap, finite-field Fox-Alexander excess nullity, and exact phase-lift alignment energy before neutral tie breakers
+#   class: correctness
+#   since: 2026-08-11
+#
+# id: prime_fox_fingerprint_covers_all_prime_characters
+#   given: a P7 or P5 whole-link fingerprint is issued
+#   then: every distinct phase-induced prime character has a rank and excess-nullity value committed by SHA-256
+#   class: evidence
+#   since: 2026-08-11
+#
+# id: prime_exact_milnor_alexander_receipt_is_nonselecting
+#   given: the family certificate is serialized
+#   then: it claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof
+#   class: doctrine
+#   since: 2026-08-11
+# === END CONTRACTS ===
+
+"""Exact diagram-level Milnor and finite-character Fox-Alexander experiment.
+
+The P7 and P5 lifted centerlines are first moved by fixed, preregistered small
+translations in the projection plane.  The earlier finite-width certificate
+leaves enough clearance for the simultaneous straight-line translation, so the
+new generic diagrams represent the same centerline links.  Circle intersections
+are evaluated at 100 decimal digits; all accepted crossing signs have explicit
+nonzero height and transversality margins.
+
+For pairwise-zero triples, preferred longitudes are constructed from Wirtinger
+arcs.  Their noncommutative Magnus expansions are evaluated exactly through
+degree two with :class:`fractions.Fraction`.  The implementation is blocked
+unless it recovers ``|mu|=1`` for the closure of ``(sigma_1 sigma_2^-1)^3``.
+
+The phase selector was frozen in ``docs/PREREGISTRATION_P7_PHASE_ALEXANDER.md``
+before evaluation.  Its whole-link term is the excess nullity of a Fox matrix
+specialized at a prime-order character over F_29 for P7 and F_11 for P5.
+"""
+
+from __future__ import annotations
+
+from collections import Counter
+from dataclasses import dataclass, replace
+from functools import lru_cache
+from fractions import Fraction
+import bisect
+import hashlib
+import itertools
+import json
+import math
+from pathlib import Path
+from typing import Iterable, Mapping, Sequence
+
+import mpmath as mp
+
+from .prime_independent_phase_milnor import P7_SPLIT_TRIPLES
+from .prime_phase_lift import _dataset, build_prime_five_phase_lift, build_prime_seven_phase_lift
+from .prime_phase_lift_model import PhaseLaw, _min_gap, _mod1, _outer
+from .prime_smooth_ribbons import (
+    SmoothPrimeRibbon,
+    build_smooth_prime_five,
+    build_smooth_prime_seven,
+    certify_smooth_prime_five,
+    certify_smooth_prime_seven,
+)
+
+SCHEMA_ID = "ucns.prime-exact-milnor-alexander"
+SCHEMA_VERSION = "0.1.0"
+SOURCE_NAME = "Möbius Strips and Quantum Geometry.txt"
+SOURCE_SHA256 = "dc3a94ca5070ffff8f2a246f48db77192b08f521e721bc7c2a011aa05ddeb9a1"
+SOURCE_LINES = (5, 6, 13, 14, 15, 16, 17)
+PREREGISTRATION_DOCUMENT = "docs/PREREGISTRATION_P7_PHASE_ALEXANDER.md"
+PREREGISTRATION_SHA256 = "f8f1a6eae5de2c8235a576266a140c93492554248c2756d838845a19240b23cc"
+PROJECTION_EPSILON = Fraction(1, 1000)
+PRIOR_RIBBON_CLEARANCE = Fraction(7, 100)
+MP_DECIMAL_DIGITS = 100
+MINIMUM_ACCEPTED_HEIGHT_GAP = mp.mpf("0.09")
+MINIMUM_ACCEPTED_TRANSVERSALITY = mp.mpf("0.05")
+MINIMUM_ACCEPTED_CROSSING_POINT_GAP = mp.mpf("0.0001")
+FIELD_MODULUS = {7: 29, 5: 11}
+FIELD_PRIMITIVE_ROOT = {7: 2, 5: 2}
+COMMON_FIELD_MODULUS = 71
+COMMON_FIELD_PRIMITIVE_ROOT = 7
+
+SHIFT_VECTORS: Mapping[str, tuple[int, int]] = {
+    "C": (0, 0),
+    "R0": (1, 2),
+    "R1": (-2, 1),
+    "R2": (3, -1),
+    "R3": (-1, -3),
+    "R4": (2, -2),
+    "R5": (-3, 3),
+}
+
+
+class ExactMilnorAlexanderError(ValueError):
+    """Raised when a frozen experiment boundary is violated."""
+
+
+def fraction_text(value: Fraction) -> str:
+    return str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
+
+
+def _mp_fraction(value: Fraction) -> mp.mpf:
+    return mp.mpf(value.numerator) / value.denominator
+
+
+def _sign(value: mp.mpf) -> int:
+    if value > 0:
+        return 1
+    if value < 0:
+        return -1
+    return 0
+
+
+def _canonical_json_sha256(payload: object) -> str:
+    text = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _center_coordinates(prime: int) -> dict[str, tuple[mp.mpf, mp.mpf]]:
+    zero = mp.mpf("0")
+    one = mp.mpf("1")
+    if prime == 5:
+        base = {
+            "C": (zero, zero),
+            "R0": (one, zero),
+            "R1": (zero, one),
+            "R2": (-one, zero),
+            "R3": (zero, -one),
+        }
+    elif prime == 7:
+        half = mp.mpf("0.5")
+        root_three_half = mp.sqrt(3) / 2
+        base = {
+            "C": (zero, zero),
+            "R0": (one, zero),
+            "R1": (half, root_three_half),
+            "R2": (-half, root_three_half),
+            "R3": (-one, zero),
+            "R4": (-half, -root_three_half),
+            "R5": (half, -root_three_half),
+        }
+    else:
+        raise ExactMilnorAlexanderError("only P7 and P5 are supported")
+    epsilon = _mp_fraction(PROJECTION_EPSILON)
+    return {
+        carrier: (
+            point[0] + epsilon * SHIFT_VECTORS[carrier][0],
+            point[1] + epsilon * SHIFT_VECTORS[carrier][1],
+        )
+        for carrier, point in base.items()
+    }
+
+
+def _smooth_lift_mp(ribbon: SmoothPrimeRibbon, carrier: str, turn: mp.mpf) -> mp.mpf:
+    target = mp.fmod(turn, 1)
+    if target < 0:
+        target += 1
+    field = ribbon.field(carrier)
+    for index, segment in enumerate(field.segments):
+        left_turn = _mp_fraction(segment.left_turn)
+        right_turn = _mp_fraction(segment.right_turn)
+        adjusted = target
+        if index == len(field.segments) - 1 and adjusted < left_turn:
+            adjusted += 1
+        if left_turn <= adjusted <= right_turn:
+            left_value = _mp_fraction(segment.left_value)
+            right_value = _mp_fraction(segment.right_value)
+            if adjusted == left_turn:
+                return left_value
+            if adjusted == right_turn:
+                return right_value
+            local = (adjusted - left_turn) / (right_turn - left_turn)
+            a = mp.e ** (-1 / local)
+            b = mp.e ** (-1 / (1 - local))
+            step = a / (a + b)
+            return left_value + (right_value - left_value) * step
+    raise AssertionError("high-precision smooth-field interval search failed")
+
+
+def _circle_intersections(
+    left_center: tuple[mp.mpf, mp.mpf],
+    right_center: tuple[mp.mpf, mp.mpf],
+) -> tuple[tuple[mp.mpf, mp.mpf], ...]:
+    dx = right_center[0] - left_center[0]
+    dy = right_center[1] - left_center[1]
+    distance = mp.sqrt(dx * dx + dy * dy)
+    if distance >= 2:
+        return ()
+    if distance <= 0:
+        raise ExactMilnorAlexanderError("coincident projected carrier centers")
+    height_squared = 1 - distance * distance / 4
+    if height_squared <= 0:
+        raise ExactMilnorAlexanderError("generic projection retained a tangency")
+    height = mp.sqrt(height_squared)
+    midpoint = (
+        (left_center[0] + right_center[0]) / 2,
+        (left_center[1] + right_center[1]) / 2,
+    )
+    perpendicular = (-dy / distance, dx / distance)
+    return (
+        (
+            midpoint[0] + height * perpendicular[0],
+            midpoint[1] + height * perpendicular[1],
+        ),
+        (
+            midpoint[0] - height * perpendicular[0],
+            midpoint[1] - height * perpendicular[1],
+        ),
+    )
+
+
+def _turn_at(
+    point: tuple[mp.mpf, mp.mpf],
+    center: tuple[mp.mpf, mp.mpf],
+) -> mp.mpf:
+    angle = mp.atan2(point[1] - center[1], point[0] - center[0])
+    turn = angle / (2 * mp.pi)
+    return turn if turn >= 0 else turn + 1
+
+
+@dataclass(frozen=True, slots=True)
+class DiagramCrossing:
+    crossing_id: str
+    left: str
+    right: str
+    left_turn: str
+    right_turn: str
+    point_x: str
+    point_y: str
+    left_height: str
+    right_height: str
+    over: str
+    under: str
+    over_turn: str
+    under_turn: str
+    sign: int
+    absolute_height_gap: str
+    absolute_transversality: str
+
+    @property
+    def left_turn_mpf(self) -> mp.mpf:
+        return mp.mpf(self.left_turn)
+
+    @property
+    def right_turn_mpf(self) -> mp.mpf:
+        return mp.mpf(self.right_turn)
+
+    @property
+    def over_turn_mpf(self) -> mp.mpf:
+        return mp.mpf(self.over_turn)
+
+    @property
+    def under_turn_mpf(self) -> mp.mpf:
+        return mp.mpf(self.under_turn)
+
+    @property
+    def point(self) -> tuple[mp.mpf, mp.mpf]:
+        return mp.mpf(self.point_x), mp.mpf(self.point_y)
+
+    def turn_for(self, carrier: str) -> mp.mpf:
+        if carrier == self.left:
+            return self.left_turn_mpf
+        if carrier == self.right:
+            return self.right_turn_mpf
+        raise ExactMilnorAlexanderError(f"{carrier} is not incident to {self.crossing_id}")
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "crossing_id": self.crossing_id,
+            "components": [self.left, self.right],
+            "turns": {self.left: self.left_turn, self.right: self.right_turn},
+            "projected_point": [self.point_x, self.point_y],
+            "heights": {self.left: self.left_height, self.right: self.right_height},
+            "over": self.over,
+            "under": self.under,
+            "sign": self.sign,
+            "absolute_height_gap": self.absolute_height_gap,
+            "absolute_transversality": self.absolute_transversality,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class ArcGenerator:
+    index: int
+    component: str
+    local_index: int
+
+    @property
+    def label(self) -> str:
+        return f"{self.component}:a{self.local_index}"
+
+
+@dataclass(frozen=True, slots=True)
+class WirtingerRelation:
+    crossing_id: str
+    sign: int
+    over_arc: int
+    incoming_under_arc: int
+    outgoing_under_arc: int
+
+    @property
+    def word(self) -> tuple[tuple[int, int], ...]:
+        return (
+            (self.over_arc, self.sign),
+            (self.incoming_under_arc, 1),
+            (self.over_arc, -self.sign),
+            (self.outgoing_under_arc, -1),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class GenericLinkDiagram:
+    prime: int
+    carriers: tuple[str, ...]
+    crossings: tuple[DiagramCrossing, ...]
+    arcs: tuple[ArcGenerator, ...]
+    relations: tuple[WirtingerRelation, ...]
+    maximum_component_displacement: str
+    maximum_relative_displacement: str
+    isotopy_ribbon_clearance_lower_bound: str
+    minimum_height_gap: str
+    minimum_transversality: str
+    minimum_distinct_crossing_point_gap: str
+    pairwise_linking_matrix: tuple[tuple[int, ...], ...]
+
+    @property
+    def crossing_count(self) -> int:
+        return len(self.crossings)
+
+    @property
+    def generator_count(self) -> int:
+        return len(self.arcs)
+
+    @property
+    def relation_count(self) -> int:
+        return len(self.relations)
+
+    def component_index(self) -> dict[str, int]:
+        return {carrier: index for index, carrier in enumerate(self.carriers)}
+
+    def subdiagram_crossings(self, components: Sequence[str]) -> tuple[DiagramCrossing, ...]:
+        selected = set(components)
+        return tuple(
+            crossing
+            for crossing in self.crossings
+            if crossing.left in selected and crossing.right in selected
+        )
+
+    def as_dict(self, *, include_crossings: bool = False) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "prime": self.prime,
+            "carriers": list(self.carriers),
+            "fixed_translation_epsilon": fraction_text(PROJECTION_EPSILON),
+            "shift_vectors": {
+                carrier: list(SHIFT_VECTORS[carrier]) for carrier in self.carriers
+            },
+            "crossing_count": self.crossing_count,
+            "generator_count": self.generator_count,
+            "relation_count": self.relation_count,
+            "maximum_component_displacement": self.maximum_component_displacement,
+            "maximum_relative_displacement": self.maximum_relative_displacement,
+            "prior_ribbon_clearance": fraction_text(PRIOR_RIBBON_CLEARANCE),
+            "isotopy_ribbon_clearance_lower_bound": self.isotopy_ribbon_clearance_lower_bound,
+            "minimum_height_gap": self.minimum_height_gap,
+            "minimum_transversality": self.minimum_transversality,
+            "minimum_distinct_crossing_point_gap": self.minimum_distinct_crossing_point_gap,
+            "pairwise_linking_matrix": [list(row) for row in self.pairwise_linking_matrix],
+            "standing": (
+                "fixed generic projection with high-precision nonzero margins; "
+                "integer invariants are exact for this certified crossing combinatorics"
+            ),
+        }
+        if include_crossings:
+            payload["crossings"] = [crossing.as_dict() for crossing in self.crossings]
+            payload["arcs"] = [
+                {
+                    "index": arc.index,
+                    "label": arc.label,
+                    "component": arc.component,
+                }
+                for arc in self.arcs
+            ]
+            payload["relations"] = [
+                {
+                    "crossing_id": relation.crossing_id,
+                    "sign": relation.sign,
+                    "over_arc": relation.over_arc,
+                    "incoming_under_arc": relation.incoming_under_arc,
+                    "outgoing_under_arc": relation.outgoing_under_arc,
+                    "word": [list(letter) for letter in relation.word],
+                }
+                for relation in self.relations
+            ]
+        return payload
+
+
+def _mp_text(value: mp.mpf, digits: int = 60) -> str:
+    return mp.nstr(value, n=digits, strip_zeros=False)
+
+
+def _crossing_rows(ribbon: SmoothPrimeRibbon) -> tuple[DiagramCrossing, ...]:
+    mp.mp.dps = MP_DECIMAL_DIGITS
+    centers = _center_coordinates(ribbon.prime)
+    rows: list[DiagramCrossing] = []
+    for left, right in itertools.combinations(ribbon.carriers, 2):
+        points = _circle_intersections(centers[left], centers[right])
+        local: list[tuple[mp.mpf, DiagramCrossing]] = []
+        for point in points:
+            left_turn = _turn_at(point, centers[left])
+            right_turn = _turn_at(point, centers[right])
+            left_height = _smooth_lift_mp(ribbon, left, left_turn)
+            right_height = _smooth_lift_mp(ribbon, right, right_turn)
+            left_tangent = (
+                -mp.sin(2 * mp.pi * left_turn),
+                mp.cos(2 * mp.pi * left_turn),
+            )
+            right_tangent = (
+                -mp.sin(2 * mp.pi * right_turn),
+                mp.cos(2 * mp.pi * right_turn),
+            )
+            determinant = (
+                left_tangent[0] * right_tangent[1]
+                - left_tangent[1] * right_tangent[0]
+            )
+            height_difference = left_height - right_height
+            sign = _sign(height_difference * determinant)
+            if sign == 0:
+                raise ExactMilnorAlexanderError(f"zero crossing sign for {left},{right}")
+            over, under = (
+                (left, right) if height_difference > 0 else (right, left)
+            )
+            over_turn, under_turn = (
+                (left_turn, right_turn)
+                if over == left
+                else (right_turn, left_turn)
+            )
+            crossing = DiagramCrossing(
+                crossing_id="pending",
+                left=left,
+                right=right,
+                left_turn=_mp_text(left_turn),
+                right_turn=_mp_text(right_turn),
+                point_x=_mp_text(point[0]),
+                point_y=_mp_text(point[1]),
+                left_height=_mp_text(left_height),
+                right_height=_mp_text(right_height),
+                over=over,
+                under=under,
+                over_turn=_mp_text(over_turn),
+                under_turn=_mp_text(under_turn),
+                sign=sign,
+                absolute_height_gap=_mp_text(abs(height_difference)),
+                absolute_transversality=_mp_text(abs(determinant)),
+            )
+            local.append((left_turn, crossing))
+        for index, (_, crossing) in enumerate(sorted(local, key=lambda item: item[0])):
+            rows.append(
+                replace(
+                    crossing,
+                    crossing_id=f"{left}::{right}::{index}",
+                )
+            )
+    return tuple(rows)
+
+
+def _under_crossings(
+    crossings: Sequence[DiagramCrossing],
+    carrier: str,
+) -> tuple[DiagramCrossing, ...]:
+    return tuple(
+        sorted(
+            (crossing for crossing in crossings if crossing.under == carrier),
+            key=lambda crossing: crossing.under_turn_mpf,
+        )
+    )
+
+
+def _arc_index_at_turn(
+    carrier: str,
+    turn: mp.mpf,
+    under_events: Mapping[str, tuple[DiagramCrossing, ...]],
+    arc_lookup: Mapping[tuple[str, int], int],
+) -> int:
+    events = under_events[carrier]
+    if not events:
+        return arc_lookup[(carrier, 0)]
+    turns = [event.under_turn_mpf for event in events]
+    position = bisect.bisect_left(turns, turn) - 1
+    return arc_lookup[(carrier, position % len(events))]
+
+
+def _wirtinger_structure(
+    carriers: Sequence[str],
+    crossings: Sequence[DiagramCrossing],
+) -> tuple[tuple[ArcGenerator, ...], tuple[WirtingerRelation, ...]]:
+    under_events = {
+        carrier: _under_crossings(crossings, carrier) for carrier in carriers
+    }
+    arcs: list[ArcGenerator] = []
+    arc_lookup: dict[tuple[str, int], int] = {}
+    for carrier in carriers:
+        count = max(1, len(under_events[carrier]))
+        for local_index in range(count):
+            index = len(arcs)
+            arcs.append(ArcGenerator(index, carrier, local_index))
+            arc_lookup[(carrier, local_index)] = index
+    relations: list[WirtingerRelation] = []
+    for crossing in crossings:
+        events = under_events[crossing.under]
+        local_index = next(
+            index
+            for index, event in enumerate(events)
+            if event.crossing_id == crossing.crossing_id
+        )
+        outgoing = arc_lookup[(crossing.under, local_index)]
+        incoming = arc_lookup[(crossing.under, (local_index - 1) % len(events))]
+        over_arc = _arc_index_at_turn(
+            crossing.over,
+            crossing.over_turn_mpf,
+            under_events,
+            arc_lookup,
+        )
+        relations.append(
+            WirtingerRelation(
+                crossing.crossing_id,
+                crossing.sign,
+                over_arc,
+                incoming,
+                outgoing,
+            )
+        )
+    return tuple(arcs), tuple(relations)
+
+
+def _linking_matrix(
+    carriers: Sequence[str],
+    crossings: Sequence[DiagramCrossing],
+) -> tuple[tuple[int, ...], ...]:
+    index = {carrier: position for position, carrier in enumerate(carriers)}
+    matrix = [[0] * len(carriers) for _ in carriers]
+    for left, right in itertools.combinations(carriers, 2):
+        signs = [
+            crossing.sign
+            for crossing in crossings
+            if {crossing.left, crossing.right} == {left, right}
+        ]
+        if sum(signs) % 2:
+            raise ExactMilnorAlexanderError(f"odd crossing-sign sum for {left},{right}")
+        value = sum(signs) // 2
+        matrix[index[left]][index[right]] = value
+        matrix[index[right]][index[left]] = value
+    return tuple(tuple(row) for row in matrix)
+
+
+def _expected_linking_matrix(prime: int) -> tuple[tuple[int, ...], ...]:
+    certificate = (
+        certify_smooth_prime_seven() if prime == 7 else certify_smooth_prime_five()
+    )
+    return certificate.linking_matrix.matrix
+
+
+def _projection_displacement_bounds(carriers: Sequence[str]) -> tuple[mp.mpf, mp.mpf, mp.mpf]:
+    epsilon = _mp_fraction(PROJECTION_EPSILON)
+    displacements = {
+        carrier: (
+            epsilon * SHIFT_VECTORS[carrier][0],
+            epsilon * SHIFT_VECTORS[carrier][1],
+        )
+        for carrier in carriers
+    }
+    maximum_component = max(
+        mp.sqrt(dx * dx + dy * dy) for dx, dy in displacements.values()
+    )
+    maximum_relative = max(
+        mp.sqrt(
+            (displacements[left][0] - displacements[right][0]) ** 2
+            + (displacements[left][1] - displacements[right][1]) ** 2
+        )
+        for left, right in itertools.combinations(carriers, 2)
+    )
+    clearance = _mp_fraction(PRIOR_RIBBON_CLEARANCE) - maximum_relative
+    return maximum_component, maximum_relative, clearance
+
+
+def _minimum_crossing_point_gap(crossings: Sequence[DiagramCrossing]) -> mp.mpf:
+    distances = []
+    for left, right in itertools.combinations(crossings, 2):
+        distances.append(
+            mp.sqrt(
+                (left.point[0] - right.point[0]) ** 2
+                + (left.point[1] - right.point[1]) ** 2
+            )
+        )
+    return min(distances) if distances else mp.inf
+
+
+def _build_generic_diagram(prime: int) -> GenericLinkDiagram:
+    ribbon = build_smooth_prime_seven() if prime == 7 else build_smooth_prime_five()
+    crossings = _crossing_rows(ribbon)
+    arcs, relations = _wirtinger_structure(ribbon.carriers, crossings)
+    linking = _linking_matrix(ribbon.carriers, crossings)
+    if linking != _expected_linking_matrix(prime):
+        raise ExactMilnorAlexanderError("generic projection changed the pairwise linking matrix")
+    minimum_height = min(mp.mpf(crossing.absolute_height_gap) for crossing in crossings)
+    minimum_transversality = min(
+        mp.mpf(crossing.absolute_transversality) for crossing in crossings
+    )
+    minimum_point_gap = _minimum_crossing_point_gap(crossings)
+    maximum_component, maximum_relative, clearance = _projection_displacement_bounds(
+        ribbon.carriers
+    )
+    if minimum_height <= MINIMUM_ACCEPTED_HEIGHT_GAP:
+        raise ExactMilnorAlexanderError("generic crossing height margin is too small")
+    if minimum_transversality <= MINIMUM_ACCEPTED_TRANSVERSALITY:
+        raise ExactMilnorAlexanderError("generic crossing transversality margin is too small")
+    if minimum_point_gap <= MINIMUM_ACCEPTED_CROSSING_POINT_GAP:
+        raise ExactMilnorAlexanderError("generic crossing points are not sufficiently separated")
+    if clearance <= 0:
+        raise ExactMilnorAlexanderError("generic projection translation consumes ribbon clearance")
+    return GenericLinkDiagram(
+        prime=prime,
+        carriers=ribbon.carriers,
+        crossings=crossings,
+        arcs=arcs,
+        relations=relations,
+        maximum_component_displacement=_mp_text(maximum_component),
+        maximum_relative_displacement=_mp_text(maximum_relative),
+        isotopy_ribbon_clearance_lower_bound=_mp_text(clearance),
+        minimum_height_gap=_mp_text(minimum_height),
+        minimum_transversality=_mp_text(minimum_transversality),
+        minimum_distinct_crossing_point_gap=_mp_text(minimum_point_gap),
+        pairwise_linking_matrix=linking,
+    )
+
+
+def build_generic_prime_seven_diagram() -> GenericLinkDiagram:
+    return _build_generic_diagram(7)
+
+
+def build_generic_prime_five_diagram() -> GenericLinkDiagram:
+    return _build_generic_diagram(5)
+
+
+class MagnusSeries:
+    """Noncommutative power series truncated above total degree two."""
+
+    __slots__ = ("coefficients",)
+
+    def __init__(self, coefficients: Mapping[tuple[int, ...], Fraction] | None = None):
+        self.coefficients = {
+            word: Fraction(value)
+            for word, value in (coefficients or {}).items()
+            if value and len(word) <= 2
+        }
+
+    @classmethod
+    def one(cls) -> "MagnusSeries":
+        return cls({(): Fraction(1)})
+
+    @classmethod
+    def generator(cls, index: int) -> "MagnusSeries":
+        return cls({(): Fraction(1), (index,): Fraction(1)})
+
+    def __mul__(self, other: "MagnusSeries") -> "MagnusSeries":
+        result: dict[tuple[int, ...], Fraction] = {}
+        for left_word, left_value in self.coefficients.items():
+            for right_word, right_value in other.coefficients.items():
+                word = left_word + right_word
+                if len(word) <= 2:
+                    result[word] = result.get(word, Fraction(0)) + left_value * right_value
+        return MagnusSeries(result)
+
+    def inverse(self) -> "MagnusSeries":
+        if self.coefficients.get((), Fraction(0)) != 1:
+            raise ExactMilnorAlexanderError("Magnus inverse requires constant coefficient one")
+        degree_one = {
+            word: value for word, value in self.coefficients.items() if len(word) == 1
+        }
+        degree_two = {
+            word: value for word, value in self.coefficients.items() if len(word) == 2
+        }
+        result: dict[tuple[int, ...], Fraction] = {(): Fraction(1)}
+        for word, value in degree_one.items():
+            result[word] = -value
+        for word, value in degree_two.items():
+            result[word] = result.get(word, Fraction(0)) - value
+        for left_word, left_value in degree_one.items():
+            for right_word, right_value in degree_one.items():
+                word = left_word + right_word
+                result[word] = result.get(word, Fraction(0)) + left_value * right_value
+        return MagnusSeries(result)
+
+    def power(self, exponent: int) -> "MagnusSeries":
+        if exponent == 1:
+            return self
+        if exponent == -1:
+            return self.inverse()
+        raise ExactMilnorAlexanderError("only exponents plus or minus one are supported")
+
+    def coefficient(self, word: Sequence[int]) -> Fraction:
+        return self.coefficients.get(tuple(word), Fraction(0))
+
+    def degree_one_coefficients(self, size: int) -> tuple[Fraction, ...]:
+        return tuple(self.coefficient((index,)) for index in range(size))
+
+
+def _triple_crossing_records(
+    diagram: GenericLinkDiagram,
+    components: Sequence[str],
+) -> tuple[dict[str, object], ...]:
+    selected = set(components)
+    rows: list[dict[str, object]] = []
+    for crossing in diagram.crossings:
+        if crossing.left not in selected or crossing.right not in selected:
+            continue
+        rows.append(
+            {
+                "crossing_id": crossing.crossing_id,
+                "sign": crossing.sign,
+                "over": crossing.over,
+                "under": crossing.under,
+                "over_turn": crossing.over_turn_mpf,
+                "under_turn": crossing.under_turn_mpf,
+            }
+        )
+    return tuple(rows)
+
+
+def _milnor_longitudes(
+    components: Sequence[str],
+    crossing_rows: Sequence[Mapping[str, object]],
+) -> dict[str, MagnusSeries]:
+    component_index = {component: index for index, component in enumerate(components)}
+    meridians = {
+        component: MagnusSeries.generator(component_index[component])
+        for component in components
+    }
+    under_events = {
+        component: tuple(
+            sorted(
+                (row for row in crossing_rows if row["under"] == component),
+                key=lambda row: row["under_turn"],
+            )
+        )
+        for component in components
+    }
+    after_states: dict[str, tuple[MagnusSeries, ...]] = {}
+    for component in components:
+        current = meridians[component]
+        states: list[MagnusSeries] = []
+        for row in under_events[component]:
+            over_meridian = meridians[str(row["over"])]
+            sign = int(row["sign"])
+            current = (
+                over_meridian.power(sign)
+                * current
+                * over_meridian.power(-sign)
+            )
+            states.append(current)
+        after_states[component] = tuple(states)
+
+    def arc_at(component: str, turn: mp.mpf) -> MagnusSeries:
+        events = under_events[component]
+        if not events:
+            return meridians[component]
+        first_turn = mp.mpf(events[0]["under_turn"])
+        relative = [
+            mp.fmod(mp.mpf(row["under_turn"]) - first_turn, 1) for row in events
+        ]
+        relative = [value if value >= 0 else value + 1 for value in relative]
+        target = mp.fmod(turn - first_turn, 1)
+        if target < 0:
+            target += 1
+        position = bisect.bisect_left(relative, target) - 1
+        return (
+            meridians[component]
+            if position < 0
+            else after_states[component][position]
+        )
+
+    longitudes: dict[str, MagnusSeries] = {}
+    for component in components:
+        longitude = MagnusSeries.one()
+        for row in under_events[component]:
+            over_arc = arc_at(str(row["over"]), mp.mpf(row["over_turn"]))
+            # Prepending is load-bearing: repeated conjugations produce the
+            # reverse product as the preferred longitude conjugator.
+            longitude = over_arc.power(int(row["sign"])) * longitude
+        longitudes[component] = longitude
+    return longitudes
+
+
+@dataclass(frozen=True, slots=True)
+class MilnorIntegerCertificate:
+    components: tuple[str, str, str]
+    coefficient_ij_in_longitude_k: int
+    coefficient_ji_in_longitude_k: int
+    longitude_degree_one: tuple[int, int, int]
+    crossing_ids: tuple[str, ...]
+
+    @property
+    def exact_zero(self) -> bool:
+        return (
+            self.coefficient_ij_in_longitude_k == 0
+            and self.coefficient_ji_in_longitude_k == 0
+            and self.longitude_degree_one == (0, 0, 0)
+        )
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "components": list(self.components),
+            "pairwise_linking_numbers": [0, 0, 0],
+            "crossing_ids": list(self.crossing_ids),
+            "preferred_longitude_degree_one": list(self.longitude_degree_one),
+            "mu_ijk": self.coefficient_ij_in_longitude_k,
+            "opposite_word_coefficient": self.coefficient_ji_in_longitude_k,
+            "exact_zero": self.exact_zero,
+            "standing": (
+                "exact integer Magnus coefficient for the fixed generic diagram; "
+                "diagram signs are guarded by recorded nonzero high-precision margins"
+            ),
+        }
+
+
+def _milnor_certificate(
+    diagram: GenericLinkDiagram,
+    components: tuple[str, str, str],
+) -> MilnorIntegerCertificate:
+    index = {component: position for position, component in enumerate(components)}
+    crossing_rows = _triple_crossing_records(diagram, components)
+    longitudes = _milnor_longitudes(components, crossing_rows)
+    longitude = longitudes[components[2]]
+    degree_one = tuple(int(value) for value in longitude.degree_one_coefficients(3))
+    coefficient = longitude.coefficient((index[components[0]], index[components[1]]))
+    opposite = longitude.coefficient((index[components[1]], index[components[0]]))
+    if coefficient.denominator != 1 or opposite.denominator != 1:
+        raise ExactMilnorAlexanderError("Milnor Magnus coefficient is nonintegral")
+    return MilnorIntegerCertificate(
+        components=components,
+        coefficient_ij_in_longitude_k=coefficient.numerator,
+        coefficient_ji_in_longitude_k=opposite.numerator,
+        longitude_degree_one=degree_one,
+        crossing_ids=tuple(str(row["crossing_id"]) for row in crossing_rows),
+    )
+
+
+def _borromean_braid_crossings() -> tuple[dict[str, object], ...]:
+    word = ((0, 1), (1, -1)) * 3
+    positions = ["B0", "B1", "B2"]
+    rows: list[dict[str, object]] = []
+    for index, (generator, sign) in enumerate(word):
+        left = positions[generator]
+        right = positions[generator + 1]
+        over, under = (left, right) if sign == 1 else (right, left)
+        turn = mp.mpf(index * 2 + 1) / (2 * len(word))
+        rows.append(
+            {
+                "crossing_id": f"BORROMEAN_{index}",
+                "sign": sign,
+                "over": over,
+                "under": under,
+                "over_turn": turn,
+                "under_turn": turn,
+            }
+        )
+        positions[generator], positions[generator + 1] = (
+            positions[generator + 1],
+            positions[generator],
+        )
+    if positions != ["B0", "B1", "B2"]:
+        raise ExactMilnorAlexanderError("Borromean braid closure did not return each strand")
+    return tuple(rows)
+
+
+def borromean_magnus_benchmark() -> int:
+    components = ("B0", "B1", "B2")
+    longitudes = _milnor_longitudes(components, _borromean_braid_crossings())
+    coefficient = longitudes["B2"].coefficient((0, 1))
+    if coefficient.denominator != 1 or abs(coefficient.numerator) != 1:
+        raise ExactMilnorAlexanderError("Borromean Magnus benchmark failed")
+    return coefficient.numerator
+
+
+def exact_p7_milnor_certificates() -> tuple[MilnorIntegerCertificate, ...]:
+    if abs(borromean_magnus_benchmark()) != 1:
+        raise ExactMilnorAlexanderError("Borromean benchmark gate failed")
+    diagram = build_generic_prime_seven_diagram()
+    certificates = tuple(
+        _milnor_certificate(diagram, tuple(triple)) for triple in P7_SPLIT_TRIPLES
+    )
+    if not all(certificate.exact_zero for certificate in certificates):
+        raise ExactMilnorAlexanderError("one or more P7 Milnor candidates are nonzero")
+    return certificates
+
+
+def _modular_inverse(value: int, modulus: int) -> int:
+    value %= modulus
+    if not value:
+        raise ExactMilnorAlexanderError("zero has no modular inverse")
+    return pow(value, -1, modulus)
+
+
+def _matrix_rank_mod(matrix: Sequence[Sequence[int]], modulus: int) -> int:
+    work = [[value % modulus for value in row] for row in matrix]
+    rows = len(work)
+    columns = len(work[0]) if rows else 0
+    rank = 0
+    for column in range(columns):
+        pivot = next(
+            (row for row in range(rank, rows) if work[row][column] % modulus),
+            None,
+        )
+        if pivot is None:
+            continue
+        work[rank], work[pivot] = work[pivot], work[rank]
+        inverse = _modular_inverse(work[rank][column], modulus)
+        work[rank] = [(value * inverse) % modulus for value in work[rank]]
+        for row in range(rows):
+            if row == rank or not work[row][column]:
+                continue
+            factor = work[row][column]
+            work[row] = [
+                (value - factor * pivot_value) % modulus
+                for value, pivot_value in zip(work[row], work[rank])
+            ]
+        rank += 1
+        if rank == rows:
+            break
+    return rank
+
+
+def _fox_matrix(
+    diagram: GenericLinkDiagram,
+    component_values: Mapping[str, int],
+    modulus: int,
+) -> tuple[tuple[int, ...], ...]:
+    generator_values = {
+        arc.index: component_values[arc.component] % modulus for arc in diagram.arcs
+    }
+    rows: list[tuple[int, ...]] = []
+    for relation in diagram.relations:
+        derivatives = [0] * diagram.generator_count
+        prefix = 1
+        for generator, exponent in relation.word:
+            value = generator_values[generator]
+            if exponent == 1:
+                derivatives[generator] = (derivatives[generator] + prefix) % modulus
+                prefix = (prefix * value) % modulus
+            elif exponent == -1:
+                inverse = _modular_inverse(value, modulus)
+                derivatives[generator] = (
+                    derivatives[generator] - prefix * inverse
+                ) % modulus
+                prefix = (prefix * inverse) % modulus
+            else:
+                raise ExactMilnorAlexanderError("Fox word contains unsupported exponent")
+        if prefix % modulus != 1:
+            raise ExactMilnorAlexanderError("Wirtinger relator did not abelianize to one")
+        rows.append(tuple(derivatives))
+    return tuple(rows)
+
+
+def _primitive_order_element(prime: int) -> tuple[int, int, int]:
+    modulus = FIELD_MODULUS[prime]
+    root = FIELD_PRIMITIVE_ROOT[prime]
+    if pow(root, modulus - 1, modulus) != 1:
+        raise ExactMilnorAlexanderError("declared finite-field root is invalid")
+    for divisor in range(1, modulus - 1):
+        if (modulus - 1) % divisor == 0 and divisor < modulus - 1:
+            if pow(root, divisor, modulus) == 1:
+                raise ExactMilnorAlexanderError("declared finite-field root is not primitive")
+    zeta = pow(root, (modulus - 1) // prime, modulus)
+    if pow(zeta, prime, modulus) != 1 or zeta == 1:
+        raise ExactMilnorAlexanderError("failed to construct prime-order character")
+    return modulus, root, zeta
+
+
+def _component_character(
+    prime: int,
+    winding: int,
+    numerator: int,
+) -> dict[str, int]:
+    modulus, _, zeta = _primitive_order_element(prime)
+    values = {"C": pow(zeta, winding % prime, modulus)}
+    values.update(
+        {
+            f"R{index}": pow(zeta, (index * numerator) % prime, modulus)
+            for index in range(prime - 1)
+        }
+    )
+    return values
+
+
+def _fox_rank_for_candidate(
+    diagram: GenericLinkDiagram,
+    winding: int,
+    numerator: int,
+) -> tuple[int, int]:
+    modulus = FIELD_MODULUS[diagram.prime]
+    matrix = _fox_matrix(
+        diagram,
+        _component_character(diagram.prime, winding, numerator),
+        modulus,
+    )
+    rank = _matrix_rank_mod(matrix, modulus)
+    excess_nullity = diagram.generator_count - rank - 1
+    if excess_nullity < 0:
+        raise ExactMilnorAlexanderError("Fox excess nullity became negative")
+    return rank, excess_nullity
+
+
+@dataclass(frozen=True, slots=True)
+class FoxCharacterRow:
+    winding_residue: int
+    outer_numerator: int
+    rank: int
+    excess_nullity: int
+
+    def as_dict(self) -> dict[str, int]:
+        return {
+            "winding_residue": self.winding_residue,
+            "outer_numerator": self.outer_numerator,
+            "rank": self.rank,
+            "excess_nullity": self.excess_nullity,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class FoxRankFingerprint:
+    prime: int
+    field_modulus: int
+    primitive_root: int
+    prime_order_element: int
+    generator_count: int
+    relation_count: int
+    rows: tuple[FoxCharacterRow, ...]
+
+    @property
+    def histogram(self) -> dict[str, int]:
+        counts = Counter(row.excess_nullity for row in self.rows)
+        return {str(key): counts[key] for key in sorted(counts)}
+
+    @property
+    def ordered_rank_vector_sha256(self) -> str:
+        return _canonical_json_sha256(
+            [
+                [
+                    row.winding_residue,
+                    row.outer_numerator,
+                    row.rank,
+                    row.excess_nullity,
+                ]
+                for row in self.rows
+            ]
+        )
+
+    def as_dict(self, *, include_rows: bool = True) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "prime": self.prime,
+            "field_modulus": self.field_modulus,
+            "primitive_root": self.primitive_root,
+            "prime_order_element": self.prime_order_element,
+            "generator_count": self.generator_count,
+            "relation_count": self.relation_count,
+            "character_count": len(self.rows),
+            "excess_nullity_histogram": self.histogram,
+            "ordered_rank_vector_sha256": self.ordered_rank_vector_sha256,
+            "standing": (
+                "finite-character specialization fingerprint of the multivariable Fox-Alexander presentation; "
+                "not the full multivariable Alexander polynomial"
+            ),
+        }
+        if include_rows:
+            payload["characters"] = [row.as_dict() for row in self.rows]
+        return payload
+
+
+def _fingerprint_in_field(
+    prime: int,
+    modulus: int,
+    root: int,
+) -> FoxRankFingerprint:
+    diagram = (
+        build_generic_prime_seven_diagram()
+        if prime == 7
+        else build_generic_prime_five_diagram()
+    )
+    if (modulus - 1) % prime:
+        raise ExactMilnorAlexanderError("field multiplicative order is not divisible by the prime")
+    zeta = pow(root, (modulus - 1) // prime, modulus)
+    if pow(zeta, prime, modulus) != 1 or zeta == 1:
+        raise ExactMilnorAlexanderError("field does not supply the requested prime-order character")
+    rows = []
+    for winding_residue in range(prime):
+        for numerator in range(1, prime):
+            values = {"C": pow(zeta, winding_residue, modulus)}
+            values.update(
+                {
+                    f"R{index}": pow(zeta, (index * numerator) % prime, modulus)
+                    for index in range(prime - 1)
+                }
+            )
+            matrix = _fox_matrix(diagram, values, modulus)
+            rank = _matrix_rank_mod(matrix, modulus)
+            rows.append(
+                FoxCharacterRow(
+                    winding_residue,
+                    numerator,
+                    rank,
+                    diagram.generator_count - rank - 1,
+                )
+            )
+    return FoxRankFingerprint(
+        prime=prime,
+        field_modulus=modulus,
+        primitive_root=root,
+        prime_order_element=zeta,
+        generator_count=diagram.generator_count,
+        relation_count=diagram.relation_count,
+        rows=tuple(rows),
+    )
+
+
+def fox_rank_fingerprint(prime: int) -> FoxRankFingerprint:
+    modulus, root, _ = _primitive_order_element(prime)
+    return _fingerprint_in_field(prime, modulus, root)
+
+
+def common_field_fox_rank_fingerprint(prime: int) -> FoxRankFingerprint:
+    return _fingerprint_in_field(
+        prime, COMMON_FIELD_MODULUS, COMMON_FIELD_PRIMITIVE_ROOT
+    )
+
+
+@lru_cache(maxsize=2)
+def _phase_lift_candidate(prime: int):
+    return (
+        build_prime_seven_phase_lift()
+        if prime == 7
+        else build_prime_five_phase_lift()
+    )
+
+
+def _phase_lift_alignment_energy(
+    prime: int,
+    winding: int,
+    numerator: int,
+) -> Fraction:
+    candidate = _phase_lift_candidate(prime)
+    step = Fraction(numerator, prime)
+    total = Fraction(0)
+    for node in candidate.hypernodes:
+        for occurrence in node.occurrences:
+            phase = _mod1(
+                winding * occurrence.turn
+                if occurrence.carrier == "C"
+                else _outer(occurrence.carrier) * step
+            )
+            target = Fraction(occurrence.residue, prime)
+            difference = abs(phase - target)
+            distance = min(difference, 1 - difference)
+            total += distance * distance
+    return total
+
+
+def _enumerate_phase_candidates(prime: int) -> tuple[dict[str, object], ...]:
+    primitive, turns, _, _, _ = _dataset(prime)
+    diagram = (
+        build_generic_prime_seven_diagram()
+        if prime == 7
+        else build_generic_prime_five_diagram()
+    )
+    rows: list[dict[str, object]] = []
+    for winding in range(-2 * prime, 2 * prime + 1):
+        for numerator in range(1, prime):
+            step = Fraction(numerator, prime)
+            gaps: list[Fraction] = []
+            for node in primitive.hypernodes:
+                phases = [
+                    _mod1(
+                        winding * turns[carrier][node.node_id]
+                        if carrier == "C"
+                        else _outer(carrier) * step
+                    )
+                    for carrier in node.carriers
+                ]
+                gap = _min_gap(phases)
+                if gap == 0:
+                    break
+                gaps.append(gap)
+            else:
+                rank, excess = _fox_rank_for_candidate(
+                    diagram, winding, numerator
+                )
+                energy = _phase_lift_alignment_energy(
+                    prime, winding, numerator
+                )
+                rows.append(
+                    {
+                        "winding": winding,
+                        "outer_numerator": numerator,
+                        "outer_step": step,
+                        "minimum_gap": min(gaps),
+                        "fox_rank": rank,
+                        "fox_excess_nullity": excess,
+                        "alignment_energy": energy,
+                        "boundary_meridional_degree": 1 + 2 * winding,
+                    }
+                )
+    return tuple(rows)
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseSelectorResult:
+    prime: int
+    preregistration_sha256: str
+    candidate_count: int
+    admissible_count: int
+    maximum_gap_candidate_count: int
+    maximum_gap: Fraction
+    selected_winding: int
+    selected_outer_numerator: int
+    selected_fox_rank: int
+    selected_fox_excess_nullity: int
+    selected_alignment_energy: Fraction
+    selected_boundary_meridional_degree: int
+    co_winners_before_neutral_tiebreak: tuple[tuple[int, int], ...]
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "prime": self.prime,
+            "preregistration_sha256": self.preregistration_sha256,
+            "candidate_count": self.candidate_count,
+            "admissible_count": self.admissible_count,
+            "maximum_gap_candidate_count": self.maximum_gap_candidate_count,
+            "maximum_gap": fraction_text(self.maximum_gap),
+            "selected": {
+                "center_winding": self.selected_winding,
+                "outer_numerator": self.selected_outer_numerator,
+                "outer_step": f"{self.selected_outer_numerator}/{self.prime}",
+                "fox_rank": self.selected_fox_rank,
+                "fox_excess_nullity": self.selected_fox_excess_nullity,
+                "alignment_energy": fraction_text(self.selected_alignment_energy),
+                "boundary_meridional_degree": self.selected_boundary_meridional_degree,
+            },
+            "co_winners_before_neutral_tiebreak": [
+                {"center_winding": winding, "outer_numerator": numerator}
+                for winding, numerator in self.co_winners_before_neutral_tiebreak
+            ],
+            "frozen_selector_order": [
+                "maximum minimum phase gap",
+                "maximum Fox-Alexander excess nullity",
+                "minimum exact phase-lift alignment energy",
+                "minimum absolute center winding",
+                "positive before negative winding",
+                "smallest outer numerator",
+            ],
+            "target_degree_not_used": True,
+        }
+
+
+def evaluate_preregistered_phase_selector(prime: int) -> PhaseSelectorResult:
+    rows = _enumerate_phase_candidates(prime)
+    if not rows:
+        raise ExactMilnorAlexanderError("no admissible phase candidates")
+    maximum_gap = max(row["minimum_gap"] for row in rows)
+    maximum_gap_rows = [row for row in rows if row["minimum_gap"] == maximum_gap]
+    maximum_nullity = max(row["fox_excess_nullity"] for row in maximum_gap_rows)
+    nullity_rows = [
+        row for row in maximum_gap_rows
+        if row["fox_excess_nullity"] == maximum_nullity
+    ]
+    minimum_energy = min(row["alignment_energy"] for row in nullity_rows)
+    substantive_winners = [
+        row for row in nullity_rows if row["alignment_energy"] == minimum_energy
+    ]
+
+    def neutral_key(row: Mapping[str, object]) -> tuple[int, int, int]:
+        winding = int(row["winding"])
+        sign_preference = 2 if winding > 0 else 1 if winding == 0 else 0
+        return (-abs(winding), sign_preference, -int(row["outer_numerator"]))
+
+    selected = max(substantive_winners, key=neutral_key)
+    return PhaseSelectorResult(
+        prime=prime,
+        preregistration_sha256=PREREGISTRATION_SHA256,
+        candidate_count=(4 * prime + 1) * (prime - 1),
+        admissible_count=len(rows),
+        maximum_gap_candidate_count=len(maximum_gap_rows),
+        maximum_gap=maximum_gap,
+        selected_winding=int(selected["winding"]),
+        selected_outer_numerator=int(selected["outer_numerator"]),
+        selected_fox_rank=int(selected["fox_rank"]),
+        selected_fox_excess_nullity=int(selected["fox_excess_nullity"]),
+        selected_alignment_energy=Fraction(selected["alignment_energy"]),
+        selected_boundary_meridional_degree=int(selected["boundary_meridional_degree"]),
+        co_winners_before_neutral_tiebreak=tuple(
+            sorted(
+                (
+                    int(row["winding"]),
+                    int(row["outer_numerator"]),
+                )
+                for row in substantive_winners
+            )
+        ),
+    )
+
+
+def exact_milnor_alexander_family_certificate() -> dict[str, object]:
+    p7_diagram = build_generic_prime_seven_diagram()
+    p5_diagram = build_generic_prime_five_diagram()
+    p7_milnor = exact_p7_milnor_certificates()
+    p7_fingerprint = fox_rank_fingerprint(7)
+    p5_fingerprint = fox_rank_fingerprint(5)
+    p7_common_fingerprint = common_field_fox_rank_fingerprint(7)
+    p5_common_fingerprint = common_field_fox_rank_fingerprint(5)
+    p7_selector = evaluate_preregistered_phase_selector(7)
+    p5_selector = evaluate_preregistered_phase_selector(5)
+    payload: dict[str, object] = {
+        "schema_id": f"{SCHEMA_ID}.family",
+        "schema_version": SCHEMA_VERSION,
+        "authority": "Erin Spencer",
+        "recorded_on": "2026-08-11",
+        "selection_effect": "none",
+        "research_order": [7, 5],
+        "source": {
+            "name": SOURCE_NAME,
+            "sha256": SOURCE_SHA256,
+            "line_basis": list(SOURCE_LINES),
+        },
+        "preregistration": {
+            "document": PREREGISTRATION_DOCUMENT,
+            "document_sha256": PREREGISTRATION_SHA256,
+            "frozen_before_evaluation": True,
+        },
+        "generic_diagrams": {
+            "p7": p7_diagram.as_dict(include_crossings=False),
+            "p5": p5_diagram.as_dict(include_crossings=False),
+        },
+        "exact_milnor": {
+            "method": (
+                "Wirtinger preferred longitudes with exact noncommutative Magnus expansion through degree two"
+            ),
+            "borromean_braid": {
+                "word": "(sigma_1 sigma_2^-1)^3",
+                "mu_012": borromean_magnus_benchmark(),
+                "gate_passed": abs(borromean_magnus_benchmark()) == 1,
+            },
+            "p7_pairwise_zero_triples": [
+                certificate.as_dict() for certificate in p7_milnor
+            ],
+            "all_five_exact_zero": all(
+                certificate.exact_zero for certificate in p7_milnor
+            ),
+            "numerical_fourier_result_superseded": (
+                "the prior convergence-to-zero evidence is retained as an independent check; "
+                "the fixed generic diagram now supplies integer degree-two coefficients"
+            ),
+        },
+        "prime_character_fox_alexander": {
+            "p7": p7_fingerprint.as_dict(include_rows=True),
+            "p5": p5_fingerprint.as_dict(include_rows=True),
+            "common_field_replay": {
+                "field_modulus": COMMON_FIELD_MODULUS,
+                "primitive_root": COMMON_FIELD_PRIMITIVE_ROOT,
+                "p7": p7_common_fingerprint.as_dict(include_rows=False),
+                "p5": p5_common_fingerprint.as_dict(include_rows=False),
+                "p7_matches_prime_specific_rank_vector": (
+                    p7_common_fingerprint.ordered_rank_vector_sha256
+                    == p7_fingerprint.ordered_rank_vector_sha256
+                ),
+                "p5_matches_prime_specific_rank_vector": (
+                    p5_common_fingerprint.ordered_rank_vector_sha256
+                    == p5_fingerprint.ordered_rank_vector_sha256
+                ),
+                "selector_effect": "none; this replay was not used to choose a phase law",
+            },
+            "comparison": {
+                "rank_vector_hashes_differ": (
+                    p7_fingerprint.ordered_rank_vector_sha256
+                    != p5_fingerprint.ordered_rank_vector_sha256
+                ),
+                "standing": (
+                    "stronger than pairwise linking as a link-group-module readout, "
+                    "but not a complete link invariant"
+                ),
+            },
+        },
+        "preregistered_phase_selector": {
+            "p7": p7_selector.as_dict(),
+            "p5": p5_selector.as_dict(),
+            "conclusion": (
+                "the selected boundary degree is an observed output of the frozen selector; "
+                "no target degree was included in the score"
+            ),
+        },
+        "next": [
+            "replay the generic crossing-sign margins with outward-rounded interval atan2 and smooth-field evaluation",
+            "compute a symbolic or multivariable Alexander presentation from the same Wirtinger diagram",
+            "test higher Milnor invariants and finite nilpotent quotients of the complete P7 link group",
+            "only after phase selection and whole-link invariants stabilize, define a spectral object",
+        ],
+        "nonclaims": [
+            "not a proof-assistant verification of the generic diagram",
+            "not a complete ambient-isotopy classification",
+            "not the full multivariable Alexander polynomial",
+            "not an arithmetic redefinition of primality",
+            "not an electron ontology or Pauli-exclusion derivation",
+            "not a spectral operator, prime-power law, zeta-zero correspondence, or proof of the Riemann hypothesis",
+        ],
+    }
+    payload["payload_sha256"] = _canonical_json_sha256(payload)
+    return payload
+
+
+def write_exact_milnor_alexander_family_certificate(
+    path: str | Path,
+    *,
+    indent: int = 2,
+) -> Path:
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps(
+            exact_milnor_alexander_family_certificate(),
+            indent=indent,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return output

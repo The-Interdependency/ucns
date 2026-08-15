@@ -1,4 +1,28 @@
 # === CHECKS ===
+# id: check_mobius_seed_surface_phase_quotient
+#   proves: mobius_seed_incident_certified_dyads_are_state_incompatible
+#   call: self::test_surface_phase_uses_the_unlabelled_half_turn_quotient
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_seed_rigid_rotation_transport
+#   proves: mobius_seed_incident_certified_dyads_are_state_incompatible
+#   call: self::test_rigid_rotation_transport_is_exact_on_representative_spokes
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_seed_direct_rotation_agreement
+#   proves: mobius_seed_incident_certified_dyads_are_state_incompatible
+#   call: self::test_rigid_rotation_phase_transport_matches_direct_surface_rotation
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # id: check_mobius_seed_incident_dyad_state_incompatibility
 #   proves: mobius_seed_incident_certified_dyads_are_state_incompatible
 #   call: self::test_all_oriented_incident_edge_states_are_incompatible

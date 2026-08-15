@@ -7,6 +7,22 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_mobius_vesica_source_claims
+#   proves: mobius_vesica_preserves_source_claims_as_testable_geometry
+#   call: self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_vesica_null_clearance
+#   proves: mobius_vesica_null_origin_has_positive_clearance
+#   call: self::test_centerlines_have_exactly_two_contacts_and_positive_null_clearance
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # id: check_mobius_vesica_quotient_return
 #   proves: mobius_vesica_obeys_one_turn_seam_and_two_turn_return
 #   call: self::test_each_band_obeys_one_turn_seam_and_two_turn_return
@@ -17,6 +33,14 @@
 #
 # id: check_mobius_vesica_four_boundary_contacts
 #   proves: mobius_vesica_sturm_proves_four_physical_boundary_contacts
+#   call: self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_vesica_alternate_branch_obstruction
+#   proves: mobius_vesica_alternate_height_branch_is_obstructed
 #   call: self::test_sturm_certificate_proves_exactly_four_physical_boundary_contacts
 #   requires: python3
 #   timeout: 5
@@ -41,6 +65,14 @@
 #
 # id: check_mobius_vesica_seed_phase_firewall
 #   proves: mobius_vesica_seed_phase_mismatch_blocks_certificate_inheritance
+#   call: self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_vesica_half_turn_obstruction
+#   proves: mobius_vesica_half_turn_phase_has_exact_contact_obstruction
 #   call: self::test_seed_half_turn_phase_is_obstructed_and_cannot_inherit_certificate
 #   requires: python3
 #   timeout: 5
