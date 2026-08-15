@@ -52,3 +52,20 @@ prevents repeated reconstruction from obscuring the filesystem validation
 witness. The preregistration document typo repair restores the already-pinned
 `f8f1a6eae5de2c8235a576266a140c93492554248c2756d838845a19240b23cc`
 document digest without changing the frozen protocol.
+
+## Post-consolidation research continuation
+
+The first declared continuation gate is recorded in
+[`UCNS_P7_GENERIC_INTERVAL_CERTIFICATE.md`](UCNS_P7_GENERIC_INTERVAL_CERTIFICATE.md).
+It independently reconstructs all 38 P7 and 18 P5 generic crossings with direct
+system-MPFR outward-rounded `atan2`, smooth-field, height-order, and tangent-
+determinant intervals. All 56 signs agree with the frozen diagrams. This adds
+computer-assisted interval evidence only; it does not alter the reconciled PR
+provenance, select a phase law, or transfer proof-assistant standing.
+
+### Usage guidance
+
+```bash
+uv run --extra test python -m pytest -q \
+  tests/test_prime_generic_interval_certificate.py
+```

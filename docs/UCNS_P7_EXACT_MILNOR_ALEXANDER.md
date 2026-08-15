@@ -354,9 +354,12 @@ This packet does not establish:
 
 ## 10. Next action
 
-The next high-leverage experiment is:
+The first gate below is now complete at the computer-assisted interval level;
+see
+[`UCNS_P7_GENERIC_INTERVAL_CERTIFICATE.md`](UCNS_P7_GENERIC_INTERVAL_CERTIFICATE.md).
+The remaining high-leverage sequence is:
 
-1. certify the generic crossing diagram with outward-rounded interval `atan2` and smooth-field evaluation;
+1. **completed:** certify the generic crossing diagram with outward-rounded interval `atan2` and smooth-field evaluation;
 2. derive the symbolic multivariable Alexander presentation and its elementary ideals;
 3. calculate length-four and higher Milnor invariants or finite nilpotent link-group quotients;
 4. test whether the two substantive phase co-winners can be separated by a preregistered invariant that does not invoke minimum winding;
