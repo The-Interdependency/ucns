@@ -1,0 +1,25 @@
+{
+  "accounting": {
+    "candidate_pairs": 665856,
+    "column_subsets": 816,
+    "deduplicated_generators": 207,
+    "nonzero_left": 174,
+    "nonzero_pair_products": 98310,
+    "nonzero_right": 565,
+    "row_subsets": 816
+  },
+  "basis_sha256": "5e20f2539229070c12261d70cd6f1ba202ddeee04c7105e4bea1945253b79711",
+  "basis_size": 3,
+  "elapsed_seconds": 2770.695526,
+  "generator_sha256": "3804ecf4d10e3d485632fbd594edd6cbe95fa32c601b272f7232e9e42113cc0f",
+  "independent_replay": {
+    "canonical_basis_equal": true,
+    "mutual_reduction": true
+  },
+  "prime": 5,
+  "reduced_lex_basis": [
+    [[[0, 0, 1, 1, 0], "1"], [[0, 0, 1, 0, 0], "-1"], [[0, 0, 0, 1, 0], "-1"], [[0, 0, 0, 0, 0], "1"]],
+    [[[0, 0, 0, 2, 0], "1"], [[0, 0, 0, 1, 0], "-2"], [[0, 0, 0, 0, 0], "1"]],
+    [[[0, 0, 0, 1, 1], "1"], [[0, 0, 0, 1, 0], "-1"], [[0, 0, 0, 0, 1], "-1"], [[0, 0, 0, 0, 0], "1"]]
+  ]
+}
