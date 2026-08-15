@@ -4,7 +4,7 @@
 #   module_kind: experiment
 #   summary: provides direct system-MPFR outward-rounded interval primitives for an independent P7/P5 separation replay
 #   owner: Erin Spencer
-#   public_surface: MPNumber, MPInterval, mpfr_version
+#   public_surface: MPNumber, MPInterval, mpfr_version, atan2_interval, flat_step_interval
 #   internal_surface: ctypes MPFR bindings with explicit directed rounding modes
 #   auth_boundary: none
 #   storage_boundary: none
@@ -87,6 +87,7 @@ def _bind(name: str, restype: object, *argtypes: object) -> object:
 _mpfr_init2 = _bind("mpfr_init2", None, _PTR, ctypes.c_long)
 _mpfr_clear = _bind("mpfr_clear", None, _PTR)
 _mpfr_set_si = _bind("mpfr_set_si", ctypes.c_int, _PTR, ctypes.c_long, ctypes.c_int)
+_mpfr_set_str = _bind("mpfr_set_str", ctypes.c_int, _PTR, ctypes.c_char_p, ctypes.c_int, ctypes.c_int)
 _mpfr_set = _bind("mpfr_set", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
 _mpfr_neg = _bind("mpfr_neg", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
 _mpfr_add = _bind("mpfr_add", ctypes.c_int, _PTR, _PTR, _PTR, ctypes.c_int)
@@ -97,6 +98,7 @@ _mpfr_sqrt = _bind("mpfr_sqrt", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
 _mpfr_exp = _bind("mpfr_exp", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
 _mpfr_sin = _bind("mpfr_sin", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
 _mpfr_cos = _bind("mpfr_cos", ctypes.c_int, _PTR, _PTR, ctypes.c_int)
+_mpfr_atan2 = _bind("mpfr_atan2", ctypes.c_int, _PTR, _PTR, _PTR, ctypes.c_int)
 _mpfr_const_pi = _bind("mpfr_const_pi", ctypes.c_int, _PTR, ctypes.c_int)
 _mpfr_cmp = _bind("mpfr_cmp", ctypes.c_int, _PTR, _PTR)
 _mpfr_sgn = _bind("mpfr_sgn", ctypes.c_int, _PTR)
@@ -171,6 +173,19 @@ class MPNumber:
         denominator = cls.integer(item.denominator, precision=precision)
         out = cls(precision)
         _mpfr_div(out.ptr, numerator.ptr, denominator.ptr, rounding)
+        return out
+
+    @classmethod
+    def decimal_value(
+        cls,
+        value: str,
+        *,
+        precision: int = DEFAULT_PRECISION_BITS,
+        rounding: int,
+    ) -> "MPNumber":
+        out = cls(precision)
+        if _mpfr_set_str(out.ptr, value.encode("ascii"), 10, rounding) != 0:
+            raise MPFRError(f"invalid MPFR decimal input: {value!r}")
         return out
 
     @classmethod
@@ -275,6 +290,13 @@ class MPInterval:
         return cls(
             MPNumber.pi(precision=precision, rounding=MPFR_RNDD),
             MPNumber.pi(precision=precision, rounding=MPFR_RNDU),
+        )
+
+    @classmethod
+    def decimal(cls, value: str, *, precision: int = DEFAULT_PRECISION_BITS) -> "MPInterval":
+        return cls(
+            MPNumber.decimal_value(value, precision=precision, rounding=MPFR_RNDD),
+            MPNumber.decimal_value(value, precision=precision, rounding=MPFR_RNDU),
         )
 
     @classmethod
@@ -418,3 +440,54 @@ def flat_step_point(value: Fraction, *, precision: int = DEFAULT_PRECISION_BITS)
     left = (minus_one / x).exp()
     right = (minus_one / (one - x)).exp()
     return left / (left + right)
+
+
+def flat_step_interval(value: MPInterval) -> MPInterval:
+    """Enclose the standard flat step on an interval contained in ``(0, 1)``.
+
+    The flat step is strictly increasing on that domain, so evaluating its
+    interval expression with directed rounding gives a valid enclosure.
+    Endpoint values zero and one are handled exactly; an interval crossing an
+    endpoint fails closed because the generic-diagram replay never needs that
+    wider case.
+    """
+
+    zero = MPInterval.rational(0, precision=value.precision)
+    one = MPInterval.rational(1, precision=value.precision)
+    if value.lo.compare(zero.lo) == 0 and value.hi.compare(zero.hi) == 0:
+        return zero
+    if value.lo.compare(one.lo) == 0 and value.hi.compare(one.hi) == 0:
+        return one
+    if value.lo.sign <= 0 or value.hi.compare(one.lo) >= 0:
+        raise MPFRError("flat-step interval must be strictly inside (0, 1)")
+    minus_one = MPInterval.rational(-1, precision=value.precision)
+    left = (minus_one / value).exp()
+    right = (minus_one / (one - value)).exp()
+    return left / (left + right)
+
+
+def atan2_interval(y: MPInterval, x: MPInterval) -> MPInterval:
+    """Return a directed-rounded principal ``atan2(y, x)`` enclosure.
+
+    Corner extrema enclose ``atan2`` on a rectangle that excludes the origin
+    and does not cross its negative-real-axis branch cut.  Those conditions are
+    checked explicitly.  This bounded primitive is sufficient for the narrow
+    circle-intersection boxes used by the generic-diagram certificate.
+    """
+
+    if x.lo.sign <= 0 <= x.hi.sign and y.lo.sign <= 0 <= y.hi.sign:
+        raise MPFRError("atan2 interval rectangle contains the origin")
+    if x.hi.sign < 0 and y.lo.sign <= 0 <= y.hi.sign:
+        raise MPFRError("atan2 interval crosses the negative-axis branch cut")
+    precision = max(x.precision, y.precision)
+    down: list[MPNumber] = []
+    up: list[MPNumber] = []
+    for y_endpoint in (y.lo, y.hi):
+        for x_endpoint in (x.lo, x.hi):
+            lower = MPNumber(precision)
+            upper = MPNumber(precision)
+            _mpfr_atan2(lower.ptr, y_endpoint.ptr, x_endpoint.ptr, MPFR_RNDD)
+            _mpfr_atan2(upper.ptr, y_endpoint.ptr, x_endpoint.ptr, MPFR_RNDU)
+            down.append(lower)
+            up.append(upper)
+    return MPInterval(_minimum(down), _maximum(up))
