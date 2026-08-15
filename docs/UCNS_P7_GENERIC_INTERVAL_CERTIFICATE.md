@@ -117,10 +117,13 @@ is a failed certificate, not permission to fall back to point arithmetic.
 
 ## 6. Next action
 
-The next declared high-leverage gate is to derive the symbolic multivariable
-Alexander presentation and its elementary ideals from the same fixed Wirtinger
-diagram. Length-four and higher Milnor or finite nilpotent quotient work follows
-without erasing the current exact length-three zero result.
+The exact symbolic presentation and first-nonzero elementary-ideal boundary are
+now recorded in
+[`UCNS_P7_SYMBOLIC_ALEXANDER.md`](UCNS_P7_SYMBOLIC_ALEXANDER.md). The remaining
+Alexander obligation is a separately pinned reduced generating-set/Gröbner
+protocol. Length-four and higher Milnor or finite nilpotent quotient work remains
+an independent next route without erasing the current exact length-three zero
+result.
 
 ## hmmm
 

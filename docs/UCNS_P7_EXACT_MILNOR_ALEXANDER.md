@@ -360,7 +360,7 @@ see
 The remaining high-leverage sequence is:
 
 1. **completed:** certify the generic crossing diagram with outward-rounded interval `atan2` and smooth-field evaluation;
-2. derive the symbolic multivariable Alexander presentation and its elementary ideals;
+2. **partially completed:** derive the symbolic multivariable Alexander presentation and certify the first-nonzero elementary-ideal boundary; complete generating sets remain open;
 3. calculate length-four and higher Milnor invariants or finite nilpotent link-group quotients;
 4. test whether the two substantive phase co-winners can be separated by a preregistered invariant that does not invoke minimum winding;
 5. only then define a spectral or trace object.
