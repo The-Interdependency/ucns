@@ -41,7 +41,20 @@ def test_relational_carrier_exact_boundary() -> None:
         parse_relational_carrier(
             json.dumps(value, sort_keys=True, separators=(",", ":")).encode() + b"\n"
         )
+    for field in (
+        "geometry_attached",
+        "measurement_attached",
+        "theorem_status_transfer",
+    ):
+        for invalid in (0, 1, "false"):
+            value = json.loads(encoded)
+            value[field] = invalid
+            with pytest.raises(RelationalCarrierError, match="exact boolean"):
+                parse_relational_carrier(
+                    json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+                    + b"\n"
+                )
     with pytest.raises(RelationalCarrierError, match="canonical"):
         parse_relational_carrier(json.dumps(json.loads(encoded), indent=2).encode())
-    with pytest.raises(RelationalCarrierError, match="invalid"):
+    with pytest.raises(RelationalCarrierError, match="dense"):
         parse_relational_carrier(encoded.replace(b'"nodes":[0,1,2]', b'"nodes":[0,2]'))

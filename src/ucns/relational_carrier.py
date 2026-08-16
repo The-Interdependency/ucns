@@ -110,6 +110,13 @@ class RelationalCarrier:
     def __post_init__(self) -> None:
         if self.schema_id != SCHEMA_ID or self.schema_version != SCHEMA_VERSION:
             raise RelationalCarrierError("relational carrier schema mismatch")
+        for field, value in (
+            ("geometry_attached", self.geometry_attached),
+            ("measurement_attached", self.measurement_attached),
+            ("theorem_status_transfer", self.theorem_status_transfer),
+        ):
+            if type(value) is not bool:
+                raise RelationalCarrierError(f"{field} must be an exact boolean")
         if self.geometry_attached or self.measurement_attached or self.theorem_status_transfer:
             raise RelationalCarrierError("geometry, measurement, and theorem transfer are forbidden")
         addresses = tuple(node.address for node in self.nodes)
@@ -199,7 +206,9 @@ def parse_relational_carrier(payload: bytes) -> RelationalCarrier:
             measurement_attached=value["measurement_attached"],
             theorem_status_transfer=value["theorem_status_transfer"],
         )
-    except (TypeError, RelationalCarrierError) as exc:
+    except RelationalCarrierError:
+        raise
+    except TypeError as exc:
         raise RelationalCarrierError("invalid relational carrier payload") from exc
     if relational_carrier_bytes(carrier) != payload:
         raise RelationalCarrierError("carrier bytes are not canonical")
