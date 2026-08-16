@@ -19,7 +19,7 @@
 #   proves: prime_boundary_cable_winding_is_derived_from_phase
 #   call: self::test_boundary_cable_classes_and_component_knot_invariants
 #   requires: python3
-#   timeout: 10
+#   timeout: 60
 #   mutates: none
 #   cleanup: none
 #

@@ -73,7 +73,7 @@ REQUIRED_MODULE_FIELDS = {
     "rollback",
 }
 REQUIRED_CONTRACT_FIELDS = {"given", "then"}
-REQUIRED_CHECK_FIELDS = {"proves", "call", "mutates", "cleanup"}
+REQUIRED_CHECK_FIELDS = {"proves", "call", "timeout", "mutates", "cleanup"}
 
 
 @dataclass(frozen=True)

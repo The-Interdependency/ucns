@@ -637,6 +637,11 @@ The source owns skill-lib `MODULE_BUILD` and `CONTRACTS` declarations; tests own
 modules, missing contracts, unknown witnesses, non-executable check targets, or
 unresolved `self::` calls.
 
+The optional executable skill-lib boundary runner first closes that no-exec
+graph audit, then executes declared `CHECKS` individually with consumed host
+capabilities, real per-check timeouts, and a bounded evidence receipt. See
+[`docs/SKILL_LIB_BOUNDARY_RUNNER.md`](docs/SKILL_LIB_BOUNDARY_RUNNER.md).
+
 ## Build doctrine
 
 This build is pinned to

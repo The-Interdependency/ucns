@@ -2,78 +2,91 @@
 # id: check_exact_public_gonol_fixture
 #   proves: edcm_public_gonol_fixture_is_exact
 #   call: self::test_public_gonol_fixture_is_exact
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_no_source_normalization
 #   proves: edcm_source_text_is_not_normalized
 #   call: self::test_source_text_is_exact_and_out_of_alphabet_is_retained
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_word_gonol_nesting
 #   proves: edcm_word_is_the_smallest_gonol
 #   call: self::test_words_are_gonols_and_each_space_is_a_nesting_boundary
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_space_manifestations_assign_to_origin
 #   proves: edcm_space_manifestations_assign_to_origin
 #   call: self::test_pinned_unicode_white_space_manifestations_assign_to_origin
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_space_origin_segmentation_preserves_source
 #   proves: edcm_space_manifestations_assign_to_origin
 #   call: self::test_space_manifestations_split_words_without_rewriting_source
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_space_assignment_pin_is_runtime_independent
 #   proves: edcm_space_manifestations_assign_to_origin
 #   call: self::test_runtime_isspace_does_not_expand_the_pinned_profile
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_turn_unit_support
 #   proves: edcm_speaker_turn_has_unit_support
 #   call: self::test_one_turn_is_one_unit_regardless_of_text_extent
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_full_corpus_iteration
 #   proves: edcm_alphabet_failure_is_positive_evidence
 #   call: self::test_observe_corpus_runs_every_turn_without_sampling
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_profile_options_fail_closed
 #   proves: edcm_source_text_is_not_normalized
 #   call: self::test_profile_options_fail_closed
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_strict_utf8_decoding
 #   proves: edcm_source_text_is_not_normalized
 #   call: self::test_utf8_decoding_is_strict
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_carrier_assignment_terms
 #   proves: edcm_space_manifestations_assign_to_origin
 #   call: self::test_carrier_assignment_terms_distinguish_fixture_membership
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_valid_unassigned_scalars_are_retained
 #   proves: edcm_alphabet_failure_is_positive_evidence
 #   call: self::test_non_space_unicode_scalars_remain_exact_unassigned_evidence
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_surrogates_fail_closed
 #   proves: edcm_source_text_is_not_normalized
 #   call: self::test_surrogate_code_points_are_rejected_at_text_boundaries
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===

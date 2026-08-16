@@ -2,6 +2,7 @@
 # id: lexical_floor_layer_check
 #   proves: lexical_hyperspace_is_occurrence_preserving_projection_not_embedding, affixiation_and_compounding_are_candidate_layers, definitions_are_context_plural_and_immutable
 #   call: self::test_projection_candidate_and_definition_boundaries
+#   timeout: 30
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===
