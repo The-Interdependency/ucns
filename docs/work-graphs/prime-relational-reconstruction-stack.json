@@ -1,0 +1,37 @@
+{
+  "boundaries": {
+    "agent_scope": "cross-repository-work-graph",
+    "authority_transfer": false,
+    "hmmm": [
+      "external fixture authorship and custody",
+      "measurement and empirical validity",
+      "producer signatures"
+    ],
+    "measurement_status_transfer": false,
+    "proof_status_transfer": false,
+    "semantic_mapping": "declared mapping"
+  },
+  "repositories": [
+    {
+      "authority": "relational representation and experiment evidence",
+      "commit": "123495018f50ef63697de7f8e0d15f1dc9e826b2",
+      "relation": "producer",
+      "repository": "The-Interdependency/ucns"
+    },
+    {
+      "authority": "measurement candidate and controlled result",
+      "commit": "02f71b5610512108066bc91c40f6055b44ba32e4",
+      "relation": "gated consumer",
+      "repository": "The-Interdependency/edcm"
+    },
+    {
+      "authority": "build and evidence doctrine",
+      "commit": "6ef2e4c123225f9db20e5230e5894c9c86b42ee6",
+      "relation": "doctrine source",
+      "repository": "The-Interdependency/skill-lib"
+    }
+  ],
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "b6684f8098ced71a4a3966d26f2dfe146c5582815909181a2527ef0038338545"
+}
