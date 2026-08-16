@@ -110,9 +110,24 @@ They do not yet assign:
 
 ## Next action
 
-P7 remains first. Construct a prime-native phase-and-lift engine whose primary variables live on seven carriers and thirteen hypernodes, including the arity-six origin. Pair and triad readouts must be derived after the global solution exists. Then apply the same lift protocol to P5 and compare invariants.
+The next prime-family goal is no longer another P7 invariant. Test whether independently constructed P2, P3, P5, and P7 views can reconstruct deliberately removed relational information exactly and uniquely.
+
+Proceed in dependency order:
+
+1. resolve P2 enough to emit one explicit candidate representation without changing arithmetic primality;
+2. construct P3 directly as its own artifact rather than as a restriction of P5/P7;
+3. freeze the source fixture, view mappings, erasures, baselines, resource bounds, and outcome criteria in [`PRIME_LOSS_RECONSTRUCTION_PLAN.md`](PRIME_LOSS_RECONSTRUCTION_PLAN.md);
+4. run only the smallest single-relation erasure test first;
+5. record `FALSIFIED`, `SURVIVED`, or `UNRESOLVED` before repair or escalation;
+6. only after survival, test structural erasure, leave-one-view-out contribution, and simpler matched baselines.
+
+P5/P7 distinguishability is prerequisite evidence, not evidence of reconstruction. No claim that all four views are necessary, sufficient, or prime-specific is active until the frozen tests survive.
 
 No spectral operator, prime-power law, zeta-zero correspondence, or proof of the Riemann hypothesis is claimed.
+
+## Usage guidance
+
+Use this document for the current standing of the direct P5/P7 artifacts. Use `docs/PRIME_LOSS_RECONSTRUCTION_PLAN.md` for the reconstruction experiment and its stop rules. Do not infer P2/P3 construction standing from dyadic or triadic restrictions inside P5/P7.
 
 ## Reproduction
 
