@@ -33,9 +33,17 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_prime_relational_independent_replay
+#   proves: prime_relational_replay_avoids_product_import, prime_relational_replay_requires_terminal_falsification
+#   call: self::test_independent_replay_agrees_with_committed_report
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from pathlib import Path
+import importlib.util
 
 import pytest
 
@@ -97,3 +105,18 @@ def test_h3_failure_propagates_without_erasing_local_survivors(report):
     }
     assert report["external_or_sealed_labels_inspected"] is False
     assert report["canon_selection"] is None
+
+
+def test_independent_replay_agrees_with_committed_report(tmp_path, report):
+    report_path = tmp_path / "report.json"
+    import json
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+    tool_path = ROOT / "tools/replay_prime_relational_reconstruction.py"
+    spec = importlib.util.spec_from_file_location("independent_prime_replay", tool_path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    replay = module.replay(ROOT / PREREGISTRATION_PATH, report_path)
+    assert replay["status"] == "AGREED"
+    assert replay["h1_exact_recoveries"] == 17
+    assert replay["h2_dimensions"] == {"P2": 1, "P3": 2, "P5": 4, "P7": 6}
