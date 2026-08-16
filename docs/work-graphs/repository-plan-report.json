@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "main",
-    "commit": "e5022b4e2cc7ef851c0b77a42448fd742d09a873",
+    "commit": "4cd8a3e2070d6ca5b410dfeb47c27a04a68db4b3",
     "generated_at": "2026-08-15",
     "note": "This report describes the cited UCNS main commit plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence."
   },
@@ -49,11 +49,11 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly; no candidate geometry, including Mobius transport, is promoted to a universal requirement of UCNS objecthood by implementation success.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly; P5/P7 distinguishability is exact evidence but does not establish P2/P3/P5/P7 loss reconstruction, complementarity, necessity, or prime-specific advantage.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
-      "description": "merged gonol relationship display specification v1 with option-preserving display semantics"
+      "commit": "4cd8a3e2070d6ca5b410dfeb47c27a04a68db4b3",
+      "description": "merged frozen P7 length-four Milnor evaluation after exact P7/P5 Alexander and Groebner discrimination; higher nilpotent comparison remains unresolved"
     }
   },
   "delivered": [
@@ -81,9 +81,17 @@
       "surface": "gonol relationship display v1",
       "status": "authority-declared option-preserving proposal",
       "boundary": "registry integration, relation-specific continuous Mobius geometry, seven-gonol construction, and embedding law remain hmmm"
+    },
+    {
+      "surface": "exact P5/P7 prime-family discrimination",
+      "status": "implemented exact evidence",
+      "boundary": "different invariants do not establish loss reconstruction, irreducible complementarity, or prime-family necessity"
     }
   ],
   "active_frontier": [
+    "test whether independently constructed P2, P3, P5, and P7 views jointly reconstruct deliberately removed relational information exactly and uniquely; distinguishability alone is insufficient",
+    "separate three claims: joint sufficiency, irreducible complementary contribution of each view, and any advantage over a simpler matched typed relation graph; stop downstream testing when a prerequisite claim fails",
+    "resolve P2 representation standing and construct P3 directly before treating 2/3/5/7 as an independently instantiated family",
     "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
     "preserve multimodal object identity separately from scalar observables: a glyph occurrence count can be scalar while the glyph remains a non-numerical vector description with identity, position, context, provenance, and relations",
     "treat language as one measurement domain rather than the definition of UCNS or EDCM",
@@ -101,6 +109,21 @@
     "keep the repo-owned portfolio report current without transferring UCNS authority to the aggregator"
   ],
   "next_actions": [
+    {
+      "action": "resolve P2 enough to emit one explicit candidate relation representation and construct P3 directly as its own artifact; do not infer either from restrictions inside P5/P7",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "ordinary arithmetic primality remains unchanged; P2 closure standing may remain scoped and conditional, but the experiment needs explicit reproducible P2 and independent P3 encoders"
+    },
+    {
+      "action": "freeze and execute the smallest P2/P3/P5/P7 single-relation loss-reconstruction experiment defined in docs/PRIME_LOSS_RECONSTRUCTION_PLAN.md",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "requires explicit P2/P3/P5/P7 encoders, one exact source relation ledger, fixed cross-view endpoint mappings that do not reveal hidden relation values, frozen erasures, baselines, resource bounds, and exact unique-recovery criteria"
+    },
+    {
+      "action": "only if joint reconstruction survives, run structural-erasure, leave-one-view-out, and simpler matched-baseline tests to determine whether each prime view contributes irreducible information and whether prime-native structure adds anything unavailable to a simpler typed relation graph",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "H1 joint sufficiency must first survive without repair or weakened criteria"
+    },
     {
       "action": "define and validate the machine path from option registry choices into gonol relationship display receipts",
       "owner": "The-Interdependency/ucns",
@@ -133,6 +156,9 @@
     }
   ],
   "blocked": [
+    "claiming that P2/P3/P5/P7 reconstruct relational loss is blocked until explicit independent P2 and P3 representations exist and the frozen exact unique-recovery experiment survives",
+    "claiming that all four views are necessary or complementary is blocked until leave-one-view-out testing finds irreducible contribution from each view",
+    "claiming a prime-specific reconstruction advantage is blocked unless the family beats a simpler matched typed-relation baseline under the same information and resource boundary",
     "selection or activation of a universal carrier/completion law is blocked on evidence-bearing decisions for the still-open topology, composition, and completion boundaries",
     "promotion of Mobius transport from relation-specific candidate to broader UCNS requirement is blocked unless mixed-topology controls show a reproducible invariant, prediction, compression, or recovery advantage unavailable to simpler relation geometries",
     "promotion of a text/glyph-specific representation to a universal UCNS object schema is blocked until non-language modalities such as GitHub metadata are represented without loss of their native distinctions"
@@ -174,9 +200,17 @@
     "option_registry": "src/ucns/option_registry.json",
     "option_decisions": "docs/UCNS_OPTION_DECISIONS.md",
     "system_overview": "README.md",
-    "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md"
+    "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md",
+    "prime_loss_reconstruction_plan": "docs/PRIME_LOSS_RECONSTRUCTION_PLAN.md"
   },
   "hmmm": [
+    "P2 closed-primitive standing sufficient to define a reproducible experimental view without overclaiming ontology",
+    "independent direct P3 artifact and its exact relation signature",
+    "the minimum source fixture that tests reconstruction without smuggling the hidden relation value through cross-view identity metadata",
+    "whether the complete P2/P3/P5/P7 family is jointly sufficient for exact unique recovery of preregistered relational loss",
+    "whether each of P2, P3, P5, and P7 contributes irreducible information under leave-one-view-out controls",
+    "whether any proper subset already reconstructs every frozen loss",
+    "whether prime-native views offer any reconstruction advantage over a simpler matched typed relation graph",
     "registry integration for gonol relationship display v1",
     "the minimum modality-independent UCNS object description that can preserve non-numerical identity, scalar observations, provenance, and relations without collapsing them",
     "the exact boundary between a glyph's non-numerical vector description and scalar occurrence measurements attached to it",
