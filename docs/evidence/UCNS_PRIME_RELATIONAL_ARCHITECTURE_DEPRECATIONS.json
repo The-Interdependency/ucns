@@ -1,0 +1,23 @@
+{
+  "architecture_status": "FALSIFIED",
+  "dependent_claims": [
+    {"claim": "multi-loss-prime-reconstruction", "status": "DEPRECATED"},
+    {"claim": "recursive-prime-reconstruction", "status": "DEPRECATED"},
+    {"claim": "cross-scale-prime-reconstruction", "status": "DEPRECATED"},
+    {"claim": "multimodal-prime-reconstruction", "status": "DEPRECATED"},
+    {"claim": "externally-authored-prime-reconstruction", "status": "DEPRECATED"},
+    {"claim": "edcm-external-validation-for-prime-architecture", "status": "DEPRECATED"},
+    {"claim": "joint-ucns-edcm-prime-architecture", "status": "DEPRECATED"}
+  ],
+  "failure_gate": "H3",
+  "failure_reason": "simpler information-matched typed-block baseline equaled all H1 and H2 outcomes with lower semantic and dispatch complexity",
+  "report_sha256": "c9a1d4b45c88a12d666e5e85e62710f8d20401ce08f57d6fff4f03bae0f1aaed",
+  "schema": "ucns.prime-relational-architecture-deprecations/1.0.0",
+  "surviving_bounded_claims": [
+    {"claim": "ucns-p5-p7-exact-distinction", "status": "SURVIVED"},
+    {"claim": "prime-cardinality-controlled-h1", "status": "SURVIVED"},
+    {"claim": "prime-cardinality-controlled-h2", "status": "SURVIVED"},
+    {"claim": "edcm-absolute-recovered-dissonance", "status": "FALSIFIED"},
+    {"claim": "edcm-normalized-recovered-dissonance-controlled", "status": "SURVIVED"}
+  ]
+}
