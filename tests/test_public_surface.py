@@ -109,6 +109,9 @@ def test_public_surface_is_bounded() -> None:
         "SourceCoordinateTrace",
         "SourceCoordinateBoundaryReport",
         "run_v019_source_coordinate_derivation_experiment",
+        "RelationalCarrier",
+        "build_relational_carrier",
+        "relational_carrier_bytes",
     ):
         assert expected in exported
 
