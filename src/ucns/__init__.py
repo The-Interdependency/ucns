@@ -644,6 +644,15 @@ from .profiles import (
     EdcmMetapatOrderedOccurrenceProfile,
     ProfileBoundStructure,
 )
+from .relational_carrier import (
+    RelationalCarrier,
+    RelationalCarrierError,
+    RelationalEdge,
+    RelationalNode,
+    build_relational_carrier,
+    parse_relational_carrier,
+    relational_carrier_bytes,
+)
 
 __all__ = [
     "LIFTED_PERIOD", "STRUCTURAL_NULL", "VISIBLE_PERIOD", "CarrierPoint",
@@ -931,4 +940,7 @@ __all__ = [
     "EdcmMetapatBridgeRecord", "InformationLossRecord",
     "RetainedLayerDigest", "PROFILE_OPTIONS",
     "EdcmMetapatOrderedOccurrenceProfile", "ProfileBoundStructure",
+    "RelationalCarrier", "RelationalCarrierError", "RelationalEdge",
+    "RelationalNode", "build_relational_carrier", "parse_relational_carrier",
+    "relational_carrier_bytes",
 ]
