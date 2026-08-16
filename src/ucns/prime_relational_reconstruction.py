@@ -166,38 +166,41 @@ def _relation_rows(groups: Mapping[str, Sequence[int]]) -> dict[str, tuple[dict[
     return rows
 
 
-def _encode(
-    view_id: str,
-    direct_group: str,
-    checksum_group: str,
-    rows: Mapping[str, tuple[dict[str, Any], ...]],
-) -> EncodedView:
-    direct = rows[direct_group]
+# These four source-native entry points intentionally do not call one another.
+def encode_p2(rows: Mapping[str, tuple[dict[str, Any], ...]]) -> EncodedView:
+    direct = rows["G2"]
     return EncodedView(
-        view_id=view_id,
-        direct_group=direct_group,
-        direct_values=tuple(row["value"] for row in direct),
-        checksum_group=checksum_group,
-        checksum=sum(row["value"] for row in rows[checksum_group]) % MODULUS,
-        public_relation_identities=tuple(row["identity"] for row in direct),
+        "P2", "G2", tuple(row["value"] for row in direct), "G7",
+        sum(row["value"] for row in rows["G7"]) % MODULUS,
+        tuple(row["identity"] for row in direct),
     )
 
 
-# These four source-native entry points intentionally do not call one another.
-def encode_p2(rows: Mapping[str, tuple[dict[str, Any], ...]]) -> EncodedView:
-    return _encode("P2", "G2", "G7", rows)
-
-
 def encode_p3(rows: Mapping[str, tuple[dict[str, Any], ...]]) -> EncodedView:
-    return _encode("P3", "G3", "G2", rows)
+    direct = rows["G3"]
+    return EncodedView(
+        "P3", "G3", tuple(row["value"] for row in direct), "G2",
+        sum(row["value"] for row in rows["G2"]) % MODULUS,
+        tuple(row["identity"] for row in direct),
+    )
 
 
 def encode_p5(rows: Mapping[str, tuple[dict[str, Any], ...]]) -> EncodedView:
-    return _encode("P5", "G5", "G3", rows)
+    direct = rows["G5"]
+    return EncodedView(
+        "P5", "G5", tuple(row["value"] for row in direct), "G3",
+        sum(row["value"] for row in rows["G3"]) % MODULUS,
+        tuple(row["identity"] for row in direct),
+    )
 
 
 def encode_p7(rows: Mapping[str, tuple[dict[str, Any], ...]]) -> EncodedView:
-    return _encode("P7", "G7", "G5", rows)
+    direct = rows["G7"]
+    return EncodedView(
+        "P7", "G7", tuple(row["value"] for row in direct), "G5",
+        sum(row["value"] for row in rows["G5"]) % MODULUS,
+        tuple(row["identity"] for row in direct),
+    )
 
 
 ENCODERS: tuple[Callable[[Mapping[str, tuple[dict[str, Any], ...]]], EncodedView], ...] = (
@@ -300,15 +303,47 @@ def _run_h2(views: Mapping[str, EncodedView]) -> dict[str, Any]:
     }
 
 
-def _run_h3(prime_h1: Mapping[str, Any], prime_h2: Mapping[str, Any]) -> dict[str, Any]:
-    # B0..B3 are an anonymous relabeling with one generic encoder dispatch.
-    baseline = {
-        "encoded_field_cells": 21,
+def _run_typed_block_baseline(
+    rows: Mapping[str, tuple[dict[str, Any], ...]],
+) -> dict[str, int]:
+    """Execute the anonymous matched code through one generic block loop."""
+    exact_recoveries = 0
+    irreducible_leave_outs = 0
+    encoded_cells = 0
+    for group in GROUP_ORDER:
+        direct = tuple(row["value"] for row in rows[group])
+        checksum = sum(direct) % MODULUS
+        encoded_cells += len(direct) + 1
+        for ordinal, hidden in enumerate(direct):
+            retained = sum(value for index, value in enumerate(direct) if index != ordinal)
+            candidates = tuple(
+                candidate for candidate in range(MODULUS)
+                if (retained + candidate) % MODULUS == checksum
+            )
+            exact_recoveries += candidates == (hidden,)
+        alternative = list(direct)
+        alternative[0] = (alternative[0] + 1) % MODULUS
+        alternative[1] = (alternative[1] - 1) % MODULUS
+        irreducible_leave_outs += (
+            tuple(alternative) != direct
+            and sum(alternative) % MODULUS == checksum
+            and len(direct) - 1 > 0
+        )
+    return {
+        "encoded_field_cells": encoded_cells,
         "encoder_dispatch_branches": 1,
-        "h1_exact_recoveries": 17,
-        "h2_irreducible_leave_outs": 4,
+        "h1_exact_recoveries": exact_recoveries,
+        "h2_irreducible_leave_outs": irreducible_leave_outs,
         "semantic_control_fields": 0,
     }
+
+
+def _run_h3(
+    rows: Mapping[str, tuple[dict[str, Any], ...]],
+    prime_h1: Mapping[str, Any],
+    prime_h2: Mapping[str, Any],
+) -> dict[str, Any]:
+    baseline = _run_typed_block_baseline(rows)
     prime = {
         "encoded_field_cells": 21,
         "encoder_dispatch_branches": 4,
@@ -368,7 +403,7 @@ def run_architecture_gates(preregistration_path: Path) -> dict[str, Any]:
     h2 = _run_h2(views)
     if h2["status"] != Status.SURVIVED.value:
         return _terminal_report(prereg, prereg_digest, prerequisites, h1=h1, h2=h2)
-    h3 = _run_h3(h1, h2)
+    h3 = _run_h3(rows, h1, h2)
     return _terminal_report(prereg, prereg_digest, prerequisites, h1=h1, h2=h2, h3=h3)
 
 
