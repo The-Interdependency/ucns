@@ -2,21 +2,21 @@
 # id: ucns_prime_relational_reconstruction_adversary
 #   module_name: prime_relational_reconstruction
 #   module_kind: experiment
-#   summary: executes frozen P2/P3/P5/P7 reconstruction, irreducibility, and matched-information baseline gates with independent replay and failure propagation
+#   summary: executes frozen P2/P3/P5/P7 gates and audits whether the registered baseline changes the prime-cardinality architecture before propagating failure
 #   owner: Erin Spencer
-#   public_surface: Status, public_relation_identity, encode_p2, encode_p3, encode_p5, encode_p7, run_architecture_gates, main
-#   internal_surface: preregistration validation, exact field reconstruction, brute-force replay, whole-view ambiguity witnesses, typed-block baseline, canonical report serialization
+#   public_surface: Status, public_relation_identity, encode_p2, encode_p3, encode_p5, encode_p7, audit_baseline_architecture, run_architecture_gates, main
+#   internal_surface: preregistration validation, exact field reconstruction, brute-force replay, whole-view ambiguity witnesses, typed-block baseline, structural-isomorphism audit, canonical report serialization
 #   auth_boundary: none
 #   storage_boundary: writes one caller-selected aggregate report
 #   network_boundary: none
 #   user_data_boundary: hand-authored development fixture only; no external or sealed labels
 #   admin_only: false
 #   tests: tests/test_prime_relational_reconstruction.py
-#   rollout: architectural falsification experiment only; no canon or runtime activation
-#   rollback: remove module, checks, report, and findings while retaining immutable preregistration and prior bounded results
+#   rollout: registered experiment plus interpretation correction only; no canon or runtime activation
+#   rollback: revert the interpretation correction while retaining immutable preregistration, original execution commits, and prior bounded results
 #   requires: edcm_external_evaluation_harness
 #   since: 2026-08-16
-#   unresolved: natural multimodal semantics, external authorship, measurement validity, independent external replication
+#   unresolved: genuinely non-prime-cardinality matched baseline, natural multimodal semantics, external authorship, measurement validity, independent external replication
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -32,26 +32,44 @@
 #   class: evidence
 #   since: 2026-08-16
 #
+# id: prime_relational_encoders_remain_source_independent
+#   given: the frozen P2/P3/P5/P7 encoders are inspected as source
+#   then: four distinct entry points exist and none delegates to another encoder or a shared encoding helper
+#   class: evidence
+#   since: 2026-08-17
+#
+# id: prime_relational_complete_run_obeys_registered_resources
+#   given: the complete producer CLI is executed by the resource-bound test harness
+#   then: one-CPU affinity, 256 MiB address-space limit, and 30-second timeout are applied and the report completes
+#   class: safety
+#   since: 2026-08-17
+#
 # id: prime_relational_h2_tests_every_whole_view
 #   given: H1 survives and each complete prime-cardinality view is omitted independently
 #   then: constructive ambiguity and an independent field-degree replay agree whether every view uniquely matters
 #   class: evidence
 #   since: 2026-08-16
 #
-# id: prime_relational_h3_fails_on_simpler_matched_equivalence
+# id: prime_relational_h3_applies_frozen_software_complexity_criterion
 #   given: H1 and H2 survive and an exactly information-matched typed-block baseline is evaluated
-#   then: equal or better baseline reconstruction with strictly lower semantic or dispatch complexity falsifies prime-specific architectural advantage
+#   then: equal or better reconstruction with strictly lower semantic or dispatch complexity falsifies only the registered semantic-label and dispatch advantage
 #   class: evidence
 #   since: 2026-08-16
 #
-# id: prime_relational_failure_propagates_before_repair
-#   given: a load-bearing architectural gate is falsified
-#   then: dependent gates are marked DEPRECATED, local bounded survivors remain recorded, and no representation or criterion is repaired
+# id: prime_relational_baseline_isomorphism_blocks_architecture_transfer
+#   given: the registered anonymous baseline preserves the 2/3/5/7 partition, F_257 arithmetic, checksum operator, and 21-cell budget
+#   then: the report identifies structural isomorphism and leaves prime-cardinality architectural standing UNRESOLVED
+#   class: evidence
+#   since: 2026-08-17
+#
+# id: prime_relational_failure_propagation_is_scope_bounded
+#   given: registered H3 is FALSIFIED but its baseline changes only semantic labels, dispatch specialization, and checksum placement
+#   then: no prime-cardinality dependent claim is deprecated; every unexecuted dependent claim remains UNRESOLVED and local bounded survivors remain recorded
 #   class: doctrine
-#   since: 2026-08-16
+#   since: 2026-08-17
 # === END CONTRACTS ===
 
-"""Frozen adversarial test of prime-cardinality relational reconstruction.
+"""Frozen adversarial test plus interpretation audit.
 
 Usage::
 
@@ -59,7 +77,10 @@ Usage::
       --repository-root . --output /tmp/prime-relations.json
 
 Run twice and compare bytes.  The command accepts no outcome labels and does
-not invoke the EDCM harness unless every UCNS prerequisite survives.
+not invoke the EDCM harness.  ``h3.status`` is the result of the frozen
+semantic/dispatch criterion; ``architecture_status`` is separately guarded by
+the structural-isomorphism audit.  A new architectural control requires a new
+preregistration rather than editing the frozen input.
 """
 
 from __future__ import annotations
@@ -338,7 +359,57 @@ def _run_typed_block_baseline(
     }
 
 
+def audit_baseline_architecture(
+    prereg: Mapping[str, Any], h3: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Report whether H3's baseline actually changes the tested architecture.
+
+    The audit is intentionally structural and outcome-independent.  It compares
+    the frozen fixture and baseline declarations plus the emitted resource tuple;
+    it does not introduce a replacement control or change the H3 criterion.
+    """
+    source_sizes = tuple(len(prereg["fixture"]["groups"][group]) for group in GROUP_ORDER)
+    baseline_sizes = tuple(prereg["baseline"]["direct_block_sizes"])
+    prime_cells = h3["prime_family"]["encoded_field_cells"]
+    baseline_cells = h3["baseline"]["encoded_field_cells"]
+    checks = {
+        "same_cardinality_signature": baseline_sizes == source_sizes == (2, 3, 5, 7),
+        "same_encoded_field_cells": (
+            baseline_cells == prime_cells == prereg["baseline"]["encoded_field_cells"] == 21
+        ),
+        "same_field_arithmetic": prereg["encoders"]["field_modulus"] == MODULUS,
+        "same_relation_partition": (
+            len(prereg["baseline"]["block_ids"]) == len(GROUP_ORDER)
+            and baseline_sizes == source_sizes
+        ),
+        "same_sum_mod_field_checksum_operator": (
+            prereg["baseline"]["kind"] == "typed-block-cyclic-checksum"
+        ),
+    }
+    structurally_isomorphic = all(checks.values())
+    return {
+        "architecture_distinguishing_control": not structurally_isomorphic,
+        "baseline_architecture_relation": (
+            "STRUCTURALLY_ISOMORPHIC" if structurally_isomorphic else "DISTINGUISHED"
+        ),
+        "changed_variables": [
+            "prime semantic labels",
+            "source-specific encoder dispatch",
+            "checksum placement",
+        ],
+        "checks": checks,
+        "unchanged_architecture_variables": [
+            "2/3/5/7 cardinality signature",
+            "F_257 arithmetic",
+            "four-block source partition",
+            "sum-mod-field checksum operator",
+            "21 encoded field cells",
+        ],
+    }
+
+
 def _run_h3(
+    prereg: Mapping[str, Any],
     rows: Mapping[str, tuple[dict[str, Any], ...]],
     prime_h1: Mapping[str, Any],
     prime_h2: Mapping[str, Any],
@@ -361,13 +432,16 @@ def _run_h3(
         or baseline["encoder_dispatch_branches"] < prime["encoder_dispatch_branches"]
     )
     falsified = baseline_matches and baseline_simpler
-    return {
+    result = {
         "baseline": baseline,
         "baseline_matches_or_exceeds": baseline_matches,
         "baseline_strictly_simpler": baseline_simpler,
         "prime_family": prime,
+        "status_scope": "registered-semantic-label-and-dispatch-advantage",
         "status": Status.FALSIFIED.value if falsified else Status.SURVIVED.value,
     }
+    result["structural_audit"] = audit_baseline_architecture(prereg, result)
+    return result
 
 
 def run_architecture_gates(preregistration_path: Path) -> dict[str, Any]:
@@ -403,7 +477,7 @@ def run_architecture_gates(preregistration_path: Path) -> dict[str, Any]:
     h2 = _run_h2(views)
     if h2["status"] != Status.SURVIVED.value:
         return _terminal_report(prereg, prereg_digest, prerequisites, h1=h1, h2=h2)
-    h3 = _run_h3(rows, h1, h2)
+    h3 = _run_h3(prereg, rows, h1, h2)
     return _terminal_report(prereg, prereg_digest, prerequisites, h1=h1, h2=h2, h3=h3)
 
 
@@ -423,10 +497,29 @@ def _terminal_report(
         (name for name, status in (("prerequisites", prerequisites["status"]), ("H1", h1_status), ("H2", h2_status), ("H3", h3_status)) if status == Status.FALSIFIED.value),
         None,
     )
-    architecture = Status.FALSIFIED.value if load_bearing_failure else Status.SURVIVED.value
-    dependent = (
-        Status.DEPRECATED.value if architecture == Status.FALSIFIED.value else "ELIGIBLE"
+    registered_program = (
+        Status.FALSIFIED.value if load_bearing_failure else Status.SURVIVED.value
     )
+    h3_isomorphic = bool(
+        h3
+        and h3_status == Status.FALSIFIED.value
+        and h3.get("structural_audit", {}).get("baseline_architecture_relation")
+        == "STRUCTURALLY_ISOMORPHIC"
+    )
+    if load_bearing_failure in {"prerequisites", "H1", "H2"}:
+        architecture = Status.FALSIFIED.value
+        dependent = Status.DEPRECATED.value
+        propagation_status = Status.SURVIVED.value
+    elif h3_isomorphic:
+        architecture = Status.UNRESOLVED.value
+        dependent = Status.UNRESOLVED.value
+        propagation_status = Status.BLOCKED.value
+    else:
+        architecture = registered_program
+        dependent = (
+            Status.DEPRECATED.value if architecture == Status.FALSIFIED.value else "ELIGIBLE"
+        )
+        propagation_status = Status.SURVIVED.value
     return {
         "architecture_status": architecture,
         "canon_selection": None,
@@ -437,22 +530,60 @@ def _terminal_report(
             )
         },
         "external_or_sealed_labels_inspected": False,
+        "failure_propagation": {
+            "deprecation_map": [] if h3_isomorphic else None,
+            "status": propagation_status,
+            "target_scope": (
+                "prime-cardinality-dependent-claims"
+                if h3_isomorphic else "registered-dependent-claims"
+            ),
+        },
         "h1": h1 or {"status": Status.DEPRECATED.value},
         "h2": h2 or {"status": Status.DEPRECATED.value},
         "h3": h3 or {"status": Status.DEPRECATED.value},
         "load_bearing_failure": load_bearing_failure,
+        "registered_falsification_scope": (
+            "semantic-label-and-dispatch-advantage-only"
+            if h3_isomorphic else None
+        ),
+        "registered_program_status": registered_program,
         "nonclaims": [
             "universal reconstruction", "physical necessity", "consciousness necessity",
             "prime metaphysics", "spectral claim", "zeta claim", "EDCM measurement validity"
         ],
         "prerequisites": prerequisites,
         "preregistration_sha256": prereg_digest,
+        "post_registration_audit": {
+            "criterion_changed": False,
+            "leakage_detected": False,
+            "preregistration_changed": False,
+            "terminal_interpretation_drift_detected": h3_isomorphic,
+            "terminal_interpretation_drift": (
+                "registered software-complexity falsification was broadened to prime-cardinality architecture and its dependent claims"
+                if h3_isomorphic else None
+            ),
+        },
         "prior_bounded_results": {
             "edcm_absolute_recovered_dissonance": prereg["edcm"]["absolute_recovered_dissonance"],
             "edcm_normalized_recovered_dissonance": prereg["edcm"]["normalized_recovered_dissonance"],
             "ucns_p5_p7_exact_distinction": prereg["ucns_prior"]["p5_p7_exact_distinction"],
         },
-        "schema": "ucns.prime-relational-reconstruction-result/1.0.0",
+        "resource_bound_enforcement": {
+            "bounds": prereg["resource_bounds"],
+            "mode": "external-posix-test-harness",
+            "test": "tests/test_prime_relational_reconstruction.py::test_complete_cli_run_obeys_registered_resource_bounds",
+        },
+        "schema": "ucns.prime-relational-reconstruction-result/2.0.0",
+        "usage_guidance": {
+            "architecture_status": "consume for prime-cardinality architectural standing",
+            "h3_status": "consume only for the frozen semantic-label and dispatch criterion",
+            "next_architectural_control": "requires a new preregistration",
+            "propagation_map": "consume failure_propagation.deprecation_map exactly",
+        },
+        "hmmm": [
+            "outcome of a newly preregistered genuinely non-prime-cardinality matched control",
+            "independent external replication",
+        ],
     }
 
 

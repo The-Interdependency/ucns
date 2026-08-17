@@ -1,90 +1,123 @@
 # UCNS prime-cardinality relational reconstruction result
 
-Date: 2026-08-16
-Terminal status: **ARCHITECTURE FALSIFIED**
+Registered execution: 2026-08-16
 
-## Result
+Interpretation correction: 2026-08-17
 
-The prerequisite gate survived: P2 is explicit, P3 is independently
-source-native, all seventeen public relation identities are unique, and value
-mutation leaves identity unchanged.
+Registered H3 status: **FALSIFIED — semantic-label and dispatch advantage only**
 
-H1 **SURVIVED**. All seventeen preregistered single-relation erasures had
-exactly one admissible `F_257` reconstruction equal to the hidden source value.
-The subtraction implementation and a separate exhaustive 257-candidate replay
-agreed for every erasure.
+Prime-cardinality architecture: **UNRESOLVED**
 
-H2 **SURVIVED**. Removing P2, P3, P5, or P7 left respectively `1`, `2`, `4`,
-or `6` independent field degrees of freedom. Constructive alternative
-assignments and the independent dimension calculation agreed, so every view
-uniquely mattered somewhere under whole-view removal.
+Deprecation propagation: **BLOCKED; exact map `[]`**
 
-H3 **FALSIFIED** the load-bearing prime-specific advantage. The anonymous
-typed-block baseline achieved the same `17/17` exact H1 recoveries and `4/4`
-irreducible H2 leave-outs using the same 21 field cells and seventeen public
-relation identities. It required one generic encoder dispatch and zero prime
-semantic control fields, versus four dispatches and two prime controls for the
-prime-labelled family.
+## Corrected result
 
-Under the frozen rule, equal reconstruction by a materially simpler,
-information-matched representation is decisive. The complete stated
-architecture is therefore **FALSIFIED**, not unresolved.
+H1 **SURVIVED — not proved**. All seventeen frozen single-relation erasures
+had exactly one admissible `F_257` reconstruction equal to the hidden fixture
+value. The subtraction implementation and exhaustive 257-candidate replay
+agreed.
 
-## Evidence ledger
+H2 **SURVIVED — not proved**. Removing P2, P3, P5, or P7 left respectively
+`1`, `2`, `4`, or `6` independent field degrees of freedom. Constructive
+alternatives and the independent dimension calculation agreed on all four
+leave-outs.
 
-| Gate | Status | Evidence |
-|---|---|---|
-| P2 explicit construction | SURVIVED | direct `G2` encoder plus complementary `G7` checksum |
-| P3 independent construction | SURVIVED | direct source-native `G3` encoder; no P5/P7 input |
-| identity non-leakage | SURVIVED | all 17 value mutations preserve public identity |
-| H1 reconstruction | SURVIVED | 17/17 exact; exhaustive replay agrees |
-| H2 irreducibility | SURVIVED | 4/4 leave-outs ambiguous; degrees `1,2,4,6` |
-| H3 simpler baseline | FALSIFIED | equal `17/17`, `4/4`, and 21 cells; lower semantic/dispatch complexity |
-| multi-loss reconstruction | DEPRECATED | dependent on surviving prime-specific advantage |
-| recursive reconstruction | DEPRECATED | dependent on surviving prime-specific advantage |
-| scale transitions | DEPRECATED | cannot rescue the stated advantage after matched baseline equality |
-| multimodal reconstruction | DEPRECATED | cannot rescue the stated advantage after matched baseline equality |
-| externally authored fixtures | DEPRECATED | not run after terminal dependency failure |
-| EDCM external validity for this architecture | DEPRECATED | not run after terminal dependency failure |
-| joint UCNS–EDCM architecture | DEPRECATED | load-bearing UCNS architectural advantage failed |
+The frozen H3 rule **FALSIFIED** an advantage for the prime-labelled,
+source-specialized software realization. The anonymous implementation matched
+`17/17` H1 and `4/4` H2 with the same 21 cells while using fewer semantic
+control fields and one generic dispatch.
 
-## Exact receipts
+That result does **not** falsify the prime-cardinality architecture. The
+anonymous baseline retained the complete 2/3/5/7 cardinality signature, the
+same four source blocks, `F_257` arithmetic, sum-mod-field checksums, and the
+same 21-cell information budget. It changed names, dispatch specialization,
+and checksum placement. Those are implementation variables inside a
+structurally isomorphic realization, not a control that removes prime
+cardinality.
+
+The correct reading is therefore:
 
 ```text
-skill-lib authority          6ef2e4c123225f9db20e5230e5894c9c86b42ee6
-UCNS frozen parent           123495018f50ef63697de7f8e0d15f1dc9e826b2
-EDCM frozen candidate        02f71b5610512108066bc91c40f6055b44ba32e4
-preregistration commit       89d4c61
-producer implementation      c146584
-independent replay           8274f03
-frozen-protocol compliance   d979751
-work graph                   b6684f8098ced71a4a3966d26f2dfe146c5582815909181a2527ef0038338545
-aggregate report SHA-256     c9a1d4b45c88a12d666e5e85e62710f8d20401ce08f57d6fff4f03bae0f1aaed
-repeat                       byte-identical
-external/sealed labels       not inspected
+registered semantic/dispatch advantage  FALSIFIED
+prime-cardinality architecture          UNRESOLVED
 ```
 
-The independent replay imports no UCNS product module. It reproduced `17`
-exact H1 recoveries, H2 dimensions `P2=1`, `P3=2`, `P5=4`, `P7=6`, and the H3
-matched-simpler falsifier.
+No criterion was changed and no replacement baseline was introduced after the
+result. A genuinely architecture-distinguishing control requires a new claim
+and a new preregistration.
 
-## Surviving bounded claims
+## Frozen-versus-executed audit
 
-- The prior exact P5/P7 distinction remains `SURVIVED` for its frozen diagrams.
-- This controlled prime-cardinality code reconstructs all seventeen declared
-  single erasures.
-- Every one of its four views is irreducible under the declared whole-view
-  leave-out test.
-- EDCM absolute recovered dissonance remains `FALSIFIED`.
-- EDCM normalized recovered dissonance remains `SURVIVED` at its controlled
+| Surface | Frozen requirement | Current execution | Audit |
+|---|---|---|---|
+| hypothesis | H1 reconstruction; H2 whole-view irreducibility; H3 registered complexity comparison | all three executed | H1/H2 survived; H3 falsified only its registered software-complexity advantage |
+| fixture | exact G2/G3/G5/G7 values and value-blind identities | unchanged; 17 unique identities | no fixture drift or value leakage |
+| independent encoders | no shared encoder helper | current head has four non-delegating source entry points | first execution commit `c146584` used a shared helper; repaired after outcome in `d979751`, so the first execution was not pristine |
+| matched-information baseline | B0/B1/B2/B3 sizes 2/3/5/7, 21 cells, typed cyclic checksums | executable baseline matches 17/17 and 4/4 | baseline is structurally isomorphic to the prime-cardinality family; it is not an architectural control |
+| resource bounds | one CPU, 256 MiB, 30 seconds | POSIX test harness applies one-CPU affinity, `RLIMIT_AS=256 MiB`, and a 30-second timeout | current execution passes the enforced bound |
+| stopping rule | stop dependent escalation at first load-bearing falsification | H3 stops later execution | stop retained; propagation target corrected to the claim H3 actually varied |
+| failure propagation | propagate only to actual dependents of the failed claim | original terminal report deprecated seven prime-architecture dependents | post-registration scope drift; broad propagation retracted |
+| external/sealed labels | must not be inspected | not inspected | no external-label leakage detected |
+
+The initial producer commit also recorded baseline outcomes before the baseline
+was executed. Commit `d979751` later made the baseline executable and reproduced
+the tuple. That reproduction preserves the arithmetic result but does not erase
+the post-outcome implementation history.
+
+## Exact minimal propagation map
+
+No prime-cardinality architectural claim is deprecated by this H3 result:
+
+```json
+[]
+```
+
+The unexecuted dependent work is restored to `UNRESOLVED`, not promoted to
+`SURVIVED`:
+
+| Dependent claim | Correct status |
+|---|---|
+| multi-loss prime reconstruction | UNRESOLVED |
+| recursive prime reconstruction | UNRESOLVED |
+| cross-scale prime reconstruction | UNRESOLVED |
+| multimodal prime reconstruction | UNRESOLVED |
+| externally authored prime reconstruction | UNRESOLVED |
+| EDCM external validation for the prime architecture | UNRESOLVED |
+| joint UCNS–EDCM prime architecture | UNRESOLVED |
+
+## Independently preserved results
+
+- UCNS P5/P7 exact distinction: `SURVIVED` in its frozen scope.
+- Controlled prime-cardinality H1: `SURVIVED — not proved`.
+- Controlled prime-cardinality H2: `SURVIVED — not proved`.
+- EDCM absolute recovered dissonance: `FALSIFIED`.
+- EDCM normalized recovered dissonance: `SURVIVED` at its controlled
   scale-confound gate.
 
-None of these bounded results supplies a prime-specific advantage over the
-matched typed-block code.
+None receives proof, canon, measurement-validity, certification, or semantic
+authority from this correction.
+
+## Receipts
+
+```text
+PR #197 frozen head             89d4c615ff09831604c69861ff51b7139bee24f2
+PR #198 audited parent          6ddae018bee20fdfe738ac26e71e69a29c275368
+skill-lib doctrine used         b4234ca29529f56526541df8deb58c2c19570792
+EDCM frozen candidate           02f71b5610512108066bc91c40f6055b44ba32e4
+preregistration JSON SHA-256    a1a94812fde4d397f874fd3dcbd1d57ddcecdebc23a9e18835a0030cd7076823
+original report SHA-256         c9a1d4b45c88a12d666e5e85e62710f8d20401ce08f57d6fff4f03bae0f1aaed
+corrected report SHA-256        f5f2ce7d81bdafe849d08d1f373aca459059304fc5779c1646c46e3f86891eae
+work-graph SHA-256              b6684f8098ced71a4a3966d26f2dfe146c5582815909181a2527ef0038338545
+external/sealed labels          not inspected
+```
+
+The preregistration Markdown, JSON, and frozen work graph remain unchanged.
+Git history retains the original execution and terminal interpretation; this
+correction does not rewrite either history or the preregistration.
 
 ## Usage guidance
 
-Reproduce the producer and independent replay:
+Reproduce the corrected producer report, then run the independent replay:
 
 ```bash
 PYTHONPATH=src python -m ucns.prime_relational_reconstruction \
@@ -94,21 +127,14 @@ python tools/replay_prime_relational_reconstruction.py \
   /tmp/prime-relations.json
 ```
 
-Do not continue the deprecated adversaries as though they could vindicate the
-stated architecture. A future program would require a materially different
-claim and a new preregistration; it may not be described as repair of this
-falsified claim.
-
-## Remaining nonclaims
-
-This result is not a universal impossibility theorem. It does not negate the
-existing P5/P7 mathematical distinctions, validate or invalidate EDCM in
-general, select UCNS or EDCM canon, or establish claims about physical
-necessity, consciousness, prime metaphysics, spectra, or zeta functions.
+Consume `h3.status` only as the frozen semantic-label/dispatch criterion.
+Consume `architecture_status` for architectural standing. Do not consume the
+historical deprecation list; its replacement map is empty. Do not implement a
+non-prime control on this preregistration after seeing these outcomes.
 
 ## hmmm
 
-Whether some future non-prime-specific multimodal error-correcting architecture
-is useful remains open. It is outside this frozen claim because the decisive
-failure is precisely that the prime-labelled architecture supplied no advantage
-over its simpler matched-information realization.
+- The result of a newly preregistered, genuinely non-prime-cardinality matched
+  control is `hmmm`.
+- Natural multimodal behavior, external authorship, measurement validity, and
+  independent external replication remain `hmmm`.

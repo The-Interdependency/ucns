@@ -1,16 +1,21 @@
 {
-  "architecture_status": "FALSIFIED",
+  "architecture_status": "UNRESOLVED",
   "canon_selection": null,
   "dependent_escalations": {
-    "edcm-external-validity": "DEPRECATED",
-    "externally-authored-fixtures": "DEPRECATED",
-    "joint-architecture": "DEPRECATED",
-    "multi-loss": "DEPRECATED",
-    "multimodal": "DEPRECATED",
-    "recursive": "DEPRECATED",
-    "scale-transition": "DEPRECATED"
+    "edcm-external-validity": "UNRESOLVED",
+    "externally-authored-fixtures": "UNRESOLVED",
+    "joint-architecture": "UNRESOLVED",
+    "multi-loss": "UNRESOLVED",
+    "multimodal": "UNRESOLVED",
+    "recursive": "UNRESOLVED",
+    "scale-transition": "UNRESOLVED"
   },
   "external_or_sealed_labels_inspected": false,
+  "failure_propagation": {
+    "deprecation_map": [],
+    "status": "BLOCKED",
+    "target_scope": "prime-cardinality-dependent-claims"
+  },
   "h1": {
     "erasures": [
       {
@@ -263,8 +268,36 @@
       "h2_irreducible_leave_outs": 4,
       "semantic_control_fields": 2
     },
-    "status": "FALSIFIED"
+    "status": "FALSIFIED",
+    "status_scope": "registered-semantic-label-and-dispatch-advantage",
+    "structural_audit": {
+      "architecture_distinguishing_control": false,
+      "baseline_architecture_relation": "STRUCTURALLY_ISOMORPHIC",
+      "changed_variables": [
+        "prime semantic labels",
+        "source-specific encoder dispatch",
+        "checksum placement"
+      ],
+      "checks": {
+        "same_cardinality_signature": true,
+        "same_encoded_field_cells": true,
+        "same_field_arithmetic": true,
+        "same_relation_partition": true,
+        "same_sum_mod_field_checksum_operator": true
+      },
+      "unchanged_architecture_variables": [
+        "2/3/5/7 cardinality signature",
+        "F_257 arithmetic",
+        "four-block source partition",
+        "sum-mod-field checksum operator",
+        "21 encoded field cells"
+      ]
+    }
   },
+  "hmmm": [
+    "outcome of a newly preregistered genuinely non-prime-cardinality matched control",
+    "independent external replication"
+  ],
   "load_bearing_failure": "H3",
   "nonclaims": [
     "universal reconstruction",
@@ -275,6 +308,13 @@
     "zeta claim",
     "EDCM measurement validity"
   ],
+  "post_registration_audit": {
+    "criterion_changed": false,
+    "leakage_detected": false,
+    "preregistration_changed": false,
+    "terminal_interpretation_drift": "registered software-complexity falsification was broadened to prime-cardinality architecture and its dependent claims",
+    "terminal_interpretation_drift_detected": true
+  },
   "preregistration_sha256": "a1a94812fde4d397f874fd3dcbd1d57ddcecdebc23a9e18835a0030cd7076823",
   "prerequisites": {
     "identity_value_mutation_invariant": true,
@@ -288,5 +328,22 @@
     "edcm_normalized_recovered_dissonance": "SURVIVED",
     "ucns_p5_p7_exact_distinction": "SURVIVED"
   },
-  "schema": "ucns.prime-relational-reconstruction-result/1.0.0"
+  "registered_falsification_scope": "semantic-label-and-dispatch-advantage-only",
+  "registered_program_status": "FALSIFIED",
+  "resource_bound_enforcement": {
+    "bounds": {
+      "cpu_count": 1,
+      "memory_mib": 256,
+      "per_complete_run_seconds": 30
+    },
+    "mode": "external-posix-test-harness",
+    "test": "tests/test_prime_relational_reconstruction.py::test_complete_cli_run_obeys_registered_resource_bounds"
+  },
+  "schema": "ucns.prime-relational-reconstruction-result/2.0.0",
+  "usage_guidance": {
+    "architecture_status": "consume for prime-cardinality architectural standing",
+    "h3_status": "consume only for the frozen semantic-label and dispatch criterion",
+    "next_architectural_control": "requires a new preregistration",
+    "propagation_map": "consume failure_propagation.deprecation_map exactly"
+  }
 }
