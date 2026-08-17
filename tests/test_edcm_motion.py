@@ -2,36 +2,42 @@
 # id: check_edcm_word_motion_binding
 #   proves: edcm_motion_retains_trajectory_identity
 #   call: self::test_word_motion_binding_preserves_exact_evidence
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_edcm_recursive_trace
 #   proves: edcm_motion_retains_trajectory_identity
 #   call: self::test_trace_preserves_order_parentage_and_completion
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_edcm_completion_scope
 #   proves: edcm_completion_is_scoped_not_epistemic_exhaustion
 #   call: self::test_completion_cannot_exhaust_the_underlying_unknowable
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_edcm_lossy_projection
 #   proves: edcm_scalar_projection_is_declared_lossy
 #   call: self::test_scalar_projection_requires_loss_and_source_link
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_edcm_parentage_fail_closed
 #   proves: edcm_motion_retains_trajectory_identity
 #   call: self::test_trace_rejects_forward_parentage
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 #
 # id: check_edcm_unknown_laws_visible
 #   proves: edcm_unknown_motion_laws_remain_explicit
 #   call: self::test_unknown_assignment_and_motion_laws_remain_visible
+#   timeout: 10
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===

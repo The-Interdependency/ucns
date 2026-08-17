@@ -2,6 +2,7 @@
 # id: lexical_floor_snapshot_check
 #   proves: every_added_layer_has_a_source_bound_snapshot
 #   call: self::test_snapshot_chain_is_source_bound_and_fail_closed
+#   timeout: 30
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===

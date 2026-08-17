@@ -79,6 +79,7 @@ def test_contract_audit_detects_gaps() -> None:
         assert any("unknown contract" in problem for problem in problems)
         assert any("missing MODULE_BUILD" in problem for problem in problems)
         assert any("missing CONTRACTS" in problem for problem in problems)
+        assert any("orphan_check missing fields: timeout" in problem for problem in problems)
         assert any("does not target an executable pytest test" in problem for problem in problems)
 
 

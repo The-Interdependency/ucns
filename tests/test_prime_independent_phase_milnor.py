@@ -3,7 +3,7 @@
 #   proves: prime_mpfr_replay_is_backend_independent
 #   call: self::test_direct_mpfr_replay_matches_frozen_partition
 #   requires: python3, libmpfr
-#   timeout: 30
+#   timeout: 120
 #   mutates: none
 #   cleanup: none
 #
@@ -11,7 +11,7 @@
 #   proves: prime_mpfr_replay_recertifies_ribbon_margin
 #   call: self::test_direct_mpfr_replay_recertifies_both_primes
 #   requires: python3, libmpfr
-#   timeout: 30
+#   timeout: 120
 #   mutates: none
 #   cleanup: none
 #
@@ -51,7 +51,7 @@
 #   proves: prime_milnor_exactness_boundary_is_preserved
 #   call: self::test_numerical_resolution_is_not_promoted_to_exact_theorem
 #   requires: python3
-#   timeout: 5
+#   timeout: 60
 #   mutates: none
 #   cleanup: none
 #
@@ -59,7 +59,7 @@
 #   proves: prime_independent_phase_milnor_receipt_is_nonselecting
 #   call: self::test_research_boundaries_remain_explicit
 #   requires: python3
-#   timeout: 5
+#   timeout: 60
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===

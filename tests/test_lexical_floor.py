@@ -2,6 +2,7 @@
 # id: lexical_floor_source_and_word_check
 #   proves: lexical_floor_source_receipt_binds_packaged_bytes, lexical_floor_words_are_unique_exact_glyph_sets, lexical_floor_order_is_serialization_only, lexical_floor_reuses_canonical_glyph_assignment
 #   call: self::test_source_word_and_glyph_boundaries
+#   timeout: 30
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===
