@@ -642,6 +642,13 @@ graph audit, then executes declared `CHECKS` individually with consumed host
 capabilities, real per-check timeouts, and a bounded evidence receipt. See
 [`docs/SKILL_LIB_BOUNDARY_RUNNER.md`](docs/SKILL_LIB_BOUNDARY_RUNNER.md).
 
+The stacked EDCM external evaluation harness opens only from an
+execution-generated full-corpus completion receipt. It binds explicit disclosure
+authority and evaluator/process identity, enforces input/output/time bounds, and
+reconciles exact ordered response coverage without granting measurement or
+activation standing. See
+[`docs/EDCM_EXTERNAL_EVALUATION_HARNESS.md`](docs/EDCM_EXTERNAL_EVALUATION_HARNESS.md).
+
 ## Build doctrine
 
 This build is pinned to
