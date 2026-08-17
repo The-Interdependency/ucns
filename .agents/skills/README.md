@@ -1,32 +1,18 @@
-# Repo-local skill-lib materialization
+# Local agent skills
 
-Canonical source: `The-Interdependency/skill-lib`
+This directory contains repo-local copies of canonical skills from
+`The-Interdependency/skill-lib`.
 
-Pinned source commit:
-`2b24be24947223b86440f59f1bd9766130f9cc11`
+Source commit: `b4234ca29529f56526541df8deb58c2c19570792`
 
-Vendored verbatim:
+Repo-local copies are not the source of truth. Edit `skill-lib` first,
+then propagate from the canonical source.
 
-- `msdmd/`
-- `meta-module-build/`
-- `test-build/`
+Installed skills:
+
 - `canon/`
 - `domain-claims/`
 - `interdependent-work-graph/`
-- shared `doctrine/` required by those skills
-
-Repo-local additions are allowed beside the canonical assets. UCNS adds
-`tools/verify_skill_lib_contracts.py` as its bounded executable evidence
-reconciler; it does not replace or modify the canonical skill files.
-
-Drift gate:
-
-```text
-python <skill-lib>/tools/check_consumer_drift.py . \
-  --canon-root <skill-lib> \
-  --sha 2b24be24947223b86440f59f1bd9766130f9cc11 \
-  --strict-sha --require-vendored
-```
-
-hmmm: future skill-lib updates require an explicit new pinned commit and
-a fresh drift-clean materialization; no floating update is authorized.
+- `meta-module-build/`
+- `msdmd/`
+- `test-build/`
