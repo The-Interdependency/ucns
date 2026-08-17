@@ -649,6 +649,14 @@ reconciles exact ordered response coverage without granting measurement or
 activation standing. See
 [`docs/EDCM_EXTERNAL_EVALUATION_HARNESS.md`](docs/EDCM_EXTERNAL_EVALUATION_HARNESS.md).
 
+## Candidate PTCNA state
+
+The explicit `ucns.ptcna_state` producer emits and validates a deterministic,
+candidate-scoped `157×7×7×53` dense initialization receipt. See
+[`docs/UCNS_PTCNA_CANDIDATE_STATE.md`](docs/UCNS_PTCNA_CANDIDATE_STATE.md).
+The surface makes downstream integration falsifiable; it does not select UCNS
+geometry or establish PTCNA usefulness.
+
 ## Build doctrine
 
 This build is pinned to
