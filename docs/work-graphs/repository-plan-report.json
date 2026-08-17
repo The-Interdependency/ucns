@@ -10,8 +10,8 @@
   },
   "source": {
     "branch": "main",
-    "commit": "e5022b4e2cc7ef851c0b77a42448fd742d09a873",
-    "generated_at": "2026-08-15",
+    "commit": "d7c6f51304ed6c32d48badf63132bea6de8af497",
+    "generated_at": "2026-08-16",
     "note": "This report describes the cited UCNS main commit plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence."
   },
   "authority": {
@@ -52,8 +52,8 @@
     "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly; no candidate geometry, including Mobius transport, is promoted to a universal requirement of UCNS objecthood by implementation success.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "67964aac4cd34a0f6c3f83fd0da2dabef65b6c9d",
-      "description": "merged gonol relationship display specification v1 with option-preserving display semantics"
+      "commit": "d7c6f51304ed6c32d48badf63132bea6de8af497",
+      "description": "merged metadata-free lexical relational carrier used by EDCM without transferring semantic, geometric, or measurement authority"
     }
   },
   "delivered": [
@@ -81,6 +81,11 @@
       "surface": "gonol relationship display v1",
       "status": "authority-declared option-preserving proposal",
       "boundary": "registry integration, relation-specific continuous Mobius geometry, seven-gonol construction, and embedding law remain hmmm"
+    },
+    {
+      "surface": "metadata-free lexical relational carrier",
+      "status": "implemented producer surface",
+      "boundary": "carrier structure contains ordered nodes and typed relation occurrences only; English identity, provenance, semantics, geometry, and measurement status remain external and do not transfer"
     }
   ],
   "active_frontier": [
@@ -98,6 +103,7 @@
     "test the current repo-interaction topology hypothesis rather than assume it: METAPAT and EDCM may require relation-specific Mobius behavior while UCNS, skill-lib, and a0 may not at the same observational scale",
     "use real recursive operations spanning UCNS, METAPAT, EDCM, a0, and skill-lib as an external capacity test for scale-relative identity and overlapping triadic/quintadic coupling without assuming a Mobius realization",
     "retain triadic and quintadic coupling as independently testable overlapping relations; evidence for one neither validates nor invalidates the other",
+    "replicate Stan Tenen/Meru Hebrew alphabet geometry on its own terms while independently testing whether variable relational arity recovers structure beyond the replicated construction; keep replication and arity extension parallel and non-blocking except at frozen comparison boundaries",
     "keep the repo-owned portfolio report current without transferring UCNS authority to the aggregator"
   ],
   "next_actions": [
@@ -130,6 +136,11 @@
       "action": "define higher-gonol and cross-scope composition candidates without promoting a candidate to canon",
       "owner": "The-Interdependency/ucns",
       "dependency": "current bounded word-gonol and ordered-source candidate evidence"
+    },
+    {
+      "action": "replicate the Tenen/Meru Hebrew alphabet construction from primary sources and run a matched-information arity sweep against its reproducible boundary: preserve letter, number, gesture, position, projection, sequence, and source provenance; compare arity n with arity n+1, pairwise/flattened baselines, and held-out Hebrew reconstruction without supplying Tenen geometry to the blind UCNS branch",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "replication and arity-extension work proceed in parallel; exact Tenen/Meru source identities and Hebrew corpus identities must be pinned; comparison and stopping criteria freeze before arity outcomes; higher arity survival does not confer canon"
     }
   ],
   "blocked": [
@@ -145,7 +156,7 @@
     },
     {
       "repository": "The-Interdependency/edcm",
-      "relation": "measures context-relative energy-density circuit behavior over explicitly pinned relational carriers; participates in planned operational loss/dissonance measurement without transferring measurement validity back to UCNS",
+      "relation": "measures context-relative energy-density circuit behavior over explicitly pinned relational carriers and may supply separately owned provenance-preserving corpus/relation observations for blind Hebrew/Tenen comparison; neither measurement validity nor source interpretation transfers back to UCNS",
       "authority_transfer": false,
       "measurement_status_transfer": false
     },
@@ -187,6 +198,9 @@
     "whether METAPAT/EDCM require Mobius interaction at the five-repository operational scale while UCNS/skill-lib/a0 do not",
     "whether the UCNS-METAPAT-EDCM triadic coupling and UCNS-METAPAT-EDCM-a0-skill-lib quintadic coupling show independently irreducible operational effects under controls",
     "whether the five-repository real-world benchmark demonstrates UCNS-specific scale reconstruction or is matched by simpler typed graph/task representations",
+    "the exact primary lecture/source identity for the Tenen work being replicated, including whether the remembered higher-dimensional carrier is explicitly present or a later memory fusion",
+    "whether Tenen/Meru has a reproducible stopping boundary at which higher arity produces recovery unavailable to information-matched pairwise or flattened representations",
+    "whether Hebrew text and letter order alone suffice for the arity test or whether gesture and geometric projection are constitutive multimodal observations",
     "seven-gonol construction and embedding law",
     "cross-scope and higher-gonol composition",
     "total Structural Null topology",
