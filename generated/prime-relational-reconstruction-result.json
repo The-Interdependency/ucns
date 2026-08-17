@@ -1,0 +1,349 @@
+{
+  "architecture_status": "UNRESOLVED",
+  "canon_selection": null,
+  "dependent_escalations": {
+    "edcm-external-validity": "UNRESOLVED",
+    "externally-authored-fixtures": "UNRESOLVED",
+    "joint-architecture": "UNRESOLVED",
+    "multi-loss": "UNRESOLVED",
+    "multimodal": "UNRESOLVED",
+    "recursive": "UNRESOLVED",
+    "scale-transition": "UNRESOLVED"
+  },
+  "external_or_sealed_labels_inspected": false,
+  "failure_propagation": {
+    "deprecation_map": [],
+    "status": "BLOCKED",
+    "target_scope": "prime-cardinality-dependent-claims"
+  },
+  "h1": {
+    "erasures": [
+      {
+        "checksum_view": "P3",
+        "erased_identity": "565369e6930700a147f2f130903f598606203120557ba8614c551c9d16b0ebed",
+        "owner_view": "P2",
+        "primary_recovery": 19,
+        "replay_candidates": [
+          19
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P3",
+        "erased_identity": "971d595f9d1c085500ecfdae4b0ff7c3378bc121088b98a876a8378f66061ede",
+        "owner_view": "P2",
+        "primary_recovery": 241,
+        "replay_candidates": [
+          241
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P5",
+        "erased_identity": "92a1d299fadadc83bab3c81f8c77b3203c2993695f630a2fd43335041b9d87df",
+        "owner_view": "P3",
+        "primary_recovery": 7,
+        "replay_candidates": [
+          7
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P5",
+        "erased_identity": "918be857bcb43e70af4f970be9403fe88fc886881edef59f78952ecb9e935aae",
+        "owner_view": "P3",
+        "primary_recovery": 113,
+        "replay_candidates": [
+          113
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P5",
+        "erased_identity": "f5c7e9318b3fb324e0baf773e6c0abeb22ee3bd9e8c3eb9ed3435c438ae74606",
+        "owner_view": "P3",
+        "primary_recovery": 229,
+        "replay_candidates": [
+          229
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P7",
+        "erased_identity": "db30a7791957bb09938bfa715efe495217ef2335ba1dff8cb332e5410da5d557",
+        "owner_view": "P5",
+        "primary_recovery": 3,
+        "replay_candidates": [
+          3
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P7",
+        "erased_identity": "12dddfe0591e4bb3aab60fffbad91bb3f17d5416567cd7b03169d772cdfee9ab",
+        "owner_view": "P5",
+        "primary_recovery": 47,
+        "replay_candidates": [
+          47
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P7",
+        "erased_identity": "d397cdc465de43f926b077b0ec4cd9b896950d227b1bef4de0059d01f6e64156",
+        "owner_view": "P5",
+        "primary_recovery": 89,
+        "replay_candidates": [
+          89
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P7",
+        "erased_identity": "7f8f72649116dceac760f2346d81fe0319b7ae62a63f21dacf67ddc03c25a655",
+        "owner_view": "P5",
+        "primary_recovery": 173,
+        "replay_candidates": [
+          173
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P7",
+        "erased_identity": "e08bb67ff477dedfe3a3a2d78ce1382e34fd432aaa94b59758050107c99a53ea",
+        "owner_view": "P5",
+        "primary_recovery": 251,
+        "replay_candidates": [
+          251
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "bc7ef6ac9bbd71a0d1495fb54628ae18150526761e0822a854f7f582814b9929",
+        "owner_view": "P7",
+        "primary_recovery": 11,
+        "replay_candidates": [
+          11
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "47690a6d8864c45af361853df1224058a5afb7aa61c5c4df030dcd826a8bb844",
+        "owner_view": "P7",
+        "primary_recovery": 31,
+        "replay_candidates": [
+          31
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "235c1202d2e724e009fb7be7e327ecd411c2880dfe2b7e070ef96fb4a1e4d983",
+        "owner_view": "P7",
+        "primary_recovery": 67,
+        "replay_candidates": [
+          67
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "014998d4237954245e9ce0938342a549b36cc5e5ab971f59d0064d66e06d49e0",
+        "owner_view": "P7",
+        "primary_recovery": 101,
+        "replay_candidates": [
+          101
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "cf322389eb3f6015297be0a5336054c10c4b25484e77819431e235d87de4b31e",
+        "owner_view": "P7",
+        "primary_recovery": 149,
+        "replay_candidates": [
+          149
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "f4429704dfb7866ddb69884bff1f43e5c2a84898b0e3c08665ef4e23233d5c89",
+        "owner_view": "P7",
+        "primary_recovery": 197,
+        "replay_candidates": [
+          197
+        ],
+        "status": "SURVIVED"
+      },
+      {
+        "checksum_view": "P2",
+        "erased_identity": "445efff05ce0e170765dbeff3c5703ae51507d8eb2dafb4cc49c5c97efff0d7d",
+        "owner_view": "P7",
+        "primary_recovery": 239,
+        "replay_candidates": [
+          239
+        ],
+        "status": "SURVIVED"
+      }
+    ],
+    "exact_recoveries": 17,
+    "status": "SURVIVED"
+  },
+  "h2": {
+    "irreducible_leave_outs": 4,
+    "leave_outs": [
+      {
+        "constructive_alternative": [
+          20,
+          240
+        ],
+        "constructive_ambiguity": true,
+        "direct_relation_count": 2,
+        "independent_replay_degrees_of_freedom": 1,
+        "status": "SURVIVED",
+        "view": "P2"
+      },
+      {
+        "constructive_alternative": [
+          8,
+          112,
+          229
+        ],
+        "constructive_ambiguity": true,
+        "direct_relation_count": 3,
+        "independent_replay_degrees_of_freedom": 2,
+        "status": "SURVIVED",
+        "view": "P3"
+      },
+      {
+        "constructive_alternative": [
+          4,
+          46,
+          89,
+          173,
+          251
+        ],
+        "constructive_ambiguity": true,
+        "direct_relation_count": 5,
+        "independent_replay_degrees_of_freedom": 4,
+        "status": "SURVIVED",
+        "view": "P5"
+      },
+      {
+        "constructive_alternative": [
+          12,
+          30,
+          67,
+          101,
+          149,
+          197,
+          239
+        ],
+        "constructive_ambiguity": true,
+        "direct_relation_count": 7,
+        "independent_replay_degrees_of_freedom": 6,
+        "status": "SURVIVED",
+        "view": "P7"
+      }
+    ],
+    "status": "SURVIVED"
+  },
+  "h3": {
+    "baseline": {
+      "encoded_field_cells": 21,
+      "encoder_dispatch_branches": 1,
+      "h1_exact_recoveries": 17,
+      "h2_irreducible_leave_outs": 4,
+      "semantic_control_fields": 0
+    },
+    "baseline_matches_or_exceeds": true,
+    "baseline_strictly_simpler": true,
+    "prime_family": {
+      "encoded_field_cells": 21,
+      "encoder_dispatch_branches": 4,
+      "h1_exact_recoveries": 17,
+      "h2_irreducible_leave_outs": 4,
+      "semantic_control_fields": 2
+    },
+    "status": "FALSIFIED",
+    "status_scope": "registered-semantic-label-and-dispatch-advantage",
+    "structural_audit": {
+      "architecture_distinguishing_control": false,
+      "baseline_architecture_relation": "STRUCTURALLY_ISOMORPHIC",
+      "changed_variables": [
+        "prime semantic labels",
+        "source-specific encoder dispatch",
+        "checksum placement"
+      ],
+      "checks": {
+        "same_cardinality_signature": true,
+        "same_encoded_field_cells": true,
+        "same_field_arithmetic": true,
+        "same_relation_partition": true,
+        "same_sum_mod_field_checksum_operator": true
+      },
+      "unchanged_architecture_variables": [
+        "2/3/5/7 cardinality signature",
+        "F_257 arithmetic",
+        "four-block source partition",
+        "sum-mod-field checksum operator",
+        "21 encoded field cells"
+      ]
+    }
+  },
+  "hmmm": [
+    "outcome of a newly preregistered genuinely non-prime-cardinality matched control",
+    "independent external replication"
+  ],
+  "load_bearing_failure": "H3",
+  "nonclaims": [
+    "universal reconstruction",
+    "physical necessity",
+    "consciousness necessity",
+    "prime metaphysics",
+    "spectral claim",
+    "zeta claim",
+    "EDCM measurement validity"
+  ],
+  "post_registration_audit": {
+    "criterion_changed": false,
+    "leakage_detected": false,
+    "preregistration_changed": false,
+    "terminal_interpretation_drift": "registered software-complexity falsification was broadened to prime-cardinality architecture and its dependent claims",
+    "terminal_interpretation_drift_detected": true
+  },
+  "preregistration_sha256": "a1a94812fde4d397f874fd3dcbd1d57ddcecdebc23a9e18835a0030cd7076823",
+  "prerequisites": {
+    "identity_value_mutation_invariant": true,
+    "p2_explicit": true,
+    "p3_direct_source_native": true,
+    "public_identities_unique": true,
+    "status": "SURVIVED"
+  },
+  "prior_bounded_results": {
+    "edcm_absolute_recovered_dissonance": "FALSIFIED",
+    "edcm_normalized_recovered_dissonance": "SURVIVED",
+    "ucns_p5_p7_exact_distinction": "SURVIVED"
+  },
+  "registered_falsification_scope": "semantic-label-and-dispatch-advantage-only",
+  "registered_program_status": "FALSIFIED",
+  "resource_bound_enforcement": {
+    "bounds": {
+      "cpu_count": 1,
+      "memory_mib": 256,
+      "per_complete_run_seconds": 30
+    },
+    "mode": "external-posix-test-harness",
+    "test": "tests/test_prime_relational_reconstruction.py::test_complete_cli_run_obeys_registered_resource_bounds"
+  },
+  "schema": "ucns.prime-relational-reconstruction-result/2.0.0",
+  "usage_guidance": {
+    "architecture_status": "consume for prime-cardinality architectural standing",
+    "h3_status": "consume only for the frozen semantic-label and dispatch criterion",
+    "next_architectural_control": "requires a new preregistration",
+    "propagation_map": "consume failure_propagation.deprecation_map exactly"
+  }
+}
