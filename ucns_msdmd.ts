@@ -2258,6 +2258,85 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "safety",
+        "given": "an external evaluator is executed",
+        "since": "2026-08-16",
+        "then": "input size, output file size, wall timeout, and process group termination are enforced rather than merely reported"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "external_evaluation_is_resource_bounded"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "an external evaluation completes successfully",
+        "since": "2026-08-16",
+        "then": "evaluator outputs remain candidate evidence and cannot select a benchmark or evaluator, validate UCNS measurement, activate EDCM, or confer canon status"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "external_evaluation_receipt_is_nonpromoting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "an external EDCM evaluation plan is constructed or executed",
+        "since": "2026-08-16",
+        "then": "it binds an execution-generated FullCorpusCompletionReceipt and cannot run from a declaration, incomplete report, or corpus prefix"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "external_evaluation_requires_completed_corpus_gate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "cases cross the external process boundary",
+        "since": "2026-08-16",
+        "then": "evaluator identity, executable digest, exact argv, declared environment keys, network policy, case order, subject digests, custody references, and disclosure authorities enter the request and receipt identity"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "external_evaluator_identity_and_disclosure_are_bound"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "an evaluator returns candidate results",
+        "since": "2026-08-16",
+        "then": "protocol, plan, evaluator echo, exact ordered case coverage, result status, and JSON shape must reconcile or the receipt remains incomplete with the failure visible"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "external_response_reconciliation_is_fail_closed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "external corpus admission and per-case disclosure authority remain caller supplied and receipt bound",
+        "internal_surface": "canonical request encoding, executable validation, process-group timeout, output-bound enforcement, response reconciliation",
+        "module_kind": "instrument",
+        "module_name": "external_evaluation",
+        "network_boundary": "evaluator network access is declared but must be enforced by the caller-provided wrapper or execution environment",
+        "owner": "Erin Spencer",
+        "public_surface": "ExternalEvaluatorIdentity, ExternalEvaluatorCommand, ExternalEvaluationCase, ExternalEvaluationPlan, ExternalEvaluationStatus, ExternalEvaluationReceipt, execute_external_evaluation",
+        "requires": "edcm_full_corpus_execution_gate, skill_lib_boundary_runner",
+        "rollback": "remove module, exports, tests, and documentation while retaining the full-corpus gate and skill-lib boundary runner",
+        "rollout": "candidate external evaluation transport only; no benchmark, evaluator selection, measurement validity, EDCM activation, or canon effect",
+        "since": "2026-08-16",
+        "storage_boundary": "request and response bytes are process-local; receipts retain digests, bounded excerpts, and parsed result evidence",
+        "summary": "executes one explicitly identified external evaluator behind the completed EDCM corpus gate and emits bounded reconciled nonpromoting receipts",
+        "tests": "tests/test_external_evaluation.py",
+        "unresolved": "authenticated remote transport, network sandbox enforcement, external secret delivery, and evaluator-specific semantic validity",
+        "user_data_boundary": "only explicitly supplied case payloads cross the process boundary; raw corpus custody is neither inferred nor fetched"
+      },
+      "file": "src/ucns/external_evaluation.py",
+      "id": "edcm_external_evaluation_harness"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "evidence",
         "given": "the corrected downstream EDCM MultiWOZ result is recorded in UCNS",
         "since": "2026-07-31",
@@ -3361,6 +3440,52 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "evidence",
+        "given": "the frozen P7/P5 partition is replayed",
+        "since": "2026-08-11",
+        "then": "direct system MPFR is used instead of the primary mpmath interval backend and the pinned partition identities match"
+      },
+      "file": "src/ucns/mpfr_interval.py",
+      "id": "prime_mpfr_replay_is_backend_independent"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every frozen pair box is replayed with directed MPFR endpoints",
+        "since": "2026-08-11",
+        "then": "both prime candidates retain lower endpoints above the declared centerline margin"
+      },
+      "file": "src/ucns/mpfr_interval.py",
+      "id": "prime_mpfr_replay_recertifies_ribbon_margin"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "ctypes MPFR bindings with explicit directed rounding modes",
+        "module_kind": "experiment",
+        "module_name": "mpfr_interval",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "MPNumber, MPInterval, mpfr_version, atan2_interval, flat_step_interval",
+        "requires": "system libmpfr",
+        "rollback": "remove with prime_independent_phase_milnor and its tests",
+        "rollout": "independent interval backend only; certificate status does not transfer",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "provides direct system-MPFR outward-rounded interval primitives for an independent P7/P5 separation replay",
+        "tests": "tests/test_prime_independent_phase_milnor.py",
+        "unresolved": "proof-assistant verification of the MPFR binding",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/mpfr_interval.py",
+      "id": "ucns_mpfr_interval"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "correctness",
         "given": "the current post-reset profile is inspected",
         "since": "2026-07-25",
@@ -3514,6 +3639,896 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/policy.py",
       "id": "structural_choice_policy_layer"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_boundary_link_invariants.py",
+      "id": "prime_boundary_helper_is_facade_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_boundary_link_invariants",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_interval_boundary_links_p7_p5",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "readable exact boundary-component and integer linking invariant implementation",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_boundary_link_invariants.py",
+      "id": "ucns_prime_boundary_link_invariants"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the complete rational-Laurent determinantal generator family is accepted",
+        "then": "component-variable saturation and exact lex reduction return a monic reduced basis for the complete ideal"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "prime_grobner_basis_is_complete_reduced_and_saturated"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "P7 E1 or P5 E3 generators are constructed",
+        "then": "every rank-size row/column subset pair is accounted for through the exact compound identity with no non-monomial denominator, and the frozen anchor, pivot-neighbor, and SHA-selected full minors agree under both direct determinant paths"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "prime_grobner_generators_cover_every_maximal_minor"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "regression",
+        "given": "primary and independent computations finish within frozen bounds",
+        "then": "generator digests, mutual reductions, and canonical reduced basis maps agree exactly"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "prime_grobner_independent_replay_agrees"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a determinantal basis computation begins",
+        "then": "the committed preregistration bytes have the frozen SHA-256 identity and the parent presentation digest matches"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "prime_grobner_protocol_identity_is_frozen"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family receipt is serialized",
+        "then": "rational ideal evidence does not escalate phase, isotopy, prime-forcing, spectral, zeta, or theorem standing"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "prime_grobner_receipt_preserves_nonclaims"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "compound maximal-minor coordinates, frozen direct full-minor audit, Laurent normalization, saturation, exact reduced lex bases, independent Buchberger replay",
+        "module_kind": "experiment",
+        "module_name": "prime_determinantal_grobner",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "determinantal_grobner_certificate, determinantal_grobner_family_certificate, write_determinantal_grobner_family_certificate",
+        "requires": "ucns_prime_symbolic_alexander_p7_p5, sympy==1.14.0",
+        "rollback": "remove this module, its tests, result document, and generated receipt while retaining preregistration and prior rank/onset evidence",
+        "rollout": "protocol 7841af16; P7 first and P5 second; selection effect none",
+        "since": "2026-08-15",
+        "storage_boundary": "caller-supplied local paths only through writer functions",
+        "summary": "executes the preregistered complete rational-Laurent determinantal-ideal Groebner protocol for the frozen P7 and P5 Fox matrices",
+        "tests": "tests/test_prime_determinantal_grobner.py",
+        "unresolved": "integral-Laurent strong bases, length-four Milnor invariants, finite nilpotent quotients, preregistered phase-co-winner separator",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_determinantal_grobner.py",
+      "id": "ucns_prime_determinantal_grobner_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family certificate is serialized",
+        "since": "2026-08-11",
+        "then": "it claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_exact_milnor_alexander_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a P7 or P5 whole-link fingerprint is issued",
+        "since": "2026-08-11",
+        "then": "every distinct phase-induced prime character has a rank and excess-nullity value committed by SHA-256"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_fox_fingerprint_covers_all_prime_characters"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the P7 or P5 diagram is constructed",
+        "since": "2026-08-11",
+        "then": "every component uses the preregistered rational planar translation and the straight-line isotopy remains inside the prior seven-hundredths ribbon clearance"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_generic_diagram_is_fixed_before_invariants"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "all generic double crossings are signed",
+        "since": "2026-08-11",
+        "then": "their half-sums reproduce the previously certified complete P7 and P5 pairwise linking matrices"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_generic_diagram_preserves_pairwise_linking"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the closure of the braid sigma-one sigma-two-inverse cubed is evaluated",
+        "since": "2026-08-11",
+        "then": "the degree-two preferred-longitude Magnus coefficient has absolute value one"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_magnus_benchmark_recovers_borromean_integer"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the five pairwise-zero P7 triples are evaluated in the fixed generic diagram",
+        "since": "2026-08-11",
+        "then": "every degree-two Magnus coefficient is exactly the integer zero"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_p7_five_milnor_candidates_are_exact_zero_in_diagram"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the phase selector is evaluated",
+        "since": "2026-08-11",
+        "then": "its document hash equals the preregistered hash and no post-evaluation criterion is added"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_phase_selector_matches_frozen_preregistration"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "an admissible phase law is scored",
+        "since": "2026-08-11",
+        "then": "the score uses maximum phase gap, finite-field Fox-Alexander excess nullity, and exact phase-lift alignment energy before neutral tie breakers"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "prime_phase_selector_uses_whole_link_character"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "fixed planar translations, high-precision circle intersections, Wirtinger arcs, degree-two Magnus algebra, finite-field Fox derivatives, exact rational phase-lift energy",
+        "module_kind": "experiment",
+        "module_name": "prime_exact_milnor_alexander",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "DiagramCrossing, GenericLinkDiagram, MilnorIntegerCertificate, FoxRankFingerprint, PhaseSelectorResult, build_generic_prime_seven_diagram, build_generic_prime_five_diagram, exact_p7_milnor_certificates, fox_rank_fingerprint, common_field_fox_rank_fingerprint, evaluate_preregistered_phase_selector, exact_milnor_alexander_family_certificate, write_exact_milnor_alexander_family_certificate",
+        "requires": "ucns_prime_independent_phase_milnor_p7_p5, mpmath>=1.3",
+        "rollback": "remove this module, its tests, documentation, preregistration, and generated certificate",
+        "rollout": "P7 first, P5 same-protocol comparison second; preregistration SHA-256 frozen before evaluation; selection effect none",
+        "since": "2026-08-11",
+        "storage_boundary": "caller-supplied local paths only through writer functions",
+        "summary": "generically resolves the P7/P5 centerline diagrams, replaces the five numerical Milnor-zero candidates with exact degree-two Magnus coefficients, freezes and evaluates a prime-character Fox-Alexander phase selector, and issues whole-link rank fingerprints",
+        "tests": "tests/test_prime_exact_milnor_alexander.py",
+        "unresolved": "proof-assistant replay of diagram signs, full multivariable Alexander polynomial, ambient-isotopy classification, higher Milnor invariants, spectral operator, prime-power law, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_exact_milnor_alexander.py",
+      "id": "ucns_prime_exact_milnor_alexander_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_generic_diagram.py",
+      "id": "prime_generic_helper_is_facade_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_generic_diagram",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_interval_boundary_links_p7_p5",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "readable clearance-preserving generic diagram implementation",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_generic_diagram.py",
+      "id": "ucns_prime_generic_diagram"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every reconstructed crossing has interval-certified height ordering and tangent determinant",
+        "since": "2026-08-15",
+        "then": "all P7-first and P5-second crossing signs agree with the frozen generic diagrams"
+      },
+      "file": "src/ucns/prime_generic_interval_certificate.py",
+      "id": "prime_generic_crossing_signs_are_interval_certified"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family certificate is serialized",
+        "since": "2026-08-15",
+        "then": "it retains method, backend, complete crossing coverage, source identities, information boundary, and selection effect none"
+      },
+      "file": "src/ucns/prime_generic_interval_certificate.py",
+      "id": "prime_generic_interval_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "each incident turn interval lies within one declared smooth-field segment",
+        "since": "2026-08-15",
+        "then": "the complete smooth-field interval difference excludes zero and agrees with the frozen over-under ordering"
+      },
+      "file": "src/ucns/prime_generic_interval_certificate.py",
+      "id": "prime_generic_smooth_signs_are_interval_certified"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every frozen P7/P5 generic equal-circle crossing is reconstructed",
+        "since": "2026-08-15",
+        "then": "direct system MPFR encloses both incident turns through directed-rounded atan2 without a branch-cut ambiguity"
+      },
+      "file": "src/ucns/prime_generic_interval_certificate.py",
+      "id": "prime_generic_turns_are_outward_atan2_enclosed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "shifted-center, equal-circle intersection, turn, smooth-field, and transversality interval construction",
+        "module_kind": "experiment",
+        "module_name": "prime_generic_interval_certificate",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "GenericIntervalCrossingCertificate, GenericIntervalDiagramCertificate, certify_generic_prime_diagram, generic_interval_family_certificate, write_generic_interval_family_certificate",
+        "requires": "ucns_mpfr_interval, ucns_prime_exact_milnor_alexander_p7_p5",
+        "rollback": "remove this module, its tests, document, and generated certificate",
+        "rollout": "nonselecting certificate over the already frozen P7/P5 generic diagrams",
+        "since": "2026-08-15",
+        "storage_boundary": "caller-supplied local paths only through the writer function",
+        "summary": "independently replays the frozen P7/P5 generic crossing diagram with outward-rounded MPFR atan2 and smooth-field intervals",
+        "tests": "tests/test_prime_generic_interval_certificate.py",
+        "unresolved": "proof-assistant replay and symbolic validation of every interval primitive",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_generic_interval_certificate.py",
+      "id": "ucns_prime_generic_interval_certificate"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "independent replay findings are summarized",
+        "since": "2026-08-11",
+        "then": "negative and numerical results retain explicit nonclaims"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_independent_phase_milnor_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "numerical estimates resolve near integers",
+        "since": "2026-08-11",
+        "then": "numerical resolution is not represented as an exact theorem"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_milnor_exactness_boundary_is_preserved"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the numerical Fourier extractor is benchmarked",
+        "since": "2026-08-11",
+        "then": "it converges to the declared Borromean value under the recorded convention"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_milnor_fourier_benchmark_recovers_borromean"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the five split P7 triples are evaluated across increasing resolutions",
+        "since": "2026-08-11",
+        "then": "every estimate converges numerically toward zero"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_milnor_p7_split_triples_resolve_numerically_to_zero"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "every equal-gap phase alternative is enumerated",
+        "since": "2026-08-11",
+        "then": "the selected winding is identified without treating it as prime-specific emergence"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_phase_sensitivity_separates_selection_from_emergence"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "falsifier",
+        "given": "P7 and P5 maximum-gap candidates are compared",
+        "since": "2026-08-11",
+        "then": "their shared knot-degree alternatives preserve the negative result that T two-seven is not forced by prime alone"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "prime_phase_sensitivity_torus_seven_is_not_forced"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "zlib-compressed byte-exact validated readable implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_independent_phase_milnor",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "independent MPFR replay, phase sensitivity report, Fourier Milnor estimate, P7 triple resolution",
+        "requires": "ucns_mpfr_interval, ucns_prime_smooth_ribbons_p7_p5",
+        "rollback": "remove with its tests and independent research documents",
+        "rollout": "independent replay and negative-result evidence; numerical extraction is not promoted to exact computation",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "compact executable representation of the independent interval replay, phase sensitivity, and numerical Milnor extraction",
+        "tests": "tests/test_prime_independent_phase_milnor.py",
+        "unresolved": "analytic proof of all numerical zero resolutions",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_independent_phase_milnor.py",
+      "id": "ucns_prime_independent_phase_milnor"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the selected phase law is evaluated over the two-turn boundary traversal",
+        "since": "2026-08-11",
+        "then": "the center boundary has cable class two-seven and each outer boundary has cable class two-one in the declared framing"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_boundary_cable_winding_is_derived_from_phase"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "one finite-width M\u00f6bius ribbon is restricted to positive half-width",
+        "since": "2026-08-11",
+        "then": "its boundary closes only after two carrier turns and retracts with longitudinal degree two"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_boundary_curve_is_single_two_turn_component"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "boundary components retract to degree-two traversals of their cores inside pairwise-disjoint ribbons",
+        "since": "2026-08-11",
+        "then": "every inter-ribbon boundary linking number is four times the corresponding core linking number"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_boundary_linking_scales_by_four"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "triples of boundary components are classified by pairwise support",
+        "since": "2026-08-11",
+        "then": "algebraically split triples are enumerated while Milnor and complete-link invariants remain explicitly unresolved"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_higher_order_boundary_is_explicit"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family certificate is built",
+        "since": "2026-08-11",
+        "then": "P7 interval and boundary invariants are completed before the same protocol is applied independently to P5"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_interval_boundaries_p7_precedes_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family receipt is serialized",
+        "since": "2026-08-11",
+        "then": "it records the interval-kernel boundary and claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_interval_boundary_compact_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every complete pair-parameter torus is recursively covered",
+        "since": "2026-08-11",
+        "then": "high-precision interval point values and interval speed majorants certify the same nine-hundredths centerline target without a binary64 subtraction heuristic"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_interval_replay_uses_outward_endpoints"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "core-core, core-boundary, and boundary-boundary linking laws are combined",
+        "since": "2026-08-11",
+        "then": "a complete two-p by two-p integer matrix and exact rank and determinant are issued"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "prime_mixed_core_boundary_matrix_is_complete"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "recovered legacy types and payloads over readable PR 181 interval and boundary certificates",
+        "module_kind": "experiment",
+        "module_name": "prime_interval_boundaries",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "IntervalPairReplay, IntervalReplayCertificate, BoundaryComponentCertificate, BoundaryInvariantCertificate, replay_prime_seven_intervals, replay_prime_five_intervals, certify_prime_seven_boundaries, certify_prime_five_boundaries, interval_boundary_family_certificate, write_interval_boundary_family_certificate, render_boundary_obj, render_core_boundary_obj",
+        "requires": "ucns_prime_smooth_ribbons_p7_p5, mpmath>=1.3",
+        "rollback": "remove this module, its test, documentation, generated certificate, and boundary exports",
+        "rollout": "P7 first, P5 same-protocol comparison second; selection effect none; does not alter prior smooth-ribbon receipts",
+        "since": "2026-08-11",
+        "storage_boundary": "caller-supplied local paths only through writer functions",
+        "summary": "replays the P7-first smooth-ribbon separation certificate with outward interval endpoints, extracts each M\u00f6bius strip's single two-turn boundary curve, and derives exact boundary-cable and mixed core-boundary invariants before P5 comparison",
+        "tests": "tests/test_prime_interval_boundaries.py",
+        "unresolved": "independently verified interval kernel, proof-assistant replay, Milnor invariants of algebraically split triples, multivariable Alexander polynomial of the complete boundary link, ambient isotopy, spectral operator, prime-power law, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_interval_boundaries.py",
+      "id": "ucns_prime_interval_boundaries_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "each centerline is a vertical graph over a circle and hence an unknot",
+        "since": "2026-08-11",
+        "then": "each boundary component is assigned its exact two-by-odd torus-cable type and Alexander, genus, determinant, and crossing-number readouts"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_boundary_component_knot_types_are_derived"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "one M\u00f6bius ribbon is evaluated at positive boundary breadth over two carrier turns",
+        "since": "2026-08-11",
+        "then": "it yields one closed boundary component with longitudinal winding two and odd meridional winding one plus twice the phase winding"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_boundary_curve_is_single_and_closed"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "distinct boundary components each carry longitudinal coefficient two",
+        "since": "2026-08-11",
+        "then": "their pairwise linking matrix equals four times the core linking matrix and the mixed core-boundary off-diagonal block equals twice the core matrix"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_boundary_linking_matrix_follows_cable_homology"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family certificate is built",
+        "since": "2026-08-11",
+        "then": "P7 is interval-certified and analyzed first and P5 is independently processed second"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_interval_boundary_p7_precedes_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the family receipt is serialized",
+        "since": "2026-08-11",
+        "then": "it records dependency, precision, generic-projection, and invariant boundaries and claims no arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_interval_boundary_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "every complete P7 or P5 pair-parameter torus is replayed",
+        "since": "2026-08-11",
+        "then": "elementary evaluations use directed interval endpoints and every accepted leaf has a rigorous lower endpoint strictly above nine hundredths at the declared precision"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_interval_replay_is_outward_rounded"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "interval centerline clearance exceeds nine hundredths and half width is one hundredth",
+        "since": "2026-08-11",
+        "then": "all distinct complete ribbons remain separated by more than seven hundredths"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_interval_replay_preserves_finite_width_disjointness"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a clearance-preserving simultaneous generic projection is constructed",
+        "since": "2026-08-11",
+        "then": "pairwise linking is unchanged and every integer-valued length-three Milnor invariant is computed by a truncated Magnus expansion validated on the Borromean braid"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_length_three_milnor_profile_is_computed_after_global_lift"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "core, boundary, and own-core boundary linkings are combined",
+        "since": "2026-08-11",
+        "then": "rank, nullity, determinant, factorization, and Smith invariant factors are computed over the integers"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "prime_mixed_linking_matrix_has_exact_integer_invariants"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "prime_interval_common, prime_interval_replay, prime_boundary_link_invariants, prime_generic_diagram, prime_milnor_invariants",
+        "module_kind": "experiment",
+        "module_name": "prime_interval_boundary_links",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "IntervalPairCertificate, IntervalSeparationCertificate, BoundaryComponentInvariant, IntegerMatrixInvariant, BoundaryLinkCertificate, DiagramCrossing, GenericCoreDiagram, MilnorTripleInvariant, MilnorProfile, IntervalBoundaryCertificate, replay_interval_separation, extract_boundary_components, build_boundary_link_certificate, build_generic_core_diagram, compute_milnor_profile, certify_interval_boundary_prime_seven, certify_interval_boundary_prime_five, interval_boundary_family_certificate, interval_boundary_family_summary, write_interval_boundary_family_certificate, write_interval_boundary_family_summary, render_boundary_curve_obj",
+        "requires": "ucns_prime_smooth_ribbons_p7_p5",
+        "rollback": "remove this facade and its five helper modules, test, documentation, generated certificate, and boundary models; revert the research/test optional dependencies",
+        "rollout": "P7 first, P5 same-protocol comparison second; selection effect none; does not alter prior smooth-ribbon receipts",
+        "since": "2026-08-11",
+        "storage_boundary": "caller-supplied local paths only through writer and renderer functions",
+        "summary": "replays P7-first smooth-ribbon separation with outward-rounded interval arithmetic, extracts each M\u00f6bius ribbon's single continuous boundary, and computes boundary, mixed, component-knot, and length-three Milnor readouts before any spectral construction",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "proof-assistant replay, simultaneous global projection regularization, length-four-and-higher Milnor invariants, whole-link ambient isotopy, multivariable Alexander or HOMFLYPT invariants, spectral operator, prime-power law, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_interval_boundary_links.py",
+      "id": "ucns_prime_interval_boundary_links_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_interval_common.py",
+      "id": "prime_interval_common_is_facade_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_interval_common",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_smooth_ribbons_p7_p5",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "shared constants and dependency guards for readable interval and boundary research",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_interval_common.py",
+      "id": "ucns_prime_interval_common"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_interval_replay.py",
+      "id": "prime_interval_replay_helper_is_facade_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_interval_replay",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_interval_common",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "readable outward-directed interval replay implementation",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_interval_replay.py",
+      "id": "ucns_prime_interval_replay"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the degree-three Magnus engine evaluates [[x1,x2],x3]",
+        "since": "2026-08-15",
+        "then": "the four frozen degree-three coefficients and every lower degree coefficient match the preregistration"
+      },
+      "file": "src/ucns/prime_length4_milnor.py",
+      "id": "prime_length4_magnus_gate_matches_frozen_commutator"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the result is serialized",
+        "since": "2026-08-15",
+        "then": "it preserves computer-assisted diagram standing and makes no isotopy-classification, phase, spectral, zeta, or theorem-status claim"
+      },
+      "file": "src/ucns/prime_length4_milnor.py",
+      "id": "prime_p7_length4_receipt_is_bounded"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the frozen target passes its lower-order gates",
+        "since": "2026-08-15",
+        "then": "the canonical, reverse-word, and four cyclic-rotation coefficients are retained without changing the primary target"
+      },
+      "file": "src/ucns/prime_length4_milnor.py",
+      "id": "prime_p7_length4_result_records_cyclic_conventions"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the minimal P7 length-four experiment is evaluated",
+        "since": "2026-08-15",
+        "then": "only R0,R1,R4,R5 is targeted and all six linking, four triple-Milnor, and required longitude lower-degree gates are exact zero"
+      },
+      "file": "src/ucns/prime_length4_milnor.py",
+      "id": "prime_p7_length4_target_is_frozen_and_lower_gated"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "degree-three noncommutative series, fixed-diagram Wirtinger longitude replay",
+        "module_kind": "experiment",
+        "module_name": "prime_length4_milnor",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "LengthFourMilnorCertificate, length_four_commutator_gate, evaluate_p7_length_four_milnor, write_p7_length_four_milnor_certificate",
+        "requires": "ucns_prime_exact_milnor_alexander_p7_p5",
+        "rollback": "remove this module, its tests, result document, and generated certificate",
+        "rollout": "frozen ordered target R0,R1,R4,R5 only; accept nonzero, zero, or unresolved without retargeting",
+        "since": "2026-08-15",
+        "storage_boundary": "caller-supplied local paths only through writer function",
+        "summary": "evaluates the frozen minimal P7 length-four Milnor experiment with exact degree-three Magnus arithmetic",
+        "tests": "tests/test_prime_length4_milnor.py",
+        "unresolved": "repeated-index Milnor invariants, higher nilpotent quotients, whole-link length-four program",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_length4_milnor.py",
+      "id": "ucns_prime_length4_milnor_p7"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_milnor_invariants.py",
+      "id": "prime_milnor_helper_is_facade_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_milnor_invariants",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_generic_diagram",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "readable length-three Milnor extraction and benchmark implementation",
+        "tests": "tests/test_prime_interval_boundary_links.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_milnor_invariants.py",
+      "id": "ucns_prime_milnor_invariants"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "P7 and P5 higher signatures are compared",
+        "since": "2026-08-15",
+        "then": "component count and weight-one rank alone cannot produce distinguish"
+      },
+      "file": "src/ucns/prime_nilpotent_discriminator.py",
+      "id": "prime_nilpotent_comparison_excludes_known_rank"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "substantive phase co-winners bind identical group and peripheral inputs",
+        "since": "2026-08-15",
+        "then": "their nilpotent comparison is no-distinguish"
+      },
+      "file": "src/ucns/prime_nilpotent_discriminator.py",
+      "id": "prime_nilpotent_phase_binding_is_topological"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "GAP/NQ emits a class-four marked quotient",
+        "since": "2026-08-15",
+        "then": "exact degree-four Magnus replay reconstructs every marked meridian and longitude from NQ pc-generator preimages"
+      },
+      "file": "src/ucns/prime_nilpotent_discriminator.py",
+      "id": "prime_nilpotent_primary_and_replay_agree"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a quotient computation starts",
+        "since": "2026-08-15",
+        "then": "the preregistration SHA-256, class four, backend versions, component orders, and resource bounds match PR 191"
+      },
+      "file": "src/ucns/prime_nilpotent_discriminator.py",
+      "id": "prime_nilpotent_protocol_identity_is_frozen"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "deterministic GAP/NQ script, exact degree-four Magnus replay, frozen higher-signature comparison",
+        "module_kind": "experiment",
+        "module_name": "prime_nilpotent_discriminator",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "compute_nilpotent_discriminator, write_nilpotent_discriminator_receipt",
+        "requires": "ucns_prime_exact_milnor_alexander_p7_p5, GAP 4.12.1, NQ 2.5.11",
+        "rollback": "remove this module, tests, result document, and generated receipt",
+        "rollout": "protocol ffaecb935e8086200fa9a27c5d55ba6e759721107d8c4979049eed760eae8aee; P7 then P5 then phase bindings",
+        "since": "2026-08-15",
+        "storage_boundary": "caller-supplied local output path and private temporary GAP script",
+        "summary": "computes the frozen class-four marked peripheral nilpotent quotients for the complete P7 and P5 core links",
+        "tests": "tests/test_prime_nilpotent_discriminator.py",
+        "unresolved": "classes above four, repeated-index classification, ambient isotopy",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_nilpotent_discriminator.py",
+      "id": "ucns_prime_nilpotent_discriminator_p7_p5"
     },
     {
       "block": "CONTRACTS",
@@ -3801,6 +4816,221 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "evidence",
+        "given": "the registered anonymous baseline preserves the 2/3/5/7 partition, F_257 arithmetic, checksum operator, and 21-cell budget",
+        "since": "2026-08-17",
+        "then": "the report identifies structural isomorphism and leaves prime-cardinality architectural standing UNRESOLVED"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_baseline_isomorphism_blocks_architecture_transfer"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "the complete producer CLI is executed by the resource-bound test harness",
+        "since": "2026-08-17",
+        "then": "one-CPU affinity, 256 MiB address-space limit, and 30-second timeout are applied and the report completes"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_complete_run_obeys_registered_resources"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the frozen P2/P3/P5/P7 encoders are inspected as source",
+        "since": "2026-08-17",
+        "then": "four distinct entry points exist and none delegates to another encoder or a shared encoding helper"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_encoders_remain_source_independent"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "registered H3 is FALSIFIED but its baseline changes only semantic labels, dispatch specialization, and checksum placement",
+        "since": "2026-08-17",
+        "then": "no prime-cardinality dependent claim is deprecated; every unexecuted dependent claim remains UNRESOLVED and local bounded survivors remain recorded"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_failure_propagation_is_scope_bounded"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "public identity is computed for a source relation",
+        "since": "2026-08-16",
+        "then": "changing its value cannot change identity and forbidden payload fields are absent"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_fixture_identity_excludes_values"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "each frozen source relation is erased once from its owning prime-cardinality view",
+        "since": "2026-08-16",
+        "then": "primary and brute-force replay use the complementary view checksum and agree on exactly one hidden field value"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_h1_requires_complementary_unique_reconstruction"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "H1 survives and each complete prime-cardinality view is omitted independently",
+        "since": "2026-08-16",
+        "then": "constructive ambiguity and an independent field-degree replay agree whether every view uniquely matters"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_h2_tests_every_whole_view"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "H1 and H2 survive and an exactly information-matched typed-block baseline is evaluated",
+        "since": "2026-08-16",
+        "then": "equal or better reconstruction with strictly lower semantic or dispatch complexity falsifies only the registered semantic-label and dispatch advantage"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "prime_relational_h3_applies_frozen_software_complexity_criterion"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "preregistration validation, exact field reconstruction, brute-force replay, whole-view ambiguity witnesses, typed-block baseline, structural-isomorphism audit, canonical report serialization",
+        "module_kind": "experiment",
+        "module_name": "prime_relational_reconstruction",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "Status, public_relation_identity, encode_p2, encode_p3, encode_p5, encode_p7, audit_baseline_architecture, run_architecture_gates, main",
+        "requires": "edcm_external_evaluation_harness",
+        "rollback": "revert the interpretation correction while retaining immutable preregistration, original execution commits, and prior bounded results",
+        "rollout": "registered experiment plus interpretation correction only; no canon or runtime activation",
+        "since": "2026-08-16",
+        "storage_boundary": "writes one caller-selected aggregate report",
+        "summary": "executes frozen P2/P3/P5/P7 gates and audits whether the registered baseline changes the prime-cardinality architecture before propagating failure",
+        "tests": "tests/test_prime_relational_reconstruction.py",
+        "unresolved": "genuinely non-prime-cardinality matched baseline, natural multimodal semantics, external authorship, measurement validity, independent external replication",
+        "user_data_boundary": "hand-authored development fixture only; no external or sealed labels"
+      },
+      "file": "src/ucns/prime_relational_reconstruction.py",
+      "id": "ucns_prime_relational_reconstruction_adversary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the owning facade invokes this readable helper",
+        "since": "2026-08-11",
+        "then": "the helper behavior is exercised through the named facade test without becoming a separate certificate"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_data.py",
+      "id": "prime_replay_data_is_receipt_witnessed"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "module implementation",
+        "module_kind": "experiment",
+        "module_name": "prime_replay_phase_milnor_data",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "internal readable implementation used through the declared facade",
+        "requires": "ucns_prime_smooth_ribbons_p7_p5",
+        "rollback": "remove only with the owning consolidated research layer",
+        "rollout": "readable implementation; authority remains with the facade contracts",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "immutable independent replay, phase-sensitivity, and numerical Milnor receipt data",
+        "tests": "tests/test_prime_replay_phase_milnor_receipt.py",
+        "unresolved": "see owning facade contracts and research document",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_data.py",
+      "id": "ucns_prime_replay_phase_milnor_data"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "P7 and P5 selected phase laws are compared",
+        "since": "2026-08-11",
+        "then": "both use center winding three and therefore both produce T two-seven"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_receipt.py",
+      "id": "prime_replay_receipt_exposes_phase_imposition"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the five algebraically split outer triples are audited",
+        "since": "2026-08-11",
+        "then": "each length-three mu-bar value is zero across the frozen projection, resolution, and basepoint sweeps"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_receipt.py",
+      "id": "prime_replay_receipt_freezes_p7_milnor_values"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "the compact receipt is serialized",
+        "since": "2026-08-11",
+        "then": "no phase law, arithmetic redefinition, electron ontology, zeta theorem, or Riemann-hypothesis proof is selected"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_receipt.py",
+      "id": "prime_replay_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the compact receipt is loaded",
+        "since": "2026-08-11",
+        "then": "P7 and P5 pair counts, box counts, margins, and independent Decimal ledger hashes remain pinned"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_receipt.py",
+      "id": "prime_replay_receipt_preserves_independent_interval_result"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "immutable base receipt validation and deterministic payload hashing",
+        "module_kind": "experiment",
+        "module_name": "prime_replay_phase_milnor_receipt",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "boundary_knot, validate_receipt, build_receipt",
+        "requires": "ucns_prime_smooth_ribbons_p7_p5",
+        "rollback": "remove this module, its test, documents, and generated summary",
+        "rollout": "compact GitHub publication surface; selection effect none",
+        "since": "2026-08-11",
+        "storage_boundary": "none",
+        "summary": "freezes the independent P7/P5 interval replay, phase-winding sensitivity, and length-three P7 Milnor audit while preserving the executable reference packet as the producing evidence",
+        "tests": "tests/test_prime_replay_phase_milnor_receipt.py",
+        "unresolved": "proof-assistant interval replay, analytic crossing extraction, length-four and higher Milnor invariants, multivariable Alexander polynomial, spectral operator, zeta correspondence",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_replay_phase_milnor_receipt.py",
+      "id": "ucns_prime_replay_phase_milnor_receipt"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "correctness",
         "given": "centerline separation exceeds nine hundredths and ribbon half-width is one hundredth",
         "since": "2026-08-11",
@@ -3914,6 +5144,74 @@ export default defineMsdmdCollection({
       "block": "CONTRACTS",
       "fields": {
         "class": "doctrine",
+        "given": "the family certificate is serialized",
+        "since": "2026-08-15",
+        "then": "it distinguishes presentation and ideal-boundary evidence from a complete ideal basis, link classification, phase selection, or spectral claim"
+      },
+      "file": "src/ucns/prime_symbolic_alexander.py",
+      "id": "prime_symbolic_alexander_receipt_is_nonselecting"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "regression",
+        "given": "the symbolic matrix is specialized at every previously frozen prime-order character",
+        "since": "2026-08-15",
+        "then": "every modular rank equals the independently retained Fox-character fingerprint"
+      },
+      "file": "src/ucns/prime_symbolic_alexander.py",
+      "id": "prime_symbolic_certificate_replays_finite_characters"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the exact symbolic presentation is evaluated over its Laurent-polynomial fraction field",
+        "since": "2026-08-15",
+        "then": "exact rank and a nonzero pivot minor certify every earlier elementary ideal as zero and the declared first nonzero ideal as nonzero"
+      },
+      "file": "src/ucns/prime_symbolic_alexander.py",
+      "id": "prime_symbolic_elementary_boundary_is_exact"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the frozen P7 or P5 Wirtinger diagram is abelianized over one Laurent variable per component",
+        "since": "2026-08-15",
+        "then": "every sparse Fox entry has exact integer Laurent coefficients and every row satisfies the Fox fundamental identity"
+      },
+      "file": "src/ucns/prime_symbolic_alexander.py",
+      "id": "prime_symbolic_fox_presentation_is_exact"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "exact Laurent Fox derivatives, rational-function rank, pivot minor, Fox fundamental identity",
+        "module_kind": "experiment",
+        "module_name": "prime_symbolic_alexander",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "SymbolicAlexanderCertificate, symbolic_alexander_certificate, symbolic_alexander_family_certificate, write_symbolic_alexander_family_certificate",
+        "requires": "ucns_prime_exact_milnor_alexander_p7_p5, sympy>=1.12,<2",
+        "rollback": "remove this module, its tests, documentation, and generated certificate",
+        "rollout": "P7 first and P5 same-construction comparison second; selection effect none",
+        "since": "2026-08-15",
+        "storage_boundary": "caller-supplied local paths only through writer functions",
+        "summary": "derives the exact multivariable Fox-Alexander presentations and certifies their first nonzero elementary-ideal boundaries for the frozen P7 and P5 diagrams",
+        "tests": "tests/test_prime_symbolic_alexander.py",
+        "unresolved": "complete generating sets and Groebner bases for the first nonzero ideals, higher elementary ideals, phase-co-winner separation, higher Milnor invariants",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/prime_symbolic_alexander.py",
+      "id": "ucns_prime_symbolic_alexander_p7_p5"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
         "given": "a current-root Carrier is bound to the EDCM/METAPAT profile",
         "since": "2026-07-23",
         "then": "order, multiplicity, occurrence identity, sidedness, algebraic zero, and retained evidence remain explicit without projection"
@@ -3965,6 +5263,127 @@ export default defineMsdmdCollection({
       },
       "file": "src/ucns/profiles.py",
       "id": "edcm_metapat_ordered_occurrence_profile"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "a valid receipt is produced or consumed",
+        "then": "candidate integration does not select geometry, prove usefulness, or establish privacy"
+      },
+      "file": "src/ucns/ptcna_state.py",
+      "id": "ucns_ptcna_candidate_transfers_no_status"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the same exact UCNS producer commit and module bytes",
+        "then": "canonical receipt bytes and state digest are byte-identical and bind the exact public-gonol provenance"
+      },
+      "file": "src/ucns/ptcna_state.py",
+      "id": "ucns_ptcna_receipt_is_deterministic_and_provenance_bound"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "any authority-bearing receipt field is changed",
+        "then": "validation fails before downstream state construction"
+      },
+      "file": "src/ucns/ptcna_state.py",
+      "id": "ucns_ptcna_receipt_rejects_tampering"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the PTCNA candidate receipt is built",
+        "then": "it describes exactly 157x7x7x53 C-order little-endian float64 state with every element present and initialized to positive zero"
+      },
+      "file": "src/ucns/ptcna_state.py",
+      "id": "ucns_ptcna_state_has_exact_requested_shape"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "canonical serialization, streaming zero-state digest, producer checkout verification",
+        "module_kind": "schema",
+        "module_name": "ptcna_state",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "PTCNA_STATE_SHAPE, PTCNAStateReceiptError, build_ptcna_state_receipt, validate_ptcna_state_receipt, write_ptcna_state_receipt",
+        "requires": "edcm_word_gonol_profile",
+        "rollback": "remove this module and export without changing the 157-position EDCM carrier or any prior candidate",
+        "rollout": "explicit candidate receipt generation only; no universal UCNS or PTCNA selection",
+        "since": "2026-08-17",
+        "storage_boundary": "write",
+        "summary": "emits and validates the candidate-scoped dense 157x7x7x53 PTCNA initialization state with deterministic provenance receipts",
+        "tests": "tests/test_ptcna_state.py",
+        "unresolved": "continuous seven-fold geometry, representative efficacy, and any canonical higher-gonol composition law",
+        "user_data_boundary": "none"
+      },
+      "file": "src/ucns/ptcna_state.py",
+      "id": "ucns_ptcna_candidate_state"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "a relational carrier is constructed or parsed",
+        "since": "2026-08-16",
+        "then": "its complete intrinsic payload contains only schema identity, dense integer node addresses, ordered typed integer relations, and permanently false transfer fields"
+      },
+      "file": "src/ucns/relational_carrier.py",
+      "id": "relational_carrier_is_intrinsic_and_metadata_free"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "node order, edge order, multiplicity, relation code, endpoint, or sidedness differs",
+        "since": "2026-08-16",
+        "then": "the canonical bytes and stable identity differ without sorting or deduplication"
+      },
+      "file": "src/ucns/relational_carrier.py",
+      "id": "relational_carrier_preserves_order_multiplicity_and_sidedness"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "canonical carrier bytes are parsed and serialized again",
+        "since": "2026-08-16",
+        "then": "the resulting bytes are exactly identical and malformed or noncanonical input fails closed"
+      },
+      "file": "src/ucns/relational_carrier.py",
+      "id": "relational_carrier_roundtrip_is_canonical"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "_canonical_bytes",
+        "module_kind": "schema",
+        "module_name": "relational_carrier",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "RelationalNode, RelationalEdge, RelationalCarrier, build_relational_carrier, relational_carrier_bytes, parse_relational_carrier",
+        "requires": "none",
+        "rollback": "remove module and exports without changing carrier, geometry, measurement, or option decisions",
+        "rollout": "explicit non-geometric representation bridge; no consumer activation or canonical UCNS object",
+        "since": "2026-08-16",
+        "storage_boundary": "serialized intrinsic representation bytes only",
+        "summary": "constructs deterministic metadata-free ordered relational carriers from dense occurrence addresses and caller-declared relation codes",
+        "tests": "tests.test_relational_carrier",
+        "unresolved": "geometric assignment, higher-gonol composition, canonical structural equivalence, M, B, and domain interpretation of relation codes",
+        "user_data_boundary": "accepts integers only; domain evidence and provenance remain external"
+      },
+      "file": "src/ucns/relational_carrier.py",
+      "id": "ucns_relational_carrier"
     },
     {
       "block": "CONTRACTS",
@@ -4838,7 +6257,8 @@ export default defineMsdmdCollection({
         "call": "self::test_completion_cannot_exhaust_the_underlying_unknowable",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_completion_is_scoped_not_epistemic_exhaustion"
+        "proves": "edcm_completion_is_scoped_not_epistemic_exhaustion",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_completion_scope"
@@ -4849,7 +6269,8 @@ export default defineMsdmdCollection({
         "call": "self::test_scalar_projection_requires_loss_and_source_link",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_scalar_projection_is_declared_lossy"
+        "proves": "edcm_scalar_projection_is_declared_lossy",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_lossy_projection"
@@ -4860,7 +6281,8 @@ export default defineMsdmdCollection({
         "call": "self::test_trace_rejects_forward_parentage",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_motion_retains_trajectory_identity"
+        "proves": "edcm_motion_retains_trajectory_identity",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_parentage_fail_closed"
@@ -4871,7 +6293,8 @@ export default defineMsdmdCollection({
         "call": "self::test_trace_preserves_order_parentage_and_completion",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_motion_retains_trajectory_identity"
+        "proves": "edcm_motion_retains_trajectory_identity",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_recursive_trace"
@@ -4882,7 +6305,8 @@ export default defineMsdmdCollection({
         "call": "self::test_unknown_assignment_and_motion_laws_remain_visible",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_unknown_motion_laws_remain_explicit"
+        "proves": "edcm_unknown_motion_laws_remain_explicit",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_unknown_laws_visible"
@@ -4893,7 +6317,8 @@ export default defineMsdmdCollection({
         "call": "self::test_word_motion_binding_preserves_exact_evidence",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_motion_retains_trajectory_identity"
+        "proves": "edcm_motion_retains_trajectory_identity",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_motion.py",
       "id": "check_edcm_word_motion_binding"
@@ -4904,7 +6329,8 @@ export default defineMsdmdCollection({
         "call": "self::test_carrier_assignment_terms_distinguish_fixture_membership",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_space_manifestations_assign_to_origin"
+        "proves": "edcm_space_manifestations_assign_to_origin",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_carrier_assignment_terms"
@@ -4915,7 +6341,8 @@ export default defineMsdmdCollection({
         "call": "self::test_public_gonol_fixture_is_exact",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_public_gonol_fixture_is_exact"
+        "proves": "edcm_public_gonol_fixture_is_exact",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_exact_public_gonol_fixture"
@@ -4926,7 +6353,8 @@ export default defineMsdmdCollection({
         "call": "self::test_observe_corpus_runs_every_turn_without_sampling",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_alphabet_failure_is_positive_evidence"
+        "proves": "edcm_alphabet_failure_is_positive_evidence",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_full_corpus_iteration"
@@ -4937,7 +6365,8 @@ export default defineMsdmdCollection({
         "call": "self::test_source_text_is_exact_and_out_of_alphabet_is_retained",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_source_text_is_not_normalized"
+        "proves": "edcm_source_text_is_not_normalized",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_no_source_normalization"
@@ -4948,7 +6377,8 @@ export default defineMsdmdCollection({
         "call": "self::test_profile_options_fail_closed",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_source_text_is_not_normalized"
+        "proves": "edcm_source_text_is_not_normalized",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_profile_options_fail_closed"
@@ -4959,7 +6389,8 @@ export default defineMsdmdCollection({
         "call": "self::test_runtime_isspace_does_not_expand_the_pinned_profile",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_space_manifestations_assign_to_origin"
+        "proves": "edcm_space_manifestations_assign_to_origin",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_space_assignment_pin_is_runtime_independent"
@@ -4970,7 +6401,8 @@ export default defineMsdmdCollection({
         "call": "self::test_pinned_unicode_white_space_manifestations_assign_to_origin",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_space_manifestations_assign_to_origin"
+        "proves": "edcm_space_manifestations_assign_to_origin",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_space_manifestations_assign_to_origin"
@@ -4981,7 +6413,8 @@ export default defineMsdmdCollection({
         "call": "self::test_space_manifestations_split_words_without_rewriting_source",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_space_manifestations_assign_to_origin"
+        "proves": "edcm_space_manifestations_assign_to_origin",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_space_origin_segmentation_preserves_source"
@@ -4992,7 +6425,8 @@ export default defineMsdmdCollection({
         "call": "self::test_utf8_decoding_is_strict",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_source_text_is_not_normalized"
+        "proves": "edcm_source_text_is_not_normalized",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_strict_utf8_decoding"
@@ -5003,7 +6437,8 @@ export default defineMsdmdCollection({
         "call": "self::test_surrogate_code_points_are_rejected_at_text_boundaries",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_source_text_is_not_normalized"
+        "proves": "edcm_source_text_is_not_normalized",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_surrogates_fail_closed"
@@ -5014,7 +6449,8 @@ export default defineMsdmdCollection({
         "call": "self::test_one_turn_is_one_unit_regardless_of_text_extent",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_speaker_turn_has_unit_support"
+        "proves": "edcm_speaker_turn_has_unit_support",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_turn_unit_support"
@@ -5025,7 +6461,8 @@ export default defineMsdmdCollection({
         "call": "self::test_non_space_unicode_scalars_remain_exact_unassigned_evidence",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_alphabet_failure_is_positive_evidence"
+        "proves": "edcm_alphabet_failure_is_positive_evidence",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_valid_unassigned_scalars_are_retained"
@@ -5036,7 +6473,8 @@ export default defineMsdmdCollection({
         "call": "self::test_words_are_gonols_and_each_space_is_a_nesting_boundary",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "edcm_word_is_the_smallest_gonol"
+        "proves": "edcm_word_is_the_smallest_gonol",
+        "timeout": "10"
       },
       "file": "tests/test_edcm_profile.py",
       "id": "check_word_gonol_nesting"
@@ -5326,6 +6764,71 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_explicit_geometric_assignment.py",
       "id": "check_explicit_geometry_total_outcomes"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_plan_requires_execution_generated_completion_receipt",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "external_evaluation_requires_completed_corpus_gate",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_external_evaluation.py",
+      "id": "check_external_evaluation_corpus_gate"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_complete_external_receipt_is_candidate_evidence_only",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "external_evaluation_receipt_is_nonpromoting",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_external_evaluation.py",
+      "id": "check_external_evaluation_nonpromotion"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_timeout_input_output_and_executable_bounds_fail_closed",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "external_evaluation_is_resource_bounded",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_external_evaluation.py",
+      "id": "check_external_evaluation_resource_bounds"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_request_binds_identity_command_cases_and_disclosure",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "external_evaluator_identity_and_disclosure_are_bound",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_external_evaluation.py",
+      "id": "check_external_evaluator_identity_disclosure_binding"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_response_requires_exact_protocol_and_ordered_case_coverage",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "external_response_reconciliation_is_fail_closed",
+        "requires": "python3",
+        "timeout": "15"
+      },
+      "file": "tests/test_external_evaluation.py",
+      "id": "check_external_response_reconciliation"
     },
     {
       "block": "CHECKS",
@@ -5801,7 +7304,8 @@ export default defineMsdmdCollection({
         "call": "self::test_source_word_and_glyph_boundaries",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "lexical_floor_source_receipt_binds_packaged_bytes, lexical_floor_words_are_unique_exact_glyph_sets, lexical_floor_order_is_serialization_only, lexical_floor_reuses_canonical_glyph_assignment"
+        "proves": "lexical_floor_source_receipt_binds_packaged_bytes, lexical_floor_words_are_unique_exact_glyph_sets, lexical_floor_order_is_serialization_only, lexical_floor_reuses_canonical_glyph_assignment",
+        "timeout": "30"
       },
       "file": "tests/test_lexical_floor.py",
       "id": "lexical_floor_source_and_word_check"
@@ -5812,7 +7316,8 @@ export default defineMsdmdCollection({
         "call": "self::test_projection_candidate_and_definition_boundaries",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding, affixiation_and_compounding_are_candidate_layers, definitions_are_context_plural_and_immutable"
+        "proves": "lexical_hyperspace_is_occurrence_preserving_projection_not_embedding, affixiation_and_compounding_are_candidate_layers, definitions_are_context_plural_and_immutable",
+        "timeout": "30"
       },
       "file": "tests/test_lexical_floor_layers.py",
       "id": "lexical_floor_layer_check"
@@ -5823,7 +7328,8 @@ export default defineMsdmdCollection({
         "call": "self::test_snapshot_chain_is_source_bound_and_fail_closed",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "every_added_layer_has_a_source_bound_snapshot"
+        "proves": "every_added_layer_has_a_source_bound_snapshot",
+        "timeout": "30"
       },
       "file": "tests/test_lexical_floor_snapshots.py",
       "id": "lexical_floor_snapshot_check"
@@ -6429,6 +7935,734 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_complete_minor_accounting_is_sealed",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_grobner_generators_cover_every_maximal_minor",
+        "requires": "python3, sympy",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_determinantal_grobner.py",
+      "id": "check_prime_grobner_complete_accounting"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_result_document_preserves_research_boundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_grobner_receipt_preserves_nonclaims",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_determinantal_grobner.py",
+      "id": "check_prime_grobner_nonclaims"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_protocol_and_parent_presentations_are_frozen",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_grobner_protocol_identity_is_frozen",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_determinantal_grobner.py",
+      "id": "check_prime_grobner_protocol_frozen"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_sealed_reduced_bases_have_expected_digests",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_grobner_basis_is_complete_reduced_and_saturated",
+        "requires": "python3, sympy",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_determinantal_grobner.py",
+      "id": "check_prime_grobner_reduced_bases"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_independent_replay_is_exact",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_grobner_independent_replay_agrees",
+        "requires": "python3, sympy",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_determinantal_grobner.py",
+      "id": "check_prime_grobner_replay"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_borromean_magnus_benchmark_is_unit",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_magnus_benchmark_recovers_borromean_integer",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_borromean_magnus"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_receipt_is_deterministic_bounded_and_nonselecting",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_exact_milnor_alexander_receipt_is_nonselecting",
+        "requires": "python3, mpmath",
+        "timeout": "180"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_exact_receipt_nonselecting"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_fox_rank_fingerprints_cover_every_prime_character",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_fox_fingerprint_covers_all_prime_characters",
+        "requires": "python3, mpmath",
+        "timeout": "120"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_fox_complete_fingerprint"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generic_projection_preserves_positive_isotopy_clearance",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_diagram_is_fixed_before_invariants",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_generic_diagram_fixed"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generic_diagrams_reproduce_complete_linking_matrices",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_diagram_preserves_pairwise_linking",
+        "requires": "python3, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_generic_pairwise_linking"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_five_p7_milnor_coefficients_are_exact_zero",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p7_five_milnor_candidates_are_exact_zero_in_diagram",
+        "requires": "python3, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_p7_exact_milnor_zero"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_preregistration_hash_and_selector_order_are_frozen",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_phase_selector_matches_frozen_preregistration",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_phase_preregistration_hash"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_preregistered_selector_outputs_are_not_target_fitted",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_phase_selector_uses_whole_link_character",
+        "requires": "python3, mpmath",
+        "timeout": "120"
+      },
+      "file": "tests/test_prime_exact_milnor_alexander.py",
+      "id": "check_prime_phase_whole_link_selector"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_frozen_turns_are_inside_outward_atan2_intervals",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_turns_are_outward_atan2_enclosed",
+        "requires": "python3, system-libmpfr, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_generic_interval_certificate.py",
+      "id": "check_prime_generic_interval_atan2"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_p7_first_p5_second_crossing_signs_are_certified",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_crossing_signs_are_interval_certified",
+        "requires": "python3, system-libmpfr, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_generic_interval_certificate.py",
+      "id": "check_prime_generic_interval_crossing_signs"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_receipt_is_deterministic_complete_and_nonselecting",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_generic_interval_receipt_is_nonselecting",
+        "requires": "python3, system-libmpfr, mpmath",
+        "timeout": "120"
+      },
+      "file": "tests/test_prime_generic_interval_certificate.py",
+      "id": "check_prime_generic_interval_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_smooth_height_intervals_exclude_zero_and_preserve_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_smooth_signs_are_interval_certified",
+        "requires": "python3, system-libmpfr, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_generic_interval_certificate.py",
+      "id": "check_prime_generic_interval_smooth_signs"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_research_boundaries_remain_explicit",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_independent_phase_milnor_receipt_is_nonselecting",
+        "requires": "python3",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_independent_receipt_nonselecting"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_fourier_milnor_benchmark_converges_to_minus_one",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_milnor_fourier_benchmark_recovers_borromean",
+        "requires": "python3, numpy",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_milnor_borromean_benchmark"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_numerical_resolution_is_not_promoted_to_exact_theorem",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_milnor_exactness_boundary_is_preserved",
+        "requires": "python3",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_milnor_exactness_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_five_p7_triples_converge_numerically_to_zero",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_milnor_p7_split_triples_resolve_numerically_to_zero",
+        "requires": "python3, numpy",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_milnor_p7_zero_resolution"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_direct_mpfr_replay_matches_frozen_partition",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_mpfr_replay_is_backend_independent",
+        "requires": "python3, libmpfr",
+        "timeout": "120"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_mpfr_backend_independence"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_direct_mpfr_replay_recertifies_both_primes",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_mpfr_replay_recertifies_ribbon_margin",
+        "requires": "python3, libmpfr",
+        "timeout": "120"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_mpfr_ribbon_margin"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_phase_sensitivity_enumerates_all_equal_gap_alternatives",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_phase_sensitivity_separates_selection_from_emergence",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_phase_sensitivity_selection"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_p7_and_p5_share_the_same_maximum_gap_knot_degrees",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_phase_sensitivity_torus_seven_is_not_forced",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_independent_phase_milnor.py",
+      "id": "check_prime_phase_torus_seven_not_forced"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_boundary_cable_classes_and_component_knot_invariants",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_cable_winding_is_derived_from_phase",
+        "requires": "python3",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_boundary_cable_winding"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_boundary_linking_matrices_are_four_times_core_matrices",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_linking_scales_by_four",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_boundary_linking_fourfold"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_each_mobius_boundary_is_one_two_turn_component",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_curve_is_single_two_turn_component",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_boundary_single_two_turn_component"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_algebraically_split_triples_are_enumerated_without_fake_milnor_values",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_higher_order_boundary_is_explicit",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_higher_order_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_receipt_preserves_p7_first_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_boundaries_p7_precedes_p5",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_interval_boundaries_p7_first"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_and_boundary_exports_are_deterministic_and_firewalled",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_interval_boundary_compact_receipt_is_nonselecting",
+        "requires": "python3, mpmath",
+        "timeout": "40"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_interval_boundary_compact_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_interval_replay_closes_every_complete_parameter_torus",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_replay_uses_outward_endpoints",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_interval_replay_outward_endpoints"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_legacy_surface_is_an_explicit_adapter_over_readable_evidence",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_replay_uses_outward_endpoints",
+        "requires": "python3, mpmath, sympy",
+        "timeout": "40"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_legacy_readable_adapter"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_mixed_core_boundary_matrices_are_full_rank_with_exact_determinants",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_mixed_core_boundary_matrix_is_complete",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundaries.py",
+      "id": "check_prime_mixed_core_boundary_matrix"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_boundary_component_cable_and_knot_invariants",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_component_knot_types_are_derived",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_boundary_component_knot_types"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_boundary_and_mixed_linking_blocks_follow_cable_homology",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_helper_is_facade_witnessed",
+        "requires": "python3, sympy",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_boundary_helper_facade"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_boundary_and_mixed_linking_blocks_follow_cable_homology",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_linking_matrix_follows_cable_homology",
+        "requires": "python3, sympy",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_boundary_linking_matrix"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_each_mobius_ribbon_has_one_closed_two_turn_boundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_boundary_curve_is_single_and_closed",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_boundary_single_closed_component"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generic_diagram_and_length_three_milnor_profile",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_generic_helper_is_facade_witnessed",
+        "requires": "python3, mpmath",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_generic_helper_facade"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_and_boundary_models_are_deterministic_and_bounded",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_interval_boundary_receipt_is_nonselecting",
+        "requires": "python3, mpmath, sympy",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_boundary_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_certificate_preserves_p7_first_order",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_boundary_p7_precedes_p5",
+        "requires": "python3, mpmath, sympy",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_boundary_research_order"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_outward_interval_replay_covers_every_pair",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_common_is_facade_witnessed",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_common_facade"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_interval_margin_implies_complete_ribbon_disjointness",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_replay_preserves_finite_width_disjointness",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_finite_width_disjointness"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_outward_interval_replay_covers_every_pair",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_replay_is_outward_rounded",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_outward_replay"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_outward_interval_replay_covers_every_pair",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_interval_replay_helper_is_facade_witnessed",
+        "requires": "python3, mpmath",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_interval_replay_helper_facade"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generic_diagram_and_length_three_milnor_profile",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_length_three_milnor_profile_is_computed_after_global_lift",
+        "requires": "python3, mpmath",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_length_three_milnor_profile"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_generic_diagram_and_length_three_milnor_profile",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_milnor_helper_is_facade_witnessed",
+        "requires": "python3, mpmath",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_milnor_helper_facade"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_full_core_boundary_integer_invariants_distinguish_p7_and_p5",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_mixed_linking_matrix_has_exact_integer_invariants",
+        "requires": "python3, sympy",
+        "timeout": "20"
+      },
+      "file": "tests/test_prime_interval_boundary_links.py",
+      "id": "check_prime_mixed_integer_invariants"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_is_deterministic_and_bounded",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_p7_length4_receipt_is_bounded",
+        "requires": "python3, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_length4_milnor.py",
+      "id": "check_prime_length4_bounded_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_frozen_degree_three_commutator_gate",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_length4_magnus_gate_matches_frozen_commutator",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_length4_milnor.py",
+      "id": "check_prime_length4_commutator_gate"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_result_records_primary_reverse_and_cyclic_coefficients",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p7_length4_result_records_cyclic_conventions",
+        "requires": "python3, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_length4_milnor.py",
+      "id": "check_prime_length4_cyclic_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_frozen_target_and_lower_order_gates",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_p7_length4_target_is_frozen_and_lower_gated",
+        "requires": "python3, mpmath",
+        "timeout": "60"
+      },
+      "file": "tests/test_prime_length4_milnor.py",
+      "id": "check_prime_length4_lower_gates"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_phase_co_winners_bind_identical_inputs",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_nilpotent_phase_binding_is_topological",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_nilpotent_discriminator.py",
+      "id": "check_nilpotent_phase_binding"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_checked_in_receipt_records_exact_replay",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_nilpotent_primary_and_replay_agree",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_nilpotent_discriminator.py",
+      "id": "check_nilpotent_primary_replay"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_protocol_identity_and_frozen_receipt",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_nilpotent_protocol_identity_is_frozen",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_nilpotent_discriminator.py",
+      "id": "check_nilpotent_protocol_identity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_comparison_excludes_weight_one_rank",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_nilpotent_comparison_excludes_known_rank",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_nilpotent_discriminator.py",
+      "id": "check_nilpotent_rank_exclusion"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_every_hypernode_has_distinct_phase_and_height",
         "cleanup": "none",
         "mutates": "none",
@@ -6650,6 +8884,180 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_frozen_encoders_do_not_delegate_to_shared_or_peer_helpers",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_encoders_remain_source_independent",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_encoder_source_independence"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_h3_failure_does_not_deprecate_architecture_dependents",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_failure_propagation_is_scope_bounded",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_failure_propagation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_h1_all_erased_relations_reconstruct_exactly_in_both_implementations",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_h1_requires_complementary_unique_reconstruction",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_h1_reconstruction"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_h2_every_whole_view_is_irreducible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_h2_tests_every_whole_view",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_h2_irreducibility"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_h3_baseline_preserves_prime_cardinality_architecture",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_baseline_isomorphism_blocks_architecture_transfer",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_h3_architecture_isomorphism"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_h3_registered_criterion_falsifies_only_software_advantage",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_h3_applies_frozen_software_complexity_criterion",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_h3_matched_baseline"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_public_identity_does_not_leak_value",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_fixture_identity_excludes_values",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_identity_nonleakage"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_independent_replay_agrees_with_committed_report",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_relational_replay_avoids_product_import, prime_relational_replay_scopes_registered_falsification",
+        "timeout": "10"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_independent_replay"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_complete_cli_run_obeys_registered_resource_bounds",
+        "cleanup": "tempdir_teardown",
+        "mutates": "filesystem",
+        "proves": "prime_relational_complete_run_obeys_registered_resources",
+        "requires": "python3, posix_resource, sched_affinity",
+        "timeout": "30"
+      },
+      "file": "tests/test_prime_relational_reconstruction.py",
+      "id": "check_prime_relational_registered_resource_bounds"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_is_deterministic_and_nonselecting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_replay_data_is_receipt_witnessed",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_replay_phase_milnor_receipt.py",
+      "id": "check_prime_replay_data_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_independent_decimal_replay_is_pinned",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_replay_receipt_preserves_independent_interval_result",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_replay_phase_milnor_receipt.py",
+      "id": "check_prime_replay_receipt_interval"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_all_five_length_three_values_are_zero",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_replay_receipt_freezes_p7_milnor_values",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_replay_phase_milnor_receipt.py",
+      "id": "check_prime_replay_receipt_milnor"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_is_deterministic_and_nonselecting",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_replay_receipt_is_nonselecting",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_replay_phase_milnor_receipt.py",
+      "id": "check_prime_replay_receipt_nonselecting"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_phase_winding_is_shared_not_prime_specific",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_replay_receipt_exposes_phase_imposition",
+        "requires": "python3",
+        "timeout": "5"
+      },
+      "file": "tests/test_prime_replay_phase_milnor_receipt.py",
+      "id": "check_prime_replay_receipt_phase"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_complete_parameter_tori_certify_nine_hundredths_centerline_margin",
         "cleanup": "none",
         "mutates": "none",
@@ -6754,10 +9162,63 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::test_symbolic_specializations_replay_frozen_character_ranks",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_symbolic_certificate_replays_finite_characters",
+        "requires": "python3, sympy",
+        "timeout": "180"
+      },
+      "file": "tests/test_prime_symbolic_alexander.py",
+      "id": "check_prime_symbolic_character_replay"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_exact_ranks_and_first_nonzero_elementary_ideals_differ",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_symbolic_elementary_boundary_is_exact",
+        "requires": "python3, sympy",
+        "timeout": "180"
+      },
+      "file": "tests/test_prime_symbolic_alexander.py",
+      "id": "check_prime_symbolic_elementary_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_symbolic_presentations_are_sparse_exact_and_deterministic",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "prime_symbolic_fox_presentation_is_exact",
+        "requires": "python3, sympy",
+        "timeout": "180"
+      },
+      "file": "tests/test_prime_symbolic_alexander.py",
+      "id": "check_prime_symbolic_fox_exact"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_family_receipt_is_deterministic_and_bounded",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "prime_symbolic_alexander_receipt_is_nonselecting",
+        "requires": "python3, sympy",
+        "timeout": "360"
+      },
+      "file": "tests/test_prime_symbolic_alexander.py",
+      "id": "check_prime_symbolic_receipt_nonselecting"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::test_algebraic_zero_remains_positive_retained_structure",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_algebraic_zero_retained"
@@ -6768,7 +9229,8 @@ export default defineMsdmdCollection({
         "call": "self::test_profile_does_not_restore_factorization_or_universal_multiplication",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "profile_does_not_restore_archived_arithmetic"
+        "proves": "profile_does_not_restore_archived_arithmetic",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_archived_arithmetic_not_restored"
@@ -6779,7 +9241,8 @@ export default defineMsdmdCollection({
         "call": "self::test_archived_schema_ids_fail_closed",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "post_reset_bridge_is_exact_and_fail_closed"
+        "proves": "post_reset_bridge_is_exact_and_fail_closed",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_archived_schema_rejection"
@@ -6790,7 +9253,8 @@ export default defineMsdmdCollection({
         "call": "self::test_bridge_round_trip_preserves_complete_record",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "post_reset_bridge_is_exact_and_fail_closed"
+        "proves": "post_reset_bridge_is_exact_and_fail_closed",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_bridge_round_trip"
@@ -6801,7 +9265,8 @@ export default defineMsdmdCollection({
         "call": "self::test_serialization_is_byte_deterministic",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "post_reset_bridge_is_exact_and_fail_closed, bridge_identity_binds_order_profile_and_content"
+        "proves": "post_reset_bridge_is_exact_and_fail_closed, bridge_identity_binds_order_profile_and_content",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_bridge_serialization_determinism"
@@ -6812,7 +9277,8 @@ export default defineMsdmdCollection({
         "call": "self::test_cartesian_pairing_produces_p_times_q_occurrences",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_cartesian_pair_cardinality"
@@ -6823,7 +9289,8 @@ export default defineMsdmdCollection({
         "call": "self::test_cartesian_pairing_is_left_major",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_cartesian_pair_order"
@@ -6834,7 +9301,8 @@ export default defineMsdmdCollection({
         "call": "self::test_equal_valued_duplicate_occurrences_remain_distinct",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_duplicate_occurrence_identity"
@@ -6845,7 +9313,8 @@ export default defineMsdmdCollection({
         "call": "self::test_existing_public_exports_remain_present",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "profile_does_not_restore_archived_arithmetic"
+        "proves": "profile_does_not_restore_archived_arithmetic",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_existing_public_surface_retained"
@@ -6856,7 +9325,8 @@ export default defineMsdmdCollection({
         "call": "self::test_reordering_changes_stable_identity",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "bridge_identity_binds_order_profile_and_content"
+        "proves": "bridge_identity_binds_order_profile_and_content",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_order_binds_identity"
@@ -6867,7 +9337,8 @@ export default defineMsdmdCollection({
         "call": "self::test_pairing_preserves_left_right_sidedness",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_pair_sidedness"
@@ -6878,7 +9349,8 @@ export default defineMsdmdCollection({
         "call": "self::test_profile_identity_participates_in_stable_identity",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "bridge_identity_binds_order_profile_and_content, profile_binding_is_fail_closed"
+        "proves": "bridge_identity_binds_order_profile_and_content, profile_binding_is_fail_closed",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_profile_identity_binding"
@@ -6889,7 +9361,8 @@ export default defineMsdmdCollection({
         "call": "self::test_option_mismatch_fails_closed",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "profile_binding_is_fail_closed"
+        "proves": "profile_binding_is_fail_closed",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_profile_option_rejection"
@@ -6900,7 +9373,8 @@ export default defineMsdmdCollection({
         "call": "self::test_retained_relation_layer_does_not_change_scalar_support",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_retained_relation_support_boundary"
@@ -6911,7 +9385,8 @@ export default defineMsdmdCollection({
         "call": "self::test_structural_null_is_distinct_from_algebraic_zero",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "ordered_occurrence_profile_preserves_declared_choices"
+        "proves": "ordered_occurrence_profile_preserves_declared_choices",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_structural_null_distinction"
@@ -6922,10 +9397,59 @@ export default defineMsdmdCollection({
         "call": "self::test_validity_transfer_fields_are_permanently_false",
         "cleanup": "none",
         "mutates": "none",
-        "proves": "validity_transfer_is_forbidden"
+        "proves": "validity_transfer_is_forbidden",
+        "timeout": "10"
       },
       "file": "tests/test_profile_boundary.py",
       "id": "check_validity_transfer_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_is_byte_deterministic_and_provenance_bound",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ucns_ptcna_receipt_is_deterministic_and_provenance_bound",
+        "timeout": "10"
+      },
+      "file": "tests/test_ptcna_state.py",
+      "id": "check_ucns_ptcna_deterministic_receipt"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_has_exact_dense_shape_and_state_digest",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ucns_ptcna_state_has_exact_requested_shape",
+        "timeout": "10"
+      },
+      "file": "tests/test_ptcna_state.py",
+      "id": "check_ucns_ptcna_exact_shape"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_preserves_candidate_and_nonclaim_boundaries",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ucns_ptcna_candidate_transfers_no_status",
+        "timeout": "10"
+      },
+      "file": "tests/test_ptcna_state.py",
+      "id": "check_ucns_ptcna_status_firewall"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_every_tested_authority_tamper_is_rejected",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ucns_ptcna_receipt_rejects_tampering",
+        "timeout": "10"
+      },
+      "file": "tests/test_ptcna_state.py",
+      "id": "check_ucns_ptcna_tamper_rejection"
     },
     {
       "block": "CHECKS",
@@ -6939,6 +9463,18 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_public_surface.py",
       "id": "check_public_surface_is_bounded"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_relational_carrier_exact_boundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "relational_carrier_is_intrinsic_and_metadata_free, relational_carrier_preserves_order_multiplicity_and_sidedness, relational_carrier_roundtrip_is_canonical",
+        "timeout": "30"
+      },
+      "file": "tests/test_relational_carrier.py",
+      "id": "relational_carrier_exact_boundary_check"
     },
     {
       "block": "CHECKS",
@@ -7004,6 +9540,71 @@ export default defineMsdmdCollection({
       },
       "file": "tests/test_root_loop_chart.py",
       "id": "check_root_loop_chart_two_way_inverse"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_audit_gap_prevents_execution",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "boundary_runner_audits_before_execution",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_skill_lib_boundary_runner.py",
+      "id": "check_boundary_runner_audit_gate"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_missing_capability_and_timeout_are_enforced",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "boundary_runner_consumes_capabilities_and_timeouts",
+        "requires": "python3",
+        "timeout": "15"
+      },
+      "file": "tests/test_skill_lib_boundary_runner.py",
+      "id": "check_boundary_runner_capability_timeout_consumption"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_passing_receipt_has_no_activation_or_selection_effect",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "boundary_runner_has_no_activation_effect",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_skill_lib_boundary_runner.py",
+      "id": "check_boundary_runner_nonactivation"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_receipt_binds_declarations_outputs_and_identity",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "boundary_runner_receipt_is_bounded_and_bound",
+        "requires": "python3",
+        "timeout": "10"
+      },
+      "file": "tests/test_skill_lib_boundary_runner.py",
+      "id": "check_boundary_runner_receipt_binding"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::test_runner_classifies_all_outcomes_and_continues",
+        "cleanup": "pytest temporary_path",
+        "mutates": "temporary_path",
+        "proves": "boundary_runner_classifies_and_continues",
+        "requires": "python3",
+        "timeout": "20"
+      },
+      "file": "tests/test_skill_lib_boundary_runner.py",
+      "id": "check_boundary_runner_status_continuation"
     },
     {
       "block": "CHECKS",
@@ -7399,6 +10000,131 @@ export default defineMsdmdCollection({
       "block": "CONTRACTS",
       "fields": {
         "class": "evidence",
+        "given": "the independent architecture replay runs",
+        "since": "2026-08-16",
+        "then": "it derives H1 candidate sets, H2 dimensions, and H3 comparison from frozen JSON using only the Python standard library"
+      },
+      "file": "tools/replay_prime_relational_reconstruction.py",
+      "id": "prime_relational_replay_avoids_product_import"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "the committed aggregate report is replayed",
+        "since": "2026-08-17",
+        "then": "H1/H2 counts, registered H3 falsification, baseline structural isomorphism, unresolved architectural status, and blocked propagation must all agree or replay fails closed"
+      },
+      "file": "tools/replay_prime_relational_reconstruction.py",
+      "id": "prime_relational_replay_scopes_registered_falsification"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "canonical JSON loading, checksum enumeration, dimension audit, matched-baseline tuple comparison, structural-isomorphism audit",
+        "module_kind": "instrument",
+        "module_name": "replay_prime_relational_reconstruction",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "replay, command-line interface",
+        "requires": "ucns_prime_relational_reconstruction_adversary",
+        "rollback": "revert the interpretation audit without changing frozen preregistration or historical execution commits",
+        "rollout": "evidence replay and interpretation audit only; no candidate execution, canon, or activation effect",
+        "since": "2026-08-16",
+        "storage_boundary": "read",
+        "summary": "independently replays frozen H1/H2/H3 arithmetic and verifies that the registered baseline is structurally isomorphic before accepting propagation status",
+        "tests": "tests/test_prime_relational_reconstruction.py",
+        "unresolved": "genuinely non-prime-cardinality matched control, independent external implementation, and producer authentication",
+        "user_data_boundary": "hand-authored development fixture and aggregate evidence only"
+      },
+      "file": "tools/replay_prime_relational_reconstruction.py",
+      "id": "prime_relational_reconstruction_independent_replay"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "declared skill-lib checks are requested for execution",
+        "since": "2026-08-15",
+        "then": "the no-exec contract graph audit must close before any check process starts"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "boundary_runner_audits_before_execution"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "one declared check passes, fails an assertion, raises unexpectedly, or times out",
+        "since": "2026-08-15",
+        "then": "the runner records PASS, FAIL, ERROR, or TIMEOUT respectively and continues with remaining selected checks"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "boundary_runner_classifies_and_continues"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "a CHECKS declaration names requires and timeout fields",
+        "since": "2026-08-15",
+        "then": "execution refuses missing capabilities and applies the positive timeout to the spawned pytest process group"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "boundary_runner_consumes_capabilities_and_timeouts"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "every selected check passes",
+        "since": "2026-08-15",
+        "then": "the receipt closes only the declared executable evidence boundary and cannot select UCNS options, activate EDCM, or confer canon status"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "boundary_runner_has_no_activation_effect"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "a boundary run completes",
+        "since": "2026-08-15",
+        "then": "its receipt binds declarations, commands, capabilities, outcomes, output digests, declared mutation and cleanup, bounded output excerpts, and an identity digest"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "boundary_runner_receipt_is_bounded_and_bound"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "capability resolution, subprocess classification, receipt hashing",
+        "module_kind": "instrument",
+        "module_name": "run_skill_lib_boundaries",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "command-line boundary runner, run_boundaries, write_receipt",
+        "requires": "skill_lib_contract_audit",
+        "rollback": "remove this tool, its tests, and documentation",
+        "rollout": "explicit local and CI evidence runner; no product, EDCM, or canon activation",
+        "since": "2026-08-15",
+        "storage_boundary": "optional caller-selected JSON receipt path",
+        "summary": "audits and executes declared skill-lib CHECKS as isolated pytest boundaries with capability, timeout, and receipt enforcement",
+        "tests": "tests/test_skill_lib_boundary_runner.py",
+        "unresolved": "mutation verification and non-pytest CHECKS call schemes",
+        "user_data_boundary": "captured test output is bounded and retained only in the caller-selected receipt"
+      },
+      "file": "tools/run_skill_lib_boundaries.py",
+      "id": "skill_lib_boundary_runner"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
         "given": "every declared contract has a resolving check and every check names known contracts",
         "since": "2026-07-21",
         "then": "the audit exits successfully"
@@ -7661,6 +10387,111 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_assignment_supplied_candidate_evidence",
+      "to": "python3"
+    },
+    {
+      "from": "check_boundary_runner_audit_gate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_audit_gate",
+      "to": "self::test_audit_gap_prevents_execution"
+    },
+    {
+      "from": "check_boundary_runner_audit_gate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_audit_gate",
+      "to": "boundary_runner_audits_before_execution"
+    },
+    {
+      "from": "check_boundary_runner_audit_gate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_audit_gate",
+      "to": "python3"
+    },
+    {
+      "from": "check_boundary_runner_capability_timeout_consumption",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_capability_timeout_consumption",
+      "to": "self::test_missing_capability_and_timeout_are_enforced"
+    },
+    {
+      "from": "check_boundary_runner_capability_timeout_consumption",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_capability_timeout_consumption",
+      "to": "boundary_runner_consumes_capabilities_and_timeouts"
+    },
+    {
+      "from": "check_boundary_runner_capability_timeout_consumption",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_capability_timeout_consumption",
+      "to": "python3"
+    },
+    {
+      "from": "check_boundary_runner_nonactivation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_nonactivation",
+      "to": "self::test_passing_receipt_has_no_activation_or_selection_effect"
+    },
+    {
+      "from": "check_boundary_runner_nonactivation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_nonactivation",
+      "to": "boundary_runner_has_no_activation_effect"
+    },
+    {
+      "from": "check_boundary_runner_nonactivation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_nonactivation",
+      "to": "python3"
+    },
+    {
+      "from": "check_boundary_runner_receipt_binding",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_receipt_binding",
+      "to": "self::test_receipt_binds_declarations_outputs_and_identity"
+    },
+    {
+      "from": "check_boundary_runner_receipt_binding",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_receipt_binding",
+      "to": "boundary_runner_receipt_is_bounded_and_bound"
+    },
+    {
+      "from": "check_boundary_runner_receipt_binding",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_receipt_binding",
+      "to": "python3"
+    },
+    {
+      "from": "check_boundary_runner_status_continuation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_status_continuation",
+      "to": "self::test_runner_classifies_all_outcomes_and_continues"
+    },
+    {
+      "from": "check_boundary_runner_status_continuation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_status_continuation",
+      "to": "boundary_runner_classifies_and_continues"
+    },
+    {
+      "from": "check_boundary_runner_status_continuation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_boundary_runner_status_continuation",
       "to": "python3"
     },
     {
@@ -8917,6 +11748,111 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_external_evaluation_corpus_gate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_corpus_gate",
+      "to": "self::test_plan_requires_execution_generated_completion_receipt"
+    },
+    {
+      "from": "check_external_evaluation_corpus_gate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_corpus_gate",
+      "to": "external_evaluation_requires_completed_corpus_gate"
+    },
+    {
+      "from": "check_external_evaluation_corpus_gate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_corpus_gate",
+      "to": "python3"
+    },
+    {
+      "from": "check_external_evaluation_nonpromotion",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_nonpromotion",
+      "to": "self::test_complete_external_receipt_is_candidate_evidence_only"
+    },
+    {
+      "from": "check_external_evaluation_nonpromotion",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_nonpromotion",
+      "to": "external_evaluation_receipt_is_nonpromoting"
+    },
+    {
+      "from": "check_external_evaluation_nonpromotion",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_nonpromotion",
+      "to": "python3"
+    },
+    {
+      "from": "check_external_evaluation_resource_bounds",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_resource_bounds",
+      "to": "self::test_timeout_input_output_and_executable_bounds_fail_closed"
+    },
+    {
+      "from": "check_external_evaluation_resource_bounds",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_resource_bounds",
+      "to": "external_evaluation_is_resource_bounded"
+    },
+    {
+      "from": "check_external_evaluation_resource_bounds",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluation_resource_bounds",
+      "to": "python3"
+    },
+    {
+      "from": "check_external_evaluator_identity_disclosure_binding",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluator_identity_disclosure_binding",
+      "to": "self::test_request_binds_identity_command_cases_and_disclosure"
+    },
+    {
+      "from": "check_external_evaluator_identity_disclosure_binding",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluator_identity_disclosure_binding",
+      "to": "external_evaluator_identity_and_disclosure_are_bound"
+    },
+    {
+      "from": "check_external_evaluator_identity_disclosure_binding",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_external_evaluator_identity_disclosure_binding",
+      "to": "python3"
+    },
+    {
+      "from": "check_external_response_reconciliation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_external_response_reconciliation",
+      "to": "self::test_response_requires_exact_protocol_and_ordered_case_coverage"
+    },
+    {
+      "from": "check_external_response_reconciliation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_external_response_reconciliation",
+      "to": "external_response_reconciliation_is_fail_closed"
+    },
+    {
+      "from": "check_external_response_reconciliation",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_external_response_reconciliation",
+      "to": "python3"
+    },
+    {
       "from": "check_falsey_retained_evidence",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -10114,6 +13050,90 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_nilpotent_phase_binding",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_phase_binding",
+      "to": "self::test_phase_co_winners_bind_identical_inputs"
+    },
+    {
+      "from": "check_nilpotent_phase_binding",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_phase_binding",
+      "to": "prime_nilpotent_phase_binding_is_topological"
+    },
+    {
+      "from": "check_nilpotent_phase_binding",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_phase_binding",
+      "to": "python3"
+    },
+    {
+      "from": "check_nilpotent_primary_replay",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_primary_replay",
+      "to": "self::test_checked_in_receipt_records_exact_replay"
+    },
+    {
+      "from": "check_nilpotent_primary_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_primary_replay",
+      "to": "prime_nilpotent_primary_and_replay_agree"
+    },
+    {
+      "from": "check_nilpotent_primary_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_primary_replay",
+      "to": "python3"
+    },
+    {
+      "from": "check_nilpotent_protocol_identity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_protocol_identity",
+      "to": "self::test_protocol_identity_and_frozen_receipt"
+    },
+    {
+      "from": "check_nilpotent_protocol_identity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_protocol_identity",
+      "to": "prime_nilpotent_protocol_identity_is_frozen"
+    },
+    {
+      "from": "check_nilpotent_protocol_identity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_protocol_identity",
+      "to": "python3"
+    },
+    {
+      "from": "check_nilpotent_rank_exclusion",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_rank_exclusion",
+      "to": "self::test_comparison_excludes_weight_one_rank"
+    },
+    {
+      "from": "check_nilpotent_rank_exclusion",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_rank_exclusion",
+      "to": "prime_nilpotent_comparison_excludes_known_rank"
+    },
+    {
+      "from": "check_nilpotent_rank_exclusion",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_nilpotent_rank_exclusion",
+      "to": "python3"
+    },
+    {
       "from": "check_no_source_normalization",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -10415,6 +13435,1280 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_prime_borromean_magnus",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_borromean_magnus",
+      "to": "self::test_borromean_magnus_benchmark_is_unit"
+    },
+    {
+      "from": "check_prime_borromean_magnus",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_borromean_magnus",
+      "to": "prime_magnus_benchmark_recovers_borromean_integer"
+    },
+    {
+      "from": "check_prime_borromean_magnus",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_borromean_magnus",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_cable_winding",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_cable_winding",
+      "to": "self::test_boundary_cable_classes_and_component_knot_invariants"
+    },
+    {
+      "from": "check_prime_boundary_cable_winding",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_cable_winding",
+      "to": "prime_boundary_cable_winding_is_derived_from_phase"
+    },
+    {
+      "from": "check_prime_boundary_cable_winding",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_cable_winding",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_component_knot_types",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_component_knot_types",
+      "to": "self::test_boundary_component_cable_and_knot_invariants"
+    },
+    {
+      "from": "check_prime_boundary_component_knot_types",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_component_knot_types",
+      "to": "prime_boundary_component_knot_types_are_derived"
+    },
+    {
+      "from": "check_prime_boundary_component_knot_types",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_component_knot_types",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_helper_facade",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_helper_facade",
+      "to": "self::test_boundary_and_mixed_linking_blocks_follow_cable_homology"
+    },
+    {
+      "from": "check_prime_boundary_helper_facade",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_helper_facade",
+      "to": "prime_boundary_helper_is_facade_witnessed"
+    },
+    {
+      "from": "check_prime_boundary_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_helper_facade",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_helper_facade",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_boundary_linking_fourfold",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_fourfold",
+      "to": "self::test_boundary_linking_matrices_are_four_times_core_matrices"
+    },
+    {
+      "from": "check_prime_boundary_linking_fourfold",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_fourfold",
+      "to": "prime_boundary_linking_scales_by_four"
+    },
+    {
+      "from": "check_prime_boundary_linking_fourfold",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_fourfold",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_linking_matrix",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_matrix",
+      "to": "self::test_boundary_and_mixed_linking_blocks_follow_cable_homology"
+    },
+    {
+      "from": "check_prime_boundary_linking_matrix",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_matrix",
+      "to": "prime_boundary_linking_matrix_follows_cable_homology"
+    },
+    {
+      "from": "check_prime_boundary_linking_matrix",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_matrix",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_linking_matrix",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_linking_matrix",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_boundary_single_closed_component",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_closed_component",
+      "to": "self::test_each_mobius_ribbon_has_one_closed_two_turn_boundary"
+    },
+    {
+      "from": "check_prime_boundary_single_closed_component",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_closed_component",
+      "to": "prime_boundary_curve_is_single_and_closed"
+    },
+    {
+      "from": "check_prime_boundary_single_closed_component",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_closed_component",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_boundary_single_two_turn_component",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_two_turn_component",
+      "to": "self::test_each_mobius_boundary_is_one_two_turn_component"
+    },
+    {
+      "from": "check_prime_boundary_single_two_turn_component",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_two_turn_component",
+      "to": "prime_boundary_curve_is_single_two_turn_component"
+    },
+    {
+      "from": "check_prime_boundary_single_two_turn_component",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_boundary_single_two_turn_component",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_exact_receipt_nonselecting",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_exact_receipt_nonselecting",
+      "to": "self::test_family_receipt_is_deterministic_bounded_and_nonselecting"
+    },
+    {
+      "from": "check_prime_exact_receipt_nonselecting",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_exact_receipt_nonselecting",
+      "to": "prime_exact_milnor_alexander_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_exact_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_exact_receipt_nonselecting",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_exact_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_exact_receipt_nonselecting",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_fox_complete_fingerprint",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_fox_complete_fingerprint",
+      "to": "self::test_fox_rank_fingerprints_cover_every_prime_character"
+    },
+    {
+      "from": "check_prime_fox_complete_fingerprint",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_fox_complete_fingerprint",
+      "to": "prime_fox_fingerprint_covers_all_prime_characters"
+    },
+    {
+      "from": "check_prime_fox_complete_fingerprint",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_fox_complete_fingerprint",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_fox_complete_fingerprint",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_fox_complete_fingerprint",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_diagram_fixed",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_diagram_fixed",
+      "to": "self::test_generic_projection_preserves_positive_isotopy_clearance"
+    },
+    {
+      "from": "check_prime_generic_diagram_fixed",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_diagram_fixed",
+      "to": "prime_generic_diagram_is_fixed_before_invariants"
+    },
+    {
+      "from": "check_prime_generic_diagram_fixed",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_diagram_fixed",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_diagram_fixed",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_diagram_fixed",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_helper_facade",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_helper_facade",
+      "to": "self::test_generic_diagram_and_length_three_milnor_profile"
+    },
+    {
+      "from": "check_prime_generic_helper_facade",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_helper_facade",
+      "to": "prime_generic_helper_is_facade_witnessed"
+    },
+    {
+      "from": "check_prime_generic_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_helper_facade",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_helper_facade",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_interval_atan2",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_atan2",
+      "to": "self::test_all_frozen_turns_are_inside_outward_atan2_intervals"
+    },
+    {
+      "from": "check_prime_generic_interval_atan2",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_atan2",
+      "to": "prime_generic_turns_are_outward_atan2_enclosed"
+    },
+    {
+      "from": "check_prime_generic_interval_atan2",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_atan2",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_interval_atan2",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_atan2",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_interval_atan2",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_atan2",
+      "to": "system-libmpfr"
+    },
+    {
+      "from": "check_prime_generic_interval_crossing_signs",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_crossing_signs",
+      "to": "self::test_all_p7_first_p5_second_crossing_signs_are_certified"
+    },
+    {
+      "from": "check_prime_generic_interval_crossing_signs",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_crossing_signs",
+      "to": "prime_generic_crossing_signs_are_interval_certified"
+    },
+    {
+      "from": "check_prime_generic_interval_crossing_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_crossing_signs",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_interval_crossing_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_crossing_signs",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_interval_crossing_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_crossing_signs",
+      "to": "system-libmpfr"
+    },
+    {
+      "from": "check_prime_generic_interval_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_receipt",
+      "to": "self::test_family_receipt_is_deterministic_complete_and_nonselecting"
+    },
+    {
+      "from": "check_prime_generic_interval_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_receipt",
+      "to": "prime_generic_interval_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_generic_interval_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_receipt",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_interval_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_interval_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_receipt",
+      "to": "system-libmpfr"
+    },
+    {
+      "from": "check_prime_generic_interval_smooth_signs",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_smooth_signs",
+      "to": "self::test_all_smooth_height_intervals_exclude_zero_and_preserve_order"
+    },
+    {
+      "from": "check_prime_generic_interval_smooth_signs",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_smooth_signs",
+      "to": "prime_generic_smooth_signs_are_interval_certified"
+    },
+    {
+      "from": "check_prime_generic_interval_smooth_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_smooth_signs",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_interval_smooth_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_smooth_signs",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_generic_interval_smooth_signs",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_interval_smooth_signs",
+      "to": "system-libmpfr"
+    },
+    {
+      "from": "check_prime_generic_pairwise_linking",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_pairwise_linking",
+      "to": "self::test_generic_diagrams_reproduce_complete_linking_matrices"
+    },
+    {
+      "from": "check_prime_generic_pairwise_linking",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_pairwise_linking",
+      "to": "prime_generic_diagram_preserves_pairwise_linking"
+    },
+    {
+      "from": "check_prime_generic_pairwise_linking",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_pairwise_linking",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_generic_pairwise_linking",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_generic_pairwise_linking",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_complete_accounting",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_complete_accounting",
+      "to": "self::test_complete_minor_accounting_is_sealed"
+    },
+    {
+      "from": "check_prime_grobner_complete_accounting",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_complete_accounting",
+      "to": "prime_grobner_generators_cover_every_maximal_minor"
+    },
+    {
+      "from": "check_prime_grobner_complete_accounting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_complete_accounting",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_complete_accounting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_complete_accounting",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_grobner_nonclaims",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_nonclaims",
+      "to": "self::test_result_document_preserves_research_boundary"
+    },
+    {
+      "from": "check_prime_grobner_nonclaims",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_nonclaims",
+      "to": "prime_grobner_receipt_preserves_nonclaims"
+    },
+    {
+      "from": "check_prime_grobner_nonclaims",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_nonclaims",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_protocol_frozen",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_protocol_frozen",
+      "to": "self::test_protocol_and_parent_presentations_are_frozen"
+    },
+    {
+      "from": "check_prime_grobner_protocol_frozen",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_protocol_frozen",
+      "to": "prime_grobner_protocol_identity_is_frozen"
+    },
+    {
+      "from": "check_prime_grobner_protocol_frozen",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_protocol_frozen",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_reduced_bases",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_reduced_bases",
+      "to": "self::test_sealed_reduced_bases_have_expected_digests"
+    },
+    {
+      "from": "check_prime_grobner_reduced_bases",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_reduced_bases",
+      "to": "prime_grobner_basis_is_complete_reduced_and_saturated"
+    },
+    {
+      "from": "check_prime_grobner_reduced_bases",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_reduced_bases",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_reduced_bases",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_reduced_bases",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_grobner_replay",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_replay",
+      "to": "self::test_independent_replay_is_exact"
+    },
+    {
+      "from": "check_prime_grobner_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_replay",
+      "to": "prime_grobner_independent_replay_agrees"
+    },
+    {
+      "from": "check_prime_grobner_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_replay",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_grobner_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_grobner_replay",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_higher_order_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_higher_order_boundary",
+      "to": "self::test_algebraically_split_triples_are_enumerated_without_fake_milnor_values"
+    },
+    {
+      "from": "check_prime_higher_order_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_higher_order_boundary",
+      "to": "prime_higher_order_boundary_is_explicit"
+    },
+    {
+      "from": "check_prime_higher_order_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_higher_order_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_independent_receipt_nonselecting",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_independent_receipt_nonselecting",
+      "to": "self::test_research_boundaries_remain_explicit"
+    },
+    {
+      "from": "check_prime_independent_receipt_nonselecting",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_independent_receipt_nonselecting",
+      "to": "prime_independent_phase_milnor_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_independent_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_independent_receipt_nonselecting",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_boundaries_p7_first",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundaries_p7_first",
+      "to": "self::test_family_receipt_preserves_p7_first_order"
+    },
+    {
+      "from": "check_prime_interval_boundaries_p7_first",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundaries_p7_first",
+      "to": "prime_interval_boundaries_p7_precedes_p5"
+    },
+    {
+      "from": "check_prime_interval_boundaries_p7_first",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundaries_p7_first",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_boundaries_p7_first",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundaries_p7_first",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_boundary_compact_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_compact_receipt",
+      "to": "self::test_receipt_and_boundary_exports_are_deterministic_and_firewalled"
+    },
+    {
+      "from": "check_prime_interval_boundary_compact_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_compact_receipt",
+      "to": "prime_interval_boundary_compact_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_interval_boundary_compact_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_compact_receipt",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_boundary_compact_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_compact_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_boundary_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_receipt",
+      "to": "self::test_receipt_and_boundary_models_are_deterministic_and_bounded"
+    },
+    {
+      "from": "check_prime_interval_boundary_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_receipt",
+      "to": "prime_interval_boundary_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_interval_boundary_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_receipt",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_boundary_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_boundary_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_receipt",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_interval_boundary_research_order",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_research_order",
+      "to": "self::test_family_certificate_preserves_p7_first_order"
+    },
+    {
+      "from": "check_prime_interval_boundary_research_order",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_research_order",
+      "to": "prime_interval_boundary_p7_precedes_p5"
+    },
+    {
+      "from": "check_prime_interval_boundary_research_order",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_research_order",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_boundary_research_order",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_research_order",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_boundary_research_order",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_boundary_research_order",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_interval_common_facade",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_common_facade",
+      "to": "self::test_outward_interval_replay_covers_every_pair"
+    },
+    {
+      "from": "check_prime_interval_common_facade",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_common_facade",
+      "to": "prime_interval_common_is_facade_witnessed"
+    },
+    {
+      "from": "check_prime_interval_common_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_common_facade",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_common_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_common_facade",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_finite_width_disjointness",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_finite_width_disjointness",
+      "to": "self::test_interval_margin_implies_complete_ribbon_disjointness"
+    },
+    {
+      "from": "check_prime_interval_finite_width_disjointness",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_finite_width_disjointness",
+      "to": "prime_interval_replay_preserves_finite_width_disjointness"
+    },
+    {
+      "from": "check_prime_interval_finite_width_disjointness",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_finite_width_disjointness",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_finite_width_disjointness",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_finite_width_disjointness",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_outward_replay",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_outward_replay",
+      "to": "self::test_outward_interval_replay_covers_every_pair"
+    },
+    {
+      "from": "check_prime_interval_outward_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_outward_replay",
+      "to": "prime_interval_replay_is_outward_rounded"
+    },
+    {
+      "from": "check_prime_interval_outward_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_outward_replay",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_outward_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_outward_replay",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_replay_helper_facade",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_helper_facade",
+      "to": "self::test_outward_interval_replay_covers_every_pair"
+    },
+    {
+      "from": "check_prime_interval_replay_helper_facade",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_helper_facade",
+      "to": "prime_interval_replay_helper_is_facade_witnessed"
+    },
+    {
+      "from": "check_prime_interval_replay_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_helper_facade",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_replay_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_helper_facade",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_interval_replay_outward_endpoints",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_outward_endpoints",
+      "to": "self::test_interval_replay_closes_every_complete_parameter_torus"
+    },
+    {
+      "from": "check_prime_interval_replay_outward_endpoints",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_outward_endpoints",
+      "to": "prime_interval_replay_uses_outward_endpoints"
+    },
+    {
+      "from": "check_prime_interval_replay_outward_endpoints",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_outward_endpoints",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_interval_replay_outward_endpoints",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_interval_replay_outward_endpoints",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_legacy_readable_adapter",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_legacy_readable_adapter",
+      "to": "self::test_legacy_surface_is_an_explicit_adapter_over_readable_evidence"
+    },
+    {
+      "from": "check_prime_legacy_readable_adapter",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_legacy_readable_adapter",
+      "to": "prime_interval_replay_uses_outward_endpoints"
+    },
+    {
+      "from": "check_prime_legacy_readable_adapter",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_legacy_readable_adapter",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_legacy_readable_adapter",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_legacy_readable_adapter",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_legacy_readable_adapter",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_legacy_readable_adapter",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_length4_bounded_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_bounded_receipt",
+      "to": "self::test_receipt_is_deterministic_and_bounded"
+    },
+    {
+      "from": "check_prime_length4_bounded_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_bounded_receipt",
+      "to": "prime_p7_length4_receipt_is_bounded"
+    },
+    {
+      "from": "check_prime_length4_bounded_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_bounded_receipt",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_length4_bounded_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_bounded_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_length4_commutator_gate",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_commutator_gate",
+      "to": "self::test_frozen_degree_three_commutator_gate"
+    },
+    {
+      "from": "check_prime_length4_commutator_gate",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_commutator_gate",
+      "to": "prime_length4_magnus_gate_matches_frozen_commutator"
+    },
+    {
+      "from": "check_prime_length4_commutator_gate",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_commutator_gate",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_length4_cyclic_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_cyclic_receipt",
+      "to": "self::test_result_records_primary_reverse_and_cyclic_coefficients"
+    },
+    {
+      "from": "check_prime_length4_cyclic_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_cyclic_receipt",
+      "to": "prime_p7_length4_result_records_cyclic_conventions"
+    },
+    {
+      "from": "check_prime_length4_cyclic_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_cyclic_receipt",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_length4_cyclic_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_cyclic_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_length4_lower_gates",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_lower_gates",
+      "to": "self::test_frozen_target_and_lower_order_gates"
+    },
+    {
+      "from": "check_prime_length4_lower_gates",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_lower_gates",
+      "to": "prime_p7_length4_target_is_frozen_and_lower_gated"
+    },
+    {
+      "from": "check_prime_length4_lower_gates",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_lower_gates",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_length4_lower_gates",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length4_lower_gates",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_length_three_milnor_profile",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length_three_milnor_profile",
+      "to": "self::test_generic_diagram_and_length_three_milnor_profile"
+    },
+    {
+      "from": "check_prime_length_three_milnor_profile",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length_three_milnor_profile",
+      "to": "prime_length_three_milnor_profile_is_computed_after_global_lift"
+    },
+    {
+      "from": "check_prime_length_three_milnor_profile",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length_three_milnor_profile",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_length_three_milnor_profile",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_length_three_milnor_profile",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_milnor_borromean_benchmark",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_borromean_benchmark",
+      "to": "self::test_fourier_milnor_benchmark_converges_to_minus_one"
+    },
+    {
+      "from": "check_prime_milnor_borromean_benchmark",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_borromean_benchmark",
+      "to": "prime_milnor_fourier_benchmark_recovers_borromean"
+    },
+    {
+      "from": "check_prime_milnor_borromean_benchmark",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_borromean_benchmark",
+      "to": "numpy"
+    },
+    {
+      "from": "check_prime_milnor_borromean_benchmark",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_borromean_benchmark",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_milnor_exactness_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_exactness_boundary",
+      "to": "self::test_numerical_resolution_is_not_promoted_to_exact_theorem"
+    },
+    {
+      "from": "check_prime_milnor_exactness_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_exactness_boundary",
+      "to": "prime_milnor_exactness_boundary_is_preserved"
+    },
+    {
+      "from": "check_prime_milnor_exactness_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_exactness_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_milnor_helper_facade",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_helper_facade",
+      "to": "self::test_generic_diagram_and_length_three_milnor_profile"
+    },
+    {
+      "from": "check_prime_milnor_helper_facade",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_helper_facade",
+      "to": "prime_milnor_helper_is_facade_witnessed"
+    },
+    {
+      "from": "check_prime_milnor_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_helper_facade",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_milnor_helper_facade",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_helper_facade",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_milnor_p7_zero_resolution",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_p7_zero_resolution",
+      "to": "self::test_all_five_p7_triples_converge_numerically_to_zero"
+    },
+    {
+      "from": "check_prime_milnor_p7_zero_resolution",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_p7_zero_resolution",
+      "to": "prime_milnor_p7_split_triples_resolve_numerically_to_zero"
+    },
+    {
+      "from": "check_prime_milnor_p7_zero_resolution",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_p7_zero_resolution",
+      "to": "numpy"
+    },
+    {
+      "from": "check_prime_milnor_p7_zero_resolution",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_milnor_p7_zero_resolution",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_mixed_core_boundary_matrix",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_core_boundary_matrix",
+      "to": "self::test_mixed_core_boundary_matrices_are_full_rank_with_exact_determinants"
+    },
+    {
+      "from": "check_prime_mixed_core_boundary_matrix",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_core_boundary_matrix",
+      "to": "prime_mixed_core_boundary_matrix_is_complete"
+    },
+    {
+      "from": "check_prime_mixed_core_boundary_matrix",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_core_boundary_matrix",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_mixed_integer_invariants",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_integer_invariants",
+      "to": "self::test_full_core_boundary_integer_invariants_distinguish_p7_and_p5"
+    },
+    {
+      "from": "check_prime_mixed_integer_invariants",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_integer_invariants",
+      "to": "prime_mixed_linking_matrix_has_exact_integer_invariants"
+    },
+    {
+      "from": "check_prime_mixed_integer_invariants",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_integer_invariants",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_mixed_integer_invariants",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mixed_integer_invariants",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_mpfr_backend_independence",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_backend_independence",
+      "to": "self::test_direct_mpfr_replay_matches_frozen_partition"
+    },
+    {
+      "from": "check_prime_mpfr_backend_independence",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_backend_independence",
+      "to": "prime_mpfr_replay_is_backend_independent"
+    },
+    {
+      "from": "check_prime_mpfr_backend_independence",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_backend_independence",
+      "to": "libmpfr"
+    },
+    {
+      "from": "check_prime_mpfr_backend_independence",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_backend_independence",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_mpfr_ribbon_margin",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_ribbon_margin",
+      "to": "self::test_direct_mpfr_replay_recertifies_both_primes"
+    },
+    {
+      "from": "check_prime_mpfr_ribbon_margin",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_ribbon_margin",
+      "to": "prime_mpfr_replay_recertifies_ribbon_margin"
+    },
+    {
+      "from": "check_prime_mpfr_ribbon_margin",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_ribbon_margin",
+      "to": "libmpfr"
+    },
+    {
+      "from": "check_prime_mpfr_ribbon_margin",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_mpfr_ribbon_margin",
+      "to": "python3"
+    },
+    {
       "from": "check_prime_p5_direct_signature",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -10454,6 +14748,34 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_prime_p7_direct_signature",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_p7_exact_milnor_zero",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_exact_milnor_zero",
+      "to": "self::test_all_five_p7_milnor_coefficients_are_exact_zero"
+    },
+    {
+      "from": "check_prime_p7_exact_milnor_zero",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_exact_milnor_zero",
+      "to": "prime_p7_five_milnor_candidates_are_exact_zero_in_diagram"
+    },
+    {
+      "from": "check_prime_p7_exact_milnor_zero",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_exact_milnor_zero",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_p7_exact_milnor_zero",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_p7_exact_milnor_zero",
       "to": "python3"
     },
     {
@@ -10709,6 +15031,356 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_prime_phase_preregistration_hash",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_preregistration_hash",
+      "to": "self::test_preregistration_hash_and_selector_order_are_frozen"
+    },
+    {
+      "from": "check_prime_phase_preregistration_hash",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_preregistration_hash",
+      "to": "prime_phase_selector_matches_frozen_preregistration"
+    },
+    {
+      "from": "check_prime_phase_preregistration_hash",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_preregistration_hash",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_phase_sensitivity_selection",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_sensitivity_selection",
+      "to": "self::test_phase_sensitivity_enumerates_all_equal_gap_alternatives"
+    },
+    {
+      "from": "check_prime_phase_sensitivity_selection",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_sensitivity_selection",
+      "to": "prime_phase_sensitivity_separates_selection_from_emergence"
+    },
+    {
+      "from": "check_prime_phase_sensitivity_selection",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_sensitivity_selection",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_phase_torus_seven_not_forced",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_torus_seven_not_forced",
+      "to": "self::test_p7_and_p5_share_the_same_maximum_gap_knot_degrees"
+    },
+    {
+      "from": "check_prime_phase_torus_seven_not_forced",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_torus_seven_not_forced",
+      "to": "prime_phase_sensitivity_torus_seven_is_not_forced"
+    },
+    {
+      "from": "check_prime_phase_torus_seven_not_forced",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_torus_seven_not_forced",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_phase_whole_link_selector",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_whole_link_selector",
+      "to": "self::test_preregistered_selector_outputs_are_not_target_fitted"
+    },
+    {
+      "from": "check_prime_phase_whole_link_selector",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_whole_link_selector",
+      "to": "prime_phase_selector_uses_whole_link_character"
+    },
+    {
+      "from": "check_prime_phase_whole_link_selector",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_whole_link_selector",
+      "to": "mpmath"
+    },
+    {
+      "from": "check_prime_phase_whole_link_selector",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_phase_whole_link_selector",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_relational_encoder_source_independence",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_encoder_source_independence",
+      "to": "self::test_frozen_encoders_do_not_delegate_to_shared_or_peer_helpers"
+    },
+    {
+      "from": "check_prime_relational_encoder_source_independence",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_encoder_source_independence",
+      "to": "prime_relational_encoders_remain_source_independent"
+    },
+    {
+      "from": "check_prime_relational_failure_propagation",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_failure_propagation",
+      "to": "self::test_h3_failure_does_not_deprecate_architecture_dependents"
+    },
+    {
+      "from": "check_prime_relational_failure_propagation",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_failure_propagation",
+      "to": "prime_relational_failure_propagation_is_scope_bounded"
+    },
+    {
+      "from": "check_prime_relational_h1_reconstruction",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h1_reconstruction",
+      "to": "self::test_h1_all_erased_relations_reconstruct_exactly_in_both_implementations"
+    },
+    {
+      "from": "check_prime_relational_h1_reconstruction",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h1_reconstruction",
+      "to": "prime_relational_h1_requires_complementary_unique_reconstruction"
+    },
+    {
+      "from": "check_prime_relational_h2_irreducibility",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h2_irreducibility",
+      "to": "self::test_h2_every_whole_view_is_irreducible"
+    },
+    {
+      "from": "check_prime_relational_h2_irreducibility",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h2_irreducibility",
+      "to": "prime_relational_h2_tests_every_whole_view"
+    },
+    {
+      "from": "check_prime_relational_h3_architecture_isomorphism",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h3_architecture_isomorphism",
+      "to": "self::test_h3_baseline_preserves_prime_cardinality_architecture"
+    },
+    {
+      "from": "check_prime_relational_h3_architecture_isomorphism",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h3_architecture_isomorphism",
+      "to": "prime_relational_baseline_isomorphism_blocks_architecture_transfer"
+    },
+    {
+      "from": "check_prime_relational_h3_matched_baseline",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h3_matched_baseline",
+      "to": "self::test_h3_registered_criterion_falsifies_only_software_advantage"
+    },
+    {
+      "from": "check_prime_relational_h3_matched_baseline",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_h3_matched_baseline",
+      "to": "prime_relational_h3_applies_frozen_software_complexity_criterion"
+    },
+    {
+      "from": "check_prime_relational_identity_nonleakage",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_identity_nonleakage",
+      "to": "self::test_public_identity_does_not_leak_value"
+    },
+    {
+      "from": "check_prime_relational_identity_nonleakage",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_identity_nonleakage",
+      "to": "prime_relational_fixture_identity_excludes_values"
+    },
+    {
+      "from": "check_prime_relational_independent_replay",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_independent_replay",
+      "to": "self::test_independent_replay_agrees_with_committed_report"
+    },
+    {
+      "from": "check_prime_relational_independent_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_independent_replay",
+      "to": "prime_relational_replay_avoids_product_import"
+    },
+    {
+      "from": "check_prime_relational_independent_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_independent_replay",
+      "to": "prime_relational_replay_scopes_registered_falsification"
+    },
+    {
+      "from": "check_prime_relational_registered_resource_bounds",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_registered_resource_bounds",
+      "to": "self::test_complete_cli_run_obeys_registered_resource_bounds"
+    },
+    {
+      "from": "check_prime_relational_registered_resource_bounds",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_registered_resource_bounds",
+      "to": "prime_relational_complete_run_obeys_registered_resources"
+    },
+    {
+      "from": "check_prime_relational_registered_resource_bounds",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_registered_resource_bounds",
+      "to": "posix_resource"
+    },
+    {
+      "from": "check_prime_relational_registered_resource_bounds",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_registered_resource_bounds",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_relational_registered_resource_bounds",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_relational_registered_resource_bounds",
+      "to": "sched_affinity"
+    },
+    {
+      "from": "check_prime_replay_data_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_data_receipt",
+      "to": "self::test_receipt_is_deterministic_and_nonselecting"
+    },
+    {
+      "from": "check_prime_replay_data_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_data_receipt",
+      "to": "prime_replay_data_is_receipt_witnessed"
+    },
+    {
+      "from": "check_prime_replay_data_receipt",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_data_receipt",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_replay_receipt_interval",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_interval",
+      "to": "self::test_independent_decimal_replay_is_pinned"
+    },
+    {
+      "from": "check_prime_replay_receipt_interval",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_interval",
+      "to": "prime_replay_receipt_preserves_independent_interval_result"
+    },
+    {
+      "from": "check_prime_replay_receipt_interval",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_interval",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_replay_receipt_milnor",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_milnor",
+      "to": "self::test_all_five_length_three_values_are_zero"
+    },
+    {
+      "from": "check_prime_replay_receipt_milnor",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_milnor",
+      "to": "prime_replay_receipt_freezes_p7_milnor_values"
+    },
+    {
+      "from": "check_prime_replay_receipt_milnor",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_milnor",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_replay_receipt_nonselecting",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_nonselecting",
+      "to": "self::test_receipt_is_deterministic_and_nonselecting"
+    },
+    {
+      "from": "check_prime_replay_receipt_nonselecting",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_nonselecting",
+      "to": "prime_replay_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_replay_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_nonselecting",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_replay_receipt_phase",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_phase",
+      "to": "self::test_phase_winding_is_shared_not_prime_specific"
+    },
+    {
+      "from": "check_prime_replay_receipt_phase",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_phase",
+      "to": "prime_replay_receipt_exposes_phase_imposition"
+    },
+    {
+      "from": "check_prime_replay_receipt_phase",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_replay_receipt_phase",
+      "to": "python3"
+    },
+    {
       "from": "check_prime_restrictions_after_construction",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -10896,6 +15568,118 @@ export default defineMsdmdCollection({
       "source_block": "CHECKS",
       "source_id": "check_prime_smooth_ribbons_tangent_regularization",
       "to": "python3"
+    },
+    {
+      "from": "check_prime_symbolic_character_replay",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_character_replay",
+      "to": "self::test_symbolic_specializations_replay_frozen_character_ranks"
+    },
+    {
+      "from": "check_prime_symbolic_character_replay",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_character_replay",
+      "to": "prime_symbolic_certificate_replays_finite_characters"
+    },
+    {
+      "from": "check_prime_symbolic_character_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_character_replay",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_symbolic_character_replay",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_character_replay",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_symbolic_elementary_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_elementary_boundary",
+      "to": "self::test_exact_ranks_and_first_nonzero_elementary_ideals_differ"
+    },
+    {
+      "from": "check_prime_symbolic_elementary_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_elementary_boundary",
+      "to": "prime_symbolic_elementary_boundary_is_exact"
+    },
+    {
+      "from": "check_prime_symbolic_elementary_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_elementary_boundary",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_symbolic_elementary_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_elementary_boundary",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_symbolic_fox_exact",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_fox_exact",
+      "to": "self::test_symbolic_presentations_are_sparse_exact_and_deterministic"
+    },
+    {
+      "from": "check_prime_symbolic_fox_exact",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_fox_exact",
+      "to": "prime_symbolic_fox_presentation_is_exact"
+    },
+    {
+      "from": "check_prime_symbolic_fox_exact",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_fox_exact",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_symbolic_fox_exact",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_fox_exact",
+      "to": "sympy"
+    },
+    {
+      "from": "check_prime_symbolic_receipt_nonselecting",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_receipt_nonselecting",
+      "to": "self::test_family_receipt_is_deterministic_and_bounded"
+    },
+    {
+      "from": "check_prime_symbolic_receipt_nonselecting",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_receipt_nonselecting",
+      "to": "prime_symbolic_alexander_receipt_is_nonselecting"
+    },
+    {
+      "from": "check_prime_symbolic_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_receipt_nonselecting",
+      "to": "python3"
+    },
+    {
+      "from": "check_prime_symbolic_receipt_nonselecting",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_prime_symbolic_receipt_nonselecting",
+      "to": "sympy"
     },
     {
       "from": "check_prime_two_cycle_boundary",
@@ -11794,6 +16578,62 @@ export default defineMsdmdCollection({
       "to": "python3"
     },
     {
+      "from": "check_ucns_ptcna_deterministic_receipt",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_deterministic_receipt",
+      "to": "self::test_receipt_is_byte_deterministic_and_provenance_bound"
+    },
+    {
+      "from": "check_ucns_ptcna_deterministic_receipt",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_deterministic_receipt",
+      "to": "ucns_ptcna_receipt_is_deterministic_and_provenance_bound"
+    },
+    {
+      "from": "check_ucns_ptcna_exact_shape",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_exact_shape",
+      "to": "self::test_receipt_has_exact_dense_shape_and_state_digest"
+    },
+    {
+      "from": "check_ucns_ptcna_exact_shape",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_exact_shape",
+      "to": "ucns_ptcna_state_has_exact_requested_shape"
+    },
+    {
+      "from": "check_ucns_ptcna_status_firewall",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_status_firewall",
+      "to": "self::test_receipt_preserves_candidate_and_nonclaim_boundaries"
+    },
+    {
+      "from": "check_ucns_ptcna_status_firewall",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_status_firewall",
+      "to": "ucns_ptcna_candidate_transfers_no_status"
+    },
+    {
+      "from": "check_ucns_ptcna_tamper_rejection",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_tamper_rejection",
+      "to": "self::test_every_tested_authority_tamper_is_rejected"
+    },
+    {
+      "from": "check_ucns_ptcna_tamper_rejection",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ucns_ptcna_tamper_rejection",
+      "to": "ucns_ptcna_receipt_rejects_tampering"
+    },
+    {
       "from": "check_unknown_dimension_fails_closed",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -12186,6 +17026,34 @@ export default defineMsdmdCollection({
       "to": "lexical_floor_words_are_unique_exact_glyph_sets"
     },
     {
+      "from": "relational_carrier_exact_boundary_check",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "relational_carrier_exact_boundary_check",
+      "to": "self::test_relational_carrier_exact_boundary"
+    },
+    {
+      "from": "relational_carrier_exact_boundary_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "relational_carrier_exact_boundary_check",
+      "to": "relational_carrier_is_intrinsic_and_metadata_free"
+    },
+    {
+      "from": "relational_carrier_exact_boundary_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "relational_carrier_exact_boundary_check",
+      "to": "relational_carrier_preserves_order_multiplicity_and_sidedness"
+    },
+    {
+      "from": "relational_carrier_exact_boundary_check",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "relational_carrier_exact_boundary_check",
+      "to": "relational_carrier_roundtrip_is_canonical"
+    },
+    {
       "from": "addition_boundary",
       "kind": "calls",
       "source_block": "CONTRACTS",
@@ -12422,6 +17290,27 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "edcm_explicit_geometric_assignment_boundary",
       "to": "edcm_gonol_initiation_structural_null_boundary"
+    },
+    {
+      "from": "edcm_external_evaluation_harness",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_external_evaluation_harness",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_external_evaluation_harness",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_external_evaluation_harness",
+      "to": "edcm_full_corpus_execution_gate"
+    },
+    {
+      "from": "edcm_external_evaluation_harness",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_external_evaluation_harness",
+      "to": "skill_lib_boundary_runner"
     },
     {
       "from": "edcm_full_carrier_attachment_evidence",
@@ -12956,6 +17845,20 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "prime_relational_reconstruction_independent_replay",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "prime_relational_reconstruction_independent_replay",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "prime_relational_reconstruction_independent_replay",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "prime_relational_reconstruction_independent_replay",
+      "to": "ucns_prime_relational_reconstruction_adversary"
+    },
+    {
       "from": "reproducible_witness_experiment_pipeline",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -13024,6 +17927,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "retained_structure_envelope",
       "to": "structural_choice_policy_layer"
+    },
+    {
+      "from": "skill_lib_boundary_runner",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "skill_lib_boundary_runner",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "skill_lib_boundary_runner",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "skill_lib_boundary_runner",
+      "to": "skill_lib_contract_audit"
     },
     {
       "from": "skill_lib_contract_audit",
@@ -13698,6 +18615,20 @@ export default defineMsdmdCollection({
       "to": "ucns_mobius_seed_of_life_candidate"
     },
     {
+      "from": "ucns_mpfr_interval",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mpfr_interval",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_mpfr_interval",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_mpfr_interval",
+      "to": "system libmpfr"
+    },
+    {
       "from": "ucns_native_cache",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -13759,6 +18690,237 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_payload_system",
       "to": "ucns_canonical"
+    },
+    {
+      "from": "ucns_prime_boundary_link_invariants",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_boundary_link_invariants",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_boundary_link_invariants",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_boundary_link_invariants",
+      "to": "ucns_prime_interval_boundary_links_p7_p5"
+    },
+    {
+      "from": "ucns_prime_determinantal_grobner_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_determinantal_grobner_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_determinantal_grobner_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_determinantal_grobner_p7_p5",
+      "to": "sympy==1.14.0"
+    },
+    {
+      "from": "ucns_prime_determinantal_grobner_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_determinantal_grobner_p7_p5",
+      "to": "ucns_prime_symbolic_alexander_p7_p5"
+    },
+    {
+      "from": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "to": "mpmath>=1.3"
+    },
+    {
+      "from": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_exact_milnor_alexander_p7_p5",
+      "to": "ucns_prime_independent_phase_milnor_p7_p5"
+    },
+    {
+      "from": "ucns_prime_generic_diagram",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_generic_diagram",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_generic_diagram",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_generic_diagram",
+      "to": "ucns_prime_interval_boundary_links_p7_p5"
+    },
+    {
+      "from": "ucns_prime_generic_interval_certificate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_generic_interval_certificate",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_generic_interval_certificate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_generic_interval_certificate",
+      "to": "ucns_mpfr_interval"
+    },
+    {
+      "from": "ucns_prime_generic_interval_certificate",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_generic_interval_certificate",
+      "to": "ucns_prime_exact_milnor_alexander_p7_p5"
+    },
+    {
+      "from": "ucns_prime_independent_phase_milnor",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_independent_phase_milnor",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_independent_phase_milnor",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_independent_phase_milnor",
+      "to": "ucns_mpfr_interval"
+    },
+    {
+      "from": "ucns_prime_independent_phase_milnor",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_independent_phase_milnor",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "from": "ucns_prime_interval_boundaries_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_boundaries_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_interval_boundaries_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_boundaries_p7_p5",
+      "to": "mpmath>=1.3"
+    },
+    {
+      "from": "ucns_prime_interval_boundaries_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_boundaries_p7_p5",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "from": "ucns_prime_interval_boundary_links_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_boundary_links_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_interval_boundary_links_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_boundary_links_p7_p5",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "from": "ucns_prime_interval_common",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_common",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_interval_common",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_common",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "from": "ucns_prime_interval_replay",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_replay",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_interval_replay",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_interval_replay",
+      "to": "ucns_prime_interval_common"
+    },
+    {
+      "from": "ucns_prime_length4_milnor_p7",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_length4_milnor_p7",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_length4_milnor_p7",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_length4_milnor_p7",
+      "to": "ucns_prime_exact_milnor_alexander_p7_p5"
+    },
+    {
+      "from": "ucns_prime_milnor_invariants",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_milnor_invariants",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_milnor_invariants",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_milnor_invariants",
+      "to": "ucns_prime_generic_diagram"
+    },
+    {
+      "from": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "to": "GAP 4.12.1"
+    },
+    {
+      "from": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "to": "NQ 2.5.11"
+    },
+    {
+      "from": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_nilpotent_discriminator_p7_p5",
+      "to": "ucns_prime_exact_milnor_alexander_p7_p5"
     },
     {
       "from": "ucns_prime_phase_lift_data",
@@ -13824,6 +18986,48 @@ export default defineMsdmdCollection({
       "to": "none"
     },
     {
+      "from": "ucns_prime_relational_reconstruction_adversary",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_relational_reconstruction_adversary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_relational_reconstruction_adversary",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_relational_reconstruction_adversary",
+      "to": "edcm_external_evaluation_harness"
+    },
+    {
+      "from": "ucns_prime_replay_phase_milnor_data",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_replay_phase_milnor_data",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_replay_phase_milnor_data",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_replay_phase_milnor_data",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
+      "from": "ucns_prime_replay_phase_milnor_receipt",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_replay_phase_milnor_receipt",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_replay_phase_milnor_receipt",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_replay_phase_milnor_receipt",
+      "to": "ucns_prime_smooth_ribbons_p7_p5"
+    },
+    {
       "from": "ucns_prime_smooth_ribbons_p7_p5",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
@@ -13836,6 +19040,48 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_prime_smooth_ribbons_p7_p5",
       "to": "ucns_prime_phase_lift_p7_p5"
+    },
+    {
+      "from": "ucns_prime_symbolic_alexander_p7_p5",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_symbolic_alexander_p7_p5",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_prime_symbolic_alexander_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_symbolic_alexander_p7_p5",
+      "to": "<2"
+    },
+    {
+      "from": "ucns_prime_symbolic_alexander_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_symbolic_alexander_p7_p5",
+      "to": "sympy>=1.12"
+    },
+    {
+      "from": "ucns_prime_symbolic_alexander_p7_p5",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_prime_symbolic_alexander_p7_p5",
+      "to": "ucns_prime_exact_milnor_alexander_p7_p5"
+    },
+    {
+      "from": "ucns_ptcna_candidate_state",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_ptcna_candidate_state",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_ptcna_candidate_state",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_ptcna_candidate_state",
+      "to": "edcm_word_gonol_profile"
     },
     {
       "from": "ucns_public_gonol",
@@ -13941,6 +19187,20 @@ export default defineMsdmdCollection({
       "source_block": "MODULE_BUILD",
       "source_id": "ucns_quotient",
       "to": "ucns_left_quotient"
+    },
+    {
+      "from": "ucns_relational_carrier",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_relational_carrier",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ucns_relational_carrier",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ucns_relational_carrier",
+      "to": "none"
     },
     {
       "from": "ucns_relational_geometry",
@@ -14035,5 +19295,5 @@ export default defineMsdmdCollection({
     }
   ],
   "gaps": [],
-  "repo": "ucns"
+  "repo": "The-Interdependency/ucns"
 });
