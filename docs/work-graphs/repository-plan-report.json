@@ -10,9 +10,9 @@
   },
   "source": {
     "branch": "main",
-    "commit": "73eea6509f830d6bf188b2ffb479e09a4e7e1308",
+    "commit": "a1c751309bc2011ee3ece9dddadce7f8971ad0ec",
     "generated_at": "2026-08-17",
-    "note": "This report describes the cited UCNS main commit plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The 2026-08-17 lexical/PTCNA corrections preserve unresolved laws rather than completing missing architecture by assumption. The lexical correction fixes the closed floor-definition semantic relationships themselves as the first deep-recursion layer."
+    "note": "This report describes the cited UCNS state plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The 2026-08-17 lexical correction deprecates the NGSL lexical-floor premise and its fixed-list closure rule; a Scrabble dictionary is authorized as the replacement lexical source class, with exact edition/source custody still to be pinned."
   },
   "authority": {
     "owns": [
@@ -35,8 +35,9 @@
       "cross-repository consumption does not transfer mathematical authority",
       "UCNS carrier evidence does not establish EDCM measurement validity",
       "representing an object or relation numerically does not erase its non-numerical identity or modality",
-      "a lexical source record or arbitrary definition string is not a floor-definition gonol",
-      "the first deep-recursion definition layer is constituted by semantic relationships among existing floor gonols; it is not a precursor waiting for a separate lexical embedding step",
+      "the deprecated NGSL lexical-floor artifacts remain historical evidence and do not define the current lexical basis",
+      "PR #205's order, multiplicity, sense, provenance, replay, and receipt mechanisms may be generalized, but its NGSL-specific closure and 2,809-target coverage rules have no forward authority",
+      "the first lexical deep-recursion layer remains constituted by source-bound semantic relationships among word gonols; deprecating the floor does not demote those relationships to metadata",
       "a UCNS-compatible PTCNA-shaped state is not evidence that the intended PTCNA architecture has been derived"
     ]
   },
@@ -52,11 +53,11 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. The admitted lexical floor is closed: its semantic definitions must be constructed only from already-admitted floor gonols and cannot enlarge the floor. Those semantic relationships are themselves the first lexical deep-recursion layer, not a pre-embedding carrier. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network; no current PTCNA-shaped candidate state satisfies that prerequisite by construction compatibility alone.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. The NGSL lexical-floor premise is DEPRECATED because NGSL is a word list rather than the dictionary semantic source required for this work. A Scrabble dictionary is authorized as the replacement lexical source class. Dictionary definitions and senses will establish source-bound semantic relationships among word gonols as the first lexical deep-recursion layer without an artificial fixed-list closure gate. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network; no current PTCNA-shaped candidate state satisfies that prerequisite by construction compatibility alone.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "73eea6509f830d6bf188b2ffb479e09a4e7e1308",
-      "description": "fixed closed floor-definition semantic relationships as the first deep-recursion lexical layer rather than a precursor to later embedding"
+      "commit": "a1c751309bc2011ee3ece9dddadce7f8971ad0ec",
+      "description": "deprecated the NGSL lexical-floor closure premise and retargeted first lexical recursion to a source-bound dictionary corpus, with Scrabble dictionary authorized as the replacement source class"
     }
   },
   "delivered": [
@@ -91,9 +92,19 @@
       "boundary": "every gonol is already spiral-bearing; complete machine-facing coordinates, projection, and higher-gonol spiral composition remain separate unresolved implementation boundaries"
     },
     {
-      "surface": "NGSL lexical floor v0.2",
-      "status": "implemented source-bound 2,809-word floor with exact word gonols and occurrence-preserving relations",
-      "boundary": "the current arbitrary-text DefinitionSense layer is not the completed first-recursion semantic definition-gonol representation; the floor is closed and definitions cannot enlarge it"
+      "surface": "NGSL lexical-floor experiment v0.2",
+      "status": "DEPRECATED; historical source-bound experiment",
+      "boundary": "NGSL word-gonol, occurrence, source-receipt, affixiation, compounding, and historical replay evidence are preserved, but NGSL no longer defines the active lexical basis or a closed semantic vocabulary"
+    },
+    {
+      "surface": "PR #205 closed-definition-gonol producer",
+      "status": "implemented historical mechanism with reusable provenance/order/receipt machinery",
+      "boundary": "NGSL-specific closure, 2,809-target coverage, and floor-source authority are deprecated; replacement dictionary construction must generalize rather than inherit those constraints"
+    },
+    {
+      "surface": "dictionary lexical replacement",
+      "status": "authority-selected source class; corpus not yet pinned or ingested",
+      "boundary": "Scrabble dictionary is sufficient as the lexical source class, but exact edition/source identity, acquisition, and custody/redistribution boundaries remain to be frozen"
     },
     {
       "surface": "metadata-free lexical relational carrier",
@@ -107,8 +118,9 @@
     }
   ],
   "active_frontier": [
-    "construct the first lexical deep-recursion layer from the already-fixed floor: every definition is an ordered, occurrence-preserving semantic relationship among existing floor word gonols; definitions cannot admit new floor words and no tokenizer, subword id, opaque vector lookup, or separate pre-embedding carrier may be silently inserted",
-    "treat each floor-definition gonol as the first recursive semantic object and as the semantic-representation analogue of a conventional vector embedding while withholding any equivalence, semantic-quality, or downstream-utility claim until evaluated",
+    "pin the exact Scrabble dictionary edition/source, machine-readable acquisition, and custody/redistribution boundary, then ingest its lexical entries, senses, and definitions as the active dictionary corpus",
+    "generalize the useful PR #205 first-recursion machinery so dictionary definitions preserve target, order, multiplicity, occurrence, sense, source, provenance, deterministic replay, and receipts without NGSL closure or 2,809-target assumptions",
+    "treat dictionary-derived definition gonols as the first recursive semantic objects and as the semantic-representation analogue of conventional vector embeddings while withholding equivalence, semantic-quality, or downstream-utility claims until evaluated",
     "design and execute a UCNS audit of a functioning conventional neural network before specifying the intended PTCNA architecture; preserve raw observations separately from derived structure and do not search for a topology chosen in advance",
     "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
     "preserve multimodal object identity separately from scalar observables: a glyph occurrence count can be scalar while the glyph remains a non-numerical vector description with identity, position, context, provenance, and relations",
@@ -129,9 +141,14 @@
   ],
   "next_actions": [
     {
-      "action": "construct the first deep-recursion floor-definition-gonol layer for the existing lexical floor: create definitions only from already-admitted floor gonols, reject every out-of-floor lexical constituent, preserve order/multiplicity/occurrence/sense/context/source provenance, materialize the semantic relationships themselves as definition gonols, and emit exact replayable receipts",
+      "action": "pin the exact Scrabble dictionary edition/source identity, acquisition method, source bytes or immutable source identity, and license/custody/redistribution boundary before corpus ingestion",
       "owner": "The-Interdependency/ucns",
-      "dependency": "fixed lexical floor identity and a source/custody procedure for closed definitions; no separate lexical embedding or pre-recursion composition gate is required before materializing the semantic relationship layer"
+      "dependency": "Scrabble dictionary is authorized as the source class; exact edition/source details remain hmmm and must not be guessed"
+    },
+    {
+      "action": "generalize the first lexical deep-recursion producer from the historical NGSL closed-floor contract to the pinned dictionary corpus: construct word gonols and definition gonols from source entries and definitions while preserving order/multiplicity/occurrence/sense/source provenance and removing NGSL closure/2,809-coverage gates",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "exact dictionary source and custody identity must be frozen first; PR #205 mechanisms may be reused without importing its deprecated floor assumptions"
     },
     {
       "action": "define and run the smallest UCNS audit of a functioning conventional neural network sufficient to produce PTCNA construction evidence without preselecting PTCNA topology",
@@ -164,9 +181,9 @@
       "dependency": "requires pinned repository states, replayable operations, explicit authority boundaries, and preregistered loss/recovery measures; success does not establish Mobius necessity or EDCM measurement validity"
     },
     {
-      "action": "define recursion above the completed floor-definition-gonol layer and cross-scope/higher-gonol composition candidates without promoting a candidate to canon",
+      "action": "define recursion above the completed dictionary definition-gonol layer and cross-scope/higher-gonol composition candidates without promoting a candidate to canon",
       "owner": "The-Interdependency/ucns",
-      "dependency": "the first lexical deep-recursion definition-gonol layer plus current bounded word-gonol and ordered-source candidate evidence"
+      "dependency": "the first lexical deep-recursion dictionary-definition layer plus current bounded word-gonol and ordered-source candidate evidence"
     },
     {
       "action": "replicate the Tenen/Meru Hebrew alphabet construction from primary sources and run a matched-information arity sweep against its reproducible boundary: preserve letter, number, gesture, position, projection, sequence, and source provenance; compare arity n with arity n+1, pairwise/flattened baselines, and held-out Hebrew reconstruction without supplying Tenen geometry to the blind UCNS branch",
@@ -175,8 +192,9 @@
     }
   ],
   "blocked": [
+    "dictionary-derived lexical recursion is BLOCKED on pinning the exact authorized Scrabble dictionary edition/source, acquisition identity, and custody/redistribution boundary; the source class is selected but the exact corpus is not yet frozen",
+    "the current NGSL-specific first-recursion implementation is DEPRECATED for forward semantic construction until generalized away from fixed-floor closure and 2,809-target coverage",
     "construction of the intended PTCNA is BLOCKED until a functioning conventional neural network has been audited by UCNS and the resulting source-bound structural evidence has been handed to PTCNA; compatibility with a preselected PTCNA-shaped state does not satisfy this prerequisite",
-    "claiming a completed UCNS lexical first-recursion semantic representation is blocked until floor definitions are actually materialized as semantic relationships among floor gonols under the closure rule; arbitrary definition text is insufficient",
     "selection or activation of a universal carrier/completion law is blocked on evidence-bearing decisions for the still-open topology, composition, and completion boundaries",
     "promotion of Mobius transport from relation-specific candidate to broader UCNS requirement is blocked unless mixed-topology controls show a reproducible invariant, prediction, compression, or recovery advantage unavailable to simpler relation geometries",
     "promotion of a text/glyph-specific representation to a universal UCNS object schema is blocked until non-language modalities such as GitHub metadata are represented without loss of their native distinctions"
@@ -189,7 +207,7 @@
     },
     {
       "repository": "The-Interdependency/edcm",
-      "relation": "measures context-relative energy-density circuit behavior over explicitly pinned relational carriers and may supply separately owned provenance-preserving corpus/relation observations for blind Hebrew/Tenen comparison; neither measurement validity nor source interpretation transfers back to UCNS",
+      "relation": "downstream measurement authority that may consume exact future dictionary-definition-gonol receipts; historical OEWN/lexical-floor-named artifacts remain sealed evidence and do not restore the deprecated UCNS floor premise",
       "authority_transfer": false,
       "measurement_status_transfer": false
     },
@@ -226,14 +244,15 @@
     "system_overview": "README.md",
     "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md",
     "gonol_spiral_identity": "docs/GONOL_SPIRAL_IDENTITY.md",
-    "lexical_floor": "docs/NGSL_LEXICAL_FLOOR_V1.md",
-    "lexical_definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
+    "deprecated_ngsl_lexical_floor": "docs/NGSL_LEXICAL_FLOOR_V1.md",
+    "dictionary_definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
     "ptcna_neural_audit_prerequisite": "docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
   },
   "hmmm": [
-    "the source/custody procedure for producing a complete set of definitions expressible entirely within the fixed lexical floor",
-    "the exact executable schema/receipt surface for the declared first deep-recursion semantic relationship layer",
-    "the recursion law above the floor-definition-gonol layer once those first-recursion objects exist",
+    "the exact Scrabble dictionary edition/source, machine-readable acquisition path, immutable source identity, and license/custody/redistribution boundary",
+    "the treatment of lexical material appearing inside selected dictionary definitions but not separately listed as dictionary headwords",
+    "the exact generalized executable schema/receipt surface that preserves PR #205's useful provenance/order/replay machinery while removing NGSL-specific floor semantics",
+    "the recursion law above the dictionary-definition-gonol layer once those first-recursion objects exist",
     "the minimum conventional-neural-network observables UCNS must retain to recover enough structure to construct PTCNA without smuggling a target topology into the audit",
     "registry integration for gonol relationship display v1",
     "the exact current machine-facing representation that exposes the complete spiral state of each gonol",
