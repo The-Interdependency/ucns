@@ -2,14 +2,22 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-08-06  
+**Corrected:** 2026-08-17  
 **Status:** executable source-admitted candidate  
 **Selection effect:** none
 
 This slice admits the 2,809-word NGSL 1.2 collection as a word-only candidate
 lexical floor. It applies the existing Public Gonol glyph assignments, creates
 one word gonol per exact ordered glyph sequence, and exposes an occurrence-
-addressed character-relationship potential. Affixiation, compounding, and
-context-derived definitions remain separate append-only layers.
+addressed character-relationship potential. Affixiation and compounding remain
+separate append-only candidate layers. The existing arbitrary-text definition
+surface is retained only as historical/provenance-capable infrastructure; it is
+not the completed floor semantic representation.
+
+The lexical floor is closed by definition. Once the floor is admitted, a floor
+definition cannot add another lexical word to it. The next semantic construction
+is therefore a definition gonol built only from already-existing floor gonols.
+See `docs/LEXICAL_DEFINITION_GONOLS.md`.
 
 ## Fixed boundaries
 
@@ -37,16 +45,27 @@ context-derived definitions remain separate append-only layers.
    type set view is explicitly identified by Unicode scalar value and records
    that occurrence order, multiplicity, and pairing were lost.
 
-6. **Layers are immutable and authority-bound.** The hyperspace index and
-   definition mapping are read-only defensive copies. Relationship, morphology,
-   definition, source, and snapshot standings reject caller promotion.
+6. **The lexical floor is closed.** Floor definitions may use only word gonols
+   already admitted to this floor. A definition that requires a lexical word
+   outside the floor is not a floor definition and cannot enlarge the floor.
 
-7. **Snapshots remain source-linked.** Every current layer records the same
+7. **No tokenizer or opaque embedding substitution.** Definition construction
+   consumes already-existing floor gonols. It does not create conventional NLP
+   token ids, subword units, or an external vector lookup between the floor and
+   its definition gonols.
+
+8. **Layers are immutable and authority-bound.** The hyperspace index and
+   currently implemented definition mapping are read-only defensive copies.
+   Relationship, morphology, definition, source, and snapshot standings reject
+   caller promotion. The current text-bearing definition layer does not satisfy
+   the new definition-gonol closure contract by itself.
+
+9. **Snapshots remain source-linked.** Every current v0.2 layer records the same
    source-receipt identity, exact producer, ordered parent, item count, content
    digest, fixed standing, and required `hmmm`. Altering the source, standing,
    unresolved boundary, or parent chain fails validation.
 
-## Current layer sequence
+## Current implemented layer sequence
 
 1. source-receipted word-only collection;
 2. fixed-carrier glyph definitions;
@@ -54,9 +73,27 @@ context-derived definitions remain separate append-only layers.
 4. occurrence-addressed character-relationship potential;
 5. orthographic affixiation candidates;
 6. orthographic compound candidates;
-7. plural context-sourced definitions.
+7. text-bearing contextual definition records.
 
-Later metadata cannot rewrite an earlier source object or snapshot.
+Later metadata cannot rewrite an earlier source object or snapshot. Layer 7 is
+not the completed semantic definition-gonol layer.
+
+## Required next semantic layer
+
+For a fixed lexical floor `F`, every floor-definition gonol must satisfy:
+
+```text
+support(definition_gonol(word, sense)) ⊆ F
+```
+
+Its lexical constituents are existing floor gonols. Definitions do not admit
+new words and do not recursively expand the floor. Multiple senses remain
+separate definition gonols with separate context and source provenance.
+
+The floor-definition gonol is intended to perform the semantic-representation
+role for which conventional systems commonly use vector embeddings, while
+remaining decomposable into source-bound UCNS lexical objects. That role analogy
+does not establish semantic quality, similarity behavior, or downstream utility.
 
 ## Affixiation
 
@@ -73,12 +110,17 @@ boundary into two other retained words. The candidate binds all three exact word
 gonol identities and remains `orthographic-candidate` until independently
 attested.
 
-## Definitions
+## Existing definition surface
 
-Definitions attach to an existing word-gonol identity. Every sense retains a
-context identity, exact definition text, source identity, and fixed
-`context-sourced-definition` standing. Multiple senses may coexist; the source
-word gonol remains singular.
+`DefinitionSense` currently attaches context identity, arbitrary definition text,
+source identity, and fixed standing to an existing word-gonol identity. That
+surface may retain source prose and provenance, but arbitrary text is not itself
+a floor-definition gonol.
+
+The replacement semantic construction must resolve every lexical constituent to
+an already-existing floor gonol, preserve order/multiplicity/context/source, fail
+closed on out-of-floor lexical material, and construct an immutable definition
+gonol from those floor objects.
 
 ## Source and attribution files
 
@@ -94,7 +136,7 @@ license or resolve the repository's broader licensing policy.
 
 ## Verification surface
 
-The test slice exercises:
+The current v0.2 test slice exercises:
 
 - exact source receipt and tamper rejection;
 - direct and indirect SPACE-boundary bypasses;
@@ -102,9 +144,14 @@ The test slice exercises:
 - unique exact word-gonol identities;
 - occurrence multiplicity and address retention;
 - explicit loss in the glyph-type set projection;
-- immutable indexes and definition layers;
+- immutable indexes and current definition records;
 - candidate-identity and standing substitution attacks; and
 - source, parent, standing, and unresolved-boundary snapshot attacks.
+
+The required next test slice must additionally reject any floor definition whose
+lexical support is not a subset of the admitted floor and must replay each
+accepted definition gonol from exact floor-gonol identities plus relation/order
+provenance.
 
 ## Nonclaims
 
@@ -113,8 +160,8 @@ This slice does not provide:
 - an independently custodied official NGSL checksum;
 - a canonical linguistic affix inventory;
 - adjudicated compound-word status;
-- a definitions corpus;
-- a semantic metric;
+- a completed closed definition-gonol corpus;
+- a semantic metric or demonstrated vector-embedding replacement advantage;
 - geometric coordinates for lexical relationships;
 - the seven-gonol construction or pairing plan;
 - deep-recursion hyperdimensional embedding; or
@@ -122,8 +169,9 @@ This slice does not provide:
 
 ## hmmm
 
-The 2,809 spellings can now enter one source-bound, occurrence-preserving lexical
-producer without crossing SPACE or laundering a lossy set view into exact
-evidence. Official-source checksum custody, attested morphology, context-corpus
-custody, selector-role interrogation, and the law that embeds retained relations
-into UCNS deep recursion remain living boundaries.
+The 2,809 spellings now form one source-bound, occurrence-preserving lexical
+floor. That floor is not permitted to expand through its definitions. The next
+living boundary is construction of closed floor-definition gonols entirely from
+already-admitted floor gonols, including the exact order/relation composition
+law and source/custody procedure. Official-source checksum custody, attested
+morphology, selector-role interrogation, and deeper UCNS recursion remain open.
