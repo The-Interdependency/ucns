@@ -704,7 +704,23 @@ from .oewn_definition_recursion import (
     OEWNMorphologyGonol,
     build_oewn_definition_layer,
     definition_layer_bytes as oewn_definition_layer_bytes,
+    oewn_entry_key,
     replay_oewn_definition_layer,
+)
+from .public_gonol_functions import (
+    APPLICATION_STANDING,
+    CONTEXT_RELATION_CODE,
+    FUNCTIONAL_INDEX_NAMES,
+    FUNCTION_RELATION_CODE,
+    AtomicFunctionState,
+    ContextualFunctionApplication,
+    FunctionDefinitionBinding,
+    PublicGonolFunction,
+    PublicGonolFunctionError,
+    PublicGonolFunctionTable,
+    apply_public_gonol_function,
+    build_public_gonol_function_table,
+    function_table_bytes,
 )
 
 __all__ = [
@@ -1017,6 +1033,12 @@ __all__ = [
     "OEWNCompositeWordGonol", "OEWNDefinitionGonol", "OEWNDefinitionLayer",
     "OEWNDefinitionOccurrence", "OEWNDefinitionRecursionError",
     "OEWNInscriptionGonol", "OEWNMorphologyGonol",
-    "build_oewn_definition_layer", "oewn_definition_layer_bytes",
+    "build_oewn_definition_layer", "oewn_definition_layer_bytes", "oewn_entry_key",
     "replay_oewn_definition_layer",
+    "APPLICATION_STANDING", "CONTEXT_RELATION_CODE", "FUNCTIONAL_INDEX_NAMES",
+    "FUNCTION_RELATION_CODE", "AtomicFunctionState",
+    "ContextualFunctionApplication", "FunctionDefinitionBinding",
+    "PublicGonolFunction", "PublicGonolFunctionError",
+    "PublicGonolFunctionTable", "apply_public_gonol_function",
+    "build_public_gonol_function_table", "function_table_bytes",
 ]

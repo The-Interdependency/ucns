@@ -4,7 +4,7 @@
 #   module_kind: engine
 #   summary: constructs the complete OEWN 2025 Core first deep-recursion layer as closed source-bound definition gonols
 #   owner: Erin Spencer
-#   public_surface: OEWNInscriptionGonol, OEWNCompositeWordGonol, OEWNDefinitionOccurrence, OEWNDefinitionGonol, OEWNMorphologyGonol, OEWNDefinitionLayer, build_oewn_definition_layer, definition_layer_bytes, replay_oewn_definition_layer
+#   public_surface: OEWNInscriptionGonol, OEWNCompositeWordGonol, OEWNDefinitionOccurrence, OEWNDefinitionGonol, OEWNMorphologyGonol, OEWNDefinitionLayer, oewn_entry_key, build_oewn_definition_layer, definition_layer_bytes, replay_oewn_definition_layer
 #   internal_surface: _canonical_bytes, _identity, _segments, _inscription
 #   auth_boundary: requires an exact receipt-bound OEWN Core snapshot
 #   storage_boundary: immutable in-memory construction and canonical receipt bytes
@@ -323,7 +323,9 @@ def _segments(text: str) -> tuple[tuple[int, int, bool], ...]:
     return tuple(result)
 
 
-def _entry_key(lemma: str, part_of_speech: str) -> str:
+def oewn_entry_key(lemma: str, part_of_speech: str) -> str:
+    """Return the stable source lexical-entry key used by definition gonols."""
+
     return _identity("ucns.oewn-entry:sha256:", {"lemma": lemma, "part_of_speech": part_of_speech})
 
 
@@ -370,7 +372,7 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
     morphology: list[OEWNMorphologyGonol] = []
     sense_targets: dict[str, tuple[str, str, str, str]] = {}
     for entry in snapshot.lexical_entries:
-        key = _entry_key(entry.lemma, entry.part_of_speech)
+        key = oewn_entry_key(entry.lemma, entry.part_of_speech)
         lemma_id = admitted_word(entry.lemma)
         for ordinal, form_text in enumerate(entry.forms):
             form_id = admitted_word(form_text)
@@ -493,7 +495,8 @@ __all__ = [
     "DEFINITION_RELATION_CODE", "MORPHOLOGY_FORM_RELATION_CODE",
     "OEWNCompositeWordGonol", "OEWNDefinitionGonol", "OEWNDefinitionLayer", "OEWNDefinitionOccurrence",
     "OEWNDefinitionRecursionError", "OEWNInscriptionGonol", "OEWNMorphologyGonol",
-    "build_oewn_definition_layer", "definition_layer_bytes", "replay_oewn_definition_layer",
+    "build_oewn_definition_layer", "definition_layer_bytes", "oewn_entry_key",
+    "replay_oewn_definition_layer",
 ]
 
 
