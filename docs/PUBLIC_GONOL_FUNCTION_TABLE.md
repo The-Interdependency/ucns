@@ -54,6 +54,17 @@ The sealed receipt is
 byte-identical at SHA-256
 `cabaa71bbae531993c2522e3e8cf30e26f37fcec030c1014f3495a5de62d9f69`.
 
+## Frozen structural evaluation
+
+The table's first contextual-control experiment is frozen in
+`docs/PREREGISTRATION_PUBLIC_GONOL_CONTEXTUAL_EVALUATION.md` and its
+outcome-free receipt is
+`generated/public-gonol-contextual-evaluation-preregistration.json`. The
+protocol is a separate producer boundary: it fixes all 84 indices, the
+identity-only control, one existing anchor, ordered context multiplicities,
+thresholds, and failure behavior before an evaluator exists. It does not add a
+usefulness, grammar, parser, or precedence result to this table.
+
 ## Contextual application
 
 An application contains:
