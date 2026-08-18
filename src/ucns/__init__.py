@@ -667,6 +667,21 @@ from .relational_carrier import (
     parse_relational_carrier,
     relational_carrier_bytes,
 )
+from .lexical_definition_gonols import (
+    DEFINITION_GONOL_STANDING,
+    DEFINITION_LAYER_STANDING,
+    DEFINITION_RELATION_CODE,
+    DEFINITION_SOURCE_STANDING,
+    DefinitionLayerReceipt,
+    DefinitionOccurrence,
+    DefinitionSourceReceipt,
+    FloorDefinitionEvidence,
+    FloorDefinitionGonol,
+    LexicalDefinitionError,
+    build_complete_definition_layer,
+    build_floor_definition_gonol,
+    definition_layer_receipt_bytes,
+)
 
 __all__ = [
     "LIFTED_PERIOD", "STRUCTURAL_NULL", "VISIBLE_PERIOD", "CarrierPoint",
@@ -965,4 +980,10 @@ __all__ = [
     "RelationalCarrier", "RelationalCarrierError", "RelationalEdge",
     "RelationalNode", "build_relational_carrier", "parse_relational_carrier",
     "relational_carrier_bytes",
+    "DEFINITION_GONOL_STANDING", "DEFINITION_LAYER_STANDING",
+    "DEFINITION_RELATION_CODE", "DEFINITION_SOURCE_STANDING",
+    "DefinitionLayerReceipt", "DefinitionOccurrence", "DefinitionSourceReceipt",
+    "FloorDefinitionEvidence", "FloorDefinitionGonol", "LexicalDefinitionError",
+    "build_complete_definition_layer", "build_floor_definition_gonol",
+    "definition_layer_receipt_bytes",
 ]

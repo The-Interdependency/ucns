@@ -66,7 +66,8 @@ embedding. See `docs/LEXICAL_DEFINITION_GONOLS.md`.
    currently implemented definition mapping are read-only defensive copies.
    Relationship, morphology, definition, source, and snapshot standings reject
    caller promotion. The current text-bearing definition layer does not satisfy
-   the new definition-gonol closure/recursion contract by itself.
+   the new definition-gonol closure/recursion contract by itself. The separate
+   `lexical_definition_gonols` module now implements that contract.
 
 10. **Snapshots remain source-linked.** Every current v0.2 layer records the same
    source-receipt identity, exact producer, ordered parent, item count, content
@@ -84,7 +85,9 @@ embedding. See `docs/LEXICAL_DEFINITION_GONOLS.md`.
 7. text-bearing contextual definition records.
 
 Later metadata cannot rewrite an earlier source object or snapshot. Layer 7 is
-not the completed semantic definition-gonol layer.
+not the completed semantic definition-gonol layer. The first-recursion
+constructor is separate so arbitrary historical text cannot be silently
+promoted into a closed definition gonol.
 
 ## Required first deep-recursion semantic layer
 
@@ -173,10 +176,11 @@ The current v0.2 test slice exercises:
 - candidate-identity and standing substitution attacks; and
 - source, parent, standing, and unresolved-boundary snapshot attacks.
 
-The required next test slice must additionally reject any floor definition whose
-lexical support is not a subset of the admitted floor and must replay each
-accepted first-recursion definition gonol from exact floor-gonol identities plus
-relation/order/occurrence provenance.
+The first-recursion test slice rejects any floor definition whose lexical
+support is not a subset of the admitted floor, preserves repeated ordered
+occurrences, rejects incomplete floor coverage, and replays definition-gonol
+identities from exact floor, source, sense, context, relation, and occurrence
+evidence.
 
 ## Nonclaims
 
@@ -187,7 +191,8 @@ This slice does not provide:
 - adjudicated compound-word status;
 - a completed closed definition-gonol corpus;
 - a semantic metric or demonstrated vector-embedding replacement advantage;
-- complete machine realization of the first deep-recursion definition layer;
+- an authorized source corpus that supplies closed definitions for all 2,809
+  floor words;
 - the recursion law above the definition-gonol layer;
 - geometric coordinates for every lexical relationship;
 - the seven-gonol construction or pairing plan; or
@@ -196,10 +201,8 @@ This slice does not provide:
 ## hmmm
 
 The 2,809 spellings now form one source-bound, occurrence-preserving lexical
-floor. That floor is not permitted to expand through its definitions. The next
-living boundary is construction of the first deep-recursion layer by materializing
-closed floor-definition gonols from semantic relationships among already-admitted
-floor gonols, together with the source/custody procedure for a complete closed
-definition set. Official-source checksum custody, attested morphology,
-selector-role interrogation, and recursion above the definition-gonol layer
-remain open.
+floor. That floor is not permitted to expand through its definitions. The
+first-recursion mechanism is executable, but no authorized source has yet
+supplied a closed definition for every floor word. That complete-corpus custody
+boundary, official-source checksum custody, attested morphology, selector-role
+interrogation, and recursion above the definition-gonol layer remain open.

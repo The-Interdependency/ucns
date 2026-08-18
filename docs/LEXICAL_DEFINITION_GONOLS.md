@@ -73,15 +73,32 @@ Multiple senses remain distinct. A word may have multiple floor-definition gonol
 
 Because the definition gonols are themselves gonols, they are available as objects for subsequent recursive layers. The existence of those later layers does not demote the definition relationships to a pre-recursive representation.
 
-## Current implementation discrepancy
+## Executable construction
 
-`src/ucns/lexical_floor.py` v0.2 currently exposes `DefinitionSense.definition` as arbitrary text and can retain such text in a definition layer. That surface is insufficient to serve as the first deep-recursion semantic layer because it does not require the definition to be constructed from floor gonols or prove lexical-floor closure.
+`src/ucns/lexical_definition_gonols.py` implements the declared construction.
+It accepts source-receipted definition evidence only after every ordered
+constituent has been resolved to an exact existing floor-gonol identity. It
+constructs one occurrence node per constituent, preserves order and repetition,
+binds target, sense, context, source record, source-text digest, floor receipt,
+and definition-source receipt into the definition-gonol identity, and rejects
+the entire proposal when any endpoint is outside the floor.
 
-Until the replacement construction is implemented, the existing text-bearing definition layer is historical/provenance-capable infrastructure only. It must not be reported as the completed floor-definition-gonol recursion layer.
+The complete-layer constructor admits no partial result: every submitted record
+must construct, the source receipt count must match, and at least one separate
+sense must target every word gonol in the exact floor. Its canonical receipt
+replays all definition-gonol identities and the complete covered-target
+inventory. Intrinsic carriers contain only dense integer occurrences and the
+fixed definition-constituent relation code. They attach no geometry or
+measurement.
 
-Historical wording in `src/ucns/lexical_floor.py` that broadly leaves a "deep-recursion hyperdimensional embedding law" unresolved is superseded for this boundary: the first deep-recursion lexical layer is fixed as the semantic relationships created by closed floor definitions. What remains unresolved is implementation of this declared layer and whatever recursion lies above it, not whether these relationships count as deep recursion.
+`src/ucns/lexical_floor.py` v0.2 still exposes `DefinitionSense.definition` as
+arbitrary historical text. That older surface remains
+historical/provenance-capable infrastructure and is not the new definition
+gonol.
 
-## Next implementation
+Historical wording in `src/ucns/lexical_floor.py` that broadly leaves a "deep-recursion hyperdimensional embedding law" unresolved is superseded for this boundary: the first deep-recursion lexical layer is fixed as the semantic relationships created by closed floor definitions. What remains unresolved is a complete authorized source corpus and whatever recursion lies above this executable layer, not whether these relationships count as deep recursion.
+
+## Construction protocol
 
 1. Keep the admitted lexical floor fixed.
 2. Create definitions whose lexical constituents are all existing floor gonols.
@@ -99,4 +116,8 @@ This document does not select a dictionary source, invent missing definitions, c
 
 ## hmmm
 
-The floor is fixed, definitions cannot expand it, and their semantic relationships are the first deep-recursion layer. The living boundaries are the source/custody procedure for producing a complete closed definition set without silently importing out-of-floor lexical material, the exact executable representation and receipts for that declared relationship layer, and the deeper recursion that consumes definition gonols after this first layer exists.
+The floor is fixed, definitions cannot expand it, their semantic relationships
+are the first deep-recursion layer, and the executable representation now fails
+closed on that boundary. The living boundaries are an authorized source/custody
+procedure that actually supplies at least one closed definition for every floor
+word, and the deeper recursion that consumes completed definition gonols.
