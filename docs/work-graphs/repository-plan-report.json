@@ -9,8 +9,8 @@
     "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
   },
   "source": {
-    "branch": "agent/current-lexical-source-receipts",
-    "commit": "8d47f14",
+    "branch": "agent/public-gonol-function-table",
+    "commit": "5d840fc",
     "generated_at": "2026-08-18",
     "note": "This report describes the cited UCNS state plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The current lexical architecture selects the xkcd constrained-English 1,000-word vocabulary as the lexical-floor candidate and OEWN 2025 Core as the primary contemporary lexical-semantic corpus; Scrabble is superseded for this work and Webster 1913 is deferred. Relationships enter gonols, completed gonols are atomic at the next scale, affixiation is scale-invariant, and direct interscale coupling is permitted without mandatory reopening of intermediate closures."
   },
@@ -110,6 +110,11 @@
       "boundary": "exact sources, xkcd atomic words, OEWN explicit forms, multi-inscription words, and all source sense-definition gonols are materialized; final morphology, carrier coverage, direct interscale coupling, and semantic efficacy remain unresolved"
     },
     {
+      "surface": "Public Gonol definition-derived function table",
+      "status": "implemented candidate with byte-identical full replay",
+      "boundary": "84 punctuation/symbol positions use canonical Public Gonol indices and already-closed OEWN definition gonols; caller supplies ordered context; no independent punctuation grammar, parser, precedence, or efficacy claim is attached"
+    },
+    {
       "surface": "metadata-free lexical relational carrier",
       "status": "implemented producer surface",
       "boundary": "carrier structure contains ordered nodes and typed relation occurrences only; English identity, provenance, semantics, geometry, and measurement status remain external and do not transfer"
@@ -124,6 +129,7 @@
     "evaluate or extend the current 157-position carrier for the twenty retained OEWN source scalars that are presently explicit coverage-failure evidence, without normalizing or inventing geometry",
     "select a root/stem/affix/transformation law only if new source or authority supports it; the complete OEWN inventory contains no explicit decomposition records",
     "define quantitative semantic reconstruction and simpler matched-information controls for the completed OEWN first-recursion layer before claiming efficacy",
+    "evaluate whether the definition-derived Public Gonol function table produces useful contextual closures without adding an independent punctuation grammar or post-result lexical tuning",
     "preserve direct coupling across non-adjacent recursive scales as an allowed UCNS relation; do not impose intermediate reopening as an implementation convenience",
     "treat affixiation as the scale-invariant relation -> intrinsic coupling -> closure -> atomic promotion pattern; linguistic affixiation is one manifestation",
     "design and execute a UCNS audit of a functioning conventional neural network before specifying the intended PTCNA architecture; preserve raw observations separately from derived structure and do not search for a topology chosen in advance",
@@ -149,6 +155,11 @@
       "action": "preregister and run quantitative semantic reconstruction plus simpler matched-information controls against the sealed OEWN first-recursion layer",
       "owner": "The-Interdependency/ucns",
       "dependency": "complete receipt bcfbf0c724a8507e00d1d3205f32de2cce489731ce019a2f883e90abd56f7c5c; freeze metrics, partitions, baselines, resource limits, and falsifiers before outcome inspection"
+    },
+    {
+      "action": "preregister contextual function tests for the sealed Public Gonol index table against source-authored examples and simpler identity-only controls",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "freeze context selection, expected relations, negative controls, baseline, and falsifiers before inspecting outcomes; do not tune definition bindings after results"
     },
     {
       "action": "define and run the smallest UCNS audit of a functioning conventional neural network sufficient to produce PTCNA construction evidence without preselecting PTCNA topology",
@@ -242,6 +253,7 @@
     "deprecated_ngsl_lexical_floor": "docs/NGSL_LEXICAL_FLOOR_V1.md",
     "lexical_recursion_architecture": "docs/LEXICAL_RECURSION_ARCHITECTURE.md",
     "definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
+    "public_gonol_function_table": "docs/PUBLIC_GONOL_FUNCTION_TABLE.md",
     "ptcna_neural_audit_prerequisite": "docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
   },
   "hmmm": [
@@ -249,6 +261,7 @@
     "geometry for the twenty exact OEWN source scalars outside the public 157-position carrier",
     "the exact machine representation of direct coupling between gonols separated by multiple recursive scales while both remain atomic",
     "the later role, if any, of OEWN native semantic-relation labels after the definition-driven recursion is constructed",
+    "whether the definition-derived Public Gonol function bindings produce useful contextual behavior without a separate syntax or punctuation grammar",
     "quantitative structural-compression and reconstruction tests once the recursive lexical corpus exists",
     "the minimum conventional-neural-network observables UCNS must retain to recover enough structure to construct PTCNA without smuggling a target topology into the audit",
     "registry integration for gonol relationship display v1",

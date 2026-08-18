@@ -246,6 +246,14 @@ coverage-failure evidence. It does not normalize or discard them, and does not
 claim geometry for them. OEWN supplies forms but no explicit root/stem/affix
 decomposition records, so no final morphology law is selected.
 
+The Public Gonol function-table continuation is implemented in
+`src/ucns/public_gonol_functions.py` and documented in
+`docs/PUBLIC_GONOL_FUNCTION_TABLE.md`. Its 84 punctuation/symbol positions are
+keyed only by canonical Public Gonol index and bind to already-closed OEWN
+definition gonols. Contextual application couples those functions to a
+caller-supplied atomic state and ordered context; it does not introduce an
+independent punctuation grammar.
+
 ## hmmm
 
 - the morphology decomposition / transformation law;
