@@ -18,7 +18,7 @@
 #   call: self::test_executor_runs_two_source_builds_before_decision
 #   timeout: 20
 #   mutates: none
-#   cleanup: monkeypatch_teardown
+#   cleanup: none
 #
 # id: public_gonol_contextual_evaluation_resource_preflight_check
 #   proves: public_gonol_contextual_evaluation_consumes_merged_protocol
@@ -30,6 +30,13 @@
 # id: public_gonol_contextual_evaluation_blocker_receipt_check
 #   proves: public_gonol_contextual_evaluation_preserves_nonclaim_boundary
 #   call: self::test_blocker_receipt_preserves_the_resource_breach_without_a_result
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: public_gonol_contextual_evaluation_result_receipt_check
+#   proves: public_gonol_contextual_evaluation_replays_source_and_application_independently, public_gonol_contextual_evaluation_preserves_nonclaim_boundary
+#   call: self::test_result_receipt_records_two_build_survival_without_claim_promotion
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -168,3 +175,50 @@ def test_blocker_receipt_preserves_the_resource_breach_without_a_result() -> Non
     assert payload["observation"]["observed_process_elapsed_seconds_lower_bound"] > (
         payload["observation"]["frozen_max_wall_seconds_per_build"]
     )
+
+
+def test_result_receipt_records_two_build_survival_without_claim_promotion() -> None:
+    artifact = Path(__file__).parents[1] / "generated" / "public-gonol-contextual-evaluation-result.json"
+    payload = json.loads(artifact.read_text(encoding="utf-8"))
+    identifier = payload.pop("evaluation_id")
+    digest = sha256(json.dumps(
+        payload, ensure_ascii=False, allow_nan=False, sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8") + b"\n").hexdigest()
+    assert identifier == f"ucns.public-gonol-contextual-evaluation:sha256:{digest}"
+    assert payload["status"] == "SURVIVED — not proved"
+    assert payload["completed_full_source_builds"] == 2
+    assert payload["byte_identical_independent_replay"] is True
+    assert payload["semantic_run_receipt_sha256"] == payload["second_semantic_run_receipt_sha256"]
+    assert payload["semantic_run"]["metric"]["metrics"] == {
+        "candidate_distinct_results_by_context": {
+            "empty": 84, "anchor-once": 84, "anchor-twice": 84,
+        },
+        "identity_only_distinct_results_by_context": {
+            "empty": 1, "anchor-once": 1, "anchor-twice": 1,
+        },
+        "candidate_context_changes": 168,
+        "identity_only_context_changes": 0,
+        "required_candidate_context_changes": 168,
+        "direct_application_replay_agrees": True,
+    }
+    assert "semantic usefulness" in payload["nonclaims"]
+    resource_artifact = (
+        Path(__file__).parents[1]
+        / "generated"
+        / "public-gonol-contextual-resource-observations.json"
+    )
+    resource_payload = json.loads(resource_artifact.read_text(encoding="utf-8"))
+    assert resource_payload["semantic_evaluation_sha256"] == sha256(
+        artifact.read_bytes(),
+    ).hexdigest()
+    assert resource_payload["artificial_resource_limit_applied"] is False
+    assert resource_payload["resource_preflight"]["artificial_wall_clock_limit"] is None
+    assert resource_payload["resource_preflight"]["artificial_memory_limit_bytes"] is None
+    assert resource_payload["all_observations_reached_natural_terminal_condition"] is True
+    assert [
+        item["terminal_condition"] for item in resource_payload["resource_observations"]
+    ] == [
+        "completed-source-build-and-contextual-metric",
+        "completed-source-build-and-contextual-metric",
+    ]

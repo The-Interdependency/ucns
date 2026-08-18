@@ -15,6 +15,14 @@
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
 #
+# id: check_boundary_runner_registered_capability_detection
+#   proves: boundary_runner_consumes_capabilities_and_timeouts
+#   call: self::test_registered_posix_capabilities_are_detected
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_boundary_runner_status_continuation
 #   proves: boundary_runner_classifies_and_continues
 #   call: self::test_runner_classifies_all_outcomes_and_continues
@@ -127,6 +135,17 @@ def test_missing_capability_and_timeout_are_enforced(tmp_path: Path) -> None:
     receipt = runner.run_boundaries(root)
     assert receipt["outcomes"][0]["status"] == "TIMEOUT"
     assert receipt["outcomes"][0]["duration_seconds"] < 4
+
+
+def test_registered_posix_capabilities_are_detected() -> None:
+    assert runner._capability_available("posix_resource") == (
+        runner.os.name == "posix"
+        and importlib.util.find_spec("resource") is not None
+    )
+    assert runner._capability_available("sched_affinity") == (
+        hasattr(runner.os, "sched_getaffinity")
+        and hasattr(runner.os, "sched_setaffinity")
+    )
 
 
 def test_runner_classifies_all_outcomes_and_continues(tmp_path: Path) -> None:
