@@ -1,123 +1,109 @@
-# Lexical floor definition gonols
+# Dictionary definition gonols — first lexical deep recursion
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-08-17  
 **Corrected:** 2026-08-17  
-**Status:** authority-declared first deep-recursion construction boundary  
-**Selection effect:** none
+**Status:** active replacement boundary; prior lexical-floor closure DEPRECATED  
 
-## Fixed lexical-floor closure
+## Replacement boundary
 
-Let `F` be the already-admitted lexical floor: the fixed set of floor word gonols.
-A floor definition cannot enlarge `F`.
+The earlier fixed lexical-floor model is deprecated. NGSL 1.2 is a word list, not a dictionary, and no longer defines the active lexical universe or a closure requirement for semantic definitions.
 
-For any floor word `w ∈ F`, every lexical constituent used to construct a floor-definition gonol for `w` must itself already be a member of `F`.
+A **Scrabble dictionary** is authorized as the replacement lexical source class. The exact edition/source identity and custody boundary must be pinned before corpus ingestion.
 
-```text
-support(definition_gonol(w, sense)) ⊆ F
-```
-
-A proposed definition that requires a lexical word outside `F` is not a floor definition. It does not admit that word, extend the floor, or trigger recursive vocabulary growth.
-
-The construction order is therefore fixed:
+The active construction is:
 
 ```text
 Unicode character gonols
         ↓
-fixed floor word gonols
+dictionary lexical entries / words
         ↓
-complete lexical floor F
+word gonols
         ↓
-semantic relationships among floor gonols expressed by floor definitions
+source-bound dictionary definitions and senses
         ↓
-floor-definition gonols = first deep-recursion layer
+ordered semantic relationships among word gonols
         ↓
-further recursion over those gonols
+definition gonols = first lexical deep-recursion layer
+        ↓
+further recursion
 ```
 
 ## First deep recursion
 
-The semantic relationships among the floor word gonols are **the first layer of deep recursion**.
+The semantic relationships expressed by a dictionary definition are themselves the first lexical deep-recursion layer. They are not metadata awaiting a later embedding step.
 
-They are not metadata collected in preparation for a later deep-recursion embedding, and they are not a temporary semantic carrier waiting to be transformed into one.
-
-For a floor word `w` and one admitted sense, the definition establishes an ordered, occurrence-preserving relation among already-existing floor gonols:
+For a dictionary entry `w` and one source sense:
 
 ```text
-target floor gonol G(w)
+target word gonol G(w)
         ↓
-ordered semantic relations to G(w1), G(w2), ... G(wn), with every wi ∈ F
+ordered semantic relations to the word gonols occurring in the definition
         ↓
 definition gonol for (w, sense)
 ```
 
-That definition gonol is the depth-plus-one UCNS object constituted by those semantic relationships. Constructing those relationships is therefore constructing the first deep-recursion layer itself.
+The definition gonol is the depth-plus-one UCNS object constituted by those source-bound semantic relationships.
 
-No additional lexical "embedding step" sits between the semantic relationships and this first recursive layer.
+## No fixed-floor closure
 
-## No tokenizer layer
+The former rule
 
-This construction does not introduce conventional NLP tokens, token ids, subword pieces, or an external embedding lookup.
+```text
+support(definition_gonol) ⊆ fixed NGSL floor
+```
 
-The lexical objects participating in a definition are already-existing floor gonols. Unicode character gonols remain the primitive inscription objects from which floor words were constructed.
+is DEPRECATED and has no forward authority.
 
-Source prose may be retained for custody and replay, but arbitrary definition text is not itself the semantic representation.
+A definition is not rejected merely because it uses a word absent from NGSL or another preselected word list. Lexical support is derived from the selected dictionary evidence under explicit provenance rather than forced to close over an artificial subset.
+
+The exact treatment of a definition word that is not separately present as a headword in the selected dictionary remains a source-ingestion boundary to freeze after the exact dictionary is pinned. It is not permission to resurrect the NGSL closure rule.
+
+## Preserved invariants
+
+The replacement does not introduce a conventional NLP token layer. Preserve:
+
+- Unicode-character gonols as primitive inscription objects;
+- exact word spelling and ordered character composition;
+- target word identity;
+- constituent order, multiplicity, and occurrence position;
+- sense identity;
+- source identity and source-text custody;
+- deterministic replay and immutable receipts;
+- multiple senses as distinct definition gonols;
+- semantic relations themselves as the first recursion.
+
+Token IDs, subword IDs, opaque vector embeddings, and whole-string hashes are not substitutes for these objects.
+
+## PR #205 status
+
+`src/ucns/lexical_definition_gonols.py`, merged in PR #205, established useful fail-closed machinery for preserving target, sense, context, source, order, repeated occurrences, provenance, replay, and receipts.
+
+Its **NGSL-specific closed-floor semantics are deprecated**:
+
+- requiring every constituent to be inside the fixed NGSL word set;
+- requiring complete coverage of exactly 2,809 NGSL targets;
+- treating the NGSL source receipt as the current lexical authority.
+
+Those requirements remain valid only for historical reproduction of the PR #205 experiment. The reusable provenance/order/receipt mechanism should be generalized to the dictionary corpus rather than discarded.
 
 ## Semantic role
 
-A floor-definition gonol is the UCNS semantic-representation analogue of a conventional vector embedding: it gives a floor word a relational semantic representation built from other already-known lexical objects rather than assigning the word an opaque coordinate vector.
+Dictionary-derived definition gonols are intended to occupy the semantic-representation role commonly served by vector embeddings while remaining decomposable into source-bound UCNS relations. That is a role statement, not an efficacy claim.
 
-This is a role analogy, not an efficacy claim. No semantic benchmark, similarity metric, downstream prediction advantage, or equivalence to established vector embeddings is established by this declaration.
+No semantic metric, similarity quality, benchmark advantage, or downstream utility is established until the dictionary corpus is instantiated and separately evaluated.
 
-Multiple senses remain distinct. A word may have multiple floor-definition gonols, each separately source- and context-bound, without averaging them into one representation or rewriting the underlying word gonol.
+## Next implementation
 
-Because the definition gonols are themselves gonols, they are available as objects for subsequent recursive layers. The existence of those later layers does not demote the definition relationships to a pre-recursive representation.
-
-## Executable construction
-
-`src/ucns/lexical_definition_gonols.py` implements the declared construction.
-It accepts source-receipted definition evidence only after every ordered
-constituent has been resolved to an exact existing floor-gonol identity. It
-constructs one occurrence node per constituent, preserves order and repetition,
-binds target, sense, context, source record, source-text digest, floor receipt,
-and definition-source receipt into the definition-gonol identity, and rejects
-the entire proposal when any endpoint is outside the floor.
-
-The complete-layer constructor admits no partial result: every submitted record
-must construct, the source receipt count must match, and at least one separate
-sense must target every word gonol in the exact floor. Its canonical receipt
-replays all definition-gonol identities and the complete covered-target
-inventory. Intrinsic carriers contain only dense integer occurrences and the
-fixed definition-constituent relation code. They attach no geometry or
-measurement.
-
-`src/ucns/lexical_floor.py` v0.2 still exposes `DefinitionSense.definition` as
-arbitrary historical text. That older surface remains
-historical/provenance-capable infrastructure and is not the new definition
-gonol.
-
-Historical wording in `src/ucns/lexical_floor.py` that broadly leaves a "deep-recursion hyperdimensional embedding law" unresolved is superseded for this boundary: the first deep-recursion lexical layer is fixed as the semantic relationships created by closed floor definitions. What remains unresolved is a complete authorized source corpus and whatever recursion lies above this executable layer, not whether these relationships count as deep recursion.
-
-## Construction protocol
-
-1. Keep the admitted lexical floor fixed.
-2. Create definitions whose lexical constituents are all existing floor gonols.
-3. Fail closed on every proposed floor definition that requires lexical material outside the floor.
-4. Preserve constituent order, multiplicity, occurrence position, target-word identity, sense identity, context, source, and provenance.
-5. Materialize the semantic relationships from the target word gonol to the floor gonols participating in each definition.
-6. Treat that ordered semantic relationship object as the first deep-recursion definition gonol for the sense; do not insert a separate pre-embedding or later conversion step.
-7. Emit source-bound receipts that permit exact replay from the fixed floor identity plus the semantic relationship evidence.
-8. Preserve multiple senses as separate definition gonols.
-9. Only after this representation exists, evaluate whether the resulting first-recursion semantic structure performs the work for which conventional systems use vector embeddings.
-
-## Nonclaims
-
-This document does not select a dictionary source, invent missing definitions, choose a semantic similarity metric, establish the recursion law above the definition-gonol layer, activate EDCM, or establish PTCNA efficacy.
+1. Pin the exact authorized Scrabble dictionary edition/source and custody/redistribution boundary.
+2. Freeze the machine-readable acquisition and normalization procedure before inspecting derived semantic structure.
+3. Construct dictionary word gonols from Unicode-character gonols.
+4. Preserve every definition sense and ordered/repeated lexical occurrence.
+5. Generalize the PR #205 producer to dictionary-source receipts and remove NGSL closure/2,809-coverage gates.
+6. Emit exact replayable first-recursion definition-gonol receipts.
+7. Preserve the old NGSL path as historical only.
+8. Evaluate semantic behavior only after construction is complete.
 
 ## hmmm
 
-The floor is fixed, definitions cannot expand it, their semantic relationships
-are the first deep-recursion layer, and the executable representation now fails
-closed on that boundary. The living boundaries are an authorized source/custody
-procedure that actually supplies at least one closed definition for every floor
-word, and the deeper recursion that consumes completed definition gonols.
+The exact Scrabble dictionary edition/source, its machine-readable acquisition and legal custody boundary, and the treatment of definition lexical material not separately listed as headwords remain unresolved until source selection is pinned. Recursion above the dictionary definition-gonol layer remains separately open.
