@@ -65,11 +65,15 @@ identity-only control, one existing anchor, ordered context multiplicities,
 thresholds, and failure behavior before an evaluator can produce a result. It
 does not add a usefulness, grammar, parser, or precedence result to this table.
 
-The first exact execution is `BLOCKED`, as recorded in
-`docs/PUBLIC_GONOL_CONTEXTUAL_EVALUATION_RESULT.md`: its first complete OEWN
-source build exceeded the frozen 420-second bound before a contextual metric or
-semantic receipt was emitted. This is neither a failing nor a surviving
-function-table result, and it cannot be retried under the exhausted protocol.
+The historical first execution is preserved as a deprecated `BLOCKED` receipt
+because it contained an unauthorized arbitrary 420-second runtime bound. The
+current protocol identity is
+`ucns.public-gonol-contextual-protocol:sha256:6129ef20a93eb925e95a52af11341a30f933302be1f60024e42215611abe6e3d`;
+it preserves the table, anchor, contexts, control, metrics, and two-build
+replay while applying current resource-run doctrine. The replacement result
+completed both source builds with byte-identical replay and status
+`SURVIVED — not proved`; it is recorded in
+`docs/PUBLIC_GONOL_CONTEXTUAL_EVALUATION_RESULT.md`.
 
 ## Contextual application
 

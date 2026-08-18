@@ -40,6 +40,10 @@ def test_protocol_freezes_sources_controls_thresholds_and_nonclaims() -> None:
     assert protocol.required_baseline_distinct_results == 1
     assert protocol.required_context_changes_per_index == 2
     assert protocol.independent_replays == 2
+    assert protocol.required_full_source_builds == 2
+    assert protocol.wall_clock_stopping_rule == "none-natural-terminal-condition"
+    assert protocol.memory_stopping_rule == "none-observe-only"
+    assert protocol.artificial_resource_limit_applied is False
     assert protocol.selection_effect == "none"
     assert protocol.outcome_recorded is False
     with pytest.raises(PublicGonolContextualProtocolError, match="source evidence"):
@@ -50,6 +54,8 @@ def test_protocol_freezes_sources_controls_thresholds_and_nonclaims() -> None:
         replace(protocol, contexts=CONTEXTS[:-1])
     with pytest.raises(PublicGonolContextualProtocolError, match="thresholds"):
         replace(protocol, required_context_changes_per_index=1)
+    with pytest.raises(PublicGonolContextualProtocolError, match="resource-run doctrine"):
+        replace(protocol, wall_clock_stopping_rule="420-second-timeout")
     with pytest.raises(PublicGonolContextualProtocolError, match="outcome"):
         replace(protocol, outcome_recorded=True)
 

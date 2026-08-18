@@ -121,6 +121,10 @@ def _capability_available(name: str) -> bool:
         return True
     if name == "posix_shell":
         return os.name == "posix" and shutil.which("sh") is not None
+    if name == "posix_resource":
+        return os.name == "posix" and importlib.util.find_spec("resource") is not None
+    if name == "sched_affinity":
+        return hasattr(os, "sched_getaffinity") and hasattr(os, "sched_setaffinity")
     if name in {"libmpfr", "system-libmpfr"}:
         return ctypes.util.find_library("mpfr") is not None
     if name in {"mpmath", "numpy", "sympy", "pytest"}:
