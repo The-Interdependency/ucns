@@ -1,109 +1,124 @@
-# Dictionary definition gonols — first lexical deep recursion
+# Definition gonols — semantic relationships enter gonols
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-08-17  
-**Corrected:** 2026-08-17  
-**Status:** active replacement boundary; prior lexical-floor closure DEPRECATED  
+**Corrected:** 2026-08-18  
+**Status:** active first lexical deep-recursion boundary  
 
-## Replacement boundary
+Read `docs/LEXICAL_RECURSION_ARCHITECTURE.md` first. It is the current construction architecture for Codex.
 
-The earlier fixed lexical-floor model is deprecated. NGSL 1.2 is a word list, not a dictionary, and no longer defines the active lexical universe or a closure requirement for semantic definitions.
+## Source correction
 
-A **Scrabble dictionary** is authorized as the replacement lexical source class. The exact edition/source identity and custody boundary must be pinned before corpus ingestion.
+The NGSL 1.2 lexical-floor premise remains **DEPRECATED**. The later Scrabble-dictionary replacement is now **SUPERSEDED** for this work.
 
-The active construction is:
+Current source roles are:
 
 ```text
-Unicode character gonols
-        ↓
-dictionary lexical entries / words
-        ↓
-word gonols
-        ↓
-source-bound dictionary definitions and senses
-        ↓
-ordered semantic relationships among word gonols
-        ↓
-definition gonols = first lexical deep-recursion layer
-        ↓
-further recursion
+xkcd constrained-English 1,000-word vocabulary
+    -> lexical-floor candidate
+
+Open English WordNet 2025 Core
+    -> primary contemporary lexical-semantic corpus
+
+Webster 1913
+    -> deferred / not in current execution graph
 ```
+
+The exact xkcd artifact identity and exact OEWN 2025 Core release bytes / immutable source receipt must be pinned before evidence-producing materialization.
 
 ## First deep recursion
 
-The semantic relationships expressed by a dictionary definition are themselves the first lexical deep-recursion layer. They are not metadata awaiting a later embedding step.
-
-For a dictionary entry `w` and one source sense:
+For a source lexical sense, semantic relationships expressed by its definition do not remain external metadata. They **enter the gonol**.
 
 ```text
-target word gonol G(w)
+atomic word gonols participating in one source definition
         ↓
-ordered semantic relations to the word gonols occurring in the definition
+ordered source-backed semantic relationship
         ↓
-definition gonol for (w, sense)
+relationship becomes intrinsic to definition gonol
+        ↓
+closure
+        ↓
+definition gonol is atomic at the next scale
 ```
 
-The definition gonol is the depth-plus-one UCNS object constituted by those source-bound semantic relationships.
+The completed definition gonol is the first lexical deep-recursion semantic object for that source sense. There is no separate vector-embedding conversion step and no authoritative sidecar semantic graph that substitutes for the gonol.
 
-## No fixed-floor closure
+## Atomicity
 
-The former rule
+A word gonol is built from character gonols, but once the word gonol exists it is atomic for morphology and definition construction.
+
+A definition gonol is built from word gonols, but once the definition gonol exists it is atomic for further recursion.
+
+Atomicity does not erase internal construction. Provenance and replay remain available. It means the next scale consumes the completed gonol as one object rather than re-expanding its constituents on every use.
+
+## Preserved PR #205 machinery
+
+`src/ucns/lexical_definition_gonols.py`, merged in PR #205, established useful implementation machinery for:
+
+- target identity;
+- sense and context identity;
+- exact source identity;
+- constituent order;
+- multiplicity and repeated occurrences;
+- provenance;
+- deterministic replay; and
+- immutable receipts.
+
+Reuse and generalize that machinery.
+
+Its NGSL-specific semantics remain historical only:
+
+- fixed NGSL closure;
+- rejection solely because a constituent is outside NGSL;
+- complete coverage of exactly 2,809 targets; and
+- NGSL source receipt as active lexical authority.
+
+## Definition construction
+
+For OEWN 2025 Core:
+
+1. retain lexical-entry / lemma identity;
+2. retain part of speech;
+3. retain source sense / synset identity;
+4. retain exact source gloss and source custody;
+5. resolve each lexical occurrence into its gonol construction without introducing token IDs, subword IDs, opaque embeddings, or whole-string hashes;
+6. preserve occurrence order and repetition;
+7. incorporate the semantic relationship into the definition gonol itself;
+8. close the gonol and treat it as atomic for the next recursive pass.
+
+Where a definition uses an inscription that does not yet have a dictionary-defined lexical sense, the inscription may still be constructed from character gonols. Do not resurrect the NGSL closure rule merely to reject it. Whether that inscription receives a source-defined semantic sense depends on the selected OEWN evidence.
+
+## Recursion
+
+Continue across the selected OEWN Core definition corpus until every source definition in scope has been gonolized and incorporated. Completed identical gonols are reused rather than textually re-expanded.
+
+A complete pass that yields no new source-backed gonol identity or relationship after the declared source scope is exhausted is the stopping boundary.
+
+## Morphology boundary
+
+Morphology precedes definition recursion, but the exact root / stem / affix / transformation law is not selected. Do not import the historical three-core morphology model or a generic stemmer as current canon.
+
+Affixiation is scale-invariant in the broader UCNS sense: coupling enters a gonol, closes, and the result becomes atomic. Morphological affixiation is one linguistic manifestation of that operation.
+
+## Native OEWN relation labels
+
+OEWN's native semantic-relation labels are source evidence, but this construction is defined by:
 
 ```text
-support(definition_gonol) ⊆ fixed NGSL floor
+characters -> morphology -> definitions -> recursive gonol relations
 ```
 
-is DEPRECATED and has no forward authority.
+Do not silently introduce the native OEWN relation graph as a separate semantic mechanism. Preserve it with provenance; its later participation remains `hmmm` until explicitly selected.
 
-A definition is not rejected merely because it uses a word absent from NGSL or another preselected word list. Lexical support is derived from the selected dictionary evidence under explicit provenance rather than forced to close over an artificial subset.
+## Nonclaims
 
-The exact treatment of a definition word that is not separately present as a headword in the selected dictionary remains a source-ingestion boundary to freeze after the exact dictionary is pinned. It is not permission to resurrect the NGSL closure rule.
-
-## Preserved invariants
-
-The replacement does not introduce a conventional NLP token layer. Preserve:
-
-- Unicode-character gonols as primitive inscription objects;
-- exact word spelling and ordered character composition;
-- target word identity;
-- constituent order, multiplicity, and occurrence position;
-- sense identity;
-- source identity and source-text custody;
-- deterministic replay and immutable receipts;
-- multiple senses as distinct definition gonols;
-- semantic relations themselves as the first recursion.
-
-Token IDs, subword IDs, opaque vector embeddings, and whole-string hashes are not substitutes for these objects.
-
-## PR #205 status
-
-`src/ucns/lexical_definition_gonols.py`, merged in PR #205, established useful fail-closed machinery for preserving target, sense, context, source, order, repeated occurrences, provenance, replay, and receipts.
-
-Its **NGSL-specific closed-floor semantics are deprecated**:
-
-- requiring every constituent to be inside the fixed NGSL word set;
-- requiring complete coverage of exactly 2,809 NGSL targets;
-- treating the NGSL source receipt as the current lexical authority.
-
-Those requirements remain valid only for historical reproduction of the PR #205 experiment. The reusable provenance/order/receipt mechanism should be generalized to the dictionary corpus rather than discarded.
-
-## Semantic role
-
-Dictionary-derived definition gonols are intended to occupy the semantic-representation role commonly served by vector embeddings while remaining decomposable into source-bound UCNS relations. That is a role statement, not an efficacy claim.
-
-No semantic metric, similarity quality, benchmark advantage, or downstream utility is established until the dictionary corpus is instantiated and separately evaluated.
-
-## Next implementation
-
-1. Pin the exact authorized Scrabble dictionary edition/source and custody/redistribution boundary.
-2. Freeze the machine-readable acquisition and normalization procedure before inspecting derived semantic structure.
-3. Construct dictionary word gonols from Unicode-character gonols.
-4. Preserve every definition sense and ordered/repeated lexical occurrence.
-5. Generalize the PR #205 producer to dictionary-source receipts and remove NGSL closure/2,809-coverage gates.
-6. Emit exact replayable first-recursion definition-gonol receipts.
-7. Preserve the old NGSL path as historical only.
-8. Evaluate semantic behavior only after construction is complete.
+This document does not establish semantic efficacy, final morphology, compression ratio, lossless reconstruction, human-cognition universality, EDCM validity, or PTCNA efficacy.
 
 ## hmmm
 
-The exact Scrabble dictionary edition/source, its machine-readable acquisition and legal custody boundary, and the treatment of definition lexical material not separately listed as headwords remain unresolved until source selection is pinned. Recursion above the dictionary definition-gonol layer remains separately open.
+- exact xkcd 1,000-word source artifact identity;
+- exact OEWN 2025 Core release receipt for this producer;
+- morphology decomposition / transformation law;
+- executable direct interscale coupling representation;
+- later role of OEWN native semantic relation labels.
