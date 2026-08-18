@@ -37,7 +37,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-ucns = ["option_registry.json", "data/*.txt", "data/*.json"]
+ucns = ["option_registry.json", "data/*.txt", "data/*.json", "data/*.js"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
