@@ -2,7 +2,7 @@
 
 **Authority:** Erin Spencer  
 **Recorded:** 2026-08-18  
-**Status:** authority-declared construction architecture; implementation incomplete  
+**Status:** first deep-recursion layer implemented for the declared OEWN 2025 Core scope
 
 ## Current scope
 
@@ -226,12 +226,30 @@ This architecture does not yet establish:
 - EDCM measurement validity;
 - PTCNA efficacy.
 
+## Implemented boundary — 2026-08-18
+
+The current implementation pins the exact xkcd Simple Writer 0.2.1 artifact and
+OEWN 2025 Core source, constructs the xkcd atomic word candidate, inventories
+all OEWN morphology evidence, and constructs the complete OEWN definition
+layer in `src/ucns/oewn_definition_recursion.py`.
+
+The sealed receipt is
+`generated/oewn-2025-core-definition-layer-receipt.json`. It records 135,969
+lexical entries, 185,129 senses, 107,524 source definitions, 185,155 exact
+sense-definition gonols, 4,473 source-explicit form gonols, 52,913 composite
+word gonols, and 122,520 reused inscription gonols. A separate full rebuild is
+byte-identical at SHA-256
+`bcfbf0c724a8507e00d1d3205f32de2cce489731ce019a2f883e90abd56f7c5c`.
+
+The construction retains twenty carrier-unassigned source scalars as positive
+coverage-failure evidence. It does not normalize or discard them, and does not
+claim geometry for them. OEWN supplies forms but no explicit root/stem/affix
+decomposition records, so no final morphology law is selected.
+
 ## hmmm
 
-- exact xkcd 1,000-word artifact identity / bytes / custody;
-- exact OEWN 2025 Core release artifact and immutable source receipt used by the new UCNS producer;
 - the morphology decomposition / transformation law;
-- the executable Möbius glyph-axis representation that faithfully realizes path history and constrained future potential;
+- geometry for the twenty exact OEWN source scalars outside the current public 157-position carrier;
 - the exact representation of direct distant interscale coupling once gonols at separated scales exist;
 - whether and how OEWN native semantic-relation labels enter a later recursion after the definition-driven build;
 - quantitative compression and reconstruction tests after the recursive corpus exists.

@@ -682,6 +682,30 @@ from .lexical_definition_gonols import (
     build_floor_definition_gonol,
     definition_layer_receipt_bytes,
 )
+from .oewn_core import (
+    OEWNCoreError,
+    OEWNCoreSnapshot,
+    OEWNLexicalEntry,
+    OEWNMorphologyInventory,
+    OEWNSense,
+    OEWNSynset,
+    inventory_oewn_morphology,
+    load_oewn_core,
+)
+from .oewn_definition_recursion import (
+    COMPOSITION_RELATION_CODE,
+    MORPHOLOGY_FORM_RELATION_CODE,
+    OEWNCompositeWordGonol,
+    OEWNDefinitionGonol,
+    OEWNDefinitionLayer,
+    OEWNDefinitionOccurrence,
+    OEWNDefinitionRecursionError,
+    OEWNInscriptionGonol,
+    OEWNMorphologyGonol,
+    build_oewn_definition_layer,
+    definition_layer_bytes as oewn_definition_layer_bytes,
+    replay_oewn_definition_layer,
+)
 
 __all__ = [
     "LIFTED_PERIOD", "STRUCTURAL_NULL", "VISIBLE_PERIOD", "CarrierPoint",
@@ -986,4 +1010,13 @@ __all__ = [
     "FloorDefinitionEvidence", "FloorDefinitionGonol", "LexicalDefinitionError",
     "build_complete_definition_layer", "build_floor_definition_gonol",
     "definition_layer_receipt_bytes",
+    "OEWNCoreError", "OEWNCoreSnapshot", "OEWNLexicalEntry",
+    "OEWNMorphologyInventory", "OEWNSense", "OEWNSynset",
+    "inventory_oewn_morphology", "load_oewn_core",
+    "COMPOSITION_RELATION_CODE", "MORPHOLOGY_FORM_RELATION_CODE",
+    "OEWNCompositeWordGonol", "OEWNDefinitionGonol", "OEWNDefinitionLayer",
+    "OEWNDefinitionOccurrence", "OEWNDefinitionRecursionError",
+    "OEWNInscriptionGonol", "OEWNMorphologyGonol",
+    "build_oewn_definition_layer", "oewn_definition_layer_bytes",
+    "replay_oewn_definition_layer",
 ]
