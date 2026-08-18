@@ -17,7 +17,9 @@ not the completed floor semantic representation.
 The lexical floor is closed by definition. Once the floor is admitted, a floor
 definition cannot add another lexical word to it. The next semantic construction
 is therefore a definition gonol built only from already-existing floor gonols.
-See `docs/LEXICAL_DEFINITION_GONOLS.md`.
+The semantic relationships established by those definitions are the **first
+layer of UCNS deep recursion**. They are not a precursor to a later lexical
+embedding. See `docs/LEXICAL_DEFINITION_GONOLS.md`.
 
 ## Fixed boundaries
 
@@ -54,13 +56,19 @@ See `docs/LEXICAL_DEFINITION_GONOLS.md`.
    token ids, subword units, or an external vector lookup between the floor and
    its definition gonols.
 
-8. **Layers are immutable and authority-bound.** The hyperspace index and
+8. **Definition relations are first recursion.** The ordered semantic
+   relationships among the floor gonols used in a definition constitute the
+   first deep-recursion definition gonol for that sense. There is no separate
+   semantic-carrier or later lexical-embedding conversion step between those
+   relationships and the first recursive layer.
+
+9. **Layers are immutable and authority-bound.** The hyperspace index and
    currently implemented definition mapping are read-only defensive copies.
    Relationship, morphology, definition, source, and snapshot standings reject
    caller promotion. The current text-bearing definition layer does not satisfy
-   the new definition-gonol closure contract by itself.
+   the new definition-gonol closure/recursion contract by itself.
 
-9. **Snapshots remain source-linked.** Every current v0.2 layer records the same
+10. **Snapshots remain source-linked.** Every current v0.2 layer records the same
    source-receipt identity, exact producer, ordered parent, item count, content
    digest, fixed standing, and required `hmmm`. Altering the source, standing,
    unresolved boundary, or parent chain fails validation.
@@ -78,7 +86,7 @@ See `docs/LEXICAL_DEFINITION_GONOLS.md`.
 Later metadata cannot rewrite an earlier source object or snapshot. Layer 7 is
 not the completed semantic definition-gonol layer.
 
-## Required next semantic layer
+## Required first deep-recursion semantic layer
 
 For a fixed lexical floor `F`, every floor-definition gonol must satisfy:
 
@@ -89,6 +97,16 @@ support(definition_gonol(word, sense)) ⊆ F
 Its lexical constituents are existing floor gonols. Definitions do not admit
 new words and do not recursively expand the floor. Multiple senses remain
 separate definition gonols with separate context and source provenance.
+
+For each sense, the construction is:
+
+```text
+target floor gonol
+        ↓
+ordered, occurrence-preserving semantic relationships to constituent floor gonols
+        ↓
+definition gonol = first deep-recursion layer
+```
 
 The floor-definition gonol is intended to perform the semantic-representation
 role for which conventional systems commonly use vector embeddings, while
@@ -118,9 +136,16 @@ surface may retain source prose and provenance, but arbitrary text is not itself
 a floor-definition gonol.
 
 The replacement semantic construction must resolve every lexical constituent to
-an already-existing floor gonol, preserve order/multiplicity/context/source, fail
-closed on out-of-floor lexical material, and construct an immutable definition
-gonol from those floor objects.
+an already-existing floor gonol, preserve order, multiplicity, occurrence,
+context and source, fail closed on out-of-floor lexical material, and materialize
+the ordered semantic relations as the first-recursion definition gonol.
+
+Historical broad wording in the v0.2 implementation that leaves a
+"deep-recursion hyperdimensional embedding law" unresolved must be read narrowly:
+the first lexical deep-recursion layer is now fixed by authority as the closed
+semantic definition relationships. What remains unresolved is implementing that
+layer and the deeper recursion above it, not whether those relationships are
+already recursion.
 
 ## Source and attribution files
 
@@ -150,8 +175,8 @@ The current v0.2 test slice exercises:
 
 The required next test slice must additionally reject any floor definition whose
 lexical support is not a subset of the admitted floor and must replay each
-accepted definition gonol from exact floor-gonol identities plus relation/order
-provenance.
+accepted first-recursion definition gonol from exact floor-gonol identities plus
+relation/order/occurrence provenance.
 
 ## Nonclaims
 
@@ -162,16 +187,19 @@ This slice does not provide:
 - adjudicated compound-word status;
 - a completed closed definition-gonol corpus;
 - a semantic metric or demonstrated vector-embedding replacement advantage;
-- geometric coordinates for lexical relationships;
-- the seven-gonol construction or pairing plan;
-- deep-recursion hyperdimensional embedding; or
+- complete machine realization of the first deep-recursion definition layer;
+- the recursion law above the definition-gonol layer;
+- geometric coordinates for every lexical relationship;
+- the seven-gonol construction or pairing plan; or
 - EDCM measurement activation.
 
 ## hmmm
 
 The 2,809 spellings now form one source-bound, occurrence-preserving lexical
 floor. That floor is not permitted to expand through its definitions. The next
-living boundary is construction of closed floor-definition gonols entirely from
-already-admitted floor gonols, including the exact order/relation composition
-law and source/custody procedure. Official-source checksum custody, attested
-morphology, selector-role interrogation, and deeper UCNS recursion remain open.
+living boundary is construction of the first deep-recursion layer by materializing
+closed floor-definition gonols from semantic relationships among already-admitted
+floor gonols, together with the source/custody procedure for a complete closed
+definition set. Official-source checksum custody, attested morphology,
+selector-role interrogation, and recursion above the definition-gonol layer
+remain open.
