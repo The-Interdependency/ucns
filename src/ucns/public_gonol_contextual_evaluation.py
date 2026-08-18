@@ -2,17 +2,17 @@
 # id: ucns_public_gonol_contextual_evaluation
 #   module_name: public_gonol_contextual_evaluation
 #   module_kind: experiment
-#   summary: executes the merged frozen Public Gonol contextual structural protocol with two source rebuilds and an independent direct application replay
+#   summary: executes the resource-run-compliant Public Gonol contextual structural protocol with two source rebuilds and an independent direct application replay
 #   owner: Erin Spencer
 #   public_surface: execute_public_gonol_contextual_protocol, semantic_evaluation_bytes, resource_observation_bytes, main
-#   internal_surface: _validated_source_build, _evaluate_table, _direct_contextual_application, _resource_observation
+#   internal_surface: _resource_preflight, _validated_source_build, _evaluate_table, _direct_contextual_application, _resource_observation
 #   auth_boundary: frozen Public Gonol contextual protocol only; evaluator cannot revise it
 #   storage_boundary: caller-selected deterministic semantic receipt plus separate runtime observation receipt
 #   network_boundary: none; exact local OEWN source checkout required
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_public_gonol_contextual_evaluation
-#   rollout: child execution of merged protocol a62de5bf2451d9ff0b7ff738566810c3dc796aae
+#   rollout: child execution of resource-run repair protocol superseding the historical 420-second blocked execution
 #   rollback: remove execution output while preserving protocol, source receipts, and recorded result evidence
 #   requires: ucns_public_gonol_contextual_protocol, ucns_public_gonol_function_table
 #   since: 2026-08-18
@@ -22,7 +22,7 @@
 # === CONTRACTS ===
 # id: public_gonol_contextual_evaluation_consumes_merged_protocol
 #   given: the contextual structural evaluator is executed
-#   then: it accepts only the exact merged protocol sources, anchor, target set, contexts, control, thresholds, and resource bounds
+#   then: it accepts only the exact resource-run-compliant protocol sources, anchor, target set, contexts, control, thresholds, and natural terminal stopping rule
 #   class: safety
 #   since: 2026-08-18
 #
@@ -39,13 +39,20 @@
 #   since: 2026-08-18
 # === END CONTRACTS ===
 
-"""Execute the merged Public Gonol contextual structural evaluation.
+"""Execute the Public Gonol contextual structural evaluation.
 
 The deterministic semantic receipt intentionally excludes elapsed time and peak
 memory so the two independent source builds can be compared byte-for-byte.
-Those runtime observations are emitted in a separate receipt and are still
-enforced against the frozen limits.  This module evaluates the frozen table;
-it does not interpret punctuation or introduce a grammar.
+Those runtime observations are emitted in a separate receipt.  The resource-run
+repair protocol deliberately applies no artificial wall-clock or memory cutoff:
+resource scarcity is preflighted before launch, and a started healthy run is
+allowed to reach its natural terminal condition.  This module evaluates the
+frozen table; it does not interpret punctuation or introduce a grammar.
+
+Usage:
+    python -m ucns.public_gonol_contextual_evaluation SOURCE_REPO SEMANTIC_JSON RESOURCES_JSON
+
+Run only after resource preflight supports completing both full source builds.
 """
 
 from __future__ import annotations
@@ -53,12 +60,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import argparse
-from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 from time import perf_counter_ns
 import resource
-import signal
+import shutil
 from typing import Mapping, Sequence
 
 from .edcm import public_gonol_sha256
@@ -89,7 +96,7 @@ from .relational_carrier import build_relational_carrier
 EVALUATION_SCHEMA_ID = "ucns.public-gonol-contextual-evaluation"
 RESOURCE_SCHEMA_ID = "ucns.public-gonol-contextual-resource-observations"
 EVALUATION_SCHEMA_VERSION = "1.0.0"
-MERGED_PROTOCOL_COMMIT = "a62de5bf2451d9ff0b7ff738566810c3dc796aae"
+MERGED_PROTOCOL_COMMIT = "agent/public-gonol-contextual-resource-run-repair"
 EVALUATION_STANDING = "frozen-contextual-structural-control-result"
 
 
@@ -98,7 +105,7 @@ class PublicGonolContextualEvaluationError(ValueError):
 
 
 class PublicGonolContextualEvaluationBlocked(RuntimeError):
-    """Raised when exact source evidence or frozen resource bounds are absent."""
+    """Raised when exact source evidence or preflight requirements are absent."""
 
 
 def _canonical_bytes(value: object) -> bytes:
@@ -304,50 +311,60 @@ def _validated_source_build(
     )
 
 
+def _meminfo_available_bytes() -> int | None:
+    meminfo = Path("/proc/meminfo")
+    if not meminfo.is_file():
+        return None
+    for line in meminfo.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if line.startswith("MemAvailable:"):
+            parts = line.split()
+            if len(parts) >= 2:
+                return int(parts[1]) * 1024
+    return None
+
+
+def _resource_preflight(source_repo: str | Path) -> Mapping[str, object]:
+    """Inspect scarce resources before launching the complete compute run."""
+
+    source_path = Path(source_repo)
+    source_exists = source_path.is_dir()
+    worktree_usage = shutil.disk_usage(Path.cwd())
+    source_usage = shutil.disk_usage(source_path if source_exists else Path.cwd())
+    return {
+        "source_repo": str(source_path),
+        "source_repo_exists": source_exists,
+        "cpu_count": os.cpu_count(),
+        "mem_available_bytes": _meminfo_available_bytes(),
+        "worktree_free_bytes": worktree_usage.free,
+        "source_filesystem_free_bytes": source_usage.free,
+        "network_required": False,
+        "api_quota_required": False,
+        "artificial_wall_clock_limit": None,
+        "artificial_memory_limit_bytes": None,
+        "stopping_rule": "natural terminal condition",
+        "can_start": source_exists,
+        "failure_reason": None if source_exists else "exact local OEWN source checkout is absent",
+    }
+
+
 def _resource_observation(
     ordinal: int,
     started_ns: int,
     protocol: PublicGonolContextualProtocol,
+    terminal_condition: str,
 ) -> Mapping[str, object]:
     elapsed_ns = perf_counter_ns() - started_ns
     peak_memory_bytes = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024
-    within_limits = (
-        elapsed_ns <= protocol.max_wall_seconds_per_build * 1_000_000_000
-        and peak_memory_bytes <= protocol.max_memory_bytes_per_build
-    )
     return {
         "full_source_build_ordinal": ordinal,
         "elapsed_nanoseconds": elapsed_ns,
         "peak_process_memory_bytes": peak_memory_bytes,
-        "within_frozen_limits": within_limits,
+        "terminal_condition": terminal_condition,
+        "resource_run_doctrine_id": protocol.resource_run_doctrine_id,
+        "wall_clock_stopping_rule": protocol.wall_clock_stopping_rule,
+        "memory_stopping_rule": protocol.memory_stopping_rule,
+        "artificial_resource_limit_applied": protocol.artificial_resource_limit_applied,
     }
-
-
-@contextmanager
-def _wall_clock_limit(seconds: int):
-    """Fail closed at the registered per-build wall-clock limit on POSIX."""
-
-    if seconds <= 0:
-        raise PublicGonolContextualEvaluationError("wall-clock limit must be positive")
-    if not hasattr(signal, "setitimer"):
-        raise PublicGonolContextualEvaluationBlocked(
-            "POSIX wall-clock enforcement is unavailable for the frozen protocol",
-        )
-
-    def _expired(signum: int, frame: object) -> None:
-        del signum, frame
-        raise PublicGonolContextualEvaluationBlocked("frozen wall-clock bound exceeded")
-
-    previous_handler = signal.getsignal(signal.SIGALRM)
-    signal.signal(signal.SIGALRM, _expired)
-    previous_timer = signal.setitimer(signal.ITIMER_REAL, seconds)
-    try:
-        yield
-    finally:
-        signal.setitimer(signal.ITIMER_REAL, 0)
-        signal.signal(signal.SIGALRM, previous_handler)
-        if previous_timer != (0.0, 0.0):
-            signal.setitimer(signal.ITIMER_REAL, *previous_timer)
 
 
 def _semantic_run(
@@ -357,18 +374,21 @@ def _semantic_run(
 ) -> tuple[_SemanticRun | None, Mapping[str, object], str | None]:
     started_ns = perf_counter_ns()
     try:
-        with _wall_clock_limit(protocol.max_wall_seconds_per_build):
-            source_build = _validated_source_build(source_repo, protocol)
-            metric = _metric_payload(source_build.table, protocol)
+        source_build = _validated_source_build(source_repo, protocol)
+        metric = _metric_payload(source_build.table, protocol)
     except PublicGonolContextualEvaluationBlocked as error:
-        resource_observation = _resource_observation(ordinal, started_ns, protocol)
+        resource_observation = _resource_observation(
+            ordinal, started_ns, protocol, "blocked-before-complete-source-build",
+        )
         return None, resource_observation, str(error)
     except PublicGonolFunctionError as error:
-        resource_observation = _resource_observation(ordinal, started_ns, protocol)
+        resource_observation = _resource_observation(
+            ordinal, started_ns, protocol, "function-table-construction-error",
+        )
         return None, resource_observation, f"function-table construction failed: {error}"
-    resource_observation = _resource_observation(ordinal, started_ns, protocol)
-    if not resource_observation["within_frozen_limits"]:
-        return None, resource_observation, "frozen resource bound exceeded"
+    resource_observation = _resource_observation(
+        ordinal, started_ns, protocol, "completed-source-build-and-contextual-metric",
+    )
     payload = {
         "schema_id": EVALUATION_SCHEMA_ID,
         "schema_version": EVALUATION_SCHEMA_VERSION,
@@ -419,74 +439,68 @@ def execute_public_gonol_contextual_protocol(
 
     if protocol != PUBLIC_GONOL_CONTEXTUAL_PROTOCOL:
         raise PublicGonolContextualEvaluationError("only the merged frozen protocol is admissible")
-    first, first_resources, first_blocker = _semantic_run(source_repo, protocol, 1)
-    resources: list[Mapping[str, object]] = [first_resources]
-    if first is None:
+    preflight = _resource_preflight(source_repo)
+    resources: list[Mapping[str, object]] = []
+    if preflight["can_start"] is not True:
         semantic_payload = {
             "schema_id": EVALUATION_SCHEMA_ID,
             "schema_version": EVALUATION_SCHEMA_VERSION,
             "merged_protocol_commit": MERGED_PROTOCOL_COMMIT,
             "protocol_id": protocol.protocol_id,
             "status": BLOCKED_STATUS,
-            "blocked_reason": first_blocker,
-            "completed_full_source_builds": 1,
-            "standing": EVALUATION_STANDING,
-            "nonclaims": list(protocol.as_payload()["nonclaims"]),
-        }
-    elif first.status == NEGATIVE_STATUS:
-        semantic_payload = {
-            "schema_id": EVALUATION_SCHEMA_ID,
-            "schema_version": EVALUATION_SCHEMA_VERSION,
-            "merged_protocol_commit": MERGED_PROTOCOL_COMMIT,
-            "protocol_id": protocol.protocol_id,
-            "status": NEGATIVE_STATUS,
-            "completed_full_source_builds": 1,
-            "semantic_run_receipt_sha256": sha256(first.receipt_bytes).hexdigest(),
-            "semantic_run": first.payload,
+            "blocked_reason": preflight["failure_reason"],
+            "completed_full_source_builds": 0,
             "standing": EVALUATION_STANDING,
             "nonclaims": list(protocol.as_payload()["nonclaims"]),
         }
     else:
-        second, second_resources, second_blocker = _semantic_run(source_repo, protocol, 2)
-        resources.append(second_resources)
-        if second is None:
+        runs: list[_SemanticRun | None] = []
+        blockers: list[str | None] = []
+        for ordinal in range(1, protocol.required_full_source_builds + 1):
+            run, run_resources, blocker = _semantic_run(source_repo, protocol, ordinal)
+            runs.append(run)
+            resources.append(run_resources)
+            blockers.append(blocker)
+        complete_runs = [run for run in runs if run is not None]
+        if len(complete_runs) != protocol.required_full_source_builds:
             semantic_payload = {
                 "schema_id": EVALUATION_SCHEMA_ID,
                 "schema_version": EVALUATION_SCHEMA_VERSION,
                 "merged_protocol_commit": MERGED_PROTOCOL_COMMIT,
                 "protocol_id": protocol.protocol_id,
                 "status": BLOCKED_STATUS,
-                "blocked_reason": second_blocker,
-                "completed_full_source_builds": 2,
-                "first_semantic_run_receipt_sha256": sha256(first.receipt_bytes).hexdigest(),
-                "standing": EVALUATION_STANDING,
-                "nonclaims": list(protocol.as_payload()["nonclaims"]),
-            }
-        elif first.receipt_bytes != second.receipt_bytes:
-            semantic_payload = {
-                "schema_id": EVALUATION_SCHEMA_ID,
-                "schema_version": EVALUATION_SCHEMA_VERSION,
-                "merged_protocol_commit": MERGED_PROTOCOL_COMMIT,
-                "protocol_id": protocol.protocol_id,
-                "status": NEGATIVE_STATUS,
-                "completed_full_source_builds": 2,
-                "first_semantic_run_receipt_sha256": sha256(first.receipt_bytes).hexdigest(),
-                "second_semantic_run_receipt_sha256": sha256(second.receipt_bytes).hexdigest(),
-                "byte_identical_independent_replay": False,
+                "blocked_reasons": [reason for reason in blockers if reason is not None],
+                "completed_full_source_builds": len(complete_runs),
                 "standing": EVALUATION_STANDING,
                 "nonclaims": list(protocol.as_payload()["nonclaims"]),
             }
         else:
+            first, second = complete_runs
+            byte_identical = first.receipt_bytes == second.receipt_bytes
+            run_statuses = [first.status, second.status]
+            semantic_run_hashes = [
+                sha256(first.receipt_bytes).hexdigest(),
+                sha256(second.receipt_bytes).hexdigest(),
+            ]
+            if all(status == POSITIVE_STATUS for status in run_statuses) and byte_identical:
+                status = POSITIVE_STATUS
+                semantic_run = first.payload
+            else:
+                status = NEGATIVE_STATUS
+                semantic_run = first.payload if byte_identical else None
             semantic_payload = {
                 "schema_id": EVALUATION_SCHEMA_ID,
                 "schema_version": EVALUATION_SCHEMA_VERSION,
                 "merged_protocol_commit": MERGED_PROTOCOL_COMMIT,
                 "protocol_id": protocol.protocol_id,
-                "status": POSITIVE_STATUS,
-                "completed_full_source_builds": 2,
-                "semantic_run_receipt_sha256": sha256(first.receipt_bytes).hexdigest(),
-                "semantic_run": first.payload,
-                "byte_identical_independent_replay": True,
+                "status": status,
+                "completed_full_source_builds": len(complete_runs),
+                "semantic_run_receipt_sha256": semantic_run_hashes[0],
+                "first_semantic_run_receipt_sha256": semantic_run_hashes[0],
+                "second_semantic_run_receipt_sha256": semantic_run_hashes[1],
+                "run_statuses": run_statuses,
+                "byte_identical_independent_replay": byte_identical,
+                "semantic_run": semantic_run,
                 "standing": EVALUATION_STANDING,
                 "nonclaims": list(protocol.as_payload()["nonclaims"]),
             }
@@ -495,10 +509,13 @@ def execute_public_gonol_contextual_protocol(
         "schema_id": RESOURCE_SCHEMA_ID,
         "schema_version": EVALUATION_SCHEMA_VERSION,
         "semantic_evaluation_sha256": sha256(semantic_bytes).hexdigest(),
+        "resource_preflight": preflight,
         "resource_observations": resources,
-        "all_observations_within_frozen_limits": all(
-            item["within_frozen_limits"] for item in resources
+        "all_observations_reached_natural_terminal_condition": all(
+            item["terminal_condition"] == "completed-source-build-and-contextual-metric"
+            for item in resources
         ),
+        "artificial_resource_limit_applied": protocol.artificial_resource_limit_applied,
     }
     return semantic_bytes, resource_observation_bytes(resource_payload)
 

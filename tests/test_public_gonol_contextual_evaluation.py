@@ -13,9 +13,16 @@
 #   mutates: none
 #   cleanup: none
 #
-# id: public_gonol_contextual_evaluation_resource_limit_check
+# id: public_gonol_contextual_evaluation_two_build_check
+#   proves: public_gonol_contextual_evaluation_replays_source_and_application_independently
+#   call: self::test_executor_runs_two_source_builds_before_decision
+#   timeout: 20
+#   mutates: none
+#   cleanup: monkeypatch_teardown
+#
+# id: public_gonol_contextual_evaluation_resource_preflight_check
 #   proves: public_gonol_contextual_evaluation_consumes_merged_protocol
-#   call: self::test_wall_clock_limit_fails_closed_before_any_retry
+#   call: self::test_resource_preflight_records_no_artificial_runtime_bound
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -32,14 +39,14 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
+from ucns import public_gonol_contextual_evaluation as evaluation_module
 from ucns.edcm import PUBLIC_GONOL_SHA256
-import pytest
-import signal
 from ucns.public_gonol_contextual_evaluation import (
-    PublicGonolContextualEvaluationBlocked,
+    _SemanticRun,
     _direct_contextual_application,
     _metric_payload,
-    _wall_clock_limit,
+    _resource_preflight,
+    execute_public_gonol_contextual_protocol,
     semantic_evaluation_bytes,
 )
 from ucns.public_gonol_contextual_protocol import PUBLIC_GONOL_CONTEXTUAL_PROTOCOL
@@ -106,10 +113,44 @@ def test_direct_replay_matches_public_application_for_all_frozen_indices() -> No
             assert replay.result_atomic_gonol_id == primary.result_atomic_gonol_id
 
 
-def test_wall_clock_limit_fails_closed_before_any_retry() -> None:
-    with pytest.raises(PublicGonolContextualEvaluationBlocked, match="wall-clock"):
-        with _wall_clock_limit(1):
-            signal.raise_signal(signal.SIGALRM)
+def test_executor_runs_two_source_builds_before_decision(monkeypatch, tmp_path) -> None:
+    calls: list[int] = []
+
+    def fake_preflight(source_repo):
+        return {"can_start": True, "failure_reason": None, "source_repo": str(source_repo)}
+
+    def fake_semantic_run(source_repo, protocol, ordinal):
+        del source_repo, protocol
+        calls.append(ordinal)
+        payload = {"metric": {"status": "FALSIFIED"}, "standing": "synthetic"}
+        return (
+            _SemanticRun(payload=payload, receipt_bytes=b"same-semantic-run\n", status="FALSIFIED"),
+            {
+                "full_source_build_ordinal": ordinal,
+                "terminal_condition": "completed-source-build-and-contextual-metric",
+            },
+            None,
+        )
+
+    monkeypatch.setattr(evaluation_module, "_resource_preflight", fake_preflight)
+    monkeypatch.setattr(evaluation_module, "_semantic_run", fake_semantic_run)
+    semantic, resources = execute_public_gonol_contextual_protocol(tmp_path)
+    semantic_payload = json.loads(semantic)
+    resource_payload = json.loads(resources)
+    assert calls == [1, 2]
+    assert semantic_payload["status"] == "FALSIFIED"
+    assert semantic_payload["completed_full_source_builds"] == 2
+    assert semantic_payload["byte_identical_independent_replay"] is True
+    assert resource_payload["all_observations_reached_natural_terminal_condition"] is True
+
+
+def test_resource_preflight_records_no_artificial_runtime_bound(tmp_path) -> None:
+    preflight = _resource_preflight(tmp_path)
+    assert preflight["can_start"] is True
+    assert preflight["source_repo_exists"] is True
+    assert preflight["artificial_wall_clock_limit"] is None
+    assert preflight["artificial_memory_limit_bytes"] is None
+    assert preflight["stopping_rule"] == "natural terminal condition"
 
 
 def test_blocker_receipt_preserves_the_resource_breach_without_a_result() -> None:

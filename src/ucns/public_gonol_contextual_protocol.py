@@ -2,7 +2,7 @@
 # id: ucns_public_gonol_contextual_protocol
 #   module_name: public_gonol_contextual_protocol
 #   module_kind: experiment
-#   summary: freezes the source-bound structural evaluation protocol for the Public Gonol definition-derived contextual function table before results are generated
+#   summary: freezes the source-bound structural evaluation protocol for the Public Gonol definition-derived contextual function table under current resource-run doctrine before results are generated
 #   owner: Erin Spencer
 #   public_surface: PublicGonolContextualProtocol, PUBLIC_GONOL_CONTEXTUAL_PROTOCOL, contextual_protocol_bytes
 #   internal_surface: _canonical_bytes, _identity
@@ -12,7 +12,7 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_public_gonol_contextual_protocol
-#   rollout: frozen prerequisite for a separate evaluator commit; this module cannot evaluate outcomes
+#   rollout: resource-run repair protocol superseding the historical 420-second blocked protocol before replacement execution
 #   rollback: remove protocol and derived receipt without changing the function table or source definition layer
 #   requires: ucns_public_gonol_function_table
 #   since: 2026-08-18
@@ -22,7 +22,7 @@
 # === CONTRACTS ===
 # id: public_gonol_contextual_protocol_freezes_all_evaluation_choices
 #   given: the contextual-function structural evaluation is prepared
-#   then: exact source receipts, anchor selection, target indices, contexts, baseline, metrics, thresholds, resources, stopping rules, and outcome propagation are immutable before execution
+#   then: exact source receipts, anchor selection, target indices, contexts, baseline, metrics, thresholds, resource-run doctrine, natural terminal stopping rule, and outcome propagation are immutable before execution
 #   class: safety
 #   since: 2026-08-18
 #
@@ -39,7 +39,14 @@
 #   since: 2026-08-18
 # === END CONTRACTS ===
 
-"""Frozen pre-evaluation protocol for Public Gonol contextual structure."""
+"""Frozen pre-evaluation protocol for Public Gonol contextual structure.
+
+Usage:
+    python -m ucns.public_gonol_contextual_protocol OUTPUT
+
+The command writes the outcome-free protocol receipt only.  It does not read
+OEWN source data and cannot produce a contextual evaluation result.
+"""
 
 from __future__ import annotations
 
@@ -53,8 +60,20 @@ from typing import Iterable
 from .public_gonol_functions import FUNCTIONAL_INDEX_NAMES
 
 PROTOCOL_SCHEMA_ID = "ucns.public-gonol-contextual-evaluation-protocol"
-PROTOCOL_SCHEMA_VERSION = "1.0.0"
-PARENT_MAIN_COMMIT = "9eadd98481e5a3fe9a28ed6a2aef39ec5c954e74"
+PROTOCOL_SCHEMA_VERSION = "1.1.0"
+PARENT_MAIN_COMMIT = "564765e34651c83c26b7047d8085fd874e0b7f6d"
+SUPERSEDED_PROTOCOL_ID = (
+    "ucns.public-gonol-contextual-protocol:sha256:"
+    "ea7f9e55b114c91781358c41b8d71a1b459ca39431f39395112d8d64d110c526"
+)
+SUPERSEDED_BLOCKER_ID = (
+    "ucns.public-gonol-contextual-evaluation-blocker:sha256:"
+    "5a74f083892fe9e95b3c314c5764e675fcd1e06e1c121ab8dcf535952725feaf"
+)
+RESOURCE_RUN_DOCTRINE_ID = (
+    "The-Interdependency/skill-lib@"
+    "e284d02e7d4bedbbcf8481426a389b1d5e39551b:RESOURCE_RUN_INVARIANT.md"
+)
 PUBLIC_GONOL_FUNCTION_TABLE_RECEIPT_SHA256 = (
     "cabaa71bbae531993c2522e3e8cf30e26f37fcec030c1014f3495a5de62d9f69"
 )
@@ -124,9 +143,12 @@ class PublicGonolContextualProtocol:
     required_baseline_distinct_results: int = 1
     required_context_changes_per_index: int = 2
     independent_replays: int = 2
-    max_full_source_builds: int = 2
-    max_wall_seconds_per_build: int = 420
-    max_memory_bytes_per_build: int = 2_147_483_648
+    required_full_source_builds: int = 2
+    resource_run_doctrine_id: str = RESOURCE_RUN_DOCTRINE_ID
+    resource_preflight_required: bool = True
+    wall_clock_stopping_rule: str = "none-natural-terminal-condition"
+    memory_stopping_rule: str = "none-observe-only"
+    artificial_resource_limit_applied: bool = False
     selection_effect: str = "none"
     outcome_recorded: bool = False
     standing: str = "preregistered-before-contextual-evaluation"
@@ -159,10 +181,16 @@ class PublicGonolContextualProtocol:
             or self.required_context_changes_per_index != 2
         ):
             raise PublicGonolContextualProtocolError("acceptance thresholds are frozen")
-        if self.independent_replays != 2 or self.max_full_source_builds != 2:
-            raise PublicGonolContextualProtocolError("replay and resource bounds are frozen")
-        if self.max_wall_seconds_per_build != 420 or self.max_memory_bytes_per_build != 2_147_483_648:
-            raise PublicGonolContextualProtocolError("resource limits are frozen")
+        if self.independent_replays != 2 or self.required_full_source_builds != 2:
+            raise PublicGonolContextualProtocolError("replay count is frozen")
+        if (
+            self.resource_run_doctrine_id != RESOURCE_RUN_DOCTRINE_ID
+            or self.resource_preflight_required is not True
+            or self.wall_clock_stopping_rule != "none-natural-terminal-condition"
+            or self.memory_stopping_rule != "none-observe-only"
+            or self.artificial_resource_limit_applied is not False
+        ):
+            raise PublicGonolContextualProtocolError("resource-run doctrine is frozen")
         if self.selection_effect != "none" or self.outcome_recorded:
             raise PublicGonolContextualProtocolError("protocol cannot contain outcome information")
         if self.standing != "preregistered-before-contextual-evaluation":
@@ -173,6 +201,11 @@ class PublicGonolContextualProtocol:
             "schema_id": PROTOCOL_SCHEMA_ID,
             "schema_version": PROTOCOL_SCHEMA_VERSION,
             "parent_main_commit": self.parent_main_commit,
+            "supersedes": {
+                "protocol_id": SUPERSEDED_PROTOCOL_ID,
+                "blocker_id": SUPERSEDED_BLOCKER_ID,
+                "reason": "historical protocol contained an unauthorized arbitrary runtime bound",
+            },
             "sources": {
                 "table_receipt_sha256": self.table_receipt_sha256,
                 "table_id": self.table_id,
@@ -196,9 +229,12 @@ class PublicGonolContextualProtocol:
             },
             "resources": {
                 "independent_replays": self.independent_replays,
-                "max_full_source_builds": self.max_full_source_builds,
-                "max_wall_seconds_per_build": self.max_wall_seconds_per_build,
-                "max_memory_bytes_per_build": self.max_memory_bytes_per_build,
+                "required_full_source_builds": self.required_full_source_builds,
+                "resource_run_doctrine_id": self.resource_run_doctrine_id,
+                "resource_preflight_required": self.resource_preflight_required,
+                "wall_clock_stopping_rule": self.wall_clock_stopping_rule,
+                "memory_stopping_rule": self.memory_stopping_rule,
+                "artificial_resource_limit_applied": self.artificial_resource_limit_applied,
             },
             "outcomes": {
                 "positive": POSITIVE_STATUS,

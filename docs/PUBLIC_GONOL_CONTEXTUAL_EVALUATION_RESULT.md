@@ -1,14 +1,18 @@
-# Public Gonol contextual-function structural evaluation result
+# Public Gonol contextual-function structural evaluation historical blocker
 
 **Authority:** Erin Spencer
 
 **Recorded:** 2026-08-18
 
-**Status:** `BLOCKED`
+**Status:** `DEPRECATED`
+
+**Replacement protocol:** `ucns.public-gonol-contextual-protocol:sha256:6129ef20a93eb925e95a52af11341a30f933302be1f60024e42215611abe6e3d`
+
+**Replacement result:** pending execution
 
 ## Frozen protocol
 
-This is the execution of the merged preregistration from UCNS commit
+This records the historical execution of the merged preregistration from UCNS commit
 `a62de5bf2451d9ff0b7ff738566810c3dc796aae`:
 
 - protocol identity:
@@ -18,6 +22,10 @@ This is the execution of the merged preregistration from UCNS commit
 - two independent complete source builds required;
 - maximum 420 seconds and 2 GiB per build; and
 - no tuning, retry, third deciding build, or changed result criterion.
+
+That resource profile is now deprecated because the wall-clock limit was not
+authorized by the user, was not load-bearing to the structural claim, and
+violates current skill-lib resource-run doctrine.
 
 ## Observation
 
@@ -38,22 +46,19 @@ The inspectable observation receipt is
 `generated/public-gonol-contextual-evaluation-blocker.json` (file SHA-256
 `825cb72d194eb3e9a41f665259aa6dd6d6328c627c33c90fc3f03f9b3cc98054`).
 
-## Result and propagation
+## Historical result and propagation
 
-`BLOCKED` is an execution-resource result only. It does not falsify the Public
+The historical `BLOCKED` receipt is an execution-resource record only. It does not falsify the Public
 Gonol function table, establish structural discrimination, or provide a
 `SURVIVED — not proved` outcome. No semantic efficacy, punctuation grammar,
 parsing, precedence, context-selection authority, measurement validity, or
 canonical semantics claim is added.
 
-The exact frozen program stops here. A future attempt would require a new,
-separately committed preregistration that changes the resource profile before
-any outcome is inspected; it may not rewrite this blocker or treat the first
-attempt as a successful replay.
+The resource-run repair protocol is now separately preregistered before
+replacement execution. It preserves this blocker as historical evidence while
+removing the unauthorized runtime bound from the active microscope.
 
 ## hmmm
 
-Whether a different, predeclared resource profile is justified for the complete
-OEWN definition-layer rebuild is unresolved. The current evidence shows only
-that the frozen 420-second microscope cannot complete its first required source
-build on this execution environment.
+Whether the active resource-run protocol survives the full two-build execution
+is unresolved until the replacement run completes.
