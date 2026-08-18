@@ -10,9 +10,9 @@
   },
   "source": {
     "branch": "main",
-    "commit": "9eadd98481e5a3fe9a28ed6a2aef39ec5c954e74",
+    "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
     "generated_at": "2026-08-18",
-    "note": "This report describes the cited UCNS state plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The current lexical architecture selects the xkcd constrained-English 1,000-word vocabulary as the lexical-floor candidate and OEWN 2025 Core as the primary contemporary lexical-semantic corpus; Scrabble is superseded for this work and Webster 1913 is deferred. Relationships enter gonols, completed gonols are atomic at the next scale, affixiation is scale-invariant, and direct interscale coupling is permitted without mandatory reopening of intermediate closures."
+    "note": "This report describes UCNS main through the completed Public Gonol contextual structural evaluation plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority is to complete the intended gonol system before building simpler falsifier mechanisms: use the newly sealed punctuation/symbol definition-derived functions to reconstruct the xkcd lexical floor correctly, then continue recursive gonol construction. Matched-information baselines are post-construction falsifiers, not prerequisites that constrain the research build."
   },
   "authority": {
     "owns": [
@@ -41,7 +41,8 @@
       "the first lexical deep-recursion layer is constituted by semantic relationships entering definition gonols; a sidecar semantic graph is not the gonol's semantic state",
       "atomicity at a higher scale does not erase lower-scale construction or provenance",
       "the cognitive origin of the construction does not establish that all human cognition has the same mechanism",
-      "a UCNS-compatible PTCNA-shaped state is not evidence that the intended PTCNA architecture has been derived"
+      "a UCNS-compatible PTCNA-shaped state is not evidence that the intended PTCNA architecture has been derived",
+      "a simpler matched-information mechanism is a later falsifier of a completed UCNS construction, not a prerequisite, architecture selector, or permission gate for constructing the intended gonol system"
     ]
   },
   "portfolio_role": {
@@ -56,11 +57,11 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the xkcd constrained-English 1,000-word vocabulary is the lexical-floor candidate and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The morphology decomposition law remains unresolved. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the exact xkcd Simple Writer 0.2.1 surface inventory is the lexical-floor source candidate and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The Public Gonol table now supplies definition-derived functions for all 84 admitted punctuation/symbol positions, so the current construction frontier is to rebuild the xkcd lexical floor using those punctuation/function gonols in exact source order rather than treating punctuation merely as characters embedded in maximal non-SPACE inscriptions. The morphology decomposition law remains unresolved. Falsifier baselines follow completion of the intended gonol system rather than gating its construction. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "9eadd98481e5a3fe9a28ed6a2aef39ec5c954e74",
-      "description": "sealed the complete Public Gonol definition-derived function table with byte-identical full replay"
+      "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
+      "description": "completed and merged the repaired Public Gonol contextual structural evaluation with two byte-identical full OEWN builds and SURVIVED — not proved status limited to structural discrimination"
     }
   },
   "delivered": [
@@ -102,27 +103,32 @@
     {
       "surface": "PR #205 closed-definition-gonol producer",
       "status": "implemented historical mechanism with reusable provenance/order/receipt machinery",
-      "boundary": "NGSL-specific closure, 2,809-target coverage, and floor-source authority are deprecated; current definition recursion must generalize the mechanism to OEWN 2025 Core"
+      "boundary": "NGSL-specific closure, 2,809-target coverage, and floor-source authority are deprecated; current definition recursion generalizes its useful evidence mechanisms to OEWN 2025 Core"
     },
     {
       "surface": "current lexical recursion architecture",
-      "status": "implemented candidate through first definition recursion",
-      "boundary": "exact sources, xkcd atomic words, OEWN explicit forms, multi-inscription words, and all source sense-definition gonols are materialized; final morphology, carrier coverage, direct interscale coupling, and semantic efficacy remain unresolved"
+      "status": "implemented candidate through first OEWN definition recursion, but xkcd floor reconstruction is not yet punctuation-function complete",
+      "boundary": "exact sources, xkcd character-history word gonols, OEWN explicit forms, multi-inscription words, and all source sense-definition gonols are materialized; existing definition segmentation treats each maximal non-SPACE sequence as one inscription, so punctuation/symbol function gonols are not yet intrinsic participants in the xkcd lexical-floor definition construction"
     },
     {
       "surface": "Public Gonol definition-derived function table",
       "status": "implemented candidate with byte-identical full replay",
-      "boundary": "84 punctuation/symbol positions use canonical Public Gonol indices and already-closed OEWN definition gonols; caller supplies ordered context; no independent punctuation grammar, parser, precedence, or efficacy claim is attached"
+      "boundary": "all 84 punctuation/symbol positions use canonical Public Gonol indices and already-closed OEWN definition gonols; caller supplies ordered context; no independent punctuation grammar, parser, precedence, or efficacy claim is attached"
     },
-        {
-          "surface": "Public Gonol contextual-function structural evaluation",
-          "status": "SURVIVED — not proved; resource-run repair completed two byte-identical full-source builds",
-          "boundary": "the table, anchor, target indices, ordered-context multiplicities, identity-only control, thresholds, two-build replay, failure propagation, and outcome labels remained frozen; result establishes only structural discrimination against the identity-only control and adds no usefulness, grammar, parsing, precedence, measurement-validity, or canon claim"
+    {
+      "surface": "Public Gonol contextual-function structural evaluation",
+      "status": "SURVIVED — not proved; resource-run repair completed two byte-identical full-source builds",
+      "boundary": "the table, anchor, target indices, ordered-context multiplicities, identity-only control, thresholds, two-build replay, failure propagation, and outcome labels remained frozen; result establishes only structural discrimination against the identity-only control and adds no usefulness, grammar, parsing, precedence, measurement-validity, or canon claim"
     },
     {
       "surface": "metadata-free lexical relational carrier",
       "status": "implemented producer surface",
       "boundary": "carrier structure contains ordered nodes and typed relation occurrences only; English identity, provenance, semantics, geometry, and measurement status remain external and do not transfer"
+    },
+    {
+      "surface": "resource-run completion doctrine",
+      "status": "current binding execution boundary",
+      "boundary": "resource scarcity is evaluated before compute begins; once an admissible healthy run begins it reaches its natural terminal condition unless explicitly cancelled or interrupted by a real resource emergency"
     },
     {
       "surface": "PTCNA neural-audit prerequisite",
@@ -131,12 +137,18 @@
     }
   ],
   "active_frontier": [
+    "reconstruct the xkcd lexical floor using the completed Public Gonol punctuation/symbol definition bindings: punctuation and symbols must participate as their own definition-derived function gonols in exact source order, occurrence, and multiplicity rather than remaining merely embedded glyphs inside maximal non-SPACE inscriptions",
+    "preserve the exact xkcd Simple Writer 0.2.1 source inventory of 3,634 accepted surfaces and its declared 1,000-family boundary without inventing an unavailable authoritative family mapping",
+    "continue recursive gonol construction from the corrected xkcd lexical floor, preserving atomic closure, intrinsic relationships, exact provenance, source order, multiplicity, and replay",
+    "complete the intended gonol system before constructing simpler matched-information mechanisms; later baselines are falsifiers of the completed system and must not constrain or replace the research architecture during construction",
     "evaluate or extend the current 157-position carrier for the twenty retained OEWN source scalars that are presently explicit coverage-failure evidence, without normalizing or inventing geometry",
     "select a root/stem/affix/transformation law only if new source or authority supports it; the complete OEWN inventory contains no explicit decomposition records",
-    "define quantitative semantic reconstruction and simpler matched-information controls for the completed OEWN first-recursion layer before claiming efficacy",
     "preserve the deprecated BLOCKED Public Gonol contextual-function execution record as historical resource-bound evidence while treating the resource-run replacement result as the active structural-control receipt",
     "preserve direct coupling across non-adjacent recursive scales as an allowed UCNS relation; do not impose intermediate reopening as an implementation convenience",
     "treat affixiation as the scale-invariant relation -> intrinsic coupling -> closure -> atomic promotion pattern; linguistic affixiation is one manifestation",
+    "after the intended lexical/recursive gonol construction is complete for its declared scope, freeze quantitative reconstruction, compression, semantic-efficacy, and simpler matched-information falsifiers without rewriting the completed UCNS architecture",
+    "emit exact corrected UCNS atomic word, punctuation/function, definition, and recursive-gonol receipts suitable for fail-closed EDCM consumption without token, subword, opaque-vector, whole-string-hash, external-semantic-graph, or forced-reopening substitution",
+    "support METAPAT binding of exact semantic module and authorization identities to completed atomic gonol identities and intrinsic relations without transferring geometry authority into METAPAT",
     "design and execute a UCNS audit of a functioning conventional neural network before specifying the intended PTCNA architecture; preserve raw observations separately from derived structure and do not search for a topology chosen in advance",
     "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
     "preserve multimodal object identity separately from scalar observables: a glyph occurrence count can be scalar while the glyph remains a non-numerical vector description with identity, position, context, provenance, and relations",
@@ -157,14 +169,39 @@
   ],
   "next_actions": [
     {
-      "action": "preregister and run quantitative semantic reconstruction plus simpler matched-information controls against the sealed OEWN first-recursion layer",
+      "action": "repair lexical definition segmentation so admitted punctuation/symbol occurrences bind the exact Public Gonol function identity and its already-closed OEWN definition gonol(s) as intrinsic ordered participants instead of remaining merely embedded inside maximal non-SPACE inscriptions; preserve exact source reconstruction and introduce no independent grammar, parser, precedence, or context-selection law",
       "owner": "The-Interdependency/ucns",
-      "dependency": "complete receipt bcfbf0c724a8507e00d1d3205f32de2cce489731ce019a2f883e90abd56f7c5c; freeze metrics, partitions, baselines, resource limits, and falsifiers before outcome inspection"
+      "dependency": "main @ 9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f; exact xkcd Simple Writer 0.2.1 and OEWN 2025 Core receipts; sealed Public Gonol function-table receipt and contextual structural receipt"
+    },
+    {
+      "action": "rebuild the xkcd lexical-floor gonols through the corrected punctuation-aware definition path, covering every source-supported accepted surface and every available source definition, then emit deterministic atomic identities, provenance, coverage failures, and an independent byte-identical replay receipt",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "corrected segmentation/function participation; preserve 3,634 exact accepted surfaces and declared 1,000-family boundary without inventing an unavailable family mapping"
+    },
+    {
+      "action": "continue recursive gonol composition above the corrected xkcd lexical floor and OEWN definition layer until the declared construction reaches its source-backed fixed point; completed gonols remain atomic and direct interscale coupling must not be replaced by mandatory reopening",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "punctuation-aware xkcd floor receipt plus existing OEWN definition-layer and affixiation/atomic-closure contracts"
+    },
+    {
+      "action": "emit a stable consumer contract for corrected atomic word, punctuation/function, definition, and recursive-gonol receipts so EDCM can consume exact UCNS identities without rebuilding semantics or substituting tokenizer IDs, opaque vectors, hashes, all-pairs semantic graphs, or forced intermediate-scale reopening",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "completed declared lexical/recursive construction with replayable producer identities"
+    },
+    {
+      "action": "bind completed gonol identities to METAPAT exact semantic module/authorization identities through a general fail-closed semantic-binding record that leaves UCNS geometry authoritative and treats any surviving Phi-fork authorization as one relation rather than the definition of the integration architecture",
+      "owner": "The-Interdependency/ucns + The-Interdependency/metapat",
+      "dependency": "completed relevant UCNS gonol identities and current METAPAT canon/catalog/application/provenance digests"
+    },
+    {
+      "action": "after the intended gonol system is complete for the declared scope, preregister quantitative reconstruction, compression, semantic-efficacy, ablation, and simpler matched-information falsifiers against the frozen completed implementation",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "completed frozen gonol-system implementation; baseline mechanisms are constructed after that freeze and may not retroactively constrain the research build"
     },
     {
       "action": "define and run the smallest UCNS audit of a functioning conventional neural network sufficient to produce PTCNA construction evidence without preselecting PTCNA topology",
       "owner": "The-Interdependency/ucns",
-      "dependency": "freeze source network/task identity, successful baseline behavior, instrumentation/provenance, observation boundary, resource limits, stopping rules, and failure propagation before inspecting UCNS structural outcomes"
+      "dependency": "freeze source network/task identity, successful baseline behavior, instrumentation/provenance, observation boundary, resource requirements, stopping rules, and failure propagation before inspecting UCNS structural outcomes"
     },
     {
       "action": "define and validate the machine path from option registry choices into gonol relationship display receipts",
@@ -187,20 +224,18 @@
       "dependency": "requires pinned repository states, replayable operations, explicit authority boundaries, and preregistered loss/recovery measures; success does not establish Mobius necessity or EDCM measurement validity"
     },
     {
-      "action": "define recursion / composition above the completed OEWN definition-gonol layer without assuming that higher-scale closure must reopen every intermediate scale",
+      "action": "replicate the Tenen/Meru Hebrew alphabet construction from primary sources and later test variable relational arity against its reproducible boundary without allowing that comparison program to block completion of the current gonol system",
       "owner": "The-Interdependency/ucns",
-      "dependency": "completed first lexical recursion plus direct interscale coupling contract and current bounded gonol evidence"
-    },
-    {
-      "action": "replicate the Tenen/Meru Hebrew alphabet construction from primary sources and run a matched-information arity sweep against its reproducible boundary: preserve letter, number, gesture, position, projection, sequence, and source provenance; compare arity n with arity n+1, pairwise/flattened baselines, and held-out Hebrew reconstruction without supplying Tenen geometry to the blind UCNS branch",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "replication and arity-extension work proceed in parallel; exact Tenen/Meru source identities and Hebrew corpus identities must be pinned; comparison and stopping criteria freeze before arity outcomes; higher arity survival does not confer canon"
+      "dependency": "exact Tenen/Meru source identities and Hebrew corpus identities must be pinned; replication may proceed in parallel, while matched-information arity comparisons freeze only after the reproduced construction boundary exists"
     }
   ],
   "blocked": [
+    "the corrected xkcd lexical-floor definition construction is BLOCKED only on implementation work: current OEWN definition segmentation treats maximal non-SPACE strings as inscriptions even though Public Gonol punctuation/symbol definition-derived functions now exist; no new semantic source is required for this repair",
     "final morphology decomposition is BLOCKED on evidence: root/stem/affix/transformation law is intentionally unresolved and the historical three-core skill may not be treated as current morphology canon",
     "complete carrier geometry for the lexical layer is BLOCKED for twenty retained source scalars outside the public 157-position carrier; the source evidence remains represented without normalization",
     "claiming implemented direct distant interscale coupling is blocked until gonols at separated scales exist and the spiral representation demonstrates the relation without mandatory intermediate reopening",
+    "EDCM lexical-semantic measurement integration is blocked on the corrected replayable UCNS lexical/recursive producer, not on source acquisition; EDCM must not rebuild missing upstream semantics",
+    "the shared UCNS-METAPAT-EDCM fixture is blocked on completed relevant gonol identities, a generalized exact semantic-binding record, and the downstream EDCM consumer projection",
     "construction of the intended PTCNA is BLOCKED until a functioning conventional neural network has been audited by UCNS and the resulting source-bound structural evidence has been handed to PTCNA; compatibility with a preselected PTCNA-shaped state does not satisfy this prerequisite",
     "selection or activation of a universal completion law is blocked on evidence-bearing decisions for still-open composition and completion boundaries",
     "promotion of a text/glyph-specific representation to a universal UCNS object schema is blocked until non-language modalities such as GitHub metadata are represented without loss of their native distinctions"
@@ -208,18 +243,18 @@
   "cross_repository_relations": [
     {
       "repository": "The-Interdependency/skill-lib",
-      "relation": "supplies build/evidence doctrine and the scale-invariant affixiation / atomic-closure procedural boundary consumed by Codex; it does not own UCNS geometry",
+      "relation": "supplies build/evidence doctrine, scale-invariant affixiation / atomic-closure procedure, and resource-run preflight/completion doctrine consumed by UCNS work; it does not own UCNS geometry",
       "authority_transfer": false
     },
     {
       "repository": "The-Interdependency/edcm",
-      "relation": "downstream measurement authority and historical OEWN 2025 acquisition/replay precedent; its sealed OEWN artifacts remain evidence and do not own the current UCNS semantic construction",
+      "relation": "downstream measurement authority and historical OEWN 2025 acquisition/replay precedent; source custody is available, but new lexical-semantic measurement waits for corrected replayable UCNS atomic word, punctuation/function, definition, and recursive-gonol receipts; EDCM does not rebuild UCNS semantics",
       "authority_transfer": false,
       "measurement_status_transfer": false
     },
     {
       "repository": "The-Interdependency/metapat",
-      "relation": "surfaces patterns/relations under its separate semantic authority and may issue exact semantic constraints or authorizations consumed by UCNS integrations; participates in planned pattern and scale-relation tests without transferring semantic authority",
+      "relation": "separate semantic authority whose current canon/catalog/application identities and explicit authorizations may bind exact completed gonol identities through fail-closed integration records; METAPAT semantic meaning does not define UCNS geometry and UCNS topology does not establish METAPAT validity",
       "authority_transfer": false,
       "proof_status_transfer": false
     },
@@ -231,7 +266,7 @@
     },
     {
       "repository": "The-Interdependency/a0",
-      "relation": "enacts pinned operations and supplies runtime observations for the planned recursive-operation benchmark; execution observations do not transfer UCNS mathematical authority or establish UCNS geometry",
+      "relation": "enacts pinned operations and supplies runtime observations for planned recursive-operation benchmarks; execution observations do not transfer UCNS mathematical authority or establish UCNS geometry",
       "authority_transfer": false,
       "active_producer": false
     },
@@ -259,12 +294,15 @@
     "ptcna_neural_audit_prerequisite": "docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
   },
   "hmmm": [
+    "the authoritative mapping, if any source provides one, from the 3,634 exact xkcd Simple Writer accepted surfaces to the declared 1,000 word families; do not invent it",
     "the morphology decomposition / transformation law, including which root/stem/affix distinctions are source-supported",
     "geometry for the twenty exact OEWN source scalars outside the public 157-position carrier",
     "the exact machine representation of direct coupling between gonols separated by multiple recursive scales while both remain atomic",
     "the later role, if any, of OEWN native semantic-relation labels after the definition-driven recursion is constructed",
-    "whether the definition-derived Public Gonol contextual-function bindings produce useful contextual behavior beyond the completed structural-control receipt; semantic efficacy still needs separate source-authorized contexts, controls, and preregistration",
-    "quantitative structural-compression and reconstruction tests once the recursive lexical corpus exists",
+    "whether the definition-derived Public Gonol contextual-function bindings produce useful contextual behavior beyond the completed structural-control receipt; semantic efficacy is evaluated only after the intended gonol construction is complete for its declared scope",
+    "quantitative structural-compression and reconstruction behavior of the completed recursive gonol system relative to later post-construction falsifiers",
+    "the exact generalized UCNS-METAPAT semantic-binding record and which parts of the historical Phi-fork integration API survive as one relation within it",
+    "the exact EDCM projection and information-loss declaration over corrected recursive gonol receipts",
     "the minimum conventional-neural-network observables UCNS must retain to recover enough structure to construct PTCNA without smuggling a target topology into the audit",
     "registry integration for gonol relationship display v1",
     "the exact current machine-facing representation that exposes the complete spiral state of each gonol",
@@ -278,12 +316,12 @@
     "whether relation topology is best represented entirely on edges or sometimes becomes a load-bearing property of a higher closure",
     "whether METAPAT/EDCM require Mobius interaction at the five-repository operational scale while UCNS/skill-lib/a0 do not",
     "whether the UCNS-METAPAT-EDCM triadic coupling and UCNS-METAPAT-EDCM-a0-skill-lib quintadic coupling show independently irreducible operational effects under controls",
-    "whether the five-repository real-world benchmark demonstrates UCNS-specific scale reconstruction or is matched by simpler typed graph/task representations",
+    "whether the five-repository real-world benchmark demonstrates UCNS-specific scale reconstruction or is matched by simpler typed graph/task representations after the intended UCNS construction is frozen",
     "the exact primary lecture/source identity for the Tenen work being replicated, including whether the remembered higher-dimensional carrier is explicitly present or a later memory fusion",
     "whether Tenen/Meru has a reproducible stopping boundary at which higher arity produces recovery unavailable to information-matched pairwise or flattened representations",
     "whether Hebrew text and letter order alone suffice for the arity test or whether gesture and geometric projection are constitutive multimodal observations",
     "seven-gonol construction and embedding law",
-    "cross-scope and higher-gonol composition above the first lexical definition layer",
+    "cross-scope and higher-gonol composition above the corrected lexical definition layer",
     "total Structural Null topology",
     "higher geometry",
     "completion law beyond declared bounded candidates",
