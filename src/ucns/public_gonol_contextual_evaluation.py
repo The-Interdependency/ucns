@@ -96,7 +96,7 @@ from .relational_carrier import build_relational_carrier
 EVALUATION_SCHEMA_ID = "ucns.public-gonol-contextual-evaluation"
 RESOURCE_SCHEMA_ID = "ucns.public-gonol-contextual-resource-observations"
 EVALUATION_SCHEMA_VERSION = "1.0.0"
-MERGED_PROTOCOL_COMMIT = "agent/public-gonol-contextual-resource-run-repair"
+MERGED_PROTOCOL_COMMIT = "e97617c360a6a1d783f3f89f60a23194846b98aa"
 EVALUATION_STANDING = "frozen-contextual-structural-control-result"
 
 
