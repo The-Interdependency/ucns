@@ -9,8 +9,8 @@
     "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
   },
   "source": {
-    "branch": "main",
-    "commit": "c4803f038133e6ce7d8a3a55825a0fbf75759dfc",
+    "branch": "agent/current-lexical-source-receipts",
+    "commit": "8d47f14",
     "generated_at": "2026-08-18",
     "note": "This report describes the cited UCNS state plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The current lexical architecture selects the xkcd constrained-English 1,000-word vocabulary as the lexical-floor candidate and OEWN 2025 Core as the primary contemporary lexical-semantic corpus; Scrabble is superseded for this work and Webster 1913 is deferred. Relationships enter gonols, completed gonols are atomic at the next scale, affixiation is scale-invariant, and direct interscale coupling is permitted without mandatory reopening of intermediate closures."
   },
@@ -59,8 +59,8 @@
     "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the xkcd constrained-English 1,000-word vocabulary is the lexical-floor candidate and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The morphology decomposition law remains unresolved. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "c4803f038133e6ce7d8a3a55825a0fbf75759dfc",
-      "description": "recorded the current lexical recursion architecture: xkcd floor candidate, OEWN 2025 Core corpus, intrinsic semantic relations, atomic closure, scale-invariant affixiation, and direct interscale coupling"
+      "commit": "8d47f14",
+      "description": "constructed and sealed the complete OEWN 2025 Core first lexical deep-recursion layer with byte-identical independent replay"
     }
   },
   "delivered": [
@@ -106,8 +106,8 @@
     },
     {
       "surface": "current lexical recursion architecture",
-      "status": "authority-declared construction plan",
-      "boundary": "xkcd 1,000 is the lexical-floor candidate; OEWN 2025 Core is the selected dictionary corpus; exact source receipts and executable morphology / Mobius traversal / direct interscale coupling remain to be materialized"
+      "status": "implemented candidate through first definition recursion",
+      "boundary": "exact sources, xkcd atomic words, OEWN explicit forms, multi-inscription words, and all source sense-definition gonols are materialized; final morphology, carrier coverage, direct interscale coupling, and semantic efficacy remain unresolved"
     },
     {
       "surface": "metadata-free lexical relational carrier",
@@ -121,13 +121,9 @@
     }
   ],
   "active_frontier": [
-    "pin the exact xkcd constrained-English 1,000-word artifact identity, bytes, ordering/custody policy, and construct its lexical-floor candidate word gonols without reviving NGSL semantics",
-    "pin exact OEWN 2025 Core release bytes / immutable source identity and license/custody receipt, excluding Namenet / 2025+ proper-name material from the first build",
-    "implement the shared Mobius glyph-axis traversal in which glyph positions are tics on the gonol circumference, accumulated traversal history is intrinsic state, and each step constrains future source-admissible continuation",
-    "make completed word and definition gonols atomic and reusable at the next scale while preserving provenance / replay; do not pre-materialize an all-pairs relation graph",
-    "inventory morphology evidence before selecting a root/stem/affix/transformation law; preserve affix gonols and affixiation/transformation where source-supported without importing the historical three-core morphology model as canon",
-    "generalize PR #205's provenance/order/occurrence/sense/receipt machinery to OEWN 2025 Core so definition semantic relationships enter definition gonols themselves",
-    "iterate OEWN Core definitions until the declared source scope is completely gonolized and a further pass yields no new source-backed gonol identity or relationship; reuse identical atomic gonols rather than textually re-expanding cycles",
+    "evaluate or extend the current 157-position carrier for the twenty retained OEWN source scalars that are presently explicit coverage-failure evidence, without normalizing or inventing geometry",
+    "select a root/stem/affix/transformation law only if new source or authority supports it; the complete OEWN inventory contains no explicit decomposition records",
+    "define quantitative semantic reconstruction and simpler matched-information controls for the completed OEWN first-recursion layer before claiming efficacy",
     "preserve direct coupling across non-adjacent recursive scales as an allowed UCNS relation; do not impose intermediate reopening as an implementation convenience",
     "treat affixiation as the scale-invariant relation -> intrinsic coupling -> closure -> atomic promotion pattern; linguistic affixiation is one manifestation",
     "design and execute a UCNS audit of a functioning conventional neural network before specifying the intended PTCNA architecture; preserve raw observations separately from derived structure and do not search for a topology chosen in advance",
@@ -150,34 +146,9 @@
   ],
   "next_actions": [
     {
-      "action": "freeze the exact xkcd 1,000-word source artifact and OEWN 2025 Core source receipt used by this lexical recursion build",
+      "action": "preregister and run quantitative semantic reconstruction plus simpler matched-information controls against the sealed OEWN first-recursion layer",
       "owner": "The-Interdependency/ucns",
-      "dependency": "xkcd is selected as lexical-floor candidate and OEWN 2025 Core as primary lexical-semantic corpus; exact immutable source identities remain hmmm and must not be guessed"
-    },
-    {
-      "action": "implement / expose the Mobius glyph-axis traversal required by the current word-gonol relation law: glyph tic identity, accumulated traversal history, source-admissible continuation potential, SPACE boundary, deterministic replay, and intrinsic spiral state",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "current gonol spiral identity and exact pinned lexical source spellings; implementation aids must not replace the UCNS geometry"
-    },
-    {
-      "action": "construct atomic xkcd floor-candidate word gonols and OEWN Core lexical-entry word gonols, reusing identical completed identities rather than materializing pairwise relation tables",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "pinned xkcd/OEWN source identities and executable glyph-axis traversal"
-    },
-    {
-      "action": "inventory OEWN morphology and current UCNS morphology mechanisms; implement only source-supported affix gonols / affixiation / transformation and leave unresolved root/stem decomposition hmmm rather than importing the historical three-core model",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "atomic word gonols plus pinned OEWN Core source evidence"
-    },
-    {
-      "action": "generalize PR #205's first-recursion producer to OEWN Core: preserve part of speech, sense/synset, definition order/multiplicity/occurrence/source provenance, make semantic relationships intrinsic to definition gonols, close them, and treat the resulting gonols as atomic for the next recursion",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "atomic word gonols and morphology evidence; NGSL closure / 2,809 coverage must not return"
-    },
-    {
-      "action": "iterate the definition recursion across the complete declared OEWN 2025 Core source scope until every source definition is incorporated and another complete pass yields no new source-backed gonol identity or relationship; retain source cycles through atomic identity reuse",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "generalized OEWN definition-gonol producer and deterministic content identity / replay"
+      "dependency": "complete receipt bcfbf0c724a8507e00d1d3205f32de2cce489731ce019a2f883e90abd56f7c5c; freeze metrics, partitions, baselines, resource limits, and falsifiers before outcome inspection"
     },
     {
       "action": "define and run the smallest UCNS audit of a functioning conventional neural network sufficient to produce PTCNA construction evidence without preselecting PTCNA topology",
@@ -216,9 +187,8 @@
     }
   ],
   "blocked": [
-    "evidence-producing lexical materialization is BLOCKED until exact xkcd 1,000 and OEWN 2025 Core source identities are frozen; source selection is established but bytes / immutable receipts are not yet pinned in UCNS",
-    "the current NGSL-specific first-recursion implementation is DEPRECATED for forward semantic construction until generalized away from fixed-floor closure and 2,809-target coverage",
     "final morphology decomposition is BLOCKED on evidence: root/stem/affix/transformation law is intentionally unresolved and the historical three-core skill may not be treated as current morphology canon",
+    "complete carrier geometry for the lexical layer is BLOCKED for twenty retained source scalars outside the public 157-position carrier; the source evidence remains represented without normalization",
     "claiming implemented direct distant interscale coupling is blocked until gonols at separated scales exist and the spiral representation demonstrates the relation without mandatory intermediate reopening",
     "construction of the intended PTCNA is BLOCKED until a functioning conventional neural network has been audited by UCNS and the resulting source-bound structural evidence has been handed to PTCNA; compatibility with a preselected PTCNA-shaped state does not satisfy this prerequisite",
     "selection or activation of a universal completion law is blocked on evidence-bearing decisions for still-open composition and completion boundaries",
@@ -275,10 +245,8 @@
     "ptcna_neural_audit_prerequisite": "docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
   },
   "hmmm": [
-    "exact xkcd constrained-English 1,000-word artifact identity, source bytes, ordering policy, and custody receipt",
-    "exact OEWN 2025 Core release artifact / immutable source receipt for the current UCNS build; EDCM's historical pinned OEWN source is acquisition precedent, not automatic current identity",
     "the morphology decomposition / transformation law, including which root/stem/affix distinctions are source-supported",
-    "the executable Mobius glyph-axis representation that faithfully realizes glyph tics, accumulated traversal history, and constrained future potential",
+    "geometry for the twenty exact OEWN source scalars outside the public 157-position carrier",
     "the exact machine representation of direct coupling between gonols separated by multiple recursive scales while both remain atomic",
     "the later role, if any, of OEWN native semantic-relation labels after the definition-driven recursion is constructed",
     "quantitative structural-compression and reconstruction tests once the recursive lexical corpus exists",

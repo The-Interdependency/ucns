@@ -24,7 +24,9 @@ Webster 1913
     -> deferred / not in current execution graph
 ```
 
-The exact xkcd artifact identity and exact OEWN 2025 Core release bytes / immutable source receipt must be pinned before evidence-producing materialization.
+The exact xkcd artifact identity and OEWN 2025 Core release receipt are now
+pinned by `src/ucns/lexical_sources.py`. The first complete materialization is
+sealed by `generated/oewn-2025-core-definition-layer-receipt.json`.
 
 ## First deep recursion
 
@@ -115,10 +117,21 @@ Do not silently introduce the native OEWN relation graph as a separate semantic 
 
 This document does not establish semantic efficacy, final morphology, compression ratio, lossless reconstruction, human-cognition universality, EDCM validity, or PTCNA efficacy.
 
+## Completed declared source scope
+
+`src/ucns/oewn_definition_recursion.py` constructs every OEWN 2025 Core
+sense-definition pairing, exact source-explicit form relation, and exact
+multi-inscription entry. Relationships are intrinsic ordered carriers inside
+the closed gonols. A second independent complete run reproduced the 1,308-byte
+receipt exactly.
+
+This is construction evidence, not semantic efficacy. The resulting standing
+is `complete-oewn-core-first-recursion-candidate`.
+
 ## hmmm
 
 - exact xkcd 1,000-word source artifact identity;
-- exact OEWN 2025 Core release receipt for this producer;
 - morphology decomposition / transformation law;
+- geometry for retained carrier-unassigned Unicode source evidence;
 - executable direct interscale coupling representation;
 - later role of OEWN native semantic relation labels.
