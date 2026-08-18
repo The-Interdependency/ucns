@@ -10,9 +10,9 @@
   },
   "source": {
     "branch": "main",
-    "commit": "5f095df85127769d067b51b4d05c04bcab037659",
-    "generated_at": "2026-08-16",
-    "note": "This report describes the cited UCNS main commit plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence."
+    "commit": "26a401a5e6a36b7551b5575c4c1c7f12dffe90f8",
+    "generated_at": "2026-08-17",
+    "note": "This report describes the cited UCNS main commit plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. The 2026-08-17 lexical/PTCNA corrections preserve unresolved laws rather than completing missing architecture by assumption."
   },
   "authority": {
     "owns": [
@@ -34,7 +34,9 @@
       "fixture or test success does not confer theorem status",
       "cross-repository consumption does not transfer mathematical authority",
       "UCNS carrier evidence does not establish EDCM measurement validity",
-      "representing an object or relation numerically does not erase its non-numerical identity or modality"
+      "representing an object or relation numerically does not erase its non-numerical identity or modality",
+      "a lexical source record or arbitrary definition string is not a floor-definition gonol",
+      "a UCNS-compatible PTCNA-shaped state is not evidence that the intended PTCNA architecture has been derived"
     ]
   },
   "portfolio_role": {
@@ -49,11 +51,11 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly; no candidate geometry, including Mobius transport, is promoted to a universal requirement of UCNS objecthood by implementation success.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. The admitted lexical floor is closed: its semantic definitions must be constructed only from already-admitted floor gonols and cannot enlarge the floor. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network; no current PTCNA-shaped candidate state satisfies that prerequisite by construction compatibility alone.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
-      "commit": "d7c6f51304ed6c32d48badf63132bea6de8af497",
-      "description": "merged metadata-free lexical relational carrier used by EDCM without transferring semantic, geometric, or measurement authority"
+      "commit": "26a401a5e6a36b7551b5575c4c1c7f12dffe90f8",
+      "description": "restored the audit-before-architecture prerequisite for intended PTCNA and fixed Unicode-character gonols as its primitive language-input objects"
     }
   },
   "delivered": [
@@ -83,12 +85,25 @@
       "boundary": "registry integration, relation-specific continuous Mobius geometry, seven-gonol construction, and embedding law remain hmmm"
     },
     {
+      "surface": "NGSL lexical floor v0.2",
+      "status": "implemented source-bound 2,809-word floor with exact word gonols and occurrence-preserving relations",
+      "boundary": "the current arbitrary-text DefinitionSense layer is not the completed semantic definition-gonol representation; the floor is closed and definitions cannot enlarge it"
+    },
+    {
       "surface": "metadata-free lexical relational carrier",
       "status": "implemented producer surface",
       "boundary": "carrier structure contains ordered nodes and typed relation occurrences only; English identity, provenance, semantics, geometry, and measurement status remain external and do not transfer"
+    },
+    {
+      "surface": "PTCNA neural-audit prerequisite",
+      "status": "authority-declared construction gate",
+      "boundary": "the intended PTCNA cannot be constructed until UCNS audits a functioning conventional neural network and produces source-bound relational evidence; current PTCNA-shaped state remains pre-audit scaffolding"
     }
   ],
   "active_frontier": [
+    "construct closed floor-definition gonols from the already-fixed lexical floor: every lexical constituent must resolve to an existing floor word gonol; definitions cannot admit new floor words and no tokenizer, subword id, or opaque vector lookup may be silently inserted",
+    "treat the floor-definition gonol as the semantic-representation analogue of a conventional vector embedding while withholding any equivalence, semantic-quality, or downstream-utility claim until evaluated",
+    "design and execute a UCNS audit of a functioning conventional neural network before specifying the intended PTCNA architecture; preserve raw observations separately from derived structure and do not search for a topology chosen in advance",
     "preserve UCNS as an option-bearing construction system rather than reintroducing hidden global defaults",
     "preserve multimodal object identity separately from scalar observables: a glyph occurrence count can be scalar while the glyph remains a non-numerical vector description with identity, position, context, provenance, and relations",
     "treat language as one measurement domain rather than the definition of UCNS or EDCM",
@@ -107,6 +122,16 @@
     "keep the repo-owned portfolio report current without transferring UCNS authority to the aggregator"
   ],
   "next_actions": [
+    {
+      "action": "construct the closed floor-definition-gonol layer for the existing lexical floor: create definitions only from already-admitted floor gonols, reject every out-of-floor lexical constituent, preserve order/multiplicity/sense/context/source provenance, and emit exact replayable definition-gonol receipts",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "fixed lexical floor identity plus an explicit UCNS relation/composition law for the ordered definition constituents; the current arbitrary-text DefinitionSense surface is insufficient"
+    },
+    {
+      "action": "define and run the smallest UCNS audit of a functioning conventional neural network sufficient to produce PTCNA construction evidence without preselecting PTCNA topology",
+      "owner": "The-Interdependency/ucns",
+      "dependency": "freeze source network/task identity, successful baseline behavior, instrumentation/provenance, observation boundary, resource limits, stopping rules, and failure propagation before inspecting UCNS structural outcomes"
+    },
     {
       "action": "define and validate the machine path from option registry choices into gonol relationship display receipts",
       "owner": "The-Interdependency/ucns",
@@ -144,6 +169,8 @@
     }
   ],
   "blocked": [
+    "construction of the intended PTCNA is BLOCKED until a functioning conventional neural network has been audited by UCNS and the resulting source-bound structural evidence has been handed to PTCNA; compatibility with a preselected PTCNA-shaped state does not satisfy this prerequisite",
+    "claiming a completed UCNS lexical semantic embedding is blocked until floor definitions are actually constructed from floor gonols under the closure rule; arbitrary definition text is insufficient",
     "selection or activation of a universal carrier/completion law is blocked on evidence-bearing decisions for the still-open topology, composition, and completion boundaries",
     "promotion of Mobius transport from relation-specific candidate to broader UCNS requirement is blocked unless mixed-topology controls show a reproducible invariant, prediction, compression, or recovery advantage unavailable to simpler relation geometries",
     "promotion of a text/glyph-specific representation to a universal UCNS object schema is blocked until non-language modalities such as GitHub metadata are represented without loss of their native distinctions"
@@ -167,6 +194,12 @@
       "proof_status_transfer": false
     },
     {
+      "repository": "The-Interdependency/ptcna",
+      "relation": "downstream consumer of a future UCNS neural-audit producer contract and of UCNS Unicode-character gonols for the intended language-input path; current pre-audit PTCNA scaffolding transfers no architecture authority back to UCNS",
+      "authority_transfer": false,
+      "active_producer": false
+    },
+    {
       "repository": "The-Interdependency/a0",
       "relation": "enacts pinned operations and supplies runtime observations for the planned recursive-operation benchmark; execution observations do not transfer UCNS mathematical authority or establish UCNS geometry",
       "authority_transfer": false,
@@ -185,9 +218,15 @@
     "option_registry": "src/ucns/option_registry.json",
     "option_decisions": "docs/UCNS_OPTION_DECISIONS.md",
     "system_overview": "README.md",
-    "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md"
+    "gonol_relationship_display": "docs/GONOL_RELATIONSHIP_DISPLAY_V1.md",
+    "lexical_floor": "docs/NGSL_LEXICAL_FLOOR_V1.md",
+    "lexical_definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
+    "ptcna_neural_audit_prerequisite": "docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
   },
   "hmmm": [
+    "the exact UCNS relation/composition law that turns ordered floor-gonol constituents into one definition gonol without losing the definition's relational content",
+    "the source/custody procedure for producing a complete set of definitions expressible entirely within the fixed lexical floor",
+    "the minimum conventional-neural-network observables UCNS must retain to recover enough structure to construct PTCNA without smuggling a target topology into the audit",
     "registry integration for gonol relationship display v1",
     "the minimum modality-independent UCNS object description that can preserve non-numerical identity, scalar observations, provenance, and relations without collapsing them",
     "the exact boundary between a glyph's non-numerical vector description and scalar occurrence measurements attached to it",
