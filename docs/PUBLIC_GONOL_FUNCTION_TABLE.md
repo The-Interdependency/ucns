@@ -62,8 +62,14 @@ outcome-free receipt is
 `generated/public-gonol-contextual-evaluation-preregistration.json`. The
 protocol is a separate producer boundary: it fixes all 84 indices, the
 identity-only control, one existing anchor, ordered context multiplicities,
-thresholds, and failure behavior before an evaluator exists. It does not add a
-usefulness, grammar, parser, or precedence result to this table.
+thresholds, and failure behavior before an evaluator can produce a result. It
+does not add a usefulness, grammar, parser, or precedence result to this table.
+
+The first exact execution is `BLOCKED`, as recorded in
+`docs/PUBLIC_GONOL_CONTEXTUAL_EVALUATION_RESULT.md`: its first complete OEWN
+source build exceeded the frozen 420-second bound before a contextual metric or
+semantic receipt was emitted. This is neither a failing nor a surviving
+function-table result, and it cannot be retried under the exhausted protocol.
 
 ## Contextual application
 
