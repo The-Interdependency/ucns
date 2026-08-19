@@ -30,6 +30,38 @@
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
+#
+# id: recursive_gonol_definition_evidence_check
+#   proves: recursive_gonol_layer_replays_byte_exactly
+#   call: self::test_recursive_gonol_rejects_counterfeit_definition_layer
+#   requires: python3
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: recursive_gonol_child_binding_check
+#   proves: recursive_gonol_preserves_closed_lower_gonols
+#   call: self::test_recursive_gonol_rejects_child_evidence_drift
+#   requires: python3
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: recursive_gonol_synset_member_check
+#   proves: recursive_gonol_preserves_closed_lower_gonols
+#   call: self::test_recursive_gonol_does_not_resolve_members_from_gloss_inscriptions
+#   requires: python3
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: recursive_gonol_code_reference_check
+#   proves: recursive_gonol_layer_replays_byte_exactly
+#   call: self::test_recursive_gonol_receipt_binds_producer_code_reference
+#   requires: python3
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
@@ -147,9 +179,64 @@ def test_recursive_gonol_layer_replays() -> None:
     assert recursive_gonol_layer_bytes(replayed) == recursive_gonol_layer_bytes(recursive)
     with pytest.raises(RecursiveGonolError, match="does not match source"):
         replace(recursive, source_native_relation_occurrence_count=99)
+    changed = replace(recursive.gonols[0], relation_label="counterfeit-label")
+    counterfeit = replace(recursive, gonols=(changed, *recursive.gonols[1:]))
     with pytest.raises(RecursiveGonolError, match="replay mismatch"):
-        replay_source_native_recursive_gonols(
-            replace(recursive, source_receipt_id=recursive.source_receipt_id + "x"),
-            snapshot,
-            layer,
+        replay_source_native_recursive_gonols(counterfeit, snapshot, layer)
+
+
+def test_recursive_gonol_rejects_counterfeit_definition_layer() -> None:
+    snapshot = _snapshot()
+    layer = build_oewn_definition_layer(snapshot)
+    counterfeit = replace(layer, source_definition_count=layer.source_definition_count + 1)
+    assert counterfeit.source_receipt_id == snapshot.source_receipt_id
+    with pytest.raises(RecursiveGonolError, match="deterministic snapshot replay"):
+        build_source_native_recursive_gonols(snapshot, counterfeit)
+
+
+def test_recursive_gonol_rejects_child_evidence_drift() -> None:
+    snapshot = _snapshot()
+    layer = build_oewn_definition_layer(snapshot)
+    recursive = build_source_native_recursive_gonols(snapshot, layer)
+    rebound_source = replace(
+        recursive.gonols[0],
+        source_receipt_id=recursive.source_receipt_id + "x",
+    )
+    with pytest.raises(RecursiveGonolError, match="evidence bindings"):
+        replace(recursive, gonols=(rebound_source, *recursive.gonols[1:]))
+    rebound_layer = replace(
+        recursive.gonols[0],
+        definition_layer_id=recursive.definition_layer_id + "x",
+    )
+    with pytest.raises(RecursiveGonolError, match="evidence bindings"):
+        replace(recursive, gonols=(rebound_layer, *recursive.gonols[1:]))
+
+
+def test_recursive_gonol_does_not_resolve_members_from_gloss_inscriptions() -> None:
+    snapshot = _snapshot()
+    orphan = OEWNCoreSnapshot(
+        snapshot.source_receipt_id,
+        snapshot.lexical_entries,
+        (
+            replace(snapshot.synsets[0], members=("ghost",), definitions=("a ghost",)),
+            *snapshot.synsets[1:],
+        ),
+    )
+    layer = build_oewn_definition_layer(orphan)
+    assert any(item.text == "ghost" for item in layer.inscriptions)
+    assert "ghost" not in dict(layer.closed_word_pairs)
+    with pytest.raises(RecursiveGonolError, match="unresolved closed-word participant 'ghost'"):
+        build_source_native_recursive_gonols(orphan, layer)
+
+
+def test_recursive_gonol_receipt_binds_producer_code_reference() -> None:
+    snapshot = _snapshot()
+    layer = build_oewn_definition_layer(snapshot)
+    recursive = build_source_native_recursive_gonols(snapshot, layer)
+    assert recursive.producer_code_reference.startswith("ucns.python-source-normalized-sha256:")
+    assert b'"producer_code_reference":' in recursive_gonol_layer_bytes(recursive)
+    with pytest.raises(RecursiveGonolError, match="producer code reference"):
+        replace(
+            recursive,
+            producer_code_reference="ucns.python-source-normalized-sha256:" + "0" * 64,
         )
