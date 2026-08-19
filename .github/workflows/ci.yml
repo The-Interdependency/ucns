@@ -68,8 +68,8 @@ jobs:
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.12"
-      - name: Install candidate
-        run: python -m pip install -e ".[test]"
+      - name: Install candidate and OEWN loader dependency
+        run: python -m pip install -e ".[test]" pyyaml
       - name: Checkout frozen OEWN 2025 Core
         uses: actions/checkout@v7.0.1
         with:
