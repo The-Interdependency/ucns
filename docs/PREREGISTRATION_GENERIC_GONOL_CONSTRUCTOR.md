@@ -14,10 +14,12 @@ It does not select `affixiate` as canon.
 affixiate(gonols, relation, source, scale, closure) -> gonol
 ```
 
-One constructor is used at every scale. Character, word, morphology,
-definition, relation, sentence, paragraph, chapter, and work are scale
-contexts, not different object types. Sentence, paragraph, chapter, and
-work have no source construction in this change.
+One constructor is used at every scale. Characters are gonols. Character,
+word, morphology, definition, relation, sentence, paragraph, chapter, and
+work are scale contexts, not different object types. An atomic character
+glyph gonol has no smaller gonol participant; history-bearing character
+gonols affixiate that glyph gonol. Sentence, paragraph, chapter, and work
+have no source construction in this change.
 
 ## Frozen constructor identity
 
@@ -45,10 +47,10 @@ followed by xkcd subset resolution:
 
 | Artifact | Identity |
 |---|---|
-| Character-word corpus | `ucns.character-word-corpus:sha256:4f26c5c614434268e396450a2626bec576cde654fbff2deb95b6acbdca81268d` |
-| xkcd floor v1.4 | `ucns.xkcd-lexical-floor-receipt:sha256:31a1b3bdf6ba56ccd2ce28def049bfe7802d556b5d1794f166fc017088ad57aa` |
-| Affixiate definition layer | `ucns.oewn-definition-layer:sha256:00845896f42528bb5389064f5714a4774794425138e4bc9ef7cac00f0839bffa` |
-| Affixiate recursive layer | `ucns.recursive-gonol-layer:sha256:822d983ec6e3cc68484c88e793f53c05da8c77e50cf8f9c8d8eb16ff40a06793` |
+| Character-word corpus | `ucns.character-word-corpus:sha256:dd033fe1b533b9d65a0755b1391c15ccf0d864f06ffe8d4b5a72f23b52444d57` |
+| xkcd floor v1.4 | `ucns.xkcd-lexical-floor-receipt:sha256:ea27e4de3e2ab9cdd7cb9e865727b57f5d8ae08700fb19844a2ec0354439d4e7` |
+| Affixiate definition layer | `ucns.oewn-definition-layer:sha256:0242af7a53d0e6a9b1095136e1dd139a4822700c8b6700ee104e229dcb646b2b` |
+| Affixiate recursive layer | `ucns.recursive-gonol-layer:sha256:78ee88fa67c2a39973b27cede9d2dbf4e7a09d572a22cadcddbbd5d30a85dc8a` |
 
 Counts: 131798 closed OEWN lemma/form surfaces, 92021 tokens, 3634 xkcd
 surfaces of which 1618 are absent from the OEWN inventory, 185155 definition

@@ -1,4 +1,32 @@
 #!/usr/bin/env python3
+# === MODULE_BUILD ===
+# id: ucns_affixiate_oewn_construction_run
+#   module_name: run_affixiate_oewn_construction
+#   module_kind: instrument
+#   summary: constructs and independently replays OEWN character-word, xkcd subset, definition, and recursive gonols through affixiate
+#   owner: Erin Spencer
+#   public_surface: command-line interface
+#   internal_surface: OEWN load, character-word corpus, xkcd subset, definition layer, recursive layer, receipt write
+#   auth_boundary: requires UCNS_OEWN_2025_CORE_ROOT
+#   storage_boundary: write new generated receipts; does not rewrite historical receipts
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests.test_oewn_character_words
+#   rollout: candidate construction runner; selection remains unresolved
+#   rollback: remove the runner without rewriting historical receipts
+#   requires: ucns_generic_gonol_affixiation, ucns_oewn_character_word_gonols
+#   since: 2026-08-19
+#   unresolved: selection of affixiate as canon
+# === END MODULE_BUILD ===
+#
+# === CONTRACTS ===
+# id: affixiate_run_does_not_rewrite_historical_receipts
+#   given: the affixiate OEWN construction runner writes receipts
+#   then: historical punctuation-aware definition and source-native recursive receipts remain the previously sealed bytes
+#   class: safety
+#   since: 2026-08-19
+# === END CONTRACTS ===
 """Build and independently replay the affixiate OEWN/xkcd candidate scope."""
 
 from __future__ import annotations

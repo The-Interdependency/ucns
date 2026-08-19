@@ -103,8 +103,11 @@ The declared executable candidate is:
 affixiate(gonols, relation, source, scale, closure) -> gonol
 ```
 
-Character, word, morphology, definition, relation, sentence, paragraph,
-chapter, and work are scale contexts, not different object types. Selection of
+Characters are gonols. Character, word, morphology, definition, relation,
+sentence, paragraph, chapter, and work are scale contexts, not different
+object types. An atomic glyph gonol is the character-scale floor; history
+affixiates that gonol. EDCM's "words are the smallest gonols" constraint
+does not transfer into this UCNS constructor. Selection of
 this constructor as canon remains `UNRESOLVED`. See
 `docs/PREREGISTRATION_GENERIC_GONOL_CONSTRUCTOR.md`.
 

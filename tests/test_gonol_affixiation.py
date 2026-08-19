@@ -14,6 +14,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: affixiate_characters_are_gonols_check
+#   proves: affixiate_characters_are_gonols
+#   call: self::test_affixiate_characters_are_gonols
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
@@ -38,8 +46,15 @@ def _source() -> AffixiationSource:
 
 def test_affixiate_is_one_generic_constructor() -> None:
     source = _source()
-    letter = affixiate(
+    glyph = affixiate(
         (),
+        AffixiationRelation(9, "character-glyph"),
+        source,
+        "character",
+        AffixiationClosure(exact_text="w", extras=(("kind", "character"),)),
+    )
+    letter = affixiate(
+        (glyph,),
         AffixiationRelation(8, "history-bearing-character-step"),
         source,
         "character",
@@ -66,7 +81,24 @@ def test_affixiate_is_one_generic_constructor() -> None:
     assert word.standing == AFFIXIATE_STANDING
     assert word.atomic_at_next_scale is True
     assert len(word.carrier.nodes) == 2
-    assert {item.scale for item in (letter, word)}.issubset(SCALE_CONTEXTS)
+    assert {item.scale for item in (glyph, letter, word)}.issubset(SCALE_CONTEXTS)
+    assert glyph.participant_ids == ()
+    assert letter.participant_ids == (glyph.gonol_id,)
+
+
+def test_affixiate_characters_are_gonols() -> None:
+    source = _source()
+    glyph = affixiate(
+        (),
+        AffixiationRelation(9, "character-glyph"),
+        source,
+        "character",
+        AffixiationClosure(exact_text="w", extras=(("kind", "character"),)),
+    )
+    assert isinstance(glyph, Gonol)
+    assert glyph.scale == "character"
+    assert glyph.exact_text == "w"
+    assert glyph.atomic_at_next_scale is True
 
 
 def test_affixiate_refuses_invented_scale_or_selection() -> None:

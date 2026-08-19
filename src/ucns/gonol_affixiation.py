@@ -49,6 +49,12 @@
 #   then: construction fails closed
 #   class: safety
 #   since: 2026-08-19
+#
+# id: affixiate_characters_are_gonols
+#   given: a character-scale affixiation completes
+#   then: the result is a Gonol; empty participants are allowed only for an atomic character-scale glyph gonol
+#   class: doctrine
+#   since: 2026-08-19
 # === END CONTRACTS ===
 
 """Generic scale-invariant gonol constructor.
@@ -62,10 +68,17 @@ Usage::
         affixiate,
     )
 
-    letter = affixiate(
+    glyph = affixiate(
         (),
-        AffixiationRelation(8, "history-bearing-character-step"),
+        AffixiationRelation(9, "character-glyph"),
         AffixiationSource("ucns.oewn-core-receipt:sha256:" + "a" * 64, "oewn-2025-core"),
+        "character",
+        AffixiationClosure(exact_text="w", extras=(("kind", "character"),)),
+    )
+    letter = affixiate(
+        (glyph,),
+        AffixiationRelation(8, "history-bearing-character-step"),
+        glyph.source,
         "character",
         AffixiationClosure(exact_text="w", extras=(("realized_prefix", "w"),)),
     )
@@ -111,6 +124,8 @@ SCALE_CONTEXTS = (
 )
 CHARACTER_STEP_RELATION_CODE = 8
 CHARACTER_STEP_RELATION_LABEL = "history-bearing-character-step"
+CHARACTER_GLYPH_RELATION_CODE = 9
+CHARACTER_GLYPH_RELATION_LABEL = "character-glyph"
 
 
 class AffixiationError(ValueError):
@@ -216,8 +231,8 @@ class Gonol:
             raise AffixiationError("generic affixiation constructor cannot be selected as canon")
         if self.carrier != _carrier(self.participant_ids, self.relation.code):
             raise AffixiationError("relation must enter the affixiation carrier")
-        if not self.participant_ids and self.scale not in {"character"}:
-            raise AffixiationError("non-character affixiation requires at least one participant")
+        if not self.participant_ids and self.scale != "character":
+            raise AffixiationError("only an atomic character-scale glyph gonol may have no smaller gonol participants")
 
     @property
     def gonol_id(self) -> str:
@@ -289,6 +304,8 @@ __all__ = [
     "AFFIXIATE_CONSTRUCTOR_ID",
     "AFFIXIATE_STANDING",
     "AFFIXIATE_VERSION",
+    "CHARACTER_GLYPH_RELATION_CODE",
+    "CHARACTER_GLYPH_RELATION_LABEL",
     "CHARACTER_STEP_RELATION_CODE",
     "CHARACTER_STEP_RELATION_LABEL",
     "SCALE_CONTEXTS",

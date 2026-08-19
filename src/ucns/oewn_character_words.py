@@ -32,6 +32,12 @@
 #   class: doctrine
 #   since: 2026-08-19
 #
+# id: oewn_characters_are_gonols
+#   given: a letter or Public Gonol function glyph participates in a closed word
+#   then: that glyph is itself a character-scale Gonol and is a participant of the history-bearing character gonol
+#   class: doctrine
+#   since: 2026-08-19
+#
 # id: oewn_closed_words_are_atomic
 #   given: a word gonol is completed
 #   then: it is reused by exact surface identity and is atomic at the next scale
@@ -70,6 +76,8 @@ from typing import Mapping
 from .edcm import EDCM_SPACE_CODE_POINTS, PUBLIC_GONOL_SHA256, edcm_carrier_position
 from .gonol_affixiation import (
     AFFIXIATE_CONSTRUCTOR_ID,
+    CHARACTER_GLYPH_RELATION_CODE,
+    CHARACTER_GLYPH_RELATION_LABEL,
     CHARACTER_STEP_RELATION_CODE,
     CHARACTER_STEP_RELATION_LABEL,
     AffixiationClosure,
@@ -252,6 +260,14 @@ def character_word_corpus_bytes(corpus: CharacterWordCorpus) -> bytes:
     return _canonical_bytes({"corpus_id": corpus.corpus_id, **_corpus_payload(corpus)})
 
 
+def _remember(cache: dict[str, Gonol], gonol: Gonol) -> Gonol:
+    existing = cache.get(gonol.gonol_id)
+    if existing is not None:
+        return existing
+    cache[gonol.gonol_id] = gonol
+    return gonol
+
+
 def _function_gonol(glyph: str, source: AffixiationSource, cache: dict[str, Gonol]) -> Gonol:
     try:
         index, name = _function_by_glyph()[glyph]
@@ -263,18 +279,48 @@ def _function_gonol(glyph: str, source: AffixiationSource, cache: dict[str, Gono
         ("unicode_name", name),
         ("public_gonol_sha256", PUBLIC_GONOL_SHA256),
     )
-    gonol = affixiate(
+    return _remember(cache, affixiate(
         (),
         AffixiationRelation(FUNCTION_RELATION_CODE, FUNCTION_PARTICIPANT_RELATION_LABEL),
         source,
         "character",
         AffixiationClosure(exact_text=glyph, extras=extras),
-    )
-    existing = cache.get(gonol.gonol_id)
-    if existing is not None:
-        return existing
-    cache[gonol.gonol_id] = gonol
-    return gonol
+    ))
+
+
+def _glyph_gonol(
+    glyph: str,
+    source: AffixiationSource,
+    cache: dict[str, Gonol],
+    axis_by_glyph: Mapping[str, GlyphAxis],
+) -> Gonol:
+    if glyph in _function_by_glyph():
+        return _function_gonol(glyph, source, cache)
+    if "a" <= glyph <= "z":
+        axis = axis_by_glyph[glyph]
+        extras = (
+            ("kind", "character"),
+            ("glyph", glyph),
+            ("code_point", ord(glyph)),
+            ("selected_axis_id", axis.axis_id),
+            ("carrier_position", axis.carrier_position),
+            ("public_gonol_sha256", PUBLIC_GONOL_SHA256),
+        )
+    else:
+        extras = (
+            ("kind", "character"),
+            ("glyph", glyph),
+            ("code_point", ord(glyph)),
+            ("carrier_position", edcm_carrier_position(glyph)),
+            ("public_gonol_sha256", PUBLIC_GONOL_SHA256),
+        )
+    return _remember(cache, affixiate(
+        (),
+        AffixiationRelation(CHARACTER_GLYPH_RELATION_CODE, CHARACTER_GLYPH_RELATION_LABEL),
+        source,
+        "character",
+        AffixiationClosure(exact_text=glyph, extras=extras),
+    ))
 
 
 def _character_gonol(
@@ -289,55 +335,28 @@ def _character_gonol(
     source: AffixiationSource,
     cache: dict[str, Gonol],
 ) -> Gonol:
-    if not ("a" <= glyph <= "z"):
-        extras = (
-            ("kind", "residual-character"),
-            ("code_point", ord(glyph)),
-            ("carrier_position", edcm_carrier_position(glyph)),
-            ("realized_prefix", prefix),
-            ("step_index", step_index),
-            ("prior_state_id", prior_id),
-            ("admissible_next_glyphs", list(potential.get(prefix, ()))),
-            ("space_boundary_available", prefix in terminals),
-        )
-        participants: tuple[str, ...] = () if prior_id == TRAVERSAL_ORIGIN else (prior_id,)
-        gonol = affixiate(
-            participants,
-            AffixiationRelation(CHARACTER_STEP_RELATION_CODE, CHARACTER_STEP_RELATION_LABEL),
-            source,
-            "character",
-            AffixiationClosure(exact_text=glyph, extras=extras),
-        )
-        existing = cache.get(gonol.gonol_id)
-        if existing is not None:
-            return existing
-        cache[gonol.gonol_id] = gonol
-        return gonol
-    axis = axis_by_glyph[glyph]
+    glyph_gonol = _glyph_gonol(glyph, source, cache, axis_by_glyph)
+    participants: tuple[Gonol | str, ...]
+    if prior_id == TRAVERSAL_ORIGIN:
+        participants = (glyph_gonol,)
+    else:
+        participants = (prior_id, glyph_gonol)
     extras = (
-        ("kind", "character-gonol"),
+        ("kind", "character"),
         ("realized_prefix", prefix),
         ("step_index", step_index),
-        ("selected_axis_id", axis.axis_id),
-        ("selected_glyph", glyph),
-        ("selected_carrier_position", axis.carrier_position),
+        ("glyph_gonol_id", glyph_gonol.gonol_id),
         ("prior_state_id", prior_id),
         ("admissible_next_glyphs", list(potential.get(prefix, ()))),
         ("space_boundary_available", prefix in terminals),
     )
-    participants = () if prior_id == TRAVERSAL_ORIGIN else (prior_id,)
-    gonol = affixiate(
+    return _remember(cache, affixiate(
         participants,
         AffixiationRelation(CHARACTER_STEP_RELATION_CODE, CHARACTER_STEP_RELATION_LABEL),
         source,
         "character",
         AffixiationClosure(exact_text=glyph, extras=extras),
-    )
-    existing = cache.get(gonol.gonol_id)
-    if existing is not None:
-        return existing
-    cache[gonol.gonol_id] = gonol
-    return gonol
+    ))
 
 
 def _close_token(

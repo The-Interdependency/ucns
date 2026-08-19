@@ -726,7 +726,7 @@ def _occurrences_from_word(word: Gonol, by_id: Mapping[str, Gonol]) -> tuple[Flo
     for participant_id in word.participant_ids:
         item = by_id[participant_id]
         text = item.exact_text or ""
-        kind = str(item.extra("kind")) if item.closure.extras else CHARACTER_KIND
+        kind = str(item.extra("kind")) if item.closure.extras else "character"
         if kind == "public-gonol-function":
             built.append(FloorOccurrence(
                 len(built), offset, offset + len(text), FUNCTION_KIND, text, item.gonol_id,
