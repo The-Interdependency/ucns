@@ -97,6 +97,17 @@ Lower-order construction remains intrinsic to gonol identity and available for p
 
 **Affixiation is not only a lexical prefix/suffix operation.** It is the scale-invariant pattern by which already-formed gonols couple, their relationship enters the resulting gonol, the relation closes, and the result becomes atomic at the next scale.
 
+The declared executable candidate is:
+
+```text
+affixiate(gonols, relation, source, scale, closure) -> gonol
+```
+
+Character, word, morphology, definition, relation, sentence, paragraph,
+chapter, and work are scale contexts, not different object types. Selection of
+this constructor as canon remains `UNRESOLVED`. See
+`docs/PREREGISTRATION_GENERIC_GONOL_CONSTRUCTOR.md`.
+
 ```text
 atomic gonol(s)
     ↓ couple / affixiate

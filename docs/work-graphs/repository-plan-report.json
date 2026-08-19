@@ -111,6 +111,11 @@
       "boundary": "exact sources, history-bearing character gonols close into xkcd surfaces, explicit occurrence-addressed function application, historical letter-run/character-history and NGSL constructors demoted off the public surface, and OEWN definitions consume closed word gonols instead of reopening them; the replacement punctuation-aware 185155-definition receipt is sealed and independently replayed; the older 185155 receipt remains historical pre-function-segmentation evidence"
     },
     {
+      "surface": "generic affixiate gonol constructor",
+      "status": "declared candidate constructor; selection UNRESOLVED",
+      "boundary": "one constructor affixiate(gonols, relation, source, scale, closure) used at every scale context; character/word/definition/relation are contexts not types; sentence/paragraph/chapter/work are declared without source construction; historical receipts are not rewritten"
+    },
+    {
       "surface": "source-native recursive gonol candidate",
       "status": "declared candidate constructor; selection UNRESOLVED",
       "boundary": "one recursive gonol per source-native OEWN relation occurrence; participants are already-closed word and definition gonols; no cartesian pairing, family map, or selected native-relation mechanism"
@@ -123,7 +128,7 @@
     {
       "surface": "punctuation-aware xkcd lexical-floor reconstruction",
       "status": "implemented reconstruction candidate on the official Simple Writer payload; not selected canon",
-      "boundary": "alphabetic identity is the ordered history-bearing character traversal, not an opaque letter-run; Public Gonol punctuation/symbol functions, including intra-word apostrophes and every source VERTICAL LINE, participate intrinsically; function application requires explicit occurrence-addressed context; no independent punctuation grammar, family map, or closed definition support is attached"
+      "boundary": "xkcd surfaces resolve against OEWN-closed word gonols produced by generic affixiate; shared surfaces reuse OEWN identities; absent xkcd surfaces are closed against OEWN-wide character history and counted without inventing a 3634-to-1000 family map; function application requires explicit occurrence-addressed context"
     },
     {
       "surface": "Public Gonol definition-derived function table",
@@ -299,7 +304,11 @@
     "lexical_recursion_architecture": "docs/LEXICAL_RECURSION_ARCHITECTURE.md",
     "xkcd_lexical_floor": "docs/XKCD_LEXICAL_FLOOR_V1.md",
     "definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
+    "character_word_gonol_receipt": "generated/oewn-2025-core-character-word-gonol-receipt.json",
+    "affixiate_definition_layer_receipt": "generated/oewn-2025-core-affixiate-definition-layer-receipt.json",
+    "affixiate_recursive_gonol_receipt": "generated/oewn-2025-core-affixiate-recursive-gonol-receipt.json",
     "punctuation_aware_oewn_definition_layer_receipt": "generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json",
+    "generic_gonol_constructor_preregistration": "docs/PREREGISTRATION_GENERIC_GONOL_CONSTRUCTOR.md",
     "recursive_gonol_preregistration": "docs/PREREGISTRATION_RECURSIVE_GONOL_RELATIONS.md",
     "source_native_recursive_gonol_receipt": "generated/oewn-2025-core-source-native-recursive-gonol-receipt.json",
     "historical_oewn_definition_layer_receipt": "generated/oewn-2025-core-definition-layer-receipt.json",

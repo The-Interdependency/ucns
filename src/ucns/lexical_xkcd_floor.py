@@ -131,13 +131,18 @@ explanatory-floor hypothesis holds.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import lru_cache
 from hashlib import sha256
 import json
 from typing import Mapping
 
 from .edcm import PUBLIC_GONOL_SHA256, edcm_carrier_position
+from .gonol_affixiation import AffixiationClosure, AffixiationRelation, AffixiationSource, affixiate
 from .lexical_word_gonols import GlyphAxis
+from .oewn_character_words import (
+    CharacterWordCorpus,
+    close_additional_word,
+    load_oewn_character_word_corpus,
+)
 from .lexical_sources import (
     XKCD_DECLARED_FAMILY_COUNT,
     XKCD_STANDING,
@@ -149,6 +154,7 @@ from .lexical_sources import (
     quoted_xkcd_payload,
 )
 from .public_gonol_functions import (
+    FUNCTION_RELATION_CODE,
     FUNCTIONAL_INDEX_NAMES,
     AtomicFunctionState,
     ContextualFunctionApplication,
@@ -158,11 +164,13 @@ from .public_gonol_functions import (
 from .relational_carrier import RelationalCarrier, build_relational_carrier
 
 XKCD_LEXICAL_FLOOR_ID = "ucns.lexical-floor.xkcd-simplewriter-0.2.1"
-XKCD_LEXICAL_FLOOR_VERSION = "1.3.0"
-XKCD_LEXICAL_FLOOR_STANDING = "character-composed-punctuation-aware-xkcd-floor-candidate"
+XKCD_LEXICAL_FLOOR_VERSION = "1.4.0"
+XKCD_LEXICAL_FLOOR_STANDING = "oewn-character-word-subset-xkcd-floor-candidate"
 XKCD_FLOOR_RECEIPT_PREFIX = "ucns.xkcd-lexical-floor-receipt:sha256:"
 CHARACTER_KIND = "character-gonol"
 FUNCTION_KIND = "public-gonol-function"
+CLOSED_WORD_KIND = "closed-word"
+XKCD_ARTIFACT = "xkcd-simplewriter-0.2.1"
 CHARACTER_TRAVERSAL_STANDING = "xkcd-character-traversal-candidate"
 FUNCTION_PARTICIPANT_STANDING = "public-gonol-function-participant-in-xkcd-floor"
 CLOSED_SURFACE_STANDING = "punctuation-aware-xkcd-surface-closure-candidate"
@@ -299,11 +307,15 @@ class CharacterTraversalState:
         elif not (
             self.prior_state_id.startswith("ucns.xkcd-character-traversal:sha256:")
             or self.prior_state_id.startswith("ucns.xkcd-function-participant:sha256:")
+            or self.prior_state_id.startswith("ucns.gonol:sha256:")
         ):
             raise XkcdLexicalFloorError("character traversal prior state identity mismatch")
         if len(set(self.admissible_next_glyphs)) != len(self.admissible_next_glyphs):
             raise XkcdLexicalFloorError("character traversal future potential contains duplicates")
-        if not self.source_receipt_id.startswith("ucns.xkcd-simplewriter-receipt:sha256:"):
+        if not (
+            self.source_receipt_id.startswith("ucns.xkcd-simplewriter-receipt:sha256:")
+            or self.source_receipt_id.startswith("ucns.oewn-core-receipt:sha256:")
+        ):
             raise XkcdLexicalFloorError("character traversal source receipt identity mismatch")
         if self.standing != CHARACTER_TRAVERSAL_STANDING:
             raise XkcdLexicalFloorError("character traversal standing cannot be promoted")
@@ -346,13 +358,23 @@ class FloorOccurrence:
                 raise XkcdLexicalFloorError("character occurrence cannot carry a function identity")
             if len(self.exact_text) != 1 or not ("a" <= self.exact_text <= "z"):
                 raise XkcdLexicalFloorError("character occurrence must be one ASCII letter")
-            if self.traversal is None or self.traversal.selected_glyph != self.exact_text:
+            if self.traversal is None:
+                if not self.participant_id.startswith("ucns.gonol:sha256:"):
+                    raise XkcdLexicalFloorError("character occurrence requires its traversal state")
+                return
+            if self.traversal.selected_glyph != self.exact_text:
                 raise XkcdLexicalFloorError("character occurrence requires its traversal state")
-            if self.participant_id != self.traversal.state_id:
+            if self.participant_id not in {self.traversal.state_id} and not self.participant_id.startswith("ucns.gonol:sha256:"):
                 raise XkcdLexicalFloorError("character occurrence identity must be the traversal state")
             return
+        if self.kind == CLOSED_WORD_KIND:
+            if self.public_gonol_index is not None or self.function_id is not None or self.traversal is not None:
+                raise XkcdLexicalFloorError("closed-word occurrence cannot carry a function or letter traversal")
+            if not self.exact_text or not self.participant_id.startswith("ucns.gonol:sha256:"):
+                raise XkcdLexicalFloorError("closed-word occurrence requires a gonol identity")
+            return
         if self.kind != FUNCTION_KIND:
-            raise XkcdLexicalFloorError("occurrence kind must be character-gonol or public-gonol-function")
+            raise XkcdLexicalFloorError("occurrence kind must be character-gonol, closed-word, or public-gonol-function")
         if self.traversal is not None:
             raise XkcdLexicalFloorError("function occurrence cannot carry a letter traversal")
         if len(self.exact_text) != 1 or self.public_gonol_index is None:
@@ -369,6 +391,8 @@ class ClosedSurfaceGonol:
     surface: str
     occurrences: tuple[FloorOccurrence, ...]
     carrier: RelationalCarrier
+    word_gonol_id: str = ""
+    absent_from_oewn_inventory: bool = False
     atomic_at_next_scale: bool = True
     independent_punctuation_grammar_attached: bool = False
     standing: str = CLOSED_SURFACE_STANDING
@@ -386,9 +410,13 @@ class ClosedSurfaceGonol:
             raise XkcdLexicalFloorError("surface closure cannot attach an independent grammar")
         if self.standing != CLOSED_SURFACE_STANDING:
             raise XkcdLexicalFloorError("surface standing cannot be promoted")
+        if self.word_gonol_id and not self.word_gonol_id.startswith("ucns.gonol:sha256:"):
+            raise XkcdLexicalFloorError("closed surface word identity must be a gonol")
 
     @property
     def gonol_id(self) -> str:
+        if self.word_gonol_id:
+            return self.word_gonol_id
         return _identity("ucns.xkcd-closed-surface-gonol:sha256:", {
             "surface": self.surface,
             "occurrence_ids": [item.participant_id for item in self.occurrences],
@@ -524,6 +552,8 @@ class XkcdLexicalFloor:
     all_pairs_graph_materialized: bool = False
     independent_punctuation_grammar_attached: bool = False
     punctuation_functions_intrinsic: bool = True
+    word_corpus_id: str | None = None
+    xkcd_surfaces_absent_from_oewn: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.source, XKCDSimpleWriterReceipt):
@@ -622,7 +652,12 @@ class XkcdLexicalFloor:
             "standing": self.standing,
             "source_receipt_id": self.source.receipt_id,
             "official_payload_sha256": sha256(self.payload.encode("utf-8")).hexdigest(),
-            "character_constructor": "history-bearing-character-traversal",
+            "character_constructor": "generic-affixiate-oewn-character-history",
+            "word_corpus_id": self.word_corpus_id,
+            "xkcd_surfaces_absent_from_oewn_count": len(self.xkcd_surfaces_absent_from_oewn),
+            "xkcd_surfaces_absent_from_oewn_sha256": sha256(
+                _canonical_bytes(list(self.xkcd_surfaces_absent_from_oewn))
+            ).hexdigest(),
             "character_axis_ids": [item.axis_id for item in self.axes],
             "surface_ids": [item.gonol_id for item in self.surfaces],
             "stream_participant_ids": [item.participant_id for item in self.stream],
@@ -662,81 +697,144 @@ class XkcdLexicalFloor:
         return _identity(XKCD_FLOOR_RECEIPT_PREFIX, self.as_payload())
 
 
+def _pipe_gonol(
+    source: AffixiationSource,
+    table: PublicGonolFunctionTable | None,
+    cache: dict[str, object],
+) -> tuple[str, int, str | None]:
+    public_index, name = _function_meta("|")
+    extras = (
+        ("kind", "public-gonol-function"),
+        ("public_gonol_index", public_index),
+        ("unicode_name", name),
+        ("public_gonol_sha256", PUBLIC_GONOL_SHA256),
+    )
+    gonol = affixiate(
+        (),
+        AffixiationRelation(FUNCTION_RELATION_CODE, "public-gonol-function-participant"),
+        source,
+        "character",
+        AffixiationClosure(exact_text="|", extras=extras),
+    )
+    cache[gonol.gonol_id] = gonol
+    return gonol.gonol_id, public_index, _table_function_id(table, public_index)
+
+
+def _occurrences_from_word(word: Gonol, by_id: Mapping[str, Gonol]) -> tuple[FloorOccurrence, ...]:
+    built: list[FloorOccurrence] = []
+    offset = 0
+    for participant_id in word.participant_ids:
+        item = by_id[participant_id]
+        text = item.exact_text or ""
+        kind = str(item.extra("kind")) if item.closure.extras else CHARACTER_KIND
+        if kind == "public-gonol-function":
+            built.append(FloorOccurrence(
+                len(built), offset, offset + len(text), FUNCTION_KIND, text, item.gonol_id,
+                int(item.extra("public_gonol_index")),
+            ))
+        elif kind == "closed-word":
+            nested = _occurrences_from_word(item, by_id)
+            for part in nested:
+                built.append(FloorOccurrence(
+                    len(built), offset + part.start, offset + part.end, part.kind,
+                    part.exact_text, part.participant_id, part.public_gonol_index,
+                    part.function_id, part.traversal,
+                ))
+        else:
+            built.append(FloorOccurrence(
+                len(built), offset, offset + len(text), CHARACTER_KIND, text, item.gonol_id,
+            ))
+        offset += len(text)
+    return tuple(built)
+
+
 def reconstruct_xkcd_lexical_floor(
     source: XKCDSimpleWriterReceipt,
+    word_corpus: CharacterWordCorpus,
     table: PublicGonolFunctionTable | None = None,
     application_plans: tuple[FunctionApplicationPlan, ...] = (),
 ) -> XkcdLexicalFloor:
-    """Reconstruct the official payload with intrinsic Public Gonol functions."""
+    """Resolve xkcd surfaces against OEWN-closed words, then reconstruct the payload."""
 
     if not isinstance(source, XKCDSimpleWriterReceipt):
         raise TypeError("source must be an XKCDSimpleWriterReceipt")
+    if not isinstance(word_corpus, CharacterWordCorpus):
+        raise TypeError("word_corpus must be a CharacterWordCorpus")
     payload = official_xkcd_source_payload(source)
-    receipt_id = source.receipt_id
-    potential, terminals = _source_potential(source.surface_forms)
-    axes = _letter_axes(source.surface_forms)
-    axis_by_glyph = {item.glyph: item for item in axes}
+    xkcd_source = AffixiationSource(source.receipt_id, XKCD_ARTIFACT)
+    cache = dict(word_corpus.by_id)
+    absent: list[str] = []
     surfaces = []
     stream: list[FloorOccurrence] = []
     offset = 0
     for ordinal, surface in enumerate(source.surface_forms):
-        surface_occurrences = _construct_surface(
-            surface, receipt_id, table, potential, terminals, axis_by_glyph,
+        present = surface in word_corpus.by_surface
+        word = word_corpus.by_surface[surface] if present else close_additional_word(
+            word_corpus, surface, xkcd_source, cache,
         )
+        if not present:
+            absent.append(surface)
+        cache[word.gonol_id] = word
+        internals = _occurrences_from_word(word, cache)
         surfaces.append(ClosedSurfaceGonol(
             surface,
-            surface_occurrences,
-            _close(tuple(item.participant_id for item in surface_occurrences)),
+            internals,
+            word.carrier,
+            word.gonol_id,
+            not present,
         ))
-        for item in surface_occurrences:
-            stream.append(FloorOccurrence(
-                len(stream), offset + item.start, offset + item.end, item.kind,
-                item.exact_text, item.participant_id, item.public_gonol_index,
-                item.function_id, item.traversal,
-            ))
+        stream.append(FloorOccurrence(
+            len(stream), offset, offset + len(surface), CLOSED_WORD_KIND, surface, word.gonol_id,
+        ))
         offset += len(surface)
         if ordinal + 1 < len(source.surface_forms):
-            public_index, name = _function_meta("|")
-            function_id = _table_function_id(table, public_index)
-            participant_id = _function_participant_id(public_index, "|", name, function_id)
+            participant_id, public_index, function_id = _pipe_gonol(xkcd_source, table, cache)
             stream.append(FloorOccurrence(
                 len(stream), offset, offset + 1, FUNCTION_KIND, "|", participant_id,
                 public_index, function_id,
             ))
             offset += 1
-    surfaces = tuple(surfaces)
     stream_occurrences = tuple(stream)
     applications = _execute_plans(table, stream_occurrences, application_plans)
     return XkcdLexicalFloor(
-        source, payload, surfaces, stream_occurrences, axes,
+        source, payload, tuple(surfaces), stream_occurrences, word_corpus.axes,
         _close(tuple(item.participant_id for item in stream_occurrences)),
         None if table is None else table.table_id,
         application_plans,
         applications,
+        word_corpus_id=word_corpus.corpus_id,
+        xkcd_surfaces_absent_from_oewn=tuple(absent),
     )
 
 
-@lru_cache(maxsize=1)
-def load_xkcd_lexical_floor() -> XkcdLexicalFloor:
-    """Load the punctuation-aware reconstruction from packaged xkcd bytes."""
+def load_xkcd_lexical_floor(
+    word_corpus: CharacterWordCorpus | None = None,
+) -> XkcdLexicalFloor:
+    """Resolve the official xkcd payload against an OEWN character-word corpus."""
 
-    return reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter())
+    corpus = word_corpus if word_corpus is not None else load_oewn_character_word_corpus()
+    return reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), corpus)
 
 
 def replay_xkcd_lexical_floor(
     floor: XkcdLexicalFloor,
+    word_corpus: CharacterWordCorpus,
     table: PublicGonolFunctionTable | None = None,
     application_plans: tuple[FunctionApplicationPlan, ...] | None = None,
 ) -> XkcdLexicalFloor:
-    """Independently rebuild the floor from the same source, table, and plans."""
+    """Independently rebuild the floor from the same source, corpus, table, and plans."""
 
+    if not isinstance(word_corpus, CharacterWordCorpus):
+        raise TypeError("word_corpus must be a CharacterWordCorpus")
+    if floor.word_corpus_id != word_corpus.corpus_id:
+        raise XkcdLexicalFloorError("replay requires the same character-word corpus")
     plans = floor.application_plans if application_plans is None else application_plans
     if floor.table_id is None:
         if table is not None:
             raise XkcdLexicalFloorError("replay table does not match the floor's absent table")
     elif table is None or table.table_id != floor.table_id:
         raise XkcdLexicalFloorError("replay requires the same function table")
-    rebuilt = reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), table, plans)
+    rebuilt = reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), word_corpus, table, plans)
     if (
         rebuilt != floor
         or rebuilt.receipt_id != floor.receipt_id
@@ -752,6 +850,7 @@ __all__ = [
     "CLOSED_SURFACE_STANDING",
     "FLOOR_OCCURRENCE_RELATION_CODE",
     "CHARACTER_KIND",
+    "CLOSED_WORD_KIND",
     "FUNCTION_KIND",
     "CharacterTraversalState",
     "XKCD_FLOOR_RECEIPT_PREFIX",

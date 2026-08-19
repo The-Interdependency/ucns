@@ -90,6 +90,8 @@ import sys
 from typing import Iterable, Mapping
 
 from .edcm import EDCM_SPACE_CODE_POINTS, PUBLIC_GONOL_SHA256, edcm_carrier_position
+from .gonol_affixiation import AffixiationClosure, AffixiationRelation, AffixiationSource, affixiate
+from .oewn_character_words import CharacterWordCorpus, CharacterWordError, build_oewn_character_word_corpus
 from .oewn_core import OEWNCoreSnapshot
 from .lexical_sources import verify_oewn_2025_core
 from .oewn_core import load_oewn_core
@@ -214,7 +216,9 @@ class OEWNMorphologyGonol:
     standing: str = MORPHOLOGY_STANDING
 
     def __post_init__(self) -> None:
-        if self.carrier != build_relational_carrier(2, ((0, MORPHOLOGY_FORM_RELATION_CODE, 1),)):
+        if self.carrier != build_relational_carrier(
+            3, ((0, MORPHOLOGY_FORM_RELATION_CODE, 1), (0, MORPHOLOGY_FORM_RELATION_CODE, 2)),
+        ):
             raise OEWNDefinitionRecursionError("morphology relation must be intrinsic")
         if self.form_ordinal < 0 or self.inferred_decomposition:
             raise OEWNDefinitionRecursionError("morphology cannot infer decomposition")
@@ -339,6 +343,7 @@ class OEWNDefinitionLayer:
     source_synset_count: int
     source_definition_count: int
     source_native_relation_occurrence_count: int
+    closed_word_pairs: tuple[tuple[str, str], ...] = ()
     construction_passes: int = 2
     new_identities_on_final_pass: int = 0
     new_relationships_on_final_pass: int = 0
@@ -474,12 +479,19 @@ def oewn_entry_key(lemma: str, part_of_speech: str) -> str:
     return _identity("ucns.oewn-entry:sha256:", {"lemma": lemma, "part_of_speech": part_of_speech})
 
 
-def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLayer:
+def build_oewn_definition_layer(
+    snapshot: OEWNCoreSnapshot,
+    word_corpus: CharacterWordCorpus | None = None,
+) -> OEWNDefinitionLayer:
     """Construct all explicit forms and every OEWN sense-definition relation."""
 
     if not isinstance(snapshot, OEWNCoreSnapshot):
         raise TypeError("snapshot must be an OEWNCoreSnapshot")
     receipt_id = snapshot.source_receipt_id
+    corpus = word_corpus if word_corpus is not None else build_oewn_character_word_corpus(snapshot)
+    if corpus.source.receipt_id != receipt_id:
+        raise OEWNDefinitionRecursionError("word corpus and OEWN snapshot differ")
+    source = AffixiationSource(receipt_id, "oewn-2025-core")
     inscription_by_text: dict[str, OEWNInscriptionGonol] = {}
     composite_by_text: dict[str, OEWNCompositeWordGonol] = {}
     closed_words: dict[str, str] = {}
@@ -529,7 +541,10 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
         return composite.gonol_id
 
     def register_closed_word(text: str) -> str:
-        gonol_id = admitted_word(text)
+        try:
+            gonol_id = corpus.word(text).gonol_id
+        except CharacterWordError:
+            gonol_id = admitted_word(text)
         existing = closed_words.get(text)
         if existing is None:
             closed_words[text] = gonol_id
@@ -544,9 +559,17 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
         lemma_id = register_closed_word(entry.lemma)
         for ordinal, form_text in enumerate(entry.forms):
             form_id = register_closed_word(form_text)
+            closed = affixiate(
+                (lemma_id, form_id),
+                AffixiationRelation(MORPHOLOGY_FORM_RELATION_CODE, "explicit-oewn-form"),
+                source,
+                "morphology",
+                AffixiationClosure(
+                    extras=(("entry_key", key), ("form_ordinal", ordinal)),
+                ),
+            )
             morphology.append(OEWNMorphologyGonol(
-                key, lemma_id, form_id, ordinal, receipt_id,
-                build_relational_carrier(2, ((0, MORPHOLOGY_FORM_RELATION_CODE, 1),)),
+                key, lemma_id, form_id, ordinal, receipt_id, closed.carrier,
             ))
         for sense in entry.senses:
             if sense.sense_id in sense_targets:
@@ -584,19 +607,31 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
                 occurrences.append(OEWNDefinitionOccurrence(
                     len(occurrences), start, end, word.gonol_id, INSCRIPTION_KIND,
                 ))
+            closed = affixiate(
+                tuple(item.participant_id for item in occurrences),
+                AffixiationRelation(DEFINITION_RELATION_CODE, "oewn-sense-definition"),
+                source,
+                "definition",
+                AffixiationClosure(
+                    exact_text=gloss,
+                    extras=(
+                        ("sense_id", sense_id),
+                        ("synset_id", synset_id),
+                        ("definition_ordinal", definition_ordinal),
+                    ),
+                ),
+            )
             definitions.append(OEWNDefinitionGonol(
                 key, target_id, pos, sense_id, synset_id, definition_ordinal,
                 gloss, tuple(occurrences), tuple(boundaries), receipt_id,
-                build_relational_carrier(
-                    1 + len(occurrences),
-                    ((0, DEFINITION_RELATION_CODE, i + 1) for i in range(len(occurrences))),
-                ),
+                closed.carrier,
             ))
     layer = OEWNDefinitionLayer(
         receipt_id, tuple(inscription_by_text.values()), tuple(composite_by_text.values()),
         tuple(morphology), tuple(definitions),
         len(snapshot.lexical_entries), snapshot.sense_count, len(snapshot.synsets),
         snapshot.definition_count, snapshot.relation_occurrence_count,
+        tuple(sorted(closed_words.items())),
     )
     expected_definition_gonols = sum(
         len(synset_by_id[sense.synset_id].definitions)

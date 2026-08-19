@@ -125,6 +125,9 @@ def test_public_surface_is_bounded() -> None:
         "build_source_native_recursive_gonols",
         "replay_source_native_recursive_gonols",
         "RecursiveGonolLayer",
+        "affixiate",
+        "Gonol",
+        "build_oewn_character_word_corpus",
     ):
         assert expected in exported
 

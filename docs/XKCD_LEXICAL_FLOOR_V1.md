@@ -1,16 +1,20 @@
-# xkcd lexical-floor reconstruction v1.3
+# xkcd lexical-floor reconstruction v1.4
 
 **Authority:** Erin Spencer
 **Recorded:** 2026-08-19
-**Status:** character-composed punctuation-aware reconstruction candidate; not selected canon
+**Status:** OEWN-character-word subset candidate via generic `affixiate`; not selected canon
 
 This reconstructs the xkcd Simple Writer 0.2.1 source from history-bearing
 character gonols plus intrinsic Public Gonol punctuation/symbol functions.
 It is not selected canon, not a closed definition set, and not evidence that
 the explanatory-floor hypothesis holds.
 
-The v1.2 letter-run shortcut is superseded. Opaque ``_letter_run_id("water")``
-identities are historical constructor evidence only.
+The v1.3 xkcd-only letter-axis constructor is superseded. Word identities are
+closed from corpus-wide OEWN character history through ``affixiate``. xkcd
+surfaces that exist as OEWN words reuse those gonols. Surfaces absent from the
+OEWN inventory are closed against OEWN-wide admissible paths and counted; they
+are not a 3,634→1,000 family map. Historical v1.2/v1.3 receipts remain
+historical.
 
 ## Construction
 

@@ -68,6 +68,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 import json
 
+from .gonol_affixiation import AffixiationClosure, AffixiationRelation, AffixiationSource, affixiate
 from .oewn_core import OEWNCoreSnapshot
 from .oewn_definition_recursion import (
     OEWNDefinitionGonol,
@@ -237,9 +238,9 @@ class _SenseIndex:
 
 
 def _word_index(layer: OEWNDefinitionLayer) -> dict[str, str]:
-    by_text: dict[str, str] = {}
+    by_text: dict[str, str] = dict(layer.closed_word_pairs)
     for item in layer.composite_words:
-        by_text[item.exact_text] = item.gonol_id
+        by_text.setdefault(item.exact_text, item.gonol_id)
     for item in layer.inscriptions:
         by_text.setdefault(item.text, item.gonol_id)
     return by_text
@@ -329,11 +330,29 @@ def _join(
     return tuple(joined)
 
 
-def _close(participants: tuple[RecursiveParticipant, ...]) -> RelationalCarrier:
-    return build_relational_carrier(
-        1 + len(participants),
-        ((0, SOURCE_NATIVE_RELATION_CODE, index + 1) for index in range(len(participants))),
+def _close(
+    participants: tuple[RecursiveParticipant, ...],
+    *,
+    source: AffixiationSource,
+    relation_label: str,
+    address_kind: str,
+    source_address: str,
+    target_address: str,
+) -> RelationalCarrier:
+    closed = affixiate(
+        tuple(item.gonol_id for item in participants),
+        AffixiationRelation(SOURCE_NATIVE_RELATION_CODE, relation_label),
+        source,
+        "relation",
+        AffixiationClosure(
+            extras=(
+                ("address_kind", address_kind),
+                ("source_address", source_address),
+                ("target_address", target_address),
+            ),
+        ),
     )
+    return closed.carrier
 
 
 def build_source_native_recursive_gonols(
@@ -352,6 +371,7 @@ def build_source_native_recursive_gonols(
     gonols: list[RecursiveGonol] = []
     receipt_id = snapshot.source_receipt_id
     layer_id = definition_layer.layer_id
+    source = AffixiationSource(receipt_id, "oewn-2025-core")
 
     def add(
         address_kind: str,
@@ -362,7 +382,14 @@ def build_source_native_recursive_gonols(
     ) -> None:
         gonols.append(RecursiveGonol(
             len(gonols), address_kind, source_address, target_address, relation_label,
-            participants, receipt_id, layer_id, _close(participants),
+            participants, receipt_id, layer_id, _close(
+                participants,
+                source=source,
+                relation_label=relation_label,
+                address_kind=address_kind,
+                source_address=source_address,
+                target_address=target_address,
+            ),
         ))
 
     for entry in snapshot.lexical_entries:

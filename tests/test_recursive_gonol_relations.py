@@ -91,10 +91,11 @@ def test_recursive_gonol_preserves_closed_lower_gonols() -> None:
     snapshot = _snapshot()
     layer = build_oewn_definition_layer(snapshot)
     recursive = build_source_native_recursive_gonols(snapshot, layer)
-    closed_words = {item.gonol_id for item in layer.inscriptions}
+    closed_words = {gonol_id for _text, gonol_id in layer.closed_word_pairs}
+    closed_words.update(item.gonol_id for item in layer.inscriptions)
     closed_words.update(item.gonol_id for item in layer.composite_words)
     closed_definitions = {item.gonol_id for item in layer.definition_gonols}
-    dont = next(item for item in layer.composite_words if item.exact_text == "don't")
+    dont_id = dict(layer.closed_word_pairs)["don't"]
     for gonol in recursive.gonols:
         assert gonol.participants
         for participant in gonol.participants:
@@ -104,7 +105,7 @@ def test_recursive_gonol_preserves_closed_lower_gonols() -> None:
                 assert participant.kind == DEFINITION_PARTICIPANT_KIND
                 assert participant.gonol_id in closed_definitions
     assert all(
-        dont.gonol_id not in {item.gonol_id for item in gonol.participants}
+        dont_id not in {item.gonol_id for item in gonol.participants}
         for gonol in recursive.gonols
     )
     antonym = recursive.gonols[0]

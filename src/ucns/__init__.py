@@ -718,6 +718,25 @@ from .lexical_xkcd_floor import (
     reconstruct_xkcd_lexical_floor,
     replay_xkcd_lexical_floor,
 )
+from .gonol_affixiation import (
+    AFFIXIATE_CONSTRUCTOR_ID,
+    AFFIXIATE_STANDING,
+    SCALE_CONTEXTS,
+    AffixiationClosure,
+    AffixiationError,
+    AffixiationRelation,
+    AffixiationSource,
+    Gonol,
+    affixiate,
+)
+from .oewn_character_words import (
+    CharacterWordCorpus,
+    CharacterWordError,
+    build_character_word_corpus,
+    build_oewn_character_word_corpus,
+    character_word_corpus_bytes,
+    replay_oewn_character_word_corpus,
+)
 from .recursive_gonol_relations import (
     RECURSIVE_GONOL_CONSTRUCTOR_ID,
     RECURSIVE_GONOL_STANDING,
@@ -1069,4 +1088,10 @@ __all__ = [
     "SOURCE_NATIVE_RELATION_CODE", "RecursiveGonol", "RecursiveGonolError",
     "RecursiveGonolLayer", "build_source_native_recursive_gonols",
     "recursive_gonol_layer_bytes", "replay_source_native_recursive_gonols",
+    "AFFIXIATE_CONSTRUCTOR_ID", "AFFIXIATE_STANDING", "SCALE_CONTEXTS",
+    "AffixiationClosure", "AffixiationError", "AffixiationRelation",
+    "AffixiationSource", "Gonol", "affixiate",
+    "CharacterWordCorpus", "CharacterWordError",
+    "build_character_word_corpus", "build_oewn_character_word_corpus",
+    "character_word_corpus_bytes", "replay_oewn_character_word_corpus",
 ]

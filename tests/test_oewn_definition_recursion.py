@@ -112,9 +112,8 @@ def test_public_gonol_functions_are_not_absorbed_into_inscriptions() -> None:
     assert period.public_gonol_index == period_index
     assert punctuated.exact_gloss[period.start:period.end] == "."
     assert all("'" not in item.text and "." not in item.text for item in layer.inscriptions)
-    lemma = next(item for item in layer.composite_words if item.exact_text == "don't")
-    assert len(lemma.component_gonol_ids) == 3
-    assert punctuated.occurrences[0].participant_id == lemma.gonol_id
+    lemma_id = dict(layer.closed_word_pairs)["don't"]
+    assert punctuated.occurrences[0].participant_id == lemma_id
     mismatched = replace(period, public_gonol_index=0)
     with pytest.raises(OEWNDefinitionRecursionError, match="does not match the source glyph"):
         replace(punctuated, occurrences=punctuated.occurrences[:-1] + (mismatched,))
@@ -129,9 +128,9 @@ def test_public_gonol_functions_are_not_absorbed_into_inscriptions() -> None:
 def test_definition_preserves_closed_word_gonols() -> None:
     layer = build_oewn_definition_layer(_snapshot())
     punctuated = next(item for item in layer.definition_gonols if item.exact_gloss == "don't cut.")
-    lemma = next(item for item in layer.composite_words if item.exact_text == "don't")
+    lemma_id = dict(layer.closed_word_pairs)["don't"]
     assert punctuated.occurrences[0].kind == CLOSED_WORD_KIND
-    assert punctuated.occurrences[0].participant_id == lemma.gonol_id
+    assert punctuated.occurrences[0].participant_id == lemma_id
     receipt = "ucns.oewn-core-receipt:sha256:" + "3" * 64
     snapshot = OEWNCoreSnapshot(
         receipt,
@@ -149,10 +148,10 @@ def test_definition_preserves_closed_word_gonols() -> None:
     assert [item.kind for item in about.occurrences] == [
         INSCRIPTION_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
     ]
-    a_word = next(item for item in prefix_layer.inscriptions if item.text == "a")
+    closed = dict(prefix_layer.closed_word_pairs)
     about_word = next(item for item in prefix_layer.inscriptions if item.text == "about")
     assert about.occurrences[0].participant_id == about_word.gonol_id
-    assert about.occurrences[0].participant_id != a_word.gonol_id
+    assert about.occurrences[0].participant_id != closed["a"]
     suffix = OEWNCoreSnapshot(
         "ucns.oewn-core-receipt:sha256:" + "4" * 64,
         (
@@ -179,6 +178,6 @@ def test_definition_preserves_closed_word_gonols() -> None:
     assert [item.kind for item in without.occurrences] == [
         INSCRIPTION_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
     ]
-    out_word = next(item for item in suffix_layer.inscriptions if item.text == "out")
-    assert about_out.occurrences[0].participant_id != out_word.gonol_id
-    assert without.occurrences[0].participant_id != out_word.gonol_id
+    out_id = dict(suffix_layer.closed_word_pairs)["out"]
+    assert about_out.occurrences[0].participant_id != out_id
+    assert without.occurrences[0].participant_id != out_id

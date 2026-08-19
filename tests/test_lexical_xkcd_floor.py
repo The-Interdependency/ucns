@@ -65,23 +65,26 @@
 # === END CHECKS ===
 
 from dataclasses import replace
+from functools import lru_cache
 
 import pytest
 
+from ucns.gonol_affixiation import AffixiationSource
 from ucns.lexical_sources import XKCD_SURFACE_COUNT, load_xkcd_simplewriter
 from ucns.lexical_xkcd_floor import (
     CHARACTER_KIND,
+    CLOSED_WORD_KIND,
     FUNCTION_KIND,
     VERTICAL_LINE_INDEX,
     XKCD_LEXICAL_FLOOR_STANDING,
     XKCD_LEXICAL_FLOOR_VERSION,
     FunctionApplicationPlan,
     XkcdLexicalFloorError,
-    load_xkcd_lexical_floor,
     official_xkcd_source_payload,
     reconstruct_xkcd_lexical_floor,
     replay_xkcd_lexical_floor,
 )
+from ucns.oewn_character_words import build_character_word_corpus
 from ucns.oewn_definition_recursion import CLOSED_WORD_KIND, build_oewn_definition_layer
 from ucns.oewn_core import OEWNCoreSnapshot, OEWNLexicalEntry, OEWNSense, OEWNSynset
 
@@ -91,6 +94,21 @@ from ucns.public_gonol_functions import (
     apply_public_gonol_function,
     build_public_gonol_function_table,
 )
+
+
+@lru_cache(maxsize=1)
+def _word_corpus():
+    source = load_xkcd_simplewriter()
+    extras = ("waterfall", "anatomy", "branched")
+    surfaces = tuple(dict.fromkeys((*source.surface_forms, *extras)))
+    return build_character_word_corpus(
+        surfaces,
+        AffixiationSource("ucns.oewn-core-receipt:sha256:" + "c" * 64, "oewn-2025-core"),
+    )
+
+
+def _floor():
+    return reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), _word_corpus())
 
 
 def _function_table():
@@ -113,7 +131,7 @@ def _function_table():
 
 def test_xkcd_floor_reconstructs_official_source_payload() -> None:
     source = load_xkcd_simplewriter()
-    floor = load_xkcd_lexical_floor()
+    floor = _floor()
     payload = official_xkcd_source_payload(source)
     assert floor.payload == payload
     assert payload.count("|") == XKCD_SURFACE_COUNT - 1
@@ -122,30 +140,34 @@ def test_xkcd_floor_reconstructs_official_source_payload() -> None:
     assert len(floor.surfaces) == XKCD_SURFACE_COUNT == 3_634
     assert all("".join(item.exact_text for item in surface.occurrences) == surface.surface for surface in floor.surfaces)
     assert all(item.kind != "letter-run" for item in floor.stream)
+    assert sum(item.kind == CLOSED_WORD_KIND for item in floor.stream) == XKCD_SURFACE_COUNT
+    assert floor.family_mapping_available is False
 
 
 def test_xkcd_floor_characters_compose_words() -> None:
-    floor = load_xkcd_lexical_floor()
+    floor = _floor()
     water = floor.closed_surface("water")
     assert tuple((item.kind, item.exact_text) for item in water.occurrences) == tuple(
         (CHARACTER_KIND, glyph) for glyph in "water"
     )
-    assert [item.traversal.realized_prefix for item in water.occurrences] == [
-        "w", "wa", "wat", "wate", "water",
-    ]
+    acc = ""
+    prefixes = []
+    for item in water.occurrences:
+        acc += item.exact_text
+        prefixes.append(acc)
+    assert prefixes == ["w", "wa", "wat", "wate", "water"]
     assert len({item.participant_id for item in water.occurrences}) == 5
-    assert all(item.participant_id.startswith("ucns.xkcd-character-traversal:sha256:") for item in water.occurrences)
+    assert all(item.participant_id.startswith("ucns.gonol:sha256:") for item in water.occurrences)
     branch_r = floor.closed_surface("branch").occurrences[1]
     tree_r = floor.closed_surface("tree").occurrences[1]
     assert branch_r.exact_text == tree_r.exact_text == "r"
     assert branch_r.participant_id != tree_r.participant_id
-    assert branch_r.traversal.realized_prefix == "br"
-    assert tree_r.traversal.realized_prefix == "tr"
     a_surface = floor.closed_surface("a").occurrences[0]
     about_a = floor.closed_surface("about").occurrences[0]
     assert a_surface.participant_id == about_a.participant_id
     assert a_surface.start == about_a.start == 0
     assert floor.closed_surface("a").gonol_id != floor.closed_surface("about").gonol_id
+    assert floor.closed_surface("water").word_gonol_id.startswith("ucns.gonol:sha256:")
     snapshot = OEWNCoreSnapshot(
         "ucns.oewn-core-receipt:sha256:" + "9" * 64,
         (OEWNLexicalEntry("don't", "v", (), (OEWNSense("dont%1", "s1", (), (), None),)),),
@@ -153,21 +175,25 @@ def test_xkcd_floor_characters_compose_words() -> None:
     )
     layer = build_oewn_definition_layer(snapshot)
     punctuated = next(item for item in layer.definition_gonols if item.exact_gloss == "don't cut.")
-    lemma = next(item for item in layer.composite_words if item.exact_text == "don't")
+    lemma_id = dict(layer.closed_word_pairs)["don't"]
     assert punctuated.occurrences[0].kind == CLOSED_WORD_KIND
-    assert punctuated.occurrences[0].participant_id == lemma.gonol_id
+    assert punctuated.occurrences[0].participant_id == lemma_id
 
 
 def test_xkcd_floor_functions_preserve_order_occurrence_and_multiplicity() -> None:
-    floor = load_xkcd_lexical_floor()
+    floor = _floor()
     apostrophe = next(index for index, glyph, _ in FUNCTIONAL_INDEX_NAMES if glyph == "'")
     curly = next(index for index, glyph, _ in FUNCTIONAL_INDEX_NAMES if glyph == "’")
+    internal = [
+        item for surface in floor.surfaces for item in surface.occurrences
+        if item.kind == FUNCTION_KIND
+    ]
     functions = floor.function_occurrences()
     assert all(item.kind == FUNCTION_KIND for item in functions)
     assert all(item.public_gonol_index is not None for item in functions)
     assert sum(item.public_gonol_index == VERTICAL_LINE_INDEX for item in functions) == XKCD_SURFACE_COUNT - 1
-    assert sum(item.public_gonol_index == apostrophe for item in functions) == 18
-    assert sum(item.public_gonol_index == curly for item in functions) == 18
+    assert sum(item.public_gonol_index == apostrophe for item in internal) == 18
+    assert sum(item.public_gonol_index == curly for item in internal) == 18
     surface = floor.closed_surface("don't")
     assert tuple((item.kind, item.exact_text) for item in surface.occurrences) == (
         (CHARACTER_KIND, "d"),
@@ -180,18 +206,14 @@ def test_xkcd_floor_functions_preserve_order_occurrence_and_multiplicity() -> No
     t_in_tree = floor.closed_surface("tree").occurrences[0]
     assert t_after_apostrophe.exact_text == t_in_tree.exact_text == "t"
     assert t_after_apostrophe.participant_id != t_in_tree.participant_id
-    assert t_after_apostrophe.traversal.prior_state_id.startswith("ucns.xkcd-function-participant:sha256:")
-    assert t_in_tree.traversal.prior_state_id == "ucns.lexical-traversal-origin"
-    assert all(
-        item.exact_text not in {"'", "’", "|"}
-        for item in floor.stream if item.kind == CHARACTER_KIND
-    )
+    assert all(item.kind != CHARACTER_KIND for item in floor.stream)
 
 
 def test_xkcd_floor_closes_relations_without_invented_grammar() -> None:
     table = _function_table()
     source = load_xkcd_simplewriter()
-    floor = reconstruct_xkcd_lexical_floor(source, table)
+    corpus = _word_corpus()
+    floor = reconstruct_xkcd_lexical_floor(source, corpus, table)
     assert floor.punctuation_functions_intrinsic is True
     assert floor.independent_punctuation_grammar_attached is False
     assert floor.function_applications == ()
@@ -201,11 +223,11 @@ def test_xkcd_floor_closes_relations_without_invented_grammar() -> None:
     assert floor.word_gonol("don't") is surface
     assert surface.independent_punctuation_grammar_attached is False
     assert len(surface.carrier.nodes) == 6
-    replay_xkcd_lexical_floor(floor, table)
+    replay_xkcd_lexical_floor(floor, corpus, table)
 
 
 def test_xkcd_floor_refuses_family_map_and_closed_definitions() -> None:
-    floor = load_xkcd_lexical_floor()
+    floor = _floor()
     assert floor.version == XKCD_LEXICAL_FLOOR_VERSION
     assert floor.standing == XKCD_LEXICAL_FLOOR_STANDING
     assert floor.source.family_count == 1000
@@ -222,8 +244,9 @@ def test_xkcd_floor_refuses_family_map_and_closed_definitions() -> None:
 
 
 def test_xkcd_floor_receipt_replays() -> None:
-    floor = load_xkcd_lexical_floor()
-    replayed = replay_xkcd_lexical_floor(floor)
+    corpus = _word_corpus()
+    floor = reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), corpus)
+    replayed = replay_xkcd_lexical_floor(floor, corpus)
     assert replayed == floor
     assert replayed.receipt_id == floor.receipt_id
     assert replayed.receipt_id.startswith("ucns.xkcd-lexical-floor-receipt:sha256:")
@@ -231,19 +254,21 @@ def test_xkcd_floor_receipt_replays() -> None:
     assert replayed.table_id is None
     table = _function_table()
     with pytest.raises(XkcdLexicalFloorError, match="absent table"):
-        replay_xkcd_lexical_floor(floor, table)
+        replay_xkcd_lexical_floor(floor, corpus, table)
 
 
 def test_xkcd_floor_source_is_validated_before_receipt() -> None:
     source = load_xkcd_simplewriter()
+    corpus = _word_corpus()
     with pytest.raises(XkcdLexicalFloorError, match="not valid for floor receipt"):
-        reconstruct_xkcd_lexical_floor(replace(source, surface_forms=source.surface_forms[1:]))
+        reconstruct_xkcd_lexical_floor(replace(source, surface_forms=source.surface_forms[1:]), corpus)
 
 
 def test_xkcd_floor_applications_require_explicit_context() -> None:
     table = _function_table()
     source = load_xkcd_simplewriter()
-    base = reconstruct_xkcd_lexical_floor(source, table)
+    corpus = _word_corpus()
+    base = reconstruct_xkcd_lexical_floor(source, corpus, table)
     assert base.function_applications == ()
     first_pipe = next(
         item for item in base.stream
@@ -256,7 +281,7 @@ def test_xkcd_floor_applications_require_explicit_context() -> None:
         AtomicFunctionState(prior.participant_id),
         (following,),
     )
-    floor = reconstruct_xkcd_lexical_floor(source, table, (plan,))
+    floor = reconstruct_xkcd_lexical_floor(source, corpus, table, (plan,))
     expected = apply_public_gonol_function(
         table,
         VERTICAL_LINE_INDEX,
@@ -272,11 +297,11 @@ def test_xkcd_floor_applications_require_explicit_context() -> None:
         "context_ordinals": [following],
         "current_atomic_gonol_id": prior.participant_id,
     }]
-    replayed = replay_xkcd_lexical_floor(floor, table)
+    replayed = replay_xkcd_lexical_floor(floor, corpus, table)
     assert replayed == floor
     assert replayed.receipt_id == floor.receipt_id
     assert replayed.function_applications == (expected,)
     with pytest.raises(XkcdLexicalFloorError, match="same function table"):
-        replay_xkcd_lexical_floor(floor)
+        replay_xkcd_lexical_floor(floor, corpus)
     with pytest.raises(XkcdLexicalFloorError, match="plans require an explicit function table"):
-        reconstruct_xkcd_lexical_floor(source, None, (plan,))
+        reconstruct_xkcd_lexical_floor(source, corpus, None, (plan,))
