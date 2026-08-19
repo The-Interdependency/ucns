@@ -1,0 +1,94 @@
+name: pr213-recursive-evidence-replay
+
+on:
+  push:
+    branches: [agent/xkcd-lexical-floor]
+
+permissions:
+  contents: write
+
+jobs:
+  replay:
+    if: contains(github.event.head_commit.message, '[full-recursive-replay]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Install UCNS
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+      - name: Checkout frozen OEWN 2025 Core source
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: globalwordnet/english-wordnet
+          ref: dc343f2683279ecbb13fab4e2fd778d7b162d287
+          fetch-depth: 0
+          path: .oewn-2025-core
+      - name: Rebuild and independently replay recursive candidate
+        env:
+          UCNS_OEWN_2025_CORE_ROOT: ${{ github.workspace }}/.oewn-2025-core
+        run: |
+          python - <<'PY'
+          import os
+          from hashlib import sha256
+          from pathlib import Path
+
+          from ucns.lexical_sources import verify_oewn_2025_core
+          from ucns.oewn_core import load_oewn_core
+          from ucns.oewn_definition_recursion import build_oewn_definition_layer
+          from ucns.recursive_gonol_relations import (
+              RECURSIVE_GONOL_STANDING,
+              build_source_native_recursive_gonols,
+              recursive_gonol_layer_bytes,
+              replay_source_native_recursive_gonols,
+          )
+
+          root = Path(os.environ["UCNS_OEWN_2025_CORE_ROOT"])
+          receipt = verify_oewn_2025_core(root)
+          snapshot = load_oewn_core(root, receipt)
+          layer = build_oewn_definition_layer(snapshot)
+          expected_definition = "ucns.oewn-definition-layer:sha256:0242af7a53d0e6a9b1095136e1dd139a4822700c8b6700ee104e229dcb646b2b"
+          if layer.layer_id != expected_definition:
+              raise SystemExit(f"affixiate definition layer rotated: {layer.layer_id}")
+
+          recursive = build_source_native_recursive_gonols(snapshot, layer)
+          replayed = replay_source_native_recursive_gonols(recursive, snapshot, layer)
+          payload = recursive_gonol_layer_bytes(recursive)
+          if recursive_gonol_layer_bytes(replayed) != payload:
+              raise SystemExit("independent recursive replay bytes differ")
+          if recursive.selected or recursive.standing != RECURSIVE_GONOL_STANDING:
+              raise SystemExit("candidate promotion boundary violated")
+          if len(recursive.gonols) != 244727:
+              raise SystemExit(f"recursive scope changed: {len(recursive.gonols)}")
+
+          output = Path("generated/oewn-2025-core-affixiate-recursive-gonol-receipt.json")
+          output.write_bytes(payload)
+          print(f"definition_layer_id={layer.layer_id}")
+          print(f"recursive_layer_id={recursive.layer_id}")
+          print(f"recursive_count={len(recursive.gonols)}")
+          print(f"producer_code_reference={recursive.producer_code_reference}")
+          print(f"receipt_sha256={sha256(payload).hexdigest()}")
+          print(f"selected={recursive.selected}")
+          PY
+      - name: Preserve historical receipts
+        run: |
+          git diff --exit-code -- \
+            generated/oewn-2025-core-definition-layer-receipt.json \
+            generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json \
+            generated/oewn-2025-core-source-native-recursive-gonol-receipt.json
+      - name: Commit repaired candidate receipt
+        run: |
+          if git diff --quiet -- generated/oewn-2025-core-affixiate-recursive-gonol-receipt.json; then
+            echo "recursive receipt unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated/oewn-2025-core-affixiate-recursive-gonol-receipt.json
+          git commit -m "Seal repaired affixiate recursive receipt"
+          git push origin HEAD:${GITHUB_REF_NAME}
