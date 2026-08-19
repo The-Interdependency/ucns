@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/skill-lib
-          ref: 5d36c0d52c6eabed46cc7665189a9a91ddf2b768
+          ref: a0cb6285e37734609b4b487ae4a2e44c6108d2b8
           path: .skill-lib-canon
           sparse-checkout: |
             msdmd
@@ -29,7 +29,7 @@ jobs:
             test-build
             canon
             domain-claims
-            gonol-build
+            gonal-morphology
             interdependent-work-graph
             doctrine
             RESOURCE_RUN_INVARIANT.md
@@ -47,7 +47,7 @@ jobs:
         run: >-
           python .skill-lib-canon/tools/check_consumer_drift.py .
           --canon-root .skill-lib-canon
-          --sha 5d36c0d52c6eabed46cc7665189a9a91ddf2b768
+          --sha a0cb6285e37734609b4b487ae4a2e44c6108d2b8
           --strict-sha
           --require-vendored
       - name: Audit skill-lib contract graph
