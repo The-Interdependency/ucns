@@ -12,10 +12,11 @@
 #   user_data_boundary: no user data; arbitrary source prose is represented only by an exact digest
 #   admin_only: false
 #   tests: tests.test_lexical_definition_gonols
-#   rollout: explicit complete-floor construction after source evidence resolves every constituent to an admitted floor gonol
-#   rollback: remove this candidate layer without altering the fixed lexical floor or historical text-bearing definition records
+#   rollout: historical NGSL closed-floor producer only; not part of the public ucns surface
+#   rollback: remove this candidate layer without altering the punctuation-aware xkcd floor or OEWN producer
 #   requires: ucns_lexical_floor, ucns_relational_carrier
 #   since: 2026-08-18
+#   deprecated: 2026-08-19 superseded by punctuation-aware xkcd floor reconstruction and OEWN definition recursion
 #   unresolved: an authorized complete closed definition corpus, semantic efficacy, geometry, measurement, and recursion above depth one
 # === END MODULE_BUILD ===
 

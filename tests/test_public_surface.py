@@ -1,6 +1,6 @@
 # === CHECKS ===
 # id: check_public_surface_is_bounded
-#   proves: public_surface_exposes_only_ratified_foundations
+#   proves: public_surface_exposes_only_ratified_foundations, public_surface_hides_superseded_lexical_constructors
 #   call: self::test_public_surface_is_bounded
 #   requires: python3
 #   timeout: 5
@@ -136,5 +136,10 @@ def test_public_surface_is_bounded() -> None:
         "TransverseCoverChartState",
         "TransverseStripReport",
         "run_v08_transverse_strip_experiment",
+        "build_floor_definition_gonol",
+        "build_complete_definition_layer",
+        "FloorDefinitionGonol",
+        "FloorDefinitionEvidence",
+        "construct_xkcd_word_gonols",
     ):
         assert forbidden not in exported

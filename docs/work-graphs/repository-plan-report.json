@@ -107,8 +107,8 @@
     },
     {
       "surface": "current lexical recursion architecture",
-      "status": "implemented candidate through first OEWN definition recursion; xkcd floor reconstruction is now punctuation-function complete as a candidate only",
-      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction, historical character-history word gonols, OEWN explicit forms, multi-inscription words, and all source sense-definition gonols are materialized; OEWN definition segmentation still treats each maximal non-SPACE sequence as one inscription"
+      "status": "implemented candidate: punctuation-aware xkcd floor reconstruction plus punctuation-aware OEWN definition segmentation; not selected canon",
+      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction, historical character-history and NGSL constructors demoted off the public surface, and OEWN lemmas/forms/glosses now split Public Gonol functions from inscriptions; the sealed 185155-definition receipt remains historical pre-function-segmentation evidence until a full OEWN checkout is replayed"
     },
     {
       "surface": "punctuation-aware xkcd lexical-floor reconstruction",
@@ -235,7 +235,7 @@
     }
   ],
   "blocked": [
-    "OEWN definition-layer consumption of the reconstructed xkcd floor remains BLOCKED on implementation work: OEWN segmentation still treats maximal non-SPACE strings as inscriptions; the xkcd floor reconstruction candidate already treats Public Gonol functions as intrinsic participants",
+    "full-corpus replay of the punctuation-aware OEWN producer remains BLOCKED on an available OEWN 2025 Core checkout and a resource-complete rebuild; fixture evidence exists, the sealed 185155-definition receipt is historical",
     "final morphology decomposition is BLOCKED on evidence: root/stem/affix/transformation law is intentionally unresolved and the historical three-core skill may not be treated as current morphology canon",
     "complete carrier geometry for the lexical layer is BLOCKED for twenty retained source scalars outside the public 157-position carrier; the source evidence remains represented without normalization",
     "claiming implemented direct distant interscale coupling is blocked until gonols at separated scales exist and the spiral representation demonstrates the relation without mandatory intermediate reopening",

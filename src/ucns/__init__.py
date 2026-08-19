@@ -25,6 +25,12 @@
 #   then: ratified foundations, explicit research infrastructure, and the named bounded downstream profile are exported without implying canonical M, B, factorization, theorem, or universal arithmetic
 #   class: safety
 #   since: 2026-07-21
+#
+# id: public_surface_hides_superseded_lexical_constructors
+#   given: a consumer inspects ucns.__all__
+#   then: NGSL closed-floor definition constructors and the character-history xkcd word-gonol constructor are not exported
+#   class: safety
+#   since: 2026-08-19
 # === END CONTRACTS ===
 
 """UCNS foundations and option-preserving candidate research infrastructure.
@@ -667,21 +673,7 @@ from .relational_carrier import (
     parse_relational_carrier,
     relational_carrier_bytes,
 )
-from .lexical_definition_gonols import (
-    DEFINITION_GONOL_STANDING,
-    DEFINITION_LAYER_STANDING,
-    DEFINITION_RELATION_CODE,
-    DEFINITION_SOURCE_STANDING,
-    DefinitionLayerReceipt,
-    DefinitionOccurrence,
-    DefinitionSourceReceipt,
-    FloorDefinitionEvidence,
-    FloorDefinitionGonol,
-    LexicalDefinitionError,
-    build_complete_definition_layer,
-    build_floor_definition_gonol,
-    definition_layer_receipt_bytes,
-)
+
 from .oewn_core import (
     OEWNCoreError,
     OEWNCoreSnapshot,
@@ -1037,12 +1029,7 @@ __all__ = [
     "RelationalCarrier", "RelationalCarrierError", "RelationalEdge",
     "RelationalNode", "build_relational_carrier", "parse_relational_carrier",
     "relational_carrier_bytes",
-    "DEFINITION_GONOL_STANDING", "DEFINITION_LAYER_STANDING",
-    "DEFINITION_RELATION_CODE", "DEFINITION_SOURCE_STANDING",
-    "DefinitionLayerReceipt", "DefinitionOccurrence", "DefinitionSourceReceipt",
-    "FloorDefinitionEvidence", "FloorDefinitionGonol", "LexicalDefinitionError",
-    "build_complete_definition_layer", "build_floor_definition_gonol",
-    "definition_layer_receipt_bytes",
+
     "OEWNCoreError", "OEWNCoreSnapshot", "OEWNLexicalEntry",
     "OEWNMorphologyInventory", "OEWNSense", "OEWNSynset",
     "inventory_oewn_morphology", "load_oewn_core",

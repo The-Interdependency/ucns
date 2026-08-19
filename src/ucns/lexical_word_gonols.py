@@ -12,10 +12,11 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_lexical_word_gonols
-#   rollout: after both current lexical sources are pinned; prerequisite for morphology and definitions
+#   rollout: historical character-history constructor only; not the punctuation-aware xkcd floor and not part of the public ucns surface
 #   rollback: remove current word-gonol candidate without altering source receipts or deprecated NGSL evidence
 #   requires: ucns_current_lexical_sources, ucns_edcm_profile
 #   since: 2026-08-18
+#   deprecated: 2026-08-19 superseded by punctuation-aware xkcd floor reconstruction
 #   unresolved: complete continuous spiral coordinates, morphological family mapping, final morphology law, direct distant interscale coupling
 # === END MODULE_BUILD ===
 
