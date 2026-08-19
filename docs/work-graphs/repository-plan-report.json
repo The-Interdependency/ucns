@@ -57,7 +57,7 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the exact xkcd Simple Writer 0.2.1 surface inventory is the lexical-floor source and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The Public Gonol table supplies definition-derived functions for all 84 admitted punctuation/symbol positions. The xkcd floor reconstruction candidate uses those functions as intrinsic participants with exact source order, occurrence, and multiplicity, requires explicit occurrence-addressed application context, and binds ordered application identities into the receipt; it is not selected canon. OEWN definition construction preserves already-closed lemma and form word gonols and only treats leftover Public Gonol punctuation/symbol glyphs as function participants. The morphology decomposition law remains unresolved. Falsifier baselines follow completion of the intended gonol system rather than gating its construction. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the exact xkcd Simple Writer 0.2.1 surface inventory is the lexical-floor source and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The Public Gonol table supplies definition-derived functions for all 84 admitted punctuation/symbol positions. The xkcd floor reconstruction candidate uses those functions as intrinsic participants with exact source order, occurrence, and multiplicity, requires explicit occurrence-addressed application context, and binds ordered application identities into the receipt; it is not selected canon. The punctuation-aware OEWN first-recursion layer is sealed and independently replayed: closed lemma/form word gonols stay atomic, leftover Public Gonol glyphs are function participants, and native OEWN relation labels remain unselected. The morphology decomposition law remains unresolved. Falsifier baselines follow completion of the intended gonol system rather than gating its construction. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
       "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
@@ -107,8 +107,13 @@
     },
     {
       "surface": "current lexical recursion architecture",
-      "status": "implemented candidate: punctuation-aware xkcd floor reconstruction plus closure-preserving OEWN definition construction; not selected canon",
-      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction with explicit occurrence-addressed function application, historical character-history and NGSL constructors demoted off the public surface, and OEWN definitions now consume closed word gonols instead of reopening them; the sealed 185155-definition receipt remains historical pre-function-segmentation evidence until a full OEWN checkout is replayed"
+      "status": "implemented candidate: punctuation-aware xkcd floor reconstruction plus sealed closure-preserving OEWN definition layer; not selected canon",
+      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction with explicit occurrence-addressed function application, historical character-history and NGSL constructors demoted off the public surface, and OEWN definitions consume closed word gonols instead of reopening them; the replacement punctuation-aware 185155-definition receipt is sealed and independently replayed; the older 185155 receipt remains historical pre-function-segmentation evidence"
+    },
+    {
+      "surface": "punctuation-aware OEWN 2025 Core definition layer",
+      "status": "implemented first-recursion candidate with two byte-identical full-source builds; not selected canon",
+      "boundary": "closed word gonols remain atomic in definition carriers; leftover Public Gonol glyphs are function participants; native OEWN relation mechanism and morphology law remain unselected; historical pre-function-segmentation receipt is not rewritten"
     },
     {
       "surface": "punctuation-aware xkcd lexical-floor reconstruction",
@@ -142,7 +147,7 @@
     }
   ],
   "active_frontier": [
-    "preserve the closure hierarchy while finishing the punctuation-aware xkcd/OEWN reconstruction: characters/functions close into word gonols, those closed word gonols participate atomically in definition gonols, and function application remains explicitly occurrence-addressed rather than inferred from adjacency",
+    "continue recursive gonol construction above the sealed punctuation-aware OEWN definition layer without reopening closed word or definition gonols and without inventing a native-OEWN-relation mechanism or morphology law",
     "preserve the exact xkcd Simple Writer 0.2.1 source inventory of 3,634 accepted surfaces and its declared 1,000-family boundary without inventing an unavailable authoritative family mapping",
     "continue recursive gonol construction from the corrected xkcd lexical floor, preserving atomic closure, intrinsic relationships, exact provenance, source order, multiplicity, and replay",
     "complete the intended gonol system before constructing simpler matched-information mechanisms; later baselines are falsifiers of the completed system and must not constrain or replace the research architecture during construction",
@@ -174,19 +179,14 @@
   ],
   "next_actions": [
     {
-      "action": "keep PR #213 as a constructor repair rather than selected canon: preserve closed word gonols in OEWN definition construction, require explicit occurrence-addressed function-application context, bind complete application identities into receipts, validate exact xkcd source bytes before minting a floor receipt, and do not invent the 3,634-to-1,000 family map or a morphology law",
+      "action": "keep PR #213 as a constructor-plus-receipt candidate rather than selected canon; do not invent the 3,634-to-1,000 family map or a morphology law",
       "owner": "The-Interdependency/ucns",
-      "dependency": "main @ 9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f; exact xkcd Simple Writer 0.2.1 and OEWN 2025 Core receipts; sealed Public Gonol function-table receipt and contextual structural receipt"
+      "dependency": "main @ 03882b63d2e9d916db3811ab01321dd41fb22af7; sealed punctuation-aware OEWN receipt generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json; historical pre-function-segmentation receipt remains in place"
     },
     {
-      "action": "once an OEWN 2025 Core checkout is available, perform the full punctuation-aware OEWN reconstruction to natural completion, seal the replacement receipt, and independently replay it byte-for-byte while preserving closed word gonols",
+      "action": "continue recursive gonol composition above the sealed punctuation-aware OEWN definition layer until a declared source-backed fixed point exists; completed gonols remain atomic and direct interscale coupling must not be replaced by mandatory reopening or by silently promoting native OEWN relation labels",
       "owner": "The-Interdependency/ucns",
-      "dependency": "constructor repair on PR #213; exact OEWN 2025 Core checkout; do not rewrite the sealed historical 185155-definition receipt in place"
-    },
-    {
-      "action": "continue recursive gonol composition above the corrected xkcd lexical floor and OEWN definition layer until the declared construction reaches its source-backed fixed point; completed gonols remain atomic and direct interscale coupling must not be replaced by mandatory reopening",
-      "owner": "The-Interdependency/ucns",
-      "dependency": "punctuation-aware xkcd floor receipt plus existing OEWN definition-layer and affixiation/atomic-closure contracts"
+      "dependency": "punctuation-aware xkcd floor plus sealed punctuation-aware OEWN definition-layer receipt; native OEWN relation participation remains hmmm"
     },
     {
       "action": "emit a stable consumer contract for corrected atomic word, punctuation/function, definition, and recursive-gonol receipts so EDCM can consume exact UCNS identities without rebuilding semantics or substituting tokenizer IDs, opaque vectors, hashes, all-pairs semantic graphs, or forced intermediate-scale reopening",
@@ -235,7 +235,7 @@
     }
   ],
   "blocked": [
-    "full-corpus replay of the punctuation-aware OEWN producer remains BLOCKED on an available OEWN 2025 Core checkout and a resource-complete rebuild; fixture evidence exists, the sealed 185155-definition receipt is historical",
+    "recursive gonol composition above the sealed punctuation-aware definition layer is BLOCKED on a selected source-backed relation mechanism; native OEWN semantic-relation labels remain preserved evidence and are not a second semantic mechanism",
     "final morphology decomposition is BLOCKED on evidence: root/stem/affix/transformation law is intentionally unresolved and the historical three-core skill may not be treated as current morphology canon",
     "complete carrier geometry for the lexical layer is BLOCKED for twenty retained source scalars outside the public 157-position carrier; the source evidence remains represented without normalization",
     "claiming implemented direct distant interscale coupling is blocked until gonols at separated scales exist and the spiral representation demonstrates the relation without mandatory intermediate reopening",
@@ -294,6 +294,8 @@
     "lexical_recursion_architecture": "docs/LEXICAL_RECURSION_ARCHITECTURE.md",
     "xkcd_lexical_floor": "docs/XKCD_LEXICAL_FLOOR_V1.md",
     "definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
+    "punctuation_aware_oewn_definition_layer_receipt": "generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json",
+    "historical_oewn_definition_layer_receipt": "generated/oewn-2025-core-definition-layer-receipt.json",
     "public_gonol_function_table": "docs/PUBLIC_GONOL_FUNCTION_TABLE.md",
     "public_gonol_contextual_protocol": "docs/PREREGISTRATION_PUBLIC_GONOL_CONTEXTUAL_EVALUATION.md",
     "public_gonol_contextual_evaluation_result": "docs/PUBLIC_GONOL_CONTEXTUAL_EVALUATION_RESULT.md",

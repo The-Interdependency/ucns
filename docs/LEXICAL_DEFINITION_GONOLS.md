@@ -135,8 +135,11 @@ That receipt is not a replay of the current punctuation-aware producer in
 `src/ucns/oewn_definition_recursion.py`. The current constructor preserves
 closed word gonols, treats leftover Public Gonol glyphs as function
 participants, and has standing
-`punctuation-aware-oewn-core-first-recursion-candidate`. Full-corpus replay
-of this producer remains blocked on an OEWN 2025 Core checkout.
+`punctuation-aware-oewn-core-first-recursion-candidate`. The replacement
+receipt is
+`generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json`
+and has been independently replayed byte-for-byte. It is not selected
+canon.
 
 ## hmmm
 

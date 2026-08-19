@@ -16,7 +16,7 @@
 #   rollback: remove current OEWN producer while preserving source receipts and historical NGSL evidence
 #   requires: ucns_oewn_2025_core, ucns_public_gonol_function_table, ucns_relational_carrier
 #   since: 2026-08-18
-#   unresolved: final root/affix decomposition law, geometry for carrier-unassigned scalars, native OEWN relation participation, semantic efficacy, recursion above depth one, full-corpus replay of the punctuation-aware producer
+#   unresolved: final root/affix decomposition law, geometry for carrier-unassigned scalars, native OEWN relation participation, semantic efficacy, recursion above the sealed first punctuation-aware layer
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===

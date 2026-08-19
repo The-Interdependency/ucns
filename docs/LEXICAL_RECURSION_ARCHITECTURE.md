@@ -239,21 +239,20 @@ lemma and form word gonols as atomic definition participants. Only leftover
 Public Gonol punctuation/symbol glyphs become function participants;
 residual non-SPACE non-function non-closed-word runs are inscriptions;
 SPACE remains a boundary. This is a producer repair, not selected canon.
-The sealed receipt
-`generated/oewn-2025-core-definition-layer-receipt.json` remains historical
-evidence of the pre-function-segmentation producer and is not a replay of the
-current constructor. Full-corpus replay requires an OEWN 2025 Core checkout.
+The historical receipt
+`generated/oewn-2025-core-definition-layer-receipt.json` remains pre-function-segmentation
+evidence. The current constructor's replacement receipt
+`generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json`
+records the same source scope (135,969 lexical entries, 185,129 senses,
+107,524 source definitions, 185,155 sense-definition gonols, 4,473
+source-explicit form gonols) with 58,317 composite word gonols and
+96,586 reused inscriptions. An independent rebuild is byte-identical at
+SHA-256
+`93c23e9ec054b17a5e47ae69b39ead51bd4a2daf106ec2c32f0a76a960d865a9`.
+That receipt is construction evidence, not selected canon.
 NGSL closed-floor constructors and the character-history xkcd word-gonol
 constructor remain importable only from their historical modules, not from
 `ucns`.
-
-The sealed receipt is
-`generated/oewn-2025-core-definition-layer-receipt.json`. It records 135,969
-lexical entries, 185,129 senses, 107,524 source definitions, 185,155 exact
-sense-definition gonols, 4,473 source-explicit form gonols, 52,913 composite
-word gonols, and 122,520 reused inscription gonols. A separate full rebuild is
-byte-identical at SHA-256
-`bcfbf0c724a8507e00d1d3205f32de2cce489731ce019a2f883e90abd56f7c5c`.
 
 The construction retains twenty carrier-unassigned source scalars as positive
 coverage-failure evidence. It does not normalize or discard them, and does not
