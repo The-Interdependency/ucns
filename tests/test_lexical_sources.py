@@ -2,6 +2,7 @@
 # id: current_lexical_source_receipt_check
 #   proves: xkcd_floor_bytes_are_exact_and_source_ordered, oewn_core_receipt_is_exact_release_identity, current_lexical_sources_precede_materialization, xkcd_receipt_matches_packaged_bytes
 #   call: self::test_current_lexical_source_receipts_are_exact
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -9,6 +10,7 @@
 # id: current_lexical_source_tamper_check
 #   proves: xkcd_floor_bytes_are_exact_and_source_ordered, oewn_core_receipt_is_exact_release_identity
 #   call: self::test_source_receipt_fields_and_wrong_checkout_fail_closed
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none

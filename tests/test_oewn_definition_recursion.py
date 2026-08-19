@@ -2,6 +2,7 @@
 # id: oewn_definition_complete_fixture_check
 #   proves: oewn_definition_scope_is_complete, oewn_definition_relationships_enter_gonols, oewn_morphology_uses_only_explicit_source_forms, oewn_definition_fixed_point_is_source_exhaustion
 #   call: self::test_complete_fixture_preserves_source_and_intrinsic_relations
+#   requires: python3
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -9,6 +10,7 @@
 # id: oewn_definition_function_participant_check
 #   proves: oewn_functions_are_not_absorbed_into_inscriptions, oewn_function_occurrence_matches_source_glyph
 #   call: self::test_public_gonol_functions_are_not_absorbed_into_inscriptions
+#   requires: python3
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -16,6 +18,7 @@
 # id: oewn_definition_closed_word_check
 #   proves: oewn_preserves_closed_word_gonols
 #   call: self::test_definition_preserves_closed_word_gonols
+#   requires: python3
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -23,6 +26,7 @@
 # id: oewn_definition_exact_replay_check
 #   proves: oewn_definition_layer_replays_byte_exactly
 #   call: self::test_replay_is_byte_exact_and_tamper_fails
+#   requires: python3
 #   timeout: 20
 #   mutates: none
 #   cleanup: none

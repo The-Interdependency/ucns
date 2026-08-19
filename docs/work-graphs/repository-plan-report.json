@@ -9,10 +9,10 @@
     "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
   },
   "source": {
-    "branch": "main",
-    "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
-    "generated_at": "2026-08-18",
-    "note": "This report describes UCNS main through the completed Public Gonol contextual structural evaluation plus the current repo-owned research plan, including the PR #213 constructor repair that preserves closed word gonols and requires explicit function-application context. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority is to complete the intended gonol system before building simpler falsifier mechanisms: finish the punctuation-aware xkcd/OEWN reconstruction without flattening closed word gonols, then continue recursive gonol construction. Matched-information baselines are post-construction falsifiers, not prerequisites that constrain the research build."
+    "branch": "agent/xkcd-lexical-floor",
+    "commit": "d867c795a81ccf6bf5af708581aa03a215f5c1e6",
+    "generated_at": "2026-08-19",
+    "note": "This report describes the PR #213 constructor repair through d867c79, based on main @ 03882b63d2e9d916db3811ab01321dd41fb22af7. Later report-only or skill-lib hygiene commits on this branch are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority is to complete the intended gonol system before building simpler falsifier mechanisms: finish the punctuation-aware xkcd/OEWN reconstruction without flattening closed word gonols, then continue recursive gonol construction. Matched-information baselines are post-construction falsifiers, not prerequisites that constrain the research build."
   },
   "authority": {
     "owns": [

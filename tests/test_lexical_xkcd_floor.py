@@ -2,6 +2,7 @@
 # id: xkcd_floor_payload_check
 #   proves: xkcd_floor_reconstructs_official_source_payload
 #   call: self::test_xkcd_floor_reconstructs_official_source_payload
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -9,6 +10,7 @@
 # id: xkcd_floor_function_participant_check
 #   proves: xkcd_floor_functions_are_public_gonol_participants, xkcd_floor_preserves_order_occurrence_and_multiplicity
 #   call: self::test_xkcd_floor_functions_preserve_order_occurrence_and_multiplicity
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -16,6 +18,7 @@
 # id: xkcd_floor_closure_check
 #   proves: xkcd_floor_closes_relations_without_invented_grammar
 #   call: self::test_xkcd_floor_closes_relations_without_invented_grammar
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -23,6 +26,7 @@
 # id: xkcd_floor_nonclaim_check
 #   proves: xkcd_floor_does_not_invent_family_mapping, xkcd_floor_does_not_close_definitions
 #   call: self::test_xkcd_floor_refuses_family_map_and_closed_definitions
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -30,6 +34,7 @@
 # id: xkcd_floor_replay_check
 #   proves: xkcd_floor_receipt_replays
 #   call: self::test_xkcd_floor_receipt_replays
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -37,6 +42,7 @@
 # id: xkcd_floor_source_validation_check
 #   proves: xkcd_floor_source_is_validated_before_receipt
 #   call: self::test_xkcd_floor_source_is_validated_before_receipt
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
@@ -44,6 +50,7 @@
 # id: xkcd_floor_explicit_context_check
 #   proves: xkcd_floor_applications_require_explicit_context, xkcd_floor_receipt_binds_application_identities
 #   call: self::test_xkcd_floor_applications_require_explicit_context
+#   requires: python3
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
