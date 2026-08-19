@@ -12,7 +12,7 @@
     "branch": "agent/xkcd-lexical-floor",
     "commit": "d867c795a81ccf6bf5af708581aa03a215f5c1e6",
     "generated_at": "2026-08-19",
-    "note": "This report describes the PR #213 constructor repair and sealed punctuation-aware OEWN receipt, based on main @ 03882b63d2e9d916db3811ab01321dd41fb22af7. Current skill-lib authority is de445dbe2dd1df4831e1c67ccf1602ddb6259cba (gonol-build replaces deprecated gonal-morphology). Later report-only or skill-lib hygiene commits on this branch are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority remains recursive gonol relations only after a source-backed relation mechanism is selected. Matched-information baselines are post-construction falsifiers."
+    "note": "This report describes the PR #213 constructor repair and sealed punctuation-aware OEWN receipt, based on main @ 03882b63d2e9d916db3811ab01321dd41fb22af7. Current skill-lib authority is 5d36c0d52c6eabed46cc7665189a9a91ddf2b768 (gonol-build: hmmm blocks promotion, not candidate construction). Later report-only or skill-lib hygiene commits on this branch are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority remains recursive gonol relations only after a source-backed relation mechanism is selected. Matched-information baselines are post-construction falsifiers."
   },
   "authority": {
     "owns": [
@@ -111,6 +111,11 @@
       "boundary": "exact sources, punctuation-aware xkcd floor reconstruction with explicit occurrence-addressed function application, historical character-history and NGSL constructors demoted off the public surface, and OEWN definitions consume closed word gonols instead of reopening them; the replacement punctuation-aware 185155-definition receipt is sealed and independently replayed; the older 185155 receipt remains historical pre-function-segmentation evidence"
     },
     {
+      "surface": "source-native recursive gonol candidate",
+      "status": "declared candidate constructor; selection UNRESOLVED",
+      "boundary": "one recursive gonol per source-native OEWN relation occurrence; participants are already-closed word and definition gonols; no cartesian pairing, family map, or selected native-relation mechanism"
+    },
+    {
       "surface": "punctuation-aware OEWN 2025 Core definition layer",
       "status": "implemented first-recursion candidate with two byte-identical full-source builds; not selected canon",
       "boundary": "closed word gonols remain atomic in definition carriers; leftover Public Gonol glyphs are function participants; native OEWN relation mechanism and morphology law remain unselected; historical pre-function-segmentation receipt is not rewritten"
@@ -184,9 +189,9 @@
       "dependency": "main @ 03882b63d2e9d916db3811ab01321dd41fb22af7; sealed punctuation-aware OEWN receipt generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json; historical pre-function-segmentation receipt remains in place"
     },
     {
-      "action": "continue recursive gonol composition above the sealed punctuation-aware OEWN definition layer until a declared source-backed fixed point exists; completed gonols remain atomic and direct interscale coupling must not be replaced by mandatory reopening or by silently promoting native OEWN relation labels",
+      "action": "construct, replay, and keep UNRESOLVED the declared source-native OEWN recursive-gonol candidate; do not promote it to selected canon and do not invent a different relation set to look complete",
       "owner": "The-Interdependency/ucns",
-      "dependency": "punctuation-aware xkcd floor plus sealed punctuation-aware OEWN definition-layer receipt; native OEWN relation participation remains hmmm"
+      "dependency": "punctuation-aware definition-layer receipt; docs/PREREGISTRATION_RECURSIVE_GONOL_RELATIONS.md"
     },
     {
       "action": "emit a stable consumer contract for corrected atomic word, punctuation/function, definition, and recursive-gonol receipts so EDCM can consume exact UCNS identities without rebuilding semantics or substituting tokenizer IDs, opaque vectors, hashes, all-pairs semantic graphs, or forced intermediate-scale reopening",
@@ -235,7 +240,7 @@
     }
   ],
   "blocked": [
-    "recursive gonol composition above the sealed punctuation-aware definition layer is BLOCKED on a selected source-backed relation mechanism; native OEWN semantic-relation labels remain preserved evidence and are not a second semantic mechanism",
+    "selection of a recursive-gonol constructor remains UNRESOLVED; the source-native OEWN relation candidate may be constructed, replayed, and compared without being promoted",
     "final morphology decomposition is BLOCKED on evidence: root/stem/affix/transformation law is intentionally unresolved and the historical three-core skill may not be treated as current morphology canon",
     "complete carrier geometry for the lexical layer is BLOCKED for twenty retained source scalars outside the public 157-position carrier; the source evidence remains represented without normalization",
     "claiming implemented direct distant interscale coupling is blocked until gonols at separated scales exist and the spiral representation demonstrates the relation without mandatory intermediate reopening",
@@ -295,6 +300,8 @@
     "xkcd_lexical_floor": "docs/XKCD_LEXICAL_FLOOR_V1.md",
     "definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
     "punctuation_aware_oewn_definition_layer_receipt": "generated/oewn-2025-core-punctuation-aware-definition-layer-receipt.json",
+    "recursive_gonol_preregistration": "docs/PREREGISTRATION_RECURSIVE_GONOL_RELATIONS.md",
+    "source_native_recursive_gonol_receipt": "generated/oewn-2025-core-source-native-recursive-gonol-receipt.json",
     "historical_oewn_definition_layer_receipt": "generated/oewn-2025-core-definition-layer-receipt.json",
     "public_gonol_function_table": "docs/PUBLIC_GONOL_FUNCTION_TABLE.md",
     "public_gonol_contextual_protocol": "docs/PREREGISTRATION_PUBLIC_GONOL_CONTEXTUAL_EVALUATION.md",

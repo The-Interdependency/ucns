@@ -120,6 +120,9 @@ def test_public_surface_is_bounded() -> None:
         "reconstruct_xkcd_lexical_floor",
         "replay_xkcd_lexical_floor",
         "FunctionApplicationPlan",
+        "build_source_native_recursive_gonols",
+        "replay_source_native_recursive_gonols",
+        "RecursiveGonolLayer",
     ):
         assert expected in exported
 

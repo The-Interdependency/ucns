@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v7.0.1
         with:
           repository: The-Interdependency/skill-lib
-          ref: de445dbe2dd1df4831e1c67ccf1602ddb6259cba
+          ref: 5d36c0d52c6eabed46cc7665189a9a91ddf2b768
           path: .skill-lib-canon
           sparse-checkout: |
             msdmd
@@ -47,7 +47,7 @@ jobs:
         run: >-
           python .skill-lib-canon/tools/check_consumer_drift.py .
           --canon-root .skill-lib-canon
-          --sha de445dbe2dd1df4831e1c67ccf1602ddb6259cba
+          --sha 5d36c0d52c6eabed46cc7665189a9a91ddf2b768
           --strict-sha
           --require-vendored
       - name: Audit skill-lib contract graph

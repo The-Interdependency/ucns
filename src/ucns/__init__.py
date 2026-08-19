@@ -717,6 +717,17 @@ from .lexical_xkcd_floor import (
     reconstruct_xkcd_lexical_floor,
     replay_xkcd_lexical_floor,
 )
+from .recursive_gonol_relations import (
+    RECURSIVE_GONOL_CONSTRUCTOR_ID,
+    RECURSIVE_GONOL_STANDING,
+    SOURCE_NATIVE_RELATION_CODE,
+    RecursiveGonol,
+    RecursiveGonolError,
+    RecursiveGonolLayer,
+    build_source_native_recursive_gonols,
+    recursive_gonol_layer_bytes,
+    replay_source_native_recursive_gonols,
+)
 from .public_gonol_functions import (
     APPLICATION_STANDING,
     CONTEXT_RELATION_CODE,
@@ -1053,4 +1064,8 @@ __all__ = [
     "FLOOR_OCCURRENCE_RELATION_CODE", "CLOSED_SURFACE_STANDING",
     "load_xkcd_lexical_floor", "official_xkcd_source_payload",
     "reconstruct_xkcd_lexical_floor", "replay_xkcd_lexical_floor",
+    "RECURSIVE_GONOL_CONSTRUCTOR_ID", "RECURSIVE_GONOL_STANDING",
+    "SOURCE_NATIVE_RELATION_CODE", "RecursiveGonol", "RecursiveGonolError",
+    "RecursiveGonolLayer", "build_source_native_recursive_gonols",
+    "recursive_gonol_layer_bytes", "replay_source_native_recursive_gonols",
 ]

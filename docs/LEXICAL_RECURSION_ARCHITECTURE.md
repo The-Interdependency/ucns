@@ -250,6 +250,11 @@ source-explicit form gonols) with 58,317 composite word gonols and
 SHA-256
 `93c23e9ec054b17a5e47ae69b39ead51bd4a2daf106ec2c32f0a76a960d865a9`.
 That receipt is construction evidence, not selected canon.
+
+A declared recursive-gonol candidate now closes one gonol per source-native
+OEWN relation occurrence, using already-closed word and definition gonols as
+atomic participants. Selection remains `UNRESOLVED`. See
+`docs/PREREGISTRATION_RECURSIVE_GONOL_RELATIONS.md`.
 NGSL closed-floor constructors and the character-history xkcd word-gonol
 constructor remain importable only from their historical modules, not from
 `ucns`.

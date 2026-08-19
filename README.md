@@ -660,7 +660,7 @@ geometry or establish PTCNA usefulness.
 ## Build doctrine
 
 This build is pinned to
-`The-Interdependency/skill-lib@de445dbe2dd1df4831e1c67ccf1602ddb6259cba`.
+`The-Interdependency/skill-lib@5d36c0d52c6eabed46cc7665189a9a91ddf2b768`.
 See [`.agents/skills/README.md`](.agents/skills/README.md). Historical stack
 manifests retain the skill-lib commit they were sealed against.
 
