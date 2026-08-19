@@ -660,9 +660,9 @@ geometry or establish PTCNA usefulness.
 ## Build doctrine
 
 This build is pinned to
-`The-Interdependency/skill-lib@2b24be24947223b86440f59f1bd9766130f9cc11`.
-See [`.agents/skills/README.md`](.agents/skills/README.md) and
-[`STACK_MANIFEST.json`](STACK_MANIFEST.json).
+`The-Interdependency/skill-lib@de445dbe2dd1df4831e1c67ccf1602ddb6259cba`.
+See [`.agents/skills/README.md`](.agents/skills/README.md). Historical stack
+manifests retain the skill-lib commit they were sealed against.
 
 hmmm: exact word observation, trajectory retention, and the bounded native
 Möbius root loop meet the directed cover through the v0.7 exact reversible
