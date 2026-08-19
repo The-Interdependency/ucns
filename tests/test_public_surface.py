@@ -112,6 +112,9 @@ def test_public_surface_is_bounded() -> None:
         "RelationalCarrier",
         "build_relational_carrier",
         "relational_carrier_bytes",
+        "XkcdLexicalFloor",
+        "load_xkcd_lexical_floor",
+        "replay_xkcd_lexical_floor",
     ):
         assert expected in exported
 

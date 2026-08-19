@@ -12,9 +12,10 @@
 #   user_data_boundary: no user data; exact source spellings remain unchanged and definitions require explicit context and source identity
 #   admin_only: false
 #   tests: tests/test_lexical_floor.py
-#   rollout: experimental lexical-floor producer; no hyperdimensional embedding or linguistic canon selection
+#   rollout: deprecated historical evidence only; current floor is ucns_xkcd_lexical_floor
 #   rollback: remove this module and packaged NGSL artifacts without altering the existing EDCM word-gonol profile
 #   since: 2026-08-04
+#   deprecated: 2026-08-17 NGSL closed floor; current candidate is ucns.lexical-floor.xkcd-simplewriter-0.2.1
 #   unresolved: independent official-source checksum custody, attested affix authority, compound adjudication, contextual definition custody, and the deep-recursion hyperdimensional embedding law
 # === END MODULE_BUILD ===
 

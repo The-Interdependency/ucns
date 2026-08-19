@@ -9,7 +9,10 @@
 
 NGSL 1.2 is a 2,809-word word list, not a dictionary. The earlier UCNS construction treated that list as a closed lexical floor and required semantic definitions to use only members of the fixed list. That premise is withdrawn.
 
-The label **lexical floor** has no forward authority in UCNS. A word list without its own definition corpus is not the semantic base this work requires.
+The label **NGSL lexical floor** has no forward authority in UCNS. The current
+floor candidate is the xkcd Simple Writer 0.2.1 binder in
+[`XKCD_LEXICAL_FLOOR_V1.md`](XKCD_LEXICAL_FLOOR_V1.md). A word list without its
+own definition corpus is not the semantic base this work requires.
 
 The closed-floor rule is therefore also deprecated:
 

@@ -203,7 +203,7 @@ That phenomenological origin is part of design provenance. It is **not** evidenc
 
 ## Codex execution order
 
-1. Freeze exact xkcd 1,000-word source identity and construct / verify its word gonols without reviving NGSL semantics.
+1. Freeze exact xkcd Simple Writer 0.2.1 source identity (3,634 surfaces) and construct / verify its word gonols without reviving NGSL semantics.
 2. Freeze exact OEWN 2025 Core source identity, license/custody, and source bytes / immutable digest.
 3. Implement the shared Möbius glyph-axis traversal / history-dependent potential needed to construct word gonols from source spellings.
 4. Make completed word gonols atomic and reusable; do not materialize all-pairs word relations.
@@ -229,9 +229,12 @@ This architecture does not yet establish:
 ## Implemented boundary — 2026-08-18
 
 The current implementation pins the exact xkcd Simple Writer 0.2.1 artifact and
-OEWN 2025 Core source, constructs the xkcd atomic word candidate, inventories
-all OEWN morphology evidence, and constructs the complete OEWN definition
-layer in `src/ucns/oewn_definition_recursion.py`.
+OEWN 2025 Core source, binds that xkcd inventory as the lexical-floor candidate
+in `src/ucns/lexical_xkcd_floor.py` (3,634 exact surfaces; no invented
+1,000-family map; no closed definition support), constructs the xkcd atomic
+word gonols, inventories all OEWN morphology evidence, and constructs the
+complete OEWN definition layer in `src/ucns/oewn_definition_recursion.py`.
+OEWN definition recursion does not consume the xkcd floor.
 
 The sealed receipt is
 `generated/oewn-2025-core-definition-layer-receipt.json`. It records 135,969
