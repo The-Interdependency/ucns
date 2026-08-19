@@ -708,12 +708,20 @@ from .oewn_definition_recursion import (
     replay_oewn_definition_layer,
 )
 from .lexical_xkcd_floor import (
+    CLOSED_SURFACE_STANDING,
+    FLOOR_OCCURRENCE_RELATION_CODE,
+    FUNCTION_KIND,
+    LETTER_RUN_KIND,
     XKCD_LEXICAL_FLOOR_ID,
     XKCD_LEXICAL_FLOOR_STANDING,
     XKCD_LEXICAL_FLOOR_VERSION,
+    ClosedSurfaceGonol,
+    FloorOccurrence,
     XkcdLexicalFloor,
     XkcdLexicalFloorError,
     load_xkcd_lexical_floor,
+    official_xkcd_source_payload,
+    reconstruct_xkcd_lexical_floor,
     replay_xkcd_lexical_floor,
 )
 from .public_gonol_functions import (
@@ -1052,5 +1060,8 @@ __all__ = [
     "build_public_gonol_function_table", "function_table_bytes",
     "XKCD_LEXICAL_FLOOR_ID", "XKCD_LEXICAL_FLOOR_STANDING",
     "XKCD_LEXICAL_FLOOR_VERSION", "XkcdLexicalFloor", "XkcdLexicalFloorError",
-    "load_xkcd_lexical_floor", "replay_xkcd_lexical_floor",
+    "ClosedSurfaceGonol", "FloorOccurrence", "FUNCTION_KIND", "LETTER_RUN_KIND",
+    "FLOOR_OCCURRENCE_RELATION_CODE", "CLOSED_SURFACE_STANDING",
+    "load_xkcd_lexical_floor", "official_xkcd_source_payload",
+    "reconstruct_xkcd_lexical_floor", "replay_xkcd_lexical_floor",
 ]

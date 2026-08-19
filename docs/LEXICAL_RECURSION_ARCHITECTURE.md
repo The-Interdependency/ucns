@@ -229,12 +229,14 @@ This architecture does not yet establish:
 ## Implemented boundary — 2026-08-18
 
 The current implementation pins the exact xkcd Simple Writer 0.2.1 artifact and
-OEWN 2025 Core source, binds that xkcd inventory as the lexical-floor candidate
-in `src/ucns/lexical_xkcd_floor.py` (3,634 exact surfaces; no invented
-1,000-family map; no closed definition support), constructs the xkcd atomic
-word gonols, inventories all OEWN morphology evidence, and constructs the
-complete OEWN definition layer in `src/ucns/oewn_definition_recursion.py`.
-OEWN definition recursion does not consume the xkcd floor.
+OEWN 2025 Core source. `src/ucns/lexical_xkcd_floor.py` reconstructs the official
+quoted payload so Public Gonol punctuation/symbol functions participate
+intrinsically: letter-runs stay lexical; intra-word apostrophes and every
+source VERTICAL LINE are function participants; relations enter a closed
+carrier. This is a reconstruction candidate, not selected canon. Historical
+character-history word gonols remain available but are not this floor.
+OEWN definition recursion still treats maximal non-SPACE sequences as
+inscriptions and does not consume the reconstructed xkcd floor.
 
 The sealed receipt is
 `generated/oewn-2025-core-definition-layer-receipt.json`. It records 135,969

@@ -25,11 +25,12 @@ Webster 1913
 ```
 
 The exact xkcd artifact identity and OEWN 2025 Core release receipt are now
-pinned by `src/ucns/lexical_sources.py`. The xkcd surfaces are bound as the
-current lexical-floor candidate by `src/ucns/lexical_xkcd_floor.py`. The first
+pinned by `src/ucns/lexical_sources.py`. `src/ucns/lexical_xkcd_floor.py`
+reconstructs that xkcd payload with Public Gonol functions as intrinsic
+participants; that reconstruction is a candidate, not selected canon. The first
 complete OEWN materialization is sealed by
-`generated/oewn-2025-core-definition-layer-receipt.json` and does not close over
-that floor.
+`generated/oewn-2025-core-definition-layer-receipt.json` and still segments
+maximal non-SPACE strings as inscriptions.
 
 ## First deep recursion
 
