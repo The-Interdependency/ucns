@@ -10,9 +10,9 @@
   },
   "source": {
     "branch": "agent/xkcd-lexical-floor",
-    "commit": "568a29da5f834c751d4d81aeb66276a4c9a152be",
+    "commit": "9c74fb79cc1750a54b8da444011d24eedc8fdc05",
     "generated_at": "2026-08-19",
-    "note": "This report describes the PR #213 generic affixiate candidate, OEWN character-word corpus, xkcd subset floor, and affixiate definition/recursive receipts, based on main @ 03882b63d2e9d916db3811ab01321dd41fb22af7. Construction identity is 568a29da5f834c751d4d81aeb66276a4c9a152be. Historical punctuation-aware definition and source-native recursive receipts remain unchanged. Current skill-lib authority is 5d36c0d52c6eabed46cc7665189a9a91ddf2b768. Selection of affixiate as canon remains UNRESOLVED."
+    "note": "This report describes the PR #213 generic affixiate candidate with characters as gonols, OEWN character-word corpus, xkcd subset floor, and affixiate definition/recursive receipts. Construction identity is 9c74fb79cc1750a54b8da444011d24eedc8fdc05. Historical punctuation-aware definition and source-native recursive receipts remain unchanged. Selection of affixiate as canon remains UNRESOLVED."
   },
   "authority": {
     "owns": [
