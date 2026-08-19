@@ -461,8 +461,6 @@ def _definition_spans(
                 continue
             end = pos + 1
             while end < len(token) and token[end] not in functions:
-                if _longest_closed_word(token[end:], closed_words, functions) is not None:
-                    break
                 end += 1
             result.append((absolute, cursor + end, INSCRIPTION_KIND))
             pos = end

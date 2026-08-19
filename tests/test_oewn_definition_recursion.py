@@ -149,3 +149,32 @@ def test_definition_preserves_closed_word_gonols() -> None:
     about_word = next(item for item in prefix_layer.inscriptions if item.text == "about")
     assert about.occurrences[0].participant_id == about_word.gonol_id
     assert about.occurrences[0].participant_id != a_word.gonol_id
+    suffix = OEWNCoreSnapshot(
+        "ucns.oewn-core-receipt:sha256:" + "4" * 64,
+        (
+            OEWNLexicalEntry("a", "n", (), (OEWNSense("a%1", "s1", (), (), None),)),
+            OEWNLexicalEntry("out", "r", (), (OEWNSense("out%1", "s2", (), (), None),)),
+        ),
+        (
+            OEWNSynset("s1", "n", ("a",), ("about outside.",), ()),
+            OEWNSynset("s2", "r", ("out",), ("without one.",), ()),
+        ),
+    )
+    suffix_layer = build_oewn_definition_layer(suffix)
+    about_out = next(item for item in suffix_layer.definition_gonols if item.exact_gloss == "about outside.")
+    without = next(item for item in suffix_layer.definition_gonols if item.exact_gloss == "without one.")
+    assert [about_out.exact_gloss[item.start:item.end] for item in about_out.occurrences] == [
+        "about", "outside", ".",
+    ]
+    assert [without.exact_gloss[item.start:item.end] for item in without.occurrences] == [
+        "without", "one", ".",
+    ]
+    assert [item.kind for item in about_out.occurrences] == [
+        INSCRIPTION_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
+    ]
+    assert [item.kind for item in without.occurrences] == [
+        INSCRIPTION_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
+    ]
+    out_word = next(item for item in suffix_layer.inscriptions if item.text == "out")
+    assert about_out.occurrences[0].participant_id != out_word.gonol_id
+    assert without.occurrences[0].participant_id != out_word.gonol_id

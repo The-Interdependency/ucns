@@ -123,16 +123,20 @@ Do not silently introduce the native OEWN relation graph as a separate semantic 
 
 This document does not establish semantic efficacy, final morphology, compression ratio, lossless reconstruction, human-cognition universality, EDCM validity, or PTCNA efficacy.
 
-## Completed declared source scope
+## Historical declared source scope
 
-`src/ucns/oewn_definition_recursion.py` constructs every OEWN 2025 Core
-sense-definition pairing, exact source-explicit form relation, and exact
-multi-inscription entry. Relationships are intrinsic ordered carriers inside
-the closed gonols. A second independent complete run reproduced the 1,308-byte
-receipt exactly.
+The sealed receipt `generated/oewn-2025-core-definition-layer-receipt.json`
+is historical pre-function-segmentation evidence. It recorded a complete
+pass over OEWN 2025 Core under standing
+`complete-oewn-core-first-recursion-candidate` and a second independent run
+reproduced that 1,308-byte receipt exactly.
 
-This is construction evidence, not semantic efficacy. The resulting standing
-is `complete-oewn-core-first-recursion-candidate`.
+That receipt is not a replay of the current punctuation-aware producer in
+`src/ucns/oewn_definition_recursion.py`. The current constructor preserves
+closed word gonols, treats leftover Public Gonol glyphs as function
+participants, and has standing
+`punctuation-aware-oewn-core-first-recursion-candidate`. Full-corpus replay
+of this producer remains blocked on an OEWN 2025 Core checkout.
 
 ## hmmm
 
