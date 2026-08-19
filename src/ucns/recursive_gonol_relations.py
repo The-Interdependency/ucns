@@ -5,7 +5,7 @@
 #   summary: constructs a declared source-native OEWN recursive-gonol candidate from already-closed word and definition gonols without selecting that candidate as canon
 #   owner: Erin Spencer
 #   public_surface: RecursiveGonol, RecursiveGonolLayer, RecursiveGonolError, SOURCE_NATIVE_RELATION_CODE, RECURSIVE_GONOL_CONSTRUCTOR_ID, build_source_native_recursive_gonols, recursive_gonol_layer_bytes, replay_source_native_recursive_gonols
-#   internal_surface: _canonical_bytes, _identity, _index_layer, _resolve_word, _sense_participants, _synset_participants, _join
+#   internal_surface: _canonical_bytes, _identity, _producer_code_reference, _index_layer, _resolve_word, _sense_participants, _synset_participants, _join
 #   auth_boundary: requires an exact OEWN Core snapshot and its matching punctuation-aware definition layer
 #   storage_boundary: immutable in-memory construction and canonical receipt bytes
 #   network_boundary: none
@@ -74,7 +74,7 @@ from .oewn_definition_recursion import (
     OEWNDefinitionGonol,
     OEWNDefinitionLayer,
     OEWNDefinitionRecursionError,
-    _function_participant_id,
+    replay_oewn_definition_layer,
 )
 from .relational_carrier import RelationalCarrier, build_relational_carrier
 
@@ -105,6 +105,20 @@ def _canonical_bytes(value: object) -> bytes:
 
 def _identity(prefix: str, value: object) -> str:
     return prefix + sha256(_canonical_bytes(value)).hexdigest()
+
+
+def _producer_code_reference() -> str:
+    """Bind receipts to the normalized source text of this producer module."""
+
+    try:
+        with open(__file__, "r", encoding="utf-8", newline=None) as source:
+            text = source.read()
+    except OSError as exc:
+        raise RecursiveGonolError("recursive producer code identity is unavailable") from exc
+    return "ucns.python-source-normalized-sha256:" + sha256(text.encode("utf-8")).hexdigest()
+
+
+_PRODUCER_CODE_REFERENCE = _producer_code_reference()
 
 
 @dataclass(frozen=True, slots=True)
@@ -180,6 +194,7 @@ class RecursiveGonolLayer:
     definition_layer_id: str
     gonols: tuple[RecursiveGonol, ...]
     source_native_relation_occurrence_count: int
+    producer_code_reference: str = _PRODUCER_CODE_REFERENCE
     constructor_id: str = RECURSIVE_GONOL_CONSTRUCTOR_ID
     version: str = RECURSIVE_GONOL_VERSION
     participant_assembly: str = PARTICIPANT_ASSEMBLY
@@ -189,6 +204,8 @@ class RecursiveGonolLayer:
     standing: str = RECURSIVE_GONOL_STANDING
 
     def __post_init__(self) -> None:
+        if self.producer_code_reference != _PRODUCER_CODE_REFERENCE:
+            raise RecursiveGonolError("recursive producer code reference cannot be retargeted")
         if self.constructor_id != RECURSIVE_GONOL_CONSTRUCTOR_ID or self.version != RECURSIVE_GONOL_VERSION:
             raise RecursiveGonolError("recursive constructor identity cannot be retargeted")
         if self.participant_assembly != PARTICIPANT_ASSEMBLY:
@@ -205,6 +222,12 @@ class RecursiveGonolLayer:
             raise RecursiveGonolError("recursive gonols must be dense and ordered")
         if len(self.gonols) != self.source_native_relation_occurrence_count:
             raise RecursiveGonolError("recursive gonol count does not match source relation occurrences")
+        for item in self.gonols:
+            if (
+                item.source_receipt_id != self.source_receipt_id
+                or item.definition_layer_id != self.definition_layer_id
+            ):
+                raise RecursiveGonolError("recursive gonol evidence bindings do not match layer envelope")
         if len({item.gonol_id for item in self.gonols}) != len(self.gonols):
             raise RecursiveGonolError("recursive gonol identities must be unique")
 
@@ -218,6 +241,7 @@ def _layer_payload(layer: RecursiveGonolLayer) -> dict[str, object]:
     return {
         "constructor_id": layer.constructor_id,
         "version": layer.version,
+        "producer_code_reference": layer.producer_code_reference,
         "standing": layer.standing,
         "selected": layer.selected,
         "native_relation_mechanism_selected": layer.native_relation_mechanism_selected,
@@ -238,25 +262,13 @@ class _SenseIndex:
 
 
 def _word_index(layer: OEWNDefinitionLayer) -> dict[str, str]:
-    by_text: dict[str, str] = dict(layer.closed_word_pairs)
-    for item in layer.composite_words:
-        by_text.setdefault(item.exact_text, item.gonol_id)
-    for item in layer.inscriptions:
-        by_text.setdefault(item.text, item.gonol_id)
-    return by_text
+    return dict(layer.closed_word_pairs)
 
 
-def _resolve_word(by_text: dict[str, str], layer: OEWNDefinitionLayer, text: str) -> str:
+def _resolve_word(by_text: dict[str, str], text: str) -> str:
     existing = by_text.get(text)
     if existing is not None:
         return existing
-    if len(text) == 1:
-        try:
-            identifier = _function_participant_id(text, layer.source_receipt_id)
-        except OEWNDefinitionRecursionError as exc:
-            raise RecursiveGonolError(f"unresolved closed-word participant {text!r}") from exc
-        by_text[text] = identifier
-        return identifier
     raise RecursiveGonolError(f"unresolved closed-word participant {text!r}")
 
 
@@ -280,7 +292,7 @@ def _index_layer(
     synset_members: dict[str, tuple[str, ...]] = {}
     for synset in snapshot.synsets:
         synset_members[synset.synset_id] = tuple(
-            _resolve_word(words, layer, member) for member in synset.members
+            _resolve_word(words, member) for member in synset.members
         )
     return senses, synset_members, {key: tuple(value) for key, value in synset_definitions.items()}
 
@@ -367,6 +379,10 @@ def build_source_native_recursive_gonols(
         raise TypeError("definition_layer must be an OEWNDefinitionLayer")
     if definition_layer.source_receipt_id != snapshot.source_receipt_id:
         raise RecursiveGonolError("definition layer and OEWN snapshot differ")
+    try:
+        definition_layer = replay_oewn_definition_layer(definition_layer, snapshot)
+    except OEWNDefinitionRecursionError as exc:
+        raise RecursiveGonolError("definition layer does not match deterministic snapshot replay") from exc
     senses, synset_members, synset_definitions = _index_layer(snapshot, definition_layer)
     gonols: list[RecursiveGonol] = []
     receipt_id = snapshot.source_receipt_id
