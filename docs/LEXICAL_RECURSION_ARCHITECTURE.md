@@ -229,9 +229,11 @@ This architecture does not yet establish:
 ## Implemented boundary — 2026-08-18
 
 The current implementation pins the exact xkcd Simple Writer 0.2.1 artifact and
-OEWN 2025 Core source. `src/ucns/lexical_xkcd_floor.py` reconstructs the official
-quoted payload so Public Gonol punctuation/symbol functions participate
-intrinsically. Function application on that floor requires an explicit
+OEWN 2025 Core source. `src/ucns/lexical_xkcd_floor.py` reconstructs each
+admitted surface from history-bearing character gonols
+(``w → wa → wat → ...``) on Möbius glyph-axis tics, then closes the surface
+with any intra-word Public Gonol functions. Opaque letter-run identities are
+superseded. Function application on that floor requires an explicit
 occurrence-addressed plan; neighboring participants are not inferred as
 state or context, and the receipt binds each application's ordered identity
 and result. `src/ucns/oewn_definition_recursion.py` preserves already-closed

@@ -123,7 +123,7 @@
     {
       "surface": "punctuation-aware xkcd lexical-floor reconstruction",
       "status": "implemented reconstruction candidate on the official Simple Writer payload; not selected canon",
-      "boundary": "letter-runs stay lexical; Public Gonol punctuation/symbol functions, including intra-word apostrophes and every source VERTICAL LINE, participate intrinsically with exact order, occurrence, and multiplicity; function application requires explicit occurrence-addressed context and the receipt binds ordered application identities; no independent punctuation grammar, adjacency/context inference, family map, or closed definition support is attached"
+      "boundary": "alphabetic identity is the ordered history-bearing character traversal, not an opaque letter-run; Public Gonol punctuation/symbol functions, including intra-word apostrophes and every source VERTICAL LINE, participate intrinsically; function application requires explicit occurrence-addressed context; no independent punctuation grammar, family map, or closed definition support is attached"
     },
     {
       "surface": "Public Gonol definition-derived function table",
