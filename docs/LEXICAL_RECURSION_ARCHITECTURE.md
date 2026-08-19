@@ -159,7 +159,7 @@ For every OEWN Core lexical sense used by the build:
 1. retain source lexical-entry / lemma identity;
 2. retain part of speech;
 3. retain source sense / synset identity;
-4. gonolize the definition constituents using already-constructed atomic word gonols where available;
+4. gonolize the definition constituents using already-constructed atomic word gonols where available and do not reopen those closed word gonols into character/function streams;
 5. preserve exact order, multiplicity, occurrence, source and provenance;
 6. let those semantic relationships **enter the definition gonol**;
 7. close the definition gonol;
@@ -231,11 +231,15 @@ This architecture does not yet establish:
 The current implementation pins the exact xkcd Simple Writer 0.2.1 artifact and
 OEWN 2025 Core source. `src/ucns/lexical_xkcd_floor.py` reconstructs the official
 quoted payload so Public Gonol punctuation/symbol functions participate
-intrinsically. `src/ucns/oewn_definition_recursion.py` now uses the same split
-on lemmas, forms, and glosses: residual non-SPACE non-function runs are
-inscriptions; Public Gonol punctuation/symbol glyphs are function
-participants; SPACE remains a boundary. This is a producer change, not selected
-canon. The sealed receipt
+intrinsically. Function application on that floor requires an explicit
+occurrence-addressed plan; neighboring participants are not inferred as
+state or context, and the receipt binds each application's ordered identity
+and result. `src/ucns/oewn_definition_recursion.py` preserves already-closed
+lemma and form word gonols as atomic definition participants. Only leftover
+Public Gonol punctuation/symbol glyphs become function participants;
+residual non-SPACE non-function non-closed-word runs are inscriptions;
+SPACE remains a boundary. This is a producer repair, not selected canon.
+The sealed receipt
 `generated/oewn-2025-core-definition-layer-receipt.json` remains historical
 evidence of the pre-function-segmentation producer and is not a replay of the
 current constructor. Full-corpus replay requires an OEWN 2025 Core checkout.

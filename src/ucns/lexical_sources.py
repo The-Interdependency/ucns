@@ -4,7 +4,7 @@
 #   module_kind: adapter
 #   summary: freezes and validates the exact xkcd Simple Writer 0.2.1 floor artifact and OEWN 2025 Core source identity selected by current UCNS lexical architecture
 #   owner: Erin Spencer
-#   public_surface: XKCDSimpleWriterReceipt, OEWNCoreReceipt, load_xkcd_simplewriter, verify_oewn_2025_core, current_lexical_source_receipts
+#   public_surface: XKCDSimpleWriterReceipt, OEWNCoreReceipt, load_xkcd_simplewriter, quoted_xkcd_payload, verify_oewn_2025_core, current_lexical_source_receipts
 #   internal_surface: _canonical_bytes, _tree_digest, _git
 #   auth_boundary: read-only validation of packaged xkcd bytes and caller-supplied OEWN checkout
 #   storage_boundary: packaged immutable source bytes; external OEWN checkout read only
@@ -37,6 +37,12 @@
 #   then: both selected source identities validate together before any word, morphology, definition, or recursion output is authorized
 #   class: safety
 #   since: 2026-08-18
+#
+# id: xkcd_receipt_matches_packaged_bytes
+#   given: a quoted xkcd payload is requested from a receipt
+#   then: packaged official bytes, digest, and quoted word list agree with the receipt or minting fails closed
+#   class: evidence
+#   since: 2026-08-19
 # === END CONTRACTS ===
 
 """Exact source custody for the current UCNS lexical recursion program.
@@ -197,6 +203,32 @@ def load_xkcd_simplewriter() -> XKCDSimpleWriterReceipt:
     )
 
 
+def quoted_xkcd_payload(source: XKCDSimpleWriterReceipt) -> str:
+    """Return the official quoted word list after checking packaged bytes."""
+
+    if not isinstance(source, XKCDSimpleWriterReceipt):
+        raise TypeError("source must be an XKCDSimpleWriterReceipt")
+    package = files("ucns")
+    payload = package.joinpath(XKCD_WORDS_RESOURCE).read_bytes()
+    if (
+        len(payload) != source.byte_count
+        or sha256(payload).hexdigest() != source.sha256
+        or sha256(payload).hexdigest() != XKCD_SHA256
+    ):
+        raise LexicalSourceError("xkcd receipt does not match packaged official bytes")
+    try:
+        text = payload.decode("utf-8", errors="strict")
+    except UnicodeDecodeError as exc:
+        raise LexicalSourceError("xkcd Simple Writer source is not strict UTF-8") from exc
+    match = _WORDS_PATTERN.fullmatch(text)
+    if match is None:
+        raise LexicalSourceError("xkcd Simple Writer source syntax or version mismatch")
+    quoted = match.group(1)
+    if quoted != "|".join(source.surface_forms):
+        raise LexicalSourceError("xkcd surfaces do not reconstruct the official quoted payload")
+    return quoted
+
+
 def _git(root: Path, *arguments: str) -> str:
     try:
         return subprocess.check_output(
@@ -260,5 +292,5 @@ __all__ = [
     "OEWN_COMMIT", "OEWN_CORE_FILE_COUNT", "OEWN_CORE_TREE_SHA256",
     "OEWN_LICENSE", "OEWN_REPOSITORY", "OEWN_TAG", "LexicalSourceError",
     "OEWNCoreReceipt", "XKCDSimpleWriterReceipt", "current_lexical_source_receipts",
-    "load_xkcd_simplewriter", "verify_oewn_2025_core",
+    "load_xkcd_simplewriter", "quoted_xkcd_payload", "verify_oewn_2025_core",
 ]

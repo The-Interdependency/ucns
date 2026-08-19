@@ -1,6 +1,6 @@
 # === CHECKS ===
 # id: current_lexical_source_receipt_check
-#   proves: xkcd_floor_bytes_are_exact_and_source_ordered, oewn_core_receipt_is_exact_release_identity, current_lexical_sources_precede_materialization
+#   proves: xkcd_floor_bytes_are_exact_and_source_ordered, oewn_core_receipt_is_exact_release_identity, current_lexical_sources_precede_materialization, xkcd_receipt_matches_packaged_bytes
 #   call: self::test_current_lexical_source_receipts_are_exact
 #   timeout: 30
 #   mutates: none
@@ -24,6 +24,7 @@ from ucns.lexical_sources import (
     OEWN_COMMIT,
     LexicalSourceError,
     load_xkcd_simplewriter,
+    quoted_xkcd_payload,
     verify_oewn_2025_core,
 )
 
@@ -46,6 +47,9 @@ def test_current_lexical_source_receipts_are_exact() -> None:
     assert xkcd.family_count == 1_000
     assert xkcd.family_mapping_available is False
     assert xkcd.receipt_id.startswith("ucns.xkcd-simplewriter-receipt:sha256:")
+    assert quoted_xkcd_payload(xkcd) == "|".join(xkcd.surface_forms)
+    with pytest.raises(LexicalSourceError, match="official quoted payload"):
+        quoted_xkcd_payload(replace(xkcd, surface_forms=xkcd.surface_forms[1:]))
     oewn = verify_oewn_2025_core(_oewn_root())
     assert oewn.commit == OEWN_COMMIT
     assert oewn.core_file_count == 73

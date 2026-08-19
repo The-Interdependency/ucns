@@ -12,7 +12,7 @@
     "branch": "main",
     "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
     "generated_at": "2026-08-18",
-    "note": "This report describes UCNS main through the completed Public Gonol contextual structural evaluation plus the current repo-owned research plan. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority is to complete the intended gonol system before building simpler falsifier mechanisms: use the newly sealed punctuation/symbol definition-derived functions to reconstruct the xkcd lexical floor correctly, then continue recursive gonol construction. Matched-information baselines are post-construction falsifiers, not prerequisites that constrain the research build."
+    "note": "This report describes UCNS main through the completed Public Gonol contextual structural evaluation plus the current repo-owned research plan, including the PR #213 constructor repair that preserves closed word gonols and requires explicit function-application context. Report-only commits are coordination metadata and are not treated as UCNS mathematical evidence. Construction priority is to complete the intended gonol system before building simpler falsifier mechanisms: finish the punctuation-aware xkcd/OEWN reconstruction without flattening closed word gonols, then continue recursive gonol construction. Matched-information baselines are post-construction falsifiers, not prerequisites that constrain the research build."
   },
   "authority": {
     "owns": [
@@ -57,7 +57,7 @@
   },
   "status": {
     "state": "active research and implementation",
-    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the exact xkcd Simple Writer 0.2.1 surface inventory is the lexical-floor source and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The Public Gonol table supplies definition-derived functions for all 84 admitted punctuation/symbol positions. The xkcd floor reconstruction candidate now uses those functions as intrinsic participants with exact source order, occurrence, and multiplicity; it is not selected canon. OEWN definition segmentation still treats maximal non-SPACE sequences as inscriptions. The morphology decomposition law remains unresolved. Falsifier baselines follow completion of the intended gonol system rather than gating its construction. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
+    "current_claim": "UCNS currently supports bounded candidate-scoped, option-preserving multimodal relation representation while preserving unresolved construction choices explicitly. For the active lexical program, the exact xkcd Simple Writer 0.2.1 surface inventory is the lexical-floor source and OEWN 2025 Core is the primary contemporary lexical-semantic corpus. The operative sequence is characters -> morphology -> definitions -> recursive gonol relations. Relationships enter gonols; once constructed, a word or definition gonol is atomic at the next scale; affixiation names the scale-invariant coupling/closure pattern, not merely prefix/suffix morphology; and direct coupling across non-adjacent scales is permitted without requiring intermediate closures to be reopened. The Public Gonol table supplies definition-derived functions for all 84 admitted punctuation/symbol positions. The xkcd floor reconstruction candidate uses those functions as intrinsic participants with exact source order, occurrence, and multiplicity, requires explicit occurrence-addressed application context, and binds ordered application identities into the receipt; it is not selected canon. OEWN definition construction preserves already-closed lemma and form word gonols and only treats leftover Public Gonol punctuation/symbol glyphs as function participants. The morphology decomposition law remains unresolved. Falsifier baselines follow completion of the intended gonol system rather than gating its construction. The intended PTCNA remains downstream of a not-yet-performed UCNS audit of a functioning conventional neural network.",
     "current_definition": "UCNS is option-preserving multimodal geometric relation-carrier research. A UCNS representation preserves relations among heterogeneous objects without requiring those objects to become numerically identical, modality-identical, or topologically identical; completion remains relative to a declared construction boundary.",
     "latest_main_milestone": {
       "commit": "9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f",
@@ -107,13 +107,13 @@
     },
     {
       "surface": "current lexical recursion architecture",
-      "status": "implemented candidate: punctuation-aware xkcd floor reconstruction plus punctuation-aware OEWN definition segmentation; not selected canon",
-      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction, historical character-history and NGSL constructors demoted off the public surface, and OEWN lemmas/forms/glosses now split Public Gonol functions from inscriptions; the sealed 185155-definition receipt remains historical pre-function-segmentation evidence until a full OEWN checkout is replayed"
+      "status": "implemented candidate: punctuation-aware xkcd floor reconstruction plus closure-preserving OEWN definition construction; not selected canon",
+      "boundary": "exact sources, punctuation-aware xkcd floor reconstruction with explicit occurrence-addressed function application, historical character-history and NGSL constructors demoted off the public surface, and OEWN definitions now consume closed word gonols instead of reopening them; the sealed 185155-definition receipt remains historical pre-function-segmentation evidence until a full OEWN checkout is replayed"
     },
     {
       "surface": "punctuation-aware xkcd lexical-floor reconstruction",
       "status": "implemented reconstruction candidate on the official Simple Writer payload; not selected canon",
-      "boundary": "letter-runs stay lexical; Public Gonol punctuation/symbol functions, including intra-word apostrophes and every source VERTICAL LINE, participate intrinsically with exact order, occurrence, and multiplicity; no independent punctuation grammar, family map, or closed definition support is attached"
+      "boundary": "letter-runs stay lexical; Public Gonol punctuation/symbol functions, including intra-word apostrophes and every source VERTICAL LINE, participate intrinsically with exact order, occurrence, and multiplicity; function application requires explicit occurrence-addressed context and the receipt binds ordered application identities; no independent punctuation grammar, adjacency/context inference, family map, or closed definition support is attached"
     },
     {
       "surface": "Public Gonol definition-derived function table",
@@ -142,7 +142,7 @@
     }
   ],
   "active_frontier": [
-    "reconstruct the xkcd lexical floor using the completed Public Gonol punctuation/symbol definition bindings: punctuation and symbols must participate as their own definition-derived function gonols in exact source order, occurrence, and multiplicity rather than remaining merely embedded glyphs inside maximal non-SPACE inscriptions",
+    "preserve the closure hierarchy while finishing the punctuation-aware xkcd/OEWN reconstruction: characters/functions close into word gonols, those closed word gonols participate atomically in definition gonols, and function application remains explicitly occurrence-addressed rather than inferred from adjacency",
     "preserve the exact xkcd Simple Writer 0.2.1 source inventory of 3,634 accepted surfaces and its declared 1,000-family boundary without inventing an unavailable authoritative family mapping",
     "continue recursive gonol construction from the corrected xkcd lexical floor, preserving atomic closure, intrinsic relationships, exact provenance, source order, multiplicity, and replay",
     "complete the intended gonol system before constructing simpler matched-information mechanisms; later baselines are falsifiers of the completed system and must not constrain or replace the research architecture during construction",
@@ -174,14 +174,14 @@
   ],
   "next_actions": [
     {
-      "action": "repair lexical definition segmentation so admitted punctuation/symbol occurrences bind the exact Public Gonol function identity and its already-closed OEWN definition gonol(s) as intrinsic ordered participants instead of remaining merely embedded inside maximal non-SPACE inscriptions; preserve exact source reconstruction and introduce no independent grammar, parser, precedence, or context-selection law",
+      "action": "keep PR #213 as a constructor repair rather than selected canon: preserve closed word gonols in OEWN definition construction, require explicit occurrence-addressed function-application context, bind complete application identities into receipts, validate exact xkcd source bytes before minting a floor receipt, and do not invent the 3,634-to-1,000 family map or a morphology law",
       "owner": "The-Interdependency/ucns",
       "dependency": "main @ 9bb6955a7e262dcbf4746bb5b9da02adbe7d3e6f; exact xkcd Simple Writer 0.2.1 and OEWN 2025 Core receipts; sealed Public Gonol function-table receipt and contextual structural receipt"
     },
     {
-      "action": "rebuild the xkcd lexical-floor gonols through the corrected punctuation-aware definition path, covering every source-supported accepted surface and every available source definition, then emit deterministic atomic identities, provenance, coverage failures, and an independent byte-identical replay receipt",
+      "action": "once an OEWN 2025 Core checkout is available, perform the full punctuation-aware OEWN reconstruction to natural completion, seal the replacement receipt, and independently replay it byte-for-byte while preserving closed word gonols",
       "owner": "The-Interdependency/ucns",
-      "dependency": "corrected segmentation/function participation; preserve 3,634 exact accepted surfaces and declared 1,000-family boundary without inventing an unavailable family mapping"
+      "dependency": "constructor repair on PR #213; exact OEWN 2025 Core checkout; do not rewrite the sealed historical 185155-definition receipt in place"
     },
     {
       "action": "continue recursive gonol composition above the corrected xkcd lexical floor and OEWN definition layer until the declared construction reaches its source-backed fixed point; completed gonols remain atomic and direct interscale coupling must not be replaced by mandatory reopening",
@@ -292,6 +292,7 @@
     "gonol_spiral_identity": "docs/GONOL_SPIRAL_IDENTITY.md",
     "deprecated_ngsl_lexical_floor": "docs/NGSL_LEXICAL_FLOOR_V1.md",
     "lexical_recursion_architecture": "docs/LEXICAL_RECURSION_ARCHITECTURE.md",
+    "xkcd_lexical_floor": "docs/XKCD_LEXICAL_FLOOR_V1.md",
     "definition_gonols": "docs/LEXICAL_DEFINITION_GONOLS.md",
     "public_gonol_function_table": "docs/PUBLIC_GONOL_FUNCTION_TABLE.md",
     "public_gonol_contextual_protocol": "docs/PREREGISTRATION_PUBLIC_GONOL_CONTEXTUAL_EVALUATION.md",

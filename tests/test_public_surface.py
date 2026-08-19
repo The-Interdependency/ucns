@@ -119,6 +119,7 @@ def test_public_surface_is_bounded() -> None:
         "official_xkcd_source_payload",
         "reconstruct_xkcd_lexical_floor",
         "replay_xkcd_lexical_floor",
+        "FunctionApplicationPlan",
     ):
         assert expected in exported
 

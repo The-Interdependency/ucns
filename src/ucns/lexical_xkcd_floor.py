@@ -4,8 +4,8 @@
 #   module_kind: engine
 #   summary: reconstructs the xkcd Simple Writer 0.2.1 floor so Public Gonol punctuation/symbol functions participate intrinsically with exact source order, occurrence, and multiplicity
 #   owner: Erin Spencer
-#   public_surface: XkcdLexicalFloor, XkcdLexicalFloorError, FloorOccurrence, ClosedSurfaceGonol, XKCD_LEXICAL_FLOOR_ID, XKCD_LEXICAL_FLOOR_VERSION, XKCD_LEXICAL_FLOOR_STANDING, official_xkcd_source_payload, reconstruct_xkcd_lexical_floor, load_xkcd_lexical_floor, replay_xkcd_lexical_floor
-#   internal_surface: _canonical_bytes, _identity, _segment, _function_meta, _letter_run_id, _function_participant_id, _close
+#   public_surface: XkcdLexicalFloor, XkcdLexicalFloorError, FloorOccurrence, ClosedSurfaceGonol, FunctionApplicationPlan, XKCD_LEXICAL_FLOOR_ID, XKCD_LEXICAL_FLOOR_VERSION, XKCD_LEXICAL_FLOOR_STANDING, official_xkcd_source_payload, reconstruct_xkcd_lexical_floor, load_xkcd_lexical_floor, replay_xkcd_lexical_floor
+#   internal_surface: _canonical_bytes, _identity, _segment, _function_meta, _letter_run_id, _function_participant_id, _close, _execute_plans
 #   auth_boundary: none
 #   storage_boundary: read packaged xkcd bytes through the existing source adapter; optional caller-supplied Public Gonol function table
 #   network_boundary: none
@@ -58,7 +58,25 @@
 #
 # id: xkcd_floor_receipt_replays
 #   given: a reconstructed floor is replayed from packaged source
-#   then: receipt identity, source identity, stream identity, and floor equality agree or replay fails closed
+#   then: receipt identity, source identity, stream identity, table identity, application evidence, and floor equality agree or replay fails closed
+#   class: evidence
+#   since: 2026-08-19
+#
+# id: xkcd_floor_source_is_validated_before_receipt
+#   given: a floor receipt is minted
+#   then: the receipt is refused unless the source matches packaged official bytes and the official quoted payload
+#   class: evidence
+#   since: 2026-08-19
+#
+# id: xkcd_floor_applications_require_explicit_context
+#   given: a function application is requested
+#   then: current state and occurrence-addressed context are caller-supplied; neighboring stream participants are not inferred
+#   class: safety
+#   since: 2026-08-19
+#
+# id: xkcd_floor_receipt_binds_application_identities
+#   given: explicit function applications are included
+#   then: the floor receipt binds each application's ordered identity, result, function, and occurrence addresses
 #   class: evidence
 #   since: 2026-08-19
 # === END CONTRACTS ===
@@ -67,13 +85,21 @@
 
 Usage::
 
-    from ucns import load_xkcd_lexical_floor, replay_xkcd_lexical_floor
+    from ucns import (
+        FunctionApplicationPlan,
+        load_xkcd_lexical_floor,
+        reconstruct_xkcd_lexical_floor,
+        replay_xkcd_lexical_floor,
+    )
 
     floor = load_xkcd_lexical_floor()
     assert floor.contains("don't")
     surface = floor.closed_surface("don't")
     assert any(item.kind == "public-gonol-function" for item in surface.occurrences)
     replay_xkcd_lexical_floor(floor)
+
+    # Function application context is caller-supplied, never inferred:
+    # reconstruct_xkcd_lexical_floor(source, table, (FunctionApplicationPlan(...),))
 
 The official Simple Writer payload is the quoted ``word|word|...`` string.
 Letter-runs stay lexical. Public Gonol punctuation and symbol glyphs, including
@@ -96,19 +122,22 @@ from .lexical_sources import (
     XKCD_STANDING,
     XKCD_SURFACE_COUNT,
     XKCD_VERSION,
+    LexicalSourceError,
     XKCDSimpleWriterReceipt,
     load_xkcd_simplewriter,
+    quoted_xkcd_payload,
 )
 from .public_gonol_functions import (
     FUNCTIONAL_INDEX_NAMES,
     AtomicFunctionState,
+    ContextualFunctionApplication,
     PublicGonolFunctionTable,
     apply_public_gonol_function,
 )
 from .relational_carrier import RelationalCarrier, build_relational_carrier
 
 XKCD_LEXICAL_FLOOR_ID = "ucns.lexical-floor.xkcd-simplewriter-0.2.1"
-XKCD_LEXICAL_FLOOR_VERSION = "1.1.0"
+XKCD_LEXICAL_FLOOR_VERSION = "1.2.0"
 XKCD_LEXICAL_FLOOR_STANDING = "punctuation-aware-xkcd-floor-reconstruction-candidate"
 XKCD_FLOOR_RECEIPT_PREFIX = "ucns.xkcd-lexical-floor-receipt:sha256:"
 LETTER_RUN_KIND = "letter-run"
@@ -142,11 +171,12 @@ def _identity(prefix: str, value: object) -> str:
 
 
 def official_xkcd_source_payload(source: XKCDSimpleWriterReceipt) -> str:
-    """Return the official quoted Simple Writer word-list payload."""
+    """Return the official quoted payload after packaged-byte validation."""
 
-    if not isinstance(source, XKCDSimpleWriterReceipt):
-        raise TypeError("source must be an XKCDSimpleWriterReceipt")
-    return "|".join(source.surface_forms)
+    try:
+        return quoted_xkcd_payload(source)
+    except (LexicalSourceError, TypeError) as exc:
+        raise XkcdLexicalFloorError("xkcd source is not valid for floor receipt minting") from exc
 
 
 def _function_meta(glyph: str) -> tuple[int, str]:
@@ -325,26 +355,47 @@ def _occurrences_for(
     return tuple(built)
 
 
-def _apply_functions(
+@dataclass(frozen=True, slots=True)
+class FunctionApplicationPlan:
+    """Caller-supplied, occurrence-addressed function application."""
+
+    stream_ordinal: int
+    current_state: AtomicFunctionState
+    context_ordinals: tuple[int, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.stream_ordinal < 0:
+            raise XkcdLexicalFloorError("application stream ordinal must be nonnegative")
+        if any(ordinal < 0 for ordinal in self.context_ordinals):
+            raise XkcdLexicalFloorError("application context ordinals must be nonnegative")
+
+
+def _execute_plans(
     table: PublicGonolFunctionTable | None,
-    occurrences: tuple[FloorOccurrence, ...],
-    participant_ids: tuple[str, ...],
-) -> tuple[object, ...]:
-    if table is None:
+    stream: tuple[FloorOccurrence, ...],
+    plans: tuple[FunctionApplicationPlan, ...],
+) -> tuple[ContextualFunctionApplication, ...]:
+    if not plans:
         return ()
+    if table is None:
+        raise XkcdLexicalFloorError("function application plans require an explicit function table")
     applications = []
-    for ordinal, item in enumerate(occurrences):
-        if item.kind != FUNCTION_KIND or item.public_gonol_index is None:
-            continue
-        prior_ids = participant_ids[:ordinal]
-        next_ids = participant_ids[ordinal + 1:ordinal + 2]
-        if not prior_ids:
-            continue
+    for plan in plans:
+        if plan.stream_ordinal >= len(stream):
+            raise XkcdLexicalFloorError("application stream ordinal is outside the source stream")
+        occurrence = stream[plan.stream_ordinal]
+        if occurrence.kind != FUNCTION_KIND or occurrence.public_gonol_index is None:
+            raise XkcdLexicalFloorError("application target is not a function occurrence")
+        context_ids = []
+        for ordinal in plan.context_ordinals:
+            if ordinal >= len(stream):
+                raise XkcdLexicalFloorError("application context ordinal is outside the source stream")
+            context_ids.append(stream[ordinal].participant_id)
         applications.append(apply_public_gonol_function(
             table,
-            item.public_gonol_index,
-            AtomicFunctionState(prior_ids[-1]),
-            next_ids,
+            occurrence.public_gonol_index,
+            plan.current_state,
+            tuple(context_ids),
         ))
     return tuple(applications)
 
@@ -358,7 +409,9 @@ class XkcdLexicalFloor:
     surfaces: tuple[ClosedSurfaceGonol, ...]
     stream: tuple[FloorOccurrence, ...]
     carrier: RelationalCarrier
-    function_applications: tuple[object, ...]
+    table_id: str | None
+    application_plans: tuple[FunctionApplicationPlan, ...]
+    function_applications: tuple[ContextualFunctionApplication, ...]
     floor_id: str = XKCD_LEXICAL_FLOOR_ID
     version: str = XKCD_LEXICAL_FLOOR_VERSION
     standing: str = XKCD_LEXICAL_FLOOR_STANDING
@@ -394,6 +447,35 @@ class XkcdLexicalFloor:
         )
         if pipe_count != XKCD_SURFACE_COUNT - 1:
             raise XkcdLexicalFloorError("source VERTICAL LINE multiplicity is not preserved")
+        for item in self.stream:
+            if self.payload[item.start:item.end] != item.exact_text:
+                raise XkcdLexicalFloorError("stream occurrence does not match official payload span")
+            if item.kind == FUNCTION_KIND:
+                index, _name = _function_meta(item.exact_text)
+                if item.public_gonol_index != index:
+                    raise XkcdLexicalFloorError("function occurrence does not match the source glyph")
+        if len(self.application_plans) != len(self.function_applications):
+            raise XkcdLexicalFloorError("function application evidence is incomplete")
+        for plan, application in zip(self.application_plans, self.function_applications):
+            if plan.stream_ordinal >= len(self.stream):
+                raise XkcdLexicalFloorError("application stream ordinal is outside the source stream")
+            occurrence = self.stream[plan.stream_ordinal]
+            if occurrence.kind != FUNCTION_KIND or occurrence.public_gonol_index is None:
+                raise XkcdLexicalFloorError("application target is not a function occurrence")
+            if not isinstance(application, ContextualFunctionApplication):
+                raise XkcdLexicalFloorError("function application evidence is incomplete")
+            context_ids = []
+            for ordinal in plan.context_ordinals:
+                if ordinal >= len(self.stream):
+                    raise XkcdLexicalFloorError("application context ordinal is outside the source stream")
+                context_ids.append(self.stream[ordinal].participant_id)
+            if (
+                application.public_gonol_index != occurrence.public_gonol_index
+                or application.prior_atomic_gonol_id != plan.current_state.atomic_gonol_id
+                or application.prior_application_depth != plan.current_state.application_depth
+                or application.ordered_context_gonol_ids != tuple(context_ids)
+            ):
+                raise XkcdLexicalFloorError("function application evidence is incomplete")
         if self.carrier != _close(tuple(item.participant_id for item in self.stream)):
             raise XkcdLexicalFloorError("floor relations must enter the closure carrier")
         if (
@@ -438,7 +520,26 @@ class XkcdLexicalFloor:
             "stream_participant_ids": [item.participant_id for item in self.stream],
             "stream_kinds": [item.kind for item in self.stream],
             "carrier_id": self.carrier.stable_identity,
-            "function_application_count": len(self.function_applications),
+            "table_id": self.table_id,
+            "function_application_plans": [
+                {
+                    "stream_ordinal": plan.stream_ordinal,
+                    "current_atomic_gonol_id": plan.current_state.atomic_gonol_id,
+                    "current_application_depth": plan.current_state.application_depth,
+                    "context_ordinals": list(plan.context_ordinals),
+                }
+                for plan in self.application_plans
+            ],
+            "function_applications": [
+                {
+                    "stream_ordinal": plan.stream_ordinal,
+                    "function_id": getattr(application, "function_id", None),
+                    "result_atomic_gonol_id": getattr(application, "result_atomic_gonol_id", None),
+                    "context_ordinals": list(plan.context_ordinals),
+                    "current_atomic_gonol_id": plan.current_state.atomic_gonol_id,
+                }
+                for plan, application in zip(self.application_plans, self.function_applications)
+            ],
             "surface_count": len(self.surfaces),
             "declared_family_count": self.source.family_count,
             "family_mapping_available": self.family_mapping_available,
@@ -456,6 +557,7 @@ class XkcdLexicalFloor:
 def reconstruct_xkcd_lexical_floor(
     source: XKCDSimpleWriterReceipt,
     table: PublicGonolFunctionTable | None = None,
+    application_plans: tuple[FunctionApplicationPlan, ...] = (),
 ) -> XkcdLexicalFloor:
     """Reconstruct the official payload with intrinsic Public Gonol functions."""
 
@@ -473,12 +575,12 @@ def reconstruct_xkcd_lexical_floor(
         ))
     surfaces = tuple(surfaces)
     stream = _occurrences_for(payload, receipt_id, table)
-    applications = _apply_functions(
-        table, stream, tuple(item.participant_id for item in stream),
-    )
+    applications = _execute_plans(table, stream, application_plans)
     return XkcdLexicalFloor(
         source, payload, surfaces, stream,
         _close(tuple(item.participant_id for item in stream)),
+        None if table is None else table.table_id,
+        application_plans,
         applications,
     )
 
@@ -490,15 +592,26 @@ def load_xkcd_lexical_floor() -> XkcdLexicalFloor:
     return reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter())
 
 
-def replay_xkcd_lexical_floor(floor: XkcdLexicalFloor) -> XkcdLexicalFloor:
-    """Independently rebuild the floor from packaged source and compare."""
+def replay_xkcd_lexical_floor(
+    floor: XkcdLexicalFloor,
+    table: PublicGonolFunctionTable | None = None,
+    application_plans: tuple[FunctionApplicationPlan, ...] | None = None,
+) -> XkcdLexicalFloor:
+    """Independently rebuild the floor from the same source, table, and plans."""
 
-    rebuilt = reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter())
+    plans = floor.application_plans if application_plans is None else application_plans
+    if floor.table_id is None:
+        if table is not None:
+            raise XkcdLexicalFloorError("replay table does not match the floor's absent table")
+    elif table is None or table.table_id != floor.table_id:
+        raise XkcdLexicalFloorError("replay requires the same function table")
+    rebuilt = reconstruct_xkcd_lexical_floor(load_xkcd_simplewriter(), table, plans)
     if (
         rebuilt != floor
         or rebuilt.receipt_id != floor.receipt_id
         or rebuilt.source.receipt_id != floor.source.receipt_id
         or rebuilt.carrier.stable_identity != floor.carrier.stable_identity
+        or rebuilt.table_id != floor.table_id
     ):
         raise XkcdLexicalFloorError("xkcd lexical floor replay mismatch")
     return rebuilt
@@ -515,6 +628,7 @@ __all__ = [
     "XKCD_LEXICAL_FLOOR_VERSION",
     "ClosedSurfaceGonol",
     "FloorOccurrence",
+    "FunctionApplicationPlan",
     "XkcdLexicalFloor",
     "XkcdLexicalFloorError",
     "load_xkcd_lexical_floor",

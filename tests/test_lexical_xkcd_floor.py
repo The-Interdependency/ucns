@@ -33,6 +33,20 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+#
+# id: xkcd_floor_source_validation_check
+#   proves: xkcd_floor_source_is_validated_before_receipt
+#   call: self::test_xkcd_floor_source_is_validated_before_receipt
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: xkcd_floor_explicit_context_check
+#   proves: xkcd_floor_applications_require_explicit_context, xkcd_floor_receipt_binds_application_identities
+#   call: self::test_xkcd_floor_applications_require_explicit_context
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
@@ -46,6 +60,7 @@ from ucns.lexical_xkcd_floor import (
     VERTICAL_LINE_INDEX,
     XKCD_LEXICAL_FLOOR_STANDING,
     XKCD_LEXICAL_FLOOR_VERSION,
+    FunctionApplicationPlan,
     XkcdLexicalFloorError,
     load_xkcd_lexical_floor,
     official_xkcd_source_payload,
@@ -118,24 +133,14 @@ def test_xkcd_floor_closes_relations_without_invented_grammar() -> None:
     floor = reconstruct_xkcd_lexical_floor(source, table)
     assert floor.punctuation_functions_intrinsic is True
     assert floor.independent_punctuation_grammar_attached is False
+    assert floor.function_applications == ()
+    assert floor.table_id == table.table_id
     assert len(floor.carrier.nodes) == 1 + len(floor.stream)
     surface = floor.closed_surface("don't")
+    assert floor.word_gonol("don't") is surface
     assert surface.independent_punctuation_grammar_attached is False
     assert len(surface.carrier.nodes) == 4
-    assert floor.function_applications
-    first_pipe = next(
-        item for item in floor.stream
-        if item.public_gonol_index == VERTICAL_LINE_INDEX
-    )
-    prior = floor.stream[first_pipe.ordinal - 1]
-    following = (floor.stream[first_pipe.ordinal + 1].participant_id,)
-    expected = apply_public_gonol_function(
-        table,
-        VERTICAL_LINE_INDEX,
-        AtomicFunctionState(prior.participant_id),
-        following,
-    )
-    assert floor.function_applications[0] == expected
+    replay_xkcd_lexical_floor(floor, table)
 
 
 def test_xkcd_floor_refuses_family_map_and_closed_definitions() -> None:
@@ -162,3 +167,55 @@ def test_xkcd_floor_receipt_replays() -> None:
     assert replayed.receipt_id == floor.receipt_id
     assert replayed.receipt_id.startswith("ucns.xkcd-lexical-floor-receipt:sha256:")
     assert replayed.carrier.stable_identity == floor.carrier.stable_identity
+    assert replayed.table_id is None
+    table = _function_table()
+    with pytest.raises(XkcdLexicalFloorError, match="absent table"):
+        replay_xkcd_lexical_floor(floor, table)
+
+
+def test_xkcd_floor_source_is_validated_before_receipt() -> None:
+    source = load_xkcd_simplewriter()
+    with pytest.raises(XkcdLexicalFloorError, match="not valid for floor receipt"):
+        reconstruct_xkcd_lexical_floor(replace(source, surface_forms=source.surface_forms[1:]))
+
+
+def test_xkcd_floor_applications_require_explicit_context() -> None:
+    table = _function_table()
+    source = load_xkcd_simplewriter()
+    base = reconstruct_xkcd_lexical_floor(source, table)
+    assert base.function_applications == ()
+    first_pipe = next(
+        item for item in base.stream
+        if item.public_gonol_index == VERTICAL_LINE_INDEX
+    )
+    prior = base.stream[first_pipe.ordinal - 1]
+    following = first_pipe.ordinal + 1
+    plan = FunctionApplicationPlan(
+        first_pipe.ordinal,
+        AtomicFunctionState(prior.participant_id),
+        (following,),
+    )
+    floor = reconstruct_xkcd_lexical_floor(source, table, (plan,))
+    expected = apply_public_gonol_function(
+        table,
+        VERTICAL_LINE_INDEX,
+        plan.current_state,
+        (base.stream[following].participant_id,),
+    )
+    assert floor.function_applications == (expected,)
+    bound = floor.as_payload()["function_applications"]
+    assert bound == [{
+        "stream_ordinal": first_pipe.ordinal,
+        "function_id": expected.function_id,
+        "result_atomic_gonol_id": expected.result_atomic_gonol_id,
+        "context_ordinals": [following],
+        "current_atomic_gonol_id": prior.participant_id,
+    }]
+    replayed = replay_xkcd_lexical_floor(floor, table)
+    assert replayed == floor
+    assert replayed.receipt_id == floor.receipt_id
+    assert replayed.function_applications == (expected,)
+    with pytest.raises(XkcdLexicalFloorError, match="same function table"):
+        replay_xkcd_lexical_floor(floor)
+    with pytest.raises(XkcdLexicalFloorError, match="plans require an explicit function table"):
+        reconstruct_xkcd_lexical_floor(source, None, (plan,))

@@ -28,8 +28,10 @@ The exact xkcd artifact identity and OEWN 2025 Core release receipt are now
 pinned by `src/ucns/lexical_sources.py`. `src/ucns/lexical_xkcd_floor.py`
 reconstructs that xkcd payload with Public Gonol functions as intrinsic
 participants; that reconstruction is a candidate, not selected canon. OEWN
-definition recursion now applies the same function/inscription split. The sealed
-receipt `generated/oewn-2025-core-definition-layer-receipt.json` is historical
+definition recursion now preserves already-closed lemma and form word gonols
+and only treats leftover Public Gonol punctuation/symbol glyphs as function
+participants. The sealed receipt
+`generated/oewn-2025-core-definition-layer-receipt.json` is historical
 pre-function-segmentation evidence and is not a replay of the current producer.
 
 ## First deep recursion
@@ -88,7 +90,7 @@ For OEWN 2025 Core:
 2. retain part of speech;
 3. retain source sense / synset identity;
 4. retain exact source gloss and source custody;
-5. resolve each lexical occurrence into its gonol construction without introducing token IDs, subword IDs, opaque embeddings, or whole-string hashes;
+5. resolve each lexical occurrence into its gonol construction without introducing token IDs, subword IDs, opaque embeddings, or whole-string hashes, and without reopening an already-closed word gonol;
 6. preserve occurrence order and repetition;
 7. incorporate the semantic relationship into the definition gonol itself;
 8. close the gonol and treat it as atomic for the next recursive pass.
@@ -134,7 +136,7 @@ is `complete-oewn-core-first-recursion-candidate`.
 
 ## hmmm
 
-- exact xkcd 1,000-word source artifact identity;
+- the authoritative 3,634 → 1,000 xkcd family mapping, if any source provides one;
 - morphology decomposition / transformation law;
 - geometry for retained carrier-unassigned Unicode source evidence;
 - executable direct interscale coupling representation;

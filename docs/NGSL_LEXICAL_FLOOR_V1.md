@@ -24,21 +24,28 @@ Definitions no longer need to close over NGSL or any other artificially preselec
 
 ## Replacement
 
-A Scrabble dictionary is authorized as the replacement lexical source class. The current target is a source-bound **dictionary corpus** containing lexical entries and definitions, not a lexical floor.
+A later plan authorized a Scrabble dictionary as the replacement source
+class. That authorization is now **SUPERSEDED**. Current source roles are
+the xkcd Simple Writer 0.2.1 floor candidate and OEWN 2025 Core as the
+primary dictionary corpus. See
+[`XKCD_LEXICAL_FLOOR_V1.md`](XKCD_LEXICAL_FLOOR_V1.md) and
+[`LEXICAL_RECURSION_ARCHITECTURE.md`](LEXICAL_RECURSION_ARCHITECTURE.md).
 
 ```text
 Unicode character gonols
         ↓
-dictionary words / lexical entries
+xkcd closed surfaces / OEWN lemmas and forms
         ↓
 word gonols
         ↓
-dictionary definitions and senses represented as relations among word gonols
+OEWN definitions and senses represented as relations among closed word gonols
         ↓
 definition gonols = first lexical deep-recursion layer
 ```
 
-The exact Scrabble dictionary edition, source identity, acquisition path, and license/custody boundary must be pinned before ingestion. No additional closed-floor requirement is authorized.
+No additional closed-floor requirement is authorized. Do not revive NGSL
+coverage rules or treat the historical Scrabble instruction as current
+ingestion work.
 
 ## Preserved historical evidence
 
@@ -51,7 +58,7 @@ The following remain reproducible historical evidence and are not erased by this
 - the PR #205 first-recursion producer's order, multiplicity, sense, provenance, replay, and receipt mechanisms;
 - tests and receipts proving behavior under the then-declared NGSL closed-floor contract.
 
-Those artifacts may be used for historical reproduction or mined for reusable implementation machinery. They must not be cited as the current lexical basis or as authority for NGSL-specific coverage/closure in the replacement dictionary construction.
+Those artifacts may be used for historical reproduction or mined for reusable implementation machinery. They must not be cited as the current lexical basis or as authority for NGSL-specific coverage/closure in the current xkcd/OEWN construction.
 
 ## Preserved forward invariants
 
@@ -59,8 +66,14 @@ The replacement does not introduce conventional NLP token IDs, subword IDs, opaq
 
 ## Next
 
-Pin and ingest the authorized Scrabble dictionary source; construct word gonols and first-recursion definition gonols from its source-bound lexical entries and definitions; generalize useful PR #205 machinery while removing the NGSL 2,809-word coverage and closed-floor assumptions.
+This document is historical. Current next work is the punctuation-aware
+xkcd floor reconstruction and OEWN definition recursion documented in
+[`LEXICAL_RECURSION_ARCHITECTURE.md`](LEXICAL_RECURSION_ARCHITECTURE.md).
+Do not pin or ingest a Scrabble dictionary for this program.
 
 ## hmmm
 
-Exact Scrabble dictionary edition/source, machine-readable acquisition, redistribution/custody boundary, and the handling of definition words not separately listed as dictionary headwords remain source-ingestion questions to freeze before corpus construction.
+The historical Scrabble edition/source question is retired for this
+program. Remaining open questions belong to the current xkcd/OEWN path:
+the 3,634 → 1,000 family mapping, morphology decomposition, and
+full-corpus replay of the punctuation-aware OEWN producer.

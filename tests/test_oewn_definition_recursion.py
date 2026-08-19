@@ -7,8 +7,15 @@
 #   cleanup: none
 #
 # id: oewn_definition_function_participant_check
-#   proves: oewn_functions_are_not_absorbed_into_inscriptions
+#   proves: oewn_functions_are_not_absorbed_into_inscriptions, oewn_function_occurrence_matches_source_glyph
 #   call: self::test_public_gonol_functions_are_not_absorbed_into_inscriptions
+#   timeout: 20
+#   mutates: none
+#   cleanup: none
+#
+# id: oewn_definition_closed_word_check
+#   proves: oewn_preserves_closed_word_gonols
+#   call: self::test_definition_preserves_closed_word_gonols
 #   timeout: 20
 #   mutates: none
 #   cleanup: none
@@ -26,8 +33,11 @@ from dataclasses import replace
 import pytest
 
 from ucns.oewn_core import OEWNCoreSnapshot, OEWNLexicalEntry, OEWNSense, OEWNSynset
+from ucns.public_gonol_functions import FUNCTIONAL_INDEX_NAMES
 from ucns.oewn_definition_recursion import (
+    CLOSED_WORD_KIND,
     FUNCTION_KIND,
+    INSCRIPTION_KIND,
     OEWNDefinitionRecursionError,
     OEWNInscriptionGonol,
     build_oewn_definition_layer,
@@ -88,16 +98,54 @@ def test_public_gonol_functions_are_not_absorbed_into_inscriptions() -> None:
     layer = build_oewn_definition_layer(_snapshot())
     punctuated = next(item for item in layer.definition_gonols if item.exact_gloss == "don't cut.")
     texts = [punctuated.exact_gloss[item.start:item.end] for item in punctuated.occurrences]
-    assert texts == ["don", "'", "t", "cut", "."]
+    assert texts == ["don't", "cut", "."]
     assert [item.kind for item in punctuated.occurrences] == [
-        "inscription", FUNCTION_KIND, "inscription", "inscription", FUNCTION_KIND,
+        CLOSED_WORD_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
     ]
+    period = punctuated.occurrences[-1]
+    assert period.kind == FUNCTION_KIND
+    period_index = next(index for index, glyph, _ in FUNCTIONAL_INDEX_NAMES if glyph == ".")
+    assert period.public_gonol_index == period_index
+    assert punctuated.exact_gloss[period.start:period.end] == "."
     assert all("'" not in item.text and "." not in item.text for item in layer.inscriptions)
     lemma = next(item for item in layer.composite_words if item.exact_text == "don't")
     assert len(lemma.component_gonol_ids) == 3
+    assert punctuated.occurrences[0].participant_id == lemma.gonol_id
+    mismatched = replace(period, public_gonol_index=0)
+    with pytest.raises(OEWNDefinitionRecursionError, match="does not match the source glyph"):
+        replace(punctuated, occurrences=punctuated.occurrences[:-1] + (mismatched,))
     with pytest.raises(OEWNDefinitionRecursionError, match="Public Gonol function"):
         OEWNInscriptionGonol(
             "don't",
             "ucns.oewn-core-receipt:sha256:" + "1" * 64,
             tuple((ord(ch), None) for ch in "don't"),
         )
+
+
+def test_definition_preserves_closed_word_gonols() -> None:
+    layer = build_oewn_definition_layer(_snapshot())
+    punctuated = next(item for item in layer.definition_gonols if item.exact_gloss == "don't cut.")
+    lemma = next(item for item in layer.composite_words if item.exact_text == "don't")
+    assert punctuated.occurrences[0].kind == CLOSED_WORD_KIND
+    assert punctuated.occurrences[0].participant_id == lemma.gonol_id
+    receipt = "ucns.oewn-core-receipt:sha256:" + "3" * 64
+    snapshot = OEWNCoreSnapshot(
+        receipt,
+        (
+            OEWNLexicalEntry("a", "n", (), (OEWNSense("a%1", "s1", (), (), None),)),
+        ),
+        (
+            OEWNSynset("s1", "n", ("a",), ("about one.",), ()),
+        ),
+    )
+    prefix_layer = build_oewn_definition_layer(snapshot)
+    about = next(item for item in prefix_layer.definition_gonols if item.exact_gloss == "about one.")
+    texts = [about.exact_gloss[item.start:item.end] for item in about.occurrences]
+    assert texts == ["about", "one", "."]
+    assert [item.kind for item in about.occurrences] == [
+        INSCRIPTION_KIND, INSCRIPTION_KIND, FUNCTION_KIND,
+    ]
+    a_word = next(item for item in prefix_layer.inscriptions if item.text == "a")
+    about_word = next(item for item in prefix_layer.inscriptions if item.text == "about")
+    assert about.occurrences[0].participant_id == about_word.gonol_id
+    assert about.occurrences[0].participant_id != a_word.gonol_id

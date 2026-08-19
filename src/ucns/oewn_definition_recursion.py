@@ -4,8 +4,8 @@
 #   module_kind: engine
 #   summary: constructs the complete OEWN 2025 Core first deep-recursion layer as closed source-bound definition gonols
 #   owner: Erin Spencer
-#   public_surface: OEWNInscriptionGonol, OEWNCompositeWordGonol, OEWNDefinitionOccurrence, OEWNDefinitionGonol, OEWNMorphologyGonol, OEWNDefinitionLayer, oewn_entry_key, build_oewn_definition_layer, definition_layer_bytes, replay_oewn_definition_layer
-#   internal_surface: _canonical_bytes, _identity, _segments, _inscription
+#   public_surface: OEWNInscriptionGonol, OEWNCompositeWordGonol, OEWNDefinitionOccurrence, OEWNDefinitionGonol, OEWNMorphologyGonol, OEWNDefinitionLayer, CLOSED_WORD_KIND, oewn_entry_key, build_oewn_definition_layer, definition_layer_bytes, replay_oewn_definition_layer
+#   internal_surface: _canonical_bytes, _identity, _segments, _definition_spans, _longest_closed_word, _inscription
 #   auth_boundary: requires an exact receipt-bound OEWN Core snapshot
 #   storage_boundary: immutable in-memory construction and canonical receipt bytes
 #   network_boundary: none
@@ -38,6 +38,18 @@
 #   class: doctrine
 #   since: 2026-08-19
 #
+# id: oewn_preserves_closed_word_gonols
+#   given: a definition gloss contains an already-closed lemma or form
+#   then: the definition uses that closed word gonol as one participant and does not reopen its character/function construction
+#   class: doctrine
+#   since: 2026-08-19
+#
+# id: oewn_function_occurrence_matches_source_glyph
+#   given: a definition occurrence is a Public Gonol function
+#   then: its index and participant identity correspond to the exact source glyph at that span
+#   class: evidence
+#   since: 2026-08-19
+#
 # id: oewn_morphology_uses_only_explicit_source_forms
 #   given: OEWN morphology is materialized before definitions
 #   then: each declared form closes with its lexical entry in a source-bound morphology gonol while no root, stem, affix, or transformation decomposition is inferred
@@ -59,9 +71,11 @@
 
 """Complete source-bound OEWN Core definition recursion.
 
-SPACE manifestations remain ordered boundaries. Public Gonol punctuation and
-symbol glyphs are function participants. Residual non-SPACE, non-function runs
-are inscriptions. No normalization is performed.
+SPACE manifestations remain ordered boundaries. Already-closed lemmas and
+forms participate as closed word gonols. Public Gonol punctuation and symbol
+glyphs that are not already inside a closed word are function participants.
+Residual non-SPACE, non-function, non-closed-word runs are inscriptions. No
+normalization is performed.
 """
 
 from __future__ import annotations
@@ -73,7 +87,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
-from typing import Iterable
+from typing import Iterable, Mapping
 
 from .edcm import EDCM_SPACE_CODE_POINTS, PUBLIC_GONOL_SHA256, edcm_carrier_position
 from .oewn_core import OEWNCoreSnapshot
@@ -91,6 +105,7 @@ DEFINITION_STANDING = "closed-oewn-definition-gonol-candidate"
 LAYER_STANDING = "punctuation-aware-oewn-core-first-recursion-candidate"
 INSCRIPTION_KIND = "inscription"
 FUNCTION_KIND = "public-gonol-function"
+CLOSED_WORD_KIND = "closed-word"
 SPACE_KIND = "space"
 _SPACE = frozenset(EDCM_SPACE_CODE_POINTS)
 
@@ -229,12 +244,12 @@ class OEWNDefinitionOccurrence:
     public_gonol_index: int | None = None
 
     def __post_init__(self) -> None:
-        if self.kind == INSCRIPTION_KIND:
+        if self.kind in {INSCRIPTION_KIND, CLOSED_WORD_KIND}:
             if self.public_gonol_index is not None:
-                raise OEWNDefinitionRecursionError("inscription occurrence cannot carry a function index")
+                raise OEWNDefinitionRecursionError("word or inscription occurrence cannot carry a function index")
             return
         if self.kind != FUNCTION_KIND:
-            raise OEWNDefinitionRecursionError("occurrence kind must be inscription or public-gonol-function")
+            raise OEWNDefinitionRecursionError("occurrence kind must be closed-word, inscription, or public-gonol-function")
         if self.public_gonol_index is None:
             raise OEWNDefinitionRecursionError("function occurrence requires a Public Gonol index")
 
@@ -281,6 +296,17 @@ class OEWNDefinitionGonol:
             reconstructed[start:end] = value
         if "".join(reconstructed) != self.exact_gloss:
             raise OEWNDefinitionRecursionError("occurrences and SPACE boundaries do not reconstruct gloss")
+        for item in self.occurrences:
+            span = self.exact_gloss[item.start:item.end]
+            if item.kind == FUNCTION_KIND:
+                try:
+                    index, _name = _function_by_glyph()[span]
+                except KeyError as exc:
+                    raise OEWNDefinitionRecursionError("function occurrence source glyph is not a Public Gonol function") from exc
+                if item.public_gonol_index != index:
+                    raise OEWNDefinitionRecursionError("function occurrence index does not match the source glyph")
+                if item.participant_id != _function_participant_id(span, self.source_receipt_id):
+                    raise OEWNDefinitionRecursionError("function participant does not match the source glyph")
         if not self.atomic_at_next_scale or self.standing != DEFINITION_STANDING:
             raise OEWNDefinitionRecursionError("definition standing cannot be promoted")
 
@@ -386,6 +412,64 @@ def _segments(text: str) -> tuple[tuple[int, int, str], ...]:
     return tuple(result)
 
 
+def _longest_closed_word(
+    token: str,
+    closed_words: Mapping[str, str],
+    functions: Mapping[str, object],
+) -> str | None:
+    for length in range(len(token), 0, -1):
+        candidate = token[:length]
+        if candidate not in closed_words:
+            continue
+        remainder = token[length:]
+        if not remainder or remainder[0] in functions:
+            return candidate
+    return None
+
+
+def _definition_spans(
+    gloss: str,
+    closed_words: Mapping[str, str],
+) -> tuple[tuple[int, int, str], ...]:
+    functions = _function_by_glyph()
+    result: list[tuple[int, int, str]] = []
+    cursor = 0
+    while cursor < len(gloss):
+        if gloss[cursor] in _SPACE:
+            end = cursor + 1
+            while end < len(gloss) and gloss[end] in _SPACE:
+                end += 1
+            result.append((cursor, end, SPACE_KIND))
+            cursor = end
+            continue
+        token_end = cursor + 1
+        while token_end < len(gloss) and gloss[token_end] not in _SPACE:
+            token_end += 1
+        token = gloss[cursor:token_end]
+        pos = 0
+        while pos < len(token):
+            absolute = cursor + pos
+            closed = _longest_closed_word(token[pos:], closed_words, functions)
+            if closed is not None:
+                result.append((absolute, absolute + len(closed), CLOSED_WORD_KIND))
+                pos += len(closed)
+                continue
+            glyph = token[pos]
+            if glyph in functions:
+                result.append((absolute, absolute + 1, FUNCTION_KIND))
+                pos += 1
+                continue
+            end = pos + 1
+            while end < len(token) and token[end] not in functions:
+                if _longest_closed_word(token[end:], closed_words, functions) is not None:
+                    break
+                end += 1
+            result.append((absolute, cursor + end, INSCRIPTION_KIND))
+            pos = end
+        cursor = token_end
+    return tuple(result)
+
+
 def oewn_entry_key(lemma: str, part_of_speech: str) -> str:
     """Return the stable source lexical-entry key used by definition gonols."""
 
@@ -400,6 +484,7 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
     receipt_id = snapshot.source_receipt_id
     inscription_by_text: dict[str, OEWNInscriptionGonol] = {}
     composite_by_text: dict[str, OEWNCompositeWordGonol] = {}
+    closed_words: dict[str, str] = {}
 
     def admitted(text: str) -> OEWNInscriptionGonol:
         if not text or any(ch in _SPACE for ch in text):
@@ -445,13 +530,22 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
         composite_by_text[text] = composite
         return composite.gonol_id
 
+    def register_closed_word(text: str) -> str:
+        gonol_id = admitted_word(text)
+        existing = closed_words.get(text)
+        if existing is None:
+            closed_words[text] = gonol_id
+        elif existing != gonol_id:
+            raise OEWNDefinitionRecursionError("closed word identity drifted")
+        return gonol_id
+
     morphology: list[OEWNMorphologyGonol] = []
     sense_targets: dict[str, tuple[str, str, str, str]] = {}
     for entry in snapshot.lexical_entries:
         key = oewn_entry_key(entry.lemma, entry.part_of_speech)
-        lemma_id = admitted_word(entry.lemma)
+        lemma_id = register_closed_word(entry.lemma)
         for ordinal, form_text in enumerate(entry.forms):
-            form_id = admitted_word(form_text)
+            form_id = register_closed_word(form_text)
             morphology.append(OEWNMorphologyGonol(
                 key, lemma_id, form_id, ordinal, receipt_id,
                 build_relational_carrier(2, ((0, MORPHOLOGY_FORM_RELATION_CODE, 1),)),
@@ -470,10 +564,15 @@ def build_oewn_definition_layer(snapshot: OEWNCoreSnapshot) -> OEWNDefinitionLay
         for definition_ordinal, gloss in enumerate(synset.definitions):
             occurrences: list[OEWNDefinitionOccurrence] = []
             boundaries: list[tuple[int, int, str]] = []
-            for start, end, kind in _segments(gloss):
+            for start, end, kind in _definition_spans(gloss, closed_words):
                 text = gloss[start:end]
                 if kind == SPACE_KIND:
                     boundaries.append((start, end, text))
+                    continue
+                if kind == CLOSED_WORD_KIND:
+                    occurrences.append(OEWNDefinitionOccurrence(
+                        len(occurrences), start, end, closed_words[text], CLOSED_WORD_KIND,
+                    ))
                     continue
                 if kind == FUNCTION_KIND:
                     index, _name = _function_by_glyph()[text]
@@ -576,7 +675,8 @@ def main(argv: Iterable[str] | None = None) -> int:
 
 
 __all__ = [
-    "DEFINITION_RELATION_CODE", "FUNCTION_KIND", "INSCRIPTION_KIND",
+    "CLOSED_WORD_KIND", "DEFINITION_RELATION_CODE", "FUNCTION_KIND",
+    "INSCRIPTION_KIND",
     "MORPHOLOGY_FORM_RELATION_CODE",
     "OEWNCompositeWordGonol", "OEWNDefinitionGonol", "OEWNDefinitionLayer", "OEWNDefinitionOccurrence",
     "OEWNDefinitionRecursionError", "OEWNInscriptionGonol", "OEWNMorphologyGonol",
