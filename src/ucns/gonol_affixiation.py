@@ -153,6 +153,14 @@ def _carrier(participant_ids: tuple[str, ...], relation_code: int) -> Relational
     )
 
 
+def _freeze_extra(value: object) -> object:
+    if isinstance(value, dict):
+        return tuple(sorted((str(key), _freeze_extra(item)) for key, item in value.items()))
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_extra(item) for item in value)
+    return value
+
+
 def _participant_id(item: Gonol | str) -> str:
     if isinstance(item, Gonol):
         return item.gonol_id
@@ -203,6 +211,7 @@ class AffixiationClosure:
         names = [name for name, _value in self.extras]
         if len(set(names)) != len(names):
             raise AffixiationError("closure extras names must be unique")
+        object.__setattr__(self, "extras", tuple((name, _freeze_extra(value)) for name, value in self.extras))
 
 
 @dataclass(frozen=True, slots=True)
@@ -264,7 +273,7 @@ class Gonol:
     def extra(self, name: str) -> object:
         for key, value in self.closure.extras:
             if key == name:
-                return value
+                return _freeze_extra(value)
         raise AffixiationError(f"closure extra {name!r} is absent")
 
 

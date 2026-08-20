@@ -52,6 +52,8 @@ def test_current_lexical_source_receipts_are_exact() -> None:
     assert quoted_xkcd_payload(xkcd) == "|".join(xkcd.surface_forms)
     with pytest.raises(LexicalSourceError, match="official quoted payload"):
         quoted_xkcd_payload(replace(xkcd, surface_forms=xkcd.surface_forms[1:]))
+    with pytest.raises(LexicalSourceError, match="provenance"):
+        quoted_xkcd_payload(replace(xkcd, source_url="https://example.invalid/words.js"))
     oewn = verify_oewn_2025_core(_oewn_root())
     assert oewn.commit == OEWN_COMMIT
     assert oewn.core_file_count == 73

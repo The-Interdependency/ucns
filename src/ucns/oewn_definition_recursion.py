@@ -14,7 +14,7 @@
 #   tests: tests.test_oewn_definition_recursion
 #   rollout: after exact sources, word construction, and source morphology inventory
 #   rollback: remove current OEWN producer while preserving source receipts and historical NGSL evidence
-#   requires: ucns_oewn_2025_core, ucns_public_gonol_function_table, ucns_relational_carrier
+#   requires: ucns_oewn_2025_core, ucns_relational_carrier, edcm_word_gonol_profile
 #   since: 2026-08-18
 #   unresolved: final root/affix decomposition law, geometry for carrier-unassigned scalars, native OEWN relation participation, semantic efficacy, recursion above the sealed first punctuation-aware layer
 # === END MODULE_BUILD ===
@@ -247,6 +247,28 @@ class OEWNDefinitionOccurrence:
     kind: str = INSCRIPTION_KIND
     public_gonol_index: int | None = None
 
+    def __init__(
+        self,
+        ordinal: int,
+        start: int,
+        end: int,
+        participant_id: str | None = None,
+        kind: str = INSCRIPTION_KIND,
+        public_gonol_index: int | None = None,
+        inscription_gonol_id: str | None = None,
+    ) -> None:
+        if participant_id is None:
+            participant_id = inscription_gonol_id
+        if not participant_id:
+            raise OEWNDefinitionRecursionError("occurrence requires a participant identity")
+        object.__setattr__(self, "ordinal", ordinal)
+        object.__setattr__(self, "start", start)
+        object.__setattr__(self, "end", end)
+        object.__setattr__(self, "participant_id", participant_id)
+        object.__setattr__(self, "kind", kind)
+        object.__setattr__(self, "public_gonol_index", public_gonol_index)
+        self.__post_init__()
+
     def __post_init__(self) -> None:
         if self.kind in {INSCRIPTION_KIND, CLOSED_WORD_KIND}:
             if self.public_gonol_index is not None:
@@ -363,6 +385,20 @@ class OEWNDefinitionLayer:
             raise OEWNDefinitionRecursionError("unselected mechanisms cannot be promoted")
         if self.standing != LAYER_STANDING:
             raise OEWNDefinitionRecursionError("layer standing cannot be promoted")
+        inscription_ids = {item.gonol_id for item in self.inscriptions}
+        closed_ids = {gonol_id for _text, gonol_id in self.closed_word_pairs}
+        closed_ids.update(item.gonol_id for item in self.composite_words)
+        closed_ids.update(inscription_ids)
+        for definition in self.definition_gonols:
+            if definition.target_gonol_id not in closed_ids:
+                raise OEWNDefinitionRecursionError("definition target is not a closed word in this layer")
+            for occurrence in definition.occurrences:
+                if occurrence.kind == INSCRIPTION_KIND:
+                    if occurrence.participant_id not in inscription_ids:
+                        raise OEWNDefinitionRecursionError("inscription participant is not in the layer inventory")
+                elif occurrence.kind == CLOSED_WORD_KIND:
+                    if occurrence.participant_id not in closed_ids:
+                        raise OEWNDefinitionRecursionError("closed-word participant is not in the layer inventory")
 
     @property
     def layer_id(self) -> str:

@@ -80,6 +80,7 @@ from ucns.lexical_xkcd_floor import (
     XKCD_LEXICAL_FLOOR_VERSION,
     FunctionApplicationPlan,
     XkcdLexicalFloorError,
+    _close,
     official_xkcd_source_payload,
     reconstruct_xkcd_lexical_floor,
     replay_xkcd_lexical_floor,
@@ -241,6 +242,23 @@ def test_xkcd_floor_refuses_family_map_and_closed_definitions() -> None:
         replace(floor, closed_definition_support=True)
     with pytest.raises(XkcdLexicalFloorError, match="standing"):
         replace(floor, standing="current-lexical-floor-candidate")
+    with pytest.raises(XkcdLexicalFloorError, match="official packaged receipt"):
+        replace(floor, source=replace(floor.source, source_url="https://example.invalid/words.js"))
+    water = floor.closed_surface("water")
+    with pytest.raises(XkcdLexicalFloorError, match="contiguous"):
+        replace(water, occurrences=(replace(water.occurrences[0], start=99, end=100),) + water.occurrences[1:])
+    stream = list(floor.stream)
+    pipe_index = next(i for i, item in enumerate(stream) if item.kind == FUNCTION_KIND)
+    stream[pipe_index] = replace(stream[pipe_index], start=0, end=1)
+    with pytest.raises(XkcdLexicalFloorError, match="contiguous"):
+        replace(floor, stream=tuple(stream))
+    bogus = "ucns.gonol:sha256:" + "0" * 64
+    with pytest.raises(XkcdLexicalFloorError, match="closed-word participant"):
+        replace(
+            floor,
+            stream=(replace(floor.stream[0], participant_id=bogus),) + floor.stream[1:],
+            carrier=_close((bogus,) + tuple(item.participant_id for item in floor.stream[1:])),
+        )
 
 
 def test_xkcd_floor_receipt_replays() -> None:

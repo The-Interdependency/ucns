@@ -42,6 +42,7 @@ from ucns.oewn_definition_recursion import (
     CLOSED_WORD_KIND,
     FUNCTION_KIND,
     INSCRIPTION_KIND,
+    OEWNDefinitionOccurrence,
     OEWNDefinitionRecursionError,
     OEWNInscriptionGonol,
     build_oewn_definition_layer,
@@ -87,6 +88,18 @@ def test_complete_fixture_preserves_source_and_intrinsic_relations() -> None:
     assert first.exact_space_boundaries == ((1, 2, " "), (6, 8, "  "), (10, 11, " "), (12, 13, " "))
     assert [edge.relation for edge in first.carrier.edges] == [0, 0, 0, 0, 0]
     assert len({x.inscription_gonol_id for x in first.occurrences}) == 4
+    aliased = OEWNDefinitionOccurrence(
+        first.occurrences[0].ordinal,
+        first.occurrences[0].start,
+        first.occurrences[0].end,
+        inscription_gonol_id=first.occurrences[0].participant_id,
+        kind=first.occurrences[0].kind,
+    )
+    assert aliased.participant_id == first.occurrences[0].participant_id
+    bogus = replace(first.occurrences[0], participant_id="bogus")
+    tampered = replace(first, occurrences=(bogus,) + first.occurrences[1:])
+    with pytest.raises(OEWNDefinitionRecursionError, match="not in the layer inventory"):
+        replace(layer, definition_gonols=(tampered,) + layer.definition_gonols[1:])
 
 
 def test_replay_is_byte_exact_and_tamper_fails() -> None:

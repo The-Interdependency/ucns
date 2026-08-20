@@ -99,6 +99,21 @@ def test_affixiate_characters_are_gonols() -> None:
     assert glyph.scale == "character"
     assert glyph.exact_text == "w"
     assert glyph.atomic_at_next_scale is True
+    history = affixiate(
+        (glyph,),
+        AffixiationRelation(8, "history-bearing-character-step"),
+        source,
+        "character",
+        AffixiationClosure(
+            exact_text="w",
+            extras=(("realized_prefix", "w"), ("admissible_next_glyphs", ["a", "e"])),
+        ),
+    )
+    extras = history.extra("admissible_next_glyphs")
+    assert extras == ("a", "e")
+    with pytest.raises(AttributeError):
+        extras.append("z")  # type: ignore[attr-defined]
+    assert history.gonol_id == history.gonol_id
 
 
 def test_affixiate_refuses_invented_scale_or_selection() -> None:

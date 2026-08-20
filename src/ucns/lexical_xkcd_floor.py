@@ -403,6 +403,13 @@ class ClosedSurfaceGonol:
         reconstructed = "".join(item.exact_text for item in self.occurrences)
         if reconstructed != self.surface:
             raise XkcdLexicalFloorError("surface occurrences do not reconstruct the exact surface")
+        cursor = 0
+        for item in self.occurrences:
+            if item.start != cursor or item.end != cursor + len(item.exact_text):
+                raise XkcdLexicalFloorError("surface occurrence spans must be contiguous and ordered")
+            cursor = item.end
+        if cursor != len(self.surface):
+            raise XkcdLexicalFloorError("surface occurrence spans must cover the exact surface")
         participant_ids = tuple(item.participant_id for item in self.occurrences)
         if self.carrier != _close(participant_ids):
             raise XkcdLexicalFloorError("surface relations must enter the closure carrier")
@@ -568,6 +575,8 @@ class XkcdLexicalFloor:
             raise XkcdLexicalFloorError("xkcd family mapping cannot be invented")
         if len({item.axis_id for item in self.axes}) != len(self.axes):
             raise XkcdLexicalFloorError("character glyph axes are duplicated")
+        if self.source != load_xkcd_simplewriter():
+            raise XkcdLexicalFloorError("xkcd source is not the official packaged receipt")
         if self.payload != official_xkcd_source_payload(self.source):
             raise XkcdLexicalFloorError("floor payload is not the official source string")
         if tuple(item.surface for item in self.surfaces) != self.source.surface_forms:
@@ -583,13 +592,32 @@ class XkcdLexicalFloor:
         )
         if pipe_count != XKCD_SURFACE_COUNT - 1:
             raise XkcdLexicalFloorError("source VERTICAL LINE multiplicity is not preserved")
+        cursor = 0
+        word_ordinal = 0
+        xkcd_source = AffixiationSource(self.source.receipt_id, XKCD_ARTIFACT)
         for item in self.stream:
+            if item.start != cursor or item.end != cursor + len(item.exact_text):
+                raise XkcdLexicalFloorError("stream occurrence spans must be contiguous and ordered")
             if self.payload[item.start:item.end] != item.exact_text:
                 raise XkcdLexicalFloorError("stream occurrence does not match official payload span")
-            if item.kind == FUNCTION_KIND:
-                index, _name = _function_meta(item.exact_text)
-                if item.public_gonol_index != index:
-                    raise XkcdLexicalFloorError("function occurrence does not match the source glyph")
+            if item.kind == CLOSED_WORD_KIND:
+                if word_ordinal >= len(self.surfaces):
+                    raise XkcdLexicalFloorError("closed-word stream exceeds closed surfaces")
+                surface = self.surfaces[word_ordinal]
+                if item.exact_text != surface.surface:
+                    raise XkcdLexicalFloorError("closed-word stream does not match the closed surface")
+                if surface.word_gonol_id and item.participant_id != surface.word_gonol_id:
+                    raise XkcdLexicalFloorError("closed-word participant is not the closed surface gonol")
+                word_ordinal += 1
+            elif item.kind == FUNCTION_KIND:
+                expected_id, expected_index = _expected_function_participant(item.exact_text, xkcd_source)
+                if item.participant_id != expected_id or item.public_gonol_index != expected_index:
+                    raise XkcdLexicalFloorError("function participant is not derived from the source glyph")
+                if self.table_id is None and item.function_id is not None:
+                    raise XkcdLexicalFloorError("function identity is not derived from the source glyph")
+            cursor = item.end
+        if cursor != len(self.payload) or word_ordinal != len(self.surfaces):
+            raise XkcdLexicalFloorError("stream occurrences do not cover the official payload")
         if len(self.application_plans) != len(self.function_applications):
             raise XkcdLexicalFloorError("function application evidence is incomplete")
         for plan, application in zip(self.application_plans, self.function_applications):
@@ -610,6 +638,7 @@ class XkcdLexicalFloor:
                 or application.prior_atomic_gonol_id != plan.current_state.atomic_gonol_id
                 or application.prior_application_depth != plan.current_state.application_depth
                 or application.ordered_context_gonol_ids != tuple(context_ids)
+                or application.function_id != occurrence.function_id
             ):
                 raise XkcdLexicalFloorError("function application evidence is incomplete")
         if self.carrier != _close(tuple(item.participant_id for item in self.stream)):
@@ -697,12 +726,8 @@ class XkcdLexicalFloor:
         return _identity(XKCD_FLOOR_RECEIPT_PREFIX, self.as_payload())
 
 
-def _pipe_gonol(
-    source: AffixiationSource,
-    table: PublicGonolFunctionTable | None,
-    cache: dict[str, object],
-) -> tuple[str, int, str | None]:
-    public_index, name = _function_meta("|")
+def _expected_function_participant(glyph: str, source: AffixiationSource) -> tuple[str, int]:
+    public_index, name = _function_meta(glyph)
     extras = (
         ("kind", "public-gonol-function"),
         ("public_gonol_index", public_index),
@@ -714,10 +739,19 @@ def _pipe_gonol(
         AffixiationRelation(FUNCTION_RELATION_CODE, "public-gonol-function-participant"),
         source,
         "character",
-        AffixiationClosure(exact_text="|", extras=extras),
+        AffixiationClosure(exact_text=glyph, extras=extras),
     )
-    cache[gonol.gonol_id] = gonol
-    return gonol.gonol_id, public_index, _table_function_id(table, public_index)
+    return gonol.gonol_id, public_index
+
+
+def _pipe_gonol(
+    source: AffixiationSource,
+    table: PublicGonolFunctionTable | None,
+    cache: dict[str, object],
+) -> tuple[str, int, str | None]:
+    participant_id, public_index = _expected_function_participant("|", source)
+    cache[participant_id] = participant_id
+    return participant_id, public_index, _table_function_id(table, public_index)
 
 
 def _occurrences_from_word(word: Gonol, by_id: Mapping[str, Gonol]) -> tuple[FloorOccurrence, ...]:

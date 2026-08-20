@@ -226,6 +226,20 @@ def quoted_xkcd_payload(source: XKCDSimpleWriterReceipt) -> str:
     quoted = match.group(1)
     if quoted != "|".join(source.surface_forms):
         raise LexicalSourceError("xkcd surfaces do not reconstruct the official quoted payload")
+    official = load_xkcd_simplewriter()
+    if (
+        source.source_url != official.source_url
+        or source.interface_url != official.interface_url
+        or source.version != official.version
+        or source.attribution_sha256 != official.attribution_sha256
+        or source.license_url != official.license_url
+        or source.license_identity != official.license_identity
+        or source.family_count != official.family_count
+        or source.family_mapping_available
+        or source.standing != official.standing
+        or source.receipt_id != official.receipt_id
+    ):
+        raise LexicalSourceError("xkcd receipt provenance does not match the official packaged source")
     return quoted
 
 
