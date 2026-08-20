@@ -40,7 +40,7 @@ selection:      false
 3. Build definition and recursive gonols with the same primitive, keeping
    source-specific receipt wrappers.
 
-## Full-scope receipts (2026-08-19)
+## Full-scope receipts (2026-08-19; evidence binding repaired 2026-08-20)
 
 Independent reconstruct and replay of the declared OEWN 2025 Core scope,
 followed by xkcd subset resolution:
@@ -50,12 +50,22 @@ followed by xkcd subset resolution:
 | Character-word corpus | `ucns.character-word-corpus:sha256:dd033fe1b533b9d65a0755b1391c15ccf0d864f06ffe8d4b5a72f23b52444d57` |
 | xkcd floor v1.4 | `ucns.xkcd-lexical-floor-receipt:sha256:ea27e4de3e2ab9cdd7cb9e865727b57f5d8ae08700fb19844a2ec0354439d4e7` |
 | Affixiate definition layer | `ucns.oewn-definition-layer:sha256:0242af7a53d0e6a9b1095136e1dd139a4822700c8b6700ee104e229dcb646b2b` |
-| Affixiate recursive layer | `ucns.recursive-gonol-layer:sha256:78ee88fa67c2a39973b27cede9d2dbf4e7a09d572a22cadcddbbd5d30a85dc8a` |
+| Affixiate recursive layer | `ucns.recursive-gonol-layer:sha256:e39270429ab46f325750a6dc4fe3c8d8394d5639d791a3b12f22f37080434588` |
 
 Counts: 131798 closed OEWN lemma/form surfaces, 92021 tokens, 3634 xkcd
 surfaces of which 1618 are absent from the OEWN inventory, 185155 definition
 gonols, 244727 recursive gonols, `selected=false`. Replay `SURVIVED`. That
 does not select the constructor as canon.
+
+The 2026-08-20 evidence-binding repair added an immutable normalized producer
+code reference to the recursive layer receipt. It rotated only the enclosing
+layer receipt from the earlier `78ee88fa…0a85dc8a` identity. The ordered
+recursive-gonol identity digest remained
+`ad46b9f59f9c33b3e95f2ba0a324d85ac5db6557dec078fec52e92569464f6cd`,
+so the preregistered relation occurrences, participant assembly, ordering,
+carrier code, and candidate semantics did not change. The earlier layer receipt
+is retained by Git history as pre-repair evidence; it is not current replay
+evidence.
 
 ## Frozen nonclaims
 
