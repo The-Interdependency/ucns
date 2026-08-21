@@ -26,6 +26,14 @@ _REMOVED_MODULES = (
 
 def test_geometry_public_surface_excludes_removed_domains() -> None:
     exported = set(ucns.__all__)
+    assert {
+        "MobiusVesica",
+        "MobiusVesicaParameters",
+        "build_mobius_vesica",
+        "MobiusSeedOfLife",
+        "MobiusBandSpec",
+        "build_mobius_seed_of_life",
+    }.issubset(exported)
     assert not exported.intersection({
         "PublicGonolFunctionTable",
         "OEWNDefinitionLayer",

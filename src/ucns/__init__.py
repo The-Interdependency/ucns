@@ -65,10 +65,12 @@ from .public_gonol import (
     public_gonol_position,
     public_gonol_sha256,
 )
+from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
+from .mobius_seed import __all__ as _mobius_seed_all
 from .mobius_seed import *  # noqa: F401,F403 - geometric public module
 
-__all__ = [
+__all__ = list(dict.fromkeys([
     "DirectMobiusError",
     "LIFTED_PERIOD",
     "LiftedCarrierPoint",
@@ -93,4 +95,4 @@ __all__ = [
     "radius_from_breadth",
     "same_lifted_position",
     "same_visible_position",
-]
+] + list(_mobius_vesica_all) + list(_mobius_seed_all)))

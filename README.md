@@ -52,6 +52,7 @@ assert s720 == s0
 ## Build
 
 ```bash
+python -m pip install -e ".[test,build]"
 python -m pytest -q
 python tools/verify_skill_lib_contracts.py .
 python -m build
