@@ -11,13 +11,21 @@
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: geometry module tests
+#   tests: tests.test_public_gonol
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
 #   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: geometry_public_surface_excludes_nongeometric_domains
+#   given: the active ucns package facade is imported
+#   then: its declared public surface contains geometry only and removed lexical, semantic, EDCM, PTCNA, evaluator, and bridge modules are absent from the package tree
+#   class: safety
+#   since: 2026-08-20
+# === END CONTRACTS ===
 
 """UCNS geometry.
 
