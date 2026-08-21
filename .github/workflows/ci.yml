@@ -1,4 +1,4 @@
-name: carrier-floor-ci
+name: geometry-ci
 
 on:
   pull_request:
@@ -29,7 +29,8 @@ jobs:
             test-build
             canon
             domain-claims
-            gonal-morphology
+            gonol-build
+            ucns-option-selection
             interdependent-work-graph
             doctrine
             RESOURCE_RUN_INVARIANT.md
@@ -52,7 +53,7 @@ jobs:
           --require-vendored
       - name: Audit skill-lib contract graph
         run: python tools/verify_skill_lib_contracts.py .
-      - name: Run tests
+      - name: Run geometry tests
         run: python -m pytest
       - name: Build package
         run: python -m build
