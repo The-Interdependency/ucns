@@ -11,7 +11,7 @@
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
 #   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate
@@ -36,7 +36,9 @@ frameworks, PTCNA state, and cross-stack adapters are not UCNS package content.
 """
 
 from .carrier import (
-    STRUCTURAL_NULL as DIRECTED_STRUCTURAL_NULL,
+    LIFTED_PERIOD,
+    STRUCTURAL_NULL,
+    VISIBLE_PERIOD,
     LiftedCarrierPoint,
     VisibleCarrierPoint,
     carrier_from_breadth,
@@ -67,16 +69,18 @@ from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import *  # noqa: F401,F403 - geometric public module
 
 __all__ = [
-    "DIRECTED_STRUCTURAL_NULL",
     "DirectMobiusError",
+    "LIFTED_PERIOD",
     "LiftedCarrierPoint",
     "NativeMobiusFrame",
     "NativeMobiusState",
     "PUBLIC_GONOL_157",
     "PUBLIC_GONOL_SHA256",
     "PublicGonolPosition",
+    "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
+    "VISIBLE_PERIOD",
     "VisibleCarrierPoint",
     "carrier_from_breadth",
     "deck_translate",
