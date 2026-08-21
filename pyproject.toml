@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ucns"
 version = "0.0.0.dev0"
-description = "Option-preserving UCNS carrier and candidate-research floor"
+description = "UCNS geometric and topological construction research"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name = "Erin Spencer"}]
@@ -28,7 +28,6 @@ research = [
   "mpmath>=1.3,<2",
   "sympy>=1.12,<2",
 ]
-lexical = ["PyYAML>=6,<7"]
 build = ["build>=1.2", "twine>=5"]
 
 [tool.setuptools]
@@ -36,9 +35,6 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-ucns = ["option_registry.json", "data/*.txt", "data/*.json", "data/*.js"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
