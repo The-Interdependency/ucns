@@ -52,10 +52,12 @@ No behavior-bearing UCNS module should import this experiment. UCNS core remains
 ## Contents
 
 ```text
-PREREGISTRATION.md       frozen research boundary and falsifiers
-METAPAT_RELATIONS.json   typed relation map
-UCNS_OBJECTS.jsonl       minimal UCNS object records
-METRICS.json             determined convergence metrics and controls
+PREREGISTRATION.md                  frozen research boundary and falsifiers
+THIRTEEN_RECURSION_LAYERS.md        thirteen-layer calibration scaffold
+THIRTEEN_RECURSION_LAYERS.json      machine-readable thirteen-layer map
+METAPAT_RELATIONS.json              typed relation map
+UCNS_OBJECTS.jsonl                  minimal UCNS object records
+METRICS.json                        determined convergence metrics and controls
 ```
 
 ## Load-bearing claim under test
