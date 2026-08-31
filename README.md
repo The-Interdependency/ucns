@@ -1,5 +1,9 @@
 # UCNS
 
+<p align="center">
+  <img src="docs/ucns-geometry-repository.svg" alt="UCNS — Geometry Repository" width="100%">
+</p>
+
 UCNS is a geometry repository.
 
 Its active scope is limited to constructions that directly represent or test geometry:
@@ -12,6 +16,8 @@ Its active scope is limited to constructions that directly represent or test geo
 - numerical machinery used to certify those constructions.
 
 Everything semantic is outside this repository's active domain: lexical corpora, definitions, morphology, NLP parsing, function-name semantics, EDCM measurement profiles, PTCNA state, evaluator laboratories, and cross-stack adapters.
+
+The poster above is a display certificate of those constructions. It is not an interpretation layer.
 
 ## Public Gonol
 
