@@ -5,6 +5,32 @@ Usage guidance:
     Discovery: ``python -m unittest discover -s tests``
 """
 
+# === CHECKS ===
+# id: check_mobius_seed_construction_center_start
+#   proves: mobius_seed_construction_starts_at_the_center
+#   call: self::test_initial_state_builds_only_the_center
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_seed_construction_structural_vesica_rule
+#   proves: mobius_seed_construction_is_adjacency_from_seed_relations
+#   call: self::test_buildable_next_derives_from_structural_vesicas_only
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
+# id: check_mobius_seed_construction_no_game_semantics
+#   proves: mobius_seed_construction_never_invents_game_semantics
+#   call: self::test_receipt_carries_no_game_semantics
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+# === END CHECKS ===
+
 from __future__ import annotations
 
 import unittest
