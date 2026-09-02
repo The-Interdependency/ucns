@@ -38,6 +38,14 @@ Usage guidance:
 #   mutates: none
 #   cleanup: none
 #
+# id: check_mobius_seed_construction_state_boundary
+#   proves: mobius_seed_construction_state_boundary_is_immutable_and_centered
+#   call: self::test_state_normalizes_built_collection_and_requires_center
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
+#
 # id: check_mobius_seed_construction_full_completion
 #   proves: mobius_seed_construction_completes_and_replays
 #   call: self::test_full_construction_completes_all_seven_slots
@@ -53,12 +61,21 @@ Usage guidance:
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+#
+# id: check_mobius_seed_construction_serialized_replay
+#   proves: mobius_seed_construction_completes_and_replays
+#   call: self::test_serialized_built_values_round_trip_and_unknown_fails
+#   requires: python3
+#   timeout: 5
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from __future__ import annotations
 
 from ucns.mobius_seed import BandSlot, MobiusSeedError, build_mobius_seed_of_life
 from ucns.mobius_seed_construction import (
+    ConstructionState,
     buildable_slots,
     construct,
     from_built,
@@ -68,6 +85,14 @@ from ucns.mobius_seed_construction import (
 
 def _seed():
     return build_mobius_seed_of_life()
+
+
+def _must_raise_mobius_seed_error(callable_) -> None:
+    try:
+        callable_()
+    except MobiusSeedError:
+        return
+    raise AssertionError("expected MobiusSeedError")
 
 
 def test_initial_state_builds_only_the_center() -> None:
@@ -92,12 +117,18 @@ def test_buildable_next_derives_from_structural_vesicas_only() -> None:
 def test_unbuildable_slot_fails_closed() -> None:
     state = construct(initial_construction_state(_seed()), BandSlot.RING_0)
     for slot in (BandSlot.RING_0, BandSlot.CENTER):
-        try:
-            construct(state, slot)
-        except MobiusSeedError:
-            pass
-        else:  # pragma: no cover - failure path
-            raise AssertionError(f"{slot.value} should fail closed")
+        _must_raise_mobius_seed_error(lambda slot=slot: construct(state, slot))
+
+
+def test_state_normalizes_built_collection_and_requires_center() -> None:
+    mutable = {BandSlot.CENTER, BandSlot.RING_0}
+    state = ConstructionState(seed=_seed(), built=mutable)  # type: ignore[arg-type]
+    mutable.clear()
+    assert state.built == frozenset((BandSlot.CENTER, BandSlot.RING_0))
+    assert isinstance(state.built, frozenset)
+    _must_raise_mobius_seed_error(
+        lambda: ConstructionState(seed=_seed(), built={BandSlot.RING_0})  # type: ignore[arg-type]
+    )
 
 
 def test_full_construction_completes_all_seven_slots() -> None:
@@ -112,6 +143,15 @@ def test_from_built_replays_a_persisted_slot_list() -> None:
     state = construct(construct(initial_construction_state(_seed()), BandSlot.RING_3), BandSlot.RING_2)
     replayed = from_built([BandSlot.CENTER, BandSlot.RING_3, BandSlot.RING_2], _seed())
     assert replayed.built == state.built
+
+
+def test_serialized_built_values_round_trip_and_unknown_fails() -> None:
+    state = construct(construct(initial_construction_state(_seed()), BandSlot.RING_3), BandSlot.RING_2)
+    serialized = state.as_dict()["built"]
+    assert isinstance(serialized, list)
+    assert from_built(serialized, _seed()).built == state.built
+    _must_raise_mobius_seed_error(lambda: from_built(["RING_0"], _seed()))
+    _must_raise_mobius_seed_error(lambda: from_built(["CENTER", "NOPE"], _seed()))
 
 
 def test_receipt_carries_no_game_semantics() -> None:
