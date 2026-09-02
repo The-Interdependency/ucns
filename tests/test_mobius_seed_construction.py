@@ -48,7 +48,7 @@ Usage guidance:
 #
 # id: check_mobius_seed_construction_replay
 #   proves: mobius_seed_construction_completes_and_replays
-#   call: self::test_from_built_replays_a_persisted_slot_list
+#   call: self::test_from_built_round_trips_serialized_receipt
 #   requires: python3
 #   timeout: 5
 #   mutates: none
@@ -57,8 +57,11 @@ Usage guidance:
 
 from __future__ import annotations
 
+import pytest
+
 from ucns.mobius_seed import BandSlot, MobiusSeedError, build_mobius_seed_of_life
 from ucns.mobius_seed_construction import (
+    ConstructionState,
     buildable_slots,
     construct,
     from_built,
@@ -79,6 +82,19 @@ def test_initial_state_builds_only_the_center() -> None:
     assert buildable_slots(state) == tuple(BandSlot)[1:]
 
 
+def test_state_normalizes_mutable_built_set_and_requires_center() -> None:
+    mutable = {BandSlot.CENTER, BandSlot.RING_0}
+    state = ConstructionState(seed=_seed(), built=mutable)  # type: ignore[arg-type]
+    assert isinstance(state.built, frozenset)
+    mutable.clear()
+    assert state.built == frozenset((BandSlot.CENTER, BandSlot.RING_0))
+
+    with pytest.raises(MobiusSeedError, match="include CENTER"):
+        ConstructionState(seed=_seed(), built={BandSlot.RING_0})  # type: ignore[arg-type]
+    with pytest.raises(MobiusSeedError, match="only BandSlot"):
+        ConstructionState(seed=_seed(), built={BandSlot.CENTER, "RING_0"})  # type: ignore[arg-type]
+
+
 def test_buildable_next_derives_from_structural_vesicas_only() -> None:
     state = construct(initial_construction_state(_seed()), BandSlot.RING_0)
     assert BandSlot.RING_0 in state.built
@@ -92,12 +108,8 @@ def test_buildable_next_derives_from_structural_vesicas_only() -> None:
 def test_unbuildable_slot_fails_closed() -> None:
     state = construct(initial_construction_state(_seed()), BandSlot.RING_0)
     for slot in (BandSlot.RING_0, BandSlot.CENTER):
-        try:
+        with pytest.raises(MobiusSeedError):
             construct(state, slot)
-        except MobiusSeedError:
-            pass
-        else:  # pragma: no cover - failure path
-            raise AssertionError(f"{slot.value} should fail closed")
 
 
 def test_full_construction_completes_all_seven_slots() -> None:
@@ -108,10 +120,20 @@ def test_full_construction_completes_all_seven_slots() -> None:
     assert buildable_slots(state) == ()
 
 
-def test_from_built_replays_a_persisted_slot_list() -> None:
+def test_from_built_round_trips_serialized_receipt() -> None:
     state = construct(construct(initial_construction_state(_seed()), BandSlot.RING_3), BandSlot.RING_2)
-    replayed = from_built([BandSlot.CENTER, BandSlot.RING_3, BandSlot.RING_2], _seed())
+    persisted = state.as_dict()["built"]
+    assert persisted == ["CENTER", "RING_2", "RING_3"]
+    replayed = from_built(persisted, _seed())  # type: ignore[arg-type]
     assert replayed.built == state.built
+    assert replayed.as_dict()["built"] == persisted
+
+
+def test_from_built_rejects_corrupt_persistence() -> None:
+    with pytest.raises(MobiusSeedError, match="include CENTER"):
+        from_built(["RING_1"], _seed())
+    with pytest.raises(MobiusSeedError, match="unknown persisted"):
+        from_built(["CENTER", "NOT_A_SLOT"], _seed())
 
 
 def test_receipt_carries_no_game_semantics() -> None:
