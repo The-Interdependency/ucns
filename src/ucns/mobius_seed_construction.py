@@ -37,6 +37,12 @@
 #   then: the artifact only records UCNS slots and the seed schema identity; it carries no AHBG tile, unit, turn, or permission semantics
 #   class: doctrine
 #   since: 2026-09-02
+#
+# id: mobius_seed_construction_completes_and_replays
+#   given: repeated buildable-next construction or a persisted built-slot list
+#   then: repeated builds complete all seven slots and from_built reproduces the exact built set
+#   class: correctness
+#   since: 2026-09-02
 # === END CONTRACTS ===
 
 """Construction state for the seven-band Mobius Seed of Life.
