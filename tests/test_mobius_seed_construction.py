@@ -39,7 +39,7 @@ Usage guidance:
 #   cleanup: none
 #
 # id: check_mobius_seed_construction_state_boundary
-#   proves: mobius_seed_construction_starts_at_the_center
+#   proves: mobius_seed_construction_state_boundary_is_immutable_and_centered
 #   call: self::test_state_normalizes_built_collection_and_requires_center
 #   requires: python3
 #   timeout: 5
