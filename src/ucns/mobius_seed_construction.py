@@ -26,6 +26,12 @@
 #   class: correctness
 #   since: 2026-09-02
 #
+# id: mobius_seed_construction_state_boundary_is_immutable_and_centered
+#   given: a ConstructionState is created from a built-slot collection
+#   then: built is normalized to an immutable frozenset of BandSlot values, CENTER is required, and invalid or out-of-seed entries fail closed
+#   class: correctness
+#   since: 2026-09-02
+#
 # id: mobius_seed_construction_is_adjacency_from_seed_relations
 #   given: any construction state
 #   then: a slot is buildable only when it is unbuilt and shares a structural-vesica relation with a built slot; no other adjacency rule is used
