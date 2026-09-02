@@ -4,7 +4,7 @@
 #   module_kind: experiment
 #   summary: smallest construction-state authority for the Mobius Seed of Life: a built-slot set plus buildable-next rule derived only from the seed's own structural-vesica relations
 #   owner: Erin Spencer
-#   public_surface: CONSTRUCTION_SCHEMA_ID, CONSTRUCTION_SCHEMA_VERSION, ConstructionState, initial_construction_state, buildable_slots, construct
+#   public_surface: CONSTRUCTION_SCHEMA_ID, CONSTRUCTION_SCHEMA_VERSION, ConstructionState, initial_construction_state, buildable_slots, construct, from_built
 #   internal_surface: slot validation and relation lookups against MobiusSeedOfLife
 #   auth_boundary: none
 #   storage_boundary: none
@@ -51,6 +51,11 @@ This is the smallest UCNS construction authority: a set of built band slots
 plus a buildable-next rule derived only from the seed's own structural-vesica
 relations. A consumer (for example AHBG) binds its build mechanic to this state
 instead of inventing construction geometry.
+
+Usage guidance:
+    Start with ``initial_construction_state()`` and advance only through
+    ``construct()``. Persist ``state.as_dict()["built"]`` and recover it with
+    ``from_built()``; serialized slot strings are validated and round-trip.
 """
 
 from __future__ import annotations
@@ -60,9 +65,6 @@ from typing import Iterable
 
 from .mobius_seed import (
     MOBIUS_SEED_PROJECTION_ID,
-    MOBIUS_SEED_SCHEMA_ID,
-    MOBIUS_SEED_SCHEMA_VERSION,
-    MOBIUS_SEED_SELECTION_EFFECT,
     BandSlot,
     MobiusSeedError,
     MobiusSeedOfLife,
@@ -86,10 +88,21 @@ class ConstructionState:
     selection_effect: str = CONSTRUCTION_SELECTION_EFFECT
 
     def __post_init__(self) -> None:
-        slots = {band.slot for band in self.seed.bands}
-        if not self.built:
+        try:
+            normalized = frozenset(self.built)
+        except TypeError as exc:
+            raise MobiusSeedError("built slots must be an iterable of BandSlot values") from exc
+        object.__setattr__(self, "built", normalized)
+
+        if not normalized:
             raise MobiusSeedError("construction state must build at least one slot")
-        unknown = self.built - slots
+        if any(not isinstance(slot, BandSlot) for slot in normalized):
+            raise MobiusSeedError("built slots must contain only BandSlot values")
+        if BandSlot.CENTER not in normalized:
+            raise MobiusSeedError("construction state must include CENTER")
+
+        slots = {band.slot for band in self.seed.bands}
+        unknown = normalized - slots
         if unknown:
             raise MobiusSeedError(
                 f"built slots outside the seed: {', '.join(sorted(slot.value for slot in unknown))}"
@@ -112,7 +125,13 @@ class ConstructionState:
                 "schema_version": self.seed.schema_version,
                 "projection_id": MOBIUS_SEED_PROJECTION_ID,
             },
-            "built": [slot.value for slot in sorted(self.built, key=lambda item: (item.ring_index is None, item.ring_index or 0, item.value))],
+            "built": [
+                slot.value
+                for slot in sorted(
+                    self.built,
+                    key=lambda item: (item is not BandSlot.CENTER, item.ring_index or 0, item.value),
+                )
+            ],
             "buildable": [slot.value for slot in buildable_slots(self)],
         }
 
@@ -149,6 +168,8 @@ def buildable_slots(state: ConstructionState) -> tuple[BandSlot, ...]:
 def construct(state: ConstructionState, slot: BandSlot) -> ConstructionState:
     """Record one built slot, fail-closed unless it is currently buildable."""
 
+    if not isinstance(slot, BandSlot):
+        raise MobiusSeedError("slot must be a BandSlot")
     if slot in state.built:
         raise MobiusSeedError(f"{slot.value} is already built")
     if slot not in buildable_slots(state):
@@ -159,12 +180,30 @@ def construct(state: ConstructionState, slot: BandSlot) -> ConstructionState:
     return ConstructionState(seed=state.seed, built=state.built | {slot})
 
 
-def from_built(slots: Iterable[BandSlot], seed: MobiusSeedOfLife | None = None) -> ConstructionState:
-    """Rebuild a construction state from a persisted built-slot list."""
+def _decode_persisted_slot(value: BandSlot | str) -> BandSlot:
+    if isinstance(value, BandSlot):
+        return value
+    if isinstance(value, str):
+        try:
+            return BandSlot(value)
+        except ValueError as exc:
+            raise MobiusSeedError(f"unknown persisted construction slot: {value!r}") from exc
+    raise MobiusSeedError("persisted construction slots must be BandSlot or string values")
+
+
+def from_built(
+    slots: Iterable[BandSlot | str],
+    seed: MobiusSeedOfLife | None = None,
+) -> ConstructionState:
+    """Rebuild a construction state from ``BandSlot`` values or serialized names."""
 
     resolved = seed if seed is not None else build_mobius_seed_of_life()
+    decoded = tuple(_decode_persisted_slot(slot) for slot in slots)
+    if BandSlot.CENTER not in decoded:
+        raise MobiusSeedError("persisted construction state must include CENTER")
+
     state = initial_construction_state(resolved)
-    for slot in slots:
+    for slot in decoded:
         if slot is not BandSlot.CENTER:
             state = construct(state, slot)
     return state
