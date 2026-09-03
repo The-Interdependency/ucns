@@ -18,7 +18,12 @@ The exact operation of a function position must be supplied by a geometric const
 
 ## Möbius origin and return
 
-Structural Null is the singular origin of the native Möbius construction. It is not ordinary numeric zero.
+Structural Null is singular. Intrinsically, it contains no coordinate, payload,
+frame, orientation, or other structural distinction. The native Möbius carrier
+extrinsically places Structural Null as its origin, and an ambient carrier may
+place or relate it extrinsically. External placement or relation belongs to the
+carrier and does not become intrinsic structure of Structural Null. Structural
+Null is not ordinary numeric zero.
 
 The native framed root-loop quotient is:
 
