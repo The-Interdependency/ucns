@@ -18,7 +18,17 @@ The exact operation of a function position must be supplied by a geometric const
 
 ## Möbius origin and return
 
-Structural Null is the singular origin of the native Möbius construction. It is not ordinary numeric zero.
+Structural Null is singular, anchors the native Möbius construction as its
+origin, and is not ordinary numeric zero. How that origin attachment is
+represented across Structural Null and its carrier remains candidate-scoped. A
+coordinate-free intrinsic Structural Null is one jurisdictional candidate:
+coordinate, payload, frame, orientation, placement, and relation would belong to
+an ambient carrier rather than become intrinsic null structure. The current
+executable identity and directed-cover chapter do not yet satisfy one consistent
+representation, so that intrinsic/extrinsic jurisdiction is not promoted here.
+
+`hmmm`: reconcile Structural Null's executable representation and candidate
+documentation before canonizing its intrinsic/extrinsic jurisdiction.
 
 The native framed root-loop quotient is:
 
