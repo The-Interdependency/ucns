@@ -40,9 +40,36 @@ A 360° visible return changes local frame. A 720° motion restores complete loc
 
 The directed twofold carrier remains an explicit geometric candidate/projection; it does not erase the native Möbius law.
 
+## Modular orbit geometry
+
+Finite modular-action circle geometry belongs to UCNS when it is represented as
+geometry rather than imported domain meaning. For a modulus `m`, multiplier
+`a`, and caller-declared canonical residue carrier `S`, the executable primitive
+records
+
+```text
+T_{a,m}(x) = a*x mod m
+```
+
+together with exact action edges, disjoint cycles, cycle periods, and exact
+normalized circle positions `r/m` turns.
+
+The active cycle primitive requires `S` to be nonempty, closed under the action,
+and bijective under that action. This is the boundary that makes the output a
+cycle decomposition; non-bijective modular maps are functional graphs and are
+not silently relabeled as cycle geometry.
+
+UCNS owns this representation. It does not thereby assign special physical,
+prime, Fibonacci, PCEA, EPAC, or other downstream significance to `m`, `a`, the
+carrier, or any observed cycle. Canonical residues are `0..m-1`; display aliases
+belong to renderers.
+
+`hmmm`: the exact composition of modular orbit circles with the native Möbius
+carrier and higher-dimensional UCNS construction remains unresolved.
+
 ## Retained research
 
-Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, and prime-indexed ribbon/link/topological geometry.
+Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, finite modular-action orbit/circle geometry, and prime-indexed ribbon/link/topological geometry.
 
 ## Excluded domains
 

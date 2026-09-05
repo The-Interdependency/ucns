@@ -12,6 +12,7 @@ Its active scope is limited to constructions that directly represent or test geo
 - the directed lifted carrier and its 360° visible / 720° complete return;
 - exact framed Möbius motion;
 - Möbius vesica and Seed-of-Life constructions and certificates;
+- exact finite modular-action orbit and circle geometry;
 - prime-indexed ribbon, link, interval, Milnor, Alexander, and related topological geometry;
 - numerical machinery used to certify those constructions.
 
@@ -34,6 +35,30 @@ A function's geometric operation is not inferred from Unicode names or dictionar
 ```
 
 One visible turn preserves phase and reverses the local frame. Two visible turns restore the complete state.
+
+## Modular orbit geometry
+
+`src/ucns/modular_orbit.py` represents a finite modular multiplication action
+
+```text
+T_{a,m}(x) = a*x mod m
+```
+
+over a caller-declared canonical residue carrier. The carrier must be nonempty, closed under the action, and bijective under that action, so the result is an exact disjoint cycle decomposition rather than a transient functional graph.
+
+UCNS records only the geometry: canonical residues, exact action edges, cycle periods, and exact normalized circle positions `r/m` turns. Display aliases and downstream meanings stay with renderers and consumers.
+
+For the mod-9 digit carrier used in common circular diagrams:
+
+```python
+from ucns import build_modular_orbit_geometry
+
+g = build_modular_orbit_geometry(9, 2, range(1, 9))
+assert g.orbits == ((1, 2, 4, 8, 7, 5), (3, 6))
+assert g.periods == (6, 2)
+```
+
+The core uses residues `0..m-1`; a renderer may choose to display residue `0` as `9` in a mod-9 digit diagram without changing the UCNS record.
 
 ## Geometry modules
 
@@ -65,4 +90,4 @@ python -m build
 python -m twine check dist/*
 ```
 
-`hmmm`: the complete higher-dimensional UCNS construction and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+`hmmm`: the complete higher-dimensional UCNS construction, the exact composition of modular orbit circles with the native Möbius carrier, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
