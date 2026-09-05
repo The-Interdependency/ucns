@@ -68,6 +68,7 @@ def test_modular_action_is_exact_wave_covering_trace() -> None:
     covering = pullback_circle_wave_trace(source, geometry, 2)
 
     assert covering.covering_degree == 2
+    assert covering.finite_multiplier == 2
     assert covering.time_scale == 2
     assert covering.target.harmonic == 2
     assert covering.action == geometry.action
@@ -83,6 +84,7 @@ def test_same_finite_action_admits_distinct_continuum_lifts() -> None:
     degree_11 = pullback_circle_wave_trace(source, geometry, 11)
 
     assert degree_2.action == degree_11.action == geometry.action
+    assert degree_2.finite_multiplier == degree_11.finite_multiplier == 2
     assert degree_2.target.harmonic == 2
     assert degree_11.target.harmonic == 11
     assert degree_2.time_scale == 2
@@ -92,6 +94,7 @@ def test_same_finite_action_admits_distinct_continuum_lifts() -> None:
     zero_trace = build_circle_wave_mode_trace(9, 1, (0,))
     degree_9 = pullback_circle_wave_trace(zero_trace, zero_mod_geometry, 9)
     assert degree_9.covering_degree == 9
+    assert degree_9.finite_multiplier == 0
     assert degree_9.target.harmonic == 9
 
 
@@ -119,6 +122,7 @@ def test_trace_surface_is_geometry_only() -> None:
     text = repr(payload).lower()
 
     assert payload["covering_degree"] == 7
+    assert payload["finite_multiplier"] == 7
     assert payload["time_scale"] == 7
     assert payload["target"]["harmonic"] == 14
     for forbidden in ("epac", "pcea", "fibonacci", "prime", "particle", "energy"):
