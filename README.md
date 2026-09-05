@@ -63,7 +63,7 @@ The core uses residues `0..m-1`; a renderer may choose to display residue `0` as
 
 ## Continuum wave → gonal boundary trace
 
-`src/ucns/gonal_boundary_trace.py` supplies the missing exact visible-boundary bridge.
+`src/ucns/gonal_boundary_trace.py` supplies the exact visible-boundary bridge.
 
 On a circle of radius `R`, the continuum scalar wave equation is
 
@@ -77,19 +77,21 @@ Periodic spatial modes have integer harmonic number `n`. On an `m`-gonal visible
 (n*r mod m)/m.
 ```
 
-For positive integer `a`, the matched spacetime covering
+For positive integer continuum covering degree `d`, the matched spacetime covering
 
 ```text
-(θ, t) -> (aθ, at)
+(θ, t) -> (dθ, dt)
 ```
 
-preserves the wave equation. Its finite gonal trace is exactly
+preserves the wave equation. Its finite gonal trace is
 
 ```text
-r -> a*r mod m.
+r -> d*r mod m.
 ```
 
-So modular multiplication is not merely drawn on a circle: it is the exact finite boundary trace of a continuum degree-`a` wave-equation covering. The equation does **not** select a privileged `a`, modulus, carrier, or physical meaning.
+If `a = d mod m`, this is exactly the finite modular action `r -> a*r mod m`.
+
+The finite trace forgets the continuum degree: `d`, `d+m`, `d+2m`, ... all produce the same residue action while multiplying the continuum harmonic and time scale differently. Therefore the continuum covering degree is an explicit input; UCNS does not infer it from the modular multiplier.
 
 ```python
 from ucns import (
@@ -100,12 +102,18 @@ from ucns import (
 
 geometry = build_modular_orbit_geometry(9, 2, range(1, 9))
 source = build_circle_wave_mode_trace(9, 1, range(1, 9))
-covering = pullback_circle_wave_trace(source, geometry)
 
-assert covering.target.harmonic == 2
-assert covering.time_scale == 2
-assert covering.action == geometry.action
+covering_2 = pullback_circle_wave_trace(source, geometry, 2)
+covering_11 = pullback_circle_wave_trace(source, geometry, 11)
+
+assert covering_2.action == covering_11.action == geometry.action
+assert covering_2.target.harmonic == 2
+assert covering_11.target.harmonic == 11
+assert covering_2.time_scale == 2
+assert covering_11.time_scale == 11
 ```
+
+So modular multiplication is not merely drawn on a circle: it is the exact finite boundary trace of a continuum wave-equation covering. The equation does **not** select a privileged continuum lift, modulus, carrier, or physical meaning.
 
 The full derivation and nonclaims are in `docs/modular-orbit-wave-trace.md`.
 
@@ -141,4 +149,4 @@ python -m build
 python -m twine check dist/*
 ```
 
-`hmmm`: the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+`hmmm`: the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
