@@ -64,12 +64,60 @@ prime, Fibonacci, PCEA, EPAC, or other downstream significance to `m`, `a`, the
 carrier, or any observed cycle. Canonical residues are `0..m-1`; display aliases
 belong to renderers.
 
-`hmmm`: the exact composition of modular orbit circles with the native Möbius
-carrier and higher-dimensional UCNS construction remains unresolved.
+## Continuum wave / gonal boundary trace
+
+On the visible circle boundary, UCNS now has an exact continuum-to-finite trace.
+For radius `R`, angular coordinate `θ`, and propagation speed `c`, the scalar
+circle wave equation is
+
+```text
+u_tt = (c^2/R^2) u_θθ.
+```
+
+Periodicity gives integer spatial harmonics `n`. For an `m`-gonal boundary,
+canonical residue `r` is placed at the exact visible turn
+
+```text
+r/m
+```
+
+and harmonic `n` has exact spatial phase turn
+
+```text
+(n*r mod m)/m.
+```
+
+For any positive integer covering degree `a`, the matched spacetime pullback
+
+```text
+(θ, t) -> (aθ, at)
+```
+
+preserves the wave equation. On harmonics it sends `n -> a*n`; on the finite
+gonal boundary it induces exactly
+
+```text
+r -> a*r mod m.
+```
+
+Therefore modular multiplication is an exact finite boundary trace of this
+positive-degree continuum covering, with the matched time scaling retained in
+the covering witness. When the declared finite carrier is closed and bijective
+under that action, `ModularOrbitGeometry` supplies the corresponding disjoint
+cycle decomposition.
+
+This relation is geometric only. The wave equation does not select a privileged
+modulus, carrier, covering degree, or downstream physical interpretation. A
+generic `m`-gonal trace is also not automatically the 157-position Public Gonol;
+that identification requires separate geometric authority.
+
+`hmmm`: the exact lift from this visible 360° circle trace into complete native
+Möbius state remains unresolved. The trace is exact at the visible boundary but
+does not yet carry the frame information required for 720° local return.
 
 ## Retained research
 
-Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, finite modular-action orbit/circle geometry, and prime-indexed ribbon/link/topological geometry.
+Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, finite modular-action orbit/circle geometry, exact visible-circle continuum/gonal boundary traces, and prime-indexed ribbon/link/topological geometry.
 
 ## Excluded domains
 
@@ -90,4 +138,4 @@ Those experiments remain recoverable from Git history but carry no current UCNS 
 
 A construction may close only relative to its declared geometric boundary. No executable convenience is promoted to the complete UCNS merely because it produces coordinates, hashes, scores, or labels.
 
-`hmmm`: the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; and the geometric operation of Public Gonol function positions not yet constructed.
+`hmmm`: the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; and the geometric operation of Public Gonol function positions not yet constructed.
