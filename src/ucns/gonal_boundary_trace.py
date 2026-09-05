@@ -47,7 +47,7 @@
 #
 # id: gonal_boundary_trace_does_not_select_downstream_physics
 #   given: an exact wave trace or covering trace is serialized or consumed
-#   then: it records only visible-circle harmonic, gonal sample geometry, explicit continuum covering degree, modular covering action, and matched time scaling; it does not assign EPAC, prime, Fibonacci, or other physical significance
+#   then: it records only visible-circle harmonic, gonal sample geometry, explicit continuum covering degree, induced finite multiplier/action, and matched time scaling; it does not assign EPAC, prime, Fibonacci, or other physical significance
 #   class: doctrine
 #   since: 2026-09-05
 # === END CONTRACTS ===
@@ -272,11 +272,18 @@ class CircleWaveCoveringTrace:
                     "trace pullback is not equivariant with harmonic multiplication"
                 )
 
+    @property
+    def finite_multiplier(self) -> int:
+        """Canonical modular multiplier retained by the finite m-gonal trace."""
+
+        return self.covering_degree % self.source.modulus
+
     def as_dict(self) -> dict[str, object]:
         """Serialize the exact covering witness."""
 
         return {
             "covering_degree": self.covering_degree,
+            "finite_multiplier": self.finite_multiplier,
             "time_scale": self.time_scale,
             "action": [[source, target] for source, target in self.action],
             "source": self.source.as_dict(),
