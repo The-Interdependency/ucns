@@ -13,6 +13,7 @@ Its active scope is limited to constructions that directly represent or test geo
 - exact framed Möbius motion;
 - Möbius vesica and Seed-of-Life constructions and certificates;
 - exact finite modular-action orbit and circle geometry;
+- exact visible-circle continuum wave / gonal boundary traces;
 - prime-indexed ribbon, link, interval, Milnor, Alexander, and related topological geometry;
 - numerical machinery used to certify those constructions.
 
@@ -60,6 +61,56 @@ assert g.periods == (6, 2)
 
 The core uses residues `0..m-1`; a renderer may choose to display residue `0` as `9` in a mod-9 digit diagram without changing the UCNS record.
 
+## Continuum wave → gonal boundary trace
+
+`src/ucns/gonal_boundary_trace.py` supplies the missing exact visible-boundary bridge.
+
+On a circle of radius `R`, the continuum scalar wave equation is
+
+```text
+u_tt = (c^2/R^2) u_θθ.
+```
+
+Periodic spatial modes have integer harmonic number `n`. On an `m`-gonal visible boundary, residue `r` sits at exactly `r/m` turns and harmonic `n` has exact phase
+
+```text
+(n*r mod m)/m.
+```
+
+For positive integer `a`, the matched spacetime covering
+
+```text
+(θ, t) -> (aθ, at)
+```
+
+preserves the wave equation. Its finite gonal trace is exactly
+
+```text
+r -> a*r mod m.
+```
+
+So modular multiplication is not merely drawn on a circle: it is the exact finite boundary trace of a continuum degree-`a` wave-equation covering. The equation does **not** select a privileged `a`, modulus, carrier, or physical meaning.
+
+```python
+from ucns import (
+    build_circle_wave_mode_trace,
+    build_modular_orbit_geometry,
+    pullback_circle_wave_trace,
+)
+
+geometry = build_modular_orbit_geometry(9, 2, range(1, 9))
+source = build_circle_wave_mode_trace(9, 1, range(1, 9))
+covering = pullback_circle_wave_trace(source, geometry)
+
+assert covering.target.harmonic == 2
+assert covering.time_scale == 2
+assert covering.action == geometry.action
+```
+
+The full derivation and nonclaims are in `docs/modular-orbit-wave-trace.md`.
+
+This trace is exact on the visible 360° boundary. It is **not yet** the complete native Möbius state; the frame-bearing lift required for 720° local return remains `hmmm`.
+
 ## Geometry modules
 
 The active package also retains the Möbius vesica/seed family and the `prime_*` topological geometry family. Generated geometry certificates remain evidence; semantic receipts do not.
@@ -90,4 +141,4 @@ python -m build
 python -m twine check dist/*
 ```
 
-`hmmm`: the complete higher-dimensional UCNS construction, the exact composition of modular orbit circles with the native Möbius carrier, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+`hmmm`: the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
