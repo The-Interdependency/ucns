@@ -2,10 +2,10 @@
 # id: ucns_gonal_boundary_trace
 #   module_name: gonal_boundary_trace
 #   module_kind: instrument
-#   summary: exact visible-circle wave-mode trace onto a finite gonal boundary with modular-covering pullback
+#   summary: exact visible-circle wave-mode trace onto a finite gonal boundary with explicit continuum covering lift
 #   owner: Erin Spencer
 #   public_surface: GonalBoundaryTraceError, GonalBoundarySample, CircleWaveModeTrace, CircleWaveCoveringTrace, build_circle_wave_mode_trace, pullback_circle_wave_trace
-#   internal_surface: canonical residue validation, exact phase-turn construction, covering equivariance audit
+#   internal_surface: canonical residue validation, exact phase-turn construction, covering congruence and equivariance audit
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
@@ -16,7 +16,7 @@
 #   rollback: remove this module, facade exports, tests, and continuum trace documentation
 #   requires: ucns_modular_orbit_geometry
 #   since: 2026-09-05
-#   unresolved: lift from visible-circle wave trace into complete native Mobius state; any law selecting a privileged covering degree
+#   unresolved: lift from visible-circle wave trace into complete native Mobius state; any law selecting a privileged continuum covering lift
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -27,21 +27,27 @@
 #   since: 2026-09-05
 #
 # id: gonal_boundary_trace_matches_modular_covering_pullback
-#   given: a circle-wave trace and modular orbit geometry with the same modulus and carrier and positive multiplier a
-#   then: pulling the trace through r -> a*r mod m equals the exact trace of harmonic a*n and records matched continuum time scaling t -> a*t
+#   given: a circle-wave trace, modular orbit geometry with the same modulus/carrier, and positive continuum covering degree d congruent to the geometry multiplier modulo m
+#   then: pulling the trace through r -> d*r mod m equals the exact trace of harmonic d*n and records matched continuum time scaling t -> d*t
 #   class: correctness
 #   requires: modular_orbit_action_decomposes_exact_permutation
 #   since: 2026-09-05
 #
+# id: gonal_boundary_trace_requires_explicit_continuum_lift
+#   given: one finite modular multiplier a modulo m
+#   then: the caller must supply a positive continuum covering degree d with d mod m = a, because d and d+k*m induce the same finite action but distinct harmonic and time scaling
+#   class: correctness
+#   since: 2026-09-05
+#
 # id: gonal_boundary_trace_fails_closed_on_incompatible_geometry
-#   given: malformed residues, mismatched modulus/carrier, a zero covering degree, or inconsistent direct record construction
+#   given: malformed residues, mismatched modulus/carrier, nonpositive covering degree, incongruent covering degree, or inconsistent direct record construction
 #   then: construction raises GonalBoundaryTraceError rather than inventing a continuum-to-gonal correspondence
 #   class: safety
 #   since: 2026-09-05
 #
 # id: gonal_boundary_trace_does_not_select_downstream_physics
 #   given: an exact wave trace or covering trace is serialized or consumed
-#   then: it records only visible-circle harmonic, gonal sample geometry, modular covering action, and matched time scaling; it does not assign EPAC, prime, Fibonacci, or other physical significance
+#   then: it records only visible-circle harmonic, gonal sample geometry, explicit continuum covering degree, modular covering action, and matched time scaling; it does not assign EPAC, prime, Fibonacci, or other physical significance
 #   class: doctrine
 #   since: 2026-09-05
 # === END CONTRACTS ===
@@ -51,7 +57,7 @@
 Continuum geometry
 ------------------
 On a circle of radius ``R``, with angular coordinate ``theta``, the scalar wave
-Equation is::
+equation is::
 
     u_tt = (c^2 / R^2) u_theta_theta
 
@@ -68,20 +74,25 @@ and harmonic ``n`` has exact spatial phase::
 
     phase_r / (2*pi) = (n*r mod m) / m.
 
-A positive integer covering degree ``a`` acts on continuum solutions by the
-matched spacetime pullback::
+A positive integer continuum covering degree ``d`` acts on solutions by::
 
-    D_a(theta, t) = (a*theta, a*t)
+    D_d(theta, t) = (d*theta, d*t)
 
-so ``u(D_a(theta,t))`` is again a solution and harmonic ``n`` maps to harmonic
-``a*n``. On the finite gonal trace this becomes exactly::
+so ``u(D_d(theta,t))`` is again a solution and harmonic ``n`` maps to harmonic
+``d*n``. On the finite gonal trace this becomes::
 
-    r -> a*r mod m.
+    r -> d*r mod m.
 
-When that finite action is bijective on a declared carrier, the existing
+Only ``d mod m`` is visible in the finite residue action. Therefore a modular
+multiplier does not uniquely recover the continuum covering degree: ``d`` and
+``d + k*m`` induce the same finite action while carrying different harmonic and
+time scaling. The continuum lift is consequently an explicit input, never an
+inferred physical selection.
+
+When the finite action is bijective on a declared carrier, the existing
 ``ModularOrbitGeometry`` records its cycle decomposition. This establishes an
-exact continuum-boundary-to-modular-action representation relation. It does
-not select a privileged ``a`` and does not make a physical interpretation.
+exact continuum-boundary-to-modular-action representation relation without
+assigning downstream meaning.
 
 The trace is on the visible 360-degree circle boundary only. Its lift into the
 complete 720-degree native Mobius state remains ``hmmm``.
@@ -124,6 +135,15 @@ def _canonical_positions(modulus: int, positions: Iterable[int] | None) -> tuple
 
 def _phase_turn(harmonic: int, residue: int, modulus: int) -> Fraction:
     return Fraction((harmonic * residue) % modulus, modulus)
+
+
+def _validate_covering_degree(covering_degree: int) -> None:
+    if (
+        isinstance(covering_degree, bool)
+        or not isinstance(covering_degree, int)
+        or covering_degree <= 0
+    ):
+        raise GonalBoundaryTraceError("covering degree must be a positive integer")
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,7 +230,7 @@ class CircleWaveModeTrace:
 
 @dataclass(frozen=True, slots=True)
 class CircleWaveCoveringTrace:
-    """Exact trace-level witness of a continuum degree-a spacetime pullback."""
+    """Exact trace-level witness of a continuum degree-d spacetime pullback."""
 
     source: CircleWaveModeTrace
     target: CircleWaveModeTrace
@@ -219,15 +239,10 @@ class CircleWaveCoveringTrace:
     action: tuple[tuple[int, int], ...]
 
     def __post_init__(self) -> None:
-        if (
-            isinstance(self.covering_degree, bool)
-            or not isinstance(self.covering_degree, int)
-            or self.covering_degree <= 0
-        ):
-            raise GonalBoundaryTraceError("covering degree must be a positive integer")
+        _validate_covering_degree(self.covering_degree)
         if self.time_scale != self.covering_degree:
             raise GonalBoundaryTraceError(
-                "wave-equation covering requires matched time scale t -> a*t"
+                "wave-equation covering requires matched time scale t -> d*t"
             )
         if self.source.modulus != self.target.modulus:
             raise GonalBoundaryTraceError("source and target moduli must match")
@@ -246,7 +261,7 @@ class CircleWaveCoveringTrace:
         )
         if self.action != expected_action:
             raise GonalBoundaryTraceError(
-                "action must be the exact gonal trace of theta -> a*theta"
+                "action must be the exact gonal trace of theta -> d*theta"
             )
         source_positions = set(self.source.positions)
         if any(target not in source_positions for _, target in self.action):
@@ -299,34 +314,36 @@ def build_circle_wave_mode_trace(
 def pullback_circle_wave_trace(
     trace: CircleWaveModeTrace,
     geometry: ModularOrbitGeometry,
+    covering_degree: int,
 ) -> CircleWaveCoveringTrace:
-    """Witness the continuum degree-a covering on an existing modular carrier.
+    """Witness one explicit continuum covering above a finite modular action.
 
-    For positive ``a``, the circle-wave equation is preserved by
-    ``(theta, t) -> (a*theta, a*t)``. On the finite gonal trace, that becomes
-    the modular action ``r -> a*r mod m``. The supplied modular geometry must
-    already certify that the action is a permutation of the declared carrier.
+    For positive integer ``d``, the circle-wave equation is preserved by
+    ``(theta, t) -> (d*theta, d*t)``. On an ``m``-gonal trace, only ``d mod m``
+    remains in the residue action. The caller therefore supplies ``d``
+    explicitly, and this function requires ``d % m == geometry.multiplier``.
     """
 
     if trace.modulus != geometry.modulus:
         raise GonalBoundaryTraceError("trace and modular geometry moduli must match")
     if trace.positions != geometry.positions:
         raise GonalBoundaryTraceError("trace and modular geometry carriers must match")
-    if geometry.multiplier <= 0:
+    _validate_covering_degree(covering_degree)
+    if covering_degree % trace.modulus != geometry.multiplier:
         raise GonalBoundaryTraceError(
-            "zero modular multiplier has no nondegenerate positive-degree wave covering"
+            "covering degree must be congruent to the modular multiplier modulo modulus"
         )
 
     target = build_circle_wave_mode_trace(
         modulus=trace.modulus,
-        harmonic=trace.harmonic * geometry.multiplier,
+        harmonic=trace.harmonic * covering_degree,
         positions=trace.positions,
     )
     return CircleWaveCoveringTrace(
         source=trace,
         target=target,
-        covering_degree=geometry.multiplier,
-        time_scale=geometry.multiplier,
+        covering_degree=covering_degree,
+        time_scale=covering_degree,
         action=geometry.action,
     )
 
