@@ -1,6 +1,6 @@
 # === CHECKS ===
 # id: check_geometry_public_surface_exclusion
-#   proves: geometry_public_surface_excludes_nongeometric_domains
+#   proves: geometry_public_surface_excludes_nongeometric_domains, geometry_public_surface_includes_modular_orbit_geometry
 #   call: self::test_geometry_public_surface_excludes_removed_domains
 #   requires: python3
 #   timeout: 10
@@ -33,6 +33,10 @@ def test_geometry_public_surface_excludes_removed_domains() -> None:
         "MobiusSeedOfLife",
         "MobiusBandSpec",
         "build_mobius_seed_of_life",
+        "CircularResiduePosition",
+        "ModularOrbitError",
+        "ModularOrbitGeometry",
+        "build_modular_orbit_geometry",
     }.issubset(exported)
     assert not exported.intersection({
         "PublicGonolFunctionTable",
