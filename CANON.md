@@ -42,10 +42,10 @@ The directed twofold carrier remains an explicit geometric candidate/projection;
 
 ## Modular orbit geometry
 
-Finite modular-action circle geometry belongs to UCNS when it is represented as
-geometry rather than imported domain meaning. For a modulus `m`, multiplier
-`a`, and caller-declared canonical residue carrier `S`, the executable primitive
-records
+Finite modular-action circle geometry is an executable **UCNS geometry
+candidate** when represented as geometry rather than imported domain meaning.
+For a modulus `m`, multiplier `a`, and caller-declared canonical residue carrier
+`S`, the candidate records
 
 ```text
 T_{a,m}(x) = a*x mod m
@@ -54,21 +54,27 @@ T_{a,m}(x) = a*x mod m
 together with exact action edges, disjoint cycles, cycle periods, and exact
 normalized circle positions `r/m` turns.
 
-The active cycle primitive requires `S` to be nonempty, closed under the action,
-and bijective under that action. This is the boundary that makes the output a
-cycle decomposition; non-bijective modular maps are functional graphs and are
-not silently relabeled as cycle geometry.
+The candidate cycle primitive requires `S` to be nonempty, closed under the
+action, and bijective under that action. This is the boundary that makes the
+output a cycle decomposition; non-bijective modular maps are functional graphs
+and are not silently relabeled as cycle geometry.
 
-UCNS owns this representation. It does not thereby assign special physical,
-prime, Fibonacci, PCEA, EPAC, or other downstream significance to `m`, `a`, the
-carrier, or any observed cycle. Canonical residues are `0..m-1`; display aliases
-belong to renderers.
+The executable representation and its arithmetic are exact within those
+declared inputs, but the representation is **not ratified as active selected
+UCNS geometry** merely because it executes and replays. Its own declared
+falsifier/replay/ratification evidence is still required before stronger
+standing. UCNS owns the candidate implementation/public contract; that ownership
+does not itself select the candidate as canon.
+
+The candidate does not assign special physical, prime, Fibonacci, PCEA, EPAC,
+or other downstream significance to `m`, `a`, the carrier, or any observed
+cycle. Canonical residues are `0..m-1`; display aliases belong to renderers.
 
 ## Continuum wave / gonal boundary trace
 
-On the visible circle boundary, UCNS has an exact continuum-to-finite trace. For
-radius `R`, angular coordinate `θ`, and propagation speed `c`, the scalar circle
-wave equation is
+On the visible circle boundary, UCNS has an executable **candidate**
+continuum-to-finite trace. For radius `R`, angular coordinate `θ`, and
+propagation speed `c`, the scalar circle wave equation is
 
 ```text
 u_tt = (c^2/R^2) u_θθ.
@@ -123,20 +129,25 @@ positive degree `d` satisfying `d mod m = a`.
 When the declared finite carrier is closed and bijective under that action,
 `ModularOrbitGeometry` supplies the corresponding disjoint cycle decomposition.
 
+These equations and finite trace identities are exact within their declared
+model, but the representation relation remains **candidate and not ratified as
+active selected UCNS geometry**. Executability is evidence for correctness of
+the candidate implementation, not a replacement for its selection protocol.
+
 This relation is geometric only. The wave equation does not select a privileged
 modulus, carrier, covering degree, congruence-class representative, or downstream
 physical interpretation. A generic `m`-gonal trace is also not automatically the
 157-position Public Gonol; that identification requires separate geometric
 authority.
 
-`hmmm`: the exact lift from this visible 360° circle trace into complete native
-Möbius state remains unresolved. The trace is exact at the visible boundary but
-does not yet carry the frame information required for 720° local return. No law
-currently selects one continuum degree `d` from the class `d ≡ a (mod m)`.
+`hmmm`: the candidate's own ratification path; the exact lift from this visible
+360° circle trace into complete native Möbius state; and any law selecting one
+continuum degree `d` from the class `d ≡ a (mod m)`. The visible trace does not
+yet carry the frame information required for 720° local return.
 
 ## Retained research
 
-Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, finite modular-action orbit/circle geometry, exact visible-circle continuum/gonal boundary traces, and prime-indexed ribbon/link/topological geometry.
+Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, candidate finite modular-action orbit/circle geometry, candidate exact visible-circle continuum/gonal boundary traces, and prime-indexed ribbon/link/topological geometry.
 
 ## Excluded domains
 
@@ -157,4 +168,4 @@ Those experiments remain recoverable from Git history but carry no current UCNS 
 
 A construction may close only relative to its declared geometric boundary. No executable convenience is promoted to the complete UCNS merely because it produces coordinates, hashes, scores, or labels.
 
-`hmmm`: the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.
+`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates; the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.

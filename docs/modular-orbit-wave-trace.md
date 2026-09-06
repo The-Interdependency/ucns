@@ -1,6 +1,6 @@
 # Continuum wave equation → gonal boundary trace → modular action
 
-Standing: exact geometric derivation on the **visible circle boundary**. This is not a physical-selection claim and does not yet lift the trace into the complete native Möbius state.
+Standing: **candidate UCNS representation** with an exact geometric derivation on the visible circle boundary. The equations and trace identities below are exact within the declared model; that does not by itself ratify this representation as selected UCNS geometry. This is not a physical-selection claim and does not yet lift the trace into the complete native Möbius state.
 
 ## 1. Continuum circle wave equation
 
@@ -51,7 +51,7 @@ Thus the continuum equation admits a degree-`d` solution endomorphism that multi
 
 Important boundary: for `d>1`, `θ ↦ dθ` is a degree-`d` covering of the circle, not a globally invertible circle isometry. The continuum equation therefore does **not** make `d` a symmetry-group generator or select one preferred `d`.
 
-## 3. Exact UCNS/gonal boundary trace
+## 3. Exact candidate UCNS/gonal boundary trace
 
 For an `m`-gonal visible boundary, place canonical residue `r ∈ Z/mZ` at the exact normalized turn
 
@@ -66,7 +66,7 @@ Define the boundary trace of harmonic `n` by sampling the continuum phase at tho
 Γ_(m,n)(r) = n r / m   (mod 1).
 ```
 
-The executable UCNS record stores the canonical exact phase turn
+The executable candidate record stores the canonical exact phase turn
 
 ```text
 phase_(m,n)(r) = (n*r mod m)/m
@@ -79,7 +79,7 @@ This is the explicit mapping:
 ```text
 continuum boundary point θ_r = 2πr/m
         ↓ sample
-UCNS gonal position r at exact turn r/m
+UCNS candidate gonal position r at exact turn r/m
         ↓ harmonic n
 exact phase turn (n*r mod m)/m.
 ```
@@ -166,11 +166,11 @@ assert covering_2.time_scale == 2
 assert covering_11.time_scale == 11
 ```
 
-The existing modular-orbit primitive requires the declared finite carrier to be closed and bijective under `T_(a,m)` before calling its components disjoint cycles. That is a **finite trace boundary**, not a claim that the degree-`d` continuum covering is globally invertible.
+The modular-orbit candidate requires the declared finite carrier to be closed and bijective under `T_(a,m)` before calling its components disjoint cycles. That is a **finite trace boundary**, not a claim that the degree-`d` continuum covering is globally invertible.
 
 ## 5. What this derives, and what it does not
 
-Derived exactly:
+Derived exactly within the candidate model:
 
 - the continuum circle wave equation and its integer harmonic basis;
 - positive-degree spacetime coverings `(θ,t) ↦ (dθ,dt)` preserving the equation;
@@ -184,14 +184,15 @@ Derived exactly:
 
 Not derived:
 
+- ratification of this candidate representation as selected UCNS geometry;
 - which continuum lift `d ≡ a (mod m)` should be privileged;
 - why a physical system should select one modulus `m`, one carrier subset, or one covering degree `d`;
 - that modular cycles themselves are energy states, particles, primes, Fibonacci structure, or EPAC semantics;
 - that the visible 360° trace already contains the complete 720° native Möbius state;
 - that the generic `m`-gonal carrier is identical to the Public Gonol without a separate geometric identification.
 
-Those nonclaims matter. The continuum derivation establishes the **representation bridge** that was missing; it does not smuggle downstream meaning into UCNS.
+Those nonclaims matter. The continuum derivation establishes the **candidate representation bridge** that was missing; it does not smuggle downstream meaning into UCNS or bypass the repository's selection protocol.
 
 ## hmmm
 
-The next load-bearing step is the exact lift of this visible-circle trace into the native Möbius carrier: what state must accompany `r/m` so that one visible turn reverses local frame and two visible turns restore complete local state? A second unresolved is any law that would select one continuum covering lift `d` from the congruence class `d ≡ a (mod m)`. Until those are constructed, the continuum/gonal trace is exact but only visible-boundary complete.
+The candidate still requires its own ratification path. The next geometric load-bearing step is the exact lift of this visible-circle trace into the native Möbius carrier: what state must accompany `r/m` so that one visible turn reverses local frame and two visible turns restore complete local state? A second unresolved is any law that would select one continuum covering lift `d` from the congruence class `d ≡ a (mod m)`. Until those are constructed, the continuum/gonal trace is exact within its visible-boundary candidate model but not selected as complete UCNS geometry.

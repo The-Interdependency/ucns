@@ -38,13 +38,24 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_gonal_boundary_trace_candidate_standing
+#   proves: gonal_boundary_trace_remains_candidate_until_ratified
+#   call: self::test_trace_is_candidate_scoped_in_canon
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
+from dataclasses import replace
 from fractions import Fraction
+from pathlib import Path
 
 import pytest
 
 from ucns.gonal_boundary_trace import (
+    CircleWaveModeTrace,
     GonalBoundaryTraceError,
     build_circle_wave_mode_trace,
     pullback_circle_wave_trace,
@@ -62,9 +73,16 @@ def test_circle_wave_mode_trace_is_exact() -> None:
     assert trace.phase_at(8) == Fraction(7, 9)
 
 
-def test_modular_action_is_exact_wave_covering_trace() -> None:
+def test_modular_action_is_exact_wave_covering_trace(monkeypatch: pytest.MonkeyPatch) -> None:
     geometry = build_modular_orbit_geometry(9, 2, range(1, 9))
     source = build_circle_wave_mode_trace(9, 1, range(1, 9))
+
+    # Covering validation must use one indexed phase pass rather than invoking
+    # the trace's linear phase_at lookup once per action edge.
+    def _unexpected_phase_lookup(self: CircleWaveModeTrace, residue: int) -> Fraction:
+        raise AssertionError(f"covering validation used phase_at({residue})")
+
+    monkeypatch.setattr(CircleWaveModeTrace, "phase_at", _unexpected_phase_lookup)
     covering = pullback_circle_wave_trace(source, geometry, 2)
 
     assert covering.covering_degree == 2
@@ -72,8 +90,10 @@ def test_modular_action_is_exact_wave_covering_trace() -> None:
     assert covering.time_scale == 2
     assert covering.target.harmonic == 2
     assert covering.action == geometry.action
+    source_phases = {sample.residue: sample.phase_turn for sample in source.samples}
+    target_phases = {sample.residue: sample.phase_turn for sample in covering.target.samples}
     for source_residue, target_residue in geometry.action:
-        assert source.phase_at(target_residue) == covering.target.phase_at(source_residue)
+        assert source_phases[target_residue] == target_phases[source_residue]
 
 
 def test_same_finite_action_admits_distinct_continuum_lifts() -> None:
@@ -114,6 +134,12 @@ def test_trace_bridge_fails_closed() -> None:
     with pytest.raises(GonalBoundaryTraceError, match="congruent"):
         pullback_circle_wave_trace(source, geometry, 3)
 
+    valid = pullback_circle_wave_trace(source, geometry, 2)
+    with pytest.raises(GonalBoundaryTraceError, match="time scale must be a positive integer"):
+        replace(valid, time_scale=True)
+    with pytest.raises(GonalBoundaryTraceError, match="time scale must be a positive integer"):
+        replace(valid, time_scale=2.0)  # type: ignore[arg-type]
+
 
 def test_trace_surface_is_geometry_only() -> None:
     geometry = build_modular_orbit_geometry(9, 7, range(1, 9))
@@ -127,3 +153,13 @@ def test_trace_surface_is_geometry_only() -> None:
     assert payload["target"]["harmonic"] == 14
     for forbidden in ("epac", "pcea", "fibonacci", "prime", "particle", "energy"):
         assert forbidden not in text
+
+
+def test_trace_is_candidate_scoped_in_canon() -> None:
+    canon = (Path(__file__).resolve().parents[1] / "CANON.md").read_text(encoding="utf-8")
+    section = canon.split("## Continuum wave / gonal boundary trace", 1)[1].split(
+        "## Retained research", 1
+    )[0]
+
+    assert "candidate" in section.lower()
+    assert "not ratified" in section.lower()

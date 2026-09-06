@@ -2,7 +2,7 @@
 # id: ucns_modular_orbit_geometry
 #   module_name: modular_orbit
 #   module_kind: instrument
-#   summary: exact finite modular-action orbit decomposition and normalized circle embedding
+#   summary: exact finite modular-action orbit decomposition and normalized circle embedding candidate
 #   owner: Erin Spencer
 #   public_surface: ModularOrbitError, CircularResiduePosition, ModularOrbitGeometry, build_modular_orbit_geometry
 #   internal_surface: residue validation, permutation closure audit, deterministic cycle traversal
@@ -12,10 +12,10 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests/test_modular_orbit.py
-#   rollout: active geometry primitive; downstream domains consume the geometry without adding their semantics here
+#   rollout: executable candidate geometry; downstream domains may test the representation, but UCNS selection/ratification remains unresolved
 #   rollback: remove this module, facade exports, tests, and documentation
 #   since: 2026-09-05
-#   unresolved: exact composition with the native Mobius carrier and higher-dimensional UCNS construction remains hmmm
+#   unresolved: candidate ratification; exact composition with the native Mobius carrier and higher-dimensional UCNS construction remains hmmm
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
@@ -42,13 +42,21 @@
 #   then: it exposes only modulus, multiplier, declared positions, action edges, cycles, periods, and exact circle turns; prime, Fibonacci, PCEA, EPAC, and physical interpretations are absent
 #   class: doctrine
 #   since: 2026-09-05
+#
+# id: modular_orbit_remains_candidate_until_ratified
+#   given: the executable modular orbit representation exists without a declared falsifier/replay/ratification receipt selecting it as UCNS geometry
+#   then: repository standing remains candidate rather than active selected UCNS canon
+#   class: doctrine
+#   since: 2026-09-06
 # === END CONTRACTS ===
 
-"""Exact finite modular-action orbit geometry.
+"""Exact finite modular-action orbit geometry candidate.
 
-UCNS owns the representation only: declared residue positions, the exact
-multiplication action ``x -> a*x (mod m)``, its cycle decomposition, periods,
-and exact normalized circle positions.
+UCNS owns the candidate representation only: declared residue positions, the
+exact multiplication action ``x -> a*x (mod m)``, its cycle decomposition,
+periods, and exact normalized circle positions. The executable mathematics is
+exact within its declared inputs; selection of this representation as active
+UCNS geometry still requires its own falsifier/replay/ratification evidence.
 
 Usage::
 
@@ -110,8 +118,6 @@ class ModularOrbitGeometry:
             raise ModularOrbitError("multiplier must be its canonical residue modulo modulus")
         if not self.positions:
             raise ModularOrbitError("positions must be nonempty")
-        if tuple(sorted(self.positions)) != self.positions or len(set(self.positions)) != len(self.positions):
-            raise ModularOrbitError("positions must be sorted unique canonical residues")
         if any(
             isinstance(value, bool)
             or not isinstance(value, int)
@@ -120,6 +126,8 @@ class ModularOrbitGeometry:
             for value in self.positions
         ):
             raise ModularOrbitError("positions contain a noncanonical residue")
+        if tuple(sorted(self.positions)) != self.positions or len(set(self.positions)) != len(self.positions):
+            raise ModularOrbitError("positions must be sorted unique canonical residues")
 
         expected_action = tuple(
             (source, (self.multiplier * source) % self.modulus)
