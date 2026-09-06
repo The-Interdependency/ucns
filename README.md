@@ -12,8 +12,8 @@ Its active scope is limited to constructions that directly represent or test geo
 - the directed lifted carrier and its 360° visible / 720° complete return;
 - exact framed Möbius motion;
 - Möbius vesica and Seed-of-Life constructions and certificates;
-- exact finite modular-action orbit and circle geometry;
-- exact visible-circle continuum wave / gonal boundary traces;
+- candidate exact finite modular-action orbit and circle geometry;
+- candidate exact visible-circle continuum wave / gonal boundary traces;
 - prime-indexed ribbon, link, interval, Milnor, Alexander, and related topological geometry;
 - numerical machinery used to certify those constructions.
 
@@ -37,9 +37,9 @@ A function's geometric operation is not inferred from Unicode names or dictionar
 
 One visible turn preserves phase and reverses the local frame. Two visible turns restore the complete state.
 
-## Modular orbit geometry
+## Modular orbit geometry candidate
 
-`src/ucns/modular_orbit.py` represents a finite modular multiplication action
+`src/ucns/modular_orbit.py` implements a candidate finite modular multiplication representation
 
 ```text
 T_{a,m}(x) = a*x mod m
@@ -47,7 +47,9 @@ T_{a,m}(x) = a*x mod m
 
 over a caller-declared canonical residue carrier. The carrier must be nonempty, closed under the action, and bijective under that action, so the result is an exact disjoint cycle decomposition rather than a transient functional graph.
 
-UCNS records only the geometry: canonical residues, exact action edges, cycle periods, and exact normalized circle positions `r/m` turns. Display aliases and downstream meanings stay with renderers and consumers.
+The executable arithmetic is exact within the declared model. The representation remains candidate-scoped until its own falsifier/replay/ratification path selects stronger UCNS standing. Executability alone is not ratification.
+
+The candidate records only geometry: canonical residues, exact action edges, cycle periods, and exact normalized circle positions `r/m` turns. Display aliases and downstream meanings stay with renderers and consumers.
 
 For the mod-9 digit carrier used in common circular diagrams:
 
@@ -61,9 +63,9 @@ assert g.periods == (6, 2)
 
 The core uses residues `0..m-1`; a renderer may choose to display residue `0` as `9` in a mod-9 digit diagram without changing the UCNS record.
 
-## Continuum wave → gonal boundary trace
+## Continuum wave → gonal boundary trace candidate
 
-`src/ucns/gonal_boundary_trace.py` supplies the exact visible-boundary bridge.
+`src/ucns/gonal_boundary_trace.py` supplies the candidate exact visible-boundary bridge.
 
 On a circle of radius `R`, the continuum scalar wave equation is
 
@@ -113,7 +115,7 @@ assert covering_2.time_scale == 2
 assert covering_11.time_scale == 11
 ```
 
-So modular multiplication is not merely drawn on a circle: it is the exact finite boundary trace of a continuum wave-equation covering. The equation does **not** select a privileged continuum lift, modulus, carrier, or physical meaning.
+So the candidate witnesses an exact finite boundary relation between modular multiplication and a continuum wave-equation covering. The equation does **not** select a privileged continuum lift, modulus, carrier, or physical meaning, and the representation itself is not yet ratified as selected UCNS geometry.
 
 The full derivation and nonclaims are in `docs/modular-orbit-wave-trace.md`.
 
@@ -149,4 +151,4 @@ python -m build
 python -m twine check dist/*
 ```
 
-`hmmm`: the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
