@@ -284,8 +284,8 @@ individual SKILLs and documented in their own SKILL.md.
    one unless your block needs syntax the universal parser can't
    express.
 4. **Implement the visibility report** — your runner must list
-   modules without your block type as gaps, and the gap list must be
-   visible in normal output (not buried behind a flag).
+   modules without your block type as gaps, and the gap list must
+   be visible in normal output (not buried behind a flag).
 5. **Author a SKILL.md** in this lib with the convention spec, the
    executor's behavior, and at least one worked example.
 
