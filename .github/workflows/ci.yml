@@ -49,6 +49,21 @@ jobs:
         run: |
           uv lock --check
           uv sync --locked --python python --extra test --extra build
+      - name: Diagnose vendored msdmd byte drift
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          a = Path('.skill-lib-canon/msdmd/SKILL.md').read_bytes()
+          b = Path('.agents/skills/msdmd/SKILL.md').read_bytes()
+          print('canon_len', len(a), 'vendored_len', len(b))
+          diffs = [(i, x, y) for i, (x, y) in enumerate(zip(a, b)) if x != y]
+          print('diff_count', len(diffs))
+          for i, x, y in diffs[:40]:
+              lo=max(0,i-24); hi=min(len(a),i+25)
+              print('offset', i, 'canon', x, 'vendored', y)
+              print('canon_ctx', repr(a[lo:hi]))
+              print('vendored_ctx', repr(b[lo:hi]))
+          PY
       - name: Check vendored skill-lib drift
         run: >-
           python .skill-lib-canon/tools/check_consumer_drift.py .
