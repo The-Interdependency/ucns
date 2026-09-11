@@ -22,16 +22,17 @@
 # === CONTRACTS ===
 # id: distributions_retain_exact_replay_inputs
 #   given: a built sdist and wheel are compared to a UCNS source tree
-#   then: missing or altered required inputs, unsafe archive members, duplicate members, and unexpected wheel payloads fail without extraction or execution
+#   then: missing or altered required inputs, unsafe archive members, duplicate members, unexpected executable payloads/metadata, and altered license material fail without extraction or execution
 #   class: evidence
 #   since: 2026-09-11
 # === END CONTRACTS ===
 
 """Usage: ``python tools/verify_distributions.py . dist`` after a clean build.
 
-The wheel contains the package; the sdist also contains the tests, their
-evidence, preregistrations, tools, and vendored parser. Matching archive bytes
-is packaging evidence only, not certificate verification or ratification.
+The wheel contains the package plus a narrowly admitted generated ``.dist-info``
+set; the sdist also contains the tests, their evidence, preregistrations, tools,
+vendored parser, and exact license bytes. Matching archive bytes is packaging
+evidence only, not certificate verification or ratification.
 """
 
 from __future__ import annotations
@@ -42,12 +43,25 @@ import tarfile
 import zipfile
 
 
-ROOT_INPUTS = ("pyproject.toml", "README.md", "AGENTS.md", "CANON.md", "CLAUDE.md", "uv.lock", "MANIFEST.in")
+ROOT_INPUTS = (
+    "pyproject.toml", "README.md", "AGENTS.md", "CANON.md", "CLAUDE.md",
+    "LICENSE", "uv.lock", "MANIFEST.in",
+)
 TREE_INPUTS = {
     "src/ucns": {".py"}, "tests": {".py"}, "tools": {".py"},
     "docs": {".md", ".json", ".jsonl", ".svg"}, "generated": {".json"},
     ".agents/skills": {".md", ".json", ".py", ".ts"},
 }
+SDIST_GENERATED = {
+    "PKG-INFO",
+    "src/ucns.egg-info/PKG-INFO",
+    "src/ucns.egg-info/SOURCES.txt",
+    "src/ucns.egg-info/dependency_links.txt",
+    "src/ucns.egg-info/requires.txt",
+    "src/ucns.egg-info/top_level.txt",
+}
+WHEEL_DIST_INFO_FILES = {"METADATA", "WHEEL", "RECORD", "top_level.txt"}
+WHEEL_LICENSE_PATH = "licenses/LICENSE"
 
 
 def expected_files(root: Path) -> dict[str, bytes]:
@@ -55,6 +69,9 @@ def expected_files(root: Path) -> dict[str, bytes]:
     for directory, suffixes in TREE_INPUTS.items():
         paths.update(path for path in (root / directory).rglob("*")
                      if path.is_file() and path.suffix in suffixes and "__pycache__" not in path.parts)
+    missing_roots = [path.name for path in paths if path.parent == root and not path.is_file()]
+    if missing_roots:
+        raise ValueError(f"missing root distribution inputs: {', '.join(sorted(missing_roots))}")
     if not any(path.is_relative_to(root / "src/ucns") for path in paths):
         raise ValueError("missing UCNS package source")
     return {path.relative_to(root).as_posix(): path.read_bytes() for path in sorted(paths)}
@@ -100,10 +117,39 @@ def read_archive(path: Path, *, wheel: bool) -> dict[str, bytes]:
     return files
 
 
+def _wheel_metadata_problems(actual: dict[str, bytes], license_bytes: bytes) -> list[str]:
+    problems: list[str] = []
+    prefixes = {
+        name.split("/", 1)[0]
+        for name in actual
+        if "/" in name and name.split("/", 1)[0].endswith(".dist-info")
+    }
+    if len(prefixes) != 1:
+        return ["wheel must contain exactly one .dist-info directory"]
+    prefix = next(iter(prefixes))
+    allowed = {f"{prefix}/{name}" for name in WHEEL_DIST_INFO_FILES}
+    allowed.add(f"{prefix}/{WHEEL_LICENSE_PATH}")
+    for name in sorted(actual):
+        if name.startswith(f"{prefix}/") and name not in allowed:
+            problems.append(f"unexpected wheel metadata {name}")
+    required = {f"{prefix}/{name}" for name in ("METADATA", "WHEEL", "RECORD")}
+    required.add(f"{prefix}/{WHEEL_LICENSE_PATH}")
+    for name in sorted(required - actual.keys()):
+        problems.append(f"missing wheel metadata {name}")
+    packaged_license = actual.get(f"{prefix}/{WHEEL_LICENSE_PATH}")
+    if packaged_license is not None and packaged_license != license_bytes:
+        problems.append(f"altered wheel license {prefix}/{WHEEL_LICENSE_PATH}")
+    return problems
+
+
 def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
     expected = expected_files(root.resolve())
-    wheel_expected = {name.removeprefix("src/"): data for name, data in expected.items() if name.startswith("src/ucns/")}
-    problems = []
+    wheel_expected = {
+        name.removeprefix("src/"): data
+        for name, data in expected.items()
+        if name.startswith("src/ucns/")
+    }
+    problems: list[str] = []
     for path, inputs, is_wheel in ((sdist, expected, False), (wheel, wheel_expected, True)):
         try:
             actual = read_archive(path, wheel=is_wheel)
@@ -115,10 +161,22 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
                 problems.append(f"{path.name}: missing {name}")
             elif actual[name] != data:
                 problems.append(f"{path.name}: altered {name}")
-        for name in actual.keys() - inputs.keys():
-            metadata = name.split("/", 1)[0].endswith(".dist-info")
-            if (is_wheel and not metadata) or (not is_wheel and name.startswith("src/ucns/")):
-                problems.append(f"{path.name}: unexpected payload {name}")
+        if is_wheel:
+            metadata_problems = _wheel_metadata_problems(actual, expected["LICENSE"])
+            problems.extend(f"{path.name}: {problem}" for problem in metadata_problems)
+            dist_prefixes = {
+                name.split("/", 1)[0]
+                for name in actual
+                if "/" in name and name.split("/", 1)[0].endswith(".dist-info")
+            }
+            metadata_prefix = next(iter(dist_prefixes), "")
+            for name in sorted(actual.keys() - inputs.keys()):
+                if not metadata_prefix or not name.startswith(f"{metadata_prefix}/"):
+                    problems.append(f"{path.name}: unexpected payload {name}")
+        else:
+            for name in sorted(actual.keys() - inputs.keys()):
+                if name not in SDIST_GENERATED:
+                    problems.append(f"{path.name}: unexpected payload {name}")
     return problems
 
 
