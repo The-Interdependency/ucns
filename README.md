@@ -144,11 +144,39 @@ assert s720 == s0
 ## Build
 
 ```bash
-python -m pip install -e ".[test,build]"
-python -m pytest -q
+python -m pip install uv==0.11.18
+uv lock --check
+uv sync --locked --python python --extra test --extra build
+.venv/bin/python -m pytest -q
 python tools/verify_skill_lib_contracts.py .
-python -m build
-python -m twine check dist/*
+.venv/bin/python -m build
+.venv/bin/python -m twine check dist/*
+python tools/verify_distributions.py . dist
 ```
+
+The independent interval checks also require system MPFR (for example,
+`libmpfr6` on Ubuntu). Verification dependencies are locked; the isolated build
+backend still follows `[build-system].requires`. Use a clean `dist` directory.
+
+The wheel supplies the geometry package. Repository-context research replay and
+the full tests require the source archive or checkout: run from its root, where
+the archived preregistrations, generated evidence, and vendored parser live.
+The distribution gate checks these inputs byte-for-byte; it does not recertify
+their mathematical claims.
+
+Exact modular and trace records require immutable tuples with non-Boolean integer
+residues; prefer the public builders. MPFR rational constructors accept only
+integers or `Fraction`, and NaN cannot participate in interval ordering.
+
+For a source-bound, selected-check receipt:
+
+```bash
+.venv/bin/python tools/run_skill_lib_boundaries.py . \
+  --check check_boundary_runner_nonactivation --receipt /tmp/ucns-receipt.json
+```
+
+Receipt schema 2 rejects skipped/expected-failing evidence, absent test reports,
+and source changes during execution. A `passed` receipt covers only its selected
+checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.

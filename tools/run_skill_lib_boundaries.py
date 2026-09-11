@@ -1,3 +1,4 @@
+# ratios: loc_comments=261:61 imports_exports=18:4 calls_definitions=108:15
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -34,13 +35,13 @@
 #
 # id: boundary_runner_classifies_and_continues
 #   given: one declared check passes, fails an assertion, raises unexpectedly, or times out
-#   then: the runner records PASS, FAIL, ERROR, or TIMEOUT respectively and continues with remaining selected checks
+#   then: the runner records PASS, FAIL, ERROR, TIMEOUT, or SKIP from machine-readable outcomes and continues after per-check harness errors; absent or skipped evidence never passes
 #   class: evidence
 #   since: 2026-08-15
 #
 # id: boundary_runner_receipt_is_bounded_and_bound
 #   given: a boundary run completes
-#   then: its receipt binds declarations, commands, capabilities, outcomes, output digests, declared mutation and cleanup, bounded output excerpts, and an identity digest
+#   then: its receipt binds source/declaration digests before and after execution, commands, capabilities, outcomes, declared mutation and cleanup, and bounded output; source mutation prevents acceptance
 #   class: evidence
 #   since: 2026-08-15
 #
@@ -51,7 +52,13 @@
 #   since: 2026-08-15
 # === END CONTRACTS ===
 
-"""Execute UCNS skill-lib ``CHECKS`` declarations as bounded processes."""
+"""Execute UCNS skill-lib ``CHECKS`` declarations as bounded processes.
+
+Usage: ``python tools/run_skill_lib_boundaries.py . --check CHECK_ID
+--receipt /tmp/receipt.json``. Schema v2 requires actual, unskipped JUnit
+evidence and unchanged source bytes. Receipts are not theorem or freshness
+certificates. Timeouts retain the existing declared execution-safety boundary.
+"""
 
 from __future__ import annotations
 
@@ -69,6 +76,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import xml.etree.ElementTree as ET
 from typing import Iterable, Sequence
 
 TOOLS_DIRECTORY = Path(__file__).resolve().parent
@@ -79,7 +87,7 @@ from verify_skill_lib_contracts import Entry, audit_repository, parse_blocks
 
 
 SCHEMA_ID = "ucns.skill-lib-boundary-run-receipt"
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "2.0.0"
 MAX_EXCERPT_BYTES = 16_384
 ALLOWED_MUTATIONS = {"none", "filesystem", "temporary_path"}
 ALLOWED_CLEANUPS = {"none", "tempdir_teardown", "pytest temporary_path"}
@@ -106,6 +114,7 @@ class CheckOutcome:
     stdout_excerpt: str
     stderr_excerpt: str
     missing_capabilities: tuple[str, ...] = ()
+    diagnostic: str = ""
 
 
 def _sha(data: bytes) -> str:
@@ -134,8 +143,9 @@ def _capability_available(name: str) -> bool:
 
 def _declared_checks(root: Path) -> tuple[Entry, ...]:
     checks: list[Entry] = []
-    for path in sorted((root / "tests").rglob("test_*.py")):
-        checks.extend(entry for entry in parse_blocks(path) if entry.block == "CHECKS")
+    for path in sorted((root / "tests").rglob("*.py")):
+        if "__pycache__" not in path.parts and (path.name.startswith("test_") or path.name.endswith("_test.py")):
+            checks.extend(entry for entry in parse_blocks(path) if entry.block == "CHECKS")
     return tuple(checks)
 
 
@@ -160,12 +170,62 @@ def _validate_check(check: Entry) -> tuple[tuple[str, ...], int, str, str]:
 
 
 def _excerpt(path: Path) -> tuple[str, int, str]:
-    data = path.read_bytes()
-    excerpt = data[:MAX_EXCERPT_BYTES]
+    digest = sha256()
+    size = 0
+    excerpt = b""
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(65_536), b""):
+            digest.update(chunk)
+            size += len(chunk)
+            excerpt += chunk[:max(0, MAX_EXCERPT_BYTES - len(excerpt))]
     text = excerpt.decode("utf-8", errors="replace")
-    if len(data) > len(excerpt):
-        text += f"\n[truncated {len(data) - len(excerpt)} bytes]"
-    return _sha(data), len(data), text
+    if size > len(excerpt):
+        text += f"\n[truncated {size - len(excerpt)} bytes]"
+    return digest.hexdigest(), size, text
+
+
+def _junit_status(path: Path, returncode: int) -> str:
+    """Classify actual test cases, not console wording or exit zero alone."""
+    try:
+        cases = tuple(ET.parse(path).getroot().iter("testcase"))
+    except (OSError, ET.ParseError):
+        return "ERROR"
+    if not cases or any(case.find("error") is not None for case in cases):
+        return "ERROR"
+    failures = [failure for case in cases for failure in case.findall("failure")]
+    if failures:
+        # pytest's JUnit failure message retains the actual exception type.
+        # A RuntimeError merely mentioning AssertionError is not a contract FAIL.
+        assertion_messages = ("assert ", "AssertionError", "Failed:")
+        return "FAIL" if all(f.get("message", "").startswith(assertion_messages) for f in failures) else "ERROR"
+    if any(case.find("skipped") is not None for case in cases):
+        return "SKIP"
+    return "PASS" if returncode == 0 else "ERROR"
+
+
+def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
+    """Bind repository-owned execution inputs, excluding caches and secrets."""
+    suffixes = {".py", ".md", ".json", ".jsonl", ".ts", ".svg", ".yml", ".yaml"}
+    paths = {
+        path for directory in ("src", "tools", "tests", "docs", "generated", ".agents/skills", ".github/workflows")
+        for path in (root / directory).rglob("*")
+        if path.is_file() and path.suffix in suffixes and "__pycache__" not in path.parts
+    }
+    paths.update(root / name for name in ("pyproject.toml", "uv.lock", "pytest.ini", "setup.cfg", "MANIFEST.in", "conftest.py", "CANON.md", "AGENTS.md") if (root / name).is_file())
+    inventory = {path.relative_to(root).as_posix(): _sha(path.read_bytes()) for path in sorted(paths)}
+    return inventory, _sha(json.dumps(inventory, sort_keys=True, separators=(",", ":")).encode())
+
+
+def _error_outcome(root: Path, check: Entry, error: Exception) -> CheckOutcome:
+    empty = _sha(b"")
+    return CheckOutcome(
+        check.id, check.source.relative_to(root).as_posix(),
+        _split(check.fields.get("proves", "")), check.fields.get("call", ""), (),
+        _split(check.fields.get("requires", "")), 0,
+        check.fields.get("mutates", ""), check.fields.get("cleanup", ""),
+        "ERROR", None, 0.0, empty, empty, 0, 0, "", "",
+        diagnostic=f"{type(error).__name__}: {error}",
+    )
 
 
 def _run_check(root: Path, check: Entry) -> CheckOutcome:
@@ -188,6 +248,8 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
     with tempfile.TemporaryDirectory(prefix="ucns-boundary-") as temporary:
         stdout_path = Path(temporary) / "stdout"
         stderr_path = Path(temporary) / "stderr"
+        junit_path = Path(temporary) / "outcomes.xml"
+        command = (*command, f"--junitxml={junit_path}", "-o", "xfail_strict=true")
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
             process = subprocess.Popen(
                 command, cwd=root, stdin=subprocess.DEVNULL,
@@ -205,16 +267,9 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
                 returncode = process.wait()
         stdout_sha, stdout_bytes, stdout_excerpt = _excerpt(stdout_path)
         stderr_sha, stderr_bytes, stderr_excerpt = _excerpt(stderr_path)
+        status = "TIMEOUT" if timed_out else _junit_status(junit_path, returncode)
 
     duration = round(time.monotonic() - started, 6)
-    if timed_out:
-        status = "TIMEOUT"
-    elif returncode == 0:
-        status = "PASS"
-    elif returncode == 1 and "AssertionError" in (stdout_excerpt + stderr_excerpt):
-        status = "FAIL"
-    else:
-        status = "ERROR"
     return CheckOutcome(
         check.id, relative_source, _split(check.fields["proves"]), call,
         command, requires, timeout, mutates, cleanup, status, returncode,
@@ -236,6 +291,7 @@ def run_boundaries(
     root: Path, *, selected_ids: Iterable[str] = (),
 ) -> dict[str, object]:
     root = root.resolve()
+    source_files, source_before = _source_snapshot(root)
     audit_ok, gaps = audit_repository(root)
     if not audit_ok:
         receipt: dict[str, object] = {
@@ -256,16 +312,26 @@ def run_boundaries(
     selected = checks if not requested else tuple(
         check for check in checks if check.id in requested
     )
-    outcomes = tuple(_run_check(root, check) for check in selected)
+    outcomes = []
+    for check in selected:
+        try:
+            outcomes.append(_run_check(root, check))
+        except (ValueError, OSError) as error:
+            outcomes.append(_error_outcome(root, check, error))
+    _, source_after = _source_snapshot(root)
     statuses = {outcome.status for outcome in outcomes}
     receipt: dict[str, object] = {
         "schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION,
-        "status": "passed" if statuses <= {"PASS"} else "not-passed",
+        "status": "passed" if outcomes and statuses == {"PASS"} and source_before == source_after else "not-passed",
         "audit_closed": True, "audit_gaps": [],
+        "source_files_sha256": source_files,
+        "source_before_sha256": source_before,
+        "source_after_sha256": source_after,
+        "source_unchanged": source_before == source_after,
         "selected_check_ids": [outcome.check_id for outcome in outcomes],
         "outcome_counts": {
             key: sum(outcome.status == key for outcome in outcomes)
-            for key in ("PASS", "FAIL", "ERROR", "TIMEOUT")
+            for key in ("PASS", "FAIL", "ERROR", "TIMEOUT", "SKIP")
         },
         "outcomes": [asdict(outcome) for outcome in outcomes],
         "selection_effect": "none", "edcm_activation": "inactive",
@@ -299,3 +365,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+# ratios: loc_comments=261:61 imports_exports=18:4 calls_definitions=108:15

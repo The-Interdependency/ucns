@@ -1,3 +1,4 @@
+# ratios: loc_comments=226:108 imports_exports=5:7 calls_definitions=76:18
 # === MODULE_BUILD ===
 # id: ucns_gonal_boundary_trace
 #   module_name: gonal_boundary_trace
@@ -211,6 +212,8 @@ class CircleWaveModeTrace:
     def phase_at(self, residue: int) -> Fraction:
         """Return exact spatial phase in normalized turns at one declared position."""
 
+        if isinstance(residue, bool) or not isinstance(residue, int):
+            raise GonalBoundaryTraceError("residue must be a nonboolean integer")
         for sample in self.samples:
             if sample.residue == residue:
                 return sample.phase_turn
@@ -242,7 +245,11 @@ class CircleWaveModeTrace:
 
 @dataclass(frozen=True, slots=True)
 class CircleWaveCoveringTrace:
-    """Exact trace-level witness of a continuum degree-d spacetime pullback."""
+    """Exact trace-level witness of a continuum degree-d spacetime pullback.
+
+    Direct restoration requires validated trace records and immutable integer
+    action pairs. Use ``pullback_circle_wave_trace`` to construct a witness.
+    """
 
     source: CircleWaveModeTrace
     target: CircleWaveModeTrace
@@ -251,6 +258,14 @@ class CircleWaveCoveringTrace:
     action: tuple[tuple[int, int], ...]
 
     def __post_init__(self) -> None:
+        if not isinstance(self.source, CircleWaveModeTrace) or not isinstance(self.target, CircleWaveModeTrace):
+            raise GonalBoundaryTraceError("source and target must be CircleWaveModeTrace records")
+        if not isinstance(self.action, tuple) or any(
+            not isinstance(pair, tuple) or len(pair) != 2
+            or any(isinstance(value, bool) or not isinstance(value, int) for value in pair)
+            for pair in self.action
+        ):
+            raise GonalBoundaryTraceError("action must contain immutable nonboolean integer pairs")
         _validate_covering_degree(self.covering_degree)
         _validate_time_scale(self.time_scale)
         if self.time_scale != self.covering_degree:
@@ -347,6 +362,8 @@ def pullback_circle_wave_trace(
     explicitly, and this function requires ``d % m == geometry.multiplier``.
     """
 
+    if not isinstance(trace, CircleWaveModeTrace) or not isinstance(geometry, ModularOrbitGeometry):
+        raise GonalBoundaryTraceError("pullback requires validated trace and modular geometry records")
     if trace.modulus != geometry.modulus:
         raise GonalBoundaryTraceError("trace and modular geometry moduli must match")
     if trace.positions != geometry.positions:
@@ -379,3 +396,4 @@ __all__ = [
     "build_circle_wave_mode_trace",
     "pullback_circle_wave_trace",
 ]
+# ratios: loc_comments=226:108 imports_exports=5:7 calls_definitions=76:18

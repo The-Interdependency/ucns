@@ -1,3 +1,4 @@
+# ratios: loc_comments=181:45 imports_exports=8:4 calls_definitions=72:8
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -27,7 +28,7 @@
 #
 # id: contract_audit_reports_graph_gaps
 #   given: a contract, check target, or self call is missing or unknown
-#   then: the audit reports the gap and exits nonzero
+#   then: the audit reports the gap and exits nonzero, including empty input, malformed syntax/fences, and unsupported class-based tests
 #   class: evidence
 #   since: 2026-07-21
 #
@@ -38,15 +39,17 @@
 #   since: 2026-07-21
 # === END CONTRACTS ===
 
-"""Minimal no-exec skill-lib contract graph audit.
+"""No-exec contract reconciliation using the vendored canonical msdmd parser.
 
-The parser is intentionally bounded to the line-oriented msdmd fields used by
-this repository. It does not replace skill-lib's canonical universal parser.
+Usage: ``python tools/verify_skill_lib_contracts.py .``. Product and test files
+are parsed, never imported. Only the pinned parser shipped beside this tool is
+loaded. Unsupported class-based test targets are visible gaps, not coverage.
 """
 
 from __future__ import annotations
 
 import ast
+import importlib.util
 import re
 import sys
 from dataclasses import dataclass
@@ -55,7 +58,12 @@ from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 BLOCK_RE = re.compile(r"^\s*#\s*===\s*(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
 END_RE = re.compile(r"^\s*#\s*===\s*END\s+(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
-FIELD_RE = re.compile(r"^\s*#\s*(?P<key>[A-Za-z_][\w-]*):\s*(?P<value>.*)$")
+PARSER_PATH = Path(__file__).resolve().parents[1] / ".agents/skills/msdmd/parsers/universal.py"
+_SPEC = importlib.util.spec_from_file_location("_ucns_canonical_msdmd", PARSER_PATH)
+if _SPEC is None or _SPEC.loader is None:
+    raise RuntimeError("canonical msdmd parser unavailable")
+_PARSER = importlib.util.module_from_spec(_SPEC)
+_SPEC.loader.exec_module(_PARSER)
 REQUIRED_MODULE_FIELDS = {
     "module_name",
     "module_kind",
@@ -90,45 +98,32 @@ class Entry:
 def _source_files(root: Path) -> Iterable[Path]:
     for base in (root / "src", root / "tools", root / "tests"):
         if base.exists():
-            yield from sorted(base.rglob("*.py"))
+            yield from (path for path in sorted(base.rglob("*.py")) if "__pycache__" not in path.parts)
 
 
 def parse_blocks(path: Path) -> List[Entry]:
-    entries: List[Entry] = []
+    """Check fence integrity, then delegate entry grammar to canonical msdmd."""
+    text = path.read_text(encoding="utf-8")
     active: str | None = None
-    current: Dict[str, str] | None = None
-
-    for raw in path.read_text(encoding="utf-8").splitlines():
+    for raw in text.splitlines():
         start = BLOCK_RE.match(raw)
         if start:
+            if active is not None:
+                raise ValueError(f"{path}: nested {start.group(1)} inside {active}")
             active = start.group(1)
-            current = None
             continue
         end = END_RE.match(raw)
         if end:
             if active != end.group(1):
                 raise ValueError(f"{path}: mismatched END {end.group(1)}")
-            if current:
-                entries.append(Entry(active, path, current))
             active = None
-            current = None
-            continue
-        if active is None:
-            continue
-        field = FIELD_RE.match(raw)
-        if not field:
-            continue
-        key, value = field.group("key"), field.group("value").strip()
-        if key == "id":
-            if current:
-                entries.append(Entry(active, path, current))
-            current = {"id": value}
-        elif current is not None:
-            current[key] = value
-
     if active is not None:
         raise ValueError(f"{path}: unterminated {active} block")
-    return entries
+    return [
+        Entry(block, path, fields)
+        for block in ("MODULE_BUILD", "CONTRACTS", "CHECKS")
+        for fields in _PARSER.parse_text(text, block)
+    ]
 
 
 def _defined_functions(path: Path) -> Set[str]:
@@ -147,13 +142,19 @@ def _missing(fields: Dict[str, str], required: Set[str]) -> Set[str]:
 
 
 def audit_repository(root: Path) -> Tuple[bool, List[str]]:
+    root = root.resolve()
     entries: List[Entry] = []
     problems: List[str] = []
-    for path in _source_files(root):
+    paths = tuple(_source_files(root))
+    trees: Dict[Path, ast.Module] = {}
+    if not paths:
+        problems.append(f"GAP empty source/test tree: {root}")
+    for path in paths:
         try:
+            trees[path] = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
             path_entries = parse_blocks(path)
-        except (SyntaxError, ValueError) as exc:
-            problems.append(f"GAP parse {exc}")
+        except (OSError, UnicodeError, SyntaxError, ValueError) as exc:
+            problems.append(f"GAP parse {type(exc).__name__}: {exc}")
             continue
 
         entries.extend(path_entries)
@@ -182,6 +183,8 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
 
     contracts = {entry.id: entry for entry in entries if entry.block == "CONTRACTS"}
     checks = [entry for entry in entries if entry.block == "CHECKS"]
+    if not contracts or not checks:
+        problems.append("GAP empty contract/check graph cannot establish evidence")
     proved: Set[str] = set()
 
     for check in checks:
@@ -204,7 +207,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             else:
                 is_test_module = (
                     check.source.is_relative_to(root / "tests")
-                    and check.source.name.startswith("test_")
+                    and (check.source.name.startswith("test_") or check.source.name.endswith("_test.py"))
                 )
                 if not is_test_module or not name.startswith("test_"):
                     problems.append(
@@ -216,15 +219,26 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
     for contract_id in sorted(set(contracts) - proved):
         problems.append(f"GAP {contract_id} has no CHECKS entry claiming to prove it")
 
-    for test_path in sorted((root / "tests").rglob("test_*.py")) if (root / "tests").exists() else ():
+    for test_path, tree in trees.items():
+        if not test_path.is_relative_to(root / "tests") or not (
+            test_path.name.startswith("test_") or test_path.name.endswith("_test.py")
+        ):
+            continue
         declared_calls = {
             entry.fields.get("call", "")[len("self::") :]
             for entry in checks
             if entry.source == test_path and entry.fields.get("call", "").startswith("self::")
         }
-        for function in _defined_functions(test_path):
+        for function in (node.name for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
             if function.startswith("test_") and function not in declared_calls:
                 problems.append(f"GAP executable check {test_path}::{function} has no resolving CHECKS declaration")
+        for cls in (node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)):
+            for method in cls.body:
+                if isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)) and method.name.startswith("test_"):
+                    problems.append(
+                        f"GAP unsupported class check {test_path}::{cls.name}::{method.name}; "
+                        "use a declared top-level self::test_fn witness"
+                    )
 
     return not problems, problems
 
@@ -243,3 +257,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+# ratios: loc_comments=181:45 imports_exports=8:4 calls_definitions=72:8

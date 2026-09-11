@@ -1,3 +1,4 @@
+# ratios: loc_comments=76:42 imports_exports=5:5 calls_definitions=38:5
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -22,6 +23,24 @@
 #   timeout: 5
 #   mutates: none
 #   cleanup: none
+# === END CHECKS ===
+
+# === CHECKS ===
+# id: check_contract_audit_empty_syntax_and_class_gaps
+#   proves: contract_audit_reports_graph_gaps
+#   call: self::test_empty_syntax_and_class_coverage_are_not_closed
+#   requires: python3
+#   timeout: 10
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+#
+# id: check_contract_audit_canonical_parser
+#   proves: contract_audit_reports_graph_gaps, contract_audit_is_no_exec
+#   call: self::test_nested_fences_cannot_hide_an_obligation
+#   requires: python3
+#   timeout: 10
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
 # === END CHECKS ===
 
 from pathlib import Path
@@ -86,3 +105,32 @@ def test_contract_audit_detects_gaps() -> None:
 def test_repository_contract_graph() -> None:
     ok, problems = audit_repository(ROOT)
     assert ok, "\n".join(problems)
+
+
+def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
+    from test_skill_lib_boundary_runner import _repo
+
+    ok, problems = audit_repository(tmp_path)
+    assert not ok and any("empty" in item for item in problems)
+    root = _repo(tmp_path, "def test_probe():\n    pass\n", [{"id": "check_probe", "function": "test_probe"}])
+    source = root / "src/pkg/feature.py"
+    original = source.read_text()
+    source.write_text(original + "\ndef syntax broken\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("syntax" in item.lower() for item in problems)
+    source.write_text(original)
+    (root / "tests/test_class.py").write_text("class TestUnregistered:\n    def test_untracked(self):\n        assert False\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("TestUnregistered::test_untracked" in item for item in problems)
+
+
+def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
+    from test_skill_lib_boundary_runner import _repo
+
+    root = _repo(tmp_path, "def test_probe():\n    pass\n", [{"id": "check_probe", "function": "test_probe"}])
+    source = root / "src/pkg/feature.py"
+    original = source.read_text()
+    source.write_text(original.replace("# === CONTRACTS ===", "# === CONTRACTS ===\n# id: hidden\n#   given: x\n#   then: y\n# === CONTRACTS ==="))
+    ok, problems = audit_repository(root)
+    assert not ok and any("nested" in item for item in problems)
+# ratios: loc_comments=76:42 imports_exports=5:5 calls_definitions=38:5
