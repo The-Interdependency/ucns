@@ -147,8 +147,13 @@ assert s720 == s0
 python -m pip install uv==0.11.18
 uv lock --check
 uv sync --locked --python python --extra test --extra build
-.venv/bin/python -m pytest -q
-python tools/verify_skill_lib_contracts.py .
+.venv/bin/python tools/verify_skill_lib_contracts.py .
+env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS \
+  PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python - <<'PY'
+from pathlib import Path
+from tools._boundary_pytest import run_suite
+raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config"], Path.cwd()))
+PY
 .venv/bin/python -m build
 .venv/bin/python -m twine check dist/*
 .venv/bin/python tools/verify_distributions.py . dist
@@ -231,7 +236,9 @@ Module/class pytest marks and pytest/xunit hooks are unsupported implicit execut
 data bindings must be literal values; imported descriptors, unresolved bases, nested classes, and compound class
 namespace construction fail closed. Fixture helpers remain supported, including
 test-prefixed helper names, but fixture-decorated functions cannot resolve CHECKS.
-Imported `__test__` bindings are unresolved collection opt-outs and fail closed.
+Imported or destructured `__test__` bindings are unresolved collection opt-outs and fail closed.
+Class and base names must have unambiguous bindings; later rebinding cannot
+stand in for the class used during construction.
 CI runs the complete suite through the outcome observer: collection skips/errors,
 runtime skips, xfail, XPASS, and empty execution fail the suite gate.
 Source observation starts before capability probing. Executable Node version
