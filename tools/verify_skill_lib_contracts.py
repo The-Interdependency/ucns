@@ -1,4 +1,4 @@
-# ratios: loc_comments=587:54 imports_exports=12:4 calls_definitions=316:23
+# ratios: loc_comments=588:54 imports_exports=12:4 calls_definitions=317:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -610,11 +610,12 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
     for test_path, tree in trees.items():
         if test_path.is_relative_to(root / "tests") and any(isinstance(node, ast.Name) and node.id == "pytest_plugins" for node in ast.walk(tree)):
             problems.append(f"GAP unsupported pytest plugin collection surface: {test_path}")
+        if test_path.is_relative_to(root / "tests"):
+            problems.extend(_collection_surface_problems(tree, test_path))
         if not test_path.is_relative_to(root / "tests") or not (
             test_path.name.startswith("test_") or test_path.name.endswith("_test.py")
         ):
             continue
-        problems.extend(_collection_surface_problems(tree, test_path))
         declared_calls = {
             entry.fields.get("call", "")[len("self::") :]
             for entry in checks
@@ -695,4 +696,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=587:54 imports_exports=12:4 calls_definitions=316:23
+# ratios: loc_comments=588:54 imports_exports=12:4 calls_definitions=317:23

@@ -1,4 +1,4 @@
-# ratios: loc_comments=127:10 imports_exports=9:1 calls_definitions=44:2
+# ratios: loc_comments=137:10 imports_exports=9:1 calls_definitions=50:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -25,7 +25,7 @@ from tools import verify_distributions as audit
 
 
 
-def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode="", sdist_directory="", wheel_directory="", sdist_root="ucns-0", sdist_mode=None, directory_mode=0o755):
+def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode="", sdist_directory="", wheel_directory="", sdist_root="ucns-0", sdist_mode=None, directory_mode=0o755, directory_payload=b""):
     core_metadata = "Metadata-Version: 2.4\nName: ucns\nVersion: 0\nSummary: Fixture\nAuthor: Test\nRequires-Python: >=3.10\nDescription-Content-Type: text/markdown\nLicense: fixture\nLicense-File: LICENSE\nDynamic: license-file\n"
     with tarfile.open(sdist, "w:gz") as archive:
         files = {**audit.expected_files(root), "setup.cfg": audit.GENERATED_SETUP_CFG,
@@ -52,7 +52,8 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
             member = tarfile.TarInfo(f"{sdist_root}/{sdist_directory}")
             member.type = tarfile.DIRTYPE
             member.mode = directory_mode
-            archive.addfile(member)
+            member.size = len(directory_payload)
+            archive.addfile(member, io.BytesIO(directory_payload))
     with zipfile.ZipFile(wheel, "w") as archive:
         files = {}
         for name, data in audit.expected_files(root).items():
@@ -81,7 +82,7 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
         for name, data in files.items():
             archive.writestr(name, data)
         if wheel_directory:
-            archive.writestr(wheel_directory.rstrip("/") + "/", b"")
+            archive.writestr(wheel_directory.rstrip("/") + "/", directory_payload)
 
 
 def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
@@ -92,10 +93,19 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n")
     (root / "pyproject.toml").write_text('[project]\nname="ucns"\nversion="0"\ndescription="Fixture"\nrequires-python=">=3.10"\nauthors=[{name="Test"}]\nreadme="README.md"\n')
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    link = root / "tests/linked-fixture"
+    link.symlink_to(outside)
+    with pytest.raises(ValueError, match="unsupported source symlink"):
+        audit.expected_files(root)
+    link.unlink()
     sdist, wheel = tmp_path / "ucns-0.tar.gz", tmp_path / "ucns-0-py3-none-any.whl"
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
     for options, message in (
+        ({"wheel_directory": "ucns", "directory_payload": b"unaccounted"}, "nonempty archive directory"),
+        ({"sdist_directory": "tests", "directory_payload": b"unaccounted"}, "nonempty archive directory"),
         ({"wheel_directory": "unexpected"}, "unexpected directory"),
         ({"sdist_directory": "unexpected"}, "unexpected directory"),
         ({"sdist_mode": 0}, "unusable sdist permissions"),
@@ -145,4 +155,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=127:10 imports_exports=9:1 calls_definitions=44:2
+# ratios: loc_comments=137:10 imports_exports=9:1 calls_definitions=50:2

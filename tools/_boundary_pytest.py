@@ -1,4 +1,4 @@
-# ratios: loc_comments=77:35 imports_exports=5:3 calls_definitions=31:6
+# ratios: loc_comments=108:35 imports_exports=7:3 calls_definitions=47:8
 # === MODULE_BUILD ===
 # id: boundary_pytest_observer
 #   module_name: _boundary_pytest
@@ -20,7 +20,7 @@
 # === CONTRACTS ===
 # id: boundary_pytest_observes_actual_outcomes
 #   given: a selected pytest boundary runs through this bootstrap
-#   then: assertion subclasses fail, unexpected exceptions error, XPASS cannot pass, imported local package origins must match the bound tree
+#   then: assertion subclasses fail, unexpected exceptions error, XPASS cannot pass, actual test function code must match the declared source, imported local package origins must match the bound tree
 #   class: evidence
 #
 # id: geometry_suite_requires_nonempty_pass
@@ -42,6 +42,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
+from types import CodeType, FunctionType, MethodType
+
+from _pytest.assertion.rewrite import _rewrite_test
 
 import pytest
 
@@ -51,6 +54,37 @@ class Observer:
         self.root = root
         self.calls: list[str] = []
         self.other: list[str] = []
+        self.expected_code: dict[Path, CodeType] = {}
+
+    def _witness_matches_source(self, item) -> bool:
+        path = Path(item.path).resolve()
+        if not path.is_relative_to(self.root.resolve()):
+            return False
+        if path not in self.expected_code:
+            if item.config.getoption("assertmode") == "plain":
+                code = compile(path.read_bytes(), str(path), "exec", dont_inherit=True)
+            else:
+                _, code = _rewrite_test(path, item.config)
+            self.expected_code[path] = code
+        expected = self.expected_code[path]
+        for name in item.nodeid.split("::")[1:]:
+            name = name.split("[", 1)[0]
+            candidates = [value for value in expected.co_consts if isinstance(value, CodeType) and value.co_name == name]
+            if len(candidates) != 1:
+                return False
+            expected = candidates[0]
+        actual = item.obj
+        if isinstance(actual, MethodType):
+            actual = actual.__func__
+        return isinstance(actual, FunctionType) and actual.__code__ == expected
+
+    @pytest.hookimpl(hookwrapper=True, tryfirst=True)
+    def pytest_pyfunc_call(self, pyfuncitem):
+        if not self._witness_matches_source(pyfuncitem):
+            pytest.fail("test witness code differs from its declared source", pytrace=False)
+        yield
+        if not self._witness_matches_source(pyfuncitem):
+            pytest.fail("test witness code changed during execution", pytrace=False)
 
     def pytest_collectreport(self, report):
         if report.skipped:
@@ -126,4 +160,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=77:35 imports_exports=5:3 calls_definitions=31:6
+# ratios: loc_comments=108:35 imports_exports=7:3 calls_definitions=47:8

@@ -206,10 +206,14 @@ Unused skill helper tools remain canonical dependency material.
 Receipt inventories hash every file under the bound `src`, `tools`, `tests`,
 `docs`, `generated`, `.agents/skills`, and `.github/workflows` directories,
 excluding `__pycache__`, plus the runner's declared root inputs. Text, binary,
-and extensionless fixtures are included. Source archives retain the complete
+and extensionless fixtures are included. Symlinks in bound inputs are unsupported
+and fail before execution. Source archives retain the complete
 package, test, tool, documentation, generated-evidence, skill, and CI trees;
 the distribution gate rejects missing or altered inputs. Declared test-function
-bindings must be unique, so a replacement cannot stand in for an earlier witness.
+bindings must be unique. Test-helper modules receive the same collection-surface
+audit, and the observer compares the actual test function code with its declared
+source before and after the call. An imported replacement cannot stand in for
+the original witness.
 
 For a source-bound, selected-check receipt:
 
