@@ -1,4 +1,4 @@
-# ratios: loc_comments=373:67 imports_exports=19:4 calls_definitions=162:18
+# ratios: loc_comments=385:67 imports_exports=19:4 calls_definitions=168:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -96,6 +96,7 @@ ALLOWED_CLEANUPS = {"none", "tempdir_teardown", "pytest temporary_path"}
 SOURCE_DIRECTORIES = ("src", "tools", "tests", "docs", "generated", ".agents/skills", ".github/workflows")
 ROOT_INPUTS = ("pyproject.toml", "uv.lock", "pytest.ini", "setup.cfg", "MANIFEST.in", "conftest.py", "CANON.md", "AGENTS.md", "README.md", "CLAUDE.md", "LICENSE")
 BOOTSTRAP = TOOLS_DIRECTORY / "_boundary_pytest.py"
+STARTUP_DIRECTORY = TOOLS_DIRECTORY / "_boundary_site"
 
 
 class _SourceWatch:
@@ -190,6 +191,7 @@ class CheckOutcome:
     stderr_excerpt: str
     missing_capabilities: tuple[str, ...] = ()
     diagnostic: str = ""
+    descendants_reaped: int = 0
     imported_sources: dict[str, list[str]] = field(default_factory=dict)
     source_events: tuple[str, ...] = ()
     source_before_sha256: str = ""
@@ -345,7 +347,8 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):
             environment.pop(name, None)
         environment.update(PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
-        environment["PYTHONPATH"] = os.pathsep.join((str(root / "src"), str(root)))
+        environment["UCNS_BOUND_SOURCE_ROOT"] = str(root)
+        environment["PYTHONPATH"] = os.pathsep.join((str(STARTUP_DIRECTORY), str(root / "src"), str(root)))
         watcher = _SourceWatch(root)
         try:
             with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
@@ -359,10 +362,16 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
                 except subprocess.TimeoutExpired:
                     timed_out = True
                     try:
-                        os.killpg(process.pid, signal.SIGKILL)
+                        process.terminate()  # Bootstrap reaps detached descendants too.
+                        returncode = process.wait(timeout=3)
+                    except subprocess.TimeoutExpired:
+                        try:
+                            os.killpg(process.pid, signal.SIGKILL)
+                        except ProcessLookupError:
+                            pass
+                        returncode = process.wait()
                     except ProcessLookupError:
-                        pass
-                    returncode = process.wait()
+                        returncode = process.wait()
         finally:
             source_events = watcher.finish()
         stdout_sha, stdout_bytes, stdout_excerpt = _excerpt(stdout_path)
@@ -377,6 +386,8 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         command, requires, timeout, mutates, cleanup, status, returncode,
         duration, stdout_sha, stderr_sha, stdout_bytes, stderr_bytes,
         stdout_excerpt, stderr_excerpt,
+        diagnostic="background descendants outlived the check" if observed.get("descendants_reaped") else "",
+        descendants_reaped=observed.get("descendants_reaped", 0),
         imported_sources=observed.get("origins", {}), source_events=source_events,
     )
 
@@ -441,6 +452,7 @@ def run_boundaries(
         "source_after_sha256": source_after,
         "source_unchanged": unchanged,
         "bootstrap_sha256": _sha(BOOTSTRAP.read_bytes()),
+        "startup_hook_sha256": _sha((STARTUP_DIRECTORY / "sitecustomize.py").read_bytes()),
         "python_version": sys.version,
         "selected_check_ids": [outcome.check_id for outcome in outcomes],
         "outcome_counts": {
@@ -487,4 +499,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=373:67 imports_exports=19:4 calls_definitions=162:18
+# ratios: loc_comments=385:67 imports_exports=19:4 calls_definitions=168:18

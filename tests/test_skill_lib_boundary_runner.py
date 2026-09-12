@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:233 imports_exports=8:16 calls_definitions=87:18
+# ratios: loc_comments=98:266 imports_exports=10:17 calls_definitions=103:19
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -337,7 +337,7 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
     assert "src/pkg/feature.py" in receipt["outcomes"][0]["source_events"]
 # === CHECKS ===
 # id: check_boundary_runner_import_origin
-#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
+#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes, boundary_descendants_import_bound_source
 #   call: self::test_check_imports_bound_source_despite_ambient_pythonpath
 #   requires: python3, pytest
 #   timeout: 15
@@ -359,7 +359,43 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     (alternate / "pkg/__init__.py").write_text("")
     (alternate / "pkg/feature.py").write_text("VALUE = 'wrong'\n")
     monkeypatch.setenv("PYTHONPATH", str(alternate))
+    test_source = root / "tests/test_feature.py"
+    test_source.write_text(test_source.read_text().replace("text=True)", f"text=True, cwd={str(alternate)!r})"))
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "passed", receipt
     assert receipt["outcomes"][0]["imported_sources"]["pkg.feature"] == [str(source)]
-# ratios: loc_comments=98:233 imports_exports=8:16 calls_definitions=87:18
+
+# === CHECKS ===
+# id: check_boundary_background_descendants
+#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
+#   call: self::test_background_descendants_block_acceptance
+#   requires: python3, pytest
+#   timeout: 30
+#   mutates: temporary_path
+#   cleanup: pytest temporary_path
+# === END CHECKS ===
+
+
+def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
+    import os
+    import pytest
+    child = "import time; from pathlib import Path; time.sleep(30); Path('src/pkg/feature.py').write_text('late mutation')"
+    body = f"import subprocess, sys\nfrom pathlib import Path\ndef test_probe():\n    p=subprocess.Popen([sys.executable, '-c', {child!r}], start_new_session=True)\n    Path('child.pid').write_text(str(p.pid))\n"
+    root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
+    before = (root / "src/pkg/feature.py").read_bytes()
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "not-passed", receipt
+    assert receipt["outcomes"][0]["status"] == "ERROR"
+    assert receipt["outcomes"][0]["descendants_reaped"] >= 1
+    pid = int((root / "child.pid").read_text())
+    with pytest.raises(ProcessLookupError):
+        os.kill(pid, 0)
+    assert (root / "src/pkg/feature.py").read_bytes() == before
+    body += "    import time; time.sleep(30)\n"
+    timeout_root = _repo(tmp_path / "timeout-child", body, [{"id": "check_probe", "function": "test_probe", "timeout": "5"}])
+    receipt = runner.run_boundaries(timeout_root)
+    assert receipt["outcomes"][0]["status"] == "TIMEOUT"
+    pid = int((timeout_root / "child.pid").read_text())
+    with pytest.raises(ProcessLookupError):
+        os.kill(pid, 0)
+# ratios: loc_comments=98:266 imports_exports=10:17 calls_definitions=103:19

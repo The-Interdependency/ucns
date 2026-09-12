@@ -1,4 +1,4 @@
-# ratios: loc_comments=301:34 imports_exports=17:4 calls_definitions=155:11
+# ratios: loc_comments=310:34 imports_exports=17:4 calls_definitions=159:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -99,31 +99,40 @@ def read_archive(path: Path, *, wheel: bool) -> dict[str, bytes]:
     """Read regular files only; reject ambiguous names rather than extracting."""
     files: dict[str, bytes] = {}
     prefixes: set[str] = set()
+    kinds: dict[str, bool] = {}
 
-    def record(name: str, data: bytes) -> None:
+    def record(name: str, data: bytes | None) -> None:
         parts = PurePosixPath(name).parts
-        if not parts or name.startswith("/") or ".." in parts or "\\" in name:
+        directory = data is None
+        if not parts or name.startswith("/") or ".." in parts or "\\" in name or "\0" in name:
             raise ValueError(f"unsafe archive name: {name}")
         if not wheel:
             prefixes.add(parts[0])
-            if len(parts) < 2 or len(prefixes) != 1:
+            if (len(parts) < 2 and not directory) or len(prefixes) != 1:
                 raise ValueError("sdist must have one enclosing directory")
-            name = "/".join(parts[1:])
-        if name in files:
+            parts = parts[1:]
+        name = "/".join(parts)
+        if name in kinds:
             raise ValueError(f"duplicate archive member: {name}")
-        files[name] = data
+        if any(kinds.get("/".join(parts[:index])) is False for index in range(1, len(parts))):
+            raise ValueError(f"file/directory archive collision: {name}")
+        if not directory and any(existing.startswith(name + "/") for existing in kinds):
+            raise ValueError(f"file/directory archive collision: {name}")
+        kinds[name] = directory
+        if not directory:
+            files[name] = data
 
     if wheel:
         with zipfile.ZipFile(path) as archive:
             for member in archive.infolist():
-                if not member.is_dir():
-                    if (member.external_attr >> 16) & 0o170000 == 0o120000:
-                        raise ValueError(f"archive symlink: {member.filename}")
-                    record(member.filename, archive.read(member))
+                if (member.external_attr >> 16) & 0o170000 == 0o120000:
+                    raise ValueError(f"archive symlink: {member.filename}")
+                record(member.filename, None if member.is_dir() else archive.read(member))
     else:
         with tarfile.open(path, "r:gz") as archive:
             for member in archive:
                 if member.isdir():
+                    record(member.name, None)
                     continue
                 if not member.isfile():
                     raise ValueError(f"non-regular archive member: {member.name}")
@@ -367,4 +376,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=301:34 imports_exports=17:4 calls_definitions=155:11
+# ratios: loc_comments=310:34 imports_exports=17:4 calls_definitions=159:11

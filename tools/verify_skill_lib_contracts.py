@@ -1,4 +1,4 @@
-# ratios: loc_comments=212:47 imports_exports=8:4 calls_definitions=92:8
+# ratios: loc_comments=303:47 imports_exports=8:4 calls_definitions=135:12
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -85,6 +85,7 @@ REQUIRED_MODULE_FIELDS = {
 }
 REQUIRED_CONTRACT_FIELDS = {"given", "then"}
 REQUIRED_CHECK_FIELDS = {"proves", "call", "timeout", "mutates", "cleanup"}
+UNKNOWN_TEST_SETTING = object()
 
 
 @dataclass(frozen=True)
@@ -140,15 +141,96 @@ def parse_blocks(path: Path) -> List[Entry]:
     return entries
 
 
+def _target_names(target: ast.AST) -> list[str]:
+    if isinstance(target, ast.Name):
+        return [target.id]
+    if isinstance(target, (ast.Tuple, ast.List)):
+        return [name for item in target.elts for name in _target_names(item)]
+    return []
+
+
+def _bindings(body: list[ast.stmt]) -> dict[str, str]:
+    """Track direct namespace bindings; callable aliases remain unsupported."""
+    bindings = {}
+    for node in body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            bindings[node.name] = "class" if isinstance(node, ast.ClassDef) else "function"
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            kind = "literal" if isinstance(node.value, (ast.Constant, ast.List, ast.Tuple, ast.Set, ast.Dict)) else "unknown"
+            for target in targets:
+                for name in _target_names(target):
+                    bindings[name] = kind
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                bindings[alias.asname or alias.name.split(".", 1)[0]] = "literal" if isinstance(node, ast.Import) else "unknown"
+        elif isinstance(node, ast.AugAssign):
+            for name in _target_names(node.target):
+                bindings[name] = "unknown"
+        elif isinstance(node, ast.Delete):
+            for target in node.targets:
+                for name in _target_names(target):
+                    bindings.pop(name, None)
+    return bindings
+
+
+def _class_mro(name: str, classes: dict[str, ast.ClassDef], active=()) -> list[str] | None:
+    """Compute local C3 order; unresolved bases and inconsistent orders are gaps."""
+    if name == "object":
+        return [name]
+    if name not in classes or name in active:
+        return None
+    cls = classes[name]
+    if any(not isinstance(base, ast.Name) for base in cls.bases):
+        return None
+    bases = [base.id for base in cls.bases] or ["object"]
+    if len(set(bases)) != len(bases):
+        return None
+    parents = [_class_mro(base, classes, (*active, name)) for base in bases]
+    if any(parent is None for parent in parents):
+        return None
+    sequences = [list(parent) for parent in parents] + [list(bases)]
+    result = [name]
+    while any(sequences):
+        candidates = [sequence[0] for sequence in sequences if sequence]
+        candidate = next((head for head in candidates if all(head not in sequence[1:] for sequence in sequences)), None)
+        if candidate is None:
+            return None
+        result.append(candidate)
+        for sequence in sequences:
+            if sequence and sequence[0] == candidate:
+                sequence.pop(0)
+    return result
+
+
+def _test_setting(cls: ast.ClassDef | ast.Module) -> tuple[bool, object]:
+    found, value = False, None
+    for node in cls.body:
+        if isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            if any("__test__" in _target_names(target) for target in targets):
+                found = True
+                try:
+                    value = ast.literal_eval(node.value)
+                except (ValueError, TypeError, SyntaxError):
+                    value = UNKNOWN_TEST_SETTING
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == "__test__":
+            found, value = True, UNKNOWN_TEST_SETTING
+        elif isinstance(node, ast.AugAssign) and "__test__" in _target_names(node.target):
+            found, value = True, UNKNOWN_TEST_SETTING
+        elif isinstance(node, ast.Delete) and any("__test__" in _target_names(target) for target in node.targets):
+            found, value = False, None
+    return found, value
+
+
 def _defined_functions(path: Path) -> Set[str]:
     """Return top-level functions without importing or executing the module."""
 
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    return {
-        node.name
-        for node in tree.body
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-    }
+    found, setting = _test_setting(tree)
+    if found and not setting:
+        return set()
+    return {name for name, kind in _bindings(tree.body).items() if kind == "function"}
 
 
 def _missing(fields: Dict[str, str], required: Set[str]) -> Set[str]:
@@ -243,35 +325,52 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             for entry in checks
             if entry.source == test_path and entry.fields.get("call", "").startswith("self::")
         }
-        for function in (node.name for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
-            if function.startswith("test_") and function not in declared_calls:
-                problems.append(f"GAP executable check {test_path}::{function} has no resolving CHECKS declaration")
-        for cls in (node for node in tree.body if isinstance(node, ast.ClassDef)):
-            # Match default pytest class collection without importing tests.
-            # Helpers/nested classes and explicitly disabled classes are not checks.
-            disabled = any(
-                ((isinstance(node, ast.Assign)
-                  and any(isinstance(target, ast.Name) and target.id == "__test__" for target in node.targets))
-                 or (isinstance(node, ast.AnnAssign)
-                     and isinstance(node.target, ast.Name) and node.target.id == "__test__"))
-                and isinstance(node.value, ast.Constant) and node.value.value is False
-                for node in cls.body
-            )
-            if not cls.name.startswith("Test") or disabled:
+        found, setting = _test_setting(tree)
+        if found and not setting:
+            continue
+        if setting is UNKNOWN_TEST_SETTING:
+            problems.append(f"GAP dynamic test-module opt-out {test_path}")
+        bindings = _bindings(tree.body)
+        for name, kind in bindings.items():
+            if name == "*":
+                problems.append(f"GAP unresolved wildcard test-module import {test_path}")
+            elif name.startswith("test_"):
+                if kind == "unknown":
+                    problems.append(f"GAP unresolved executable alias {test_path}::{name}")
+                elif kind == "function" and name not in declared_calls:
+                    problems.append(f"GAP executable check {test_path}::{name} has no resolving CHECKS declaration")
+            elif name.startswith("Test") and kind == "unknown":
+                problems.append(f"GAP unresolved class alias {test_path}::{name}")
+        classes = {node.name: node for node in tree.body if isinstance(node, ast.ClassDef) and bindings.get(node.name) == "class"}
+        for cls in classes.values():
+            found, setting = _test_setting(cls)
+            order = _class_mro(cls.name, classes)
+            if not found and order is not None:
+                for ancestor in order[1:]:
+                    if ancestor in classes:
+                        found, setting = _test_setting(classes[ancestor])
+                        if found:
+                            break
+            if found and not setting:
                 continue
-            if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for node in cls.body):
+            if setting is UNKNOWN_TEST_SETTING:
+                problems.append(f"GAP dynamic class opt-out {test_path}::{cls.name}")
                 continue
-            if any(not (isinstance(base, ast.Name) and base.id == "object") for base in cls.bases):
-                problems.append(
-                    f"GAP inherited class check {test_path}::{cls.name}; "
-                    "base-class executable surfaces require a declared top-level witness"
-                )
-            for method in cls.body:
-                if isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)) and method.name.startswith("test_"):
-                    problems.append(
-                        f"GAP unsupported class check {test_path}::{cls.name}::{method.name}; "
-                        "use a declared top-level self::test_fn witness"
-                    )
+            if not cls.name.startswith("Test") and setting is not True:
+                continue
+            if order is None:
+                problems.append(f"GAP inherited class check {test_path}::{cls.name}; unresolved base surface")
+                continue
+            inherited = [classes[name] for name in order if name in classes]
+            if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for ancestor in inherited for node in ancestor.body):
+                continue
+            methods = {}
+            for ancestor in reversed(inherited):
+                methods.update(_bindings(ancestor.body))
+            for name, kind in methods.items():
+                if name.startswith("test_") and kind in {"function", "unknown"}:
+                    label = "inherited class check" if cls.bases else "unsupported class check"
+                    problems.append(f"GAP {label} {test_path}::{cls.name}::{name}; use a declared top-level self::test_fn witness")
 
     return not problems, problems
 
@@ -290,4 +389,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=212:47 imports_exports=8:4 calls_definitions=92:8
+# ratios: loc_comments=303:47 imports_exports=8:4 calls_definitions=135:12
