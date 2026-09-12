@@ -1,4 +1,4 @@
-# ratios: loc_comments=70:78 imports_exports=17:3 calls_definitions=75:3
+# ratios: loc_comments=81:81 imports_exports=17:3 calls_definitions=83:3
 # === CHECKS ===
 # id: check_distribution_replay_source_integrity
 #   proves: ucns_distributions_replay_installed_code, ucns_distribution_evidence_binds_all_files
@@ -47,6 +47,17 @@ def test_replay_source_changes_fail_closed(tmp_path):
     source.mkdir()
     for name in ("test_case.py", "helper.sh", "evidence.json", "extensionless"):
         (source / name).write_text("original")
+    script = Path(__file__).resolve().parents[1] / "tools/replay_distributions.sh"
+    for optimize in ("1", "2"):
+        rejected = subprocess.run(["bash", str(script)], env=dict(os.environ, PYTHONOPTIMIZE=optimize), capture_output=True, text=True)
+        assert rejected.returncode == 2 and "optimized Python mode" in rejected.stderr
+    binary = tmp_path / "bin"
+    binary.mkdir()
+    fake_uv = binary / "uv"
+    fake_uv.write_text("#!/bin/sh\nprintf '%s\\n' 'uv 0.11.17'\n")
+    fake_uv.chmod(0o755)
+    rejected = subprocess.run(["bash", str(script)], env=dict(os.environ, PYTHONOPTIMIZE="0", PATH=str(binary) + os.pathsep + os.environ["PATH"]), capture_output=True, text=True)
+    assert rejected.returncode == 2 and "unsupported uv" in rejected.stderr
     baseline = source_snapshot(source)
     verify_snapshot(source, baseline)
     for name in baseline:
@@ -133,7 +144,10 @@ def test_sdist_installer_metadata_is_recorded(tmp_path):
     environment = tmp_path / "environment"
     subprocess.run(["uv", "venv", "--python", sys.executable, str(environment)], check=True, capture_output=True)
     python = environment / "bin/python"
-    subprocess.run(["uv", "pip", "install", "--python", str(python), "setuptools==84.0.0", "wheel==0.48.0"], check=True, capture_output=True)
+    dependencies = tmp_path / "dependencies.txt"
+    project = Path(__file__).resolve().parents[1]
+    subprocess.run(["uv", "export", "--project", str(project), "--locked", "--extra", "test", "--extra", "build", "--no-emit-project", "--no-dev", "--format", "requirements.txt", "--output-file", str(dependencies)], check=True, capture_output=True)
+    subprocess.run(["uv", "pip", "sync", "--python", str(python), "--require-hashes", str(dependencies)], check=True, capture_output=True)
     uri = artifact.as_uri() + "#sha256=" + hashlib.sha256(artifact.read_bytes()).hexdigest()
     result = subprocess.run(["uv", "pip", "install", "--python", str(python), "--no-deps", "--no-build-isolation", "ucns @ " + uri], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
@@ -155,4 +169,4 @@ print(json.dumps(module.installed_inventory(pathlib.Path(sys.argv[2]), pathlib.P
     path = next(environment.glob("lib/python*/site-packages")) / name
     path.write_text('{"unexpected": true}')
     assert subprocess.run(command, env=clean, capture_output=True).returncode != 0
-# ratios: loc_comments=70:78 imports_exports=17:3 calls_definitions=75:3
+# ratios: loc_comments=81:81 imports_exports=17:3 calls_definitions=83:3
