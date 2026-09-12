@@ -151,7 +151,7 @@ uv sync --locked --python python --extra test --extra build
 python tools/verify_skill_lib_contracts.py .
 .venv/bin/python -m build
 .venv/bin/python -m twine check dist/*
-python tools/verify_distributions.py . dist
+.venv/bin/python tools/verify_distributions.py . dist
 ```
 
 The independent interval checks also require system MPFR (for example,
@@ -162,7 +162,9 @@ The wheel supplies the geometry package. Repository-context research replay and
 the full tests require the source archive or checkout: run from its root, where
 the archived preregistrations, generated evidence, and vendored parser live.
 The distribution gate checks these inputs byte-for-byte; it does not recertify
-their mathematical claims.
+their mathematical claims. It also binds wheel dependencies and flags to
+`pyproject.toml`, verifies every RECORD digest, and requires the exact generated
+sdist configuration.
 
 Exact modular and trace records require immutable tuples with non-Boolean integer
 residues; prefer the public builders. MPFR rational constructors accept only
@@ -178,6 +180,8 @@ For a source-bound, selected-check receipt:
 Receipt schema 2.1 rejects skips, expected failures, both forms of XPASS, absent
 reports, and source changes during execution (including write-and-restore).
 Receipt execution requires Linux inotify; an unavailable observer is an error.
+Receipt output must be outside the bound source tree and is written by atomic
+replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient PYTHONPATH and pytest plugins
 excluded, and imported package paths are recorded and checked. The observer is
 evidence instrumentation, not a sandbox for hostile test code. A `passed` receipt covers only its selected

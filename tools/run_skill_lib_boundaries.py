@@ -1,4 +1,4 @@
-# ratios: loc_comments=361:65 imports_exports=19:4 calls_definitions=151:18
+# ratios: loc_comments=370:66 imports_exports=19:4 calls_definitions=160:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -397,6 +397,7 @@ def run_boundaries(
             "schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION,
             "status": "audit-gap", "audit_closed": False,
             "audit_gaps": gaps, "outcomes": [], "selection_effect": "none",
+            "bound_source_root": str(root),
             "edcm_activation": "inactive", "canon_status": "none",
         }
         receipt["receipt_sha256"] = _receipt_identity(receipt)
@@ -428,6 +429,7 @@ def run_boundaries(
     )
     receipt: dict[str, object] = {
         "schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION,
+        "bound_source_root": str(root),
         "status": "passed" if outcomes and statuses == {"PASS"} and unchanged else "not-passed",
         "audit_closed": True, "audit_gaps": [],
         "source_files_sha256": source_files,
@@ -451,11 +453,17 @@ def run_boundaries(
 
 
 def write_receipt(receipt: dict[str, object], path: Path) -> None:
+    bound_root = receipt.get("bound_source_root")
+    if not isinstance(bound_root, str) or not bound_root:
+        raise ValueError("receipt must identify its bound source tree")
+    if path.resolve().is_relative_to(Path(bound_root).resolve()):
+        raise ValueError("receipt output must be outside the bound source tree")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(receipt, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    # Replacing the directory entry avoids writing through an external hardlink.
+    with tempfile.TemporaryDirectory(prefix=".ucns-receipt-", dir=path.parent) as temporary:
+        output = Path(temporary) / "receipt.json"
+        output.write_text(json.dumps(receipt, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        os.replace(output, path)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -464,6 +472,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--check", action="append", default=[], dest="checks")
     parser.add_argument("--receipt", type=Path)
     args = parser.parse_args(argv)
+    if args.receipt and args.receipt.resolve().is_relative_to(Path(args.root).resolve()):
+        parser.error("receipt output must be outside the bound source tree")
     receipt = run_boundaries(Path(args.root), selected_ids=args.checks)
     if args.receipt:
         write_receipt(receipt, args.receipt)
@@ -473,4 +483,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=361:65 imports_exports=19:4 calls_definitions=151:18
+# ratios: loc_comments=370:66 imports_exports=19:4 calls_definitions=160:18

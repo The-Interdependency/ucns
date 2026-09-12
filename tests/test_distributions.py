@@ -1,4 +1,4 @@
-# ratios: loc_comments=72:10 imports_exports=6:1 calls_definitions=32:2
+# ratios: loc_comments=92:10 imports_exports=9:1 calls_definitions=39:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -12,6 +12,9 @@
 """Build small archive fixtures; missing evidence must fail independently of Twine."""
 
 import importlib.util
+import base64
+import csv
+import hashlib
 import io
 from pathlib import Path
 import tarfile
@@ -26,9 +29,12 @@ audit = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(audit)
 
 
-def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered=""):
+def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode=""):
     with tarfile.open(sdist, "w:gz") as archive:
-        for name, data in audit.expected_files(root).items():
+        files = {**audit.expected_files(root), "setup.cfg": audit.GENERATED_SETUP_CFG}
+        if sdist_extra:
+            files[sdist_extra] = b"unexpected"
+        for name, data in files.items():
             if name == omit:
                 continue
             if name == altered:
@@ -36,25 +42,33 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
             member = tarfile.TarInfo(f"ucns-0/{name}")
             member.size = len(data)
             archive.addfile(member, io.BytesIO(data))
-        if sdist_extra:
-            member = tarfile.TarInfo(f"ucns-0/{sdist_extra}")
-            member.size = 10
-            archive.addfile(member, io.BytesIO(b"unexpected"))
     with zipfile.ZipFile(wheel, "w") as archive:
+        files = {}
         for name, data in audit.expected_files(root).items():
             if name.startswith("src/ucns/"):
-                archive.writestr(name.removeprefix("src/"), data)
+                files[name.removeprefix("src/")] = data
         metadata = {
-            "METADATA": b"Metadata-Version: 2.4\nName: ucns\nVersion: 0\n",
-            "WHEEL": b"Wheel-Version: 1.0\nRoot-Is-Purelib: true\nTag: py3-none-any\n",
-            "RECORD": b"",
+            "METADATA": ("Metadata-Version: 2.4\nName: ucns\nVersion: 0\nSummary: Fixture\nAuthor: Test\nRequires-Python: >=3.10\nDescription-Content-Type: text/markdown\nLicense: fixture\nLicense-File: LICENSE\nDynamic: license-file\n" + metadata_extra + "\nfixture\n").encode(),
+            "WHEEL": f"Wheel-Version: 1.0\nGenerator: fixture\nRoot-Is-Purelib: {wheel_flags}\nTag: py3-none-any\n".encode(),
             "licenses/LICENSE": (root / "LICENSE").read_bytes(),
         }
         for name, data in metadata.items():
             if name != wheel_omit:
-                archive.writestr(f"ucns-0.dist-info/{name}", data + (b"drift" if name == wheel_altered else b""))
+                files[f"ucns-0.dist-info/{name}"] = data + (b"drift" if name == wheel_altered else b"")
         if extra:
-            archive.writestr(extra, b"unexpected")
+            files[extra] = b"unexpected"
+        record = io.StringIO()
+        writer = csv.writer(record)
+        for name, data in files.items():
+            digest = base64.urlsafe_b64encode(hashlib.sha256(data).digest()).rstrip(b"=").decode()
+            writer.writerow((name, "sha256=" + digest, len(data)))
+        writer.writerow(("ucns-0.dist-info/RECORD", "", ""))
+        if wheel_omit != "RECORD":
+            files["ucns-0.dist-info/RECORD"] = b"" if record_mode == "empty" else record.getvalue().encode()
+        if record_mode == "wrong-hash":
+            files["ucns/__init__.py"] += b"changed after recording"
+        for name, data in files.items():
+            archive.writestr(name, data)
 
 
 def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
@@ -64,6 +78,7 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n")
+    (root / "pyproject.toml").write_text('[project]\nname="ucns"\nversion="0"\ndescription="Fixture"\nrequires-python=">=3.10"\nauthors=[{name="Test"}]\nreadme="README.md"\n')
     sdist, wheel = tmp_path / "ucns.tar.gz", tmp_path / "ucns.whl"
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
@@ -77,6 +92,11 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         ({"wheel_omit": "RECORD"}, "missing wheel metadata"),
         ({"sdist_extra": "setup.py"}, "unexpected payload setup.py"),
         ({"sdist_extra": "setup.cfg"}, "altered generated setup.cfg"),
+        ({"omit": "setup.cfg"}, "missing generated setup.cfg"),
+        ({"metadata_extra": "Requires-Dist: unexpected>=1\n"}, "Requires-Dist differs"),
+        ({"wheel_flags": "false"}, "Root-Is-Purelib differs"),
+        ({"record_mode": "empty"}, "RECORD missing path"),
+        ({"record_mode": "wrong-hash"}, "RECORD digest or size mismatch"),
         ({"extra": "ucns-0.dist-info/entry_points.txt"}, "unexpected wheel metadata"),
     ):
         _archives(root, sdist, wheel, **options)
@@ -90,4 +110,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=72:10 imports_exports=6:1 calls_definitions=32:2
+# ratios: loc_comments=92:10 imports_exports=9:1 calls_definitions=39:2

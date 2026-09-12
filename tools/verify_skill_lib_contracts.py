@@ -1,4 +1,4 @@
-# ratios: loc_comments=205:47 imports_exports=8:4 calls_definitions=88:8
+# ratios: loc_comments=207:47 imports_exports=8:4 calls_definitions=90:8
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -250,8 +250,10 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             # Match default pytest class collection without importing tests.
             # Helpers/nested classes and explicitly disabled classes are not checks.
             disabled = any(
-                isinstance(node, ast.Assign)
-                and any(isinstance(target, ast.Name) and target.id == "__test__" for target in node.targets)
+                ((isinstance(node, ast.Assign)
+                  and any(isinstance(target, ast.Name) and target.id == "__test__" for target in node.targets))
+                 or (isinstance(node, ast.AnnAssign)
+                     and isinstance(node.target, ast.Name) and node.target.id == "__test__"))
                 and isinstance(node.value, ast.Constant) and node.value.value is False
                 for node in cls.body
             )
@@ -283,4 +285,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=205:47 imports_exports=8:4 calls_definitions=88:8
+# ratios: loc_comments=207:47 imports_exports=8:4 calls_definitions=90:8

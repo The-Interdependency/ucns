@@ -1,4 +1,4 @@
-# ratios: loc_comments=146:33 imports_exports=5:4 calls_definitions=73:6
+# ratios: loc_comments=252:34 imports_exports=15:4 calls_definitions=128:9
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -38,9 +38,23 @@ evidence only, not certificate verification or ratification.
 from __future__ import annotations
 
 import argparse
+import base64
+from collections import Counter
+import csv
+from email.parser import BytesParser
+import hashlib
+import io
 from pathlib import Path, PurePosixPath
 import tarfile
 import zipfile
+
+from packaging.requirements import Requirement
+from packaging.utils import canonicalize_name
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10; declared in the build extra.
+    import tomli as tomllib
 
 
 ROOT_INPUTS = (
@@ -119,7 +133,84 @@ def read_archive(path: Path, *, wheel: bool) -> dict[str, bytes]:
     return files
 
 
-def _wheel_metadata_problems(actual: dict[str, bytes], license_bytes: bytes) -> list[str]:
+def _requirement_key(value: str) -> tuple[str, ...]:
+    requirement = Requirement(value)
+    return (canonicalize_name(requirement.name), ",".join(sorted(requirement.extras)),
+            str(requirement.specifier), requirement.url or "", str(requirement.marker or ""))
+
+
+def _metadata_content_problems(data: bytes, expected: dict[str, bytes]) -> list[str]:
+    """Bind installer-facing metadata to this project's static configuration."""
+    project = tomllib.loads(expected["pyproject.toml"].decode("utf-8"))["project"]
+    metadata = BytesParser().parsebytes(data)
+    wanted = {
+        "Metadata-Version": ["2.4"], "Name": [project["name"]],
+        "Version": [project["version"]], "Summary": [project["description"]],
+        "Requires-Python": [project["requires-python"]],
+        "Author": [", ".join(author["name"] for author in project["authors"])],
+        "Classifier": project.get("classifiers", []),
+        "Description-Content-Type": ["text/markdown"], "License-File": ["LICENSE"],
+        "Dynamic": ["license-file"],
+        "Provides-Extra": list(project.get("optional-dependencies", {})),
+    }
+    problems = []
+    if metadata.defects:
+        problems.append("malformed wheel METADATA")
+    allowed = {key.lower() for key in wanted} | {"license", "requires-dist"}
+    for name in metadata.keys():
+        if name.lower() not in allowed:
+            problems.append(f"unexpected wheel METADATA field {name}")
+    for name, values in wanted.items():
+        if Counter(metadata.get_all(name, [])) != Counter(values):
+            problems.append(f"wheel METADATA {name} differs from project configuration")
+    licenses = metadata.get_all("License", [])
+    if len(licenses) != 1 or " ".join(licenses[0].split()) != " ".join(expected["LICENSE"].decode().split()):
+        problems.append("wheel METADATA License differs from source license")
+    if metadata.get_payload(decode=True).rstrip() != expected[project["readme"]].rstrip():
+        problems.append("wheel METADATA description differs from source README")
+    requirements = list(project.get("dependencies", []))
+    for extra, dependencies in project.get("optional-dependencies", {}).items():
+        for value in dependencies:
+            requirement = Requirement(value)
+            marker = f'({requirement.marker}) and extra == "{extra}"' if requirement.marker else f'extra == "{extra}"'
+            requirement.marker = None
+            requirements.append(f"{requirement}; {marker}")
+    try:
+        if Counter(map(_requirement_key, metadata.get_all("Requires-Dist", []))) != Counter(map(_requirement_key, requirements)):
+            problems.append("wheel METADATA Requires-Dist differs from project configuration")
+    except ValueError as error:
+        problems.append(f"invalid wheel METADATA Requires-Dist: {error}")
+    return problems
+
+
+def _record_problems(actual: dict[str, bytes], record_path: str) -> list[str]:
+    problems = []
+    seen = set()
+    try:
+        for row in csv.reader(io.StringIO(actual[record_path].decode("utf-8")), strict=True):
+            if len(row) != 3:
+                problems.append("wheel RECORD row must have three fields")
+                continue
+            name, digest, size = row
+            if name in seen or name not in actual:
+                problems.append(f"wheel RECORD duplicate or unknown path {name}")
+                continue
+            seen.add(name)
+            if name == record_path:
+                if digest or size:
+                    problems.append("wheel RECORD self-entry must omit hash and size")
+            else:
+                expected_digest = base64.urlsafe_b64encode(hashlib.sha256(actual[name]).digest()).rstrip(b"=").decode()
+                if digest != "sha256=" + expected_digest or size != str(len(actual[name])):
+                    problems.append(f"wheel RECORD digest or size mismatch {name}")
+    except (UnicodeError, csv.Error) as error:
+        problems.append(f"malformed wheel RECORD: {error}")
+    for name in sorted(actual.keys() - seen):
+        problems.append(f"wheel RECORD missing path {name}")
+    return problems
+
+
+def _wheel_metadata_problems(actual: dict[str, bytes], expected: dict[str, bytes]) -> list[str]:
     problems: list[str] = []
     prefixes = {
         name.split("/", 1)[0]
@@ -129,6 +220,10 @@ def _wheel_metadata_problems(actual: dict[str, bytes], license_bytes: bytes) -> 
     if len(prefixes) != 1:
         return ["wheel must contain exactly one .dist-info directory"]
     prefix = next(iter(prefixes))
+    project = tomllib.loads(expected["pyproject.toml"].decode("utf-8"))["project"]
+    expected_prefix = f"{project['name'].replace('-', '_')}-{project['version']}.dist-info"
+    if prefix != expected_prefix:
+        problems.append("wheel .dist-info identity differs from project configuration")
     allowed = {f"{prefix}/{name}" for name in WHEEL_DIST_INFO_FILES}
     allowed.add(f"{prefix}/{WHEEL_LICENSE_PATH}")
     for name in sorted(actual):
@@ -139,8 +234,26 @@ def _wheel_metadata_problems(actual: dict[str, bytes], license_bytes: bytes) -> 
     for name in sorted(required - actual.keys()):
         problems.append(f"missing wheel metadata {name}")
     packaged_license = actual.get(f"{prefix}/{WHEEL_LICENSE_PATH}")
-    if packaged_license is not None and packaged_license != license_bytes:
+    if packaged_license is not None and packaged_license != expected["LICENSE"]:
         problems.append(f"altered wheel license {prefix}/{WHEEL_LICENSE_PATH}")
+    if f"{prefix}/METADATA" in actual:
+        problems.extend(_metadata_content_problems(actual[f"{prefix}/METADATA"], expected))
+    if f"{prefix}/WHEEL" in actual:
+        metadata = BytesParser().parsebytes(actual[f"{prefix}/WHEEL"])
+        wanted = {"Wheel-Version": ["1.0"], "Root-Is-Purelib": ["true"], "Tag": ["py3-none-any"]}
+        if metadata.defects or metadata.get_payload().strip():
+            problems.append("malformed wheel WHEEL metadata")
+        for name, values in wanted.items():
+            if metadata.get_all(name, []) != values:
+                problems.append(f"wheel WHEEL {name} differs from pure Python configuration")
+        if len(metadata.get_all("Generator", [])) != 1 or not metadata["Generator"].strip():
+            problems.append("wheel WHEEL must identify its generator")
+        if any(name.lower() not in {"wheel-version", "root-is-purelib", "tag", "generator"} for name in metadata.keys()):
+            problems.append("unexpected wheel WHEEL field")
+    if f"{prefix}/RECORD" in actual:
+        problems.extend(_record_problems(actual, f"{prefix}/RECORD"))
+    if f"{prefix}/top_level.txt" in actual and actual[f"{prefix}/top_level.txt"] != b"ucns\n":
+        problems.append("altered wheel top_level.txt")
     return problems
 
 
@@ -164,7 +277,7 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
             elif actual[name] != data:
                 problems.append(f"{path.name}: altered {name}")
         if is_wheel:
-            metadata_problems = _wheel_metadata_problems(actual, expected["LICENSE"])
+            metadata_problems = _wheel_metadata_problems(actual, expected)
             problems.extend(f"{path.name}: {problem}" for problem in metadata_problems)
             dist_prefixes = {
                 name.split("/", 1)[0]
@@ -176,7 +289,9 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
                 if not metadata_prefix or not name.startswith(f"{metadata_prefix}/"):
                     problems.append(f"{path.name}: unexpected payload {name}")
         else:
-            if "setup.cfg" in actual and actual["setup.cfg"] != GENERATED_SETUP_CFG:
+            if "setup.cfg" not in actual:
+                problems.append(f"{path.name}: missing generated setup.cfg")
+            elif actual["setup.cfg"] != GENERATED_SETUP_CFG:
                 problems.append(f"{path.name}: altered generated setup.cfg")
             for name in sorted(actual.keys() - inputs.keys()):
                 if name not in SDIST_GENERATED:
@@ -199,4 +314,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=146:33 imports_exports=5:4 calls_definitions=73:6
+# ratios: loc_comments=252:34 imports_exports=15:4 calls_definitions=128:9

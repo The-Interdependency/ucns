@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:209 imports_exports=6:16 calls_definitions=74:18
+# ratios: loc_comments=98:224 imports_exports=8:16 calls_definitions=83:18
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -311,6 +311,21 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
     assert receipt["source_unchanged"] is False
     assert receipt["status"] == "not-passed"
     assert "src/pkg/feature.py" in receipt["outcomes"][0]["source_events"]
+    import pytest
+    import subprocess
+    with pytest.raises(ValueError, match="outside the bound source tree"):
+        runner.write_receipt(receipt, root / "generated/receipt.json")
+    assert not (root / "generated/receipt.json").exists()
+    result = subprocess.run([sys.executable, str(RUNNER_PATH), str(root), "--receipt", str(root / "generated/receipt.json")], capture_output=True, text=True)
+    assert result.returncode == 2
+    assert "outside the bound source tree" in result.stderr
+    external = tmp_path / "outside-receipt.json"
+    source = root / "src/pkg/feature.py"
+    original = source.read_bytes()
+    external.hardlink_to(source)
+    runner.write_receipt(receipt, external)
+    assert source.read_bytes() == original
+    assert json.loads(external.read_text())["receipt_sha256"] == receipt["receipt_sha256"]
 # === CHECKS ===
 # id: check_boundary_runner_import_origin
 #   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
@@ -338,4 +353,4 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "passed", receipt
     assert receipt["outcomes"][0]["imported_sources"]["pkg.feature"] == [str(source)]
-# ratios: loc_comments=98:209 imports_exports=6:16 calls_definitions=74:18
+# ratios: loc_comments=98:224 imports_exports=8:16 calls_definitions=83:18

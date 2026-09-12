@@ -65,4 +65,4 @@ jobs:
       - name: Check distributions
         run: |
           .venv/bin/python -m twine check dist/*
-          python tools/verify_distributions.py . dist
+          .venv/bin/python tools/verify_distributions.py . dist
