@@ -1,4 +1,4 @@
-# ratios: loc_comments=170:60 imports_exports=9:7 calls_definitions=89:7
+# ratios: loc_comments=203:60 imports_exports=9:7 calls_definitions=102:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -136,6 +136,15 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         "if True:\n    class TestHidden:\n        def test_hidden(self): assert False\n",
         "__test__ = False\nif True:\n    __test__ = True\n    def test_hidden(): assert False\n",
         "class TestConditional:\n    __test__ = False\n    if True:\n        __test__ = True\n        def test_hidden(self): assert False\n",
+        "def helper(): assert False\nfor test_hidden in [helper]: pass\n",
+        "def helper(): assert False\nfor _, *test_hidden in [(1, helper)]: pass\n",
+        "with manager() as test_hidden: pass\n",
+        "if (test_hidden := helper): pass\n",
+        "match helper:\n    case test_hidden: pass\n",
+        "match mapping:\n    case {'x': value, **TestHidden}: pass\n",
+        "class TestConditional:\n    for test_hidden in [helper]: pass\n",
+        "def helper(): assert False\n(test_hidden := helper)\n",
+        "def helper(): assert False\nvalues = [(test_hidden := helper) for item in [1]]\n",
     ):
         branch.write_text(code)
         ok, problems = audit_repository(root)
@@ -148,6 +157,30 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         branch.write_text(code)
         ok, problems = audit_repository(root)
         assert ok, (code, problems)
+    branch.write_text("def testhidden(): assert False\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("testhidden" in item for item in problems), problems
+    branch.unlink()
+    config = root / "pyproject.toml"
+    for settings in (
+        'python_files = ["spec_*.py"]',
+        'python_classes = ["Spec"]',
+        'python_functions = ["spec_"]',
+        'testpaths = ["integration"]',
+        'addopts = "-o python_files=spec_*.py"',
+    ):
+        config.write_text('[tool.pytest.ini_options]\n' + settings + '\n')
+        ok, problems = audit_repository(root)
+        assert not ok and any("pytest" in item for item in problems), (settings, problems)
+    config.write_text('[tool.pytest.ini_options]\npython_files = ["test_*.py", "*_test.py"]\npython_classes = ["Test"]\npython_functions = ["test"]\ntestpaths = ["tests"]\naddopts = "-q"\n')
+    ok, problems = audit_repository(root)
+    assert ok, problems
+    for name in ("pytest.ini", ".pytest.ini", "pytest.toml", ".pytest.toml", "tox.ini", "setup.cfg"):
+        alternate = root / name
+        alternate.write_text("")
+        ok, problems = audit_repository(root)
+        assert not ok and any("collection configuration" in item for item in problems), (name, problems)
+        alternate.unlink()
 
 
 def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
@@ -250,4 +283,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=170:60 imports_exports=9:7 calls_definitions=89:7
+# ratios: loc_comments=203:60 imports_exports=9:7 calls_definitions=102:7

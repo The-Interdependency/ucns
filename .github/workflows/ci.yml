@@ -60,7 +60,7 @@ jobs:
           --strict-sha
           --require-vendored
       - name: Audit skill-lib contract graph
-        run: python tools/verify_skill_lib_contracts.py .
+        run: .venv/bin/python tools/verify_skill_lib_contracts.py .
       - name: Run geometry tests
         run: .venv/bin/python -m pytest
       - name: Build package

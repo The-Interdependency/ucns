@@ -1001,6 +1001,7 @@ test = [
     { name = "mpmath" },
     { name = "pytest" },
     { name = "sympy" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
 [package.metadata]
@@ -1014,6 +1015,7 @@ requires-dist = [
     { name = "sympy", marker = "extra == 'research'", specifier = ">=1.12,<2" },
     { name = "sympy", marker = "extra == 'test'", specifier = ">=1.12,<2" },
     { name = "tomli", marker = "python_full_version < '3.11' and extra == 'build'", specifier = ">=2" },
+    { name = "tomli", marker = "python_full_version < '3.11' and extra == 'test'", specifier = ">=2" },
     { name = "twine", marker = "extra == 'build'", specifier = ">=5" },
 ]
 provides-extras = ["test", "research", "build"]
