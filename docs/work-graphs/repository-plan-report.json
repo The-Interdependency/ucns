@@ -10,15 +10,15 @@
   },
   "source": {
     "branch": "repair/ucns-audit-20260911",
-    "commit": "0c8e9fc38edf3b3c2c00e6309c4064cb9b0e27fb",
-    "generated_at": "2026-09-11",
-    "note": "Describes the exact local implementation commit below this coordination-only report refresh. Not published or merged by this audit; remote main was observed at 487d24e3a0ed7d1cff858b85faae00312d631905. Report standing does not confer mathematical, semantic, empirical, or deployment authority."
+    "commit": "8ec67074352ecdea186586510e1593bbe61c0331",
+    "generated_at": "2026-09-12",
+    "note": "Describes the exact implementation commit preceding this report-only refresh. Maintenance PR #226 is published; its final remote checks and merge remain separate acceptance observations. Report standing does not confer mathematical, semantic, empirical, or deployment authority."
   },
   "authority": {
     "owns": [
       "geometry constructions and exact geometric carriers implemented in UCNS",
       "UCNS-local mathematical representation candidates and their proof/status evidence",
-      "Public Gonol carrier geometry and native Möbius geometric state"
+      "Public Gonol carrier geometry and native M\u00f6bius geometric state"
     ],
     "does_not_own": [
       "lexical, semantic, morphological, NLP, EDCM measurement, PTCNA runtime, PCEA security, or external-physics truth claims"
@@ -38,7 +38,7 @@
     }
   },
   "status": {
-    "state": "active geometry repository; local maintenance repair awaiting publication and remote CI",
+    "state": "active geometry repository; maintenance repair in exact-head review",
     "current_claim": "UCNS retains exact geometric carriers and candidate modular/wave relations. Local repairs harden immutable/exact inputs, MPFR NaN ordering, no-exec contract auditing, selected-check receipts, and replayable distributions; no candidate is ratified by those repairs."
   },
   "delivered": [
@@ -48,8 +48,8 @@
       "boundary": "glyph function meaning is not inferred from Unicode or lexical semantics"
     },
     {
-      "surface": "native Möbius geometry",
-      "status": "implemented exact framed 360° visible / 720° complete return",
+      "surface": "native M\u00f6bius geometry",
+      "status": "implemented exact framed 360\u00b0 visible / 720\u00b0 complete return",
       "boundary": "display equivalence does not collapse complete-state identity"
     },
     {
@@ -63,8 +63,8 @@
       "boundary": "non-Boolean integer and immutable record admission; NaN cannot supply ordered interval evidence; valid geometric laws unchanged"
     },
     {
-      "surface": "Contract audit and selected-check receipt schema 2",
-      "status": "implemented fail-closed graph audit and source-bound JUnit classification",
+      "surface": "Contract audit and selected-check receipt schema 2.1",
+      "status": "implemented fail-closed declaration audit, actual pytest outcome classification, import-origin verification, per-check snapshots, and Linux source-write observation",
       "boundary": "skips, empty evidence, and source mutation do not pass; selected checks do not establish whole-repository, theorem, freshness, or canon standing"
     },
     {
@@ -74,17 +74,17 @@
     }
   ],
   "active_frontier": [
-    "publish and remotely verify the local maintenance repair after its exact skill-lib dependency is available",
+    "close exact-head maintenance review and then verify the source-distribution/clean-install replay chain across supported Python versions",
     "reconcile the intrinsic/extrinsic Structural Null representation before constructing an origin attachment",
-    "derive the complete visible-circle wave trace into the native frame-bearing Möbius carrier",
+    "derive the complete visible-circle wave trace into the native frame-bearing M\u00f6bius carrier",
     "ratify or reject modular-orbit / continuum-boundary-trace candidates under explicit falsifiers",
     "resolve higher-dimensional recursive-scale laws and geometric operations for unresolved Public Gonol positions"
   ],
   "next_actions": [
     {
-      "action": "Review and publish skill-lib 537cc3954b9ce4f660d46694b1e704a3ae9a5684, then UCNS repair; run Python 3.10/3.12 remote tests, drift, build, Twine, lock and archive-content gates",
-      "owner": "The-Interdependency/skill-lib and The-Interdependency/ucns maintainers",
-      "dependency": "separate publication direction; current inherited CI dependency is local and unpublished"
+      "action": "Complete exact-head review and Python 3.10/3.12 CI for UCNS PR #226; merge after all live findings and gates close",
+      "owner": "The-Interdependency/ucns maintainers",
+      "dependency": "Canonical skill-lib 8de4f12d0f31ff94f41e4a0196c447c0cbe20faf is published; nine installed skills pass strict drift verification"
     },
     {
       "action": "Correct stale stack research claims about PR #220 and reconcile its exact research base before consuming results",
@@ -102,7 +102,7 @@
       "dependency": "exact accepted attachment; this dependency order is a research contract, not ratified UCNS geometry"
     },
     {
-      "action": "Propose a complete native Möbius wave lift with 360/720-degree and continuum-degree counterexample checks",
+      "action": "Propose a complete native M\u00f6bius wave lift with 360/720-degree and continuum-degree counterexample checks",
       "owner": "The-Interdependency/ucns geometry",
       "dependency": "explicit frame-bearing construction and candidate selection protocol"
     },
@@ -113,7 +113,7 @@
     }
   ],
   "blocked": [
-    "New remote maintenance CI is unobserved and requires publication of the inherited exact skill-lib dependency.",
+    "Final exact-head CI and merge remain unobserved at this report refresh.",
     "Origin attachment and recursive traversal cannot be supplied by numerical defaults or downstream interpretations."
   ],
   "cross_repository_relations": [
@@ -158,10 +158,10 @@
   "hmmm": [
     "Structural Null executable representation and candidate documentation remain unreconciled.",
     "Origin attachment, recursive-scale transitions, and unresolved Public Gonol operations lack selecting geometric laws.",
-    "Modular-orbit / continuum-boundary-trace ratification and complete native Möbius lift remain unresolved.",
-    "The exact cited Möbius Strips and Quantum Geometry.txt source attachment is absent from the inspected owning tree.",
-    "A passing default suite includes archived receipt checks, not a newly executed full independent Gröbner replay.",
-    "New remote CI, merge, release, cross-repository repinning, and proof-assistant verification are unobserved.",
+    "Modular-orbit / continuum-boundary-trace ratification and complete native M\u00f6bius lift remain unresolved.",
+    "The exact cited M\u00f6bius Strips and Quantum Geometry.txt source attachment is absent from the inspected owning tree.",
+    "A passing default suite includes archived receipt checks, not a newly executed full independent Gr\u00f6bner replay.",
+    "Final-head remote CI, merge, release, cross-repository repinning, and proof-assistant verification remain separate observations.",
     "Pre-existing ratio coverage gaps and large-module decomposition remain incremental maintenance work."
   ]
 }
