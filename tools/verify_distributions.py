@@ -1,4 +1,4 @@
-# ratios: loc_comments=87:32 imports_exports=5:4 calls_definitions=49:5
+# ratios: loc_comments=146:33 imports_exports=5:4 calls_definitions=73:6
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -53,6 +53,7 @@ TREE_INPUTS = {
     ".agents/skills": {".md", ".json", ".py", ".ts"},
 }
 SDIST_GENERATED = {
+    "setup.cfg",
     "PKG-INFO",
     "src/ucns.egg-info/PKG-INFO",
     "src/ucns.egg-info/SOURCES.txt",
@@ -60,6 +61,7 @@ SDIST_GENERATED = {
     "src/ucns.egg-info/requires.txt",
     "src/ucns.egg-info/top_level.txt",
 }
+GENERATED_SETUP_CFG = b"[egg_info]\ntag_build = \ntag_date = 0\n\n"
 WHEEL_DIST_INFO_FILES = {"METADATA", "WHEEL", "RECORD", "top_level.txt"}
 WHEEL_LICENSE_PATH = "licenses/LICENSE"
 
@@ -174,6 +176,8 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
                 if not metadata_prefix or not name.startswith(f"{metadata_prefix}/"):
                     problems.append(f"{path.name}: unexpected payload {name}")
         else:
+            if "setup.cfg" in actual and actual["setup.cfg"] != GENERATED_SETUP_CFG:
+                problems.append(f"{path.name}: altered generated setup.cfg")
             for name in sorted(actual.keys() - inputs.keys()):
                 if name not in SDIST_GENERATED:
                     problems.append(f"{path.name}: unexpected payload {name}")
@@ -195,4 +199,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=87:32 imports_exports=5:4 calls_definitions=49:5
+# ratios: loc_comments=146:33 imports_exports=5:4 calls_definitions=73:6

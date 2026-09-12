@@ -1,4 +1,4 @@
-# ratios: loc_comments=71:10 imports_exports=6:1 calls_definitions=32:2
+# ratios: loc_comments=72:10 imports_exports=6:1 calls_definitions=32:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -76,6 +76,7 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         ({"wheel_omit": "WHEEL"}, "missing wheel metadata"),
         ({"wheel_omit": "RECORD"}, "missing wheel metadata"),
         ({"sdist_extra": "setup.py"}, "unexpected payload setup.py"),
+        ({"sdist_extra": "setup.cfg"}, "altered generated setup.cfg"),
         ({"extra": "ucns-0.dist-info/entry_points.txt"}, "unexpected wheel metadata"),
     ):
         _archives(root, sdist, wheel, **options)
@@ -89,4 +90,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=71:10 imports_exports=6:1 calls_definitions=32:2
+# ratios: loc_comments=72:10 imports_exports=6:1 calls_definitions=32:2
