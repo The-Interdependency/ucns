@@ -1,4 +1,4 @@
-# ratios: loc_comments=292:60 imports_exports=9:7 calls_definitions=150:7
+# ratios: loc_comments=296:60 imports_exports=9:7 calls_definitions=154:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -268,6 +268,10 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         fixture_root = _repo(tmp_path / f"fixture-{index}", "import pytest\n" + decorator + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
         ok, problems = audit_repository(fixture_root)
         assert not ok and any("check_probe call does not resolve" in item for item in problems), problems
+    for index, declaration in enumerate(("from helper import __test__", "from helper import disabled as __test__", "import helper as __test__")):
+        import_root = _repo(tmp_path / f"import-optout-{index}", declaration + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
+        ok, problems = audit_repository(import_root)
+        assert not ok and any("dynamic test-module opt-out" in item for item in problems), problems
     ok, problems = audit_repository(root / "absent")
     assert not ok and any("empty" in item for item in problems), problems
 
@@ -372,4 +376,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=292:60 imports_exports=9:7 calls_definitions=150:7
+# ratios: loc_comments=296:60 imports_exports=9:7 calls_definitions=154:7

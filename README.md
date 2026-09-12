@@ -211,6 +211,7 @@ Module/class pytest marks and pytest/xunit hooks are unsupported implicit execut
 data bindings must be literal values; imported descriptors, unresolved bases, nested classes, and compound class
 namespace construction fail closed. Fixture helpers remain supported, including
 test-prefixed helper names, but fixture-decorated functions cannot resolve CHECKS.
+Imported `__test__` bindings are unresolved collection opt-outs and fail closed.
 CI runs the complete suite through the outcome observer: collection skips/errors,
 runtime skips, xfail, XPASS, and empty execution fail the suite gate.
 Source observation starts before capability probing. Executable Node version

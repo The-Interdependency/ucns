@@ -1,4 +1,4 @@
-# ratios: loc_comments=575:54 imports_exports=12:4 calls_definitions=309:23
+# ratios: loc_comments=577:54 imports_exports=12:4 calls_definitions=310:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -302,6 +302,8 @@ def _test_setting(cls: ast.ClassDef | ast.Module) -> tuple[bool, object]:
                     value = UNKNOWN_TEST_SETTING
         elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == "__test__":
             found, value = True, UNKNOWN_TEST_SETTING
+        elif isinstance(node, (ast.Import, ast.ImportFrom)) and "__test__" in _bindings([node]):
+            found, value = True, UNKNOWN_TEST_SETTING
         elif isinstance(node, ast.AugAssign) and "__test__" in _target_names(node.target):
             found, value = True, UNKNOWN_TEST_SETTING
         elif isinstance(node, ast.Delete) and any("__test__" in _target_names(target) for target in node.targets):
@@ -314,7 +316,7 @@ def _defined_functions(path: Path) -> Set[str]:
 
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     found, setting = _test_setting(tree)
-    if found and not setting:
+    if setting is UNKNOWN_TEST_SETTING or found and not setting:
         return set()
     return {name for name, kind in _bindings(tree.body).items() if kind == "function"}
 
@@ -683,4 +685,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=575:54 imports_exports=12:4 calls_definitions=309:23
+# ratios: loc_comments=577:54 imports_exports=12:4 calls_definitions=310:23
