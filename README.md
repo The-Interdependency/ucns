@@ -183,6 +183,14 @@ repository evidence suite requires Node 24.15.0 for that TypeScript check; UCNS
 library use remains Python-only. Parser ownership remains in skill-lib.
 Unused skill helper tools remain canonical dependency material.
 
+Receipt inventories hash every file under the bound `src`, `tools`, `tests`,
+`docs`, `generated`, `.agents/skills`, and `.github/workflows` directories,
+excluding `__pycache__`, plus the runner's declared root inputs. Text, binary,
+and extensionless fixtures are included. Source archives retain the complete
+package, test, tool, documentation, generated-evidence, skill, and CI trees;
+the distribution gate rejects missing or altered inputs. Declared test-function
+bindings must be unique, so a replacement cannot stand in for an earlier witness.
+
 For a source-bound, selected-check receipt:
 
 ```bash

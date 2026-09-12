@@ -1,4 +1,4 @@
-# ratios: loc_comments=583:54 imports_exports=12:4 calls_definitions=314:23
+# ratios: loc_comments=587:54 imports_exports=12:4 calls_definitions=316:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -321,7 +321,11 @@ def _defined_functions(path: Path) -> Set[str]:
     found, setting = _test_setting(tree)
     if setting is UNKNOWN_TEST_SETTING or found and not setting:
         return set()
-    return {name for name, kind in _bindings(tree.body).items() if kind == "function"}
+    counts = {}
+    for statement in tree.body:
+        for name in _bindings([statement]):
+            counts[name] = counts.get(name, 0) + 1
+    return {name for name, kind in _bindings(tree.body).items() if kind == "function" and counts[name] == 1}
 
 
 def _missing(fields: Dict[str, str], required: Set[str]) -> Set[str]:
@@ -691,4 +695,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=583:54 imports_exports=12:4 calls_definitions=314:23
+# ratios: loc_comments=587:54 imports_exports=12:4 calls_definitions=316:23

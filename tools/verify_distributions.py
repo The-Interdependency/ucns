@@ -1,4 +1,4 @@
-# ratios: loc_comments=323:35 imports_exports=17:4 calls_definitions=169:11
+# ratios: loc_comments=321:35 imports_exports=17:4 calls_definitions=168:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -64,11 +64,10 @@ ROOT_INPUTS = (
     "pyproject.toml", "README.md", "AGENTS.md", "CANON.md", "CLAUDE.md",
     "LICENSE", "uv.lock", "MANIFEST.in",
 )
-TREE_INPUTS = {
-    "src/ucns": {".py"}, "tests": {".py"}, "tools": {".py"},
-    "docs": {".md", ".json", ".jsonl", ".svg"}, "generated": {".json"},
-    ".agents/skills": {".md", ".json", ".py", ".ts"},
-}
+TREE_INPUTS = (
+    "src/ucns", "tests", "tools", "docs", "generated", ".agents/skills", ".github/workflows",
+)
+
 SDIST_GENERATED = {
     "setup.cfg",
     "PKG-INFO",
@@ -85,9 +84,9 @@ WHEEL_LICENSE_PATH = "licenses/LICENSE"
 
 def expected_files(root: Path) -> dict[str, bytes]:
     paths = {root / name for name in ROOT_INPUTS}
-    for directory, suffixes in TREE_INPUTS.items():
+    for directory in TREE_INPUTS:
         paths.update(path for path in (root / directory).rglob("*")
-                     if path.is_file() and path.suffix in suffixes and "__pycache__" not in path.parts)
+                     if path.is_file() and "__pycache__" not in path.parts)
     missing_roots = [path.name for path in paths if path.parent == root and not path.is_file()]
     if missing_roots:
         raise ValueError(f"missing root distribution inputs: {', '.join(sorted(missing_roots))}")
@@ -390,4 +389,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=323:35 imports_exports=17:4 calls_definitions=169:11
+# ratios: loc_comments=321:35 imports_exports=17:4 calls_definitions=168:11

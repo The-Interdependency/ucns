@@ -87,7 +87,7 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
 def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     root.mkdir()
-    for name in (*audit.ROOT_INPUTS, "src/ucns/__init__.py", "generated/receipt.json", "docs/preregistration.md", ".agents/skills/msdmd/parsers/universal.py"):
+    for name in (*audit.ROOT_INPUTS, "src/ucns/__init__.py", "generated/receipt.json", "docs/preregistration.md", "tests/witness.txt", "tools/helper.sh", ".github/workflows/ci.yml", "docs/extensionless", ".agents/skills/msdmd/parsers/universal.py"):
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n")
@@ -132,7 +132,7 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     ):
         _archives(root, sdist, wheel, **options)
         assert any(message in problem for problem in audit.verify_distributions(root, sdist, wheel)), options
-    for key, name, expected in (("omit", "generated/receipt.json", "missing"), ("altered", "docs/preregistration.md", "altered"), ("extra", "ucns/lexical.py", "unexpected")):
+    for key, name, expected in (("omit", "tests/witness.txt", "missing"), ("altered", "docs/extensionless", "altered"), ("omit", ".github/workflows/ci.yml", "missing"), ("omit", "generated/receipt.json", "missing"), ("altered", "docs/preregistration.md", "altered"), ("extra", "ucns/lexical.py", "unexpected")):
         _archives(root, sdist, wheel, **{key: name})
         assert any(expected in problem for problem in audit.verify_distributions(root, sdist, wheel))
     _archives(root, sdist, wheel, extra="../escaped.py")

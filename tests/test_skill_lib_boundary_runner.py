@@ -1,4 +1,4 @@
-# ratios: loc_comments=155:351 imports_exports=19:18 calls_definitions=186:20
+# ratios: loc_comments=158:367 imports_exports=19:18 calls_definitions=197:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -148,6 +148,9 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     assert receipt["status"] == "audit-gap"
     assert receipt["outcomes"] == []
     assert len(receipt["receipt_sha256"]) == 64
+    root = _repo(tmp_path / "rebound-function", "def test_probe(): assert False\ndef test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
     root = _repo(tmp_path / "nested", "def test_fails(): assert False\n", [{"id": "check_fails", "function": "test_fails"}])
     nested = root / "tests/sub"
     nested.mkdir()
@@ -320,6 +323,24 @@ def test_receipt_binds_declarations_outputs_and_identity(tmp_path: Path) -> None
         receipt, sort_keys=True, separators=(",", ":"), ensure_ascii=False
     ).encode()
     assert identity == sha256(encoded).hexdigest()
+
+
+    root = _repo(tmp_path / "text-input", "from pathlib import Path\ndef test_probe():\n    assert Path(__file__).with_name('witness.txt').read_text() in {'one', 'two'}\n", [{"id": "check_probe", "function": "test_probe"}])
+    witness = root / "tests/witness.txt"
+    snapshots = []
+    for text in ("one", "two"):
+        witness.write_text(text)
+        observed = runner.run_boundaries(root)
+        assert observed["status"] == "passed" and observed["source_unchanged"], observed
+        assert observed["source_files_sha256"]["tests/witness.txt"] == sha256(text.encode()).hexdigest()
+        snapshots.append(observed["source_before_sha256"])
+    assert snapshots[0] != snapshots[1]
+    for directory in runner.SOURCE_DIRECTORIES:
+        path = root / directory / "fixture-without-suffix"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"input")
+        inventory, _ = runner._source_snapshot(root)
+        assert inventory[path.relative_to(root).as_posix()] == sha256(b"input").hexdigest()
 
 
 def test_passing_receipt_has_no_activation_or_selection_effect(tmp_path: Path) -> None:
@@ -544,4 +565,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=155:351 imports_exports=19:18 calls_definitions=186:20
+# ratios: loc_comments=158:367 imports_exports=19:18 calls_definitions=197:20
