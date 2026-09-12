@@ -1,4 +1,4 @@
-# ratios: loc_comments=399:71 imports_exports=20:4 calls_definitions=179:20
+# ratios: loc_comments=421:71 imports_exports=20:4 calls_definitions=186:20
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -308,7 +308,7 @@ def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
 
 
 def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
-    """Bind repository-owned execution inputs, excluding caches and secrets."""
+    """Bind declared execution inputs, excluding bytecode caches."""
     entries = {root / name for name in ROOT_INPUTS}
     for directory in SOURCE_DIRECTORIES:
         base = root / directory
@@ -378,6 +378,7 @@ def _execute_check(root: Path, check: Entry) -> CheckOutcome:
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):
             environment.pop(name, None)
         environment.update(PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+        environment["PYTHONPYCACHEPREFIX"] = str(Path(temporary) / "bytecode")
         environment["UCNS_BOUND_SOURCE_ROOT"] = str(root)
         environment["PYTHONPATH"] = os.pathsep.join((str(STARTUP_DIRECTORY), str(root / "src"), str(root)))
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
@@ -419,8 +420,13 @@ def run_boundaries(
     root: Path, *, selected_ids: Iterable[str] = (),
 ) -> dict[str, object]:
     root = root.resolve()
-    source_files, source_before = _source_snapshot(root)
-    audit_ok, gaps = audit_repository(root)
+    try:
+        source_files, source_before = _source_snapshot(root)
+    except (ValueError, OSError) as error:
+        source_files, source_before = {}, ""
+        audit_ok, gaps = False, [f"GAP source snapshot {type(error).__name__}: {error}"]
+    else:
+        audit_ok, gaps = audit_repository(root)
     if not audit_ok:
         receipt: dict[str, object] = {
             "schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION,
@@ -442,17 +448,32 @@ def run_boundaries(
         check for check in checks if check.id in requested
     )
     outcomes = []
+    snapshot_errors = []
     for check in selected:
-        _, check_before = _source_snapshot(root)
+        check_before = check_after = ""
+        try:
+            _, check_before = _source_snapshot(root)
+        except (ValueError, OSError) as error:
+            snapshot_errors.append({"check_id": check.id, "phase": "before", "error": str(error)})
+            outcomes.append(_error_outcome(root, check, error))
+            continue
         try:
             outcome = _run_check(root, check)
         except (ValueError, OSError, AttributeError) as error:
             outcome = _error_outcome(root, check, error)
-        _, check_after = _source_snapshot(root)
+        try:
+            _, check_after = _source_snapshot(root)
+        except (ValueError, OSError) as error:
+            snapshot_errors.append({"check_id": check.id, "phase": "after", "error": str(error)})
+            outcome = replace(outcome, status="ERROR", diagnostic=f"source snapshot {type(error).__name__}: {error}")
         outcomes.append(replace(outcome, source_before_sha256=check_before, source_after_sha256=check_after))
-    _, source_after = _source_snapshot(root)
+    try:
+        _, source_after = _source_snapshot(root)
+    except (ValueError, OSError) as error:
+        source_after = ""
+        snapshot_errors.append({"phase": "final", "error": str(error)})
     statuses = {outcome.status for outcome in outcomes}
-    unchanged = source_before == source_after and all(
+    unchanged = not snapshot_errors and source_before == source_after and all(
         not outcome.source_events and outcome.source_before_sha256 == outcome.source_after_sha256
         for outcome in outcomes
     )
@@ -465,6 +486,7 @@ def run_boundaries(
         "source_before_sha256": source_before,
         "source_after_sha256": source_after,
         "source_unchanged": unchanged,
+        "snapshot_errors": snapshot_errors,
         "bootstrap_sha256": _sha(BOOTSTRAP.read_bytes()),
         "supervisor_sha256": _sha(SUPERVISOR.read_bytes()),
         "startup_hook_sha256": _sha((STARTUP_DIRECTORY / "sitecustomize.py").read_bytes()),
@@ -521,4 +543,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=399:71 imports_exports=20:4 calls_definitions=179:20
+# ratios: loc_comments=421:71 imports_exports=20:4 calls_definitions=186:20

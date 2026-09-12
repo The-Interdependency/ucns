@@ -73,7 +73,7 @@ _SPEC = importlib.util.spec_from_file_location("_ucns_canonical_msdmd", PARSER_P
 if _SPEC is None or _SPEC.loader is None:
     raise RuntimeError("canonical msdmd parser unavailable")
 _PARSER = importlib.util.module_from_spec(_SPEC)
-_SPEC.loader.exec_module(_PARSER)
+exec(compile(PARSER_PATH.read_bytes(), str(PARSER_PATH), "exec", dont_inherit=True), _PARSER.__dict__)
 REQUIRED_MODULE_FIELDS = {
     "module_name",
     "module_kind",

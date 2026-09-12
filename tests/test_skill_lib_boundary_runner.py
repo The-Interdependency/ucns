@@ -1,4 +1,4 @@
-# ratios: loc_comments=168:379 imports_exports=20:18 calls_definitions=210:20
+# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -365,8 +365,9 @@ def test_receipt_binds_declarations_outputs_and_identity(tmp_path: Path) -> None
         linked = _repo(tmp_path / f"symlink-{index}", "def test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe"}])
         path = linked / name
         path.symlink_to(outside / "witness" if name == "tests/witness-link" or name == "README.md" else outside)
-        with pytest.raises(ValueError, match="unsupported source symlink"):
-            runner.run_boundaries(linked)
+        invalid = runner.run_boundaries(linked)
+        assert invalid["status"] == "audit-gap" and not invalid["outcomes"]
+        assert any("unsupported source symlink" in gap for gap in invalid["audit_gaps"])
 
 
 def test_passing_receipt_has_no_activation_or_selection_effect(tmp_path: Path) -> None:
@@ -378,6 +379,9 @@ def test_passing_receipt_has_no_activation_or_selection_effect(tmp_path: Path) -
     assert receipt["selection_effect"] == "none"
     assert receipt["edcm_activation"] == "inactive"
     assert receipt["canon_status"] == "none"
+    parametrized = _repo(tmp_path / "parameter-ids", "import pytest\n@pytest.mark.parametrize('value', [1, 2], ids=['a::b', 'nested[x]::y'])\ndef test_probe(value): assert value > 0\n", [{"id": "check_probe", "function": "test_probe"}])
+    observed = runner.run_boundaries(parametrized)
+    assert observed["status"] == "passed", observed
 
 
 def test_skips_xfails_and_mixed_parameters_are_not_passes(tmp_path: Path) -> None:
@@ -476,6 +480,15 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
 # === END CHECKS ===
 
 
+    root = _repo(tmp_path / "new-symlink", "from pathlib import Path\ndef test_mutate():\n    Path(__file__).with_name('new-link').symlink_to('test_feature.py')\ndef test_later(): pass\n", [{"id": "check_mutate", "function": "test_mutate"}, {"id": "check_later", "function": "test_later"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "not-passed" and not receipt["source_unchanged"]
+    assert [outcome["check_id"] for outcome in receipt["outcomes"]] == ["check_mutate", "check_later"]
+    assert all(outcome["status"] == "ERROR" for outcome in receipt["outcomes"])
+    assert receipt["snapshot_errors"] and receipt["source_after_sha256"] == ""
+    assert receipt["outcomes"][0]["source_events"]
+
+
 def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, monkeypatch) -> None:
     body = "import pkg.feature\nimport subprocess, sys\ndef test_probe():\n    assert pkg.feature.VALUE == 'bound'\n    child = subprocess.check_output([sys.executable, '-c', 'import pkg.feature; print(pkg.feature.VALUE)'], text=True)\n    assert child.strip() == 'bound'\n"
     root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
@@ -504,6 +517,28 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
 # === END CHECKS ===
+
+
+    # A timestamp-valid cache must not replace inventoried source bytes.
+    import os
+    import py_compile
+    import subprocess
+    poisoned = _repo(tmp_path / "poisoned-cache", "def test_probe():\n    from pkg.feature import VALUE\n    assert VALUE == 1\n    import subprocess, sys\n    child = subprocess.run([sys.executable, '-c', 'from pkg.feature import VALUE; print(VALUE)'], check=True, capture_output=True, text=True)\n    assert child.stdout.strip() == '1'\n", [{"id": "check_probe", "function": "test_probe"}])
+    module = poisoned / "src/pkg/feature.py"
+    declarations = module.read_text()
+    module.write_text(declarations + "\nVALUE = 2\n")
+    stamp = module.stat()
+    cache = module.parent / "__pycache__" / f"{module.stem}.{sys.implementation.cache_tag}.pyc"
+    py_compile.compile(str(module), cfile=str(cache), doraise=True)
+    module.write_text(declarations + "\nVALUE = 1\n")
+    os.utime(module, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+    ordinary = dict(os.environ, PYTHONPATH=str(poisoned / "src"), PYTHONDONTWRITEBYTECODE="1")
+    ordinary.pop("PYTHONPYCACHEPREFIX", None)
+    old = subprocess.run([sys.executable, "-c", "from pkg.feature import VALUE; print(VALUE)"], env=ordinary, capture_output=True, text=True, check=True)
+    assert old.stdout.strip() == "2", "fixture must contain an executable stale cache"
+    observed = runner.run_boundaries(poisoned)
+    assert observed["status"] == "passed" and observed["source_unchanged"], observed
+    assert not any("__pycache__" in name for name in observed["source_files_sha256"])
 
 
 def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
@@ -591,4 +626,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=168:379 imports_exports=20:18 calls_definitions=210:20
+# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20

@@ -1,4 +1,4 @@
-# ratios: loc_comments=108:35 imports_exports=7:3 calls_definitions=47:8
+# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
 # === MODULE_BUILD ===
 # id: boundary_pytest_observer
 #   module_name: _boundary_pytest
@@ -42,6 +42,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
+import tempfile
 from types import CodeType, FunctionType, MethodType
 
 from _pytest.assertion.rewrite import _rewrite_test
@@ -67,8 +68,12 @@ class Observer:
                 _, code = _rewrite_test(path, item.config)
             self.expected_code[path] = code
         expected = self.expected_code[path]
-        for name in item.nodeid.split("::")[1:]:
-            name = name.split("[", 1)[0]
+        names = [item.originalname or item.name.split("[", 1)[0]]
+        parent = item.parent
+        while isinstance(parent, pytest.Class):
+            names.insert(0, parent.name)
+            parent = parent.parent
+        for name in names:
             candidates = [value for value in expected.co_consts if isinstance(value, CodeType) and value.co_name == name]
             if len(candidates) != 1:
                 return False
@@ -116,7 +121,13 @@ class Observer:
 
 def run_suite(arguments: list[str], root: Path) -> int:
     observer = Observer(root)
-    result = int(pytest.main(arguments, plugins=[observer]))
+    previous_prefix = sys.pycache_prefix
+    try:
+        with tempfile.TemporaryDirectory(prefix="ucns-suite-bytecode-") as cache:
+            sys.pycache_prefix = cache
+            result = int(pytest.main(arguments, plugins=[observer]))
+    finally:
+        sys.pycache_prefix = previous_prefix
     if result:
         return result
     return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other else 1
@@ -160,4 +171,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=108:35 imports_exports=7:3 calls_definitions=47:8
+# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
