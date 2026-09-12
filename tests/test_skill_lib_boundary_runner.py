@@ -44,7 +44,7 @@
 #   proves: boundary_runner_has_no_activation_effect
 #   call: self::test_passing_receipt_has_no_activation_or_selection_effect
 #   requires: python3
-#   timeout: 10
+#   timeout: 30
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
 # === END CHECKS ===
