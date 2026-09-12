@@ -1,4 +1,4 @@
-# ratios: loc_comments=385:67 imports_exports=19:4 calls_definitions=168:18
+# ratios: loc_comments=373:71 imports_exports=19:4 calls_definitions=165:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -8,9 +8,11 @@
 #   public_surface: command-line boundary runner, run_boundaries, write_receipt
 #   internal_surface: capability resolution, subprocess classification, receipt hashing
 #   auth_boundary: none
-#   storage_boundary: optional caller-selected JSON receipt path
+#   storage_boundary: write
+#   storage_notes: optional caller-selected JSON receipt path
 #   network_boundary: none
-#   user_data_boundary: captured test output is bounded and retained only in the caller-selected receipt
+#   user_data_boundary: write
+#   user_data_notes: captured test output is bounded and retained only in the caller-selected receipt
 #   admin_only: false
 #   tests: tests/test_skill_lib_boundary_runner.py
 #   rollout: explicit local and CI evidence runner; no product, EDCM, or canon activation
@@ -96,6 +98,7 @@ ALLOWED_CLEANUPS = {"none", "tempdir_teardown", "pytest temporary_path"}
 SOURCE_DIRECTORIES = ("src", "tools", "tests", "docs", "generated", ".agents/skills", ".github/workflows")
 ROOT_INPUTS = ("pyproject.toml", "uv.lock", "pytest.ini", "setup.cfg", "MANIFEST.in", "conftest.py", "CANON.md", "AGENTS.md", "README.md", "CLAUDE.md", "LICENSE")
 BOOTSTRAP = TOOLS_DIRECTORY / "_boundary_pytest.py"
+SUPERVISOR = TOOLS_DIRECTORY / "_boundary_supervisor.py"
 STARTUP_DIRECTORY = TOOLS_DIRECTORY / "_boundary_site"
 
 
@@ -343,6 +346,7 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         report_path = Path(temporary) / "outcomes.json"
         command = (sys.executable, str(BOOTSTRAP), str(root), str(report_path),
                    "-q", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
+        command = (sys.executable, str(SUPERVISOR), str(timeout), *command[1:])
         environment = dict(os.environ)
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):
             environment.pop(name, None)
@@ -356,28 +360,15 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
                     command, cwd=root, stdin=subprocess.DEVNULL,
                     stdout=stdout, stderr=stderr, start_new_session=True, env=environment,
                 )
-                timed_out = False
-                try:
-                    returncode = process.wait(timeout=timeout)
-                except subprocess.TimeoutExpired:
-                    timed_out = True
-                    try:
-                        process.terminate()  # Bootstrap reaps detached descendants too.
-                        returncode = process.wait(timeout=3)
-                    except subprocess.TimeoutExpired:
-                        try:
-                            os.killpg(process.pid, signal.SIGKILL)
-                        except ProcessLookupError:
-                            pass
-                        returncode = process.wait()
-                    except ProcessLookupError:
-                        returncode = process.wait()
+                # The separate supervisor owns the timeout and descendant reaping;
+                # pytest signal handlers never run in that process.
+                returncode = process.wait()
         finally:
             source_events = watcher.finish()
         stdout_sha, stdout_bytes, stdout_excerpt = _excerpt(stdout_path)
         stderr_sha, stderr_bytes, stderr_excerpt = _excerpt(stderr_path)
         status, observed = _pytest_outcome(report_path, returncode)
-        if timed_out:
+        if observed.get("timed_out"):
             status = "TIMEOUT"
 
     duration = round(time.monotonic() - started, 6)
@@ -452,6 +443,7 @@ def run_boundaries(
         "source_after_sha256": source_after,
         "source_unchanged": unchanged,
         "bootstrap_sha256": _sha(BOOTSTRAP.read_bytes()),
+        "supervisor_sha256": _sha(SUPERVISOR.read_bytes()),
         "startup_hook_sha256": _sha((STARTUP_DIRECTORY / "sitecustomize.py").read_bytes()),
         "python_version": sys.version,
         "selected_check_ids": [outcome.check_id for outcome in outcomes],
@@ -499,4 +491,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=385:67 imports_exports=19:4 calls_definitions=168:18
+# ratios: loc_comments=373:71 imports_exports=19:4 calls_definitions=165:18

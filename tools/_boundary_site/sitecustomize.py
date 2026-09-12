@@ -1,4 +1,4 @@
-# ratios: loc_comments=28:27 imports_exports=5:1 calls_definitions=13:3
+# ratios: loc_comments=28:28 imports_exports=5:1 calls_definitions=13:3
 # === MODULE_BUILD ===
 # id: boundary_descendant_import_binding
 #   module_name: sitecustomize
@@ -8,7 +8,8 @@
 #   public_surface: none; installed on the boundary runner's sanitized PYTHONPATH
 #   internal_surface: BoundSourceFinder
 #   auth_boundary: none
-#   storage_boundary: reads source package locations
+#   storage_boundary: read
+#   storage_notes: reads source package locations
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
@@ -63,4 +64,4 @@ class BoundSourceFinder:
 if BOUND_ROOT:
     FINDER = BoundSourceFinder(Path(BOUND_ROOT).resolve())
     sys.meta_path.insert(0, FINDER)
-# ratios: loc_comments=28:27 imports_exports=5:1 calls_definitions=13:3
+# ratios: loc_comments=28:28 imports_exports=5:1 calls_definitions=13:3

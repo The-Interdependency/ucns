@@ -1,4 +1,4 @@
-# ratios: loc_comments=310:34 imports_exports=17:4 calls_definitions=159:11
+# ratios: loc_comments=312:35 imports_exports=17:4 calls_definitions=160:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -8,7 +8,8 @@
 #   public_surface: verify_distributions, command-line audit
 #   internal_surface: expected_files, read_archive
 #   auth_boundary: none
-#   storage_boundary: read-only repository and archives
+#   storage_boundary: read
+#   storage_notes: read-only repository and archives
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
@@ -95,7 +96,7 @@ def expected_files(root: Path) -> dict[str, bytes]:
     return {path.relative_to(root).as_posix(): path.read_bytes() for path in sorted(paths)}
 
 
-def read_archive(path: Path, *, wheel: bool) -> dict[str, bytes]:
+def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None) -> dict[str, bytes]:
     """Read regular files only; reject ambiguous names rather than extracting."""
     files: dict[str, bytes] = {}
     prefixes: set[str] = set()
@@ -107,6 +108,8 @@ def read_archive(path: Path, *, wheel: bool) -> dict[str, bytes]:
         if not parts or name.startswith("/") or ".." in parts or "\\" in name or "\0" in name:
             raise ValueError(f"unsafe archive name: {name}")
         if not wheel:
+            if expected_prefix is not None and parts[0] != expected_prefix:
+                raise ValueError("sdist root identity differs from project/filename")
             prefixes.add(parts[0])
             if (len(parts) < 2 and not directory) or len(prefixes) != 1:
                 raise ValueError("sdist must have one enclosing directory")
@@ -328,7 +331,7 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
         problems.append(f"invalid distribution filename: {error}")
     for path, inputs, is_wheel in ((sdist, expected, False), (wheel, wheel_expected, True)):
         try:
-            actual = read_archive(path, wheel=is_wheel)
+            actual = read_archive(path, wheel=is_wheel, expected_prefix=None if is_wheel else sdist.name.removesuffix(".tar.gz"))
         except (OSError, ValueError, tarfile.TarError, zipfile.BadZipFile) as error:
             problems.append(f"{path.name}: {error}")
             continue
@@ -376,4 +379,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=310:34 imports_exports=17:4 calls_definitions=159:11
+# ratios: loc_comments=312:35 imports_exports=17:4 calls_definitions=160:11

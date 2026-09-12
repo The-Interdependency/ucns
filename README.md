@@ -187,6 +187,9 @@ and zero skipped checks. It also binds a selected exact-input receipt executed
 from the archived source, whose UCNS hashes must match both installed artifacts.
 CI repeats this on Python 3.10, 3.11, and 3.12.
 The source archive includes this replay script and the exact build-tool pins.
+The no-exec graph also reconciles the exact vendored reference parser that it
+executes, including a local numeric-field witness. Parser ownership remains in
+skill-lib. Unused skill helper tools remain canonical dependency material.
 
 For a source-bound, selected-check receipt:
 
@@ -203,9 +206,10 @@ Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient pytest plugins disabled and
 PYTHONPATH replaced. An inherited startup hook makes ordinary Python descendants
-prefer bound packages over their working directory. The bootstrap uses Linux
+prefer bound packages over their working directory. A separate supervisor uses Linux
 child subreaping to terminate remaining descendants before observation ends;
-leaked background work prevents acceptance. Origin receipts observe the selected
+leaked background work prevents acceptance. Timeout cleanup is outside the
+pytest process, so replacing its signal handler cannot bypass descendant cleanup. Origin receipts observe the selected
 pytest process. Explicit isolated/no-site interpreters and replaced child
 environments do not inherit the import protocol. The observer instruments trusted
 checks; it is not a sandbox for hostile test code. A `passed` receipt covers only its selected
