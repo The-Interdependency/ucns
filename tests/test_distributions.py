@@ -1,4 +1,4 @@
-# ratios: loc_comments=121:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=122:10 imports_exports=9:1 calls_definitions=47:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -97,6 +97,7 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
     for options, message in (
+        ({"wheel_directory": "evil-1.dist-info"}, "exactly one .dist-info directory"),
         ({"omit": "LICENSE"}, "missing LICENSE"),
         ({"altered": "LICENSE"}, "altered LICENSE"),
         ({"wheel_omit": "licenses/LICENSE"}, "missing wheel metadata"),
@@ -139,4 +140,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=121:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=122:10 imports_exports=9:1 calls_definitions=47:2

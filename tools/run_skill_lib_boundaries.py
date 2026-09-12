@@ -1,4 +1,4 @@
-# ratios: loc_comments=383:71 imports_exports=20:4 calls_definitions=168:18
+# ratios: loc_comments=388:71 imports_exports=20:4 calls_definitions=172:19
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -470,11 +470,18 @@ def run_boundaries(
     return receipt
 
 
+def _receipt_inside_source(path: Path, root: Path) -> bool:
+    lexical = Path(os.path.abspath(path))
+    destination = path.parent.resolve() / path.name
+    bound = root.resolve()
+    return any(candidate.is_relative_to(bound) for candidate in (lexical, destination, path.resolve()))
+
+
 def write_receipt(receipt: dict[str, object], path: Path) -> None:
     bound_root = receipt.get("bound_source_root")
     if not isinstance(bound_root, str) or not bound_root:
         raise ValueError("receipt must identify its bound source tree")
-    if path.resolve().is_relative_to(Path(bound_root).resolve()):
+    if _receipt_inside_source(path, Path(bound_root)):
         raise ValueError("receipt output must be outside the bound source tree")
     path.parent.mkdir(parents=True, exist_ok=True)
     # Replacing the directory entry avoids writing through an external hardlink.
@@ -490,7 +497,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--check", action="append", default=[], dest="checks")
     parser.add_argument("--receipt", type=Path)
     args = parser.parse_args(argv)
-    if args.receipt and args.receipt.resolve().is_relative_to(Path(args.root).resolve()):
+    if args.receipt and _receipt_inside_source(args.receipt, Path(args.root)):
         parser.error("receipt output must be outside the bound source tree")
     receipt = run_boundaries(Path(args.root), selected_ids=args.checks)
     if args.receipt:
@@ -501,4 +508,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=383:71 imports_exports=20:4 calls_definitions=168:18
+# ratios: loc_comments=388:71 imports_exports=20:4 calls_definitions=172:19
