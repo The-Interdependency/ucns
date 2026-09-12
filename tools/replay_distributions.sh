@@ -34,9 +34,11 @@ runtime=${4:-python3}
 case "$output/" in "$repo/"*) echo 'OUTPUT must be outside source' >&2; exit 2;; esac
 test ! -e "$output"
 mkdir -p "$output"
-python3 "$repo/tools/verify_distributions.py" "$repo" "$dist"
-sha256sum "$dist"/*.whl "$dist"/*.tar.gz > "$output/archives.sha256"
 uv export --project "$repo" --locked --extra test --extra build --no-emit-project --no-dev --format requirements.txt --output-file "$output/dependencies.txt" >/dev/null
+uv venv --python "$runtime" "$output/verification-venv"
+uv pip sync --python "$output/verification-venv/bin/python" --require-hashes "$output/dependencies.txt"
+"$output/verification-venv/bin/python" "$repo/tools/verify_distributions.py" "$repo" "$dist"
+sha256sum "$dist"/*.whl "$dist"/*.tar.gz > "$output/archives.sha256"
 mkdir "$output/source"
 tar -xzf "$dist"/*.tar.gz -C "$output/source"
 source_root=$(find "$output/source" -mindepth 1 -maxdepth 1 -type d)
@@ -48,7 +50,7 @@ for kind in wheel sdist; do
   uv pip install --python "$environment/bin/python" --no-deps --no-build-isolation "${artifact[0]}"
   (
     cd "$source_root"
-    env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+    env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
       "$environment/bin/python" - "$output/$kind.xml" "$output/$kind-import.json" <<'PY'
 import hashlib
 import json
@@ -61,17 +63,25 @@ import ucns
 installed = Path(ucns.__file__).resolve()
 assert installed.is_relative_to(Path(sys.prefix)), installed
 initial = installed.read_bytes()
+expected = {p.relative_to(Path("src")).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("src/ucns").rglob("*.py")}
+def installed_sources():
+    return {"ucns/" + p.relative_to(installed.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in installed.parent.rglob("*.py")}
+assert installed_sources() == expected
 result = pytest.main(["tests", "--junitxml=" + sys.argv[1]])
 assert result == 0, result
 assert Path(ucns.__file__).resolve() == installed
 assert installed.read_bytes() == initial
+assert installed_sources() == expected
+origins = {name: str(Path(module.__file__).resolve()) for name, module in sys.modules.items() if (name == "ucns" or name.startswith("ucns.")) and getattr(module, "__file__", None)}
+assert all(Path(path).is_relative_to(installed.parent) for path in origins.values()), origins
 cases = list(ET.parse(sys.argv[1]).getroot().iter("testcase"))
 assert cases and not any(c.find("skipped") is not None or c.find("failure") is not None or c.find("error") is not None for c in cases)
-Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str(installed), "ucns_init_sha256": hashlib.sha256(initial).hexdigest(), "tests": len(cases), "skips": 0, "status": "passed"}, indent=2) + "\n")
+Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str(installed), "ucns_init_sha256": hashlib.sha256(initial).hexdigest(), "installed_source_sha256": expected, "imported_origins": origins, "tests": len(cases), "skips": 0, "status": "passed"}, indent=2) + "\n")
 PY
   )
 done
 sha256sum -c "$output/archives.sha256"
+"$output/verification-venv/bin/python" "$repo/tools/verify_distributions.py" "$repo" "$dist"
 python3 - "$dist" "$output" <<'PY'
 import hashlib
 import json
