@@ -40,20 +40,31 @@ uv export --project "$repo" --locked --extra test --extra build --no-emit-projec
 uv venv --python "$runtime" "$output/verification-venv"
 uv pip sync --python "$output/verification-venv/bin/python" --require-hashes "$output/dependencies.txt"
 "$output/verification-venv/bin/python" "$repo/tools/verify_distributions.py" "$repo" "$dist"
-sha256sum "$dist"/*.whl "$dist"/*.tar.gz > "$output/archives.sha256"
+(cd "$dist"; sha256sum ./*.whl ./*.tar.gz) > "$output/archives.sha256"
 mkdir "$output/source"
 tar -xzf "$dist"/*.tar.gz -C "$output/source"
 source_root=$(find "$output/source" -mindepth 1 -maxdepth 1 -type d)
+snapshot_tool="$repo/tools/_distribution_evidence.py"
+"$output/verification-venv/bin/python" "$snapshot_tool" snapshot "$source_root" "$output/source-snapshot.json"
 for kind in wheel sdist; do
+  "$output/verification-venv/bin/python" "$snapshot_tool" verify-snapshot "$source_root" "$output/source-snapshot.json"
   environment="$output/$kind-venv"
   uv venv --python "$runtime" "$environment"
   uv pip sync --python "$environment/bin/python" --require-hashes "$output/dependencies.txt"
   if [ "$kind" = wheel ]; then artifact=("$dist"/*.whl); else artifact=("$dist"/*.tar.gz); fi
-  uv pip install --python "$environment/bin/python" --no-deps --no-build-isolation "${artifact[0]}"
+  artifact_uri=$("$output/verification-venv/bin/python" - "${artifact[0]}" <<'PYTHON'
+import hashlib
+from pathlib import Path
+import sys
+artifact = Path(sys.argv[1])
+print(artifact.as_uri() + "#sha256=" + hashlib.sha256(artifact.read_bytes()).hexdigest())
+PYTHON
+  )
+  uv pip install --python "$environment/bin/python" --no-deps --no-build-isolation "ucns @ $artifact_uri"
   (
     cd "$source_root"
     env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPYCACHEPREFIX="$output/$kind-bytecode" \
-      "$environment/bin/python" - "$output/$kind.xml" "$output/$kind-import.json" <<'PY'
+      "$environment/bin/python" - "$output/$kind.xml" "$output/$kind-import.json" "$dist"/*.whl "${artifact[0]}" <<'PY'
 import hashlib
 import json
 from pathlib import Path
@@ -61,6 +72,7 @@ import sys
 import xml.etree.ElementTree as ET
 import ucns
 from tools._boundary_pytest import run_suite
+from tools._distribution_evidence import installed_inventory
 
 installed = Path(ucns.__file__).resolve()
 assert installed.is_relative_to(Path(sys.prefix)), installed
@@ -71,18 +83,21 @@ def installed_sources():
     assert not any(path.is_symlink() for path in entries), "installed package contains a symlink"
     return {"ucns/" + p.relative_to(installed.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in entries if p.is_file() and "__pycache__" not in p.parts}
 assert installed_sources() == expected
-result = run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config", "--junitxml=" + sys.argv[1]], Path.cwd())
+distribution_before = installed_inventory(Path(sys.argv[3]), Path(sys.argv[4]))
+result = run_suite(["tests", "-p", "no:cacheprovider", "-c", "pyproject.toml", "--noconftest", "--strict-config", "--junitxml=" + sys.argv[1]], Path.cwd())
 assert result == 0, result
 assert Path(ucns.__file__).resolve() == installed
 assert installed.read_bytes() == initial
 assert installed_sources() == expected
+assert installed_inventory(Path(sys.argv[3]), Path(sys.argv[4])) == distribution_before
 origins = {name: str(Path(module.__file__).resolve()) for name, module in sys.modules.items() if (name == "ucns" or name.startswith("ucns.")) and getattr(module, "__file__", None)}
 assert all(Path(path).is_relative_to(installed.parent) for path in origins.values()), origins
 cases = list(ET.parse(sys.argv[1]).getroot().iter("testcase"))
 assert cases and not any(c.find("skipped") is not None or c.find("failure") is not None or c.find("error") is not None for c in cases)
-Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str(installed), "ucns_init_sha256": hashlib.sha256(initial).hexdigest(), "installed_source_sha256": expected, "imported_origins": origins, "tests": len(cases), "skips": 0, "status": "passed"}, indent=2) + "\n")
+Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str(installed), "ucns_init_sha256": hashlib.sha256(initial).hexdigest(), "installed_source_sha256": expected, "installed_distribution": distribution_before, "imported_origins": origins, "tests": len(cases), "skips": 0, "status": "passed"}, indent=2) + "\n")
 PY
   )
+  "$output/verification-venv/bin/python" "$snapshot_tool" verify-snapshot "$source_root" "$output/source-snapshot.json"
 done
 # This receipt executes the exact source archived above. Installed wheel/sdist
 # execution is separately witnessed by the two complete suites and source maps.
@@ -93,9 +108,10 @@ env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWR
   --check check_mpfr_nan_is_not_ordered_evidence \
   --check check_mpfr_exact_rational_admission \
   --check check_boundary_runner_nonactivation --receipt "$output/exact-input-receipt.json"
-sha256sum -c "$output/archives.sha256"
+(cd "$dist"; sha256sum -c "$output/archives.sha256")
+"$output/verification-venv/bin/python" "$snapshot_tool" verify-snapshot "$source_root" "$output/source-snapshot.json"
 "$output/verification-venv/bin/python" "$repo/tools/verify_distributions.py" "$repo" "$dist"
-python3 - "$dist" "$output" <<'PY'
+"$output/verification-venv/bin/python" - "$dist" "$output" <<'PY'
 import hashlib
 import json
 from pathlib import Path
@@ -106,7 +122,7 @@ assert boundary["status"] == "passed" and boundary["source_unchanged"] and bound
 for kind in ("wheel", "sdist"):
     installed = json.loads((out / (kind + "-import.json")).read_text())["installed_source_sha256"]
     assert all(boundary["source_files_sha256"]["src/" + name] == digest for name, digest in installed.items())
-receipt = {"schema": "ucns.distribution-replay", "version": "1.0.0", "status": "passed", "artifacts_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dist.iterdir()) if p.suffix == ".whl" or p.name.endswith(".tar.gz")}, "runs": {kind: json.loads((out / (kind + "-import.json")).read_text()) for kind in ("wheel", "sdist")}, "dependency_export_sha256": hashlib.sha256((out / "dependencies.txt").read_bytes()).hexdigest(), "candidate_ratification": "none", "exact_input_receipt_sha256": hashlib.sha256((out / "exact-input-receipt.json").read_bytes()).hexdigest(), "exact_input_receipt_identity": boundary["receipt_sha256"], "exact_input_source_boundary": "archived source; installed artifact execution witnessed separately above"}
+receipt = {"schema": "ucns.distribution-replay", "version": "1.0.0", "status": "passed", "artifacts_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dist.iterdir()) if p.suffix == ".whl" or p.name.endswith(".tar.gz")}, "runs": {kind: json.loads((out / (kind + "-import.json")).read_text()) for kind in ("wheel", "sdist")}, "dependency_export_sha256": hashlib.sha256((out / "dependencies.txt").read_bytes()).hexdigest(), "candidate_ratification": "none", "exact_input_receipt_sha256": hashlib.sha256((out / "exact-input-receipt.json").read_bytes()).hexdigest(), "exact_input_receipt_identity": boundary["receipt_sha256"], "full_replay_source_sha256": json.loads((out / "source-snapshot.json").read_text()), "exact_input_source_boundary": "archived source; installed artifact execution witnessed separately above"}
 (out / "receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
 print(json.dumps(receipt, indent=2))
 PY

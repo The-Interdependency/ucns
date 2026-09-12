@@ -280,3 +280,5 @@ checks; it is not a sandbox for hostile test code. A `passed` receipt covers onl
 checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+
+Distribution replays hash the complete extracted tree before and after each full suite, reject persistent source changes, and retain the full source map. Each installed distribution inventory covers package files, dist-info payloads, and validated uv installer metadata/RECORD; imports remain separately witnessed. Check downloaded archives from their directory with `sha256sum -c ../replay/archives.sha256`. These checks establish execution provenance, not scientific ratification.

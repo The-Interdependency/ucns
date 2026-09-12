@@ -85,6 +85,7 @@ jobs:
         run: |
           mkdir -p /tmp/ucns-evidence/artifacts /tmp/ucns-evidence/replay
           cp dist/*.whl dist/*.tar.gz /tmp/ucns-evidence/artifacts/
+          (cd /tmp/ucns-evidence/artifacts; sha256sum -c /tmp/ucns-replay/archives.sha256)
           cp /tmp/ucns-replay/*.json /tmp/ucns-replay/*.xml /tmp/ucns-replay/archives.sha256 /tmp/ucns-replay/dependencies.txt /tmp/ucns-evidence/replay/
           python - <<'PY'
           import json, pathlib, subprocess, sys
