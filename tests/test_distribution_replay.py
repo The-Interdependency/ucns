@@ -1,4 +1,4 @@
-# ratios: loc_comments=64:39 imports_exports=14:2 calls_definitions=51:2
+# ratios: loc_comments=69:76 imports_exports=16:3 calls_definitions=73:3
 # === CHECKS ===
 # id: check_distribution_replay_source_integrity
 #   proves: ucns_distributions_replay_installed_code, ucns_distribution_evidence_binds_all_files
@@ -13,6 +13,14 @@
 #   call: self::test_installed_distribution_inventory
 #   requires: python3, pytest, uv
 #   timeout: 30
+#   mutates: temporary_path
+#   cleanup: pytest temporary_path
+#
+# id: check_distribution_replay_source_install
+#   proves: ucns_distributions_replay_installed_code, ucns_distribution_evidence_binds_all_files
+#   call: self::test_sdist_installer_metadata_is_recorded
+#   requires: python3, pytest, uv, build
+#   timeout: 60
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
 # === END CHECKS ===
@@ -108,4 +116,40 @@ print(json.dumps(report))
         path.unlink()
     (site / (info + "METADATA")).unlink()
     assert subprocess.run(command, capture_output=True).returncode != 0
-# ratios: loc_comments=64:39 imports_exports=14:2 calls_definitions=51:2
+
+
+def test_sdist_installer_metadata_is_recorded(tmp_path):
+    source = tmp_path / "project"
+    (source / "src/ucns").mkdir(parents=True)
+    (source / "src/ucns/__init__.py").write_text("VALUE = 1\n")
+    (source / "pyproject.toml").write_text('[build-system]\nrequires=["setuptools==84.0.0", "wheel==0.48.0"]\nbuild-backend="setuptools.build_meta"\n[project]\nname="ucns"\nversion="0"\n[tool.setuptools.packages.find]\nwhere=["src"]\n')
+    dist = tmp_path / "dist"
+    built = subprocess.run([sys.executable, "-m", "build", "--no-isolation", "--outdir", str(dist), str(source)], capture_output=True, text=True)
+    assert built.returncode == 0, built.stdout + built.stderr
+    wheel = next(dist.glob("*.whl"))
+    artifact = next(dist.glob("*.tar.gz"))
+    environment = tmp_path / "environment"
+    subprocess.run(["uv", "venv", "--python", sys.executable, str(environment)], check=True, capture_output=True)
+    python = environment / "bin/python"
+    subprocess.run(["uv", "pip", "install", "--python", str(python), "setuptools==84.0.0", "wheel==0.48.0"], check=True, capture_output=True)
+    uri = artifact.as_uri() + "#sha256=" + hashlib.sha256(artifact.read_bytes()).hexdigest()
+    result = subprocess.run(["uv", "pip", "install", "--python", str(python), "--no-deps", "--no-build-isolation", "ucns @ " + uri], capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout + result.stderr
+    from tools import _distribution_evidence
+    script = """
+import importlib.util, json, pathlib, sys
+spec = importlib.util.spec_from_file_location('evidence', sys.argv[1])
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+print(json.dumps(module.installed_inventory(pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[3]))))
+"""
+    command = [str(python), "-c", script, str(Path(_distribution_evidence.__file__).resolve()), str(wheel), str(artifact)]
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    inventory = json.loads(result.stdout)
+    name, = [name for name in inventory["installer_metadata"] if name.endswith("/uv_build.json")]
+    assert json.loads(inventory["installer_metadata"][name]) == {}
+    path = next(environment.glob("lib/python*/site-packages")) / name
+    path.write_text('{"unexpected": true}')
+    assert subprocess.run(command, capture_output=True).returncode != 0
+# ratios: loc_comments=69:76 imports_exports=16:3 calls_definitions=73:3

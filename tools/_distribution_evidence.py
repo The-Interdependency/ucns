@@ -1,4 +1,4 @@
-# ratios: loc_comments=88:28 imports_exports=10:4 calls_definitions=58:4
+# ratios: loc_comments=94:28 imports_exports=10:4 calls_definitions=63:4
 # === MODULE_BUILD ===
 # id: ucns_distribution_evidence
 #   module_name: _distribution_evidence
@@ -66,7 +66,7 @@ def installed_inventory(wheel: Path, artifact: Path) -> dict:
         raise ValueError("wheel RECORD identity is ambiguous")
     record = records[0]
     info = record.rsplit("/", 1)[0]
-    generated = {info + "/" + name for name in ("RECORD", "INSTALLER", "REQUESTED", "direct_url.json", "uv_cache.json")}
+    generated = {info + "/" + name for name in ("RECORD", "INSTALLER", "REQUESTED", "direct_url.json", "uv_cache.json", "uv_build.json")}
     paths = {str(path): Path(distribution.locate_file(path)) for path in distribution.files or ()}
     for name, path in paths.items():
         if Path(name).is_absolute() or ".." in Path(name).parts or path.is_symlink() or not path.resolve().is_relative_to(base):
@@ -91,6 +91,12 @@ def installed_inventory(wheel: Path, artifact: Path) -> dict:
     expected_uri = artifact.resolve().as_uri() + "#sha256=" + hashlib.sha256(artifact.read_bytes()).hexdigest()
     if direct != {"url": expected_uri, "archive_info": {}}:
         raise ValueError("installed artifact origin differs")
+    build_metadata = actual.get(info + "/uv_build.json")
+    if artifact.name.endswith(".tar.gz"):
+        if build_metadata is None or json.loads(build_metadata) != {}:
+            raise ValueError("unexpected uv build metadata")
+    elif build_metadata is not None:
+        raise ValueError("wheel install contains source-build metadata")
     cache = json.loads(actual[info + "/uv_cache.json"])
     if set(cache) != {"timestamp", "commit", "tags", "env", "directories"} or cache["commit"] is not None or cache["tags"] is not None or cache["env"] != {} or cache["directories"] != {}:
         raise ValueError("unexpected uv cache metadata")
@@ -127,4 +133,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-# ratios: loc_comments=88:28 imports_exports=10:4 calls_definitions=58:4
+# ratios: loc_comments=94:28 imports_exports=10:4 calls_definitions=63:4
