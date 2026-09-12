@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "repair/ucns-audit-20260911",
-    "commit": "db804f4c04f81ddc3d9348ac66300134ba55318d",
+    "commit": "d59738db2c624a164914351241766faa89a0c3cc",
     "generated_at": "2026-09-12",
     "note": "Describes the exact implementation commit preceding this report-only refresh. Maintenance PR #226 is in final exact-head review; merge remains a separate acceptance observation. No scientific or deployment authority is transferred."
   },
@@ -64,12 +64,12 @@
     },
     {
       "surface": "Contract audit and selected-check receipt schema 2.1",
-      "status": "implemented fail-closed declaration audit, actual pytest outcome classification, import-origin verification, per-check snapshots, and Linux source-write observation",
+      "status": "implemented fail-closed declaration bindings, actual pytest outcomes, bound descendant imports and lifetime, per-check snapshots, and Linux source-write observation",
       "boundary": "skips, empty evidence, and source mutation do not pass; selected checks do not establish whole-repository, theorem, freshness, or canon standing"
     },
     {
       "surface": "Source distribution replay inputs and artifact gate",
-      "status": "implemented source manifest, archive-byte verification, and locked verification-dependency CI path",
+      "status": "implemented exact wheel/sdist metadata and directory validation with pinned build backend and source replay inputs",
       "boundary": "archive presence and matching bytes are packaging evidence; archived certificates are not thereby recomputed"
     }
   ],
