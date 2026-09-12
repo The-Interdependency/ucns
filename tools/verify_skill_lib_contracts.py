@@ -1,4 +1,4 @@
-# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
+# ratios: loc_comments=430:53 imports_exports=12:4 calls_definitions=216:16
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -239,8 +239,8 @@ def _conditional_test_names(body: list[ast.stmt]) -> set[str]:
             for name, kind in _bindings([node]).items():
                 if name in {"*", "__test__"} or name.startswith("test") and kind != "literal" or name.startswith("Test") and kind == "unknown":
                     names.add(name)
-        if isinstance(node, _COMPOUND_STATEMENTS):
-            names.update(name for name in _header_bindings(node) if name == "__test__" or name.startswith(("test", "Test")))
+        header = _header_bindings(node, named_only=not isinstance(node, _COMPOUND_STATEMENTS))
+        names.update(name for name in header if name == "__test__" or name.startswith(("test", "Test")))
     return names
 
 
@@ -323,6 +323,8 @@ def _collection_config_problems(root: Path) -> list[str]:
         if not base.exists():
             continue
         for path in paths:
+            if path.is_file() and path.name == "conftest.py":
+                problems.append(f"GAP unsupported conftest collection/plugin surface: {path}")
             if path.is_file() and path.name in alternatives:
                 if path.name in {"setup.cfg", "tox.ini"}:
                     try:
@@ -337,6 +339,7 @@ def _collection_config_problems(root: Path) -> list[str]:
                 problems.append(f"GAP unsupported pytest collection configuration: {path}; use root pyproject.toml with default collection")
     path = root / "pyproject.toml"
     if not path.exists():
+        problems.append("GAP pytest collection requires explicit testpaths = ['tests'] in root pyproject.toml")
         return problems
     try:
         document = tomllib.loads(path.read_text(encoding="utf-8"))
@@ -344,6 +347,10 @@ def _collection_config_problems(root: Path) -> list[str]:
         if set(section) - {"ini_options"}:
             problems.append(f"GAP unsupported native pytest collection configuration: {path}")
         config = section.get("ini_options", {})
+        if "testpaths" not in config:
+            problems.append("GAP pytest collection requires explicit testpaths = ['tests']")
+        if config.get("required_plugins"):
+            problems.append("GAP unsupported pytest plugin collection configuration")
         defaults = {"python_files": ["test_*.py", "*_test.py"], "python_classes": ["Test"], "python_functions": ["test"], "testpaths": ["tests"]}
         for name, expected in defaults.items():
             if name in config:
@@ -440,6 +447,8 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         problems.append(f"GAP {contract_id} has no CHECKS entry claiming to prove it")
 
     for test_path, tree in trees.items():
+        if test_path.is_relative_to(root / "tests") and any(isinstance(node, ast.Name) and node.id == "pytest_plugins" for node in ast.walk(tree)):
+            problems.append(f"GAP unsupported pytest plugin collection surface: {test_path}")
         if not test_path.is_relative_to(root / "tests") or not (
             test_path.name.startswith("test_") or test_path.name.endswith("_test.py")
         ):
@@ -524,4 +533,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
+# ratios: loc_comments=430:53 imports_exports=12:4 calls_definitions=216:16
