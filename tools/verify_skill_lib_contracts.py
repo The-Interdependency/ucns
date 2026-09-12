@@ -1,4 +1,4 @@
-# ratios: loc_comments=430:53 imports_exports=12:4 calls_definitions=216:16
+# ratios: loc_comments=484:54 imports_exports=12:4 calls_definitions=251:20
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -319,10 +319,12 @@ def _collection_config_problems(root: Path) -> list[str]:
     problems = []
     alternatives = {"pytest.toml", ".pytest.toml", "pytest.ini", ".pytest.ini", "tox.ini", "setup.cfg"}
     for base in (root, root / "tests"):
-        paths = base.iterdir() if base == root else base.rglob("*")
-        if not base.exists():
+        if not base.is_dir():
             continue
+        paths = base.iterdir() if base == root else base.rglob("*")
         for path in paths:
+            if path.is_file() and path.name == "pyproject.toml" and path.parent != root:
+                problems.append(f"GAP nested pytest configuration: {path}")
             if path.is_file() and path.name == "conftest.py":
                 problems.append(f"GAP unsupported conftest collection/plugin surface: {path}")
             if path.is_file() and path.name in alternatives:
@@ -363,6 +365,60 @@ def _collection_config_problems(root: Path) -> list[str]:
             problems.append("GAP unsupported pytest addopts; collection-changing arguments are outside the audited boundary")
     except (OSError, UnicodeError, ValueError, AttributeError, TypeError) as error:
         problems.append(f"GAP invalid pytest collection configuration: {error}")
+    return problems
+
+
+def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
+    """Reject collection metaprogramming instead of guessing its effects."""
+    def surface(node):
+        yield node
+        for field, value in ast.iter_fields(node):
+            if field == "body" and isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+                continue
+            for child in value if isinstance(value, list) else [value]:
+                if isinstance(child, ast.AST):
+                    yield from surface(child)
+    nodes = list(surface(tree))
+    imports = {}
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                imports[alias.asname or alias.name] = (node.module, alias.name) if isinstance(node, ast.ImportFrom) else (alias.name, None)
+    rebound = {node.id for node in nodes if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
+    rebound.update(node.name for node in nodes if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)))
+    path_bound = imports.get("Path") == ("pathlib", "Path") and "Path" not in rebound
+    pytest_bound = imports.get("pytest") == ("pytest", None) and "pytest" not in rebound
+    def pytest_decorator(reference):
+        if not pytest_bound or not isinstance(reference, ast.Attribute):
+            return False
+        if isinstance(reference.value, ast.Name):
+            return reference.value.id == "pytest" and reference.attr == "fixture"
+        parent = reference.value
+        return isinstance(parent, ast.Attribute) and parent.attr == "mark" and isinstance(parent.value, ast.Name) and parent.value.id == "pytest" and not reference.attr.startswith("_")
+    def safe_call(node):
+        spelling = ast.unparse(node.func)
+        if path_bound and spelling == "Path":
+            return len(node.args) == 1 and isinstance(node.args[0], ast.Name) and node.args[0].id == "__file__" and not node.keywords
+        if path_bound and spelling == "Path(__file__).resolve":
+            return not node.args and not node.keywords
+        return pytest_decorator(node.func)
+    problems = []
+    for node in nodes:
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Delete)):
+            targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
+            if any(isinstance(item, (ast.Subscript, ast.Attribute)) for target in targets for item in ast.walk(target)):
+                problems.append(f"GAP indirect test-namespace mutation: {path}:{node.lineno}")
+        if isinstance(node, ast.Call) and not safe_call(node):
+            problems.append(f"GAP unsupported collection-time call: {path}:{node.lineno}; move execution into fixtures or checks")
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            for decorator in node.decorator_list:
+                reference = decorator.func if isinstance(decorator, ast.Call) else decorator
+                if not pytest_decorator(reference):
+                    problems.append(f"GAP unsupported collection-time decorator: {path}:{decorator.lineno}")
+            if isinstance(node, ast.ClassDef) and node.keywords:
+                problems.append(f"GAP unsupported class construction keywords: {path}:{node.lineno}")
+            if node.name in {"__getattr__", "__getattribute__", "__dir__", "__init_subclass__", "__set_name__"}:
+                problems.append(f"GAP unsupported collection-time namespace protocol: {path}:{node.lineno}")
     return problems
 
 
@@ -453,6 +509,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             test_path.name.startswith("test_") or test_path.name.endswith("_test.py")
         ):
             continue
+        problems.extend(_collection_surface_problems(tree, test_path))
         declared_calls = {
             entry.fields.get("call", "")[len("self::") :]
             for entry in checks
@@ -533,4 +590,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=430:53 imports_exports=12:4 calls_definitions=216:16
+# ratios: loc_comments=484:54 imports_exports=12:4 calls_definitions=251:20

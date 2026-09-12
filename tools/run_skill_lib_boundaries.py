@@ -365,7 +365,7 @@ def _execute_check(root: Path, check: Entry) -> CheckOutcome:
         junit_path = Path(temporary) / "outcomes.xml"
         report_path = Path(temporary) / "outcomes.json"
         command = (sys.executable, str(BOOTSTRAP), str(root), str(report_path),
-                   "-q", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
+                   "-q", "-c", str(root / "pyproject.toml"), "--noconftest", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
         command = (sys.executable, str(SUPERVISOR), str(timeout), *command[1:])
         environment = dict(os.environ)
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):

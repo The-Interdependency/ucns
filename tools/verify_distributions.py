@@ -1,4 +1,4 @@
-# ratios: loc_comments=318:35 imports_exports=17:4 calls_definitions=165:11
+# ratios: loc_comments=323:35 imports_exports=17:4 calls_definitions=169:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -341,6 +341,11 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
         except (OSError, ValueError, tarfile.TarError, zipfile.BadZipFile) as error:
             problems.append(f"{path.name}: {error}")
             continue
+        implied_directories = {parent.as_posix() for name in actual for parent in PurePosixPath(name).parents if parent.as_posix() != "."}
+        if not is_wheel:
+            implied_directories.add("")  # The single enclosing sdist root.
+        for name in sorted(directories - implied_directories):
+            problems.append(f"{path.name}: unexpected directory {name}")
         for name, data in inputs.items():
             if name not in actual:
                 problems.append(f"{path.name}: missing {name}")
@@ -385,4 +390,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=318:35 imports_exports=17:4 calls_definitions=165:11
+# ratios: loc_comments=323:35 imports_exports=17:4 calls_definitions=169:11

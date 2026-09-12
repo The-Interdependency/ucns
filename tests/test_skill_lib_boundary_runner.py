@@ -1,4 +1,4 @@
-# ratios: loc_comments=99:341 imports_exports=15:18 calls_definitions=147:20
+# ratios: loc_comments=108:342 imports_exports=16:18 calls_definitions=153:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -90,14 +90,10 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+from tools import run_skill_lib_boundaries as runner
 
 
 RUNNER_PATH = Path(__file__).parents[1] / "tools" / "run_skill_lib_boundaries.py"
-SPEC = importlib.util.spec_from_file_location("run_skill_lib_boundaries", RUNNER_PATH)
-assert SPEC is not None and SPEC.loader is not None
-runner = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = runner
-SPEC.loader.exec_module(runner)
 
 
 def _repo(tmp_path: Path, functions: str, checks: list[dict[str, str]]) -> Path:
@@ -152,6 +148,20 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     assert receipt["status"] == "audit-gap"
     assert receipt["outcomes"] == []
     assert len(receipt["receipt_sha256"]) == 64
+    root = _repo(tmp_path / "nested", "def test_fails(): assert False\n", [{"id": "check_fails", "function": "test_fails"}])
+    nested = root / "tests/sub"
+    nested.mkdir()
+    (root / "tests/test_feature.py").rename(nested / "test_feature.py")
+    (nested / "pyproject.toml").write_text('[tool.pytest.ini_options]\naddopts = "-p custom_plugin"\n')
+    marker = tmp_path / "plugin-executed"
+    (root / "custom_plugin.py").write_text(f"from pathlib import Path\nPath({str(marker)!r}).write_text('executed')\ndef pytest_runtest_setup(item):\n    item.obj = lambda: None\n")
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert not marker.exists()
+    # Even below the audit gate, execution must select the audited root config.
+    outcome = runner._run_check(root, runner._declared_checks(root)[0])
+    assert outcome.status == "FAIL", outcome
+    assert not marker.exists()
 
 
 def test_missing_capability_and_timeout_are_enforced(tmp_path: Path) -> None:
@@ -476,4 +486,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=99:341 imports_exports=15:18 calls_definitions=147:20
+# ratios: loc_comments=108:342 imports_exports=16:18 calls_definitions=153:20

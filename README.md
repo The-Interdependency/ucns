@@ -218,10 +218,16 @@ file/class/function naming. Conftest files and local plugin registration are
 outside this bounded collection contract. Changed settings, alternative pytest configuration
 files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is
 parsed without executing tests; Python 3.10 uses the declared `tomli` test dependency.
+Nested pytest configuration is rejected, and selected execution explicitly uses
+the audited root config with conftest loading disabled. Collection-time execution
+is limited to declarations, pytest decorators, and read-only `Path(__file__)`
+source constants. Indirect namespace mutation and unresolved calls, decorators,
+or namespace protocols fail closed; setup work belongs in fixtures or checks.
 Source observation starts before capability probing. Executable Node version
 probes use the same descendant supervisor as checks; a timeout or leaked child
 cannot satisfy the capability. Source archives require owner-readable/writable
 files and owner-readable/writable/searchable directories, without special mode bits.
+Explicit archive directories must belong to the hierarchy of allowed files.
 Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient pytest plugins disabled and
