@@ -156,7 +156,7 @@ python tools/verify_skill_lib_contracts.py .
 
 The independent interval checks also require system MPFR (for example,
 `libmpfr6` on Ubuntu). Verification dependencies are locked; the isolated build
-backend still follows `[build-system].requires`. Use a clean `dist` directory.
+backend is pinned in `[build-system].requires`. Use a clean `dist` directory.
 
 The wheel supplies the geometry package. Repository-context research replay and
 the full tests require the source archive or checkout: run from its root, where
@@ -165,7 +165,8 @@ The distribution gate checks these inputs byte-for-byte; it does not recertify
 their mathematical claims. It also binds wheel filename tags, dependencies, and flags to
 `pyproject.toml`, verifies every RECORD digest, and requires the exact generated
 sdist configuration. Both source PKG-INFO records and generated egg-info
-dependency and file lists must agree with that same source configuration.
+dependency and file lists must agree with that same source configuration. Directory
+entries are validated too; duplicate names and file/directory collisions fail.
 
 Exact modular and trace records require immutable tuples with non-Boolean integer
 residues; prefer the public builders. MPFR rational constructors accept only
@@ -198,10 +199,14 @@ through external hardlinks).
 Receipt execution requires Linux inotify; an unavailable observer is an error.
 Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
-Checks import the bound checkout with ambient PYTHONPATH and pytest plugins
-replaced with the bound source path, which ordinary Python descendants inherit.
-Origin receipts observe the selected pytest process. The observer is
-evidence instrumentation, not a sandbox for hostile test code. A `passed` receipt covers only its selected
+Checks import the bound checkout with ambient pytest plugins disabled and
+PYTHONPATH replaced. An inherited startup hook makes ordinary Python descendants
+prefer bound packages over their working directory. The bootstrap uses Linux
+child subreaping to terminate remaining descendants before observation ends;
+leaked background work prevents acceptance. Origin receipts observe the selected
+pytest process. Explicit isolated/no-site interpreters and replaced child
+environments do not inherit the import protocol. The observer instruments trusted
+checks; it is not a sandbox for hostile test code. A `passed` receipt covers only its selected
 checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.

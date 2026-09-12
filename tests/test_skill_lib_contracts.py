@@ -1,4 +1,4 @@
-# ratios: loc_comments=91:42 imports_exports=5:5 calls_definitions=50:5
+# ratios: loc_comments=113:42 imports_exports=5:5 calls_definitions=65:5
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -149,4 +149,26 @@ def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
     (root / "tests/test_inherited.py").write_text("class Base:\n    def test_inherited(self): assert False\nclass TestChild(Base):\n    pass\n")
     ok, problems = audit_repository(root)
     assert not ok and any("inherited class check" in item for item in problems)
-# ratios: loc_comments=91:42 imports_exports=5:5 calls_definitions=50:5
+    inherited = root / "tests/test_inherited.py"
+    for declaration in ("__test__ = False", "__test__: bool = False"):
+        inherited.write_text(f"class Base:\n    {declaration}\n    def test_hidden(self): assert False\nclass TestChild(Base):\n    pass\n")
+        ok, problems = audit_repository(root)
+        assert ok, problems
+    inherited.write_text("class A:\n    __test__ = False\n    def test_hidden(self): pass\nclass B(A): pass\nclass C(A):\n    __test__ = True\nclass TestChild(B, C): pass\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("TestChild::test_hidden" in item for item in problems)
+    for code, label in (
+        ("def hidden(): assert False\ntest_aliased = hidden\n", "unresolved executable alias"),
+        ("class Helper:\n    __test__ = True\n    def test_explicit(self): pass\n", "Helper::test_explicit"),
+        ("class TestAlias:\n    def hidden(self): pass\n    test_aliased = hidden\n", "TestAlias::test_aliased"),
+    ):
+        inherited.write_text(code)
+        ok, problems = audit_repository(root)
+        assert not ok and any(label in item for item in problems), problems
+    inherited.write_text("test_data = [1, 2]\n")
+    ok, problems = audit_repository(root)
+    assert ok, problems
+    inherited.write_text("__test__ = False\ndef test_disabled(): assert False\n")
+    ok, problems = audit_repository(root)
+    assert ok, problems
+# ratios: loc_comments=113:42 imports_exports=5:5 calls_definitions=65:5
