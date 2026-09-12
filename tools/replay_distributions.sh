@@ -52,7 +52,7 @@ for kind in wheel sdist; do
   uv pip install --python "$environment/bin/python" --no-deps --no-build-isolation "${artifact[0]}"
   (
     cd "$source_root"
-    env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+    env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPYCACHEPREFIX="$output/$kind-bytecode" \
       "$environment/bin/python" - "$output/$kind.xml" "$output/$kind-import.json" <<'PY'
 import hashlib
 import json
@@ -102,7 +102,7 @@ from pathlib import Path
 import sys
 dist, out = map(Path, sys.argv[1:])
 boundary = json.loads((out / "exact-input-receipt.json").read_text())
-assert boundary["status"] == "passed" and boundary["source_unchanged"]
+assert boundary["status"] == "passed" and boundary["source_unchanged"] and boundary["snapshot_errors"] == []
 for kind in ("wheel", "sdist"):
     installed = json.loads((out / (kind + "-import.json")).read_text())["installed_source_sha256"]
     assert all(boundary["source_files_sha256"]["src/" + name] == digest for name, digest in installed.items())
