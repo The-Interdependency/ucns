@@ -1,4 +1,4 @@
-# ratios: loc_comments=246:60 imports_exports=9:7 calls_definitions=130:7
+# ratios: loc_comments=265:60 imports_exports=9:7 calls_definitions=138:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -222,6 +222,25 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         ok, problems = audit_repository(root)
         assert not ok and any("namespace" in item or "collection-time" in item for item in problems), (code, problems)
     dynamic.unlink()
+    for code in (
+        'from descriptor_helper import descriptor\nclass TestInjected:\n    injected = descriptor\n',
+        'class TestInjected:\n    from descriptor_helper import descriptor\n',
+        'from descriptor_helper import descriptor\nclass Helper:\n    injected: object = descriptor\nclass TestInherited(Helper): pass\n',
+        'from descriptor_helper import descriptor\nclass TestInjected:\n    for injected in [descriptor]: pass\n',
+        'def pytest_generate_tests(metafunc): pass\n',
+        'def helper(metafunc): pass\npytest_generate_tests = helper\n',
+        'from hook_helper import pytest_generate_tests\n',
+        'def setup_function(function): pass\n',
+        'class TestHooks:\n    def pytest_generate_tests(self, metafunc): pass\n',
+    ):
+        dynamic.write_text(code)
+        ok, problems = audit_repository(root)
+        assert not ok and any("class namespace" in item or "implicit pytest hook" in item for item in problems), (code, problems)
+    dynamic.unlink()
+    for index, decorator in enumerate(("@pytest.fixture", "@pytest.fixture()", "@pytest.fixture(name='other')")):
+        fixture_root = _repo(tmp_path / f"fixture-{index}", "import pytest\n" + decorator + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
+        ok, problems = audit_repository(fixture_root)
+        assert not ok and any("check_probe call does not resolve" in item for item in problems), problems
     ok, problems = audit_repository(root / "absent")
     assert not ok and any("empty" in item for item in problems), problems
 
@@ -326,4 +345,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=246:60 imports_exports=9:7 calls_definitions=130:7
+# ratios: loc_comments=265:60 imports_exports=9:7 calls_definitions=138:7

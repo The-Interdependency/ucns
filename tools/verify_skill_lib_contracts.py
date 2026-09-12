@@ -1,4 +1,4 @@
-# ratios: loc_comments=484:54 imports_exports=12:4 calls_definitions=251:20
+# ratios: loc_comments=509:54 imports_exports=12:4 calls_definitions=265:21
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -167,12 +167,21 @@ def _target_names(target: ast.AST) -> list[str]:
     return []
 
 
+def _is_fixture(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    for decorator in node.decorator_list:
+        reference = decorator.func if isinstance(decorator, ast.Call) else decorator
+        if (isinstance(reference, ast.Attribute) and reference.attr == "fixture"
+                and isinstance(reference.value, ast.Name) and reference.value.id == "pytest"):
+            return True
+    return False
+
+
 def _bindings(body: list[ast.stmt]) -> dict[str, str]:
     """Track direct namespace bindings; callable aliases remain unsupported."""
     bindings = {}
     for node in body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            bindings[node.name] = "class" if isinstance(node, ast.ClassDef) else "function"
+            bindings[node.name] = "class" if isinstance(node, ast.ClassDef) else "fixture" if _is_fixture(node) else "function"
         elif isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
             kind = "literal" if isinstance(node.value, (ast.Constant, ast.List, ast.Tuple, ast.Set, ast.Dict)) else "unknown"
@@ -403,7 +412,14 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
             return not node.args and not node.keywords
         return pytest_decorator(node.func)
     problems = []
+    implicit_hooks = {"setup_module", "teardown_module", "setup_function", "teardown_function",
+                      "setup_class", "teardown_class", "setup_method", "teardown_method",
+                      "setUpModule", "tearDownModule"}
     for node in nodes:
+        names = set(_bindings([node])) if isinstance(node, ast.stmt) else set()
+        names.update(_header_bindings(node, named_only=not isinstance(node, _COMPOUND_STATEMENTS)))
+        if any(name.startswith("pytest_") or name in implicit_hooks for name in names):
+            problems.append(f"GAP unsupported implicit pytest hook: {path}:{node.lineno}")
         if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Delete)):
             targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
             if any(isinstance(item, (ast.Subscript, ast.Attribute)) for target in targets for item in ast.walk(target)):
@@ -417,6 +433,17 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
                     problems.append(f"GAP unsupported collection-time decorator: {path}:{decorator.lineno}")
             if isinstance(node, ast.ClassDef) and node.keywords:
                 problems.append(f"GAP unsupported class construction keywords: {path}:{node.lineno}")
+            if isinstance(node, ast.ClassDef):
+                for statement in node.body:
+                    if isinstance(statement, (ast.Assign, ast.AnnAssign)):
+                        if statement.value is not None:
+                            try:
+                                ast.literal_eval(statement.value)
+                            except (ValueError, TypeError, SyntaxError):
+                                problems.append(f"GAP unresolved class namespace value (possible descriptor): {path}:{statement.lineno}")
+                    elif not isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Pass)):
+                        if not (isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Constant) and isinstance(statement.value.value, str)):
+                            problems.append(f"GAP unsupported class namespace statement: {path}:{statement.lineno}")
             if node.name in {"__getattr__", "__getattribute__", "__dir__", "__init_subclass__", "__set_name__"}:
                 problems.append(f"GAP unsupported collection-time namespace protocol: {path}:{node.lineno}")
     return problems
@@ -590,4 +617,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=484:54 imports_exports=12:4 calls_definitions=251:20
+# ratios: loc_comments=509:54 imports_exports=12:4 calls_definitions=265:21

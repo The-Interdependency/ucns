@@ -1,4 +1,4 @@
-# ratios: loc_comments=108:342 imports_exports=16:18 calls_definitions=153:20
+# ratios: loc_comments=121:342 imports_exports=16:18 calls_definitions=163:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -162,6 +162,19 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     outcome = runner._run_check(root, runner._declared_checks(root)[0])
     assert outcome.status == "FAIL", outcome
     assert not marker.exists()
+    hook_body = f"from pathlib import Path\ndef pytest_generate_tests(metafunc):\n    Path({str(marker)!r}).write_text('hook ran')\n    metafunc.function.__code__ = (lambda: None).__code__\ndef test_fails(): assert False\n"
+    root = _repo(tmp_path / "module-hook", hook_body, [{"id": "check_fails", "function": "test_fails"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert not marker.exists()
+    root = _repo(tmp_path / "descriptor", "from descriptor_helper import descriptor\nclass TestInjected:\n    injected = descriptor\ndef test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe"}])
+    (root / "descriptor_helper.py").write_text(f"from pathlib import Path\nclass Inject:\n    def __set_name__(self, owner, name):\n        Path({str(marker)!r}).write_text('descriptor ran')\n        owner.test_hidden = lambda self: 1 / 0\ndescriptor = Inject()\n")
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert not marker.exists()
+    root = _repo(tmp_path / "fixture-helper", "import pytest\n@pytest.fixture\ndef test_data(): return 1\ndef test_probe(test_data): assert test_data == 1\n", [{"id": "check_probe", "function": "test_probe"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "passed", receipt
 
 
 def test_missing_capability_and_timeout_are_enforced(tmp_path: Path) -> None:
@@ -486,4 +499,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=108:342 imports_exports=16:18 calls_definitions=153:20
+# ratios: loc_comments=121:342 imports_exports=16:18 calls_definitions=163:20
