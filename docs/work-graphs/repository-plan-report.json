@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "repair/ucns-audit-20260911",
-    "commit": "d59738db2c624a164914351241766faa89a0c3cc",
+    "commit": "30600fb0642afe28917835dec362afaebca3e682",
     "generated_at": "2026-09-12",
     "note": "Describes the exact implementation commit preceding this report-only refresh. Maintenance PR #226 is in final exact-head review; merge remains a separate acceptance observation. No scientific or deployment authority is transferred."
   },
@@ -84,7 +84,7 @@
     {
       "action": "Complete exact-head review and Python 3.10/3.12 CI for UCNS PR #226; merge after all live findings and gates close",
       "owner": "The-Interdependency/ucns maintainers",
-      "dependency": "Canonical skill-lib 8de4f12d0f31ff94f41e4a0196c447c0cbe20faf is published; nine installed skills pass strict drift verification"
+      "dependency": "Exact canonical skill-lib 0f0346ad619bd891b80cc9875617532f8b26d8a0 binds the declared parser; nine installed skills pass strict drift verification"
     },
     {
       "action": "Correct stale stack research claims about PR #220 and reconcile its exact research base before consuming results",
