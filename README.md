@@ -193,7 +193,10 @@ the distribution gate rejects missing or altered inputs. Declared test-function
 bindings must be unique. Test-helper modules receive the same collection-surface
 audit, and the observer compares the actual test function code with its declared
 source before and after the call. An imported replacement cannot stand in for
-the original witness.
+the original witness. Bound Python imports compile the inventoried source, and
+pytest runs use fresh bytecode-cache locations; pre-existing caches cannot replace
+those source imports. Snapshot failures during execution become explicit ERROR
+outcomes, retain mutation evidence, and produce a not-passed receipt.
 
 For a source-bound, selected-check receipt:
 
