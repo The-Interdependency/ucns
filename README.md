@@ -216,6 +216,9 @@ audit closed; executable witnesses use direct module-level definitions.
 The graph requires explicit `testpaths = ["tests"]` and
 `collect_imported_tests = false`, with pytest 9.1 or later, and supports default pytest
 file/class/function naming. Unrecognized configuration keys fail closed.
+Repository-root helper imports outside the declared source layout fail the audit.
+The complete-suite gate also requires every statically declared top-level test to
+execute, so hiding a failing witness during collection cannot leave a passing gate.
 Conftest files and local plugin registration are
 outside this bounded collection contract. Changed settings, alternative pytest configuration
 files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is

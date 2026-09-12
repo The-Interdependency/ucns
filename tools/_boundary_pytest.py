@@ -1,4 +1,4 @@
-# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
+# ratios: loc_comments=128:35 imports_exports=9:3 calls_definitions=55:8
 # === MODULE_BUILD ===
 # id: boundary_pytest_observer
 #   module_name: _boundary_pytest
@@ -25,7 +25,7 @@
 #
 # id: geometry_suite_requires_nonempty_pass
 #   given: the full geometry suite runs through run_suite
-#   then: empty, skipped, xfailed, XPASS, failed, or collection-error evidence cannot produce exit status zero
+#   then: empty, unexecuted declared witnesses, skipped, xfailed, XPASS, failed, or collection-error evidence cannot produce exit status zero
 #   class: evidence
 # === END CONTRACTS ===
 
@@ -55,6 +55,7 @@ class Observer:
         self.root = root
         self.calls: list[str] = []
         self.other: list[str] = []
+        self.executed_witnesses: set[tuple[Path, str]] = set()
         self.expected_code: dict[Path, CodeType] = {}
 
     def _witness_matches_source(self, item) -> bool:
@@ -115,11 +116,16 @@ class Observer:
             status = "PASS"
         if call.when == "call":
             self.calls.append(status)
+            self.executed_witnesses.add((Path(item.path).resolve(), item.originalname or item.name.split("[", 1)[0]))
         elif status != "PASS":
             self.other.append(status)
 
 
 def run_suite(arguments: list[str], root: Path) -> int:
+    from tools.verify_skill_lib_contracts import _defined_functions
+    expected = {(path.resolve(), name) for path in (root / "tests").rglob("*.py")
+                if path.name.startswith("test_") or path.name.endswith("_test.py")
+                for name in _defined_functions(path) if name.startswith("test")}
     observer = Observer(root)
     previous_prefix = sys.pycache_prefix
     try:
@@ -130,7 +136,10 @@ def run_suite(arguments: list[str], root: Path) -> int:
         sys.pycache_prefix = previous_prefix
     if result:
         return result
-    return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other else 1
+    missing = expected - observer.executed_witnesses
+    if missing:
+        print("Declared witnesses did not execute:", sorted(str(path) + "::" + name for path, name in missing))
+    return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other and not missing else 1
 
 
 def main() -> int:
@@ -171,4 +180,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
+# ratios: loc_comments=128:35 imports_exports=9:3 calls_definitions=55:8

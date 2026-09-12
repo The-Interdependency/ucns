@@ -1,4 +1,4 @@
-# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20
+# ratios: loc_comments=186:410 imports_exports=23:18 calls_definitions=241:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -197,12 +197,26 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     helper.write_text(helper_source)
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
-    # Root helpers lie outside the test-tree surface audit. Runtime witness binding
-    # must still reject an imported replacement with matching name and module.
+    # Root helpers are outside the declared source layout and must fail the audit.
     helper.rename(root / "replacing_helper.py")
     receipt = runner.run_boundaries(root)
-    assert receipt["status"] == "not-passed" and receipt["outcomes"][0]["status"] == "FAIL", receipt
-    assert "witness code differs" in receipt["outcomes"][0]["stdout_excerpt"], receipt
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert any("root helper" in gap for gap in receipt["audit_gaps"])
+    # Below the audit gate, the runtime still rejects a replaced witness.
+    outcome = runner._run_check(root, runner._declared_checks(root)[0])
+    assert outcome.status == "FAIL" and "witness code differs" in outcome.stdout_excerpt, outcome
+    hiding = "import inspect\nfor frame in inspect.stack():\n    witness = frame.frame.f_globals.get('test_fails')\n    if witness is not None:\n        witness.__test__ = False\n"
+    root = _repo(tmp_path / "hidden-witness", "def test_fails(): assert False\nimport hide_witness\ndef test_passes(): pass\n", [{"id": "check_fails", "function": "test_fails"}, {"id": "check_passes", "function": "test_passes"}])
+    (root / "hide_witness.py").write_text(hiding)
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    namespace = root / "hide_package"
+    namespace.mkdir()
+    (root / "hide_witness.py").rename(namespace / "effects.py")
+    source = root / "tests/test_feature.py"
+    source.write_text(source.read_text().replace("import hide_witness", "import hide_package.effects"))
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
 
 
 # === CHECKS ===
@@ -227,6 +241,8 @@ def test_geometry_suite_rejects_nonpasses(tmp_path: Path) -> None:
         ("collection-skip", "import pytest\npytest.skip('unobserved', allow_module_level=True)\n", False),
         ("collection-error", "raise RuntimeError('broken collection')\n", False),
         ("module-mark", "import pytest\npytestmark = pytest.mark.skip\ndef test_probe(): assert False\n", False),
+        ("hidden-witness", "def test_fails(): assert False\nimport hide_witness\ndef test_passes(): pass\n", False),
+        ("removed-witness", "def test_first(request): request.session.items[:] = [request.node]\ndef test_fails(): assert False\n", False),
     )
     script = "import os,sys; from pathlib import Path; sys.path.insert(0,sys.argv[1]); from tools._boundary_pytest import run_suite; root=Path(sys.argv[2]); os.chdir(root); raise SystemExit(run_suite(['tests','-c','pyproject.toml','--noconftest','--strict-config'],root))"
     environment = {key: value for key, value in os.environ.items() if key not in {"PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"}}
@@ -235,6 +251,8 @@ def test_geometry_suite_rejects_nonpasses(tmp_path: Path) -> None:
         root = _repo(tmp_path / label, body, [])
         if label.startswith("collection-"):
             (root / "tests/test_other.py").write_text("def test_other(): pass\n")
+        if label == "hidden-witness":
+            (root / "hide_witness.py").write_text("import inspect\nfor frame in inspect.stack():\n    witness = frame.frame.f_globals.get('test_fails')\n    if witness is not None:\n        witness.__test__ = False\n")
         result = subprocess.run([sys.executable, "-c", script, str(RUNNER_PATH.parents[1]), str(root)], env=environment, capture_output=True, text=True)
         assert (result.returncode == 0) is expected_pass, (label, result.stdout, result.stderr)
 
@@ -626,4 +644,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20
+# ratios: loc_comments=186:410 imports_exports=23:18 calls_definitions=241:20

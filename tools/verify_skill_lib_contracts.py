@@ -1,4 +1,4 @@
-# ratios: loc_comments=588:54 imports_exports=12:4 calls_definitions=317:23
+# ratios: loc_comments=595:54 imports_exports=12:4 calls_definitions=323:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -611,6 +611,13 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         if test_path.is_relative_to(root / "tests") and any(isinstance(node, ast.Name) and node.id == "pytest_plugins" for node in ast.walk(tree)):
             problems.append(f"GAP unsupported pytest plugin collection surface: {test_path}")
         if test_path.is_relative_to(root / "tests"):
+            for node in ast.walk(tree):
+                names = ([node.module] if isinstance(node, ast.ImportFrom) and node.module and not node.level
+                         else [alias.name for alias in node.names] if isinstance(node, ast.Import) else [])
+                for name in names:
+                    top = name.split(".", 1)[0]
+                    if top not in {"src", "tools", "tests"} and ((root / (top + ".py")).exists() or (root / top).is_dir()):
+                        problems.append(f"GAP imported root helper outside audited source layout: {name} in {test_path}")
             problems.extend(_collection_surface_problems(tree, test_path))
         if not test_path.is_relative_to(root / "tests") or not (
             test_path.name.startswith("test_") or test_path.name.endswith("_test.py")
@@ -696,4 +703,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=588:54 imports_exports=12:4 calls_definitions=317:23
+# ratios: loc_comments=595:54 imports_exports=12:4 calls_definitions=323:23
