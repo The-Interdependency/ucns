@@ -170,6 +170,20 @@ Exact modular and trace records require immutable tuples with non-Boolean intege
 residues; prefer the public builders. MPFR rational constructors accept only
 integers or `Fraction`, and NaN cannot participate in interval ordering.
 
+To replay both exact distribution files after the archive gate, with no editable
+installation or source-path dependency:
+
+```bash
+bash tools/replay_distributions.sh . dist /tmp/ucns-replay python3.12
+```
+
+The output directory must be new and outside this checkout. The script exports
+hash-locked dependencies, installs the wheel and sdist into separate clean
+venvs, and runs all geometry tests against each installed package. Its receipt
+records artifact hashes, Python versions, loaded package paths, test counts,
+and zero skipped checks. CI repeats this on Python 3.10, 3.11, and 3.12.
+The source archive includes this replay script and the exact build-tool pins.
+
 For a source-bound, selected-check receipt:
 
 ```bash

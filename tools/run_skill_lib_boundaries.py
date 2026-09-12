@@ -291,7 +291,7 @@ def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
 
 def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
     """Bind repository-owned execution inputs, excluding caches and secrets."""
-    suffixes = {".py", ".md", ".json", ".jsonl", ".ts", ".svg", ".yml", ".yaml"}
+    suffixes = {".py", ".sh", ".md", ".json", ".jsonl", ".ts", ".svg", ".yml", ".yaml"}
     paths = {
         path for directory in SOURCE_DIRECTORIES
         for path in (root / directory).rglob("*")

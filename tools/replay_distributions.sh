@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# === MODULE_BUILD ===
+# id: ucns_distribution_replay
+#   module_name: replay_distributions
+#   module_kind: instrument
+#   summary: runs the complete geometry suite against clean wheel and sdist installations
+#   owner: Erin Spencer
+#   public_surface: bash tools/replay_distributions.sh ROOT DIST OUTPUT PYTHON
+#   internal_surface: none
+#   auth_boundary: none
+#   storage_boundary: new caller-selected output directory and uv cache
+#   network_boundary: locked Python build/test dependencies
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: full geometry suite under both installed artifacts
+#   rollout: CI on Python 3.10, 3.11, and 3.12
+#   rollback: remove the replay CI step
+# === END MODULE_BUILD ===
+# === CONTRACTS ===
+# id: ucns_distributions_replay_installed_code
+#   given: archives match the source inputs and dependencies resolve from the lock
+#   then: each artifact installs without editable source and every geometry test passes without skips while ucns resolves inside its clean environment
+#   class: evidence
+# === END CONTRACTS ===
+
+# Usage: bash tools/replay_distributions.sh . dist /tmp/ucns-replay python3.12
+# OUTPUT must not exist and must be outside ROOT. Receipts cover packaging and
+# executed tests, never candidate ratification or historical expensive replay.
+set -euo pipefail
+repo=$(realpath "$1")
+dist=$(realpath "$2")
+output=$(realpath -m "$3")
+runtime=${4:-python3}
+case "$output/" in "$repo/"*) echo 'OUTPUT must be outside source' >&2; exit 2;; esac
+test ! -e "$output"
+mkdir -p "$output"
+python3 "$repo/tools/verify_distributions.py" "$repo" "$dist"
+sha256sum "$dist"/*.whl "$dist"/*.tar.gz > "$output/archives.sha256"
+uv export --project "$repo" --locked --extra test --extra build --no-emit-project --no-dev --format requirements.txt --output-file "$output/dependencies.txt" >/dev/null
+mkdir "$output/source"
+tar -xzf "$dist"/*.tar.gz -C "$output/source"
+source_root=$(find "$output/source" -mindepth 1 -maxdepth 1 -type d)
+for kind in wheel sdist; do
+  environment="$output/$kind-venv"
+  uv venv --python "$runtime" "$environment"
+  uv pip sync --python "$environment/bin/python" --require-hashes "$output/dependencies.txt"
+  if [ "$kind" = wheel ]; then artifact=("$dist"/*.whl); else artifact=("$dist"/*.tar.gz); fi
+  uv pip install --python "$environment/bin/python" --no-deps --no-build-isolation "${artifact[0]}"
+  (
+    cd "$source_root"
+    env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+      "$environment/bin/python" - "$output/$kind.xml" "$output/$kind-import.json" <<'PY'
+import hashlib
+import json
+from pathlib import Path
+import sys
+import xml.etree.ElementTree as ET
+import pytest
+import ucns
+
+installed = Path(ucns.__file__).resolve()
+assert installed.is_relative_to(Path(sys.prefix)), installed
+initial = installed.read_bytes()
+result = pytest.main(["tests", "--junitxml=" + sys.argv[1]])
+assert result == 0, result
+assert Path(ucns.__file__).resolve() == installed
+assert installed.read_bytes() == initial
+cases = list(ET.parse(sys.argv[1]).getroot().iter("testcase"))
+assert cases and not any(c.find("skipped") is not None or c.find("failure") is not None or c.find("error") is not None for c in cases)
+Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str(installed), "ucns_init_sha256": hashlib.sha256(initial).hexdigest(), "tests": len(cases), "skips": 0, "status": "passed"}, indent=2) + "\n")
+PY
+  )
+done
+sha256sum -c "$output/archives.sha256"
+python3 - "$dist" "$output" <<'PY'
+import hashlib
+import json
+from pathlib import Path
+import sys
+dist, out = map(Path, sys.argv[1:])
+receipt = {"schema": "ucns.distribution-replay", "version": "1.0.0", "status": "passed", "artifacts_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dist.iterdir()) if p.suffix == ".whl" or p.name.endswith(".tar.gz")}, "runs": {kind: json.loads((out / (kind + "-import.json")).read_text()) for kind in ("wheel", "sdist")}, "dependency_export_sha256": hashlib.sha256((out / "dependencies.txt").read_bytes()).hexdigest(), "candidate_ratification": "none"}
+(out / "receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+print(json.dumps(receipt, indent=2))
+PY

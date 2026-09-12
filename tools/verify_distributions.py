@@ -62,7 +62,7 @@ ROOT_INPUTS = (
     "LICENSE", "uv.lock", "MANIFEST.in",
 )
 TREE_INPUTS = {
-    "src/ucns": {".py"}, "tests": {".py"}, "tools": {".py"},
+    "src/ucns": {".py"}, "tests": {".py"}, "tools": {".py", ".sh"},
     "docs": {".md", ".json", ".jsonl", ".svg"}, "generated": {".json"},
     ".agents/skills": {".md", ".json", ".py", ".ts"},
 }
