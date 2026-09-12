@@ -1,4 +1,4 @@
-# ratios: loc_comments=312:35 imports_exports=17:4 calls_definitions=160:11
+# ratios: loc_comments=315:35 imports_exports=17:4 calls_definitions=163:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -96,7 +96,7 @@ def expected_files(root: Path) -> dict[str, bytes]:
     return {path.relative_to(root).as_posix(): path.read_bytes() for path in sorted(paths)}
 
 
-def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None) -> dict[str, bytes]:
+def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None, directories: set[str] | None = None) -> dict[str, bytes]:
     """Read regular files only; reject ambiguous names rather than extracting."""
     files: dict[str, bytes] = {}
     prefixes: set[str] = set()
@@ -122,6 +122,8 @@ def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None)
         if not directory and any(existing.startswith(name + "/") for existing in kinds):
             raise ValueError(f"file/directory archive collision: {name}")
         kinds[name] = directory
+        if directory and directories is not None:
+            directories.add(name)
         if not directory:
             files[name] = data
 
@@ -264,12 +266,12 @@ def _record_problems(actual: dict[str, bytes], record_path: str) -> list[str]:
     return problems
 
 
-def _wheel_metadata_problems(actual: dict[str, bytes], expected: dict[str, bytes]) -> list[str]:
+def _wheel_metadata_problems(actual: dict[str, bytes], expected: dict[str, bytes], directories: set[str]) -> list[str]:
     problems: list[str] = []
     prefixes = {
         name.split("/", 1)[0]
-        for name in actual
-        if "/" in name and name.split("/", 1)[0].endswith(".dist-info")
+        for name in actual.keys() | directories
+        if name.split("/", 1)[0].endswith(".dist-info")
     }
     if len(prefixes) != 1:
         return ["wheel must contain exactly one .dist-info directory"]
@@ -331,7 +333,8 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
         problems.append(f"invalid distribution filename: {error}")
     for path, inputs, is_wheel in ((sdist, expected, False), (wheel, wheel_expected, True)):
         try:
-            actual = read_archive(path, wheel=is_wheel, expected_prefix=None if is_wheel else sdist.name.removesuffix(".tar.gz"))
+            directories: set[str] = set()
+            actual = read_archive(path, wheel=is_wheel, expected_prefix=None if is_wheel else sdist.name.removesuffix(".tar.gz"), directories=directories)
         except (OSError, ValueError, tarfile.TarError, zipfile.BadZipFile) as error:
             problems.append(f"{path.name}: {error}")
             continue
@@ -341,7 +344,7 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
             elif actual[name] != data:
                 problems.append(f"{path.name}: altered {name}")
         if is_wheel:
-            metadata_problems = _wheel_metadata_problems(actual, expected)
+            metadata_problems = _wheel_metadata_problems(actual, expected, directories)
             problems.extend(f"{path.name}: {problem}" for problem in metadata_problems)
             dist_prefixes = {
                 name.split("/", 1)[0]
@@ -379,4 +382,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=312:35 imports_exports=17:4 calls_definitions=160:11
+# ratios: loc_comments=315:35 imports_exports=17:4 calls_definitions=163:11

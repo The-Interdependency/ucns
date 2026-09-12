@@ -1,4 +1,4 @@
-# ratios: loc_comments=57:30 imports_exports=8:1 calls_definitions=23:3
+# ratios: loc_comments=73:31 imports_exports=8:1 calls_definitions=30:4
 # === MODULE_BUILD ===
 # id: boundary_process_supervisor
 #   module_name: _boundary_supervisor
@@ -46,12 +46,30 @@ def _enable_descendant_reaping() -> None:
         raise OSError(ctypes.get_errno(), "cannot bind check descendant lifetime")
 
 
+def _owned_children(proc_root: Path = Path("/proc")) -> list[int]:
+    """Use the optional task list, falling back to ordinary procfs parent IDs."""
+    parent = os.getpid()
+    try:
+        return [int(pid) for pid in (proc_root / f"self/task/{parent}/children").read_text().split()]
+    except FileNotFoundError:
+        children = []
+        for process in proc_root.iterdir():
+            if not process.name.isdecimal():
+                continue
+            try:
+                state = (process / "stat").read_text().rpartition(")")[2].split()
+                if int(state[1]) == parent:
+                    children.append(int(process.name))
+            except (FileNotFoundError, ProcessLookupError, PermissionError):
+                continue  # Exited processes or unrelated users hidden by procfs.
+        return children
+
+
 def _reap_descendants() -> int:
     """Terminate and reap only children owned/adopted by this bootstrap."""
     observed = 0
-    children_path = Path(f"/proc/self/task/{os.getpid()}/children")
     while True:
-        children = [int(pid) for pid in children_path.read_text().split()]
+        children = _owned_children()
         if not children:
             return observed
         observed += len(children)
@@ -71,6 +89,7 @@ def main() -> int:
     timeout = int(sys.argv[1])
     report = Path(sys.argv[4])
     _enable_descendant_reaping()
+    _owned_children()  # Verify procfs support before any check code is launched.
     process = subprocess.Popen([sys.executable, *sys.argv[2:]], start_new_session=True)
     timed_out = False
     try:
@@ -96,4 +115,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=57:30 imports_exports=8:1 calls_definitions=23:3
+# ratios: loc_comments=73:31 imports_exports=8:1 calls_definitions=30:4

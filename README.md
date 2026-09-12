@@ -208,7 +208,11 @@ For a source-bound, selected-check receipt:
 Receipt schema 2.1 rejects skips, expected failures, both forms of XPASS, absent
 reports, and source changes during execution (including write-and-restore
 through external hardlinks).
-Receipt execution requires Linux inotify; an unavailable observer is an error.
+Receipt execution requires Linux inotify and readable procfs process identities;
+unavailable instrumentation is an error before check execution. Descendant discovery
+uses the task-children interface when available and otherwise reads procfs parent IDs.
+Potential test definitions inside module or class control flow fail the declaration
+audit closed; executable witnesses use direct module-level definitions.
 Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient pytest plugins disabled and

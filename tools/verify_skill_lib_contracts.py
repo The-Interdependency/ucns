@@ -1,4 +1,4 @@
-# ratios: loc_comments=313:50 imports_exports=8:4 calls_definitions=140:12
+# ratios: loc_comments=348:51 imports_exports=8:4 calls_definitions=167:14
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -183,6 +183,39 @@ def _bindings(body: list[ast.stmt]) -> dict[str, str]:
     return bindings
 
 
+_COMPOUND_STATEMENTS = (ast.If, ast.For, ast.AsyncFor, ast.While, ast.Try, ast.With, ast.AsyncWith, ast.Match, getattr(ast, "TryStar", ast.Try))
+
+
+def _conditional_test_names(body: list[ast.stmt]) -> set[str]:
+    """Find possible module/class test bindings without entering function bodies."""
+    names: set[str] = set()
+    for node in body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if node.name.startswith("test_"):
+                names.add(node.name)
+        elif isinstance(node, ast.ClassDef):
+            found, setting = _test_setting(node)
+            if not (found and setting is False) and (node.name.startswith("Test") or node.bases or setting is True):
+                names.add(node.name)
+        elif isinstance(node, ast.If) and isinstance(node.test, ast.Constant):
+            names.update(_conditional_test_names(node.body if node.test.value else node.orelse))
+        elif isinstance(node, _COMPOUND_STATEMENTS):
+            groups = [getattr(node, name, []) for name in ("body", "orelse", "finalbody")]
+            groups.extend(handler.body for handler in getattr(node, "handlers", []))
+            groups.extend(case.body for case in getattr(node, "cases", []))
+            for group in groups:
+                names.update(_conditional_test_names(group))
+        else:
+            for name, kind in _bindings([node]).items():
+                if name in {"*", "__test__"} or name.startswith("test_") and kind != "literal" or name.startswith("Test") and kind == "unknown":
+                    names.add(name)
+    return names
+
+
+def _conditional_surface(body: list[ast.stmt]) -> set[str]:
+    return _conditional_test_names([node for node in body if isinstance(node, _COMPOUND_STATEMENTS)])
+
+
 def _class_mro(name: str, classes: dict[str, ast.ClassDef], active=()) -> list[str] | None:
     """Compute local C3 order; unresolved bases and inconsistent orders are gaps."""
     if name == "object":
@@ -337,8 +370,11 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             if entry.source == test_path and entry.fields.get("call", "").startswith("self::")
         }
         found, setting = _test_setting(tree)
-        if found and not setting:
+        conditional = _conditional_surface(tree.body)
+        if found and not setting and "__test__" not in conditional:
             continue
+        for name in sorted(conditional):
+            problems.append(f"GAP conditional test binding {test_path}::{name}; use direct module-level test definitions")
         if setting is UNKNOWN_TEST_SETTING:
             problems.append(f"GAP dynamic test-module opt-out {test_path}")
         bindings = _bindings(tree.body)
@@ -356,13 +392,16 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         for cls in classes.values():
             found, setting = _test_setting(cls)
             order = _class_mro(cls.name, classes)
+            conditional_opt_out = any("__test__" in _conditional_surface(classes[name].body) for name in (order or [cls.name]) if name in classes)
+            if conditional_opt_out:
+                problems.append(f"GAP conditional class opt-out {test_path}::{cls.name}")
             if not found and order is not None:
                 for ancestor in order[1:]:
                     if ancestor in classes:
                         found, setting = _test_setting(classes[ancestor])
                         if found:
                             break
-            if found and not setting:
+            if found and not setting and not conditional_opt_out:
                 continue
             if setting is UNKNOWN_TEST_SETTING:
                 problems.append(f"GAP dynamic class opt-out {test_path}::{cls.name}")
@@ -375,6 +414,9 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             if not cls.name.startswith("Test") and setting is not True:
                 continue
             inherited = [classes[name] for name in order if name in classes]
+            for ancestor in inherited:
+                for name in sorted(_conditional_surface(ancestor.body)):
+                    problems.append(f"GAP conditional class check {test_path}::{cls.name}::{name}")
             if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for ancestor in inherited for node in ancestor.body):
                 continue
             methods = {}
@@ -402,4 +444,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=313:50 imports_exports=8:4 calls_definitions=140:12
+# ratios: loc_comments=348:51 imports_exports=8:4 calls_definitions=167:14

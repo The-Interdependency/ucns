@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:287 imports_exports=12:18 calls_definitions=110:20
+# ratios: loc_comments=98:314 imports_exports=13:18 calls_definitions=131:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -326,6 +326,20 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
     runner.write_receipt(receipt, external)
     assert source.read_bytes() == original
     assert json.loads(external.read_text())["receipt_sha256"] == receipt["receipt_sha256"]
+    internal_link = root / "receipt-link.json"
+    internal_link.symlink_to(external)
+    external_before = external.read_bytes()
+    with pytest.raises(ValueError, match="outside the bound source tree"):
+        runner.write_receipt(receipt, internal_link)
+    result = subprocess.run([sys.executable, str(RUNNER_PATH), str(root), "--receipt", str(internal_link)], capture_output=True, text=True)
+    assert result.returncode == 2
+    assert "outside the bound source tree" in result.stderr
+    assert internal_link.is_symlink() and external.read_bytes() == external_before
+    root_alias = tmp_path / "root-alias"
+    root_alias.symlink_to(root, target_is_directory=True)
+    with pytest.raises(ValueError, match="outside the bound source tree"):
+        runner.write_receipt(receipt, root_alias / internal_link.name)
+    assert internal_link.is_symlink() and external.read_bytes() == external_before
     alias = tmp_path / "source-alias.py"
     body = f"from pathlib import Path\ndef test_probe():\n    p=Path({str(alias)!r})\n    original=p.read_bytes()\n    p.write_bytes(original+b'# transient\\n')\n    p.write_bytes(original)\n"
     root = _repo(tmp_path / "hardlinked", body, [{"id": "check_probe", "function": "test_probe"}])
@@ -379,6 +393,19 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
 def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
     import os
     import pytest
+    from tools._boundary_supervisor import _owned_children
+    proc = tmp_path / "proc"
+    proc.mkdir()
+    for pid, parent in ((101, os.getpid()), (102, 1)):
+        process = proc / str(pid)
+        process.mkdir()
+        (process / "stat").write_text(f"{pid} (name with ) spaces) S {parent} 0 0 0\n")
+    (proc / "103").mkdir()  # Exited between directory enumeration and stat read.
+    assert _owned_children(proc) == [101]
+    task = proc / f"self/task/{os.getpid()}"
+    task.mkdir(parents=True)
+    (task / "children").write_text("101 104\n")
+    assert _owned_children(proc) == [101, 104]
     child = "import time; from pathlib import Path; time.sleep(30); Path('src/pkg/feature.py').write_text('late mutation')"
     body = f"import subprocess, sys\nfrom pathlib import Path\ndef test_probe():\n    p=subprocess.Popen([sys.executable, '-c', {child!r}], start_new_session=True)\n    Path('child.pid').write_text(str(p.pid))\n"
     root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
@@ -421,4 +448,4 @@ def test_node24_capability_runs_typescript_witness() -> None:
     receipt = runner.run_boundaries(RUNNER_PATH.resolve().parents[1], selected_ids=("check_vendored_typescript_field_preservation",))
     assert receipt["status"] == "passed", receipt
     assert len(receipt["outcomes"]) == 1 and receipt["outcomes"][0]["status"] == "PASS", receipt
-# ratios: loc_comments=98:287 imports_exports=12:18 calls_definitions=110:20
+# ratios: loc_comments=98:314 imports_exports=13:18 calls_definitions=131:20
