@@ -1,4 +1,4 @@
-# ratios: loc_comments=129:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=127:10 imports_exports=9:1 calls_definitions=44:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -11,7 +11,6 @@
 
 """Build small archive fixtures; missing evidence must fail independently of Twine."""
 
-import importlib.util
 import base64
 import csv
 import hashlib
@@ -21,12 +20,9 @@ import tarfile
 import zipfile
 
 import pytest
+from tools import verify_distributions as audit
 
 
-SPEC = importlib.util.spec_from_file_location("distribution_audit", Path(__file__).parents[1] / "tools/verify_distributions.py")
-assert SPEC is not None and SPEC.loader is not None
-audit = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(audit)
 
 
 def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode="", sdist_directory="", wheel_directory="", sdist_root="ucns-0", sdist_mode=None, directory_mode=0o755):
@@ -100,6 +96,8 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
     for options, message in (
+        ({"wheel_directory": "unexpected"}, "unexpected directory"),
+        ({"sdist_directory": "unexpected"}, "unexpected directory"),
         ({"sdist_mode": 0}, "unusable sdist permissions"),
         ({"sdist_mode": 0o400}, "unusable sdist permissions"),
         ({"sdist_mode": 0o4644}, "unusable sdist permissions"),
@@ -147,4 +145,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=129:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=127:10 imports_exports=9:1 calls_definitions=44:2
