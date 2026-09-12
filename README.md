@@ -172,9 +172,11 @@ Exact modular and trace records require immutable tuples with non-Boolean intege
 residues; prefer the public builders. MPFR rational constructors accept only
 integers or `Fraction`, and NaN cannot participate in interval ordering.
 
-The no-exec graph also reconciles the exact vendored reference parser that it
-executes, including a local numeric-field witness. Parser ownership remains in
-skill-lib. Unused skill helper tools remain canonical dependency material.
+The no-exec graph also reconciles both exact vendored reference parsers, with
+local Python and TypeScript numeric-field/no-execution witnesses. The complete
+repository evidence suite requires Node 24.15.0 for that TypeScript check; UCNS
+library use remains Python-only. Parser ownership remains in skill-lib.
+Unused skill helper tools remain canonical dependency material.
 
 For a source-bound, selected-check receipt:
 

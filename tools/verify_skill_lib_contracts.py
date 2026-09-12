@@ -1,4 +1,4 @@
-# ratios: loc_comments=306:50 imports_exports=8:4 calls_definitions=136:12
+# ratios: loc_comments=313:50 imports_exports=8:4 calls_definitions=140:12
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -100,10 +100,11 @@ class Entry:
 
 
 def _source_files(root: Path) -> Iterable[Path]:
-    # This vendored helper executes as part of the audit instrument itself.
-    parser = root / ".agents/skills/msdmd/parsers/universal.py"
-    if parser.is_file():
-        yield parser
+    # Reconcile both updated canonical parser implementations beside their owner.
+    for name in ("universal.py", "universal.ts"):
+        parser = root / ".agents/skills/msdmd/parsers" / name
+        if parser.is_file():
+            yield parser
     for base in (root / "src", root / "tools", root / "tests"):
         if base.exists():
             yield from (path for path in sorted(base.rglob("*.py")) if "__pycache__" not in path.parts)
@@ -112,9 +113,13 @@ def _source_files(root: Path) -> Iterable[Path]:
 def parse_blocks(path: Path) -> List[Entry]:
     """Check fence integrity, then delegate entry grammar to canonical msdmd."""
     text = path.read_text(encoding="utf-8")
+    marker = _PARSER.marker_for(path)
+    if marker not in {"#", "//"}:
+        raise ValueError(f"unsupported declaration source: {path}")
     active: str | None = None
     declarations = 0
-    for raw in text.splitlines():
+    for line in text.splitlines():
+        raw = "#" + line[len(marker):] if line.startswith(marker) else line
         start = BLOCK_RE.match(raw)
         if start:
             if active is not None:
@@ -138,7 +143,7 @@ def parse_blocks(path: Path) -> List[Entry]:
     entries = [
         Entry(block, path, fields)
         for block in ("MODULE_BUILD", "CONTRACTS", "CHECKS")
-        for fields in _PARSER.parse_text(text, block)
+        for fields in _PARSER.parse_text(text, block, marker=marker)
     ]
     if len(entries) != declarations:
         raise ValueError(f"{path}: declarations lost by canonical parser")
@@ -251,14 +256,16 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         problems.append(f"GAP empty source/test tree: {root}")
     for path in paths:
         try:
-            trees[path] = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            if path.suffix == ".py":
+                trees[path] = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
             path_entries = parse_blocks(path)
         except (OSError, UnicodeError, SyntaxError, ValueError) as exc:
             problems.append(f"GAP parse {type(exc).__name__}: {exc}")
             continue
 
         entries.extend(path_entries)
-        if path.is_relative_to(root / "src") or path.is_relative_to(root / "tools"):
+        if (path.is_relative_to(root / "src") or path.is_relative_to(root / "tools")
+                or path.is_relative_to(root / ".agents/skills/msdmd/parsers")):
             declared = {entry.block for entry in path_entries}
             for required_block in ("MODULE_BUILD", "CONTRACTS"):
                 if required_block not in declared:
@@ -395,4 +402,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=306:50 imports_exports=8:4 calls_definitions=136:12
+# ratios: loc_comments=313:50 imports_exports=8:4 calls_definitions=140:12
