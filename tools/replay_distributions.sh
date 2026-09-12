@@ -80,6 +80,15 @@ Path(sys.argv[2]).write_text(json.dumps({"python": sys.version, "ucns_path": str
 PY
   )
 done
+# This receipt executes the exact source archived above. Installed wheel/sdist
+# execution is separately witnessed by the two complete suites and source maps.
+env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS PYTHONDONTWRITEBYTECODE=1 \
+  "$output/verification-venv/bin/python" "$source_root/tools/run_skill_lib_boundaries.py" "$source_root" \
+  --check check_modular_orbit_fails_closed \
+  --check check_gonal_boundary_trace_fails_closed_on_incompatible_geometry \
+  --check check_mpfr_nan_is_not_ordered_evidence \
+  --check check_mpfr_exact_rational_admission \
+  --check check_boundary_runner_nonactivation --receipt "$output/exact-input-receipt.json"
 sha256sum -c "$output/archives.sha256"
 "$output/verification-venv/bin/python" "$repo/tools/verify_distributions.py" "$repo" "$dist"
 python3 - "$dist" "$output" <<'PY'
@@ -88,7 +97,12 @@ import json
 from pathlib import Path
 import sys
 dist, out = map(Path, sys.argv[1:])
-receipt = {"schema": "ucns.distribution-replay", "version": "1.0.0", "status": "passed", "artifacts_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dist.iterdir()) if p.suffix == ".whl" or p.name.endswith(".tar.gz")}, "runs": {kind: json.loads((out / (kind + "-import.json")).read_text()) for kind in ("wheel", "sdist")}, "dependency_export_sha256": hashlib.sha256((out / "dependencies.txt").read_bytes()).hexdigest(), "candidate_ratification": "none"}
+boundary = json.loads((out / "exact-input-receipt.json").read_text())
+assert boundary["status"] == "passed" and boundary["source_unchanged"]
+for kind in ("wheel", "sdist"):
+    installed = json.loads((out / (kind + "-import.json")).read_text())["installed_source_sha256"]
+    assert all(boundary["source_files_sha256"]["src/" + name] == digest for name, digest in installed.items())
+receipt = {"schema": "ucns.distribution-replay", "version": "1.0.0", "status": "passed", "artifacts_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dist.iterdir()) if p.suffix == ".whl" or p.name.endswith(".tar.gz")}, "runs": {kind: json.loads((out / (kind + "-import.json")).read_text()) for kind in ("wheel", "sdist")}, "dependency_export_sha256": hashlib.sha256((out / "dependencies.txt").read_bytes()).hexdigest(), "candidate_ratification": "none", "exact_input_receipt_sha256": hashlib.sha256((out / "exact-input-receipt.json").read_bytes()).hexdigest(), "exact_input_receipt_identity": boundary["receipt_sha256"], "exact_input_source_boundary": "archived source; installed artifact execution witnessed separately above"}
 (out / "receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
 print(json.dumps(receipt, indent=2))
 PY

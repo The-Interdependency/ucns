@@ -183,7 +183,9 @@ The output directory must be new and outside this checkout. The script exports
 hash-locked dependencies, installs the wheel and sdist into separate clean
 venvs, and runs all geometry tests against each installed package. Its receipt
 records artifact hashes, Python versions, loaded package paths, test counts,
-and zero skipped checks. CI repeats this on Python 3.10, 3.11, and 3.12.
+and zero skipped checks. It also binds a selected exact-input receipt executed
+from the archived source, whose UCNS hashes must match both installed artifacts.
+CI repeats this on Python 3.10, 3.11, and 3.12.
 The source archive includes this replay script and the exact build-tool pins.
 
 For a source-bound, selected-check receipt:
