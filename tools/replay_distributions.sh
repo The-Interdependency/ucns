@@ -8,8 +8,10 @@
 #   public_surface: bash tools/replay_distributions.sh ROOT DIST OUTPUT PYTHON
 #   internal_surface: none
 #   auth_boundary: none
-#   storage_boundary: new caller-selected output directory and uv cache
-#   network_boundary: locked Python build/test dependencies
+#   storage_boundary: write
+#   storage_notes: new caller-selected output directory and uv cache
+#   network_boundary: external
+#   network_notes: locked Python build/test dependencies
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: full geometry suite under both installed artifacts
