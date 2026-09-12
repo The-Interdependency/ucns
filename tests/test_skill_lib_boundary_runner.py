@@ -1,4 +1,4 @@
-# ratios: loc_comments=94:169 imports_exports=6:13 calls_definitions=56:15
+# ratios: loc_comments=98:209 imports_exports=6:16 calls_definitions=74:18
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -25,7 +25,7 @@
 #   cleanup: none
 #
 # id: check_boundary_runner_status_continuation
-#   proves: boundary_runner_classifies_and_continues
+#   proves: boundary_runner_classifies_and_continues, boundary_pytest_observes_actual_outcomes
 #   call: self::test_runner_classifies_all_outcomes_and_continues
 #   requires: python3
 #   timeout: 20
@@ -191,27 +191,32 @@ def test_fail():
     assert False
 def test_error():
     raise RuntimeError("AssertionError mentioned by a broken harness")
+class ContractViolation(AssertionError):
+    pass
+def test_subclass():
+    raise ContractViolation("broken")
 """
     checks = [
         {"id": "check_pass", "function": "test_pass"},
         {"id": "check_fail", "function": "test_fail"},
         {"id": "check_error", "function": "test_error"},
+        {"id": "check_subclass", "function": "test_subclass"},
     ]
     receipt = runner.run_boundaries(_repo(tmp_path, functions, checks))
     assert [item["status"] for item in receipt["outcomes"]] == [
-        "PASS", "FAIL", "ERROR",
+        "PASS", "FAIL", "ERROR", "FAIL",
     ]
     assert receipt["outcome_counts"] == {
-        "PASS": 1, "FAIL": 1, "ERROR": 1, "TIMEOUT": 0, "SKIP": 0,
+        "PASS": 1, "FAIL": 2, "ERROR": 1, "TIMEOUT": 0, "SKIP": 0,
     }
 
 
 def test_report_errors_suffix_discovery_and_launch_continuation(tmp_path: Path, monkeypatch) -> None:
     report = tmp_path / "report.xml"
-    assert runner._junit_status(report, 0) == "ERROR"
-    for text in ("not xml", "<testsuites/>", '<testsuite><testcase><error/></testcase></testsuite>'):
+    assert runner._pytest_outcome(report, 0)[0] == "ERROR"
+    for text in ("not json", "[]", '{"status": "PASS"}', '{"status": "PASS", "calls": [], "other": [], "origins": {}}'):
         report.write_text(text)
-        assert runner._junit_status(report, 0) == "ERROR"
+        assert runner._pytest_outcome(report, 0)[0] == "ERROR"
     root = _repo(tmp_path, "def test_first():\n    pass\ndef test_later():\n    pass\n", [
         {"id": "check_first", "function": "test_first"},
         {"id": "check_later", "function": "test_later"},
@@ -270,6 +275,12 @@ def test_skips_xfails_and_mixed_parameters_are_not_passes(tmp_path: Path) -> Non
         receipt = runner.run_boundaries(root)
         assert receipt["status"] == "not-passed"
         assert receipt["outcomes"][0]["status"] == "SKIP"
+    for index, decorator in enumerate(("@pytest.mark.xfail(strict=False)", "@pytest.mark.xfail(strict=True)")):
+        body = "import pytest\n" + decorator + "\ndef test_probe():\n    pass\n"
+        root = _repo(tmp_path / f"xpass{index}", body, [{"id": "check_probe", "function": "test_probe"}])
+        receipt = runner.run_boundaries(root)
+        assert receipt["status"] == "not-passed"
+        assert receipt["outcomes"][0]["status"] == "FAIL"
     assert runner.run_boundaries(tmp_path / "absent")["status"] == "audit-gap"
 
 
@@ -292,4 +303,39 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
     assert receipt["status"] == "not-passed"
     assert receipt["source_before_sha256"] != receipt["source_after_sha256"]
     assert receipt["source_unchanged"] is False
-# ratios: loc_comments=94:169 imports_exports=6:13 calls_definitions=56:15
+    root = _repo(tmp_path / "restored", "from pathlib import Path\ndef test_probe():\n    p=Path('src/pkg/feature.py')\n    original=p.read_bytes()\n    p.write_bytes(original+b'\\n# transient\\n')\n    p.write_bytes(original)\n", [
+        {"id": "check_probe", "function": "test_probe"},
+    ])
+    receipt = runner.run_boundaries(root)
+    assert receipt["source_before_sha256"] == receipt["source_after_sha256"]
+    assert receipt["source_unchanged"] is False
+    assert receipt["status"] == "not-passed"
+    assert "src/pkg/feature.py" in receipt["outcomes"][0]["source_events"]
+# === CHECKS ===
+# id: check_boundary_runner_import_origin
+#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
+#   call: self::test_check_imports_bound_source_despite_ambient_pythonpath
+#   requires: python3, pytest
+#   timeout: 15
+#   mutates: temporary_path
+#   cleanup: pytest temporary_path
+# === END CHECKS ===
+
+
+def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, monkeypatch) -> None:
+    body = "import pkg.feature\ndef test_probe():\n    assert pkg.feature.VALUE == 'bound'\n"
+    root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
+    source = root / "src/pkg/feature.py"
+    source.write_text(source.read_text() + "VALUE = 'bound'\n")
+    # A regular package avoids unrelated namespace packages in the host.
+    (root / "src/pkg/__init__.py").write_text(source.read_text().replace("fixture_module", "fixture_init").replace("contract_0", "init_contract"))
+    (root / "tests/test_feature.py").write_text((root / "tests/test_feature.py").read_text().replace("#   proves: contract_0", "#   proves: contract_0, init_contract"))
+    alternate = tmp_path / "alternate"
+    (alternate / "pkg").mkdir(parents=True)
+    (alternate / "pkg/__init__.py").write_text("")
+    (alternate / "pkg/feature.py").write_text("VALUE = 'wrong'\n")
+    monkeypatch.setenv("PYTHONPATH", str(alternate))
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "passed", receipt
+    assert receipt["outcomes"][0]["imported_sources"]["pkg.feature"] == [str(source)]
+# ratios: loc_comments=98:209 imports_exports=6:16 calls_definitions=74:18

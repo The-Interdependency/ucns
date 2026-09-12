@@ -1,4 +1,4 @@
-# ratios: loc_comments=76:42 imports_exports=5:5 calls_definitions=38:5
+# ratios: loc_comments=88:42 imports_exports=5:5 calls_definitions=47:5
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -133,4 +133,17 @@ def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
     source.write_text(original.replace("# === CONTRACTS ===", "# === CONTRACTS ===\n# id: hidden\n#   given: x\n#   then: y\n# === CONTRACTS ==="))
     ok, problems = audit_repository(root)
     assert not ok and any("nested" in item for item in problems)
-# ratios: loc_comments=76:42 imports_exports=5:5 calls_definitions=38:5
+
+    for malformed in ("# === CONTRACTS ==", "# == CONTRACTS ==="):
+        source.write_text(original + malformed + "\n# id: dropped\n#   given: x\n#   then: y\n# === END CONTRACTS ===\n")
+        ok, problems = audit_repository(root)
+        assert not ok and any("malformed declaration fence" in item for item in problems)
+    for malformed in ("# id:", "# id: two words", "# id missing_colon"):
+        source.write_text(original.replace("# === END CONTRACTS ===", malformed + "\n#   given: x\n#   then: y\n# === END CONTRACTS ==="))
+        ok, problems = audit_repository(root)
+        assert not ok and any("malformed id" in item for item in problems)
+    source.write_text(original)
+    (root / "tests/test_helpers.py").write_text("class Helper:\n    def test_helper(self): pass\nclass TestDisabled:\n    __test__ = False\n    def test_disabled(self): pass\ndef helper():\n    class TestNested:\n        def test_nested(self): pass\n")
+    ok, problems = audit_repository(root)
+    assert ok, problems
+# ratios: loc_comments=88:42 imports_exports=5:5 calls_definitions=47:5

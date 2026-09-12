@@ -175,8 +175,12 @@ For a source-bound, selected-check receipt:
   --check check_boundary_runner_nonactivation --receipt /tmp/ucns-receipt.json
 ```
 
-Receipt schema 2 rejects skipped/expected-failing evidence, absent test reports,
-and source changes during execution. A `passed` receipt covers only its selected
+Receipt schema 2.1 rejects skips, expected failures, both forms of XPASS, absent
+reports, and source changes during execution (including write-and-restore).
+Receipt execution requires Linux inotify; an unavailable observer is an error.
+Checks import the bound checkout with ambient PYTHONPATH and pytest plugins
+excluded, and imported package paths are recorded and checked. The observer is
+evidence instrumentation, not a sandbox for hostile test code. A `passed` receipt covers only its selected
 checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.

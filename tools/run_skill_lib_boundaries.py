@@ -1,4 +1,4 @@
-# ratios: loc_comments=261:61 imports_exports=18:4 calls_definitions=108:15
+# ratios: loc_comments=361:65 imports_exports=19:4 calls_definitions=151:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -55,16 +55,18 @@
 """Execute UCNS skill-lib ``CHECKS`` declarations as bounded processes.
 
 Usage: ``python tools/run_skill_lib_boundaries.py . --check CHECK_ID
---receipt /tmp/receipt.json``. Schema v2 requires actual, unskipped JUnit
-evidence and unchanged source bytes. Receipts are not theorem or freshness
+--receipt /tmp/receipt.json``. Schema v2.1 requires observed pytest outcomes,
+bound import origins, unchanged source snapshots, and no Linux inotify write
+events. JUnit remains diagnostic only. Receipts are not theorem or freshness
 certificates. Timeouts retain the existing declared execution-safety boundary.
 """
 
 from __future__ import annotations
 
 import argparse
+import ctypes
 import ctypes.util
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field, replace
 from hashlib import sha256
 import importlib.util
 import json
@@ -72,11 +74,11 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import struct
 import subprocess
 import sys
 import tempfile
 import time
-import xml.etree.ElementTree as ET
 from typing import Iterable, Sequence
 
 TOOLS_DIRECTORY = Path(__file__).resolve().parent
@@ -87,10 +89,80 @@ from verify_skill_lib_contracts import Entry, audit_repository, parse_blocks
 
 
 SCHEMA_ID = "ucns.skill-lib-boundary-run-receipt"
-SCHEMA_VERSION = "2.0.0"
+SCHEMA_VERSION = "2.1.0"
 MAX_EXCERPT_BYTES = 16_384
 ALLOWED_MUTATIONS = {"none", "filesystem", "temporary_path"}
 ALLOWED_CLEANUPS = {"none", "tempdir_teardown", "pytest temporary_path"}
+SOURCE_DIRECTORIES = ("src", "tools", "tests", "docs", "generated", ".agents/skills", ".github/workflows")
+ROOT_INPUTS = ("pyproject.toml", "uv.lock", "pytest.ini", "setup.cfg", "MANIFEST.in", "conftest.py", "CANON.md", "AGENTS.md", "README.md", "CLAUDE.md", "LICENSE")
+BOOTSTRAP = TOOLS_DIRECTORY / "_boundary_pytest.py"
+
+
+class _SourceWatch:
+    """Observe Linux source write events, including a write followed by restoration.
+
+    Receipt execution requires inotify; an unavailable observer fails closed.
+    This detects changed inputs, not malicious checks or a security sandbox.
+    """
+    def __init__(self, root: Path):
+        self.root = root
+        self.libc = ctypes.CDLL(None, use_errno=True)
+        self.fd = self.libc.inotify_init1(os.O_NONBLOCK | os.O_CLOEXEC)
+        if self.fd < 0:
+            raise OSError(ctypes.get_errno(), "source observer unavailable")
+        self.watches = {}
+        try:
+            directories = {root}
+            for relative in SOURCE_DIRECTORIES:
+                base = root / relative
+                if base.exists():
+                    directories.add(base)
+                    directories.update(p for p in base.rglob("*") if p.is_dir() and "__pycache__" not in p.parts)
+                parent = base.parent
+                while parent != root and parent.is_relative_to(root):
+                    if parent.is_dir():
+                        directories.add(parent)
+                    parent = parent.parent
+            # MODIFY, ATTRIB, MOVED_FROM/TO, CREATE, DELETE, DELETE_SELF, MOVE_SELF.
+            for directory in sorted(directories):
+                descriptor = self.libc.inotify_add_watch(self.fd, os.fsencode(directory), 0xFC6)
+                if descriptor < 0:
+                    raise OSError(ctypes.get_errno(), "cannot watch source directory")
+                self.watches[descriptor] = directory
+        except BaseException:
+            os.close(self.fd)
+            raise
+
+    def finish(self) -> tuple[str, ...]:
+        changed = set()
+        try:
+            while True:
+                try:
+                    data = os.read(self.fd, 65536)
+                except BlockingIOError:
+                    break
+                if not data:
+                    break
+                offset = 0
+                while offset < len(data):
+                    descriptor, mask, _, length = struct.unpack_from("iIII", data, offset)
+                    name = os.fsdecode(data[offset + 16:offset + 16 + length].split(b"\0", 1)[0])
+                    offset += 16 + length
+                    if mask & 0x4000:
+                        changed.add("hmmm: source event queue overflow")
+                        continue
+                    parent = self.watches.get(descriptor)
+                    if parent is None:
+                        changed.add("hmmm: unknown source watch")
+                        continue
+                    relative = (parent / name).relative_to(self.root).as_posix()
+                    if "__pycache__" in Path(relative).parts:
+                        continue
+                    if relative in ROOT_INPUTS or any(relative == d or relative.startswith(d + "/") or d.startswith(relative + "/") for d in SOURCE_DIRECTORIES):
+                        changed.add(relative)
+        finally:
+            os.close(self.fd)
+        return tuple(sorted(changed))
 
 
 @dataclass(frozen=True)
@@ -115,6 +187,10 @@ class CheckOutcome:
     stderr_excerpt: str
     missing_capabilities: tuple[str, ...] = ()
     diagnostic: str = ""
+    imported_sources: dict[str, list[str]] = field(default_factory=dict)
+    source_events: tuple[str, ...] = ()
+    source_before_sha256: str = ""
+    source_after_sha256: str = ""
 
 
 def _sha(data: bytes) -> str:
@@ -184,34 +260,44 @@ def _excerpt(path: Path) -> tuple[str, int, str]:
     return digest.hexdigest(), size, text
 
 
-def _junit_status(path: Path, returncode: int) -> str:
-    """Classify actual test cases, not console wording or exit zero alone."""
+def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
+    """Validate the bootstrap's machine report; absent evidence is an error."""
     try:
-        cases = tuple(ET.parse(path).getroot().iter("testcase"))
-    except (OSError, ET.ParseError):
-        return "ERROR"
-    if not cases or any(case.find("error") is not None for case in cases):
-        return "ERROR"
-    failures = [failure for case in cases for failure in case.findall("failure")]
-    if failures:
-        # pytest's JUnit failure message retains the actual exception type.
-        # A RuntimeError merely mentioning AssertionError is not a contract FAIL.
-        assertion_messages = ("assert ", "AssertionError", "Failed:")
-        return "FAIL" if all(f.get("message", "").startswith(assertion_messages) for f in failures) else "ERROR"
-    if any(case.find("skipped") is not None for case in cases):
-        return "SKIP"
-    return "PASS" if returncode == 0 else "ERROR"
+        observed = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return "ERROR", {}
+    if not isinstance(observed, dict):
+        return "ERROR", {}
+    calls, other = observed.get("calls"), observed.get("other")
+    origins = observed.get("origins")
+    allowed = {"PASS", "FAIL", "ERROR", "SKIP"}
+    if not isinstance(calls, list) or not isinstance(other, list) or not isinstance(origins, dict):
+        return "ERROR", {}
+    if any(not isinstance(value, str) or value not in allowed for value in calls + other):
+        return "ERROR", {}
+    statuses = calls + other
+    if observed.get("wrong_origins") or "ERROR" in statuses:
+        status = "ERROR"
+    elif "FAIL" in statuses:
+        status = "FAIL"
+    elif "SKIP" in statuses:
+        status = "SKIP"
+    else:
+        status = "PASS" if calls and returncode == 0 else "ERROR"
+    if observed.get("status") != status:
+        return "ERROR", {}
+    return status, observed
 
 
 def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
     """Bind repository-owned execution inputs, excluding caches and secrets."""
     suffixes = {".py", ".md", ".json", ".jsonl", ".ts", ".svg", ".yml", ".yaml"}
     paths = {
-        path for directory in ("src", "tools", "tests", "docs", "generated", ".agents/skills", ".github/workflows")
+        path for directory in SOURCE_DIRECTORIES
         for path in (root / directory).rglob("*")
         if path.is_file() and path.suffix in suffixes and "__pycache__" not in path.parts
     }
-    paths.update(root / name for name in ("pyproject.toml", "uv.lock", "pytest.ini", "setup.cfg", "MANIFEST.in", "conftest.py", "CANON.md", "AGENTS.md") if (root / name).is_file())
+    paths.update(root / name for name in ROOT_INPUTS if (root / name).is_file())
     inventory = {path.relative_to(root).as_posix(): _sha(path.read_bytes()) for path in sorted(paths)}
     return inventory, _sha(json.dumps(inventory, sort_keys=True, separators=(",", ":")).encode())
 
@@ -249,25 +335,37 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         stdout_path = Path(temporary) / "stdout"
         stderr_path = Path(temporary) / "stderr"
         junit_path = Path(temporary) / "outcomes.xml"
-        command = (*command, f"--junitxml={junit_path}", "-o", "xfail_strict=true")
-        with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
-            process = subprocess.Popen(
-                command, cwd=root, stdin=subprocess.DEVNULL,
-                stdout=stdout, stderr=stderr, start_new_session=True,
-            )
-            timed_out = False
-            try:
-                returncode = process.wait(timeout=timeout)
-            except subprocess.TimeoutExpired:
-                timed_out = True
+        report_path = Path(temporary) / "outcomes.json"
+        command = (sys.executable, str(BOOTSTRAP), str(root), str(report_path),
+                   "-q", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
+        environment = dict(os.environ)
+        for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):
+            environment.pop(name, None)
+        environment.update(PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+        watcher = _SourceWatch(root)
+        try:
+            with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                process = subprocess.Popen(
+                    command, cwd=root, stdin=subprocess.DEVNULL,
+                    stdout=stdout, stderr=stderr, start_new_session=True, env=environment,
+                )
+                timed_out = False
                 try:
-                    os.killpg(process.pid, signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
-                returncode = process.wait()
+                    returncode = process.wait(timeout=timeout)
+                except subprocess.TimeoutExpired:
+                    timed_out = True
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                    returncode = process.wait()
+        finally:
+            source_events = watcher.finish()
         stdout_sha, stdout_bytes, stdout_excerpt = _excerpt(stdout_path)
         stderr_sha, stderr_bytes, stderr_excerpt = _excerpt(stderr_path)
-        status = "TIMEOUT" if timed_out else _junit_status(junit_path, returncode)
+        status, observed = _pytest_outcome(report_path, returncode)
+        if timed_out:
+            status = "TIMEOUT"
 
     duration = round(time.monotonic() - started, 6)
     return CheckOutcome(
@@ -275,6 +373,7 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         command, requires, timeout, mutates, cleanup, status, returncode,
         duration, stdout_sha, stderr_sha, stdout_bytes, stderr_bytes,
         stdout_excerpt, stderr_excerpt,
+        imported_sources=observed.get("origins", {}), source_events=source_events,
     )
 
 
@@ -314,20 +413,29 @@ def run_boundaries(
     )
     outcomes = []
     for check in selected:
+        _, check_before = _source_snapshot(root)
         try:
-            outcomes.append(_run_check(root, check))
-        except (ValueError, OSError) as error:
-            outcomes.append(_error_outcome(root, check, error))
+            outcome = _run_check(root, check)
+        except (ValueError, OSError, AttributeError) as error:
+            outcome = _error_outcome(root, check, error)
+        _, check_after = _source_snapshot(root)
+        outcomes.append(replace(outcome, source_before_sha256=check_before, source_after_sha256=check_after))
     _, source_after = _source_snapshot(root)
     statuses = {outcome.status for outcome in outcomes}
+    unchanged = source_before == source_after and all(
+        not outcome.source_events and outcome.source_before_sha256 == outcome.source_after_sha256
+        for outcome in outcomes
+    )
     receipt: dict[str, object] = {
         "schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION,
-        "status": "passed" if outcomes and statuses == {"PASS"} and source_before == source_after else "not-passed",
+        "status": "passed" if outcomes and statuses == {"PASS"} and unchanged else "not-passed",
         "audit_closed": True, "audit_gaps": [],
         "source_files_sha256": source_files,
         "source_before_sha256": source_before,
         "source_after_sha256": source_after,
-        "source_unchanged": source_before == source_after,
+        "source_unchanged": unchanged,
+        "bootstrap_sha256": _sha(BOOTSTRAP.read_bytes()),
+        "python_version": sys.version,
         "selected_check_ids": [outcome.check_id for outcome in outcomes],
         "outcome_counts": {
             key: sum(outcome.status == key for outcome in outcomes)
@@ -365,4 +473,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=261:61 imports_exports=18:4 calls_definitions=108:15
+# ratios: loc_comments=361:65 imports_exports=19:4 calls_definitions=151:18

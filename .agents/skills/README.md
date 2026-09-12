@@ -11,6 +11,7 @@ then propagate from the canonical source.
 Skills refreshed from the source commit above:
 
 - `gonol-build/`
+- `msdmd/`
 
 Other installed skills (not refreshed by this propagation):
 
@@ -21,7 +22,6 @@ commit above does not assert that these copies were refreshed.
 - `domain-claims/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
 - `interdependent-work-graph/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
 - `meta-module-build/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
-- `msdmd/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
 - `test-build/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
 - `the-interdependency/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]
 - `ucns-option-selection/` [not refreshed; prior source: `c14ee9d500579a4b5d6821f62c9d82ca96e73608`]

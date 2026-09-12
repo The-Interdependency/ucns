@@ -1,4 +1,4 @@
-# ratios: loc_comments=181:45 imports_exports=8:4 calls_definitions=72:8
+# ratios: loc_comments=205:47 imports_exports=8:4 calls_definitions=88:8
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -58,6 +58,9 @@ from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 BLOCK_RE = re.compile(r"^\s*#\s*===\s*(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
 END_RE = re.compile(r"^\s*#\s*===\s*END\s+(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
+DECLARATION_FENCE_RE = re.compile(r"^\s*#\s*=+\s*(?:END\s+)?(?:MODULE_BUILD|CONTRACTS|CHECKS)\b")
+ID_LIKE_RE = re.compile(r"^\s*#\s*id\b")
+ID_RE = re.compile(r"^#\s*id:\s*([a-z_][a-z0-9_]*)\s*$")
 PARSER_PATH = Path(__file__).resolve().parents[1] / ".agents/skills/msdmd/parsers/universal.py"
 _SPEC = importlib.util.spec_from_file_location("_ucns_canonical_msdmd", PARSER_PATH)
 if _SPEC is None or _SPEC.loader is None:
@@ -105,6 +108,7 @@ def parse_blocks(path: Path) -> List[Entry]:
     """Check fence integrity, then delegate entry grammar to canonical msdmd."""
     text = path.read_text(encoding="utf-8")
     active: str | None = None
+    declarations = 0
     for raw in text.splitlines():
         start = BLOCK_RE.match(raw)
         if start:
@@ -117,13 +121,23 @@ def parse_blocks(path: Path) -> List[Entry]:
             if active != end.group(1):
                 raise ValueError(f"{path}: mismatched END {end.group(1)}")
             active = None
+            continue
+        if DECLARATION_FENCE_RE.match(raw):
+            raise ValueError(f"{path}: malformed declaration fence: {raw.strip()}")
+        if active is not None and ID_LIKE_RE.match(raw):
+            if ID_RE.fullmatch(raw) is None:
+                raise ValueError(f"{path}: malformed id declaration: {raw.strip()}")
+            declarations += 1
     if active is not None:
         raise ValueError(f"{path}: unterminated {active} block")
-    return [
+    entries = [
         Entry(block, path, fields)
         for block in ("MODULE_BUILD", "CONTRACTS", "CHECKS")
         for fields in _PARSER.parse_text(text, block)
     ]
+    if len(entries) != declarations:
+        raise ValueError(f"{path}: declarations lost by canonical parser")
+    return entries
 
 
 def _defined_functions(path: Path) -> Set[str]:
@@ -232,7 +246,19 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         for function in (node.name for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
             if function.startswith("test_") and function not in declared_calls:
                 problems.append(f"GAP executable check {test_path}::{function} has no resolving CHECKS declaration")
-        for cls in (node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)):
+        for cls in (node for node in tree.body if isinstance(node, ast.ClassDef)):
+            # Match default pytest class collection without importing tests.
+            # Helpers/nested classes and explicitly disabled classes are not checks.
+            disabled = any(
+                isinstance(node, ast.Assign)
+                and any(isinstance(target, ast.Name) and target.id == "__test__" for target in node.targets)
+                and isinstance(node.value, ast.Constant) and node.value.value is False
+                for node in cls.body
+            )
+            if not cls.name.startswith("Test") or disabled:
+                continue
+            if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for node in cls.body):
+                continue
             for method in cls.body:
                 if isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)) and method.name.startswith("test_"):
                     problems.append(
@@ -257,4 +283,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=181:45 imports_exports=8:4 calls_definitions=72:8
+# ratios: loc_comments=205:47 imports_exports=8:4 calls_definitions=88:8
