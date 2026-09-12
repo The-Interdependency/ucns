@@ -59,8 +59,8 @@ import json
 from pathlib import Path
 import sys
 import xml.etree.ElementTree as ET
-import pytest
 import ucns
+from tools._boundary_pytest import run_suite
 
 installed = Path(ucns.__file__).resolve()
 assert installed.is_relative_to(Path(sys.prefix)), installed
@@ -69,7 +69,7 @@ expected = {p.relative_to(Path("src")).as_posix(): hashlib.sha256(p.read_bytes()
 def installed_sources():
     return {"ucns/" + p.relative_to(installed.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in installed.parent.rglob("*.py")}
 assert installed_sources() == expected
-result = pytest.main(["tests", "--junitxml=" + sys.argv[1]])
+result = run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config", "--junitxml=" + sys.argv[1]], Path.cwd())
 assert result == 0, result
 assert Path(ucns.__file__).resolve() == installed
 assert installed.read_bytes() == initial
