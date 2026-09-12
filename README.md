@@ -219,6 +219,8 @@ file/class/function naming. Unrecognized configuration keys fail closed.
 Repository-root helper imports outside the declared source layout fail the audit.
 The complete-suite gate also requires every statically declared top-level test to
 execute, so hiding a failing witness during collection cannot leave a passing gate.
+Both full and selected execution also reconcile every collected pytest item,
+including separate parameter invocations, against its actual call outcome.
 Conftest files and local plugin registration are
 outside this bounded collection contract. Changed settings, alternative pytest configuration
 files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is

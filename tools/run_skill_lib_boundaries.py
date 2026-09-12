@@ -1,4 +1,4 @@
-# ratios: loc_comments=421:71 imports_exports=20:4 calls_definitions=186:20
+# ratios: loc_comments=422:71 imports_exports=20:4 calls_definitions=187:20
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -301,7 +301,7 @@ def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
     elif "SKIP" in statuses:
         status = "SKIP"
     else:
-        status = "PASS" if calls and returncode == 0 else "ERROR"
+        status = "PASS" if calls and returncode == 0 and observed.get("item_coverage_closed") is True else "ERROR"
     if observed.get("status") != status:
         return "ERROR", {}
     return status, observed
@@ -401,7 +401,8 @@ def _execute_check(root: Path, check: Entry) -> CheckOutcome:
         command, requires, timeout, mutates, cleanup, status, returncode,
         duration, stdout_sha, stderr_sha, stdout_bytes, stderr_bytes,
         stdout_excerpt, stderr_excerpt,
-        diagnostic="background descendants outlived the check" if observed.get("descendants_reaped") else "",
+        diagnostic=("background descendants outlived the check" if observed.get("descendants_reaped") else
+                    "collected pytest items did not all execute" if status == "ERROR" and observed.get("item_coverage_closed") is False else ""),
         descendants_reaped=observed.get("descendants_reaped", 0),
         imported_sources=observed.get("origins", {}),
     )
@@ -543,4 +544,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=421:71 imports_exports=20:4 calls_definitions=186:20
+# ratios: loc_comments=422:71 imports_exports=20:4 calls_definitions=187:20
