@@ -65,9 +65,11 @@ from tools._boundary_pytest import run_suite
 installed = Path(ucns.__file__).resolve()
 assert installed.is_relative_to(Path(sys.prefix)), installed
 initial = installed.read_bytes()
-expected = {p.relative_to(Path("src")).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("src/ucns").rglob("*.py")}
+expected = {p.relative_to(Path("src")).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("src/ucns").rglob("*") if p.is_file() and "__pycache__" not in p.parts}
 def installed_sources():
-    return {"ucns/" + p.relative_to(installed.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in installed.parent.rglob("*.py")}
+    entries = tuple(installed.parent.rglob("*"))
+    assert not any(path.is_symlink() for path in entries), "installed package contains a symlink"
+    return {"ucns/" + p.relative_to(installed.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in entries if p.is_file() and "__pycache__" not in p.parts}
 assert installed_sources() == expected
 result = run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config", "--junitxml=" + sys.argv[1]], Path.cwd())
 assert result == 0, result
