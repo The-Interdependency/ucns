@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "repair/ucns-audit-20260911",
-    "commit": "0ff4fb72c2fed47d7cb75ea7990f72407ec0da9d",
+    "commit": "3f7219d9da66db8f2bd5f245df312d6d4b9d3454",
     "generated_at": "2026-09-12",
     "note": "Describes the exact implementation commit preceding this report-only refresh. Maintenance PR #226 is in final exact-head review; merge remains a separate acceptance observation. No scientific or deployment authority is transferred."
   },
