@@ -177,6 +177,26 @@ Exact modular and trace records require immutable tuples with non-Boolean intege
 residues; prefer the public builders. MPFR rational constructors accept only
 integers or `Fraction`, and NaN cannot participate in interval ordering.
 
+To replay both exact distribution files after the archive gate, with no editable
+installation or source-path dependency:
+
+```bash
+bash tools/replay_distributions.sh . dist /tmp/ucns-replay python3.12
+```
+
+The output directory must be new and outside this checkout. The script exports
+hash-locked dependencies, installs the wheel and sdist into separate clean
+venvs, and runs all geometry tests against each installed package. Its receipt
+records artifact hashes, Python versions, loaded package paths, test counts,
+and zero skipped checks. It also binds a selected exact-input receipt executed
+from the archived source, whose UCNS hashes must match both installed artifacts.
+CI repeats this on Python 3.10, 3.11, and 3.12 against the exact PR head. Each
+job retains its wheel, source archive, dependency export, test reports, selected
+receipt, and replay receipt in `ucns-evidence-<python-version>`. The accompanying
+`source.json` binds the Git commit/tree and runtimes. Download those bundles
+from the workflow run and verify their artifact/receipt hashes and source maps
+before accepting the chain; a successful Actions job alone is not acceptance.
+The source archive includes this replay script and the exact build-tool pins.
 The no-exec graph also reconciles both exact vendored reference parsers, with
 local Python and TypeScript numeric-field/no-execution witnesses. The complete
 repository evidence suite requires Node 24.15.0 for that TypeScript check; UCNS
@@ -260,3 +280,7 @@ checks; it is not a sandbox for hostile test code. A `passed` receipt covers onl
 checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
+
+Distribution replays hash the complete extracted tree before and after each full suite, reject persistent source changes, and retain the full source map. Each installed distribution inventory covers package files, dist-info payloads, and validated uv installer metadata/RECORD; imports remain separately witnessed. Check downloaded archives from their directory with `sha256sum -c ../replay/archives.sha256`. These checks establish execution provenance, not scientific ratification.
+
+Standalone replay requires uv 0.11.18. It verifies the bootstrap version, synchronizes the verification environment from the hash-locked export, uses that environment’s uv for later installation, and retains both executable identities. Fixture source builds consume the same locked dependency export. Optimized Python mode is rejected before evidence can be produced.

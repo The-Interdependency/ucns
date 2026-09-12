@@ -230,7 +230,7 @@ def _capability_available(name: str) -> bool:
         return hasattr(os, "sched_getaffinity") and hasattr(os, "sched_setaffinity")
     if name in {"libmpfr", "system-libmpfr"}:
         return ctypes.util.find_library("mpfr") is not None
-    if name in {"mpmath", "numpy", "sympy", "pytest"}:
+    if name in {"mpmath", "numpy", "sympy", "pytest", "build"}:
         return importlib.util.find_spec(name) is not None
     return shutil.which(name) is not None
 
@@ -372,7 +372,7 @@ def _execute_check(root: Path, check: Entry) -> CheckOutcome:
         junit_path = Path(temporary) / "outcomes.xml"
         report_path = Path(temporary) / "outcomes.json"
         command = (sys.executable, str(BOOTSTRAP), str(root), str(report_path),
-                   "-q", "-c", str(root / "pyproject.toml"), "--noconftest", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
+                   "-q", "-p", "no:cacheprovider", "-c", str(root / "pyproject.toml"), "--noconftest", f"{relative_source}::{function}", f"--junitxml={junit_path}", "-o", "xfail_strict=true")
         command = (sys.executable, str(SUPERVISOR), str(timeout), *command[1:])
         environment = dict(os.environ)
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):

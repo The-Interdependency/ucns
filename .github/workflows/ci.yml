@@ -14,9 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.12"]
+        python-version: ["3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Checkout pinned skill-lib authority
         uses: actions/checkout@v7.0.1
         with:
@@ -71,9 +73,43 @@ jobs:
           from tools._boundary_pytest import run_suite
           raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config"], Path.cwd()))
           PY
-      - name: Build package
-        run: .venv/bin/python -m build
+      - name: Build package from clean exact Git source
+        env:
+          EXPECTED_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_COMMIT"
+          mkdir /tmp/ucns-build-source
+          git archive "$EXPECTED_SOURCE_COMMIT" | tar -x -C /tmp/ucns-build-source
+          .venv/bin/python -m build --outdir "$PWD/dist" /tmp/ucns-build-source
       - name: Check distributions
         run: |
           .venv/bin/python -m twine check dist/*
           .venv/bin/python tools/verify_distributions.py . dist
+      - name: Replay exact wheel and source distribution in clean environments
+        run: bash tools/replay_distributions.sh . dist /tmp/ucns-replay python
+      - name: Collect exact artifact replay evidence
+        env:
+          EXPECTED_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p /tmp/ucns-evidence/artifacts /tmp/ucns-evidence/replay
+          cp dist/*.whl dist/*.tar.gz /tmp/ucns-evidence/artifacts/
+          (cd /tmp/ucns-evidence/artifacts; sha256sum -c /tmp/ucns-replay/archives.sha256)
+          cp /tmp/ucns-replay/*.json /tmp/ucns-replay/*.xml /tmp/ucns-replay/archives.sha256 /tmp/ucns-replay/dependencies.txt /tmp/ucns-evidence/replay/
+          python - <<'PY'
+          import json, os, pathlib, subprocess, sys
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          if git("status", "--porcelain", "--untracked-files=all"):
+              raise SystemExit("checkout changed before provenance capture")
+          if git("rev-parse", "HEAD") != os.environ["EXPECTED_SOURCE_COMMIT"]:
+              raise SystemExit("checkout no longer matches the selected source commit")
+          record = {"source_commit": git("rev-parse", "HEAD"), "source_tree": git("rev-parse", "HEAD^{tree}"), "python": sys.version, "node": subprocess.check_output(["node", "--version"], text=True).strip(), "authority": "execution evidence; independent receipt and source verification required"}
+          pathlib.Path("/tmp/ucns-evidence/source.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Retain artifacts and replay receipts
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: ucns-evidence-${{ matrix.python-version }}
+          path: /tmp/ucns-evidence/
+          if-no-files-found: error

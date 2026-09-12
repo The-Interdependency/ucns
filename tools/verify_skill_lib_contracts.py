@@ -114,7 +114,7 @@ def _source_files(root: Path) -> Iterable[Path]:
             yield parser
     for base in (root / "src", root / "tools", root / "tests"):
         if base.exists():
-            yield from (path for path in sorted(base.rglob("*.py")) if "__pycache__" not in path.parts)
+            yield from (path for path in sorted(base.rglob("*")) if path.suffix in {".py", ".sh"} and path.is_file() and "__pycache__" not in path.parts)
 
 
 def parse_blocks(path: Path) -> List[Entry]:
