@@ -9,10 +9,10 @@
     "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
   },
   "source": {
-    "branch": "repair/ucns-audit-20260911",
-    "commit": "e408e1781ff143f772a02cd72d407deaca00cde4",
+    "branch": "evidence/clean-install-final-20260912",
+    "commit": "ccbddd3a2b895e230075278f26ca77464daf3792",
     "generated_at": "2026-09-12",
-    "note": "Describes the exact implementation commit preceding this report-only refresh. Maintenance PR #226 is in final exact-head review; merge remains a separate acceptance observation. No scientific or deployment authority is transferred."
+    "note": "Describes the exact implementation commit preceding this report-only refresh. Artifact acceptance requires inspecting the hash-bound replay bundle for the selected source identity; job success alone is not acceptance. No scientific or deployment authority is transferred."
   },
   "authority": {
     "owns": [
@@ -38,7 +38,7 @@
     }
   },
   "status": {
-    "state": "active geometry repository; maintenance repair in exact-head review",
+    "state": "active geometry repository with an exact artifact replay chain",
     "current_claim": "UCNS retains exact geometric carriers and candidate modular/wave relations. Local repairs harden immutable/exact inputs, MPFR NaN ordering, no-exec contract auditing, selected-check receipts, and replayable distributions; no candidate is ratified by those repairs."
   },
   "delivered": [
@@ -71,10 +71,15 @@
       "surface": "Source distribution replay inputs and artifact gate",
       "status": "implemented exact wheel/sdist metadata and directory validation with pinned build backend and source replay inputs",
       "boundary": "archive presence and matching bytes are packaging evidence; archived certificates are not thereby recomputed"
+    },
+    {
+      "surface": "Clean wheel and source-install evidence chain",
+      "status": "implemented full-suite artifact replay on Python 3.10, 3.11, and 3.12 with hash-locked dependencies, installed source maps, archived-source exact-input receipts, and retained CI bundles",
+      "boundary": "each receipt binds its own exact artifact and source identity; Python/Node execution and passing packaging evidence do not ratify geometry or grant publication/freshness standing"
     }
   ],
   "active_frontier": [
-    "close exact-head maintenance review and then verify the source-distribution/clean-install replay chain across supported Python versions",
+    "inspect and accept the exact artifact replay bundle for each selected source identity across supported Python versions",
     "reconcile the intrinsic/extrinsic Structural Null representation before constructing an origin attachment",
     "derive the complete visible-circle wave trace into the native frame-bearing M\u00f6bius carrier",
     "ratify or reject modular-orbit / continuum-boundary-trace candidates under explicit falsifiers",
@@ -82,9 +87,9 @@
   ],
   "next_actions": [
     {
-      "action": "Complete exact-head review and Python 3.10/3.12 CI for UCNS PR #226; merge after all live findings and gates close",
-      "owner": "The-Interdependency/ucns maintainers",
-      "dependency": "Exact canonical skill-lib 5e7239b52dc5403d8d01fbc63341fe397719ec3f binds the declared parser; nine installed skills pass strict drift verification"
+      "action": "Verify artifact hashes, source maps, dependency exports, and selected receipt identities from each supported runtime bundle before accepting the evidence chain",
+      "owner": "The-Interdependency/ucns evidence maintainers",
+      "dependency": "accepted exact source and skill-lib pins; no acceptance from Actions status alone"
     },
     {
       "action": "Correct stale stack research claims about PR #220 and reconcile its exact research base before consuming results",
@@ -113,7 +118,6 @@
     }
   ],
   "blocked": [
-    "Final exact-head CI and merge remain unobserved at this report refresh.",
     "Origin attachment and recursive traversal cannot be supplied by numerical defaults or downstream interpretations."
   ],
   "cross_repository_relations": [
