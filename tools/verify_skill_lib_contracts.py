@@ -1,4 +1,4 @@
-# ratios: loc_comments=410:53 imports_exports=11:4 calls_definitions=204:16
+# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -49,6 +49,7 @@ loaded. Unsupported class-based test targets are visible gaps, not coverage.
 from __future__ import annotations
 
 import ast
+import configparser
 import importlib.util
 import re
 import shlex
@@ -323,6 +324,16 @@ def _collection_config_problems(root: Path) -> list[str]:
             continue
         for path in paths:
             if path.is_file() and path.name in alternatives:
+                if path.name in {"setup.cfg", "tox.ini"}:
+                    try:
+                        parser = configparser.ConfigParser(interpolation=None)
+                        parser.read_string(path.read_text(encoding="utf-8"))
+                        section = "tool:pytest" if path.name == "setup.cfg" else "pytest"
+                        if not parser.has_section(section):
+                            continue  # Setuptools emits setup.cfg with only egg_info.
+                    except (OSError, UnicodeError, configparser.Error) as error:
+                        problems.append(f"GAP invalid pytest collection configuration: {path}: {error}")
+                        continue
                 problems.append(f"GAP unsupported pytest collection configuration: {path}; use root pyproject.toml with default collection")
     path = root / "pyproject.toml"
     if not path.exists():
@@ -513,4 +524,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=410:53 imports_exports=11:4 calls_definitions=204:16
+# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
