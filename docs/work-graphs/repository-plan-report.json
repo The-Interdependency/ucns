@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "evidence/clean-install-final-20260912",
-    "commit": "2ea2c4010ce532aab367c63c7ef5ece38a9c7339",
+    "commit": "ce3bf8ab6bfc620ec507b9a889ed33eb3d83459d",
     "generated_at": "2026-09-12",
     "note": "Describes the exact implementation commit preceding this report-only refresh. Artifact acceptance requires inspecting the hash-bound replay bundle for the selected source identity; job success alone is not acceptance. No scientific or deployment authority is transferred."
   },
@@ -74,7 +74,7 @@
     },
     {
       "surface": "Clean wheel and source-install evidence chain",
-      "status": "implemented full-suite artifact replay on Python 3.10, 3.11, and 3.12 with hash-locked dependencies, installed source maps, archived-source exact-input receipts, and retained CI bundles",
+      "status": "implemented 159-test artifact replay on Python 3.10, 3.11, and 3.12 with hash-locked dependencies, full source snapshots, complete installed-distribution inventories and retained installer metadata, archived-source exact-input receipts, and portable CI bundles",
       "boundary": "each receipt binds its own exact artifact and source identity; Python/Node execution and passing packaging evidence do not ratify geometry or grant publication/freshness standing"
     }
   ],
