@@ -1,4 +1,4 @@
-# ratios: loc_comments=69:76 imports_exports=16:3 calls_definitions=73:3
+# ratios: loc_comments=70:78 imports_exports=17:3 calls_definitions=75:3
 # === CHECKS ===
 # id: check_distribution_replay_source_integrity
 #   proves: ucns_distributions_replay_installed_code, ucns_distribution_evidence_binds_all_files
@@ -30,6 +30,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -97,8 +98,9 @@ wheel = pathlib.Path(sys.argv[2])
 report = module.installed_inventory(wheel, wheel)
 print(json.dumps(report))
 """
+    clean = {name: value for name, value in os.environ.items() if name not in {"PYTHONPATH", "PYTHONHOME", "UCNS_BOUND_SOURCE_ROOT"}}
     command = [str(python), "-c", script, helper, str(wheel)]
-    initial = subprocess.run(command, capture_output=True, text=True)
+    initial = subprocess.run(command, env=clean, capture_output=True, text=True)
     assert initial.returncode == 0, initial.stderr
     report = json.loads(initial.stdout)
     assert info + "METADATA" in report["files_sha256"] and info + "direct_url.json" in report["installer_metadata"]
@@ -107,15 +109,15 @@ print(json.dumps(report))
         path = site / name
         original = path.read_bytes()
         path.write_bytes(original + b"altered")
-        assert subprocess.run(command, capture_output=True).returncode != 0, name
+        assert subprocess.run(command, env=clean, capture_output=True).returncode != 0, name
         path.write_bytes(original)
     for name in (info + "unexpected", "ucns/unrecorded.txt"):
         path = site / name
         path.write_text("extra")
-        assert subprocess.run(command, capture_output=True).returncode != 0, name
+        assert subprocess.run(command, env=clean, capture_output=True).returncode != 0, name
         path.unlink()
     (site / (info + "METADATA")).unlink()
-    assert subprocess.run(command, capture_output=True).returncode != 0
+    assert subprocess.run(command, env=clean, capture_output=True).returncode != 0
 
 
 def test_sdist_installer_metadata_is_recorded(tmp_path):
@@ -143,13 +145,14 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 print(json.dumps(module.installed_inventory(pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[3]))))
 """
+    clean = {name: value for name, value in os.environ.items() if name not in {"PYTHONPATH", "PYTHONHOME", "UCNS_BOUND_SOURCE_ROOT"}}
     command = [str(python), "-c", script, str(Path(_distribution_evidence.__file__).resolve()), str(wheel), str(artifact)]
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(command, env=clean, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     inventory = json.loads(result.stdout)
     name, = [name for name in inventory["installer_metadata"] if name.endswith("/uv_build.json")]
     assert json.loads(inventory["installer_metadata"][name]) == {}
     path = next(environment.glob("lib/python*/site-packages")) / name
     path.write_text('{"unexpected": true}')
-    assert subprocess.run(command, capture_output=True).returncode != 0
-# ratios: loc_comments=69:76 imports_exports=16:3 calls_definitions=73:3
+    assert subprocess.run(command, env=clean, capture_output=True).returncode != 0
+# ratios: loc_comments=70:78 imports_exports=17:3 calls_definitions=75:3

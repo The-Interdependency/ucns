@@ -230,7 +230,7 @@ def _capability_available(name: str) -> bool:
         return hasattr(os, "sched_getaffinity") and hasattr(os, "sched_setaffinity")
     if name in {"libmpfr", "system-libmpfr"}:
         return ctypes.util.find_library("mpfr") is not None
-    if name in {"mpmath", "numpy", "sympy", "pytest"}:
+    if name in {"mpmath", "numpy", "sympy", "pytest", "build"}:
         return importlib.util.find_spec(name) is not None
     return shutil.which(name) is not None
 
