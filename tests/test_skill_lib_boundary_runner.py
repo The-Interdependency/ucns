@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:266 imports_exports=10:17 calls_definitions=103:19
+# ratios: loc_comments=98:287 imports_exports=12:18 calls_definitions=110:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -398,4 +398,27 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
     pid = int((timeout_root / "child.pid").read_text())
     with pytest.raises(ProcessLookupError):
         os.kill(pid, 0)
-# ratios: loc_comments=98:266 imports_exports=10:17 calls_definitions=103:19
+# === CHECKS ===
+# id: check_node24_capability_runs_typescript_witness
+#   proves: boundary_runner_consumes_capabilities_and_timeouts
+#   call: self::test_node24_capability_runs_typescript_witness
+#   requires: python3, node24
+#   timeout: 20
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
+
+
+def test_node24_capability_runs_typescript_witness() -> None:
+    from unittest.mock import patch
+    from subprocess import CompletedProcess
+    for version, expected in (("v24.15.0\n", True), ("v22.23.2\n", False), ("not-a-version", False)):
+        with patch.object(runner.shutil, "which", return_value="/fake/node"):
+            with patch.object(runner.subprocess, "run", return_value=CompletedProcess([], 0, version, "")):
+                assert runner._capability_available("node24") is expected
+    with patch.object(runner.shutil, "which", return_value=None):
+        assert not runner._capability_available("node24")
+    receipt = runner.run_boundaries(RUNNER_PATH.resolve().parents[1], selected_ids=("check_vendored_typescript_field_preservation",))
+    assert receipt["status"] == "passed", receipt
+    assert len(receipt["outcomes"]) == 1 and receipt["outcomes"][0]["status"] == "PASS", receipt
+# ratios: loc_comments=98:287 imports_exports=12:18 calls_definitions=110:20
