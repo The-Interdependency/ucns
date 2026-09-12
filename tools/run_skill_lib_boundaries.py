@@ -1,4 +1,4 @@
-# ratios: loc_comments=373:71 imports_exports=19:4 calls_definitions=165:18
+# ratios: loc_comments=383:71 imports_exports=20:4 calls_definitions=168:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -73,6 +73,7 @@ from hashlib import sha256
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import signal
@@ -212,6 +213,15 @@ def _split(value: str) -> tuple[str, ...]:
 def _capability_available(name: str) -> bool:
     if name == "python3":
         return True
+    if name == "node24":
+        executable = shutil.which("node")
+        if executable is None:
+            return False
+        try:
+            result = subprocess.run([executable, "--version"], capture_output=True, text=True, timeout=5)
+        except (OSError, UnicodeError, subprocess.TimeoutExpired):
+            return False
+        return result.returncode == 0 and re.fullmatch(r"v24\.\d+\.\d+", result.stdout.strip()) is not None
     if name == "posix_shell":
         return os.name == "posix" and shutil.which("sh") is not None
     if name == "posix_resource":
@@ -491,4 +501,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=373:71 imports_exports=19:4 calls_definitions=165:18
+# ratios: loc_comments=383:71 imports_exports=20:4 calls_definitions=168:18
