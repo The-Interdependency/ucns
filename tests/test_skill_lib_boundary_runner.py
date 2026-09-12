@@ -192,7 +192,7 @@ def test_fail():
 def test_error():
     raise RuntimeError("AssertionError mentioned by a broken harness")
 class ContractViolation(AssertionError):
-    pass
+    __test__ = False
 def test_subclass():
     raise ContractViolation("broken")
 """
@@ -367,7 +367,7 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
 
 # === CHECKS ===
 # id: check_boundary_background_descendants
-#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
+#   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes, boundary_supervisor_ends_descendants
 #   call: self::test_background_descendants_block_acceptance
 #   requires: python3, pytest
 #   timeout: 30
@@ -391,7 +391,7 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
     with pytest.raises(ProcessLookupError):
         os.kill(pid, 0)
     assert (root / "src/pkg/feature.py").read_bytes() == before
-    body += "    import time; time.sleep(30)\n"
+    body += "    import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); time.sleep(30)\n"
     timeout_root = _repo(tmp_path / "timeout-child", body, [{"id": "check_probe", "function": "test_probe", "timeout": "5"}])
     receipt = runner.run_boundaries(timeout_root)
     assert receipt["outcomes"][0]["status"] == "TIMEOUT"

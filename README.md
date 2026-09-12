@@ -172,6 +172,10 @@ Exact modular and trace records require immutable tuples with non-Boolean intege
 residues; prefer the public builders. MPFR rational constructors accept only
 integers or `Fraction`, and NaN cannot participate in interval ordering.
 
+The no-exec graph also reconciles the exact vendored reference parser that it
+executes, including a local numeric-field witness. Parser ownership remains in
+skill-lib. Unused skill helper tools remain canonical dependency material.
+
 For a source-bound, selected-check receipt:
 
 ```bash
@@ -187,9 +191,10 @@ Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient pytest plugins disabled and
 PYTHONPATH replaced. An inherited startup hook makes ordinary Python descendants
-prefer bound packages over their working directory. The bootstrap uses Linux
+prefer bound packages over their working directory. A separate supervisor uses Linux
 child subreaping to terminate remaining descendants before observation ends;
-leaked background work prevents acceptance. Origin receipts observe the selected
+leaked background work prevents acceptance. Timeout cleanup is outside the
+pytest process, so replacing its signal handler cannot bypass descendant cleanup. Origin receipts observe the selected
 pytest process. Explicit isolated/no-site interpreters and replaced child
 environments do not inherit the import protocol. The observer instruments trusted
 checks; it is not a sandbox for hostile test code. A `passed` receipt covers only its selected

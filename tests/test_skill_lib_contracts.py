@@ -1,4 +1,4 @@
-# ratios: loc_comments=113:42 imports_exports=5:5 calls_definitions=65:5
+# ratios: loc_comments=122:51 imports_exports=6:6 calls_definitions=72:6
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -159,6 +159,8 @@ def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
     assert not ok and any("TestChild::test_hidden" in item for item in problems)
     for code, label in (
         ("def hidden(): assert False\ntest_aliased = hidden\n", "unresolved executable alias"),
+        ("import unittest\nclass HiddenName(unittest.TestCase):\n    def test_hidden(self): assert False\n", "HiddenName"),
+        ("from unittest import TestCase as Case\nclass HiddenName(Case):\n    def test_hidden(self): assert False\n", "HiddenName"),
         ("class Helper:\n    __test__ = True\n    def test_explicit(self): pass\n", "Helper::test_explicit"),
         ("class TestAlias:\n    def hidden(self): pass\n    test_aliased = hidden\n", "TestAlias::test_aliased"),
     ):
@@ -171,4 +173,22 @@ def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
     inherited.write_text("__test__ = False\ndef test_disabled(): assert False\n")
     ok, problems = audit_repository(root)
     assert ok, problems
-# ratios: loc_comments=113:42 imports_exports=5:5 calls_definitions=65:5
+# === CHECKS ===
+# id: check_vendored_msdmd_field_preservation
+#   proves: msdmd_python_parser_preserves_field_names
+#   call: self::test_vendored_parser_retains_numeric_field_names
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+# === END CHECKS ===
+
+
+def test_vendored_parser_retains_numeric_field_names() -> None:
+    from tools.verify_skill_lib_contracts import _PARSER, PARSER_PATH, parse_blocks
+    declarations = parse_blocks(PARSER_PATH)
+    assert any(entry.block == "MODULE_BUILD" and entry.id == "msdmd_python_reference_parser" for entry in declarations)
+    assert any(entry.block == "CONTRACTS" and entry.id == "msdmd_python_parser_preserves_field_names" for entry in declarations)
+    text = "# === NARRATIVE ===\n# id: sample\n#   evidence_sha256: abc123\n# === END NARRATIVE ===\nraise RuntimeError('not executable input')\n"
+    assert _PARSER.parse_text(text, "NARRATIVE") == [{"id": "sample", "evidence_sha256": "abc123"}]
+# ratios: loc_comments=122:51 imports_exports=6:6 calls_definitions=72:6

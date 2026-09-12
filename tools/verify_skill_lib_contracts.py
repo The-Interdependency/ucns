@@ -1,4 +1,4 @@
-# ratios: loc_comments=303:47 imports_exports=8:4 calls_definitions=135:12
+# ratios: loc_comments=306:50 imports_exports=8:4 calls_definitions=136:12
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -100,6 +100,10 @@ class Entry:
 
 
 def _source_files(root: Path) -> Iterable[Path]:
+    # This vendored helper executes as part of the audit instrument itself.
+    parser = root / ".agents/skills/msdmd/parsers/universal.py"
+    if parser.is_file():
+        yield parser
     for base in (root / "src", root / "tools", root / "tests"):
         if base.exists():
             yield from (path for path in sorted(base.rglob("*.py")) if "__pycache__" not in path.parts)
@@ -356,10 +360,12 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             if setting is UNKNOWN_TEST_SETTING:
                 problems.append(f"GAP dynamic class opt-out {test_path}::{cls.name}")
                 continue
-            if not cls.name.startswith("Test") and setting is not True:
-                continue
             if order is None:
+                # unittest.TestCase collection does not require a Test prefix.
+                # Unknown external bases can carry executable tests under any name.
                 problems.append(f"GAP inherited class check {test_path}::{cls.name}; unresolved base surface")
+                continue
+            if not cls.name.startswith("Test") and setting is not True:
                 continue
             inherited = [classes[name] for name in order if name in classes]
             if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for ancestor in inherited for node in ancestor.body):
@@ -389,4 +395,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=303:47 imports_exports=8:4 calls_definitions=135:12
+# ratios: loc_comments=306:50 imports_exports=8:4 calls_definitions=136:12
