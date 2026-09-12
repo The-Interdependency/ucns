@@ -1,4 +1,4 @@
-# ratios: loc_comments=315:35 imports_exports=17:4 calls_definitions=163:11
+# ratios: loc_comments=318:35 imports_exports=17:4 calls_definitions=165:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -136,6 +136,9 @@ def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None,
     else:
         with tarfile.open(path, "r:gz") as archive:
             for member in archive:
+                required_mode = 0o700 if member.isdir() else 0o600
+                if member.mode & required_mode != required_mode or member.mode & 0o7000:
+                    raise ValueError(f"unusable sdist permissions: {member.name}: {oct(member.mode)}")
                 if member.isdir():
                     record(member.name, None)
                     continue
@@ -382,4 +385,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=315:35 imports_exports=17:4 calls_definitions=163:11
+# ratios: loc_comments=318:35 imports_exports=17:4 calls_definitions=165:11

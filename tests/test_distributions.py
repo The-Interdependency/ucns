@@ -1,4 +1,4 @@
-# ratios: loc_comments=122:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=129:10 imports_exports=9:1 calls_definitions=47:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -29,7 +29,7 @@ audit = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(audit)
 
 
-def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode="", sdist_directory="", wheel_directory="", sdist_root="ucns-0"):
+def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode="", sdist_directory="", wheel_directory="", sdist_root="ucns-0", sdist_mode=None, directory_mode=0o755):
     core_metadata = "Metadata-Version: 2.4\nName: ucns\nVersion: 0\nSummary: Fixture\nAuthor: Test\nRequires-Python: >=3.10\nDescription-Content-Type: text/markdown\nLicense: fixture\nLicense-File: LICENSE\nDynamic: license-file\n"
     with tarfile.open(sdist, "w:gz") as archive:
         files = {**audit.expected_files(root), "setup.cfg": audit.GENERATED_SETUP_CFG,
@@ -49,10 +49,13 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
                 data += b"drift"
             member = tarfile.TarInfo(f"{sdist_root}/{name}")
             member.size = len(data)
+            if name == "pyproject.toml" and sdist_mode is not None:
+                member.mode = sdist_mode
             archive.addfile(member, io.BytesIO(data))
         if sdist_directory:
             member = tarfile.TarInfo(f"{sdist_root}/{sdist_directory}")
             member.type = tarfile.DIRTYPE
+            member.mode = directory_mode
             archive.addfile(member)
     with zipfile.ZipFile(wheel, "w") as archive:
         files = {}
@@ -97,6 +100,10 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
     for options, message in (
+        ({"sdist_mode": 0}, "unusable sdist permissions"),
+        ({"sdist_mode": 0o400}, "unusable sdist permissions"),
+        ({"sdist_mode": 0o4644}, "unusable sdist permissions"),
+        ({"sdist_directory": "extra", "directory_mode": 0o644}, "unusable sdist permissions"),
         ({"wheel_directory": "evil-1.dist-info"}, "exactly one .dist-info directory"),
         ({"omit": "LICENSE"}, "missing LICENSE"),
         ({"altered": "LICENSE"}, "altered LICENSE"),
@@ -140,4 +147,4 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=122:10 imports_exports=9:1 calls_definitions=47:2
+# ratios: loc_comments=129:10 imports_exports=9:1 calls_definitions=47:2

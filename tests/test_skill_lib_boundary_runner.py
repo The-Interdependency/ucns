@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:314 imports_exports=13:18 calls_definitions=131:20
+# ratios: loc_comments=99:341 imports_exports=15:18 calls_definitions=147:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -105,6 +105,7 @@ def _repo(tmp_path: Path, functions: str, checks: list[dict[str, str]]) -> Path:
     (root / "src" / "pkg").mkdir(parents=True)
     (root / "tools").mkdir()
     (root / "tests").mkdir()
+    (root / "pyproject.toml").write_text('[tool.pytest.ini_options]\ntestpaths = ["tests"]\n')
     contracts: list[str] = []
     check_lines: list[str] = []
     for index, check in enumerate(checks):
@@ -427,7 +428,7 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
         os.kill(pid, 0)
 # === CHECKS ===
 # id: check_node24_capability_runs_typescript_witness
-#   proves: boundary_runner_consumes_capabilities_and_timeouts
+#   proves: boundary_runner_consumes_capabilities_and_timeouts, boundary_runner_receipt_is_bounded_and_bound, boundary_supervisor_ends_descendants
 #   call: self::test_node24_capability_runs_typescript_witness
 #   requires: python3, node24
 #   timeout: 20
@@ -436,7 +437,9 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
 # === END CHECKS ===
 
 
-def test_node24_capability_runs_typescript_witness() -> None:
+def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
+    import os
+    import pytest
     from unittest.mock import patch
     from subprocess import CompletedProcess
     for version, expected in (("v24.15.0\n", True), ("v22.23.2\n", False), ("not-a-version", False)):
@@ -448,4 +451,29 @@ def test_node24_capability_runs_typescript_witness() -> None:
     receipt = runner.run_boundaries(RUNNER_PATH.resolve().parents[1], selected_ids=("check_vendored_typescript_field_preservation",))
     assert receipt["status"] == "passed", receipt
     assert len(receipt["outcomes"]) == 1 and receipt["outcomes"][0]["status"] == "PASS", receipt
-# ratios: loc_comments=98:314 imports_exports=13:18 calls_definitions=131:20
+    root = _repo(tmp_path, "def test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe", "requires": "node24"}])
+    source = root / "src/pkg/feature.py"
+    node = tmp_path / "node"
+    node.write_text(f"#!{sys.executable}\nfrom pathlib import Path\np=Path({str(source)!r})\noriginal=p.read_bytes()\np.write_bytes(original+b'# transient\\n')\np.write_bytes(original)\nprint('v24.15.0')\n")
+    node.chmod(0o755)
+    with patch.dict(os.environ, {"PATH": str(tmp_path) + os.pathsep + os.environ["PATH"]}):
+        receipt = runner.run_boundaries(root)
+    assert receipt["outcomes"][0]["status"] == "PASS", receipt
+    assert receipt["source_before_sha256"] == receipt["source_after_sha256"]
+    assert receipt["status"] == "not-passed" and not receipt["source_unchanged"]
+    assert "src/pkg/feature.py" in receipt["outcomes"][0]["source_events"]
+    pid_path = tmp_path / "probe-child.pid"
+    node.write_text(f"#!{sys.executable}\nimport subprocess, sys\nfrom pathlib import Path\np=subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'], start_new_session=True)\nPath({str(pid_path)!r}).write_text(str(p.pid))\nprint('v24.15.0')\n")
+    with patch.dict(os.environ, {"PATH": str(tmp_path) + os.pathsep + os.environ["PATH"]}):
+        receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "not-passed" and receipt["outcomes"][0]["status"] == "ERROR", receipt
+    assert receipt["outcomes"][0]["missing_capabilities"] == ("node24",)
+    with pytest.raises(ProcessLookupError):
+        os.kill(int(pid_path.read_text()), 0)
+    node.write_text(f"#!{sys.executable}\nimport os, time\nfrom pathlib import Path\nPath({str(pid_path)!r}).write_text(str(os.getpid()))\nprint('v24.15.0', flush=True)\ntime.sleep(30)\n")
+    with patch.dict(os.environ, {"PATH": str(tmp_path) + os.pathsep + os.environ["PATH"]}):
+        receipt = runner.run_boundaries(root)
+    assert receipt["outcomes"][0]["status"] == "ERROR", receipt
+    with pytest.raises(ProcessLookupError):
+        os.kill(int(pid_path.read_text()), 0)
+# ratios: loc_comments=99:341 imports_exports=15:18 calls_definitions=147:20

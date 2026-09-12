@@ -1,4 +1,4 @@
-# ratios: loc_comments=73:31 imports_exports=8:1 calls_definitions=30:4
+# ratios: loc_comments=79:32 imports_exports=8:1 calls_definitions=32:5
 # === MODULE_BUILD ===
 # id: boundary_process_supervisor
 #   module_name: _boundary_supervisor
@@ -19,11 +19,13 @@
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: boundary_supervisor_ends_descendants
-#   given: a selected check exits or exceeds its timeout, including after replacing its signal handlers
+#   given: a selected check or executable capability probe exits or exceeds its timeout, including after replacing its signal handlers
 #   then: a separate Linux subreaper kills and reaps remaining check descendants before accepting or returning its outcome
 #   class: evidence
 # === END CONTRACTS ===
 """Internal usage: python _boundary_supervisor.py TIMEOUT BOOTSTRAP ROOT REPORT PYTEST_ARGS.
+
+For a capability executable: python _boundary_supervisor.py --probe TIMEOUT COMMAND ARGS.
 
 Only the child runs pytest or test code. Descendant adoption therefore survives
 child signal-handler changes, crashes, and detached sessions. This is trusted
@@ -85,12 +87,10 @@ def _reap_descendants() -> int:
                 pass
 
 
-def main() -> int:
-    timeout = int(sys.argv[1])
-    report = Path(sys.argv[4])
+def _supervise(command: list[str], timeout: int) -> tuple[int, bool, int]:
     _enable_descendant_reaping()
     _owned_children()  # Verify procfs support before any check code is launched.
-    process = subprocess.Popen([sys.executable, *sys.argv[2:]], start_new_session=True)
+    process = subprocess.Popen(command, start_new_session=True)
     timed_out = False
     try:
         returncode = process.wait(timeout=timeout)
@@ -99,6 +99,16 @@ def main() -> int:
         process.kill()
         returncode = process.wait()
     descendants = _reap_descendants()
+    return returncode, timed_out, descendants
+
+
+def main() -> int:
+    if sys.argv[1] == "--probe":
+        returncode, timed_out, descendants = _supervise(sys.argv[3:], int(sys.argv[2]))
+        return 124 if timed_out else 1 if descendants else returncode
+    timeout = int(sys.argv[1])
+    report = Path(sys.argv[4])
+    returncode, timed_out, descendants = _supervise([sys.executable, *sys.argv[2:]], timeout)
     try:
         observed = json.loads(report.read_text())
         if not isinstance(observed, dict):
@@ -115,4 +125,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=73:31 imports_exports=8:1 calls_definitions=30:4
+# ratios: loc_comments=79:32 imports_exports=8:1 calls_definitions=32:5

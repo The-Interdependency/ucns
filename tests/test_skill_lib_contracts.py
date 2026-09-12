@@ -1,4 +1,4 @@
-# ratios: loc_comments=206:60 imports_exports=9:7 calls_definitions=104:7
+# ratios: loc_comments=224:60 imports_exports=9:7 calls_definitions=118:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -145,6 +145,7 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         "class TestConditional:\n    for test_hidden in [helper]: pass\n",
         "def helper(): assert False\n(test_hidden := helper)\n",
         "def helper(): assert False\nvalues = [(test_hidden := helper) for item in [1]]\n",
+        "def helper(): assert False\nif True:\n    (test_hidden := helper)\n",
     ):
         branch.write_text(code)
         ok, problems = audit_repository(root)
@@ -184,6 +185,23 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
     (root / "setup.cfg").write_text("[egg_info]\ntag_build =\ntag_date = 0\n")
     ok, problems = audit_repository(root)
     assert ok, problems
+    for name in ("conftest.py", "tests/conftest.py"):
+        plugin = root / name
+        plugin.write_text("def pytest_pycollect_makeitem(collector, name, obj):\n    return []\n")
+        ok, problems = audit_repository(root)
+        assert not ok and any("conftest collection/plugin" in item for item in problems), problems
+        plugin.unlink()
+    plugin = root / "tests/test_plugins.py"
+    plugin.write_text("pytest_plugins = ['custom_collector']\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("pytest plugin collection" in item for item in problems), problems
+    plugin.unlink()
+    config.write_text('[tool.pytest.ini_options]\naddopts = "-q"\n')
+    ok, problems = audit_repository(root)
+    assert not ok and any("explicit testpaths" in item for item in problems), problems
+    config.unlink()
+    ok, problems = audit_repository(root)
+    assert not ok and any("explicit testpaths" in item for item in problems), problems
 
 
 def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
@@ -286,4 +304,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=206:60 imports_exports=9:7 calls_definitions=104:7
+# ratios: loc_comments=224:60 imports_exports=9:7 calls_definitions=118:7

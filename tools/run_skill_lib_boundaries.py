@@ -1,4 +1,4 @@
-# ratios: loc_comments=388:71 imports_exports=20:4 calls_definitions=172:19
+# ratios: loc_comments=392:71 imports_exports=20:4 calls_definitions=175:20
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -218,7 +218,7 @@ def _capability_available(name: str) -> bool:
         if executable is None:
             return False
         try:
-            result = subprocess.run([executable, "--version"], capture_output=True, text=True, timeout=5)
+            result = subprocess.run([sys.executable, str(SUPERVISOR), "--probe", "5", executable, "--version"], capture_output=True, text=True)
         except (OSError, UnicodeError, subprocess.TimeoutExpired):
             return False
         return result.returncode == 0 and re.fullmatch(r"v24\.\d+\.\d+", result.stdout.strip()) is not None
@@ -333,6 +333,16 @@ def _error_outcome(root: Path, check: Entry, error: Exception) -> CheckOutcome:
 
 
 def _run_check(root: Path, check: Entry) -> CheckOutcome:
+    started = time.monotonic()
+    watcher = _SourceWatch(root)
+    try:
+        outcome = _execute_check(root, check)
+    finally:
+        source_events = watcher.finish()
+    return replace(outcome, source_events=source_events, duration_seconds=round(time.monotonic() - started, 6))
+
+
+def _execute_check(root: Path, check: Entry) -> CheckOutcome:
     requires, timeout, mutates, cleanup = _validate_check(check)
     missing = tuple(name for name in requires if not _capability_available(name))
     call = check.fields["call"]
@@ -363,18 +373,14 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         environment.update(PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
         environment["UCNS_BOUND_SOURCE_ROOT"] = str(root)
         environment["PYTHONPATH"] = os.pathsep.join((str(STARTUP_DIRECTORY), str(root / "src"), str(root)))
-        watcher = _SourceWatch(root)
-        try:
-            with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
-                process = subprocess.Popen(
-                    command, cwd=root, stdin=subprocess.DEVNULL,
-                    stdout=stdout, stderr=stderr, start_new_session=True, env=environment,
-                )
-                # The separate supervisor owns the timeout and descendant reaping;
-                # pytest signal handlers never run in that process.
-                returncode = process.wait()
-        finally:
-            source_events = watcher.finish()
+        with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+            process = subprocess.Popen(
+                command, cwd=root, stdin=subprocess.DEVNULL,
+                stdout=stdout, stderr=stderr, start_new_session=True, env=environment,
+            )
+            # The separate supervisor owns the timeout and descendant reaping;
+            # pytest signal handlers never run in that process.
+            returncode = process.wait()
         stdout_sha, stdout_bytes, stdout_excerpt = _excerpt(stdout_path)
         stderr_sha, stderr_bytes, stderr_excerpt = _excerpt(stderr_path)
         status, observed = _pytest_outcome(report_path, returncode)
@@ -389,7 +395,7 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         stdout_excerpt, stderr_excerpt,
         diagnostic="background descendants outlived the check" if observed.get("descendants_reaped") else "",
         descendants_reaped=observed.get("descendants_reaped", 0),
-        imported_sources=observed.get("origins", {}), source_events=source_events,
+        imported_sources=observed.get("origins", {}),
     )
 
 
@@ -508,4 +514,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=388:71 imports_exports=20:4 calls_definitions=172:19
+# ratios: loc_comments=392:71 imports_exports=20:4 calls_definitions=175:20
