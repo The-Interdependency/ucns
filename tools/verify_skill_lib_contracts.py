@@ -1,4 +1,4 @@
-# ratios: loc_comments=577:54 imports_exports=12:4 calls_definitions=310:23
+# ratios: loc_comments=583:54 imports_exports=12:4 calls_definitions=314:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -296,6 +296,9 @@ def _test_setting(cls: ast.ClassDef | ast.Module) -> tuple[bool, object]:
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
             if any("__test__" in _target_names(target) for target in targets):
                 found = True
+                if any("__test__" in _target_names(target) and not isinstance(target, ast.Name) for target in targets):
+                    value = UNKNOWN_TEST_SETTING
+                    continue
                 try:
                     value = ast.literal_eval(node.value)
                 except (ValueError, TypeError, SyntaxError):
@@ -476,6 +479,8 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
             problems.append(f"GAP unsupported implicit pytest hook: {path}:{node.lineno}")
         if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Delete)):
             targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
+            if any("__test__" in _target_names(target) and not isinstance(target, ast.Name) for target in targets):
+                problems.append(f"GAP destructured collection opt-out: {path}:{node.lineno}")
             if any(isinstance(item, (ast.Subscript, ast.Attribute)) for target in targets for item in ast.walk(target)):
                 problems.append(f"GAP indirect test-namespace mutation: {path}:{node.lineno}")
             if isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None and not (literal(node.value) or source_path(node.value)):
@@ -500,7 +505,8 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
             if isinstance(node, ast.ClassDef) and node.keywords:
                 problems.append(f"GAP unsupported class construction keywords: {path}:{node.lineno}")
             if isinstance(node, ast.ClassDef):
-                if _class_mro(node.name, classes) is None or any(isinstance(base, ast.Name) and base.id == "object" and "object" in binding_counts for base in node.bases):
+                ambiguous = binding_counts.get(node.name) != 1 or any(isinstance(base, ast.Name) and binding_counts.get(base.id, 0) > 1 for base in node.bases)
+                if ambiguous or _class_mro(node.name, classes) is None or any(isinstance(base, ast.Name) and base.id == "object" and "object" in binding_counts for base in node.bases):
                     problems.append(f"GAP unresolved collection-time class base: {path}:{node.lineno}")
                 for statement in node.body:
                     if isinstance(statement, (ast.Assign, ast.AnnAssign)):
@@ -685,4 +691,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=577:54 imports_exports=12:4 calls_definitions=310:23
+# ratios: loc_comments=583:54 imports_exports=12:4 calls_definitions=314:23

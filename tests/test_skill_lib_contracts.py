@@ -1,4 +1,4 @@
-# ratios: loc_comments=296:60 imports_exports=9:7 calls_definitions=154:7
+# ratios: loc_comments=302:60 imports_exports=9:7 calls_definitions=158:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -235,6 +235,8 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         'from descriptor_helper import Base\nclass TestInjected:\n    class Nested(Base): pass\n',
         'from descriptor_helper import Base\nclass Helper(Base):\n    __test__ = False\n',
         'from descriptor_helper import Base as object\nclass TestInjected(object): pass\n',
+        'from descriptor_helper import Base\nclass TestInjected(Base): pass\nclass Base: pass\n',
+        'from descriptor_helper import Base\nclass TestInjected(Base): pass\nclass TestInjected: pass\n',
     ):
         dynamic.write_text(code)
         ok, problems = audit_repository(root)
@@ -272,6 +274,10 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         import_root = _repo(tmp_path / f"import-optout-{index}", declaration + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
         ok, problems = audit_repository(import_root)
         assert not ok and any("dynamic test-module opt-out" in item for item in problems), problems
+    for index, declaration in enumerate(("(__test__,) = (False,)", "[__test__] = [False]", "value, (__test__,) = (1, (False,))", "*__test__, value = (1,)", "__test__ = (__test__,) = (False,)")):
+        unpack_root = _repo(tmp_path / f"unpacked-optout-{index}", declaration + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
+        ok, problems = audit_repository(unpack_root)
+        assert not ok and any("destructured collection opt-out" in item for item in problems), problems
     ok, problems = audit_repository(root / "absent")
     assert not ok and any("empty" in item for item in problems), problems
 
@@ -376,4 +382,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=296:60 imports_exports=9:7 calls_definitions=154:7
+# ratios: loc_comments=302:60 imports_exports=9:7 calls_definitions=158:7
