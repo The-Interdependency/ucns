@@ -1,4 +1,4 @@
-# ratios: loc_comments=149:351 imports_exports=19:18 calls_definitions=181:20
+# ratios: loc_comments=155:351 imports_exports=19:18 calls_definitions=186:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -177,6 +177,12 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     assert receipt["status"] == "passed", receipt
     callback_body = f"import pytest\nfrom pathlib import Path\ndef alter(value):\n    Path({str(marker)!r}).write_text('callback ran')\n    test_fails.__code__ = (lambda sample: None).__code__\n    return str(value)\n@pytest.fixture(params=[1], ids=alter)\ndef sample(request): return request.param\ndef test_fails(sample): assert False\n"
     root = _repo(tmp_path / "decorator-callback", callback_body, [{"id": "check_fails", "function": "test_fails"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert not marker.exists()
+    root = _repo(tmp_path / "import-optout", "from helper import __test__\ndef test_fails(): assert False\n", [{"id": "check_fails", "function": "test_fails"}])
+    (root / "helper.py").write_text(f"from pathlib import Path\nPath({str(marker)!r}).write_text('import ran')\n__test__ = False\n")
+    (root / "tests/test_other.py").write_text("# === CHECKS ===\n# id: check_other\n#   proves: contract_0\n#   call: self::test_other\n#   timeout: 5\n#   mutates: none\n#   cleanup: none\n# === END CHECKS ===\ndef test_other(): pass\n")
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
     assert not marker.exists()
@@ -538,4 +544,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=149:351 imports_exports=19:18 calls_definitions=181:20
+# ratios: loc_comments=155:351 imports_exports=19:18 calls_definitions=186:20
