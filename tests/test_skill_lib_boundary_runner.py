@@ -1,4 +1,4 @@
-# ratios: loc_comments=121:342 imports_exports=16:18 calls_definitions=163:20
+# ratios: loc_comments=149:351 imports_exports=19:18 calls_definitions=181:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -101,7 +101,7 @@ def _repo(tmp_path: Path, functions: str, checks: list[dict[str, str]]) -> Path:
     (root / "src" / "pkg").mkdir(parents=True)
     (root / "tools").mkdir()
     (root / "tests").mkdir()
-    (root / "pyproject.toml").write_text('[tool.pytest.ini_options]\ntestpaths = ["tests"]\n')
+    (root / "pyproject.toml").write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\ntestpaths = ["tests"]\n')
     contracts: list[str] = []
     check_lines: list[str] = []
     for index, check in enumerate(checks):
@@ -152,7 +152,7 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     nested = root / "tests/sub"
     nested.mkdir()
     (root / "tests/test_feature.py").rename(nested / "test_feature.py")
-    (nested / "pyproject.toml").write_text('[tool.pytest.ini_options]\naddopts = "-p custom_plugin"\n')
+    (nested / "pyproject.toml").write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\naddopts = "-p custom_plugin"\n')
     marker = tmp_path / "plugin-executed"
     (root / "custom_plugin.py").write_text(f"from pathlib import Path\nPath({str(marker)!r}).write_text('executed')\ndef pytest_runtest_setup(item):\n    item.obj = lambda: None\n")
     receipt = runner.run_boundaries(root)
@@ -175,6 +175,45 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     root = _repo(tmp_path / "fixture-helper", "import pytest\n@pytest.fixture\ndef test_data(): return 1\ndef test_probe(test_data): assert test_data == 1\n", [{"id": "check_probe", "function": "test_probe"}])
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "passed", receipt
+    callback_body = f"import pytest\nfrom pathlib import Path\ndef alter(value):\n    Path({str(marker)!r}).write_text('callback ran')\n    test_fails.__code__ = (lambda sample: None).__code__\n    return str(value)\n@pytest.fixture(params=[1], ids=alter)\ndef sample(request): return request.param\ndef test_fails(sample): assert False\n"
+    root = _repo(tmp_path / "decorator-callback", callback_body, [{"id": "check_fails", "function": "test_fails"}])
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert not marker.exists()
+
+
+# === CHECKS ===
+# id: check_geometry_suite_nonempty_pass
+#   proves: geometry_suite_requires_nonempty_pass
+#   call: self::test_geometry_suite_rejects_nonpasses
+#   requires: python3
+#   timeout: 30
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
+def test_geometry_suite_rejects_nonpasses(tmp_path: Path) -> None:
+    import os
+    import subprocess
+    import sys
+    cases = (
+        ("pass", "def test_probe(): pass\n", True),
+        ("skip", "import pytest\ndef test_probe(): pytest.skip('unobserved')\n", False),
+        ("xfail", "import pytest\n@pytest.mark.xfail\ndef test_probe(): assert False\n", False),
+        ("xpass", "import pytest\n@pytest.mark.xfail(strict=False)\ndef test_probe(): pass\n", False),
+        ("empty", "# no executable checks\n", False),
+        ("collection-skip", "import pytest\npytest.skip('unobserved', allow_module_level=True)\n", False),
+        ("collection-error", "raise RuntimeError('broken collection')\n", False),
+        ("module-mark", "import pytest\npytestmark = pytest.mark.skip\ndef test_probe(): assert False\n", False),
+    )
+    script = "import os,sys; from pathlib import Path; sys.path.insert(0,sys.argv[1]); from tools._boundary_pytest import run_suite; root=Path(sys.argv[2]); os.chdir(root); raise SystemExit(run_suite(['tests','-c','pyproject.toml','--noconftest','--strict-config'],root))"
+    environment = {key: value for key, value in os.environ.items() if key not in {"PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"}}
+    environment["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    for label, body, expected_pass in cases:
+        root = _repo(tmp_path / label, body, [])
+        if label.startswith("collection-"):
+            (root / "tests/test_other.py").write_text("def test_other(): pass\n")
+        result = subprocess.run([sys.executable, "-c", script, str(RUNNER_PATH.parents[1]), str(root)], env=environment, capture_output=True, text=True)
+        assert (result.returncode == 0) is expected_pass, (label, result.stdout, result.stderr)
 
 
 def test_missing_capability_and_timeout_are_enforced(tmp_path: Path) -> None:
@@ -215,9 +254,9 @@ def test_fail():
     assert False
 def test_error():
     raise RuntimeError("AssertionError mentioned by a broken harness")
-class ContractViolation(AssertionError):
-    __test__ = False
 def test_subclass():
+    class ContractViolation(AssertionError):
+        pass
     raise ContractViolation("broken")
 """
     checks = [
@@ -499,4 +538,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=121:342 imports_exports=16:18 calls_definitions=163:20
+# ratios: loc_comments=149:351 imports_exports=19:18 calls_definitions=181:20

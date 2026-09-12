@@ -62,7 +62,15 @@ jobs:
       - name: Audit skill-lib contract graph
         run: .venv/bin/python tools/verify_skill_lib_contracts.py .
       - name: Run geometry tests
-        run: .venv/bin/python -m pytest
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          from tools._boundary_pytest import run_suite
+          raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config"], Path.cwd()))
+          PY
       - name: Build package
         run: .venv/bin/python -m build
       - name: Check distributions

@@ -1,4 +1,4 @@
-# ratios: loc_comments=100:51 imports_exports=6:6 calls_definitions=55:7
+# ratios: loc_comments=101:51 imports_exports=7:6 calls_definitions=55:7
 # === CHECKS ===
 # id: check_gonal_boundary_trace_samples_circle_wave_mode_exactly
 #   proves: gonal_boundary_trace_samples_circle_wave_mode_exactly
@@ -48,6 +48,8 @@
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===
+
+from __future__ import annotations
 
 from dataclasses import replace
 from fractions import Fraction
@@ -178,4 +180,4 @@ def test_trace_is_candidate_scoped_in_canon() -> None:
 
     assert "candidate" in section.lower()
     assert "not ratified" in section.lower()
-# ratios: loc_comments=100:51 imports_exports=6:6 calls_definitions=55:7
+# ratios: loc_comments=101:51 imports_exports=7:6 calls_definitions=55:7

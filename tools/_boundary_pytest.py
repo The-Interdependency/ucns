@@ -1,11 +1,11 @@
-# ratios: loc_comments=66:28 imports_exports=5:2 calls_definitions=25:4
+# ratios: loc_comments=77:35 imports_exports=5:3 calls_definitions=31:6
 # === MODULE_BUILD ===
 # id: boundary_pytest_observer
 #   module_name: _boundary_pytest
 #   module_kind: instrument
 #   summary: observes actual pytest exceptions, xfail outcomes, and imported source origins for UCNS receipts
 #   owner: Erin Spencer
-#   public_surface: none; launched by run_skill_lib_boundaries
+#   public_surface: run_suite; selected-check bootstrap launched by run_skill_lib_boundaries
 #   internal_surface: Observer, main
 #   auth_boundary: none
 #   storage_boundary: write
@@ -22,9 +22,17 @@
 #   given: a selected pytest boundary runs through this bootstrap
 #   then: assertion subclasses fail, unexpected exceptions error, XPASS cannot pass, imported local package origins must match the bound tree
 #   class: evidence
+#
+# id: geometry_suite_requires_nonempty_pass
+#   given: the full geometry suite runs through run_suite
+#   then: empty, skipped, xfailed, XPASS, failed, or collection-error evidence cannot produce exit status zero
+#   class: evidence
 # === END CONTRACTS ===
 
-"""Internal bootstrap. Usage: launched only by tools/run_skill_lib_boundaries.py.
+"""Pytest evidence observer and selected-check bootstrap.
+
+CI usage: ``run_suite(["tests", "-c", "pyproject.toml", "--noconftest"], Path.cwd())``.
+Selected-check CLI usage remains owned by tools/run_skill_lib_boundaries.py.
 
 Observations describe executed checks, not theorem standing or a hostile-code
 sandbox. Ambient pytest plugins and PYTHONPATH are excluded by the parent.
@@ -43,6 +51,12 @@ class Observer:
         self.root = root
         self.calls: list[str] = []
         self.other: list[str] = []
+
+    def pytest_collectreport(self, report):
+        if report.skipped:
+            self.other.append("SKIP")
+        elif report.failed:
+            self.other.append("ERROR")
 
     @pytest.hookimpl(hookwrapper=True, tryfirst=True)
     def pytest_runtest_makereport(self, item, call):
@@ -64,6 +78,14 @@ class Observer:
             self.calls.append(status)
         elif status != "PASS":
             self.other.append(status)
+
+
+def run_suite(arguments: list[str], root: Path) -> int:
+    observer = Observer(root)
+    result = int(pytest.main(arguments, plugins=[observer]))
+    if result:
+        return result
+    return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other else 1
 
 
 def main() -> int:
@@ -104,4 +126,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=66:28 imports_exports=5:2 calls_definitions=25:4
+# ratios: loc_comments=77:35 imports_exports=5:3 calls_definitions=31:6

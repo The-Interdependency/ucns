@@ -193,20 +193,26 @@ unavailable instrumentation is an error before check execution. Descendant disco
 uses the task-children interface when available and otherwise reads procfs parent IDs.
 Potential test definitions inside module or class control flow fail the declaration
 audit closed; executable witnesses use direct module-level definitions.
-The graph requires explicit `testpaths = ["tests"]` and supports default pytest
-file/class/function naming. Conftest files and local plugin registration are
+The graph requires explicit `testpaths = ["tests"]` and
+`collect_imported_tests = false`, with pytest 9.1 or later, and supports default pytest
+file/class/function naming. Unrecognized configuration keys fail closed.
+Conftest files and local plugin registration are
 outside this bounded collection contract. Changed settings, alternative pytest configuration
 files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is
 parsed without executing tests; Python 3.10 uses the declared `tomli` test dependency.
 Nested pytest configuration is rejected, and selected execution explicitly uses
 the audited root config with conftest loading disabled. Collection-time execution
-is limited to declarations, pytest decorators, and read-only `Path(__file__)`
-source constants. Indirect namespace mutation and unresolved calls, decorators,
+is limited to declarations, literal data, pytest decorators with literal arguments,
+and read-only `Path(__file__)` source constants. Callable decorator options and
+string skip/xfail conditions are unsupported. Compound annotations require
+`from __future__ import annotations`. Indirect namespace mutation and unresolved calls, decorators,
 or namespace protocols fail closed; setup work belongs in fixtures or checks.
-Module/class pytest and xunit hooks are unsupported implicit execution. Class
-data bindings must be literal values; imported descriptors and compound class
+Module/class pytest marks and pytest/xunit hooks are unsupported implicit execution. Class
+data bindings must be literal values; imported descriptors, unresolved bases, nested classes, and compound class
 namespace construction fail closed. Fixture helpers remain supported, including
 test-prefixed helper names, but fixture-decorated functions cannot resolve CHECKS.
+CI runs the complete suite through the outcome observer: collection skips/errors,
+runtime skips, xfail, XPASS, and empty execution fail the suite gate.
 Source observation starts before capability probing. Executable Node version
 probes use the same descendant supervisor as checks; a timeout or leaked child
 cannot satisfy the capability. Source archives require owner-readable/writable

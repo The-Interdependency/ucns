@@ -1,4 +1,4 @@
-# ratios: loc_comments=265:60 imports_exports=9:7 calls_definitions=138:7
+# ratios: loc_comments=292:60 imports_exports=9:7 calls_definitions=150:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -170,10 +170,10 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         'testpaths = ["integration"]',
         'addopts = "-o python_files=spec_*.py"',
     ):
-        config.write_text('[tool.pytest.ini_options]\n' + settings + '\n')
+        config.write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\n' + settings + '\n')
         ok, problems = audit_repository(root)
         assert not ok and any("pytest" in item for item in problems), (settings, problems)
-    config.write_text('[tool.pytest.ini_options]\npython_files = ["test_*.py", "*_test.py"]\npython_classes = ["Test"]\npython_functions = ["test"]\ntestpaths = ["tests"]\naddopts = "-q"\n')
+    config.write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\npython_files = ["test_*.py", "*_test.py"]\npython_classes = ["Test"]\npython_functions = ["test"]\ntestpaths = ["tests"]\naddopts = "-q"\n')
     ok, problems = audit_repository(root)
     assert ok, problems
     for name in ("pytest.ini", ".pytest.ini", "pytest.toml", ".pytest.toml", "tox.ini", "setup.cfg"):
@@ -196,16 +196,16 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
     ok, problems = audit_repository(root)
     assert not ok and any("pytest plugin collection" in item for item in problems), problems
     plugin.unlink()
-    config.write_text('[tool.pytest.ini_options]\naddopts = "-q"\n')
+    config.write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\naddopts = "-q"\n')
     ok, problems = audit_repository(root)
     assert not ok and any("explicit testpaths" in item for item in problems), problems
     config.unlink()
     ok, problems = audit_repository(root)
     assert not ok and any("explicit testpaths" in item for item in problems), problems
-    config.write_text('[tool.pytest.ini_options]\ntestpaths = ["tests"]\n')
+    config.write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\ntestpaths = ["tests"]\n')
     nested = root / "tests/sub/pyproject.toml"
     nested.parent.mkdir()
-    nested.write_text('[tool.pytest.ini_options]\naddopts = "-p custom_plugin"\n')
+    nested.write_text('[tool.pytest.ini_options]\ncollect_imported_tests = false\naddopts = "-p custom_plugin"\n')
     ok, problems = audit_repository(root)
     assert not ok and any("nested pytest configuration" in item for item in problems), problems
     nested.unlink()
@@ -232,11 +232,38 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         'from hook_helper import pytest_generate_tests\n',
         'def setup_function(function): pass\n',
         'class TestHooks:\n    def pytest_generate_tests(self, metafunc): pass\n',
+        'from descriptor_helper import Base\nclass TestInjected:\n    class Nested(Base): pass\n',
+        'from descriptor_helper import Base\nclass Helper(Base):\n    __test__ = False\n',
+        'from descriptor_helper import Base as object\nclass TestInjected(object): pass\n',
     ):
         dynamic.write_text(code)
         ok, problems = audit_repository(root)
-        assert not ok and any("class namespace" in item or "implicit pytest hook" in item for item in problems), (code, problems)
+        assert not ok and any("class namespace" in item or "implicit pytest hook" in item or "class base" in item for item in problems), (code, problems)
     dynamic.unlink()
+    for code in (
+        'import pytest\npytestmark = pytest.mark.skip\n',
+        'import pytest\npytestmark = [pytest.mark.xfail]\n',
+        'from marker_helper import pytestmark\n',
+        'import pytest\ndef alter(value): return value\n@pytest.fixture(params=[1], ids=alter)\ndef helper(request): return request.param\n',
+        'import pytest\n@pytest.mark.parametrize("value", [1], ids=lambda value: str(value))\ndef helper(value): pass\n',
+        'import pytest\n@pytest.mark.skipif("execute_a_condition()")\ndef helper(): pass\n',
+        'from descriptor_helper import descriptor\nvalue = descriptor.attribute\n',
+        'from descriptor_helper import descriptor\nassert descriptor.attribute\n',
+    ):
+        dynamic.write_text(code)
+        ok, problems = audit_repository(root)
+        assert not ok and any("collection-time" in item or "implicit pytest hook" in item for item in problems), (code, problems)
+    dynamic.unlink()
+    baseline = config.read_text()
+    for replacement in ('collect_imported_tests = true\n', 'collect_imported_tests = 0\n', ''):
+        config.write_text(baseline.replace('collect_imported_tests = false\n', replacement))
+        ok, problems = audit_repository(root)
+        assert not ok and any("explicit collect_imported_tests" in item for item in problems), problems
+    for option in ('pythonpath = ["outside"]', 'future_collection_option = true'):
+        config.write_text(baseline + option + '\n')
+        ok, problems = audit_repository(root)
+        assert not ok and any("unsupported pytest collection settings" in item for item in problems), problems
+    config.write_text(baseline)
     for index, decorator in enumerate(("@pytest.fixture", "@pytest.fixture()", "@pytest.fixture(name='other')")):
         fixture_root = _repo(tmp_path / f"fixture-{index}", "import pytest\n" + decorator + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
         ok, problems = audit_repository(fixture_root)
@@ -345,4 +372,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=265:60 imports_exports=9:7 calls_definitions=138:7
+# ratios: loc_comments=292:60 imports_exports=9:7 calls_definitions=150:7
