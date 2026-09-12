@@ -1,4 +1,4 @@
-# ratios: loc_comments=122:51 imports_exports=6:6 calls_definitions=72:6
+# ratios: loc_comments=144:60 imports_exports=9:7 calls_definitions=84:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -191,4 +191,37 @@ def test_vendored_parser_retains_numeric_field_names() -> None:
     assert any(entry.block == "CONTRACTS" and entry.id == "msdmd_python_parser_preserves_field_names" for entry in declarations)
     text = "# === NARRATIVE ===\n# id: sample\n#   evidence_sha256: abc123\n# === END NARRATIVE ===\nraise RuntimeError('not executable input')\n"
     assert _PARSER.parse_text(text, "NARRATIVE") == [{"id": "sample", "evidence_sha256": "abc123"}]
-# ratios: loc_comments=122:51 imports_exports=6:6 calls_definitions=72:6
+# === CHECKS ===
+# id: check_vendored_typescript_field_preservation
+#   proves: msdmd_typescript_parser_preserves_field_names, contract_audit_reports_graph_gaps
+#   call: self::test_vendored_typescript_parser_retains_numeric_field_names
+#   requires: python3, node24
+#   timeout: 10
+#   mutates: filesystem
+#   cleanup: tempdir_teardown
+# === END CHECKS ===
+
+
+def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) -> None:
+    import json
+    import subprocess
+    from tools.verify_skill_lib_contracts import parse_blocks
+    helper = ROOT / ".agents/skills/msdmd/parsers/universal.ts"
+    declarations = parse_blocks(helper)
+    assert any(entry.block == "MODULE_BUILD" and entry.id == "msdmd_typescript_reference_parser" for entry in declarations)
+    assert any(entry.block == "CONTRACTS" and entry.id == "msdmd_typescript_parser_preserves_field_names" for entry in declarations)
+    marker = tmp_path / "executed"
+    source = tmp_path / "inspected.ts"
+    text = "// === NARRATIVE ===\n// id: sample\n//   evidence_sha256: abc123\n// === END NARRATIVE ===\n"
+    source.write_text(text + 'import {writeFileSync} from "node:fs";\n' + f'writeFileSync({json.dumps(str(marker))}, "executed");\n')
+    script = f"import {{parseText, parseFile}} from {json.dumps(helper.as_uri())};" + f"process.stdout.write(JSON.stringify([parseText({json.dumps(text)}, 'NARRATIVE', '//'),parseFile({json.dumps(str(source))}, 'NARRATIVE')]));"
+    result = subprocess.run(["node", "--input-type=module", "--eval", script], check=True, capture_output=True, text=True)
+    expected = [{"id": "sample", "evidence_sha256": "abc123"}]
+    assert json.loads(result.stdout) == [expected, expected]
+    assert not marker.exists(), "TypeScript parsing executed inspected source"
+    broken = tmp_path / "repo/.agents/skills/msdmd/parsers/universal.ts"
+    broken.parent.mkdir(parents=True)
+    broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
+    ok, problems = audit_repository(tmp_path / "repo")
+    assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
+# ratios: loc_comments=144:60 imports_exports=9:7 calls_definitions=84:7

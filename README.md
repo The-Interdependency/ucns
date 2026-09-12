@@ -187,9 +187,11 @@ and zero skipped checks. It also binds a selected exact-input receipt executed
 from the archived source, whose UCNS hashes must match both installed artifacts.
 CI repeats this on Python 3.10, 3.11, and 3.12.
 The source archive includes this replay script and the exact build-tool pins.
-The no-exec graph also reconciles the exact vendored reference parser that it
-executes, including a local numeric-field witness. Parser ownership remains in
-skill-lib. Unused skill helper tools remain canonical dependency material.
+The no-exec graph also reconciles both exact vendored reference parsers, with
+local Python and TypeScript numeric-field/no-execution witnesses. The complete
+repository evidence suite requires Node 24.15.0 for that TypeScript check; UCNS
+library use remains Python-only. Parser ownership remains in skill-lib.
+Unused skill helper tools remain canonical dependency material.
 
 For a source-bound, selected-check receipt:
 
