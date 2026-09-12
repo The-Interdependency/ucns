@@ -1,4 +1,4 @@
-# ratios: loc_comments=252:34 imports_exports=15:4 calls_definitions=128:9
+# ratios: loc_comments=301:34 imports_exports=17:4 calls_definitions=155:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -49,7 +49,9 @@ import tarfile
 import zipfile
 
 from packaging.requirements import Requirement
-from packaging.utils import canonicalize_name
+from packaging.utils import canonicalize_name, parse_wheel_filename, parse_sdist_filename
+from packaging.tags import Tag
+from packaging.version import Version
 
 try:
     import tomllib
@@ -139,6 +141,17 @@ def _requirement_key(value: str) -> tuple[str, ...]:
             str(requirement.specifier), requirement.url or "", str(requirement.marker or ""))
 
 
+def _project_requirements(project: dict) -> list[str]:
+    requirements = list(project.get("dependencies", []))
+    for extra, dependencies in project.get("optional-dependencies", {}).items():
+        for value in dependencies:
+            requirement = Requirement(value)
+            marker = f'({requirement.marker}) and extra == "{extra}"' if requirement.marker else f'extra == "{extra}"'
+            requirement.marker = None
+            requirements.append(f"{requirement}; {marker}")
+    return requirements
+
+
 def _metadata_content_problems(data: bytes, expected: dict[str, bytes]) -> list[str]:
     """Bind installer-facing metadata to this project's static configuration."""
     project = tomllib.loads(expected["pyproject.toml"].decode("utf-8"))["project"]
@@ -168,18 +181,47 @@ def _metadata_content_problems(data: bytes, expected: dict[str, bytes]) -> list[
         problems.append("wheel METADATA License differs from source license")
     if metadata.get_payload(decode=True).rstrip() != expected[project["readme"]].rstrip():
         problems.append("wheel METADATA description differs from source README")
-    requirements = list(project.get("dependencies", []))
-    for extra, dependencies in project.get("optional-dependencies", {}).items():
-        for value in dependencies:
-            requirement = Requirement(value)
-            marker = f'({requirement.marker}) and extra == "{extra}"' if requirement.marker else f'extra == "{extra}"'
-            requirement.marker = None
-            requirements.append(f"{requirement}; {marker}")
+    requirements = _project_requirements(project)
     try:
         if Counter(map(_requirement_key, metadata.get_all("Requires-Dist", []))) != Counter(map(_requirement_key, requirements)):
             problems.append("wheel METADATA Requires-Dist differs from project configuration")
     except ValueError as error:
         problems.append(f"invalid wheel METADATA Requires-Dist: {error}")
+    return problems
+
+
+def _sdist_metadata_problems(actual: dict[str, bytes], expected: dict[str, bytes]) -> list[str]:
+    problems = []
+    for name in ("PKG-INFO", "src/ucns.egg-info/PKG-INFO"):
+        if name not in actual:
+            problems.append(f"missing sdist metadata {name}")
+        else:
+            problems.extend(problem.replace("wheel METADATA", f"sdist {name}")
+                            for problem in _metadata_content_problems(actual[name], expected))
+    for name, value in (("top_level.txt", b"ucns\n"), ("dependency_links.txt", b"\n")):
+        if actual.get("src/ucns.egg-info/" + name) != value:
+            problems.append(f"altered or missing sdist {name}")
+    sources = actual.get("src/ucns.egg-info/SOURCES.txt", b"").decode("utf-8").splitlines()
+    if Counter(sources) != Counter(actual.keys() - {"PKG-INFO", "setup.cfg"}):
+        problems.append("sdist SOURCES.txt differs from archive members")
+    project = tomllib.loads(expected["pyproject.toml"].decode("utf-8"))["project"]
+    requirements = []
+    marker = ""
+    try:
+        for line in actual.get("src/ucns.egg-info/requires.txt", b"").decode("utf-8").splitlines():
+            if not line.strip():
+                continue
+            if line.startswith("[") and line.endswith("]"):
+                extra, _, condition = line[1:-1].partition(":")
+                marker = condition
+                if extra:
+                    marker = f'({marker}) and extra == "{extra}"' if marker else f'extra == "{extra}"'
+            else:
+                requirements.append(_requirement_key(line + ("; " + marker if marker else "")))
+        if Counter(requirements) != Counter(map(_requirement_key, _project_requirements(project))):
+            problems.append("sdist requires.txt differs from project dependencies")
+    except (ValueError, UnicodeError):
+        problems.append("invalid sdist requires.txt")
     return problems
 
 
@@ -259,12 +301,22 @@ def _wheel_metadata_problems(actual: dict[str, bytes], expected: dict[str, bytes
 
 def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
     expected = expected_files(root.resolve())
+    project = tomllib.loads(expected["pyproject.toml"].decode("utf-8"))["project"]
     wheel_expected = {
         name.removeprefix("src/"): data
         for name, data in expected.items()
         if name.startswith("src/ucns/")
     }
     problems: list[str] = []
+    try:
+        name, version, build, tags = parse_wheel_filename(wheel.name)
+        if name != canonicalize_name(project["name"]) or version != Version(project["version"]) or build or tags != {Tag("py3", "none", "any")}:
+            problems.append("wheel filename identity or tags differ from project/WHEEL metadata")
+        name, version = parse_sdist_filename(sdist.name)
+        if name != canonicalize_name(project["name"]) or version != Version(project["version"]):
+            problems.append("sdist filename identity differs from project metadata")
+    except ValueError as error:
+        problems.append(f"invalid distribution filename: {error}")
     for path, inputs, is_wheel in ((sdist, expected, False), (wheel, wheel_expected, True)):
         try:
             actual = read_archive(path, wheel=is_wheel)
@@ -289,6 +341,7 @@ def verify_distributions(root: Path, sdist: Path, wheel: Path) -> list[str]:
                 if not metadata_prefix or not name.startswith(f"{metadata_prefix}/"):
                     problems.append(f"{path.name}: unexpected payload {name}")
         else:
+            problems.extend(f"{path.name}: {problem}" for problem in _sdist_metadata_problems(actual, expected))
             if "setup.cfg" not in actual:
                 problems.append(f"{path.name}: missing generated setup.cfg")
             elif actual["setup.cfg"] != GENERATED_SETUP_CFG:
@@ -314,4 +367,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=252:34 imports_exports=15:4 calls_definitions=128:9
+# ratios: loc_comments=301:34 imports_exports=17:4 calls_definitions=155:11

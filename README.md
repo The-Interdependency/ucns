@@ -162,9 +162,10 @@ The wheel supplies the geometry package. Repository-context research replay and
 the full tests require the source archive or checkout: run from its root, where
 the archived preregistrations, generated evidence, and vendored parser live.
 The distribution gate checks these inputs byte-for-byte; it does not recertify
-their mathematical claims. It also binds wheel dependencies and flags to
+their mathematical claims. It also binds wheel filename tags, dependencies, and flags to
 `pyproject.toml`, verifies every RECORD digest, and requires the exact generated
-sdist configuration.
+sdist configuration. Both source PKG-INFO records and generated egg-info
+dependency and file lists must agree with that same source configuration.
 
 Exact modular and trace records require immutable tuples with non-Boolean integer
 residues; prefer the public builders. MPFR rational constructors accept only
@@ -178,12 +179,14 @@ For a source-bound, selected-check receipt:
 ```
 
 Receipt schema 2.1 rejects skips, expected failures, both forms of XPASS, absent
-reports, and source changes during execution (including write-and-restore).
+reports, and source changes during execution (including write-and-restore
+through external hardlinks).
 Receipt execution requires Linux inotify; an unavailable observer is an error.
 Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient PYTHONPATH and pytest plugins
-excluded, and imported package paths are recorded and checked. The observer is
+replaced with the bound source path, which ordinary Python descendants inherit.
+Origin receipts observe the selected pytest process. The observer is
 evidence instrumentation, not a sandbox for hostile test code. A `passed` receipt covers only its selected
 checks; it does not select geometry, ratify candidates, or establish freshness.
 
