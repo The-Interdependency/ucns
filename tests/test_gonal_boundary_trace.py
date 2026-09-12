@@ -1,3 +1,4 @@
+# ratios: loc_comments=101:51 imports_exports=7:6 calls_definitions=55:7
 # === CHECKS ===
 # id: check_gonal_boundary_trace_samples_circle_wave_mode_exactly
 #   proves: gonal_boundary_trace_samples_circle_wave_mode_exactly
@@ -47,6 +48,8 @@
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===
+
+from __future__ import annotations
 
 from dataclasses import replace
 from fractions import Fraction
@@ -140,6 +143,20 @@ def test_trace_bridge_fails_closed() -> None:
     with pytest.raises(GonalBoundaryTraceError, match="time scale must be a positive integer"):
         replace(valid, time_scale=2.0)  # type: ignore[arg-type]
 
+    identity = build_modular_orbit_geometry(3, 1)
+    trace = build_circle_wave_mode_trace(3, 1)
+    covering = pullback_circle_wave_trace(trace, identity, 1)
+    for action in (((False, False), (True, True), (2.0, 2.0)), None, [[0, 0], [1, 1], [2, 2]]):
+        with pytest.raises(GonalBoundaryTraceError):
+            replace(covering, action=action)
+    for query in (True, False, 1.0, Fraction(1), "1", []):
+        with pytest.raises(GonalBoundaryTraceError):
+            trace.phase_at(query)
+    with pytest.raises(GonalBoundaryTraceError):
+        replace(covering, source=None)
+    with pytest.raises(GonalBoundaryTraceError):
+        pullback_circle_wave_trace(trace, None, 1)
+
 
 def test_trace_surface_is_geometry_only() -> None:
     geometry = build_modular_orbit_geometry(9, 7, range(1, 9))
@@ -163,3 +180,4 @@ def test_trace_is_candidate_scoped_in_canon() -> None:
 
     assert "candidate" in section.lower()
     assert "not ratified" in section.lower()
+# ratios: loc_comments=101:51 imports_exports=7:6 calls_definitions=55:7

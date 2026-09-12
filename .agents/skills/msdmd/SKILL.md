@@ -63,7 +63,9 @@ claims to prove those obligations. See
   referenced from external tooling).
 - **Field lines**: indented one level beneath the id (two spaces of
   visible indent inside the comment). Field names are lowercase
-  snake_case followed by `:` and a value.
+  snake_case followed by `:` and a value. Digits are allowed after the first
+  character, so `evidence_sha256` is valid; the first character must be a
+  lowercase letter or underscore.
 - **Multiple blocks per file**: a module may declare more than one
   block, of the same or different types. The parser concatenates
   entries.
@@ -143,6 +145,13 @@ A reference implementation in pure stdlib Python lives at
 `parsers/universal.py`; the TypeScript equivalent at `parsers/universal.ts`.
 Both commit to zero non-stdlib dependencies so you can copy them into
 any project.
+
+The Python and TypeScript reference helpers each own `MODULE_BUILD` and
+field-preservation `CONTRACTS` beside their implementations. A consumer that
+executes or updates a vendored helper should reconcile its exact dependency
+declarations and provide a local resolving `CHECKS` witness. The dependency's canonical owner
+and exact source identity remain explicit; local execution does not transfer
+parser ownership to the consumer.
 
 Extension detection refuses ambiguous suffixes rather than sniffing content.
 For example, `.m` can mean Objective-C or MATLAB/Octave and therefore has no

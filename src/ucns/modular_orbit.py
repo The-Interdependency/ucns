@@ -1,3 +1,4 @@
+# ratios: loc_comments=204:82 imports_exports=4:5 calls_definitions=92:10
 # === MODULE_BUILD ===
 # id: ucns_modular_orbit_geometry
 #   module_name: modular_orbit
@@ -99,7 +100,11 @@ class CircularResiduePosition:
 
 @dataclass(frozen=True, slots=True)
 class ModularOrbitGeometry:
-    """Immutable exact geometry of one finite modular multiplication action."""
+    """Immutable exact geometry of one finite modular multiplication action.
+
+    Restore records with nested tuples and nonboolean integers; numeric equality
+    to an integer is not sufficient admission. Use the builder for iterables.
+    """
 
     modulus: int
     multiplier: int
@@ -110,6 +115,19 @@ class ModularOrbitGeometry:
     embedding: tuple[CircularResiduePosition, ...]
 
     def __post_init__(self) -> None:
+        for name in ("positions", "action", "orbits", "periods", "embedding"):
+            if not isinstance(getattr(self, name), tuple):
+                raise ModularOrbitError(f"{name} must be an immutable tuple")
+        for name in ("action", "orbits"):
+            for row in getattr(self, name):
+                if not isinstance(row, tuple) or not row:
+                    raise ModularOrbitError(f"{name} must contain nonempty immutable tuples")
+                if name == "action" and len(row) != 2:
+                    raise ModularOrbitError("action entries must be source/target pairs")
+                if any(isinstance(value, bool) or not isinstance(value, int) for value in row):
+                    raise ModularOrbitError(f"{name} must contain nonboolean integer residues")
+        if any(isinstance(value, bool) or not isinstance(value, int) for value in self.periods):
+            raise ModularOrbitError("periods must be nonboolean integers")
         if isinstance(self.modulus, bool) or not isinstance(self.modulus, int) or self.modulus <= 1:
             raise ModularOrbitError("modulus must be an integer greater than 1")
         if isinstance(self.multiplier, bool) or not isinstance(self.multiplier, int):
@@ -170,6 +188,8 @@ class ModularOrbitGeometry:
     def target(self, residue: int) -> int:
         """Return the exact action target for a declared position."""
 
+        if isinstance(residue, bool) or not isinstance(residue, int):
+            raise ModularOrbitError("residue must be a nonboolean integer")
         for source, target in self.action:
             if source == residue:
                 return target
@@ -178,6 +198,8 @@ class ModularOrbitGeometry:
     def turn_of(self, residue: int) -> Fraction:
         """Return the exact normalized-circle turn for a declared position."""
 
+        if isinstance(residue, bool) or not isinstance(residue, int):
+            raise ModularOrbitError("residue must be a nonboolean integer")
         for position in self.embedding:
             if position.residue == residue:
                 return position.turn
@@ -309,3 +331,4 @@ __all__ = [
     "ModularOrbitGeometry",
     "build_modular_orbit_geometry",
 ]
+# ratios: loc_comments=204:82 imports_exports=4:5 calls_definitions=92:10

@@ -1,3 +1,4 @@
+# ratios: loc_comments=84:43 imports_exports=5:5 calls_definitions=39:5
 # === CHECKS ===
 # id: check_modular_orbit_mod9_times_two
 #   proves: modular_orbit_action_decomposes_exact_permutation, modular_orbit_circle_embedding_is_exact
@@ -101,6 +102,23 @@ def test_invalid_carriers_fail_closed() -> None:
     with pytest.raises(ModularOrbitError, match="noncanonical residue"):
         replace(valid, positions=(0, []))  # type: ignore[arg-type]
 
+    identity = build_modular_orbit_geometry(3, 1)
+    for patch in (
+        {"action": ((False, False), (True, True), (2.0, 2.0))},
+        {"orbits": ((False,), (True,), (2.0,))},
+        {"orbits": [list(orbit) for orbit in identity.orbits]},
+        {"periods": (True, 1.0, 1)},
+        {"orbits": None},
+        {"orbits": ((0,), None, (2,))},
+    ):
+        with pytest.raises(ModularOrbitError):
+            replace(identity, **patch)
+    for query in (True, False, 1.0, Fraction(1), "1", []):
+        with pytest.raises(ModularOrbitError):
+            identity.target(query)
+        with pytest.raises(ModularOrbitError):
+            identity.turn_of(query)
+
 
 def test_serialized_surface_contains_geometry_only() -> None:
     payload = build_modular_orbit_geometry(9, 2, range(1, 9)).as_dict()
@@ -129,3 +147,4 @@ def test_modular_orbit_is_candidate_scoped_in_canon() -> None:
     assert "candidate" in section.lower()
     assert "not ratified" in section.lower()
     assert "active cycle primitive" not in section.lower()
+# ratios: loc_comments=84:43 imports_exports=5:5 calls_definitions=39:5

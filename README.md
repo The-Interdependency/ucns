@@ -144,11 +144,119 @@ assert s720 == s0
 ## Build
 
 ```bash
-python -m pip install -e ".[test,build]"
-python -m pytest -q
-python tools/verify_skill_lib_contracts.py .
-python -m build
-python -m twine check dist/*
+python -m pip install uv==0.11.18
+uv lock --check
+uv sync --locked --python python --extra test --extra build
+.venv/bin/python tools/verify_skill_lib_contracts.py .
+env -u PYTHONPATH -u PYTHONHOME -u PYTEST_ADDOPTS -u PYTEST_PLUGINS \
+  PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python - <<'PY'
+from pathlib import Path
+from tools._boundary_pytest import run_suite
+raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--strict-config"], Path.cwd()))
+PY
+.venv/bin/python -m build
+.venv/bin/python -m twine check dist/*
+.venv/bin/python tools/verify_distributions.py . dist
 ```
+
+The independent interval checks also require system MPFR (for example,
+`libmpfr6` on Ubuntu). Verification dependencies are locked; the isolated build
+backend is pinned in `[build-system].requires`. Use a clean `dist` directory.
+
+The wheel supplies the geometry package. Repository-context research replay and
+the full tests require the source archive or checkout: run from its root, where
+the archived preregistrations, generated evidence, and vendored parser live.
+The distribution gate checks these inputs byte-for-byte; it does not recertify
+their mathematical claims. It also binds wheel filename tags, dependencies, and flags to
+`pyproject.toml`, verifies every RECORD digest, and requires the exact generated
+sdist configuration. Both source PKG-INFO records and generated egg-info
+dependency and file lists must agree with that same source configuration. Directory
+entries are validated too; duplicate names and file/directory collisions fail.
+
+Exact modular and trace records require immutable tuples with non-Boolean integer
+residues; prefer the public builders. MPFR rational constructors accept only
+integers or `Fraction`, and NaN cannot participate in interval ordering.
+
+The no-exec graph also reconciles both exact vendored reference parsers, with
+local Python and TypeScript numeric-field/no-execution witnesses. The complete
+repository evidence suite requires Node 24.15.0 for that TypeScript check; UCNS
+library use remains Python-only. Parser ownership remains in skill-lib.
+Unused skill helper tools remain canonical dependency material.
+
+Receipt inventories hash every file under the bound `src`, `tools`, `tests`,
+`docs`, `generated`, `.agents/skills`, and `.github/workflows` directories,
+excluding `__pycache__`, plus the runner's declared root inputs. Text, binary,
+and extensionless fixtures are included. Symlinks in bound inputs are unsupported
+and fail before execution. Source archives retain the complete
+package, test, tool, documentation, generated-evidence, skill, and CI trees;
+the distribution gate rejects missing or altered inputs. Declared test-function
+bindings must be unique. Test-helper modules receive the same collection-surface
+audit, and the observer compares the actual test function code with its declared
+source before and after the call. An imported replacement cannot stand in for
+the original witness. Bound Python imports compile the inventoried source, and
+pytest runs use fresh bytecode-cache locations; pre-existing caches cannot replace
+those source imports. Snapshot failures during execution become explicit ERROR
+outcomes, retain mutation evidence, and produce a not-passed receipt.
+
+For a source-bound, selected-check receipt:
+
+```bash
+.venv/bin/python tools/run_skill_lib_boundaries.py . \
+  --check check_boundary_runner_nonactivation --receipt /tmp/ucns-receipt.json
+```
+
+Receipt schema 2.1 rejects skips, expected failures, both forms of XPASS, absent
+reports, and source changes during execution (including write-and-restore
+through external hardlinks).
+Receipt execution requires Linux inotify and readable procfs process identities;
+unavailable instrumentation is an error before check execution. Descendant discovery
+uses the task-children interface when available and otherwise reads procfs parent IDs.
+Potential test definitions inside module or class control flow fail the declaration
+audit closed; executable witnesses use direct module-level definitions.
+The graph requires explicit `testpaths = ["tests"]` and
+`collect_imported_tests = false`, with pytest 9.1 or later, and supports default pytest
+file/class/function naming. Unrecognized configuration keys fail closed.
+Repository-root helper imports outside the declared source layout fail the audit.
+The complete-suite gate also requires every statically declared top-level test to
+execute, so hiding a failing witness during collection cannot leave a passing gate.
+Both full and selected execution also reconcile every collected pytest item,
+including separate parameter invocations, against its actual call outcome.
+Conftest files and local plugin registration are
+outside this bounded collection contract. Changed settings, alternative pytest configuration
+files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is
+parsed without executing tests; Python 3.10 uses the declared `tomli` test dependency.
+Nested pytest configuration is rejected, and selected execution explicitly uses
+the audited root config with conftest loading disabled. Collection-time execution
+is limited to declarations, literal data, pytest decorators with literal arguments,
+and read-only `Path(__file__)` source constants. Callable decorator options and
+string skip/xfail conditions are unsupported. Compound annotations require
+`from __future__ import annotations`. Indirect namespace mutation and unresolved calls, decorators,
+or namespace protocols fail closed; setup work belongs in fixtures or checks.
+Module/class pytest marks and pytest/xunit hooks are unsupported implicit execution. Class
+data bindings must be literal values; imported descriptors, unresolved bases, nested classes, and compound class
+namespace construction fail closed. Fixture helpers remain supported, including
+test-prefixed helper names, but fixture-decorated functions cannot resolve CHECKS.
+Imported or destructured `__test__` bindings are unresolved collection opt-outs and fail closed.
+Class and base names must have unambiguous bindings; later rebinding cannot
+stand in for the class used during construction.
+CI runs the complete suite through the outcome observer: collection skips/errors,
+runtime skips, xfail, XPASS, and empty execution fail the suite gate.
+Source observation starts before capability probing. Executable Node version
+probes use the same descendant supervisor as checks; a timeout or leaked child
+cannot satisfy the capability. Source archives require owner-readable/writable
+files and owner-readable/writable/searchable directories, without special mode bits.
+Explicit archive directories must belong to the hierarchy of allowed files.
+Receipt output must be outside the bound source tree and is written by atomic
+replacement so an output hardlink cannot modify a bound input.
+Checks import the bound checkout with ambient pytest plugins disabled and
+PYTHONPATH replaced. An inherited startup hook makes ordinary Python descendants
+prefer bound packages over their working directory. A separate supervisor uses Linux
+child subreaping to terminate remaining descendants before observation ends;
+leaked background work prevents acceptance. Timeout cleanup is outside the
+pytest process, so replacing its signal handler cannot bypass descendant cleanup. Origin receipts observe the selected
+pytest process. Explicit isolated/no-site interpreters and replaced child
+environments do not inherit the import protocol. The observer instruments trusted
+checks; it is not a sandbox for hostile test code. A `passed` receipt covers only its selected
+checks; it does not select geometry, ratify candidates, or establish freshness.
 
 `hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates, the complete higher-dimensional UCNS construction, the exact visible-circle wave-trace lift into the native Möbius carrier, any law selecting one continuum covering lift from a finite modular congruence class, and the exact geometric operation of every Public Gonol function position remain unresolved. Unresolved geometry stays unresolved; semantic machinery is not used to fill it.
