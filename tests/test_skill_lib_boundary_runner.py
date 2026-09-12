@@ -1,4 +1,4 @@
-# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20
+# ratios: loc_comments=195:410 imports_exports=23:18 calls_definitions=248:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -197,12 +197,26 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     helper.write_text(helper_source)
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
-    # Root helpers lie outside the test-tree surface audit. Runtime witness binding
-    # must still reject an imported replacement with matching name and module.
+    # Root helpers are outside the declared source layout and must fail the audit.
     helper.rename(root / "replacing_helper.py")
     receipt = runner.run_boundaries(root)
-    assert receipt["status"] == "not-passed" and receipt["outcomes"][0]["status"] == "FAIL", receipt
-    assert "witness code differs" in receipt["outcomes"][0]["stdout_excerpt"], receipt
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    assert any("root helper" in gap for gap in receipt["audit_gaps"])
+    # Below the audit gate, the runtime still rejects a replaced witness.
+    outcome = runner._run_check(root, runner._declared_checks(root)[0])
+    assert outcome.status == "FAIL" and "witness code differs" in outcome.stdout_excerpt, outcome
+    hiding = "import inspect\nfor frame in inspect.stack():\n    witness = frame.frame.f_globals.get('test_fails')\n    if witness is not None:\n        witness.__test__ = False\n"
+    root = _repo(tmp_path / "hidden-witness", "def test_fails(): assert False\nimport hide_witness\ndef test_passes(): pass\n", [{"id": "check_fails", "function": "test_fails"}, {"id": "check_passes", "function": "test_passes"}])
+    (root / "hide_witness.py").write_text(hiding)
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    namespace = root / "hide_package"
+    namespace.mkdir()
+    (root / "hide_witness.py").rename(namespace / "effects.py")
+    source = root / "tests/test_feature.py"
+    source.write_text(source.read_text().replace("import hide_witness", "import hide_package.effects"))
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
 
 
 # === CHECKS ===
@@ -210,7 +224,7 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
 #   proves: geometry_suite_requires_nonempty_pass
 #   call: self::test_geometry_suite_rejects_nonpasses
 #   requires: python3
-#   timeout: 30
+#   timeout: 90
 #   mutates: filesystem
 #   cleanup: tempdir_teardown
 # === END CHECKS ===
@@ -221,22 +235,35 @@ def test_geometry_suite_rejects_nonpasses(tmp_path: Path) -> None:
     cases = (
         ("pass", "def test_probe(): pass\n", True),
         ("skip", "import pytest\ndef test_probe(): pytest.skip('unobserved')\n", False),
+        ("marked-skip", "import pytest\n@pytest.mark.skip(reason='unobserved')\ndef test_probe(): pass\n", False),
         ("xfail", "import pytest\n@pytest.mark.xfail\ndef test_probe(): assert False\n", False),
         ("xpass", "import pytest\n@pytest.mark.xfail(strict=False)\ndef test_probe(): pass\n", False),
         ("empty", "# no executable checks\n", False),
         ("collection-skip", "import pytest\npytest.skip('unobserved', allow_module_level=True)\n", False),
         ("collection-error", "raise RuntimeError('broken collection')\n", False),
         ("module-mark", "import pytest\npytestmark = pytest.mark.skip\ndef test_probe(): assert False\n", False),
+        ("hidden-witness", "def test_fails(): assert False\nimport hide_witness\ndef test_passes(): pass\n", False),
+        ("removed-witness", "def test_first(request): request.session.items[:] = [request.node]\ndef test_fails(): assert False\n", False),
+        ("removed-parameter", "import pytest\n@pytest.mark.parametrize('value', [0, 1], ids=['a::b', 'failing'])\ndef test_probe(value, request):\n    if value == 0: request.session.items[:] = [request.node]\n    assert value == 0\n", False),
     )
     script = "import os,sys; from pathlib import Path; sys.path.insert(0,sys.argv[1]); from tools._boundary_pytest import run_suite; root=Path(sys.argv[2]); os.chdir(root); raise SystemExit(run_suite(['tests','-c','pyproject.toml','--noconftest','--strict-config'],root))"
     environment = {key: value for key, value in os.environ.items() if key not in {"PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"}}
     environment["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
     for label, body, expected_pass in cases:
-        root = _repo(tmp_path / label, body, [])
+        checks = [{"id": "check_probe", "function": "test_probe", "timeout": "15"}] if label in {"removed-parameter", "marked-skip"} else []
+        root = _repo(tmp_path / label, body, checks)
         if label.startswith("collection-"):
             (root / "tests/test_other.py").write_text("def test_other(): pass\n")
+        if label == "hidden-witness":
+            (root / "hide_witness.py").write_text("import inspect\nfor frame in inspect.stack():\n    witness = frame.frame.f_globals.get('test_fails')\n    if witness is not None:\n        witness.__test__ = False\n")
         result = subprocess.run([sys.executable, "-c", script, str(RUNNER_PATH.parents[1]), str(root)], env=environment, capture_output=True, text=True)
         assert (result.returncode == 0) is expected_pass, (label, result.stdout, result.stderr)
+        if label in {"removed-parameter", "marked-skip"}:
+            receipt = runner.run_boundaries(root)
+            assert receipt["audit_closed"] and receipt["status"] == "not-passed", json.dumps(receipt, indent=2)
+            assert receipt["outcomes"][0]["status"] == ("ERROR" if label == "removed-parameter" else "SKIP"), json.dumps(receipt, indent=2)
+            if label == "removed-parameter":
+                assert "did not all execute" in receipt["outcomes"][0]["diagnostic"]
 
 
 def test_missing_capability_and_timeout_are_enforced(tmp_path: Path) -> None:
@@ -474,7 +501,7 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
 #   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes, boundary_descendants_import_bound_source
 #   call: self::test_check_imports_bound_source_despite_ambient_pythonpath
 #   requires: python3, pytest
-#   timeout: 15
+#   timeout: 30
 #   mutates: temporary_path
 #   cleanup: pytest temporary_path
 # === END CHECKS ===
@@ -491,7 +518,7 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
 
 def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, monkeypatch) -> None:
     body = "import pkg.feature\nimport subprocess, sys\ndef test_probe():\n    assert pkg.feature.VALUE == 'bound'\n    child = subprocess.check_output([sys.executable, '-c', 'import pkg.feature; print(pkg.feature.VALUE)'], text=True)\n    assert child.strip() == 'bound'\n"
-    root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
+    root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe", "timeout": "15"}])
     source = root / "src/pkg/feature.py"
     source.write_text(source.read_text() + "VALUE = 'bound'\n")
     # A regular package avoids unrelated namespace packages in the host.
@@ -505,7 +532,7 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     test_source = root / "tests/test_feature.py"
     test_source.write_text(test_source.read_text().replace("text=True)", f"text=True, cwd={str(alternate)!r})"))
     receipt = runner.run_boundaries(root)
-    assert receipt["status"] == "passed", receipt
+    assert receipt["status"] == "passed", json.dumps(receipt, indent=2)
     assert receipt["outcomes"][0]["imported_sources"]["pkg.feature"] == [str(source)]
 
 # === CHECKS ===
@@ -523,7 +550,7 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     import os
     import py_compile
     import subprocess
-    poisoned = _repo(tmp_path / "poisoned-cache", "def test_probe():\n    from pkg.feature import VALUE\n    assert VALUE == 1\n    import subprocess, sys\n    child = subprocess.run([sys.executable, '-c', 'from pkg.feature import VALUE; print(VALUE)'], check=True, capture_output=True, text=True)\n    assert child.stdout.strip() == '1'\n", [{"id": "check_probe", "function": "test_probe"}])
+    poisoned = _repo(tmp_path / "poisoned-cache", "def test_probe():\n    from pkg.feature import VALUE\n    assert VALUE == 1\n    import subprocess, sys\n    child = subprocess.run([sys.executable, '-c', 'from pkg.feature import VALUE; print(VALUE)'], check=True, capture_output=True, text=True)\n    assert child.stdout.strip() == '1'\n", [{"id": "check_probe", "function": "test_probe", "timeout": "15"}])
     module = poisoned / "src/pkg/feature.py"
     declarations = module.read_text()
     module.write_text(declarations + "\nVALUE = 2\n")
@@ -537,7 +564,7 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     old = subprocess.run([sys.executable, "-c", "from pkg.feature import VALUE; print(VALUE)"], env=ordinary, capture_output=True, text=True, check=True)
     assert old.stdout.strip() == "2", "fixture must contain an executable stale cache"
     observed = runner.run_boundaries(poisoned)
-    assert observed["status"] == "passed" and observed["source_unchanged"], observed
+    assert observed["status"] == "passed" and observed["source_unchanged"], json.dumps(observed, indent=2)
     assert not any("__pycache__" in name for name in observed["source_files_sha256"])
 
 
@@ -626,4 +653,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=168:410 imports_exports=23:18 calls_definitions=228:20
+# ratios: loc_comments=195:410 imports_exports=23:18 calls_definitions=248:20

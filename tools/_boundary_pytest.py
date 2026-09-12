@@ -1,4 +1,4 @@
-# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
+# ratios: loc_comments=138:35 imports_exports=10:3 calls_definitions=62:10
 # === MODULE_BUILD ===
 # id: boundary_pytest_observer
 #   module_name: _boundary_pytest
@@ -25,7 +25,7 @@
 #
 # id: geometry_suite_requires_nonempty_pass
 #   given: the full geometry suite runs through run_suite
-#   then: empty, skipped, xfailed, XPASS, failed, or collection-error evidence cannot produce exit status zero
+#   then: empty, unexecuted declared witnesses or collected parameter items, skipped, xfailed, XPASS, failed, or collection-error evidence cannot produce exit status zero
 #   class: evidence
 # === END CONTRACTS ===
 
@@ -39,6 +39,7 @@ sandbox. Ambient pytest plugins and PYTHONPATH are excluded by the parent.
 """
 from __future__ import annotations
 
+from collections import Counter
 import json
 from pathlib import Path
 import sys
@@ -55,7 +56,16 @@ class Observer:
         self.root = root
         self.calls: list[str] = []
         self.other: list[str] = []
+        self.executed_witnesses: set[tuple[Path, str]] = set()
+        self.collected_items: tuple[object, ...] = ()
+        self.item_calls: Counter[int] = Counter()
         self.expected_code: dict[Path, CodeType] = {}
+
+    def pytest_collection_finish(self, session):
+        self.collected_items = tuple(session.items)
+
+    def item_coverage_closed(self) -> bool:
+        return Counter(id(item) for item in self.collected_items) == self.item_calls
 
     def _witness_matches_source(self, item) -> bool:
         path = Path(item.path).resolve()
@@ -115,11 +125,17 @@ class Observer:
             status = "PASS"
         if call.when == "call":
             self.calls.append(status)
+            self.item_calls[id(item)] += 1
+            self.executed_witnesses.add((Path(item.path).resolve(), item.originalname or item.name.split("[", 1)[0]))
         elif status != "PASS":
             self.other.append(status)
 
 
 def run_suite(arguments: list[str], root: Path) -> int:
+    from tools.verify_skill_lib_contracts import _defined_functions
+    expected = {(path.resolve(), name) for path in (root / "tests").rglob("*.py")
+                if path.name.startswith("test_") or path.name.endswith("_test.py")
+                for name in _defined_functions(path) if name.startswith("test")}
     observer = Observer(root)
     previous_prefix = sys.pycache_prefix
     try:
@@ -130,7 +146,12 @@ def run_suite(arguments: list[str], root: Path) -> int:
         sys.pycache_prefix = previous_prefix
     if result:
         return result
-    return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other else 1
+    missing = expected - observer.executed_witnesses
+    if missing:
+        print("Declared witnesses did not execute:", sorted(str(path) + "::" + name for path, name in missing))
+    if not observer.item_coverage_closed():
+        print("Collected test item execution differs:", [(item.nodeid, observer.item_calls[id(item)]) for item in observer.collected_items])
+    return 0 if observer.calls and set(observer.calls) == {"PASS"} and not observer.other and not missing and observer.item_coverage_closed() else 1
 
 
 def main() -> int:
@@ -161,14 +182,14 @@ def main() -> int:
         status = "FAIL"
     elif "SKIP" in statuses:
         status = "SKIP"
-    elif observer.calls and exit_code == 0:
+    elif observer.calls and exit_code == 0 and observer.item_coverage_closed():
         status = "PASS"
     else:
         status = "ERROR"
-    report_path.write_text(json.dumps({"status": status, "calls": observer.calls, "other": observer.other, "origins": origins, "wrong_origins": wrong_origins, "descendants_reaped": 0}), encoding="utf-8")
+    report_path.write_text(json.dumps({"status": status, "calls": observer.calls, "other": observer.other, "origins": origins, "wrong_origins": wrong_origins, "descendants_reaped": 0, "item_coverage_closed": observer.item_coverage_closed()}), encoding="utf-8")
     return exit_code
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=119:35 imports_exports=8:3 calls_definitions=49:8
+# ratios: loc_comments=138:35 imports_exports=10:3 calls_definitions=62:10
