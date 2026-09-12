@@ -1,4 +1,4 @@
-# ratios: loc_comments=92:10 imports_exports=9:1 calls_definitions=39:2
+# ratios: loc_comments=110:10 imports_exports=9:1 calls_definitions=44:2
 # === CHECKS ===
 # id: check_distribution_replay_inputs
 #   proves: distributions_retain_exact_replay_inputs
@@ -30,10 +30,18 @@ SPEC.loader.exec_module(audit)
 
 
 def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra="", wheel_omit="", wheel_altered="", metadata_extra="", wheel_flags="true", record_mode=""):
+    core_metadata = "Metadata-Version: 2.4\nName: ucns\nVersion: 0\nSummary: Fixture\nAuthor: Test\nRequires-Python: >=3.10\nDescription-Content-Type: text/markdown\nLicense: fixture\nLicense-File: LICENSE\nDynamic: license-file\n"
     with tarfile.open(sdist, "w:gz") as archive:
-        files = {**audit.expected_files(root), "setup.cfg": audit.GENERATED_SETUP_CFG}
+        files = {**audit.expected_files(root), "setup.cfg": audit.GENERATED_SETUP_CFG,
+                 "PKG-INFO": (core_metadata + "\nfixture\n").encode(),
+                 "src/ucns.egg-info/PKG-INFO": (core_metadata + "\nfixture\n").encode(),
+                 "src/ucns.egg-info/top_level.txt": b"ucns\n",
+                 "src/ucns.egg-info/dependency_links.txt": b"\n",
+                 "src/ucns.egg-info/requires.txt": b"",
+                 "src/ucns.egg-info/SOURCES.txt": b""}
         if sdist_extra:
             files[sdist_extra] = b"unexpected"
+        files["src/ucns.egg-info/SOURCES.txt"] = ("\n".join(sorted(files.keys() - {"PKG-INFO", "setup.cfg"})) + "\n").encode()
         for name, data in files.items():
             if name == omit:
                 continue
@@ -48,7 +56,7 @@ def _archives(root, sdist, wheel, *, omit="", altered="", extra="", sdist_extra=
             if name.startswith("src/ucns/"):
                 files[name.removeprefix("src/")] = data
         metadata = {
-            "METADATA": ("Metadata-Version: 2.4\nName: ucns\nVersion: 0\nSummary: Fixture\nAuthor: Test\nRequires-Python: >=3.10\nDescription-Content-Type: text/markdown\nLicense: fixture\nLicense-File: LICENSE\nDynamic: license-file\n" + metadata_extra + "\nfixture\n").encode(),
+            "METADATA": (core_metadata + metadata_extra + "\nfixture\n").encode(),
             "WHEEL": f"Wheel-Version: 1.0\nGenerator: fixture\nRoot-Is-Purelib: {wheel_flags}\nTag: py3-none-any\n".encode(),
             "licenses/LICENSE": (root / "LICENSE").read_bytes(),
         }
@@ -79,7 +87,7 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture\n")
     (root / "pyproject.toml").write_text('[project]\nname="ucns"\nversion="0"\ndescription="Fixture"\nrequires-python=">=3.10"\nauthors=[{name="Test"}]\nreadme="README.md"\n')
-    sdist, wheel = tmp_path / "ucns.tar.gz", tmp_path / "ucns.whl"
+    sdist, wheel = tmp_path / "ucns-0.tar.gz", tmp_path / "ucns-0-py3-none-any.whl"
     _archives(root, sdist, wheel)
     assert audit.verify_distributions(root, sdist, wheel) == []
     for options, message in (
@@ -92,6 +100,12 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
         ({"wheel_omit": "RECORD"}, "missing wheel metadata"),
         ({"sdist_extra": "setup.py"}, "unexpected payload setup.py"),
         ({"sdist_extra": "setup.cfg"}, "altered generated setup.cfg"),
+        ({"sdist_extra": "PKG-INFO"}, "sdist PKG-INFO Name differs"),
+        ({"sdist_extra": "src/ucns.egg-info/PKG-INFO"}, "sdist src/ucns.egg-info/PKG-INFO Name differs"),
+        ({"omit": "PKG-INFO"}, "missing sdist metadata PKG-INFO"),
+        ({"omit": "src/ucns.egg-info/PKG-INFO"}, "missing sdist metadata src/ucns.egg-info/PKG-INFO"),
+        ({"sdist_extra": "src/ucns.egg-info/requires.txt"}, "requires.txt differs"),
+        ({"altered": "src/ucns.egg-info/SOURCES.txt"}, "SOURCES.txt differs"),
         ({"omit": "setup.cfg"}, "missing generated setup.cfg"),
         ({"metadata_extra": "Requires-Dist: unexpected>=1\n"}, "Requires-Dist differs"),
         ({"wheel_flags": "false"}, "Root-Is-Purelib differs"),
@@ -107,7 +121,11 @@ def test_distribution_replay_inputs_fail_closed(tmp_path: Path) -> None:
     _archives(root, sdist, wheel, extra="../escaped.py")
     assert any("unsafe" in problem for problem in audit.verify_distributions(root, sdist, wheel))
     _archives(root, sdist, wheel)
+    renamed = wheel.with_name("ucns-0-cp310-cp310-manylinux_2_17_x86_64.whl")
+    wheel.rename(renamed)
+    assert any("filename identity or tags" in problem for problem in audit.verify_distributions(root, sdist, renamed))
+    renamed.rename(wheel)
     with zipfile.ZipFile(wheel, "a") as archive, pytest.warns(UserWarning, match="Duplicate"):
         archive.writestr("ucns/__init__.py", b"duplicate")
     assert any("duplicate" in problem for problem in audit.verify_distributions(root, sdist, wheel))
-# ratios: loc_comments=92:10 imports_exports=9:1 calls_definitions=39:2
+# ratios: loc_comments=110:10 imports_exports=9:1 calls_definitions=44:2

@@ -1,4 +1,4 @@
-# ratios: loc_comments=98:224 imports_exports=8:16 calls_definitions=83:18
+# ratios: loc_comments=98:233 imports_exports=8:16 calls_definitions=87:18
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -326,6 +326,15 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
     runner.write_receipt(receipt, external)
     assert source.read_bytes() == original
     assert json.loads(external.read_text())["receipt_sha256"] == receipt["receipt_sha256"]
+    alias = tmp_path / "source-alias.py"
+    body = f"from pathlib import Path\ndef test_probe():\n    p=Path({str(alias)!r})\n    original=p.read_bytes()\n    p.write_bytes(original+b'# transient\\n')\n    p.write_bytes(original)\n"
+    root = _repo(tmp_path / "hardlinked", body, [{"id": "check_probe", "function": "test_probe"}])
+    alias.hardlink_to(root / "src/pkg/feature.py")
+    receipt = runner.run_boundaries(root)
+    assert receipt["outcomes"][0]["status"] == "PASS"
+    assert receipt["source_before_sha256"] == receipt["source_after_sha256"]
+    assert receipt["status"] == "not-passed"
+    assert "src/pkg/feature.py" in receipt["outcomes"][0]["source_events"]
 # === CHECKS ===
 # id: check_boundary_runner_import_origin
 #   proves: boundary_runner_receipt_is_bounded_and_bound, boundary_pytest_observes_actual_outcomes
@@ -338,7 +347,7 @@ def test_source_mutation_prevents_acceptance(tmp_path: Path) -> None:
 
 
 def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, monkeypatch) -> None:
-    body = "import pkg.feature\ndef test_probe():\n    assert pkg.feature.VALUE == 'bound'\n"
+    body = "import pkg.feature\nimport subprocess, sys\ndef test_probe():\n    assert pkg.feature.VALUE == 'bound'\n    child = subprocess.check_output([sys.executable, '-c', 'import pkg.feature; print(pkg.feature.VALUE)'], text=True)\n    assert child.strip() == 'bound'\n"
     root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
     source = root / "src/pkg/feature.py"
     source.write_text(source.read_text() + "VALUE = 'bound'\n")
@@ -353,4 +362,4 @@ def test_check_imports_bound_source_despite_ambient_pythonpath(tmp_path: Path, m
     receipt = runner.run_boundaries(root)
     assert receipt["status"] == "passed", receipt
     assert receipt["outcomes"][0]["imported_sources"]["pkg.feature"] == [str(source)]
-# ratios: loc_comments=98:224 imports_exports=8:16 calls_definitions=83:18
+# ratios: loc_comments=98:233 imports_exports=8:16 calls_definitions=87:18

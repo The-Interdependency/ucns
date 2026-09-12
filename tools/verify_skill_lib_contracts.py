@@ -1,4 +1,4 @@
-# ratios: loc_comments=207:47 imports_exports=8:4 calls_definitions=90:8
+# ratios: loc_comments=212:47 imports_exports=8:4 calls_definitions=92:8
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -261,6 +261,11 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
                 continue
             if any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in {"__init__", "__new__"} for node in cls.body):
                 continue
+            if any(not (isinstance(base, ast.Name) and base.id == "object") for base in cls.bases):
+                problems.append(
+                    f"GAP inherited class check {test_path}::{cls.name}; "
+                    "base-class executable surfaces require a declared top-level witness"
+                )
             for method in cls.body:
                 if isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)) and method.name.startswith("test_"):
                     problems.append(
@@ -285,4 +290,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=207:47 imports_exports=8:4 calls_definitions=90:8
+# ratios: loc_comments=212:47 imports_exports=8:4 calls_definitions=92:8

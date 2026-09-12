@@ -1,4 +1,4 @@
-# ratios: loc_comments=88:42 imports_exports=5:5 calls_definitions=47:5
+# ratios: loc_comments=91:42 imports_exports=5:5 calls_definitions=50:5
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -146,4 +146,7 @@ def test_nested_fences_cannot_hide_an_obligation(tmp_path: Path) -> None:
     (root / "tests/test_helpers.py").write_text("class Helper:\n    def test_helper(self): pass\nclass TestDisabled:\n    __test__ = False\n    def test_disabled(self): pass\nclass TestTypedDisabled:\n    __test__: bool = False\n    def test_disabled(self): pass\ndef helper():\n    class TestNested:\n        def test_nested(self): pass\n")
     ok, problems = audit_repository(root)
     assert ok, problems
-# ratios: loc_comments=88:42 imports_exports=5:5 calls_definitions=47:5
+    (root / "tests/test_inherited.py").write_text("class Base:\n    def test_inherited(self): assert False\nclass TestChild(Base):\n    pass\n")
+    ok, problems = audit_repository(root)
+    assert not ok and any("inherited class check" in item for item in problems)
+# ratios: loc_comments=91:42 imports_exports=5:5 calls_definitions=50:5

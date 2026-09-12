@@ -1,4 +1,4 @@
-# ratios: loc_comments=370:66 imports_exports=19:4 calls_definitions=160:18
+# ratios: loc_comments=373:67 imports_exports=19:4 calls_definitions=162:18
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -124,7 +124,10 @@ class _SourceWatch:
                         directories.add(parent)
                     parent = parent.parent
             # MODIFY, ATTRIB, MOVED_FROM/TO, CREATE, DELETE, DELETE_SELF, MOVE_SELF.
-            for directory in sorted(directories):
+            # File watches follow the inode, including writes via external hardlinks.
+            files, _ = _source_snapshot(root)
+            watched = directories | {root / name for name in files}
+            for directory in sorted(watched):
                 descriptor = self.libc.inotify_add_watch(self.fd, os.fsencode(directory), 0xFC6)
                 if descriptor < 0:
                     raise OSError(ctypes.get_errno(), "cannot watch source directory")
@@ -342,6 +345,7 @@ def _run_check(root: Path, check: Entry) -> CheckOutcome:
         for name in ("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"):
             environment.pop(name, None)
         environment.update(PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+        environment["PYTHONPATH"] = os.pathsep.join((str(root / "src"), str(root)))
         watcher = _SourceWatch(root)
         try:
             with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
@@ -483,4 +487,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=370:66 imports_exports=19:4 calls_definitions=160:18
+# ratios: loc_comments=373:67 imports_exports=19:4 calls_definitions=162:18
