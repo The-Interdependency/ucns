@@ -203,6 +203,10 @@ the audited root config with conftest loading disabled. Collection-time executio
 is limited to declarations, pytest decorators, and read-only `Path(__file__)`
 source constants. Indirect namespace mutation and unresolved calls, decorators,
 or namespace protocols fail closed; setup work belongs in fixtures or checks.
+Module/class pytest and xunit hooks are unsupported implicit execution. Class
+data bindings must be literal values; imported descriptors and compound class
+namespace construction fail closed. Fixture helpers remain supported, including
+test-prefixed helper names, but fixture-decorated functions cannot resolve CHECKS.
 Source observation starts before capability probing. Executable Node version
 probes use the same descendant supervisor as checks; a timeout or leaked child
 cannot satisfy the capability. Source archives require owner-readable/writable
