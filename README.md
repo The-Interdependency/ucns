@@ -213,6 +213,10 @@ unavailable instrumentation is an error before check execution. Descendant disco
 uses the task-children interface when available and otherwise reads procfs parent IDs.
 Potential test definitions inside module or class control flow fail the declaration
 audit closed; executable witnesses use direct module-level definitions.
+The graph supports default pytest file/class/function naming and `tests` as the
+collection root. Changed collection settings, alternative pytest configuration
+files, and collection-changing `addopts` fail closed. Root `pyproject.toml` is
+parsed without executing tests; Python 3.10 uses the declared `tomli` test dependency.
 Receipt output must be outside the bound source tree and is written by atomic
 replacement so an output hardlink cannot modify a bound input.
 Checks import the bound checkout with ambient pytest plugins disabled and

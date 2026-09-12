@@ -1,4 +1,4 @@
-# ratios: loc_comments=348:51 imports_exports=8:4 calls_definitions=167:14
+# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -49,12 +49,19 @@ loaded. Unsupported class-based test targets are visible gaps, not coverage.
 from __future__ import annotations
 
 import ast
+import configparser
 import importlib.util
 import re
+import shlex
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Set, Tuple
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 verification dependency.
+    import tomli as tomllib
 
 BLOCK_RE = re.compile(r"^\s*#\s*===\s*(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
 END_RE = re.compile(r"^\s*#\s*===\s*END\s+(MODULE_BUILD|CONTRACTS|CHECKS)\s*===\s*$")
@@ -155,6 +162,8 @@ def _target_names(target: ast.AST) -> list[str]:
         return [target.id]
     if isinstance(target, (ast.Tuple, ast.List)):
         return [name for item in target.elts for name in _target_names(item)]
+    if isinstance(target, ast.Starred):
+        return _target_names(target.value)
     return []
 
 
@@ -186,12 +195,33 @@ def _bindings(body: list[ast.stmt]) -> dict[str, str]:
 _COMPOUND_STATEMENTS = (ast.If, ast.For, ast.AsyncFor, ast.While, ast.Try, ast.With, ast.AsyncWith, ast.Match, getattr(ast, "TryStar", ast.Try))
 
 
+def _header_bindings(node: ast.AST, *, named_only: bool = False) -> set[str]:
+    """Include assignment targets in statement headers, without executing them."""
+    names: set[str] = set()
+    if isinstance(node, ast.NamedExpr):
+        names.update(_target_names(node.target))
+    for field, value in ast.iter_fields(node):
+        if field in {"body", "orelse", "finalbody"}:
+            continue
+        values = value if isinstance(value, list) else [value]
+        for item in values:
+            if isinstance(item, ast.AST):
+                if not named_only and isinstance(item, ast.Name) and isinstance(item.ctx, ast.Store):
+                    names.add(item.id)
+                if not named_only and isinstance(item, (ast.MatchAs, ast.MatchStar, ast.ExceptHandler)) and item.name:
+                    names.add(item.name)
+                if not named_only and isinstance(item, ast.MatchMapping) and item.rest:
+                    names.add(item.rest)
+                names.update(_header_bindings(item, named_only=named_only))
+    return names
+
+
 def _conditional_test_names(body: list[ast.stmt]) -> set[str]:
     """Find possible module/class test bindings without entering function bodies."""
     names: set[str] = set()
     for node in body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            if node.name.startswith("test_"):
+            if node.name.startswith("test"):
                 names.add(node.name)
         elif isinstance(node, ast.ClassDef):
             found, setting = _test_setting(node)
@@ -207,13 +237,18 @@ def _conditional_test_names(body: list[ast.stmt]) -> set[str]:
                 names.update(_conditional_test_names(group))
         else:
             for name, kind in _bindings([node]).items():
-                if name in {"*", "__test__"} or name.startswith("test_") and kind != "literal" or name.startswith("Test") and kind == "unknown":
+                if name in {"*", "__test__"} or name.startswith("test") and kind != "literal" or name.startswith("Test") and kind == "unknown":
                     names.add(name)
+        if isinstance(node, _COMPOUND_STATEMENTS):
+            names.update(name for name in _header_bindings(node) if name == "__test__" or name.startswith(("test", "Test")))
     return names
 
 
 def _conditional_surface(body: list[ast.stmt]) -> set[str]:
-    return _conditional_test_names([node for node in body if isinstance(node, _COMPOUND_STATEMENTS)])
+    names = _conditional_test_names([node for node in body if isinstance(node, _COMPOUND_STATEMENTS)])
+    for node in body:
+        names.update(name for name in _header_bindings(node, named_only=True) if name == "__test__" or name.startswith(("test", "Test")))
+    return names
 
 
 def _class_mro(name: str, classes: dict[str, ast.ClassDef], active=()) -> list[str] | None:
@@ -279,10 +314,55 @@ def _missing(fields: Dict[str, str], required: Set[str]) -> Set[str]:
     return {name for name in required if not fields.get(name)}
 
 
+def _collection_config_problems(root: Path) -> list[str]:
+    """The no-exec graph supports the repository's bounded default collection."""
+    problems = []
+    alternatives = {"pytest.toml", ".pytest.toml", "pytest.ini", ".pytest.ini", "tox.ini", "setup.cfg"}
+    for base in (root, root / "tests"):
+        paths = base.iterdir() if base == root else base.rglob("*")
+        if not base.exists():
+            continue
+        for path in paths:
+            if path.is_file() and path.name in alternatives:
+                if path.name in {"setup.cfg", "tox.ini"}:
+                    try:
+                        parser = configparser.ConfigParser(interpolation=None)
+                        parser.read_string(path.read_text(encoding="utf-8"))
+                        section = "tool:pytest" if path.name == "setup.cfg" else "pytest"
+                        if not parser.has_section(section):
+                            continue  # Setuptools emits setup.cfg with only egg_info.
+                    except (OSError, UnicodeError, configparser.Error) as error:
+                        problems.append(f"GAP invalid pytest collection configuration: {path}: {error}")
+                        continue
+                problems.append(f"GAP unsupported pytest collection configuration: {path}; use root pyproject.toml with default collection")
+    path = root / "pyproject.toml"
+    if not path.exists():
+        return problems
+    try:
+        document = tomllib.loads(path.read_text(encoding="utf-8"))
+        section = document.get("tool", {}).get("pytest", {})
+        if set(section) - {"ini_options"}:
+            problems.append(f"GAP unsupported native pytest collection configuration: {path}")
+        config = section.get("ini_options", {})
+        defaults = {"python_files": ["test_*.py", "*_test.py"], "python_classes": ["Test"], "python_functions": ["test"], "testpaths": ["tests"]}
+        for name, expected in defaults.items():
+            if name in config:
+                actual = config[name].split() if isinstance(config[name], str) else config[name]
+                if actual != expected:
+                    problems.append(f"GAP unsupported pytest collection setting {name}: {actual!r}")
+        options = config.get("addopts", [])
+        options = shlex.split(options) if isinstance(options, str) else options
+        if not isinstance(options, list) or any(option not in {"-q", "-v", "-vv", "-ra", "--strict-markers", "--strict-config"} for option in options):
+            problems.append("GAP unsupported pytest addopts; collection-changing arguments are outside the audited boundary")
+    except (OSError, UnicodeError, ValueError, AttributeError, TypeError) as error:
+        problems.append(f"GAP invalid pytest collection configuration: {error}")
+    return problems
+
+
 def audit_repository(root: Path) -> Tuple[bool, List[str]]:
     root = root.resolve()
     entries: List[Entry] = []
-    problems: List[str] = []
+    problems: List[str] = _collection_config_problems(root)
     paths = tuple(_source_files(root))
     trees: Dict[Path, ast.Module] = {}
     if not paths:
@@ -349,7 +429,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
                     check.source.is_relative_to(root / "tests")
                     and (check.source.name.startswith("test_") or check.source.name.endswith("_test.py"))
                 )
-                if not is_test_module or not name.startswith("test_"):
+                if not is_test_module or not name.startswith("test"):
                     problems.append(
                         f"GAP {check.id} call does not target an executable pytest test: {call}"
                     )
@@ -381,7 +461,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
         for name, kind in bindings.items():
             if name == "*":
                 problems.append(f"GAP unresolved wildcard test-module import {test_path}")
-            elif name.startswith("test_"):
+            elif name.startswith("test"):
                 if kind == "unknown":
                     problems.append(f"GAP unresolved executable alias {test_path}::{name}")
                 elif kind == "function" and name not in declared_calls:
@@ -423,7 +503,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
             for ancestor in reversed(inherited):
                 methods.update(_bindings(ancestor.body))
             for name, kind in methods.items():
-                if name.startswith("test_") and kind in {"function", "unknown"}:
+                if name.startswith("test") and kind in {"function", "unknown"}:
                     label = "inherited class check" if cls.bases else "unsupported class check"
                     problems.append(f"GAP {label} {test_path}::{cls.name}::{name}; use a declared top-level self::test_fn witness")
 
@@ -444,4 +524,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=348:51 imports_exports=8:4 calls_definitions=167:14
+# ratios: loc_comments=421:53 imports_exports=12:4 calls_definitions=208:16
