@@ -10,7 +10,7 @@
   },
   "source": {
     "branch": "evidence/clean-install-final-20260912",
-    "commit": "2574977c0403258ea7673b57fbe9566edc42560f",
+    "commit": "2ea2c4010ce532aab367c63c7ef5ece38a9c7339",
     "generated_at": "2026-09-12",
     "note": "Describes the exact implementation commit preceding this report-only refresh. Artifact acceptance requires inspecting the hash-bound replay bundle for the selected source identity; job success alone is not acceptance. No scientific or deployment authority is transferred."
   },
