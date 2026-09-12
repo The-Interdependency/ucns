@@ -1,4 +1,4 @@
-# ratios: loc_comments=392:71 imports_exports=20:4 calls_definitions=175:20
+# ratios: loc_comments=391:71 imports_exports=20:4 calls_definitions=175:20
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -309,11 +309,10 @@ def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
 
 def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
     """Bind repository-owned execution inputs, excluding caches and secrets."""
-    suffixes = {".py", ".sh", ".md", ".json", ".jsonl", ".ts", ".svg", ".yml", ".yaml"}
     paths = {
         path for directory in SOURCE_DIRECTORIES
         for path in (root / directory).rglob("*")
-        if path.is_file() and path.suffix in suffixes and "__pycache__" not in path.parts
+        if path.is_file() and "__pycache__" not in path.parts
     }
     paths.update(root / name for name in ROOT_INPUTS if (root / name).is_file())
     inventory = {path.relative_to(root).as_posix(): _sha(path.read_bytes()) for path in sorted(paths)}
@@ -514,4 +513,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=392:71 imports_exports=20:4 calls_definitions=175:20
+# ratios: loc_comments=391:71 imports_exports=20:4 calls_definitions=175:20

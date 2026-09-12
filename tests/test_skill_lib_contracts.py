@@ -1,4 +1,4 @@
-# ratios: loc_comments=302:60 imports_exports=9:7 calls_definitions=158:7
+# ratios: loc_comments=306:60 imports_exports=9:7 calls_definitions=162:7
 # === CHECKS ===
 # id: check_contract_audit_no_exec
 #   proves: contract_audit_is_no_exec
@@ -278,6 +278,10 @@ def test_empty_syntax_and_class_coverage_are_not_closed(tmp_path: Path) -> None:
         unpack_root = _repo(tmp_path / f"unpacked-optout-{index}", declaration + "\ndef test_probe(): assert False\n", [{"id": "check_probe", "function": "test_probe"}])
         ok, problems = audit_repository(unpack_root)
         assert not ok and any("destructured collection opt-out" in item for item in problems), problems
+    for index, prefix in enumerate(("def test_probe(): assert False\n", "test_probe = 1\n", "from helper import test_probe\n")):
+        rebound_root = _repo(tmp_path / f"rebound-function-{index}", prefix + "def test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe"}])
+        ok, problems = audit_repository(rebound_root)
+        assert not ok and any("check_probe call does not resolve" in item for item in problems), problems
     ok, problems = audit_repository(root / "absent")
     assert not ok and any("empty" in item for item in problems), problems
 
@@ -382,4 +386,4 @@ def test_vendored_typescript_parser_retains_numeric_field_names(tmp_path: Path) 
     broken.write_text("// no declaration\nthrow new Error('must not execute');\n")
     ok, problems = audit_repository(tmp_path / "repo")
     assert not ok and any("universal.ts missing MODULE_BUILD" in item for item in problems), problems
-# ratios: loc_comments=302:60 imports_exports=9:7 calls_definitions=158:7
+# ratios: loc_comments=306:60 imports_exports=9:7 calls_definitions=162:7
