@@ -185,7 +185,12 @@ venvs, and runs all geometry tests against each installed package. Its receipt
 records artifact hashes, Python versions, loaded package paths, test counts,
 and zero skipped checks. It also binds a selected exact-input receipt executed
 from the archived source, whose UCNS hashes must match both installed artifacts.
-CI repeats this on Python 3.10, 3.11, and 3.12.
+CI repeats this on Python 3.10, 3.11, and 3.12 against the exact PR head. Each
+job retains its wheel, source archive, dependency export, test reports, selected
+receipt, and replay receipt in `ucns-evidence-<python-version>`. The accompanying
+`source.json` binds the Git commit/tree and runtimes. Download those bundles
+from the workflow run and verify their artifact/receipt hashes and source maps
+before accepting the chain; a successful Actions job alone is not acceptance.
 The source archive includes this replay script and the exact build-tool pins.
 The no-exec graph also reconciles both exact vendored reference parsers, with
 local Python and TypeScript numeric-field/no-execution witnesses. The complete
