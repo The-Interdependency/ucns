@@ -1,4 +1,4 @@
-# ratios: loc_comments=158:367 imports_exports=19:18 calls_definitions=197:20
+# ratios: loc_comments=168:379 imports_exports=20:18 calls_definitions=210:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -191,6 +191,20 @@ def test_audit_gap_prevents_execution(tmp_path: Path) -> None:
     assert not marker.exists()
 
 
+    helper_source = "import inspect\ndef passing(): pass\nfor frame in inspect.stack():\n    namespace = frame.frame.f_globals\n    if 'test_probe' in namespace:\n        passing.__name__ = 'test_probe'\n        passing.__module__ = namespace['__name__']\n        namespace['test_probe'] = passing\n"
+    root = _repo(tmp_path / "helper-replacement", "def test_probe(): assert False\nimport replacing_helper\n", [{"id": "check_probe", "function": "test_probe"}])
+    helper = root / "tests/replacing_helper.py"
+    helper.write_text(helper_source)
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "audit-gap" and not receipt["outcomes"], receipt
+    # Root helpers lie outside the test-tree surface audit. Runtime witness binding
+    # must still reject an imported replacement with matching name and module.
+    helper.rename(root / "replacing_helper.py")
+    receipt = runner.run_boundaries(root)
+    assert receipt["status"] == "not-passed" and receipt["outcomes"][0]["status"] == "FAIL", receipt
+    assert "witness code differs" in receipt["outcomes"][0]["stdout_excerpt"], receipt
+
+
 # === CHECKS ===
 # id: check_geometry_suite_nonempty_pass
 #   proves: geometry_suite_requires_nonempty_pass
@@ -341,6 +355,18 @@ def test_receipt_binds_declarations_outputs_and_identity(tmp_path: Path) -> None
         path.write_bytes(b"input")
         inventory, _ = runner._source_snapshot(root)
         assert inventory[path.relative_to(root).as_posix()] == sha256(b"input").hexdigest()
+
+
+    import pytest
+    outside = tmp_path / "outside-inputs"
+    outside.mkdir()
+    (outside / "witness").write_text("one")
+    for index, name in enumerate(("tests/fixtures", "tests/witness-link", "README.md", ".agents")):
+        linked = _repo(tmp_path / f"symlink-{index}", "def test_probe(): pass\n", [{"id": "check_probe", "function": "test_probe"}])
+        path = linked / name
+        path.symlink_to(outside / "witness" if name == "tests/witness-link" or name == "README.md" else outside)
+        with pytest.raises(ValueError, match="unsupported source symlink"):
+            runner.run_boundaries(linked)
 
 
 def test_passing_receipt_has_no_activation_or_selection_effect(tmp_path: Path) -> None:
@@ -565,4 +591,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=158:367 imports_exports=19:18 calls_definitions=197:20
+# ratios: loc_comments=168:379 imports_exports=20:18 calls_definitions=210:20

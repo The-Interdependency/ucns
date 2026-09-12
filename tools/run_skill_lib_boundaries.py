@@ -1,4 +1,4 @@
-# ratios: loc_comments=391:71 imports_exports=20:4 calls_definitions=175:20
+# ratios: loc_comments=399:71 imports_exports=20:4 calls_definitions=179:20
 # === MODULE_BUILD ===
 # id: skill_lib_boundary_runner
 #   module_name: run_skill_lib_boundaries
@@ -309,12 +309,20 @@ def _pytest_outcome(path: Path, returncode: int) -> tuple[str, dict]:
 
 def _source_snapshot(root: Path) -> tuple[dict[str, str], str]:
     """Bind repository-owned execution inputs, excluding caches and secrets."""
-    paths = {
-        path for directory in SOURCE_DIRECTORIES
-        for path in (root / directory).rglob("*")
-        if path.is_file() and "__pycache__" not in path.parts
-    }
-    paths.update(root / name for name in ROOT_INPUTS if (root / name).is_file())
+    entries = {root / name for name in ROOT_INPUTS}
+    for directory in SOURCE_DIRECTORIES:
+        base = root / directory
+        parent = base
+        while parent != root:
+            if parent.is_symlink():
+                raise ValueError("unsupported source symlink: " + parent.relative_to(root).as_posix())
+            entries.add(parent)
+            parent = parent.parent
+        entries.update(base.rglob("*"))
+    links = sorted(path.relative_to(root).as_posix() for path in entries if path.is_symlink())
+    if links:
+        raise ValueError("unsupported source symlink: " + ", ".join(links))
+    paths = {path for path in entries if path.is_file() and "__pycache__" not in path.parts}
     inventory = {path.relative_to(root).as_posix(): _sha(path.read_bytes()) for path in sorted(paths)}
     return inventory, _sha(json.dumps(inventory, sort_keys=True, separators=(",", ":")).encode())
 
@@ -513,4 +521,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=391:71 imports_exports=20:4 calls_definitions=175:20
+# ratios: loc_comments=399:71 imports_exports=20:4 calls_definitions=179:20

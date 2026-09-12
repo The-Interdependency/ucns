@@ -1,4 +1,4 @@
-# ratios: loc_comments=321:35 imports_exports=17:4 calls_definitions=168:11
+# ratios: loc_comments=336:35 imports_exports=17:4 calls_definitions=178:11
 # === MODULE_BUILD ===
 # id: ucns_distribution_audit
 #   module_name: verify_distributions
@@ -84,9 +84,20 @@ WHEEL_LICENSE_PATH = "licenses/LICENSE"
 
 def expected_files(root: Path) -> dict[str, bytes]:
     paths = {root / name for name in ROOT_INPUTS}
+    if any(path.is_symlink() for path in paths):
+        raise ValueError("unsupported source symlink in root distribution inputs")
     for directory in TREE_INPUTS:
-        paths.update(path for path in (root / directory).rglob("*")
-                     if path.is_file() and "__pycache__" not in path.parts)
+        base = root / directory
+        parent = base
+        while parent != root:
+            if parent.is_symlink():
+                raise ValueError(f"unsupported source symlink: {parent}")
+            parent = parent.parent
+        for path in base.rglob("*"):
+            if path.is_symlink():
+                raise ValueError(f"unsupported source symlink: {path}")
+            if path.is_file() and "__pycache__" not in path.parts:
+                paths.add(path)
     missing_roots = [path.name for path in paths if path.parent == root and not path.is_file()]
     if missing_roots:
         raise ValueError(f"missing root distribution inputs: {', '.join(sorted(missing_roots))}")
@@ -131,6 +142,8 @@ def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None,
             for member in archive.infolist():
                 if (member.external_attr >> 16) & 0o170000 == 0o120000:
                     raise ValueError(f"archive symlink: {member.filename}")
+                if member.is_dir() and member.file_size:
+                    raise ValueError(f"nonempty archive directory: {member.filename}")
                 record(member.filename, None if member.is_dir() else archive.read(member))
     else:
         with tarfile.open(path, "r:gz") as archive:
@@ -139,6 +152,8 @@ def read_archive(path: Path, *, wheel: bool, expected_prefix: str | None = None,
                 if member.mode & required_mode != required_mode or member.mode & 0o7000:
                     raise ValueError(f"unusable sdist permissions: {member.name}: {oct(member.mode)}")
                 if member.isdir():
+                    if member.size:
+                        raise ValueError(f"nonempty archive directory: {member.name}")
                     record(member.name, None)
                     continue
                 if not member.isfile():
@@ -389,4 +404,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=321:35 imports_exports=17:4 calls_definitions=168:11
+# ratios: loc_comments=336:35 imports_exports=17:4 calls_definitions=178:11
