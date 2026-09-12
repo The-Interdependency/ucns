@@ -1,4 +1,4 @@
-# ratios: loc_comments=509:54 imports_exports=12:4 calls_definitions=265:21
+# ratios: loc_comments=575:54 imports_exports=12:4 calls_definitions=309:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -363,6 +363,11 @@ def _collection_config_problems(root: Path) -> list[str]:
         if config.get("required_plugins"):
             problems.append("GAP unsupported pytest plugin collection configuration")
         defaults = {"python_files": ["test_*.py", "*_test.py"], "python_classes": ["Test"], "python_functions": ["test"], "testpaths": ["tests"]}
+        unknown = set(config) - set(defaults) - {"addopts", "collect_imported_tests"}
+        if unknown:
+            problems.append(f"GAP unsupported pytest collection settings: {', '.join(sorted(unknown))}")
+        if config.get("collect_imported_tests") is not False:
+            problems.append("GAP pytest collection requires explicit collect_imported_tests = false")
         for name, expected in defaults.items():
             if name in config:
                 actual = config[name].split() if isinstance(config[name], str) else config[name]
@@ -395,8 +400,13 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
                 imports[alias.asname or alias.name] = (node.module, alias.name) if isinstance(node, ast.ImportFrom) else (alias.name, None)
     rebound = {node.id for node in nodes if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
     rebound.update(node.name for node in nodes if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)))
-    path_bound = imports.get("Path") == ("pathlib", "Path") and "Path" not in rebound
-    pytest_bound = imports.get("pytest") == ("pytest", None) and "pytest" not in rebound
+    binding_counts = {}
+    for node in nodes:
+        if isinstance(node, ast.stmt):
+            for name in _bindings([node]):
+                binding_counts[name] = binding_counts.get(name, 0) + 1
+    path_bound = imports.get("Path") == ("pathlib", "Path") and "Path" not in rebound and binding_counts.get("Path") == 1 and "__file__" not in binding_counts
+    pytest_bound = imports.get("pytest") == ("pytest", None) and "pytest" not in rebound and binding_counts.get("pytest") == 1
     def pytest_decorator(reference):
         if not pytest_bound or not isinstance(reference, ast.Attribute):
             return False
@@ -410,23 +420,77 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
             return len(node.args) == 1 and isinstance(node.args[0], ast.Name) and node.args[0].id == "__file__" and not node.keywords
         if path_bound and spelling == "Path(__file__).resolve":
             return not node.args and not node.keywords
-        return pytest_decorator(node.func)
+        if not pytest_decorator(node.func):
+            return False
+        try:
+            arguments = [ast.literal_eval(value) for value in node.args]
+            keywords = {item.arg: ast.literal_eval(item.value) for item in node.keywords}
+        except (ValueError, TypeError, SyntaxError):
+            return False
+        if None in keywords:
+            return False
+        if node.func.attr in {"skipif", "xfail"}:
+            conditions = [*arguments, *([keywords["condition"]] if "condition" in keywords else [])]
+            if any(type(value) is not bool for value in conditions):
+                return False  # String conditions are executable expressions.
+        return True
+    def literal(node):
+        try:
+            ast.literal_eval(node)
+            return True
+        except (ValueError, TypeError, SyntaxError):
+            return False
+    path_constants = set()
+    def source_path(node):
+        if isinstance(node, ast.Name):
+            return node.id in path_constants
+        if isinstance(node, ast.Call):
+            return path_bound and ast.unparse(node.func) in {"Path", "Path(__file__).resolve"} and safe_call(node)
+        if isinstance(node, ast.Attribute):
+            return node.attr == "parent" and source_path(node.value)
+        if isinstance(node, ast.Subscript) and isinstance(node.value, ast.Attribute) and node.value.attr == "parents":
+            return source_path(node.value.value) and isinstance(node.slice, ast.Constant) and type(node.slice.value) is int and node.slice.value >= 0
+        return (isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div)
+                and source_path(node.left) and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str))
     problems = []
+    for statement in tree.body:
+        if isinstance(statement, (ast.Assign, ast.AnnAssign)) and statement.value is not None:
+            targets = statement.targets if isinstance(statement, ast.Assign) else [statement.target]
+            if source_path(statement.value):
+                path_constants.update(name for target in targets for name in _target_names(target) if binding_counts.get(name) == 1)
+    classes = {node.name: node for node in tree.body if isinstance(node, ast.ClassDef)}
+    postponed_annotations = any(isinstance(node, ast.ImportFrom) and node.module == "__future__" and any(alias.name == "annotations" for alias in node.names) for node in tree.body)
     implicit_hooks = {"setup_module", "teardown_module", "setup_function", "teardown_function",
                       "setup_class", "teardown_class", "setup_method", "teardown_method",
                       "setUpModule", "tearDownModule"}
     for node in nodes:
+        if isinstance(node, ast.stmt) and not isinstance(node, (ast.Import, ast.ImportFrom, ast.Assign, ast.AnnAssign, ast.Expr, ast.Pass, ast.If, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            problems.append(f"GAP unsupported collection-time statement: {path}:{node.lineno}")
+        if isinstance(node, ast.AnnAssign) and not postponed_annotations and not isinstance(node.annotation, (ast.Name, ast.Constant)):
+            problems.append(f"GAP deferred annotations required for compound type expressions: {path}:{node.lineno}")
         names = set(_bindings([node])) if isinstance(node, ast.stmt) else set()
         names.update(_header_bindings(node, named_only=not isinstance(node, _COMPOUND_STATEMENTS)))
-        if any(name.startswith("pytest_") or name in implicit_hooks for name in names):
+        if any(name.startswith("pytest_") or name == "pytestmark" or name in implicit_hooks for name in names):
             problems.append(f"GAP unsupported implicit pytest hook: {path}:{node.lineno}")
         if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Delete)):
             targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
             if any(isinstance(item, (ast.Subscript, ast.Attribute)) for target in targets for item in ast.walk(target)):
                 problems.append(f"GAP indirect test-namespace mutation: {path}:{node.lineno}")
+            if isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None and not (literal(node.value) or source_path(node.value)):
+                problems.append(f"GAP unresolved collection-time value: {path}:{node.lineno}; use literal data or source-path constants")
+        if isinstance(node, ast.Expr) and not literal(node.value):
+            problems.append(f"GAP unsupported collection-time expression: {path}:{node.lineno}")
+        if isinstance(node, _COMPOUND_STATEMENTS) and not (isinstance(node, ast.If) and isinstance(node.test, ast.Constant) and type(node.test.value) is bool):
+            problems.append(f"GAP unsupported collection-time control flow: {path}:{node.lineno}")
         if isinstance(node, ast.Call) and not safe_call(node):
             problems.append(f"GAP unsupported collection-time call: {path}:{node.lineno}; move execution into fixtures or checks")
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if any(not (literal(value) or source_path(value)) for value in [*node.args.defaults, *(value for value in node.args.kw_defaults if value is not None)]):
+                    problems.append(f"GAP unresolved collection-time default: {path}:{node.lineno}")
+                annotations = [node.returns, *(argument.annotation for argument in [*node.args.posonlyargs, *node.args.args, *node.args.kwonlyargs, *([node.args.vararg] if node.args.vararg else []), *([node.args.kwarg] if node.args.kwarg else [])])]
+                if not postponed_annotations and any(value is not None and not isinstance(value, (ast.Name, ast.Constant)) for value in annotations):
+                    problems.append(f"GAP deferred annotations required for compound type expressions: {path}:{node.lineno}")
             for decorator in node.decorator_list:
                 reference = decorator.func if isinstance(decorator, ast.Call) else decorator
                 if not pytest_decorator(reference):
@@ -434,6 +498,8 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
             if isinstance(node, ast.ClassDef) and node.keywords:
                 problems.append(f"GAP unsupported class construction keywords: {path}:{node.lineno}")
             if isinstance(node, ast.ClassDef):
+                if _class_mro(node.name, classes) is None or any(isinstance(base, ast.Name) and base.id == "object" and "object" in binding_counts for base in node.bases):
+                    problems.append(f"GAP unresolved collection-time class base: {path}:{node.lineno}")
                 for statement in node.body:
                     if isinstance(statement, (ast.Assign, ast.AnnAssign)):
                         if statement.value is not None:
@@ -441,7 +507,7 @@ def _collection_surface_problems(tree: ast.Module, path: Path) -> list[str]:
                                 ast.literal_eval(statement.value)
                             except (ValueError, TypeError, SyntaxError):
                                 problems.append(f"GAP unresolved class namespace value (possible descriptor): {path}:{statement.lineno}")
-                    elif not isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Pass)):
+                    elif not isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Pass)):
                         if not (isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Constant) and isinstance(statement.value.value, str)):
                             problems.append(f"GAP unsupported class namespace statement: {path}:{statement.lineno}")
             if node.name in {"__getattr__", "__getattribute__", "__dir__", "__init_subclass__", "__set_name__"}:
@@ -617,4 +683,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=509:54 imports_exports=12:4 calls_definitions=265:21
+# ratios: loc_comments=575:54 imports_exports=12:4 calls_definitions=309:23
