@@ -2,19 +2,19 @@
 # id: ucns_geometry_public_surface
 #   module_name: __init__
 #   module_kind: facade
-#   summary: geometry-only UCNS public surface
+#   summary: geometry-only UCNS public surface including the visible-circle displacement candidate
 #   owner: Erin Spencer
-#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact visible-circle gonal wave boundary trace
+#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
-#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace
+#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===
@@ -37,6 +37,12 @@
 #   then: exact visible-circle wave-mode traces, gonal boundary samples, continuum covering witnesses, and builders are public without downstream physical-selection semantics
 #   class: correctness
 #   since: 2026-09-05
+#
+# id: geometry_public_surface_includes_visible_displacement_candidate
+#   given: the active ucns package facade is imported
+#   then: the exact visible-circle displacement candidate record, error, builder, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-15
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -92,6 +98,14 @@ from .public_gonol import (
     public_gonol_position,
     public_gonol_sha256,
 )
+from .visible_displacement import (
+    SCHEMA as VISIBLE_DISPLACEMENT_SCHEMA,
+    VERSION as VISIBLE_DISPLACEMENT_VERSION,
+    VisibleDisplacementError,
+    VisibleDisplacementRecord,
+    build_visible_displacement,
+    replay_visible_displacement,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -117,9 +131,14 @@ __all__ = list(dict.fromkeys([
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
     "VISIBLE_PERIOD",
+    "VISIBLE_DISPLACEMENT_SCHEMA",
+    "VISIBLE_DISPLACEMENT_VERSION",
     "VisibleCarrierPoint",
+    "VisibleDisplacementError",
+    "VisibleDisplacementRecord",
     "build_circle_wave_mode_trace",
     "build_modular_orbit_geometry",
+    "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
     "lifted_preimages",
@@ -130,6 +149,7 @@ __all__ = list(dict.fromkeys([
     "public_gonol_sha256",
     "pullback_circle_wave_trace",
     "radius_from_breadth",
+    "replay_visible_displacement",
     "same_lifted_position",
     "same_visible_position",
 ] + list(_mobius_vesica_all) + list(_mobius_seed_all)))
