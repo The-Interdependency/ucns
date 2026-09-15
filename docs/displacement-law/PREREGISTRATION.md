@@ -1,4 +1,4 @@
-# Visible-circle displacement law — preregistration v0.3
+# Visible-circle displacement law — preregistration v0.4
 
 ## Standing
 
@@ -84,6 +84,37 @@ invents weights, scores, or probabilities for the mapping
 claims ratification from execution alone
 ```
 
+## Radius semantics
+
+For English gonols, radius does not mean character or token count and does not
+mean ordinal position in the text:
+
+```text
+angular/axis position -> carries sequence/order
+radius               -> carries recursive construction depth
+```
+
+Letters occupy the base shell. Affixiated letters close into a lexical gonol
+on the next shell. Words affixiate into larger constructions on subsequent
+shells. Repeated occurrence of the same word does not create a new radial
+identity; occurrence and order belong to the relational (angular) geometry.
+Spaces and boundaries trigger construction closure; they do not add
+arbitrary radial distance.
+
+The minimal rule under test is:
+
+```text
+r(x) = r0 + d(x)
+```
+
+where ``d(x)`` is the number of completed recursive affixiation/containment
+levels from the 157-glyph substrate, not the ordinal position in the text.
+
+Open test: does each completed construction layer genuinely require a new
+radius, or does UCNS scale recursion supply the radius automatically? If UCNS
+already determines that scaling, English must consume it rather than invent a
+second radial law.
+
 ## Existing primitives available to a candidate
 
 A candidate displacement law may compose only established UCNS primitives:
@@ -159,5 +190,7 @@ a scoped ratification receipt. None of these exist yet.
 - The law selecting one continuum lift `d` from `d ≡ a (mod 157)` is unresolved.
 - The lift from the visible 360° circle into the complete 720° native Möbius
   state (frame information included) is unresolved.
+- The exact radius/scale transition remains a UCNS-derived invariant to
+  recover, not an English-specific constant.
 - Whether the Public Gonol function positions themselves participate in the
   displacement or only carry it remains unresolved.
