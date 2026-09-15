@@ -1,4 +1,4 @@
-# Visible-circle displacement law — preregistration v0.2
+# Visible-circle displacement law — preregistration v0.3
 
 ## Standing
 
@@ -58,6 +58,31 @@ an origin:
 
 The evidence residue channels `x`, `y`, `z` live on the 3-axis describing
 graph. They are not axes of the 157-axis construct.
+
+## Admissible relation class between construct and describing graph
+
+A candidate relation between the 157-axis construct and the 3-axis describing
+graph is admissible only if it:
+
+```text
+maps construct positions to describing-graph positions exactly
+  (157 glyph axes -> x, y, z)
+keeps the two origins distinct; no shared origin is ever assigned
+records the mapping as its own named candidate with falsifiers and replay
+uses exact rational arithmetic only; no floating point in the core
+replays byte-identically from a canonical receipt
+fails closed on malformed construct axes or describing-graph axes
+```
+
+A candidate relation is not admissible if it:
+
+```text
+merges the two origins or declares a shared origin
+treats the describing-graph axes as axes of the construct
+derives construct geometry from graph rendering choices
+invents weights, scores, or probabilities for the mapping
+claims ratification from execution alone
+```
 
 ## Existing primitives available to a candidate
 
