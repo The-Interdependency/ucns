@@ -1,4 +1,4 @@
-# Visible-circle displacement law — preregistration v0.1
+# Visible-circle displacement law — preregistration v0.2
 
 ## Standing
 
@@ -39,6 +39,25 @@ displacement. UCNS does not read the English evidence, does not interpret
 missing geometric operation. The consumer is responsible for reducing its
 evidence channels to exact residue inputs; UCNS is responsible only for the
 geometry that consumes them.
+
+## Construct and describing graph
+
+Two geometric objects are held separate, are never merged, and do not share
+an origin:
+
+```text
+157-axis construct
+    origin -> the 157 Public Gonol glyphs, each an orthogonal axis
+    status -> the thing being created
+
+3-axis describing graph
+    axes   -> x, y, z
+    status -> an external graph that describes the construct
+    origin -> its own; it does NOT share the construct's origin
+```
+
+The evidence residue channels `x`, `y`, `z` live on the 3-axis describing
+graph. They are not axes of the 157-axis construct.
 
 ## Existing primitives available to a candidate
 
@@ -109,6 +128,9 @@ a scoped ratification receipt. None of these exist yet.
 
 - The displacement law itself remains unconstructed.
 - The exact composition rule for the three evidence residues is unresolved.
+- The exact geometric relation between the 3-axis describing graph and the
+  157-axis construct is unresolved beyond: the graph describes the construct
+  and does not share its origin.
 - The law selecting one continuum lift `d` from `d ≡ a (mod 157)` is unresolved.
 - The lift from the visible 360° circle into the complete 720° native Möbius
   state (frame information included) is unresolved.
