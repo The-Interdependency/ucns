@@ -1,4 +1,4 @@
-# Visible-circle displacement law — preregistration v0.4
+# Visible-circle displacement law — preregistration v0.5
 
 ## Standing
 
@@ -110,10 +110,21 @@ r(x) = r0 + d(x)
 where ``d(x)`` is the number of completed recursive affixiation/containment
 levels from the 157-glyph substrate, not the ordinal position in the text.
 
-Open test: does each completed construction layer genuinely require a new
-radius, or does UCNS scale recursion supply the radius automatically? If UCNS
-already determines that scaling, English must consume it rather than invent a
-second radial law.
+Derived result (candidate): the open test is answered by the established
+carrier primitives. UCNS scale recursion supplies the layer recursion, and
+radius is the canonical radial map on breadth:
+
+```text
+radius(x) = radius_from_breadth(breadth(x))
+layer(d)  = d deck translations in the lifted carrier
+```
+
+Each completed construction layer is one deck translation: the lifted
+representative advances one visible lap, the visible projection is unchanged,
+and two laps complete the return. Radius does not advance per layer. The
+English ``r(x) = r0 + d(x)`` candidate is therefore superseded; ``d(x)``
+counts deck-translation steps, not additive radial units. See the executable
+``ucns.radius_recursion`` candidate and its tests.
 
 ## Existing primitives available to a candidate
 
@@ -190,7 +201,9 @@ a scoped ratification receipt. None of these exist yet.
 - The law selecting one continuum lift `d` from `d ≡ a (mod 157)` is unresolved.
 - The lift from the visible 360° circle into the complete 720° native Möbius
   state (frame information included) is unresolved.
-- The exact radius/scale transition remains a UCNS-derived invariant to
-  recover, not an English-specific constant.
+- The exact radius/scale transition is recovered as a UCNS-derived candidate:
+  radius = radius_from_breadth(breadth), layers = deck translations;
+  ratification of that recovery remains hmmm, and it is not an
+  English-specific constant.
 - Whether the Public Gonol function positions themselves participate in the
   displacement or only carry it remains unresolved.

@@ -43,6 +43,12 @@
 #   then: the exact visible-circle displacement candidate record, error, builder, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-15
+#
+# id: geometry_public_surface_includes_radius_recursion_candidate
+#   given: the active ucns package facade is imported
+#   then: the exact radius-recursion candidate record, error, builder, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-15
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -106,6 +112,14 @@ from .visible_displacement import (
     build_visible_displacement,
     replay_visible_displacement,
 )
+from .radius_recursion import (
+    SCHEMA as RADIUS_RECURSION_SCHEMA,
+    VERSION as RADIUS_RECURSION_VERSION,
+    RadiusRecursionError,
+    RadiusRecursionRecord,
+    build_radius_recursion,
+    replay_radius_recursion,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -127,6 +141,10 @@ __all__ = list(dict.fromkeys([
     "PUBLIC_GONOL_157",
     "PUBLIC_GONOL_SHA256",
     "PublicGonolPosition",
+    "RADIUS_RECURSION_SCHEMA",
+    "RADIUS_RECURSION_VERSION",
+    "RadiusRecursionError",
+    "RadiusRecursionRecord",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
@@ -138,6 +156,7 @@ __all__ = list(dict.fromkeys([
     "VisibleDisplacementRecord",
     "build_circle_wave_mode_trace",
     "build_modular_orbit_geometry",
+    "build_radius_recursion",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
