@@ -55,6 +55,12 @@
 #   then: the exact placement-frame candidate record, error, builder, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-15
+#
+# id: geometry_public_surface_includes_displacement_law_candidates
+#   given: the active ucns package facade is imported
+#   then: the displacement-law candidate registry, composite record, error, builder, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-15
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -134,6 +140,15 @@ from .placement_frame import (
     build_placement_frame,
     replay_placement_frame,
 )
+from .displacement_law import (
+    SCHEMA as DISPLACEMENT_LAW_SCHEMA,
+    VERSION as DISPLACEMENT_LAW_VERSION,
+    DISPLACEMENT_LAW_CANDIDATES,
+    DisplacementLawError,
+    DisplacementRecord,
+    build_displacement,
+    replay_displacement,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -155,6 +170,11 @@ __all__ = list(dict.fromkeys([
     "PUBLIC_GONOL_157",
     "PUBLIC_GONOL_SHA256",
     "PublicGonolPosition",
+    "DISPLACEMENT_LAW_CANDIDATES",
+    "DISPLACEMENT_LAW_SCHEMA",
+    "DISPLACEMENT_LAW_VERSION",
+    "DisplacementLawError",
+    "DisplacementRecord",
     "PLACEMENT_FRAME_SCHEMA",
     "PLACEMENT_FRAME_VERSION",
     "PlacementFrameError",
@@ -173,6 +193,7 @@ __all__ = list(dict.fromkeys([
     "VisibleDisplacementError",
     "VisibleDisplacementRecord",
     "build_circle_wave_mode_trace",
+    "build_displacement",
     "build_modular_orbit_geometry",
     "build_placement_frame",
     "build_radius_recursion",
@@ -187,6 +208,9 @@ __all__ = list(dict.fromkeys([
     "public_gonol_sha256",
     "pullback_circle_wave_trace",
     "radius_from_breadth",
+    "replay_displacement",
+    "replay_placement_frame",
+    "replay_radius_recursion",
     "replay_visible_displacement",
     "same_lifted_position",
     "same_visible_position",
