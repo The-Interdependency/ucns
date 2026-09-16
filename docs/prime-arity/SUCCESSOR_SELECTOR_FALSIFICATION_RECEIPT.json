@@ -1,0 +1,560 @@
+{
+  "anchor_audit": {
+    "append_only_family_status": "FALSIFIED_ON_BOTH_OBSERVED_TRANSITIONS",
+    "coefficient_update_law": "PROVEN",
+    "selector_verdicts": {
+      "least_squarefree_next_arity": {
+        "exact_matches": 0,
+        "frozen_rule": "choose the least larger square-free integer with one more distinct factor",
+        "tested_transitions": 2,
+        "verdict": "FALSIFIED"
+      },
+      "least_unit_order_prime_append": {
+        "exact_matches": 0,
+        "frozen_rule": "append the least unused prime factor of the current unit-group order",
+        "tested_transitions": 2,
+        "verdict": "FALSIFIED"
+      },
+      "least_unused_prime_append": {
+        "exact_matches": 0,
+        "frozen_rule": "append the least prime absent from the current unordered role multiset",
+        "tested_transitions": 2,
+        "verdict": "FALSIFIED"
+      }
+    },
+    "successor_q_status": "UNRESOLVED",
+    "supplied_q_is_a_selector": false,
+    "transitions": [
+      {
+        "append_only_update_can_reach_expected_roles": false,
+        "candidate_cases": [
+          {
+            "exact_match": false,
+            "expected_carrier": 2881,
+            "expected_roles": [
+              43,
+              67
+            ],
+            "frozen_rule": "append the least prime absent from the current unordered role multiset",
+            "prediction": {
+              "predicted_carrier": 314,
+              "predicted_coefficients": [
+                1,
+                159,
+                314
+              ],
+              "predicted_roles": [
+                2,
+                157
+              ],
+              "supplied_or_derived_q": 2
+            },
+            "selector": "least_unused_prime_append",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          },
+          {
+            "exact_match": false,
+            "expected_carrier": 2881,
+            "expected_roles": [
+              43,
+              67
+            ],
+            "frozen_rule": "append the least unused prime factor of the current unit-group order",
+            "prediction": {
+              "predicted_carrier": 314,
+              "predicted_coefficients": [
+                1,
+                159,
+                314
+              ],
+              "predicted_roles": [
+                2,
+                157
+              ],
+              "supplied_or_derived_q": 2,
+              "unit_group_order": 156,
+              "unit_order_factors": [
+                2,
+                2,
+                3,
+                13
+              ]
+            },
+            "selector": "least_unit_order_prime_append",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          },
+          {
+            "exact_match": false,
+            "expected_carrier": 2881,
+            "expected_roles": [
+              43,
+              67
+            ],
+            "frozen_rule": "choose the least larger square-free integer with one more distinct factor",
+            "prediction": {
+              "predicted_carrier": 158,
+              "predicted_coefficients": [
+                1,
+                81,
+                158
+              ],
+              "predicted_roles": [
+                2,
+                79
+              ],
+              "requested_distinct_factor_count": 2
+            },
+            "selector": "least_squarefree_next_arity",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          }
+        ],
+        "expected_carrier": 2881,
+        "expected_coefficients": [
+          1,
+          110,
+          2881
+        ],
+        "expected_roles": [
+          43,
+          67
+        ],
+        "role_multiset_is_append_only": false,
+        "source_carrier": 157,
+        "source_coefficients": [
+          1,
+          157
+        ],
+        "source_roles": [
+          157
+        ]
+      },
+      {
+        "append_only_update_can_reach_expected_roles": false,
+        "candidate_cases": [
+          {
+            "exact_match": false,
+            "expected_carrier": 54837698421,
+            "expected_roles": [
+              3,
+              11,
+              1661748437
+            ],
+            "frozen_rule": "append the least prime absent from the current unordered role multiset",
+            "prediction": {
+              "predicted_carrier": 5762,
+              "predicted_coefficients": [
+                1,
+                112,
+                3101,
+                5762
+              ],
+              "predicted_roles": [
+                2,
+                43,
+                67
+              ],
+              "supplied_or_derived_q": 2
+            },
+            "selector": "least_unused_prime_append",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          },
+          {
+            "exact_match": false,
+            "expected_carrier": 54837698421,
+            "expected_roles": [
+              3,
+              11,
+              1661748437
+            ],
+            "frozen_rule": "append the least unused prime factor of the current unit-group order",
+            "prediction": {
+              "predicted_carrier": 5762,
+              "predicted_coefficients": [
+                1,
+                112,
+                3101,
+                5762
+              ],
+              "predicted_roles": [
+                2,
+                43,
+                67
+              ],
+              "supplied_or_derived_q": 2,
+              "unit_group_order": 2772,
+              "unit_order_factors": [
+                2,
+                2,
+                3,
+                3,
+                7,
+                11
+              ]
+            },
+            "selector": "least_unit_order_prime_append",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          },
+          {
+            "exact_match": false,
+            "expected_carrier": 54837698421,
+            "expected_roles": [
+              3,
+              11,
+              1661748437
+            ],
+            "frozen_rule": "choose the least larger square-free integer with one more distinct factor",
+            "prediction": {
+              "predicted_carrier": 2882,
+              "predicted_coefficients": [
+                1,
+                144,
+                1725,
+                2882
+              ],
+              "predicted_roles": [
+                2,
+                11,
+                131
+              ],
+              "requested_distinct_factor_count": 3
+            },
+            "selector": "least_squarefree_next_arity",
+            "source_only_inputs": true,
+            "ucns_authority": "NONE",
+            "verdict": "FALSIFIED"
+          }
+        ],
+        "expected_carrier": 54837698421,
+        "expected_coefficients": [
+          1,
+          1661748451,
+          23264478151,
+          54837698421
+        ],
+        "expected_roles": [
+          3,
+          11,
+          1661748437
+        ],
+        "role_multiset_is_append_only": false,
+        "source_carrier": 2881,
+        "source_coefficients": [
+          1,
+          110,
+          2881
+        ],
+        "source_roles": [
+          43,
+          67
+        ]
+      }
+    ]
+  },
+  "canon_status": "NONE",
+  "gate": {
+    "falsified_candidate_count": 6,
+    "gate_survivors": 0,
+    "requirement": "The next role or carrier must be derived from retained UCNS structure without supplied q, future-label access, target tables, or fitted constants.",
+    "selector_status": "MISSING",
+    "tested_candidate_count": 6
+  },
+  "hmmm": "The selector remains missing.",
+  "ladder_audit": {
+    "known_control_m": [
+      3,
+      4,
+      6,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "known_hit_m": [
+      0,
+      1,
+      2,
+      5,
+      7,
+      8
+    ],
+    "known_next_hit_map": {
+      "0": 1,
+      "1": 2,
+      "2": 5,
+      "5": 7,
+      "7": 8,
+      "8": null
+    },
+    "rejected_controls": {
+      "known_hit_lookup": {
+        "admissibility": "REJECTED_PATTERN_FIT",
+        "reason": "stores the observed successors",
+        "table": {
+          "0": 1,
+          "1": 2,
+          "2": 5,
+          "5": 7,
+          "7": 8
+        }
+      },
+      "scan_to_next_hit": {
+        "admissibility": "REJECTED_TARGET_LEAKAGE",
+        "cases": [
+          {
+            "selected_m": 1,
+            "selection_used_future_labels": true,
+            "source_m": 0
+          },
+          {
+            "selected_m": 2,
+            "selection_used_future_labels": true,
+            "source_m": 1
+          },
+          {
+            "selected_m": 5,
+            "selection_used_future_labels": true,
+            "source_m": 2
+          },
+          {
+            "selected_m": 7,
+            "selection_used_future_labels": true,
+            "source_m": 5
+          },
+          {
+            "selected_m": 8,
+            "selection_used_future_labels": true,
+            "source_m": 7
+          }
+        ],
+        "reason": "consults future HIT/CONTROL labels"
+      }
+    },
+    "selector_results": {
+      "factor_component_step": {
+        "cases": [
+          {
+            "classification": "EXACT_NEXT_HIT",
+            "expected_next_hit_m": 1,
+            "predicted_label": "HIT",
+            "predicted_m": 1,
+            "predicted_n": 1317,
+            "source_m": 0,
+            "source_n": 157
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 2,
+            "predicted_label": "CONTROL",
+            "predicted_m": 3,
+            "predicted_n": 128917,
+            "source_m": 1,
+            "source_n": 1317
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 5,
+            "predicted_label": "CONTROL",
+            "predicted_m": 3,
+            "predicted_n": 128917,
+            "source_m": 2,
+            "source_n": 12917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 7,
+            "predicted_label": "CONTROL",
+            "predicted_m": 6,
+            "predicted_n": 128888917,
+            "source_m": 5,
+            "source_n": 12888917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 8,
+            "predicted_label": "CONTROL",
+            "predicted_m": 9,
+            "predicted_n": 128888888917,
+            "source_m": 7,
+            "source_n": 1288888917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": null,
+            "predicted_label": "CONTROL",
+            "predicted_m": 10,
+            "predicted_n": 1288888888917,
+            "source_m": 8,
+            "source_n": 12888888917
+          }
+        ],
+        "derived_from_retained_ucns_geometry": false,
+        "exact_next_hit_matches": 1,
+        "frozen_rule": "advance by the retained number of distinct prime factors",
+        "known_break_landings": 5,
+        "uses_only_source_row_and_frozen_arithmetic": true,
+        "verdict": "FALSIFIED"
+      },
+      "immediate_decimal_step": {
+        "cases": [
+          {
+            "classification": "EXACT_NEXT_HIT",
+            "expected_next_hit_m": 1,
+            "predicted_label": "HIT",
+            "predicted_m": 1,
+            "predicted_n": 1317,
+            "source_m": 0,
+            "source_n": 157
+          },
+          {
+            "classification": "EXACT_NEXT_HIT",
+            "expected_next_hit_m": 2,
+            "predicted_label": "HIT",
+            "predicted_m": 2,
+            "predicted_n": 12917,
+            "source_m": 1,
+            "source_n": 1317
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 5,
+            "predicted_label": "CONTROL",
+            "predicted_m": 3,
+            "predicted_n": 128917,
+            "source_m": 2,
+            "source_n": 12917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 7,
+            "predicted_label": "CONTROL",
+            "predicted_m": 6,
+            "predicted_n": 128888917,
+            "source_m": 5,
+            "source_n": 12888917
+          },
+          {
+            "classification": "EXACT_NEXT_HIT",
+            "expected_next_hit_m": 8,
+            "predicted_label": "HIT",
+            "predicted_m": 8,
+            "predicted_n": 12888888917,
+            "source_m": 7,
+            "source_n": 1288888917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": null,
+            "predicted_label": "CONTROL",
+            "predicted_m": 9,
+            "predicted_n": 128888888917,
+            "source_m": 8,
+            "source_n": 12888888917
+          }
+        ],
+        "derived_from_retained_ucns_geometry": false,
+        "exact_next_hit_matches": 3,
+        "frozen_rule": "continue the decimal ladder once, m -> m+1",
+        "known_break_landings": 3,
+        "uses_only_source_row_and_frozen_arithmetic": true,
+        "verdict": "FALSIFIED"
+      },
+      "quartic_kernel_step": {
+        "cases": [
+          {
+            "classification": "NON_SUCCESSOR_HIT",
+            "expected_next_hit_m": 1,
+            "predicted_label": "HIT",
+            "predicted_m": 2,
+            "predicted_n": 12917,
+            "source_m": 0,
+            "source_n": 157
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 2,
+            "predicted_label": "CONTROL",
+            "predicted_m": 3,
+            "predicted_n": 128917,
+            "source_m": 1,
+            "source_n": 1317
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 5,
+            "predicted_label": "CONTROL",
+            "predicted_m": 4,
+            "predicted_n": 1288917,
+            "source_m": 2,
+            "source_n": 12917
+          },
+          {
+            "classification": "EXACT_NEXT_HIT",
+            "expected_next_hit_m": 7,
+            "predicted_label": "HIT",
+            "predicted_m": 7,
+            "predicted_n": 1288888917,
+            "source_m": 5,
+            "source_n": 12888917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": 8,
+            "predicted_label": "CONTROL",
+            "predicted_m": 9,
+            "predicted_n": 128888888917,
+            "source_m": 7,
+            "source_n": 1288888917
+          },
+          {
+            "classification": "KNOWN_BREAK",
+            "expected_next_hit_m": null,
+            "predicted_label": "CONTROL",
+            "predicted_m": 10,
+            "predicted_n": 1288888888917,
+            "source_m": 8,
+            "source_n": 12888888917
+          }
+        ],
+        "derived_from_retained_ucns_geometry": false,
+        "exact_next_hit_matches": 1,
+        "frozen_rule": "advance by log2 of the retained fourth-power coset arity",
+        "known_break_landings": 4,
+        "uses_only_source_row_and_frozen_arithmetic": true,
+        "verdict": "FALSIFIED"
+      }
+    }
+  },
+  "nonclaims": [
+    "No tested selector is promoted.",
+    "No arithmetic recurrence is treated as retained UCNS geometry.",
+    "No HIT, factorization, coset, or coefficient is treated as secrecy.",
+    "No result establishes a PCEA or post-quantum primitive."
+  ],
+  "preserved_evidence": {
+    "3229_pattern_is_continuous_arity_four_ladder": false,
+    "anchor_progression_is_proven_successor_ladder": false,
+    "coefficient_recursion": "PROVEN",
+    "coefficient_vector_preserves_unordered_role_multiset": "PROVEN",
+    "factor_count_is_ucns_arity": false,
+    "successor_q_derivation": "UNRESOLVED"
+  },
+  "runtime_status": "NOT_PCEA_RUNTIME",
+  "schema": "ucns-prime-arity-successor-selector-falsification-v1",
+  "standing": "INCUBATING_UNRESOLVED",
+  "verdict": "UNRESOLVED"
+}

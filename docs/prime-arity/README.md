@@ -61,6 +61,11 @@ METRICS.json                        determined convergence metrics and controls
 audit_3229_ladder_arity.py          bounded fourth-power-coset ladder replay
 3229_LADDER_ARITY_RECEIPT.json      deterministic machine-readable ladder receipt
 3229_LADDER_ARITY_RECEIPT.md        deterministic human-readable ladder receipt
+audit_successor_selection.py        target-blind selector falsification replay
+SUCCESSOR_SELECTOR_FALSIFICATION_RECEIPT.json
+                                    deterministic selector evidence
+SUCCESSOR_SELECTOR_FALSIFICATION_RECEIPT.md
+                                    human-readable selector evidence
 ```
 
 ## Load-bearing claim under test
