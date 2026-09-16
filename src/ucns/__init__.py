@@ -67,6 +67,12 @@
 #   then: the displacement falsification controls, report, error, and runner are public with falsification-selection standing
 #   class: correctness
 #   since: 2026-09-16
+#
+# id: geometry_public_surface_includes_lattice_carrier_candidate
+#   given: the active ucns package facade is imported
+#   then: the abstract lattice/carrier address, derivations, record, error, builder, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-16
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -163,6 +169,18 @@ from .displacement_falsification import (
     FalsificationReport,
     run_falsification,
 )
+from .lattice_carrier import (
+    SCHEMA as LATTICE_CARRIER_SCHEMA,
+    VERSION as LATTICE_CARRIER_VERSION,
+    LatticeCarrierError,
+    LatticeAddress,
+    LatticeCarrierRecord,
+    build_lattice_address,
+    derive_lattice_from_deck_translations,
+    derive_lattice_from_modular_orbit,
+    build_lattice_carrier,
+    replay_lattice_carrier,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -194,6 +212,11 @@ __all__ = list(dict.fromkeys([
     "FALSIFIER_CONTROLS",
     "FalsificationError",
     "FalsificationReport",
+    "LATTICE_CARRIER_SCHEMA",
+    "LATTICE_CARRIER_VERSION",
+    "LatticeAddress",
+    "LatticeCarrierError",
+    "LatticeCarrierRecord",
     "PLACEMENT_FRAME_SCHEMA",
     "PLACEMENT_FRAME_VERSION",
     "PlacementFrameError",
@@ -213,12 +236,16 @@ __all__ = list(dict.fromkeys([
     "VisibleDisplacementRecord",
     "build_circle_wave_mode_trace",
     "build_displacement",
+    "build_lattice_address",
+    "build_lattice_carrier",
     "build_modular_orbit_geometry",
     "build_placement_frame",
     "build_radius_recursion",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
+    "derive_lattice_from_deck_translations",
+    "derive_lattice_from_modular_orbit",
     "lifted_preimages",
     "native_mobius_state",
     "project",
@@ -228,6 +255,7 @@ __all__ = list(dict.fromkeys([
     "pullback_circle_wave_trace",
     "radius_from_breadth",
     "replay_displacement",
+    "replay_lattice_carrier",
     "replay_placement_frame",
     "replay_radius_recursion",
     "replay_visible_displacement",
