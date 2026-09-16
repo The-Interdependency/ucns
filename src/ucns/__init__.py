@@ -61,6 +61,12 @@
 #   then: the displacement-law candidate registry, composite record, error, builder, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-15
+#
+# id: geometry_public_surface_includes_displacement_falsification
+#   given: the active ucns package facade is imported
+#   then: the displacement falsification controls, report, error, and runner are public with falsification-selection standing
+#   class: correctness
+#   since: 2026-09-16
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -149,6 +155,14 @@ from .displacement_law import (
     build_displacement,
     replay_displacement,
 )
+from .displacement_falsification import (
+    SCHEMA as DISPLACEMENT_FALSIFICATION_SCHEMA,
+    VERSION as DISPLACEMENT_FALSIFICATION_VERSION,
+    FALSIFIER_CONTROLS,
+    FalsificationError,
+    FalsificationReport,
+    run_falsification,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -170,11 +184,16 @@ __all__ = list(dict.fromkeys([
     "PUBLIC_GONOL_157",
     "PUBLIC_GONOL_SHA256",
     "PublicGonolPosition",
+    "DISPLACEMENT_FALSIFICATION_SCHEMA",
+    "DISPLACEMENT_FALSIFICATION_VERSION",
     "DISPLACEMENT_LAW_CANDIDATES",
     "DISPLACEMENT_LAW_SCHEMA",
     "DISPLACEMENT_LAW_VERSION",
     "DisplacementLawError",
     "DisplacementRecord",
+    "FALSIFIER_CONTROLS",
+    "FalsificationError",
+    "FalsificationReport",
     "PLACEMENT_FRAME_SCHEMA",
     "PLACEMENT_FRAME_VERSION",
     "PlacementFrameError",
@@ -212,6 +231,7 @@ __all__ = list(dict.fromkeys([
     "replay_placement_frame",
     "replay_radius_recursion",
     "replay_visible_displacement",
+    "run_falsification",
     "same_lifted_position",
     "same_visible_position",
 ] + list(_mobius_vesica_all) + list(_mobius_seed_all)))
