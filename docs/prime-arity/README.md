@@ -58,6 +58,9 @@ THIRTEEN_RECURSION_LAYERS.json      machine-readable thirteen-layer map
 METAPAT_RELATIONS.json              typed relation map
 UCNS_OBJECTS.jsonl                  minimal UCNS object records
 METRICS.json                        determined convergence metrics and controls
+audit_3229_ladder_arity.py          bounded fourth-power-coset ladder replay
+3229_LADDER_ARITY_RECEIPT.json      deterministic machine-readable ladder receipt
+3229_LADDER_ARITY_RECEIPT.md        deterministic human-readable ladder receipt
 ```
 
 ## Load-bearing claim under test
