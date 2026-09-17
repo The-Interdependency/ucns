@@ -122,6 +122,7 @@ class FalsificationReport:
     schema: str
     version: str
     candidates: dict[str, dict[str, str]]
+    controls: dict[str, str]
     results: dict[str, dict[str, dict[str, Any]]]
     refuted: dict[str, list[str]]
     survivors: dict[str, list[str]]
@@ -133,6 +134,7 @@ class FalsificationReport:
             "schema": self.schema,
             "version": self.version,
             "candidates": self.candidates,
+            "controls": self.controls,
             "results": self.results,
             "refuted": self.refuted,
             "survivors": self.survivors,
@@ -344,6 +346,7 @@ def run_falsification() -> FalsificationReport:
         schema=SCHEMA,
         version=VERSION,
         candidates=DISPLACEMENT_LAW_CANDIDATES,
+        controls=FALSIFIER_CONTROLS,
         results=results,
         refuted=refuted,
         survivors=survivors,
