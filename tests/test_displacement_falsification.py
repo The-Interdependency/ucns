@@ -1,7 +1,7 @@
 # === CHECKS ===
-# id: check_falsification_runs_declared_controls
-#   proves: falsification_runs_declared_controls
-#   call: self::test_runs_declared_controls
+# id: check_falsification_runs_implemented_controls
+#   proves: falsification_runs_implemented_controls
+#   call: self::test_runs_implemented_controls
 #   requires: python3
 #   timeout: 10
 #   mutates: none
@@ -15,9 +15,17 @@
 #   mutates: none
 #   cleanup: none
 #
-# id: check_falsification_records_survivors_honestly
-#   proves: falsification_records_survivors_honestly
-#   call: self::test_records_survivors_honestly
+# id: check_falsification_composite_propagates_failed_hard_gate
+#   proves: falsification_composite_propagates_failed_hard_gate
+#   call: self::test_composite_propagates_failed_frame_gate
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_falsification_blocks_selection_until_preregistered_controls_complete
+#   proves: falsification_blocks_selection_until_preregistered_controls_complete
+#   call: self::test_missing_modular_orbit_control_blocks_selection
 #   requires: python3
 #   timeout: 10
 #   mutates: none
@@ -36,12 +44,24 @@ from __future__ import annotations
 
 from ucns import (
     DISPLACEMENT_FALSIFICATION_SCHEMA,
+    DISPLACEMENT_LAW_CANDIDATES,
     FALSIFIER_CONTROLS,
     run_falsification,
 )
 
 
-def test_runs_declared_controls() -> None:
+IMPLEMENTED_CONTROLS = (
+    "null",
+    "single-channel",
+    "pair",
+    "channel-permutation",
+    "frame",
+    "covering",
+    "radius",
+)
+
+
+def test_runs_implemented_controls() -> None:
     report = run_falsification()
     assert report.schema == DISPLACEMENT_FALSIFICATION_SCHEMA
     assert set(report.results) == {
@@ -50,8 +70,12 @@ def test_runs_declared_controls() -> None:
         "composite-displacement",
     }
     for candidate, controls in report.results.items():
-        for control in ("null", "single-channel", "pair", "permutation", "frame", "covering", "radius"):
+        for control in IMPLEMENTED_CONTROLS:
             assert control in controls, f"{candidate} missing {control}"
+        assert "modular-orbit-permutation" not in controls
+
+    assert "modular-orbit-permutation" in FALSIFIER_CONTROLS
+    assert FALSIFIER_CONTROLS["modular-orbit-permutation"].startswith("UNRESOLVED")
 
     again = run_falsification()
     assert again.receipt_sha256 == report.receipt_sha256
@@ -61,26 +85,26 @@ def test_runs_declared_controls() -> None:
 def test_frame_control_refutes_ordinal_only_angle() -> None:
     report = run_falsification()
 
-    # ordered concatenation survives the frame control.
     assert report.results["ordered-concatenation"]["frame"]["ok"] is True
-    # placement-frame is refuted: ordinal=157 collapses to angle zero.
     assert report.results["placement-frame"]["frame"]["ok"] is False
     assert "frame" in report.refuted["placement-frame"]
     assert "frame" in report.survivors["ordered-concatenation"]
 
 
-def test_records_survivors_honestly() -> None:
+def test_composite_propagates_failed_frame_gate() -> None:
     report = run_falsification()
-    for name in report.results:
-        assert set(report.refuted[name]) | set(report.survivors[name]) == set(
-            report.results[name]
-        )
-    # surviving candidates are not promoted to ratified.
-    assert "not ratified" in report.hmmm
-    for name, controls in report.results.items():
-        if report.survivors[name]:
-            for outcome in controls.values():
-                assert "ok" in outcome
+    assert report.results["composite-displacement"]["frame"]["ok"] is False
+    assert "frame" in report.refuted["composite-displacement"]
+
+
+def test_missing_modular_orbit_control_blocks_selection() -> None:
+    report = run_falsification()
+    assert "modular-orbit permutation control has not been executed" in report.hmmm
+    assert "no displacement-law candidate is selected" in report.hmmm
+    assert all(
+        record["standing"] == "candidate"
+        for record in DISPLACEMENT_LAW_CANDIDATES.values()
+    )
 
 
 def test_facade_exports_falsification() -> None:

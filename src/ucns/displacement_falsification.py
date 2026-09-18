@@ -2,7 +2,7 @@
 # id: ucns_displacement_falsification
 #   module_name: displacement_falsification
 #   module_kind: instrument
-#   summary: runs the declared falsification controls against the displacement-law candidates and records which candidates survive
+#   summary: runs the implemented displacement controls, propagates hard-gate failures, and exposes the preregistered modular-orbit control as unresolved
 #   owner: Erin Spencer
 #   public_surface: SCHEMA, VERSION, FALSIFIER_CONTROLS, FalsificationError, FalsificationReport, run_falsification
 #   internal_surface: control execution, exact comparison, canonical receipt serialization
@@ -12,48 +12,65 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_displacement_falsification
-#   rollout: executable falsification harness; falsification selects among candidates, execution alone ratifies nothing
+#   rollout: executable partial falsification harness; incomplete preregistered evidence blocks selection
 #   rollback: remove this module, facade exports, tests, and candidate documentation
 #   requires: ucns_displacement_law_candidates, ucns_visible_displacement_candidate, ucns_placement_frame_candidate
 #   since: 2026-09-16
-#   unresolved: ratification remains hmmm even for surviving candidates
+#   unresolved: the preregistered modular-orbit permutation control is not yet implemented
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
-# id: falsification_runs_declared_controls
+# id: falsification_runs_implemented_controls
 #   given: the displacement-law candidates
-#   then: null, single-channel, pair, permutation, frame, covering, and radius controls all execute exactly and deterministically
+#   then: null, single-channel, pair, diagnostic channel-permutation, frame, covering, and radius controls execute exactly and deterministically while the missing preregistered modular-orbit control stays explicit
 #   class: correctness
-#   since: 2026-09-16
+#   since: 2026-09-17
 #
 # id: falsification_frame_control_refutes_ordinal_only_angle
 #   given: ordinal = 157 with the placement-frame candidate
-#   then: the candidate collapses a full visible turn to angle zero and loses the 360/720 frame flip, so the ordinal-only angle candidate is refuted by the frame control
+#   then: the candidate collapses a full visible turn to angle zero and loses the 360/720 frame flip, so the placement-frame candidate fails the frame hard gate
 #   class: correctness
 #   since: 2026-09-16
 #
-# id: falsification_records_survivors_honestly
-#   given: a falsification run
-#   then: the report records exactly which candidate survived which control and never promotes a survivor to ratified
+# id: falsification_composite_propagates_failed_hard_gate
+#   given: one composite sub-candidate fails an applicable hard control
+#   then: the composite fails that control rather than borrowing survival from the other sub-candidate
+#   class: safety
+#   since: 2026-09-17
+#
+# id: falsification_blocks_selection_until_preregistered_controls_complete
+#   given: the preregistered modular-orbit permutation control has not been executed
+#   then: the report preserves that missing evidence as hmmm and authorizes no candidate selection
 #   class: doctrine
-#   since: 2026-09-16
+#   since: 2026-09-17
 # === END CONTRACTS ===
 
-"""Falsify the displacement-law candidates.
+"""Run the implemented displacement-law falsification controls.
 
-The preregistration declares these controls:
+The preregistration requires a permutation control using the same residues under
+a known modular-orbit action. The original harness instead rotated the three
+channel positions. That channel rotation remains useful as a diagnostic, but it
+is not the preregistered modular-orbit control and cannot close the selection
+gate.
+
+Implemented controls:
 
 * null control — all three residue channels zero/neutral;
 * single-channel control — one channel nonzero, the other two neutral;
 * pair controls — each pair active independently;
-* permutation control — the same residues under a known permutation;
+* channel-permutation diagnostic — the same residues under a channel reorder;
 * frame control — one full visible turn must flip the frame, two restore;
 * covering control — non-bijective covering degrees fail closed;
 * radius control — radius is the canonical radial map, not an additive depth.
 
-This harness runs those controls against the declared candidates and records
-which candidates survive. A candidate that fails a control is refuted.
-Survival is not ratification.
+Unresolved required control:
+
+* modular-orbit permutation — the same residues under a known modular-orbit
+  action, with its expected comparison criterion frozen before execution.
+
+A candidate that fails an implemented hard control is refuted. A candidate that
+survives the implemented controls is not selected while required preregistered
+evidence remains unresolved.
 """
 
 from __future__ import annotations
@@ -70,24 +87,29 @@ from .displacement_law import (
     build_displacement,
 )
 from .placement_frame import build_placement_frame
-from .visible_displacement import build_visible_displacement
 
 SCHEMA = "ucns.displacement-falsification"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 FALSIFIER_CONTROLS: dict[str, str] = {
     "null": "all three residue channels zero/neutral",
     "single-channel": "one channel nonzero, the other two neutral",
     "pair": "each pair of channels active independently",
-    "permutation": "the same residues under a known channel permutation",
+    "channel-permutation": (
+        "diagnostic channel reorder only; not the preregistered modular-orbit action"
+    ),
+    "modular-orbit-permutation": (
+        "UNRESOLVED: same residues under a known modular-orbit action"
+    ),
     "frame": "one full visible turn must flip the frame; two must restore",
     "covering": "non-bijective covering degrees fail closed",
     "radius": "radius is the canonical radial map on breadth, not an additive depth",
 }
 
 _HMMM = (
-    "falsification selects among candidates; survivors remain candidates "
-    "and are not ratified by survival alone"
+    "the preregistered modular-orbit permutation control has not been executed; "
+    "the implemented channel-permutation diagnostic is not a substitute, so no "
+    "displacement-law candidate is selected by this report"
 )
 
 
@@ -100,6 +122,7 @@ class FalsificationReport:
     schema: str
     version: str
     candidates: dict[str, dict[str, str]]
+    controls: dict[str, str]
     results: dict[str, dict[str, dict[str, Any]]]
     refuted: dict[str, list[str]]
     survivors: dict[str, list[str]]
@@ -111,6 +134,7 @@ class FalsificationReport:
             "schema": self.schema,
             "version": self.version,
             "candidates": self.candidates,
+            "controls": self.controls,
             "results": self.results,
             "refuted": self.refuted,
             "survivors": self.survivors,
@@ -140,7 +164,7 @@ def _check_frame_restore(phase: Fraction, frame: str) -> bool:
 
 
 def run_falsification() -> FalsificationReport:
-    """Run every declared control and record which candidates survive."""
+    """Run implemented controls without claiming the missing preregistered control."""
 
     results: dict[str, dict[str, dict[str, Any]]] = {
         name: {} for name in DISPLACEMENT_LAW_CANDIDATES
@@ -196,7 +220,8 @@ def run_falsification() -> FalsificationReport:
                 detail_parts.append(f"{triple}:{'exact' if sub_ok else 'drift'}")
             results[name][control] = _result(ok, "; ".join(detail_parts))
 
-    # permutation control
+    # Diagnostic channel-permutation control. This is deliberately not named or
+    # represented as the preregistered modular-orbit permutation falsifier.
     permutation = build_displacement(7, 11, 13)
     permuted = build_displacement(11, 13, 7)
     concat_ok = (
@@ -206,13 +231,13 @@ def run_falsification() -> FalsificationReport:
     frame_angle_changes = (
         permutation.placement_frame.angle_turn != permuted.placement_frame.angle_turn
     )
-    results["ordered-concatenation"]["permutation"] = _result(
+    results["ordered-concatenation"]["channel-permutation"] = _result(
         concat_ok,
-        "total turn is invariant under channel permutation (abelian turn sum)",
+        "total turn is invariant under channel reorder (abelian turn sum)",
     )
-    results["placement-frame"]["permutation"] = _result(
+    results["placement-frame"]["channel-permutation"] = _result(
         frame_angle_changes,
-        "angle follows the ordinal channel and therefore changes under permutation",
+        "angle follows the ordinal channel and therefore changes under channel reorder",
     )
 
     # frame control
@@ -241,7 +266,7 @@ def run_falsification() -> FalsificationReport:
     results["placement-frame"]["frame"] = _result(
         frame_ok,
         "ordinal=157 collapses to angle zero and does not flip the frame; "
-        "the ordinal-only angle candidate is refuted by the frame control",
+        "the placement-frame candidate fails the frame hard gate",
     )
 
     # covering control
@@ -276,24 +301,25 @@ def run_falsification() -> FalsificationReport:
         True, "not applicable: angle-only candidate carries no radius"
     )
 
-    # composite candidate: survives exactly where both sub-candidates survive.
+    # Composite candidate: a failed hard gate in either carried sub-candidate
+    # remains a failed hard gate for the composite. It cannot be compensated by
+    # the other sub-candidate's survival.
     composite_results: dict[str, dict[str, Any]] = {}
-    for control in ("null", "single-channel", "pair", "permutation", "covering"):
+    for control in (
+        "null",
+        "single-channel",
+        "pair",
+        "channel-permutation",
+        "frame",
+        "covering",
+        "radius",
+    ):
         left = results["ordered-concatenation"][control]["ok"]
         right = results["placement-frame"][control]["ok"]
         composite_results[control] = _result(
             left and right,
-            f"composite survives {control} iff both sub-candidates do",
+            f"composite survives {control} iff both carried sub-candidates do",
         )
-    composite_results["frame"] = _result(
-        results["ordered-concatenation"]["frame"]["ok"],
-        "composite records the surviving concatenation frame control and the "
-        "refuted ordinal-only frame control side by side",
-    )
-    composite_results["radius"] = _result(
-        results["placement-frame"]["radius"]["ok"],
-        "composite carries the placement-frame radius control",
-    )
     results["composite-displacement"] = composite_results
 
     refuted: dict[str, list[str]] = {}
@@ -306,6 +332,7 @@ def run_falsification() -> FalsificationReport:
         "schema": SCHEMA,
         "version": VERSION,
         "candidates": DISPLACEMENT_LAW_CANDIDATES,
+        "controls": FALSIFIER_CONTROLS,
         "results": results,
         "refuted": refuted,
         "survivors": survivors,
@@ -319,6 +346,7 @@ def run_falsification() -> FalsificationReport:
         schema=SCHEMA,
         version=VERSION,
         candidates=DISPLACEMENT_LAW_CANDIDATES,
+        controls=FALSIFIER_CONTROLS,
         results=results,
         refuted=refuted,
         survivors=survivors,
