@@ -85,6 +85,12 @@
 #   then: the displacement selection controls, runner, and replay are public with scoped selection standing
 #   class: correctness
 #   since: 2026-09-19
+#
+# id: geometry_public_surface_includes_lifted_displacement_candidate
+#   given: the active ucns package facade is imported
+#   then: the lifted displacement record, error, builder, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-19
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -202,6 +208,14 @@ from .lattice_carrier import (
     build_lattice_carrier,
     replay_lattice_carrier,
 )
+from .lifted_displacement import (
+    SCHEMA as LIFTED_DISPLACEMENT_SCHEMA,
+    VERSION as LIFTED_DISPLACEMENT_VERSION,
+    LiftedDisplacementError,
+    LiftedDisplacementRecord,
+    build_lifted_displacement,
+    replay_lifted_displacement,
+)
 from .motion import (
     SCHEMA as MOTION_SCHEMA,
     VERSION as MOTION_VERSION,
@@ -254,9 +268,13 @@ __all__ = list(dict.fromkeys([
     "FalsificationReport",
     "LATTICE_CARRIER_SCHEMA",
     "LATTICE_CARRIER_VERSION",
+    "LIFTED_DISPLACEMENT_SCHEMA",
+    "LIFTED_DISPLACEMENT_VERSION",
     "LatticeAddress",
     "LatticeCarrierError",
     "LatticeCarrierRecord",
+    "LiftedDisplacementError",
+    "LiftedDisplacementRecord",
     "PLACEMENT_FRAME_SCHEMA",
     "PLACEMENT_FRAME_VERSION",
     "PlacementFrameError",
@@ -278,6 +296,7 @@ __all__ = list(dict.fromkeys([
     "build_displacement",
     "build_lattice_address",
     "build_lattice_carrier",
+    "build_lifted_displacement",
     "build_modular_orbit_geometry",
     "build_motion",
     "build_placement_frame",
@@ -307,6 +326,7 @@ __all__ = list(dict.fromkeys([
     "replay_displacement",
     "replay_displacement_selection",
     "replay_lattice_carrier",
+    "replay_lifted_displacement",
     "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",

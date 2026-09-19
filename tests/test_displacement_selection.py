@@ -53,6 +53,7 @@ def test_executes_preregistered_modular_orbit_control() -> None:
     assert control["verdicts"]["ordered-concatenation"]["ok"] is False
     assert "frame" in control["verdicts"]["ordered-concatenation"]["detail"]
     assert control["verdicts"]["placement-frame"]["ok"] is True
+    assert control["verdicts"]["lifted-ordered-concatenation"]["ok"] is True
 
 
 def test_requires_all_applicable_controls_survive() -> None:
@@ -64,7 +65,9 @@ def test_requires_all_applicable_controls_survive() -> None:
     assert decisions["placement-frame"]["selected"] is False
     assert "frame" in decisions["placement-frame"]["refuted_controls"]
     assert decisions["composite-displacement"]["selected"] is False
-    assert report["selected"] == []
+    # the lifted candidate sums before reduction and survives all controls
+    assert decisions["lifted-ordered-concatenation"]["selected"] is True
+    assert report["selected"] == ["lifted-ordered-concatenation"]
 
 
 def test_receipt_is_scoped_and_replayable() -> None:

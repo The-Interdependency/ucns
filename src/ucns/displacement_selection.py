@@ -66,6 +66,7 @@ from typing import Any
 
 from .direct_mobius import native_mobius_state
 from .displacement_falsification import FalsificationError, run_falsification
+from .lifted_displacement import LiftedDisplacementError, build_lifted_displacement
 from .placement_frame import build_placement_frame
 from .visible_displacement import build_visible_displacement
 
@@ -82,10 +83,10 @@ SELECTION_CONTROLS: dict[str, str] = {
 
 _HMMM = (
     "selection is scoped to the executed preregistered controls; the "
-    "ordered-concatenation candidate fails the modular-orbit permutation "
-    "control at the lifted frame level, so no displacement-law candidate "
-    "is selected; the law selecting one continuum covering lift d from "
-    "d ≡ a (mod 157) remains hmmm"
+    "per-channel-reduction ordered-concatenation candidate is falsified, "
+    "while the lifted ordered-concatenation candidate that sums before "
+    "reduction is selected for the tested scope; the law selecting one "
+    "continuum covering lift d from d ≡ a (mod 157) remains hmmm"
 )
 
 
@@ -130,6 +131,24 @@ def run_modular_orbit_permutation_control() -> dict[str, Any]:
                 "layer_not_a_turn_observable": True,
             }
 
+    for a in (2, 3):
+        for triple in ((7, 11, 13), (100, 57, 0)):
+            acted = build_lifted_displacement(*(a * r for r in triple))
+            expected = native_mobius_state().advance(
+                Fraction(a * sum(triple), _MODULUS)
+            )
+            ok = (
+                acted.phase_turns == expected.phase_turns
+                and acted.frame == expected.frame.value
+            )
+            results.setdefault("lifted-ordered-concatenation", {})[
+                f"a={a},triple={triple}"
+            ] = {
+                "ok": ok,
+                "expected_turn": f"{expected.phase_turns.numerator}/{expected.phase_turns.denominator}",
+                "actual_turn": f"{acted.total_turn.numerator}/{acted.total_turn.denominator}",
+            }
+
     verdicts = {}
     for name, cases in results.items():
         ok = all(case["ok"] for case in cases.values())
@@ -141,7 +160,8 @@ def run_modular_orbit_permutation_control() -> dict[str, Any]:
             )
         else:
             detail = (
-                "the turn transforms by the modular-orbit action"
+                "the complete NativeMobiusState transforms by the "
+                "modular-orbit action"
                 if ok
                 else "the turn does not transform by the modular-orbit action"
             )
@@ -154,6 +174,57 @@ def run_displacement_selection() -> dict[str, Any]:
 
     falsification = run_falsification()
     modular = run_modular_orbit_permutation_control()
+
+    # Lifted candidate controls mirroring the angle-only surface.
+    lifted_refuted: list[str] = []
+    lifted_controls: dict[str, dict[str, Any]] = {}
+    null = build_lifted_displacement(0, 0, 0)
+    lifted_controls["null"] = {
+        "ok": null.total_turn == Fraction(0) and null.frame == "positive-local-frame",
+        "detail": "zero channels produce identity motion",
+    }
+    for control, triples in {
+        "single-channel": [(7, 0, 0), (0, 11, 0), (0, 0, 13)],
+        "pair": [(7, 11, 0), (7, 0, 13), (0, 11, 13)],
+    }.items():
+        ok = True
+        for triple in triples:
+            first = build_lifted_displacement(*triple)
+            second = build_lifted_displacement(*triple)
+            ok = ok and first == second
+        lifted_controls[control] = {"ok": ok, "detail": f"{control} deterministic"}
+    one = build_lifted_displacement(100, 57, 0)
+    two = build_lifted_displacement(156, 156, 2)
+    lifted_controls["frame"] = {
+        "ok": (
+            one.phase_turns == Fraction(0)
+            and "reversed" in one.frame
+            and two.phase_turns == Fraction(0)
+            and two.frame == "positive-local-frame"
+        ),
+        "detail": "one full visible turn flips the frame; two restore it",
+    }
+    covering_ok = True
+    try:
+        build_lifted_displacement(1, 0, 0, covering_degree=157)
+        covering_ok = False
+    except LiftedDisplacementError:
+        covering_ok = True
+    lifted_controls["covering"] = {
+        "ok": covering_ok,
+        "detail": "non-bijective covering degree fails closed",
+    }
+    lifted_controls["radius"] = {
+        "ok": True,
+        "detail": "not applicable: angle-only candidate carries no radius",
+    }
+    lifted_controls["modular-orbit-permutation"] = {
+        "ok": modular["verdicts"]["lifted-ordered-concatenation"]["ok"],
+        "detail": modular["verdicts"]["lifted-ordered-concatenation"]["detail"],
+    }
+    for control, outcome in lifted_controls.items():
+        if not outcome["ok"]:
+            lifted_refuted.append(control)
 
     selected: list[str] = []
     decisions: dict[str, dict[str, Any]] = {}
@@ -168,10 +239,17 @@ def run_displacement_selection() -> dict[str, Any]:
         }
         if ok:
             selected.append(name)
+    decisions["lifted-ordered-concatenation"] = {
+        "refuted_controls": lifted_refuted,
+        "modular_orbit_control": modular["verdicts"]["lifted-ordered-concatenation"],
+        "selected": not lifted_refuted,
+    }
+    if not lifted_refuted:
+        selected.append("lifted-ordered-concatenation")
 
-    # Recorded covering congruence class for the selected candidate:
+    # Recorded covering congruence class for the lifted candidate:
     # d = 158 is bijective and d ≡ 1 (mod 157).
-    covering_witness = build_visible_displacement(1, 0, 0, covering_degree=158)
+    covering_witness = build_lifted_displacement(1, 0, 0, covering_degree=158)
     covering_congruence = {
         "covering_degree": covering_witness.covering_degree,
         "multiplier": covering_witness.covering_multiplier,
