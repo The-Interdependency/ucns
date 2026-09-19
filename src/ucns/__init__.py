@@ -79,6 +79,12 @@
 #   then: the motion record, error, builder, replay, and the motion falsification controls and runner are public with candidate standing
 #   class: correctness
 #   since: 2026-09-19
+#
+# id: geometry_public_surface_includes_displacement_selection
+#   given: the active ucns package facade is imported
+#   then: the displacement selection controls, runner, and replay are public with scoped selection standing
+#   class: correctness
+#   since: 2026-09-19
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -175,6 +181,15 @@ from .displacement_falsification import (
     FalsificationReport,
     run_falsification,
 )
+from .displacement_selection import (
+    SCHEMA as DISPLACEMENT_SELECTION_SCHEMA,
+    VERSION as DISPLACEMENT_SELECTION_VERSION,
+    SELECTION_CONTROLS,
+    DisplacementSelectionError,
+    run_modular_orbit_permutation_control,
+    run_displacement_selection,
+    replay_displacement_selection,
+)
 from .lattice_carrier import (
     SCHEMA as LATTICE_CARRIER_SCHEMA,
     VERSION as LATTICE_CARRIER_VERSION,
@@ -229,7 +244,10 @@ __all__ = list(dict.fromkeys([
     "DISPLACEMENT_LAW_CANDIDATES",
     "DISPLACEMENT_LAW_SCHEMA",
     "DISPLACEMENT_LAW_VERSION",
+    "DISPLACEMENT_SELECTION_SCHEMA",
+    "DISPLACEMENT_SELECTION_VERSION",
     "DisplacementLawError",
+    "DisplacementSelectionError",
     "DisplacementRecord",
     "FALSIFIER_CONTROLS",
     "FalsificationError",
@@ -287,13 +305,17 @@ __all__ = list(dict.fromkeys([
     "pullback_circle_wave_trace",
     "radius_from_breadth",
     "replay_displacement",
+    "replay_displacement_selection",
     "replay_lattice_carrier",
     "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",
     "replay_visible_displacement",
+    "run_displacement_selection",
     "run_falsification",
+    "run_modular_orbit_permutation_control",
     "run_motion_falsification",
+    "SELECTION_CONTROLS",
     "same_lifted_position",
     "same_visible_position",
 ] + list(_mobius_vesica_all) + list(_mobius_seed_all)))
