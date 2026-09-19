@@ -73,6 +73,12 @@
 #   then: the abstract lattice/carrier address, derivations, record, error, builder, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-16
+#
+# id: geometry_public_surface_includes_motion_candidate
+#   given: the active ucns package facade is imported
+#   then: the motion record, error, builder, replay, and the motion falsification controls and runner are public with candidate standing
+#   class: correctness
+#   since: 2026-09-19
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -181,6 +187,22 @@ from .lattice_carrier import (
     build_lattice_carrier,
     replay_lattice_carrier,
 )
+from .motion import (
+    SCHEMA as MOTION_SCHEMA,
+    VERSION as MOTION_VERSION,
+    MotionError,
+    MotionStepRecord,
+    MotionRecord,
+    build_motion,
+    replay_motion,
+)
+from .motion_falsification import (
+    SCHEMA as MOTION_FALSIFICATION_SCHEMA,
+    VERSION as MOTION_FALSIFICATION_VERSION,
+    MOTION_FALSIFIER_CONTROLS,
+    MotionFalsificationError,
+    run_motion_falsification,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -239,6 +261,7 @@ __all__ = list(dict.fromkeys([
     "build_lattice_address",
     "build_lattice_carrier",
     "build_modular_orbit_geometry",
+    "build_motion",
     "build_placement_frame",
     "build_radius_recursion",
     "build_visible_displacement",
@@ -247,6 +270,15 @@ __all__ = list(dict.fromkeys([
     "derive_lattice_from_deck_translations",
     "derive_lattice_from_modular_orbit",
     "lifted_preimages",
+    "MOTION_FALSIFIER_CONTROLS",
+    "MOTION_FALSIFICATION_SCHEMA",
+    "MOTION_FALSIFICATION_VERSION",
+    "MOTION_SCHEMA",
+    "MOTION_VERSION",
+    "MotionError",
+    "MotionFalsificationError",
+    "MotionRecord",
+    "MotionStepRecord",
     "native_mobius_state",
     "project",
     "public_gonol_function",
@@ -256,10 +288,12 @@ __all__ = list(dict.fromkeys([
     "radius_from_breadth",
     "replay_displacement",
     "replay_lattice_carrier",
+    "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",
     "replay_visible_displacement",
     "run_falsification",
+    "run_motion_falsification",
     "same_lifted_position",
     "same_visible_position",
 ] + list(_mobius_vesica_all) + list(_mobius_seed_all)))
