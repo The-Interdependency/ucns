@@ -12,17 +12,17 @@
 #   user_data_boundary: none
 #   admin_only: false
 #   tests: tests.test_motion
-#   rollout: executable candidate motion; inherits the unselected status of the ordered-concatenation displacement candidate
+#   rollout: executable candidate motion; inherits the scoped-selection status of the lifted ordered-concatenation displacement candidate
 #   rollback: remove this module, facade exports, tests, and candidate documentation
-#   requires: ucns_visible_displacement_candidate, directed_carrier_floor
+#   requires: ucns_lifted_displacement_candidate, directed_carrier_floor
 #   since: 2026-09-19
-#   unresolved: the consumed displacement candidate remains unselected; motion selection/ratification follows from displacement selection
+#   unresolved: motion selection/ratification follows displacement selection; the continuum lift-selection law remains hmmm
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
 # id: motion_step_advances_native_mobius_state
 #   given: one definition-walk step with three exact residues
-#   then: the step advances a NativeMobiusState by the ordered-concatenation turn exactly
+#   then: the step advances a NativeMobiusState by the lifted ordered-concatenation turn exactly
 #   class: correctness
 #   since: 2026-09-19
 #
@@ -32,11 +32,11 @@
 #   class: correctness
 #   since: 2026-09-19
 #
-# id: motion_inherits_unselected_displacement_status
+# id: motion_inherits_scoped_selected_displacement_status
 #   given: the consumed displacement candidate
-#   then: the motion record carries the candidate's unselected status and never claims selection
+#   then: the motion record carries the candidate's scoped-selection status and never overstates the scope
 #   class: doctrine
-#   since: 2026-09-19
+#   since: 2026-09-20
 #
 # id: motion_fails_closed
 #   given: malformed walk residues or a malformed receipt
@@ -48,10 +48,11 @@
 """Candidate gonol motion over a definition walk.
 
 One walk step ``(ordinal, semantic, context)`` advances a cumulative
-``NativeMobiusState`` by the ordered-concatenation displacement candidate.
-Radius is the canonical radial map on the semantic breadth; layer is the
-context deck-translation count. The consumed displacement candidate is
-UNSELECTED, and this motion candidate inherits that status.
+``NativeMobiusState`` by the lifted ordered-concatenation displacement
+candidate. Radius is the canonical radial map on the semantic breadth;
+layer is the context deck-translation count. The consumed displacement
+candidate is SELECTED for the tested scope, and this motion candidate
+inherits that scoped status.
 """
 
 from __future__ import annotations
@@ -65,13 +66,13 @@ from typing import Any
 
 from .carrier import radius_from_breadth
 from .direct_mobius import NativeMobiusState, native_mobius_state
-from .visible_displacement import VisibleDisplacementError, build_visible_displacement
+from .lifted_displacement import LiftedDisplacementError, build_lifted_displacement
 
 SCHEMA = "ucns.motion-candidate"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 _MODULUS = 157
-_DISPLACEMENT_CANDIDATE = "ordered-concatenation"
-_DISPLACEMENT_CANDIDATE_STATUS = "unselected"
+_DISPLACEMENT_CANDIDATE = "lifted-ordered-concatenation"
+_DISPLACEMENT_CANDIDATE_STATUS = "selected-scoped"
 
 
 class MotionError(ValueError):
@@ -142,10 +143,10 @@ class MotionRecord:
         return json.dumps(self.as_dict(), sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
-def _coerce_residue(name: str, value: int) -> int:
+def _coerce_channel(name: str, value: int) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise MotionError(f"{name} must be an exact integer")
-    return value % _MODULUS
+    return value
 
 
 def build_motion(
@@ -163,12 +164,12 @@ def build_motion(
     for index, triple in enumerate(walk):
         if not isinstance(triple, (tuple, list)) or len(triple) != 3:
             raise MotionError("each walk step must be an (ordinal, semantic, context) triple")
-        ordinal = _coerce_residue("ordinal", triple[0])
-        semantic = _coerce_residue("semantic", triple[1])
-        context = _coerce_residue("context", triple[2])
+        ordinal = _coerce_channel("ordinal", triple[0])
+        semantic = _coerce_channel("semantic", triple[1])
+        context = _coerce_channel("context", triple[2])
         try:
-            displacement = build_visible_displacement(ordinal, semantic, context)
-        except VisibleDisplacementError as exc:
+            displacement = build_lifted_displacement(ordinal, semantic, context)
+        except LiftedDisplacementError as exc:
             raise MotionError(str(exc)) from exc
         turn = displacement.total_turn
         state = state.advance(turn)

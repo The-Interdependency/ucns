@@ -15,9 +15,9 @@
 #   mutates: none
 #   cleanup: none
 #
-# id: check_motion_inherits_unselected_displacement_status
-#   proves: motion_inherits_unselected_displacement_status
-#   call: self::test_inherits_unselected_displacement_status
+# id: check_motion_inherits_scoped_selected_displacement_status
+#   proves: motion_inherits_scoped_selected_displacement_status
+#   call: self::test_inherits_scoped_selected_displacement_status
 #   requires: python3
 #   timeout: 10
 #   mutates: none
@@ -64,10 +64,10 @@ def test_records_radius_and_layer_per_step() -> None:
     assert step.layer == 1
 
 
-def test_inherits_unselected_displacement_status() -> None:
+def test_inherits_scoped_selected_displacement_status() -> None:
     record = build_motion(((1, 2, 3),))
-    assert record.displacement_candidate == "ordered-concatenation"
-    assert record.displacement_candidate_status == "unselected"
+    assert record.displacement_candidate == "lifted-ordered-concatenation"
+    assert record.displacement_candidate_status == "selected-scoped"
 
 
 def test_fails_closed() -> None:

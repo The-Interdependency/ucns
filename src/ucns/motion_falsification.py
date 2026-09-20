@@ -54,8 +54,8 @@ from fractions import Fraction
 from hashlib import sha256
 from typing import Any
 
+from .lifted_displacement import LiftedDisplacementError, build_lifted_displacement
 from .motion import MotionError, build_motion
-from .visible_displacement import build_visible_displacement
 
 SCHEMA = "ucns.motion-falsification"
 VERSION = "0.1.0"
@@ -125,9 +125,9 @@ def run_motion_falsification() -> dict[str, Any]:
     # covering control
     covering_ok = True
     try:
-        build_visible_displacement(1, 0, 0, covering_degree=157)
+        build_lifted_displacement(1, 0, 0, covering_degree=157)
         covering_ok = False
-    except Exception:
+    except LiftedDisplacementError:
         covering_ok = True
     results["covering"] = {
         "ok": covering_ok,
