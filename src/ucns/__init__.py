@@ -91,6 +91,12 @@
 #   then: the lifted displacement record, error, builder, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-19
+#
+# id: geometry_public_surface_includes_lift_selection_candidates
+#   given: the active ucns package facade is imported
+#   then: the lift-selection builders, error, and controls runner are public with candidate standing
+#   class: correctness
+#   since: 2026-09-21
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -216,6 +222,14 @@ from .lifted_displacement import (
     build_lifted_displacement,
     replay_lifted_displacement,
 )
+from .lift_selection import (
+    SCHEMA as LIFT_SELECTION_SCHEMA,
+    VERSION as LIFT_SELECTION_VERSION,
+    LiftSelectionError,
+    build_provenance_interval_lift,
+    build_canonical_witness_lift,
+    run_lift_selection_controls,
+)
 from .motion import (
     SCHEMA as MOTION_SCHEMA,
     VERSION as MOTION_VERSION,
@@ -270,11 +284,14 @@ __all__ = list(dict.fromkeys([
     "LATTICE_CARRIER_VERSION",
     "LIFTED_DISPLACEMENT_SCHEMA",
     "LIFTED_DISPLACEMENT_VERSION",
+    "LIFT_SELECTION_SCHEMA",
+    "LIFT_SELECTION_VERSION",
     "LatticeAddress",
     "LatticeCarrierError",
     "LatticeCarrierRecord",
     "LiftedDisplacementError",
     "LiftedDisplacementRecord",
+    "LiftSelectionError",
     "PLACEMENT_FRAME_SCHEMA",
     "PLACEMENT_FRAME_VERSION",
     "PlacementFrameError",
@@ -294,12 +311,14 @@ __all__ = list(dict.fromkeys([
     "VisibleDisplacementRecord",
     "build_circle_wave_mode_trace",
     "build_displacement",
+    "build_canonical_witness_lift",
     "build_lattice_address",
     "build_lattice_carrier",
     "build_lifted_displacement",
     "build_modular_orbit_geometry",
     "build_motion",
     "build_placement_frame",
+    "build_provenance_interval_lift",
     "build_radius_recursion",
     "build_visible_displacement",
     "carrier_from_breadth",
@@ -333,6 +352,7 @@ __all__ = list(dict.fromkeys([
     "replay_visible_displacement",
     "run_displacement_selection",
     "run_falsification",
+    "run_lift_selection_controls",
     "run_modular_orbit_permutation_control",
     "run_motion_falsification",
     "SELECTION_CONTROLS",
