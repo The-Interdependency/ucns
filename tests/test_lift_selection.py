@@ -31,6 +31,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_lift_selection_gate_selects_provenance_only
+#   proves: lift_selection_gate_selects_provenance_only
+#   call: self::test_selection_gate_selects_provenance_only
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_geometry_public_surface_includes_lift_selection_candidates
 #   proves: geometry_public_surface_includes_lift_selection_candidates
 #   call: self::test_facade_exports_lift_selection
@@ -47,6 +55,8 @@ import json
 import pytest
 
 from ucns import (
+    replay_lift_selection_gate,
+    run_lift_selection_gate,
     LiftSelectionError,
     build_canonical_witness_lift,
     build_provenance_interval_lift,
@@ -106,3 +116,21 @@ def test_facade_exports_lift_selection() -> None:
     assert hasattr(ucns, "build_canonical_witness_lift")
     assert hasattr(ucns, "run_lift_selection_controls")
     assert ucns.LIFT_SELECTION_SCHEMA == "ucns.lift-selection-candidate"
+
+
+def test_selection_gate_selects_provenance_only() -> None:
+    from ucns import replay_lift_selection_gate, run_lift_selection_gate
+
+    gate = run_lift_selection_gate()
+    assert gate["selected"] == ["provenance-interval"]
+    assert gate["decision"]["canonical-witness"]["derived"] is True
+    data = json.dumps(gate, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    replayed = replay_lift_selection_gate(data)
+    assert replayed["receipt_sha256"] == gate["receipt_sha256"]
+
+    tampered = bytearray(data)
+    tampered[30] ^= 0x01
+    import pytest
+
+    with pytest.raises(Exception):
+        replay_lift_selection_gate(bytes(tampered))

@@ -229,6 +229,8 @@ from .lift_selection import (
     build_provenance_interval_lift,
     build_canonical_witness_lift,
     run_lift_selection_controls,
+    run_lift_selection_gate,
+    replay_lift_selection_gate,
 )
 from .motion import (
     SCHEMA as MOTION_SCHEMA,
@@ -353,6 +355,8 @@ __all__ = list(dict.fromkeys([
     "run_displacement_selection",
     "run_falsification",
     "run_lift_selection_controls",
+    "run_lift_selection_gate",
+    "replay_lift_selection_gate",
     "run_modular_orbit_permutation_control",
     "run_motion_falsification",
     "SELECTION_CONTROLS",

@@ -233,6 +233,70 @@ def run_lift_selection_controls() -> dict[str, Any]:
     return payload
 
 
+def run_lift_selection_gate() -> dict[str, Any]:
+    """Scoped lift-selection decision.
+
+    Provenance-interval is selected for the tested scope: it is the only
+    candidate derived from the source ordinal's own deck and it satisfies
+    deck-translation equivariance. Canonical-witness is recorded as
+    DERIVED (a constant function of the residue) and not selected.
+    """
+
+    controls = run_lift_selection_controls()
+    provenance_ok = controls["results"]["provenance-interval"]["ok"]
+    witness_ok = controls["results"]["canonical-witness"]["ok"]
+    if not provenance_ok or not witness_ok:
+        raise LiftSelectionError("controls must pass before the selection gate")
+
+    payload = {
+        "schema": SCHEMA,
+        "version": VERSION,
+        "controls_receipt": controls["receipt_sha256"],
+        "decision": {
+            "provenance-interval": {
+                "selected": True,
+                "scope": "tested preregistered controls",
+                "basis": "source-derived deck selection with deck-translation equivariance",
+            },
+            "canonical-witness": {
+                "selected": False,
+                "derived": True,
+                "basis": "constant function of the residue; reduces to derivation",
+            },
+        },
+        "selected": ["provenance-interval"],
+        "hmmm": (
+            "selection is scoped to the tested controls; the canonical-witness "
+            "candidate reduces to derivation and is retained only as a derived "
+            "surface"
+        ),
+    }
+    payload["receipt_sha256"] = _receipt(payload)
+    return payload
+
+
+def replay_lift_selection_gate(data: bytes) -> dict[str, Any]:
+    """Recompute the selection receipt and verify byte-identically."""
+
+    if not isinstance(data, bytes):
+        raise LiftSelectionError("receipt must be bytes")
+    try:
+        obj = json.loads(data.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise LiftSelectionError("receipt is not valid canonical JSON") from exc
+    if obj.get("schema") != SCHEMA or obj.get("version") != VERSION:
+        raise LiftSelectionError("receipt schema or version mismatch")
+    rebuilt = run_lift_selection_gate()
+    if rebuilt["receipt_sha256"] != obj.get("receipt_sha256"):
+        raise LiftSelectionError("receipt digest does not match recomputation")
+    rebuilt_bytes = json.dumps(
+        rebuilt, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    if rebuilt_bytes != data:
+        raise LiftSelectionError("receipt does not replay byte-identically")
+    return rebuilt
+
+
 __all__ = [
     "SCHEMA",
     "VERSION",
@@ -240,4 +304,6 @@ __all__ = [
     "build_provenance_interval_lift",
     "build_canonical_witness_lift",
     "run_lift_selection_controls",
+    "run_lift_selection_gate",
+    "replay_lift_selection_gate",
 ]
