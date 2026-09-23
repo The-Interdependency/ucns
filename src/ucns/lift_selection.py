@@ -38,6 +38,12 @@
 #   class: correctness
 #   since: 2026-09-21
 #
+# id: lift_selection_gate_selects_provenance_only
+#   given: both candidates surviving the controls
+#   then: provenance-interval is selected for the tested scope and canonical-witness is recorded derived
+#   class: doctrine
+#   since: 2026-09-23
+#
 # id: lift_selection_candidates_are_replayable
 #   given: a candidate lift
 #   then: the canonical receipt replays byte-identically and tampering fails closed
