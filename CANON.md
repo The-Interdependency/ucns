@@ -26,10 +26,33 @@ Identity across scale is not inferred from similar coordinates, labels, hashes, 
 
 METAPAT remains the semantic authority for cross-domain terms and transfer constraints. EDCM owns measurement and evaluation. EPAC, consciousness constructions, language constructions, and other consumers retain their own domain semantics and evidence standards. Their recurrence may test UCNS structure; it does not move their semantics into UCNS.
 
-The present repository contains candidate pieces of this formalism, including exact carrier state, native Möbius return, radius/layer recursion, continuum-to-finite gonal trace, lattice address structure, displacement, lift selection, and motion. Their existence does not establish one complete scale-transformation law.
+The present repository contains candidate pieces of this formalism, including exact carrier state, native Möbius return, radius/layer recursion, continuum-to-finite gonal trace, lattice address structure, an exact multiplicative scale-action candidate, displacement, lift selection, and motion. Their existence does not establish one complete scale-transformation law.
+
+## Multiplicative scale-action candidate
+
+UCNS has an executable domain-agnostic candidate action on an ordered positive exact-rational coordinate carrier:
+
+```text
+T_q(x)_i = q^w_i x_i
+```
+
+where `q > 0` is an exact rational factor and each `w_i` is an integer. For one fixed ordered weight vector, the candidate constructs exact composition, identity, and inverse:
+
+```text
+T_p o T_q = T_(p*q)
+T_1 = identity
+T_q^-1 = T_(1/q)
+```
+
+For a monomial `I_a(x) = product(x_i^a_i)`, the candidate's structural scale weight is `sum(a_i*w_i)`; the monomial is invariant under the action when that weight is zero.
+
+This establishes an exact algebraic candidate component, not the complete UCNS scale-transition law. UCNS assigns no domain meaning to the coordinate positions or weights. A consumer may bind physical, chemical, linguistic, consciousness, or other meanings externally under its own authority and evidence.
+
+`hmmm`: how this diagonal action binds to native Möbius origin/attachment, recursive carrier transitions, and the full higher-dimensional construction remains unresolved.
 
 
 ## Public Gonol carrier
+
 
 The exact 157-position Public Gonol arrangement is retained as geometry. Every admitted glyph is a Public Gonol function position. No active UCNS rule divides these positions into letters, punctuation, symbols, digits, lexical glyphs, or other linguistic classes.
 

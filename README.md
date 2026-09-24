@@ -14,6 +14,7 @@ Its active scope is limited to constructions that directly represent or test geo
 - Möbius vesica and Seed-of-Life constructions and certificates;
 - candidate exact finite modular-action orbit and circle geometry;
 - candidate exact visible-circle continuum wave / gonal boundary traces;
+- candidate exact multiplicative scale actions and monomial-invariant kernels;
 - prime-indexed ribbon, link, interval, Milnor, Alexander, and related topological geometry;
 - numerical machinery used to certify those constructions.
 
@@ -36,7 +37,20 @@ measurement / evaluation of claimed observables    -> EDCM
 
 See `docs/scale-transformation-jurisdiction.md` for the contract, current primitive audit, usage guidance, and unresolved boundary.
 
+### Multiplicative scale-action candidate
+
+`src/ucns/scale_action.py` implements one exact candidate component:
+
+```text
+T_q(x)_i = q^w_i x_i
+```
+
+for positive exact rational `q`, positive exact rational coordinates, and an ordered integer weight vector `w`. Actions with the same weights compose as `T_p o T_q = T_(p*q)`; reciprocal factors invert. A monomial `product(x_i^a_i)` is structurally invariant exactly when `sum(a_i*w_i) = 0`.
+
+The core carries no domain axis names. See `docs/scale-transform-physics-fixture.md` for a conditional external physics fixture that maps one six-axis hypothesis onto this action without promoting the physics premise into UCNS.
+
 The poster above is a display certificate of those constructions. It is not an interpretation layer.
+
 
 ## Public Gonol
 

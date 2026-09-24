@@ -2,19 +2,19 @@
 # id: ucns_geometry_public_surface
 #   module_name: __init__
 #   module_kind: facade
-#   summary: geometry-only UCNS public surface including the visible-circle displacement candidate
+#   summary: geometry-only UCNS public surface including exact scale/representation candidates
 #   owner: Erin Spencer
-#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate
+#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, modular orbit geometry, visible-circle gonal wave boundary trace, displacement/lift/motion candidates, exact multiplicative scale-action candidate
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement, tests.test_scale_action
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
-#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate
+#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate, ucns_multiplicative_scale_action_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===
@@ -97,6 +97,12 @@
 #   then: the lift-selection builders, error, and controls runner are public with candidate standing
 #   class: correctness
 #   since: 2026-09-21
+#
+# id: geometry_public_surface_includes_scale_action_candidate
+#   given: the active ucns package facade is imported
+#   then: the exact domain-agnostic multiplicative scale action, application receipt, invariant helper, builders, and replay are public with candidate standing
+#   class: correctness
+#   since: 2026-09-23
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -248,6 +254,17 @@ from .motion_falsification import (
     MotionFalsificationError,
     run_motion_falsification,
 )
+from .scale_action import (
+    SCHEMA as SCALE_ACTION_SCHEMA,
+    VERSION as SCALE_ACTION_VERSION,
+    MultiplicativeScaleAction,
+    ScaleActionError,
+    ScaleActionRecord,
+    build_scale_action,
+    build_scale_action_record,
+    monomial_value,
+    replay_scale_action_record,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -302,6 +319,11 @@ __all__ = list(dict.fromkeys([
     "RADIUS_RECURSION_VERSION",
     "RadiusRecursionError",
     "RadiusRecursionRecord",
+    "SCALE_ACTION_SCHEMA",
+    "SCALE_ACTION_VERSION",
+    "ScaleActionError",
+    "ScaleActionRecord",
+    "MultiplicativeScaleAction",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
@@ -322,6 +344,8 @@ __all__ = list(dict.fromkeys([
     "build_placement_frame",
     "build_provenance_interval_lift",
     "build_radius_recursion",
+    "build_scale_action",
+    "build_scale_action_record",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
@@ -337,6 +361,7 @@ __all__ = list(dict.fromkeys([
     "MotionFalsificationError",
     "MotionRecord",
     "MotionStepRecord",
+    "monomial_value",
     "native_mobius_state",
     "project",
     "public_gonol_function",
@@ -351,6 +376,7 @@ __all__ = list(dict.fromkeys([
     "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",
+    "replay_scale_action_record",
     "replay_visible_displacement",
     "run_displacement_selection",
     "run_falsification",

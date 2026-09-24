@@ -31,7 +31,7 @@ For a source construction (X_a), target construction (X_b), and candidate geomet
 
 Coordinate similarity, equal hashes, matching labels, or a shared downstream interpretation do not establish geometric identity across scale.
 
-No universal `ScaleTransform` metadata class is introduced here. Such a class would currently describe the desired abstraction more strongly than the geometry justifies. The implementation target is the geometric law; the record type comes after the law survives construction and falsification.
+No universal completed `ScaleTransform` law is introduced here. `src/ucns/scale_action.py` implements one narrower exact candidate component: a diagonal multiplicative action `T_q(x)_i = q^w_i x_i` with exact composition, inversion, and monomial-invariant detection. It does not bind the existing Möbius, origin/attachment, recursive carrier, or higher-dimensional transition machinery into one universal transform.
 
 ## Current primitive audit
 
@@ -45,6 +45,7 @@ No universal `ScaleTransform` metadata class is introduced here. Such a class wo
 | lattice carrier | discrete deck/modular address structure | candidate address substrate |
 | visible/lifted displacement | candidate transport on the carrier | candidate transform component; scope-bounded selection where recorded |
 | lift selection | explicit alternatives and selection gate for finite-to-lifted witnesses | candidate selection machinery |
+| multiplicative scale action | exact `T_q(x)_i = q^w_i x_i`, multiplicative composition, inverse, and monomial-invariant kernel | executable domain-agnostic candidate component |
 | motion | ordered accumulation of selected-scoped displacement with radius/layer state | candidate composed transport |
 | circle → epicycle → disk → sphere → recursive scale | not yet constructed as one law | `hmmm` |
 
@@ -59,6 +60,8 @@ For EPAC, an electron, atom, boundary, ligand, or molecule remains an EPAC objec
 For consciousness work, stimulus, somatic response, integrated state, learned association, or persistent model remain consciousness-domain terms. UCNS may represent declared coupling geometry or scale transport only when that geometry is independently specified.
 
 Renormalization-group flow is therefore a useful external test case, not UCNS doctrine. If UCNS can express an RG scale flow without importing field-theory semantics, that is evidence for the abstraction. RG vocabulary does not become UCNS primitive vocabulary merely because the structures correspond.
+
+A second external fixture now exercises the exact multiplicative candidate with a six-axis varying-constants hypothesis. The mapping and its conditional invariants are documented in `docs/scale-transform-physics-fixture.md`. That fixture tests UCNS structure only; it does not validate the external physical premise.
 
 ## Usage guidance
 
