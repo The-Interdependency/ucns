@@ -61,7 +61,7 @@ For consciousness work, stimulus, somatic response, integrated state, learned as
 
 Renormalization-group flow is therefore a useful external test case, not UCNS doctrine. If UCNS can express an RG scale flow without importing field-theory semantics, that is evidence for the abstraction. RG vocabulary does not become UCNS primitive vocabulary merely because the structures correspond.
 
-A second external fixture now exercises the exact multiplicative candidate with a six-axis varying-constants hypothesis. The mapping and its conditional invariants are documented in `docs/scale-transform-physics-fixture.md`. That fixture tests UCNS structure only; it does not validate the external physical premise.
+Physics bindings, including the conditional six-axis confinement fixture formerly drafted here, belong in a consumer repository such as Stack. UCNS may supply the exact ordered integer weight vector and multiplicative action; the names `(epsilon, mu, c, hbar, m, L)`, the Compton/confinement algebra, varying-constants hypotheses, and all empirical or physical claims stay outside UCNS under exact provenance and non-transfer boundaries.
 
 ## Usage guidance
 
@@ -83,6 +83,7 @@ When adding a proposed scale transformation:
 - “The mapping loses a behaviorally relevant ligand distinction” — EDCM measurement/evaluation against an EPAC observable.
 - “Two consciousness time windows share this geometric coupling transform” — UCNS only after the coupling geometry and boundaries are independently declared.
 - “All such transformations are energy flows” — not licensed by structural recurrence; METAPAT/domain restraint applies.
+- “A six-axis physical hypothesis gives names to the ordered coordinates of `T_q`” — consumer/Stack physics fixture, not UCNS.
 
 ## Acceptance target
 
