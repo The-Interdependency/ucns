@@ -47,7 +47,7 @@ T_q(x)_i = q^w_i x_i
 
 for positive exact rational `q`, positive exact rational coordinates, and an ordered integer weight vector `w`. Actions with the same weights compose as `T_p o T_q = T_(p*q)`; reciprocal factors invert. A monomial `product(x_i^a_i)` is structurally invariant exactly when `sum(a_i*w_i) = 0`.
 
-The core carries no domain axis names. See `docs/scale-transform-physics-fixture.md` for a conditional external physics fixture that maps one six-axis hypothesis onto this action without promoting the physics premise into UCNS.
+The core carries no domain axis names. Physics, chemistry, language, consciousness, or other domain bindings belong in consumer repositories under exact provenance; those consumers may bind ordered coordinate names and claims without transferring them into UCNS.
 
 The poster above is a display certificate of those constructions. It is not an interpretation layer.
 
@@ -187,7 +187,6 @@ raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--
 PY
 .venv/bin/python -m build
 .venv/bin/python -m twine check dist/*
-.venv/bin/python tools/verify_distributions.py . dist
 ```
 
 The independent interval checks also require system MPFR (for example,
