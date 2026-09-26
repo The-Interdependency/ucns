@@ -10,7 +10,49 @@ UCNS assigns elements of an unknowable to completion through geometric motion.
 
 Assignment, ordered motion, orientation, nesting, recursive scale, and scoped completion are load-bearing. Text labels, lexical definitions, corpora, hashes, evaluator frameworks, and external semantic graphs are not substitutes for geometry.
 
+## Scale-transformation jurisdiction
+
+UCNS is the geometric and mathematical-representation substrate for constructing how structure changes across declared scale or representation boundaries. Its cross-domain role is structural, not semantic: a consumer may supply domain meaning and domain evidence, while UCNS owns only the geometry of the representation, motion, attachment, recursion, and transport it actually constructs.
+
+A claimed UCNS scale transformation must declare enough geometry to identify both sides of the transition and the operation between them. At minimum, the construction must make explicit:
+
+- the source and target geometric boundaries or carriers;
+- the geometric operation that relates them;
+- the attachment, origin, or provenance needed to establish continuity of the construction;
+- which geometric distinctions are retained, changed, or discarded by the operation; and
+- the standing of the relation: candidate, selected within a declared scope, ratified, or `hmmm`.
+
+Identity across scale is not inferred from similar coordinates, labels, hashes, or downstream meaning. Composition is likewise not assumed: when two scale transitions are claimed to compose, the composed geometric law must itself be constructed or tested.
+
+METAPAT remains the semantic authority for cross-domain terms and transfer constraints. EDCM owns measurement and evaluation. EPAC, consciousness constructions, language constructions, and other consumers retain their own domain semantics and evidence standards. Their recurrence may test UCNS structure; it does not move their semantics into UCNS.
+
+The present repository contains candidate pieces of this formalism, including exact carrier state, native Möbius return, radius/layer recursion, continuum-to-finite gonal trace, lattice address structure, an exact multiplicative scale-action candidate, displacement, lift selection, and motion. Their existence does not establish one complete scale-transformation law.
+
+## Multiplicative scale-action candidate
+
+UCNS has an executable domain-agnostic candidate action on an ordered positive exact-rational coordinate carrier:
+
+```text
+T_q(x)_i = q^w_i x_i
+```
+
+where `q > 0` is an exact rational factor and each `w_i` is an integer. For one fixed ordered weight vector, the candidate constructs exact composition, identity, and inverse:
+
+```text
+T_p o T_q = T_(p*q)
+T_1 = identity
+T_q^-1 = T_(1/q)
+```
+
+For a monomial `I_a(x) = product(x_i^a_i)`, the candidate's structural scale weight is `sum(a_i*w_i)`; the monomial is invariant under the action when that weight is zero.
+
+This establishes an exact algebraic candidate component, not the complete UCNS scale-transition law. UCNS assigns no domain meaning to the coordinate positions or weights. A consumer may bind physical, chemical, linguistic, consciousness, or other meanings externally under its own authority and evidence.
+
+`hmmm`: how this diagonal action binds to native Möbius origin/attachment, recursive carrier transitions, and the full higher-dimensional construction remains unresolved.
+
+
 ## Public Gonol carrier
+
 
 The exact 157-position Public Gonol arrangement is retained as geometry. Every admitted glyph is a Public Gonol function position. No active UCNS rule divides these positions into letters, punctuation, symbols, digits, lexical glyphs, or other linguistic classes.
 
@@ -168,4 +210,4 @@ Those experiments remain recoverable from Git history but carry no current UCNS 
 
 A construction may close only relative to its declared geometric boundary. No executable convenience is promoted to the complete UCNS merely because it produces coordinates, hashes, scores, or labels.
 
-`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates; the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.
+`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates; one explicit composition law binding the present candidate pieces into a complete UCNS scale-transformation formalism; the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.
