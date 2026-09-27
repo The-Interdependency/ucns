@@ -284,3 +284,7 @@ checks; it does not select geometry, ratify candidates, or establish freshness.
 Distribution replays hash the complete extracted tree before and after each full suite, reject persistent source changes, and retain the full source map. Each installed distribution inventory covers package files, dist-info payloads, and validated uv installer metadata/RECORD; imports remain separately witnessed. Check downloaded archives from their directory with `sha256sum -c ../replay/archives.sha256`. These checks establish execution provenance, not scientific ratification.
 
 Standalone replay requires uv 0.11.18. It verifies the bootstrap version, synchronizes the verification environment from the hash-locked export, uses that environment’s uv for later installation, and retains both executable identities. Fixture source builds consume the same locked dependency export. Optimized Python mode is rejected before evidence can be produced.
+
+## License
+
+This repository is licensed under the Mozilla Public License 2.0 (SPDX: `MPL-2.0`). See [`LICENSE`](LICENSE) for the full text.
