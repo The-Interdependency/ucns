@@ -181,7 +181,7 @@ compose to identity; that tautology is not new evidence of path holonomy.
 
 `docs/work-graphs/native-mobius-comparison-inputs.json` is the shared exact
 input-authority graph, not a claim about a future consumer deployment. Its digest
-is `bd1059322ef8223d2a6531f84591e76970db67aa3982f1cbfd174d5039b5ecd5`. The output implementation is identified separately by
+is `5d3b887d6165f3a5154c32b37378cee7e385bcb83b833a5f85bf01ec6afa6ca1`. The output implementation is identified separately by
 the delivering commit and source hashes. Consumer receipts must additionally pin
 the delivered UCNS implementation; they must not mistake the native-law input
 commit in this graph for that later output. Certification and empirical status
