@@ -103,6 +103,12 @@
 #   then: the exact domain-agnostic multiplicative scale action, application receipt, invariant helper, builders, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-23
+#
+# id: geometry_public_surface_includes_structural_convergence_candidate
+#   given: the active ucns package facade is imported
+#   then: the domain-neutral multi-origin path mapping invariant and convergence witness records are public without semantic recurrence judgment
+#   class: correctness
+#   since: 2026-10-03
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -265,6 +271,15 @@ from .scale_action import (
     monomial_value,
     replay_scale_action_record,
 )
+from .structural_convergence import (
+    SCHEMA as STRUCTURAL_CONVERGENCE_SCHEMA,
+    VERSION as STRUCTURAL_CONVERGENCE_VERSION,
+    OriginPath,
+    StructuralMapping,
+    InvariantObservation,
+    StructuralConvergenceWitness,
+    build_convergence_witness,
+)
 from .mobius_vesica import __all__ as _mobius_vesica_all
 from .mobius_vesica import *  # noqa: F401,F403 - geometric public module
 from .mobius_seed import __all__ as _mobius_seed_all
@@ -324,6 +339,13 @@ __all__ = list(dict.fromkeys([
     "ScaleActionError",
     "ScaleActionRecord",
     "MultiplicativeScaleAction",
+    "STRUCTURAL_CONVERGENCE_SCHEMA",
+    "STRUCTURAL_CONVERGENCE_VERSION",
+    "OriginPath",
+    "StructuralMapping",
+    "InvariantObservation",
+    "StructuralConvergenceWitness",
+    "build_convergence_witness",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
