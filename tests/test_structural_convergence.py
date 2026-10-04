@@ -1,3 +1,45 @@
+# === CHECKS ===
+# id: check_convergence_path_distinction
+#   proves: convergence_preserves_path_distinction
+#   call: self::test_witness_preserves_distinct_paths_and_independence
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_convergence_shared_ancestry
+#   proves: convergence_preserves_path_distinction
+#   call: self::test_shared_ancestry_is_recorded_without_destroying_witness
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_convergence_typed_replay
+#   proves: convergence_replay_is_typed
+#   call: self::test_unknown_replay_remains_typed_unknown
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_convergence_digest_tamper
+#   proves: convergence_digest_tamper_rejected
+#   call: self::test_receipt_is_deterministic_and_tamper_fails_closed
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_convergence_no_semantic_judgment
+#   proves: convergence_records_not_judges
+#   call: self::test_no_semantic_outcome_is_encoded
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+# === END CHECKS ===
+
 from dataclasses import replace
 import pytest
 
