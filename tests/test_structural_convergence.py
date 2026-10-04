@@ -38,10 +38,18 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+# id: check_convergence_facade
+#   proves: geometry_public_surface_includes_structural_convergence_candidate
+#   call: self::test_facade_exports_structural_convergence_candidate
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
 import pytest
+import ucns
 
 from ucns.structural_convergence import (
     InvariantObservation,
@@ -104,3 +112,11 @@ def test_no_semantic_outcome_is_encoded():
     assert "outcome" not in keys
     assert "analogy" not in keys
     assert "semantic_equivalence" not in keys
+
+
+def test_facade_exports_structural_convergence_candidate():
+    assert hasattr(ucns, "StructuralConvergenceWitness")
+    assert hasattr(ucns, "OriginPath")
+    assert hasattr(ucns, "StructuralMapping")
+    assert hasattr(ucns, "InvariantObservation")
+    assert hasattr(ucns, "build_convergence_witness")
