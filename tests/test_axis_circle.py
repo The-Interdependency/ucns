@@ -30,6 +30,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_axis_circle_replay_normalizes_json_integer_limit_failure
+#   proves: axis_circle_fails_closed
+#   call: self::test_axis_circle_replay_normalizes_json_integer_limit_failure
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
