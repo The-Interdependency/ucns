@@ -43,6 +43,12 @@
 #   then: construction raises AxisCircleError rather than coercing or inventing a position
 #   class: safety
 #   since: 2026-10-05
+#
+# id: axis_circle_work_graph_binds_enforced_skill_authority
+#   given: the polyglot axis-circle work graph coordinates UCNS with external consumers
+#   then: its skill-lib participant matches the exact vendored skill authority enforced by this checkout and the graph digest recomputes
+#   class: provenance_contract
+#   since: 2026-10-05
 # === END CONTRACTS ===
 
 """Exact candidate identity for an axis as a position on its finite origin circle.
