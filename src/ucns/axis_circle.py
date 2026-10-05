@@ -7,7 +7,7 @@
 #   public_surface: SCHEMA, VERSION, AxisCircleError, AxisCirclePosition, build_axis_circle_position, replay_axis_circle_position
 #   internal_surface: exact ordinal-to-turn mapping, origin receipt validation, deterministic identity and replay receipt
 #   auth_boundary: none
-#   storage_boundary: immutable records only
+#   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
@@ -55,6 +55,9 @@ which ordered origin is being used; UCNS supplies only the geometry.
 Labels, words, language tags, dictionary senses, and other semantic names are
 intentionally absent. A consumer may attach any number of external labels to
 the resulting identity_sha256 without changing the UCNS object.
+
+The candidate's canonical JSON transport bounds axis_count to 4096 bits. That
+is a serialization boundary, not a geometric claim about finite origins.
 """
 
 from __future__ import annotations
@@ -68,6 +71,7 @@ import re
 SCHEMA = "ucns.axis-circle-position-candidate"
 VERSION = "0.1.0"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_MAX_AXIS_COUNT_BITS = 4096
 
 
 class AxisCircleError(ValueError):
@@ -75,13 +79,16 @@ class AxisCircleError(ValueError):
 
 
 def _canonical(payload: dict[str, object]) -> bytes:
-    return json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        allow_nan=False,
-    ).encode("utf-8")
+    try:
+        return json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (ValueError, OverflowError, RecursionError) as exc:
+        raise AxisCircleError("axis-circle payload exceeds canonical JSON transport support") from exc
 
 
 def _identity_payload(
@@ -118,6 +125,8 @@ class AxisCirclePosition:
             raise AxisCircleError("origin_sha256 must be a lowercase hexadecimal SHA-256")
         if isinstance(self.axis_count, bool) or not isinstance(self.axis_count, int) or self.axis_count <= 0:
             raise AxisCircleError("axis_count must be a positive integer")
+        if self.axis_count.bit_length() > _MAX_AXIS_COUNT_BITS:
+            raise AxisCircleError("axis_count exceeds the 4096-bit canonical JSON transport bound")
         if isinstance(self.axis_ordinal, bool) or not isinstance(self.axis_ordinal, int):
             raise AxisCircleError("axis_ordinal must be an integer")
         if not 0 <= self.axis_ordinal < self.axis_count:
@@ -152,6 +161,8 @@ def build_axis_circle_position(
         raise AxisCircleError("origin_sha256 must be a lowercase hexadecimal SHA-256")
     if isinstance(axis_count, bool) or not isinstance(axis_count, int) or axis_count <= 0:
         raise AxisCircleError("axis_count must be a positive integer")
+    if axis_count.bit_length() > _MAX_AXIS_COUNT_BITS:
+        raise AxisCircleError("axis_count exceeds the 4096-bit canonical JSON transport bound")
     if isinstance(axis_ordinal, bool) or not isinstance(axis_ordinal, int):
         raise AxisCircleError("axis_ordinal must be an integer")
     if not 0 <= axis_ordinal < axis_count:
