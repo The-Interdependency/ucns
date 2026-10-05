@@ -45,13 +45,9 @@ from ucns.axis_circle import (
 )
 
 
-ORIGIN_A = "a" * 64
-ORIGIN_B = "b" * 64
-
-
 def test_axis_circle_position_is_exact() -> None:
     position = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=9,
         axis_ordinal=4,
     )
@@ -65,12 +61,12 @@ def test_axis_circle_identity_is_label_independent() -> None:
     # exactly the same identity whether a consumer calls it heart, cardiac,
     # corazon, or anything else.
     first = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=3,
         axis_ordinal=1,
     )
     second = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=3,
         axis_ordinal=1,
     )
@@ -82,17 +78,17 @@ def test_axis_circle_identity_is_label_independent() -> None:
 
 def test_axis_circle_origin_change_changes_identity() -> None:
     first = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=3,
         axis_ordinal=1,
     )
     changed_origin = build_axis_circle_position(
-        origin_sha256=ORIGIN_B,
+        origin_sha256="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
         axis_count=3,
         axis_ordinal=1,
     )
     changed_axis = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=3,
         axis_ordinal=2,
     )
@@ -103,15 +99,15 @@ def test_axis_circle_origin_change_changes_identity() -> None:
 def test_axis_circle_fails_closed() -> None:
     for kwargs in (
         {"origin_sha256": "x" * 64, "axis_count": 3, "axis_ordinal": 1},
-        {"origin_sha256": ORIGIN_A, "axis_count": 0, "axis_ordinal": 0},
-        {"origin_sha256": ORIGIN_A, "axis_count": 3, "axis_ordinal": 3},
-        {"origin_sha256": ORIGIN_A, "axis_count": 3, "axis_ordinal": True},
+        {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 0, "axis_ordinal": 0},
+        {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 3, "axis_ordinal": 3},
+        {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 3, "axis_ordinal": True},
     ):
         with pytest.raises(AxisCircleError):
             build_axis_circle_position(**kwargs)
 
     valid = build_axis_circle_position(
-        origin_sha256=ORIGIN_A,
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         axis_count=3,
         axis_ordinal=1,
     )
