@@ -177,7 +177,10 @@ def replay_axis_circle_position(data: bytes) -> AxisCirclePosition:
         raise AxisCircleError("axis-circle receipt must be bytes")
     try:
         obj = json.loads(data.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, ValueError) as exc:
+        # json.loads may raise ValueError (rather than JSONDecodeError) for
+        # interpreter-enforced integer digit limits. Normalize every parse
+        # failure to the documented fail-closed boundary.
         raise AxisCircleError("axis-circle receipt is not valid canonical JSON") from exc
     if not isinstance(obj, dict):
         raise AxisCircleError("axis-circle receipt root must be an object")
