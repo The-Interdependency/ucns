@@ -46,11 +46,22 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_axis_circle_transport_bound
+#   proves: axis_circle_fails_closed
+#   call: self::test_axis_circle_declares_and_enforces_transport_bound
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
 from fractions import Fraction
+from hashlib import sha256
 import json
+from pathlib import Path
+import re
 
 import pytest
 
@@ -149,3 +160,33 @@ def test_axis_circle_replay_normalizes_json_recursion_failure() -> None:
     deeply_nested = b"[" * 2000 + b"0" + b"]" * 2000
     with pytest.raises(AxisCircleError):
         replay_axis_circle_position(deeply_nested)
+
+
+def test_axis_circle_declares_and_enforces_transport_bound() -> None:
+    within = build_axis_circle_position(
+        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        axis_count=1 << 4095,
+        axis_ordinal=1,
+    )
+    assert within.axis_count.bit_length() == 4096
+    with pytest.raises(AxisCircleError, match="4096-bit"):
+        build_axis_circle_position(
+            origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            axis_count=1 << 4096,
+            axis_ordinal=1,
+        )
+
+
+def test_axis_circle_work_graph_uses_enforced_skill_source() -> None:
+    root = Path(__file__).resolve().parents[1]
+    graph = json.loads((root / "docs/work-graphs/polyglot-circle-identity-v0.json").read_text(encoding="utf-8"))
+    expected = sha256(json.dumps(
+        {key: graph[key] for key in ("repositories", "boundaries")},
+        sort_keys=True, separators=(",", ":"),
+    ).encode()).hexdigest()
+    assert graph["work_graph_sha256"] == expected
+    readme = (root / ".agents/skills/README.md").read_text(encoding="utf-8")
+    match = re.search(r"Source commit: `([0-9a-f]{40})`", readme)
+    assert match is not None
+    skill = next(row for row in graph["repositories"] if row["repository"] == "The-Interdependency/skill-lib")
+    assert skill["commit"] == match.group(1)
