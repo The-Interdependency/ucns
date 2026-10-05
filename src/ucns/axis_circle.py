@@ -63,8 +63,10 @@ intentionally absent. A consumer may attach any number of external labels to
 the resulting identity_sha256 without changing the UCNS object.
 
 Canonical JSON integer rendering and replay are implemented without Python's
-process-wide integer-to-decimal digit limit, so finite exact inputs do not gain
-an accidental geometry bound from host interpreter configuration.
+process-wide integer-to-decimal digit limit. The candidate receipt transport
+admits integers up to 4096 decimal digits and rejects larger values before
+bigint conversion. This is an explicit serialization/resource boundary, not a
+claim that finite UCNS origins cease beyond that size.
 """
 
 from __future__ import annotations
@@ -78,6 +80,8 @@ import re
 SCHEMA = "ucns.axis-circle-position-candidate"
 VERSION = "0.1.0"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_MAX_CANONICAL_INTEGER_DIGITS = 4096
+_MAX_CANONICAL_INTEGER = 10 ** _MAX_CANONICAL_INTEGER_DIGITS - 1
 
 
 class AxisCircleError(ValueError):
@@ -93,6 +97,8 @@ def _int_decimal(value: int) -> str:
         return "0"
     sign = "-" if value < 0 else ""
     value = abs(value)
+    if value > _MAX_CANONICAL_INTEGER:
+        raise AxisCircleError("canonical integer exceeds the 4096-decimal-digit receipt bound")
     chunks: list[int] = []
     base = 1_000_000_000
     while value:
@@ -112,6 +118,8 @@ def _parse_decimal_integer(text: str) -> int:
     digits = text[1:] if sign < 0 else text
     if not digits or not digits.isascii() or not digits.isdigit():
         raise AxisCircleError("canonical JSON integer is malformed")
+    if len(digits) > _MAX_CANONICAL_INTEGER_DIGITS:
+        raise AxisCircleError("canonical integer exceeds the 4096-decimal-digit receipt bound")
     value = 0
     first = len(digits) % 9 or 9
     value = int(digits[:first])
