@@ -4,7 +4,7 @@
   <img src="docs/ucns-geometry-repository.svg" alt="UCNS — Geometry Repository" width="100%">
 </p>
 
-UCNS is a geometry repository.
+UCNS is a geometry repository and domain-independent mathematical-representation substrate for constructing transformations across declared scale or representation boundaries.
 
 Its active scope is limited to constructions that directly represent or test geometry:
 
@@ -14,12 +14,43 @@ Its active scope is limited to constructions that directly represent or test geo
 - Möbius vesica and Seed-of-Life constructions and certificates;
 - candidate exact finite modular-action orbit and circle geometry;
 - candidate exact visible-circle continuum wave / gonal boundary traces;
+- candidate exact multiplicative scale actions and monomial-invariant kernels;
 - prime-indexed ribbon, link, interval, Milnor, Alexander, and related topological geometry;
 - numerical machinery used to certify those constructions.
 
 Everything semantic is outside this repository's active domain: lexical corpora, definitions, morphology, NLP parsing, function-name semantics, EDCM measurement profiles, PTCNA state, evaluator laboratories, and cross-stack adapters.
 
+## Scale-transformation jurisdiction
+
+UCNS supplies geometry for asking what survives, changes, or disappears when a construction is represented across a declared scale or representation boundary. A consumer supplies domain meaning; METAPAT constrains cross-domain semantic transfer; EDCM measures claimed observables. UCNS does not absorb those roles.
+
+The current repository already contains pieces of this architecture: carrier and origin state, native Möbius transport and return, candidate radius/layer recursion, continuum-to-finite gonal traces, discrete lattice addresses, displacement and lift candidates, and candidate motion. These are evidence-bearing components, not yet one complete scale-transformation law.
+
+Use this placement test before adding a cross-domain feature:
+
+```text
+geometric representation / transport across scale -> UCNS
+domain meaning and domain evidence                  -> consuming domain
+cross-domain semantic authority                    -> METAPAT
+measurement / evaluation of claimed observables    -> EDCM
+```
+
+See `docs/scale-transformation-jurisdiction.md` for the contract, current primitive audit, usage guidance, and unresolved boundary.
+
+### Multiplicative scale-action candidate
+
+`src/ucns/scale_action.py` implements one exact candidate component:
+
+```text
+T_q(x)_i = q^w_i x_i
+```
+
+for positive exact rational `q`, positive exact rational coordinates, and an ordered integer weight vector `w`. Actions with the same weights compose as `T_p o T_q = T_(p*q)`; reciprocal factors invert. A monomial `product(x_i^a_i)` is structurally invariant exactly when `sum(a_i*w_i) = 0`.
+
+The core carries no domain axis names. Physics, chemistry, language, consciousness, or other domain bindings belong in consumer repositories under exact provenance; those consumers may bind ordered coordinate names and claims without transferring them into UCNS.
+
 The poster above is a display certificate of those constructions. It is not an interpretation layer.
+
 
 ## Public Gonol
 
@@ -156,7 +187,6 @@ raise SystemExit(run_suite(["tests", "-c", "pyproject.toml", "--noconftest", "--
 PY
 .venv/bin/python -m build
 .venv/bin/python -m twine check dist/*
-.venv/bin/python tools/verify_distributions.py . dist
 ```
 
 The independent interval checks also require system MPFR (for example,
