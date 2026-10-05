@@ -54,6 +54,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_axis_circle_work_graph_skill_authority
+#   proves: axis_circle_work_graph_binds_enforced_skill_authority
+#   call: self::test_axis_circle_work_graph_uses_enforced_skill_source
+#   requires: python3
+#   timeout: 10
+#   mutates: filesystem_read
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
