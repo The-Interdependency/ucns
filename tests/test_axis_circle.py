@@ -98,7 +98,7 @@ def test_axis_circle_origin_change_changes_identity() -> None:
 
 def test_axis_circle_fails_closed() -> None:
     for kwargs in (
-        {"origin_sha256": "x" * 64, "axis_count": 3, "axis_ordinal": 1},
+        {"origin_sha256": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "axis_count": 3, "axis_ordinal": 1},
         {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 0, "axis_ordinal": 0},
         {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 3, "axis_ordinal": 3},
         {"origin_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "axis_count": 3, "axis_ordinal": True},
@@ -114,10 +114,16 @@ def test_axis_circle_fails_closed() -> None:
     with pytest.raises(AxisCircleError):
         replace(valid, turn=Fraction(2, 3))
     with pytest.raises(AxisCircleError):
-        replace(valid, identity_sha256="0" * 64)
+        replace(valid, identity_sha256="0000000000000000000000000000000000000000000000000000000000000000")
 
     obj = json.loads(valid.receipt_bytes())
     obj["axis_ordinal"] = 2
     tampered = json.dumps(obj, sort_keys=True, separators=(",", ":")).encode("utf-8")
     with pytest.raises(AxisCircleError):
         replay_axis_circle_position(tampered)
+
+
+def test_axis_circle_replay_normalizes_json_integer_limit_failure() -> None:
+    oversized = (b'{"schema":"ucns.axis-circle-position-candidate","version":"0.1.0","origin_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","axis_count":' + b"9" * 5000 + b',"axis_ordinal":1,"turn":{"numerator":1,"denominator":3},"identity_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}')
+    with pytest.raises(AxisCircleError):
+        replay_axis_circle_position(oversized)
