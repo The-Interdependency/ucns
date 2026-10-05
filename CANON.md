@@ -70,6 +70,25 @@ The candidate does not assign special physical, prime, Fibonacci, PCEA, EPAC,
 or other downstream significance to `m`, `a`, the carrier, or any observed
 cycle. Canonical residues are `0..m-1`; display aliases belong to renderers.
 
+## Axis-circle object identity candidate
+
+For any explicitly identified finite ordered origin, UCNS may represent one axis
+at the exact normalized-circle position r/N, where N is the axis count and r is
+the zero-based axis ordinal. The origin itself is bound by the owning
+construction's exact SHA-256 receipt so equal ordinals in distinct origins do
+not collapse into one object identity.
+
+The resulting identity is geometric and label-independent. Text labels,
+language tags, definitions, translations, and register names remain external
+attachments and cannot alter the UCNS identity.
+
+This is an executable **candidate** specialization of the existing exact gonal
+circle placement. It does not yet establish that every UCNS object class,
+including non-finite or later recursive objects, must use this identity form.
+
+`hmmm`: universalization of finite-origin circle identity beyond the declared
+candidate scope.
+
 ## Continuum wave / gonal boundary trace
 
 On the visible circle boundary, UCNS has an executable **candidate**
