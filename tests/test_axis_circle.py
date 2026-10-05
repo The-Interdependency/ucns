@@ -55,6 +55,14 @@
 #   mutates: none
 #   cleanup: none
 #
+# id: check_axis_circle_receipt_size_bound
+#   proves: axis_circle_fails_closed
+#   call: self::test_axis_circle_replay_rejects_oversized_integer_before_conversion
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
 # id: check_axis_circle_work_graph_skill_authority
 #   proves: axis_circle_work_graph_binds_enforced_skill_authority
 #   call: self::test_axis_circle_work_graph_uses_enforced_skill_source
@@ -186,6 +194,16 @@ def test_axis_circle_large_integer_transport_ignores_process_digit_limit() -> No
         assert replay_axis_circle_position(position.receipt_bytes()) == position
     finally:
         sys.set_int_max_str_digits(prior)
+
+
+def test_axis_circle_replay_rejects_oversized_integer_before_conversion() -> None:
+    payload = (
+        b'{"axis_count":' + b'9' * 4097
+        + b',"axis_ordinal":1,"origin_sha256":"' + b'a' * 64
+        + b'","schema":"ucns.axis-circle-position-candidate","version":"0.1.0"}'
+    )
+    with pytest.raises(AxisCircleError, match="4096-decimal-digit"):
+        replay_axis_circle_position(payload)
 
 
 def test_axis_circle_work_graph_uses_enforced_skill_source() -> None:
