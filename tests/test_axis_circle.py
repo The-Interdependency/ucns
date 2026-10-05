@@ -38,6 +38,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_axis_circle_replay_normalizes_json_recursion_failure
+#   proves: axis_circle_fails_closed
+#   call: self::test_axis_circle_replay_normalizes_json_recursion_failure
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
@@ -135,3 +143,9 @@ def test_axis_circle_replay_normalizes_json_integer_limit_failure() -> None:
     oversized = (b'{"schema":"ucns.axis-circle-position-candidate","version":"0.1.0","origin_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","axis_count":' + b"9" * 5000 + b',"axis_ordinal":1,"turn":{"numerator":1,"denominator":3},"identity_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}')
     with pytest.raises(AxisCircleError):
         replay_axis_circle_position(oversized)
+
+
+def test_axis_circle_replay_normalizes_json_recursion_failure() -> None:
+    deeply_nested = b"[" * 2000 + b"0" + b"]" * 2000
+    with pytest.raises(AxisCircleError):
+        replay_axis_circle_position(deeply_nested)
