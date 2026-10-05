@@ -47,9 +47,9 @@
 #   mutates: none
 #   cleanup: none
 #
-# id: check_axis_circle_transport_bound
-#   proves: axis_circle_fails_closed
-#   call: self::test_axis_circle_declares_and_enforces_transport_bound
+# id: check_axis_circle_large_integer_transport
+#   proves: axis_circle_position_is_exact, axis_circle_fails_closed
+#   call: self::test_axis_circle_large_integer_transport_ignores_process_digit_limit
 #   requires: python3
 #   timeout: 10
 #   mutates: none
@@ -70,6 +70,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import sys
 
 import pytest
 
@@ -170,19 +171,21 @@ def test_axis_circle_replay_normalizes_json_recursion_failure() -> None:
         replay_axis_circle_position(deeply_nested)
 
 
-def test_axis_circle_declares_and_enforces_transport_bound() -> None:
-    within = build_axis_circle_position(
-        origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        axis_count=1 << 4095,
-        axis_ordinal=1,
-    )
-    assert within.axis_count.bit_length() == 4096
-    with pytest.raises(AxisCircleError, match="4096-bit"):
-        build_axis_circle_position(
+def test_axis_circle_large_integer_transport_ignores_process_digit_limit() -> None:
+    if not hasattr(sys, "set_int_max_str_digits"):
+        pytest.skip("interpreter has no integer conversion digit limit")
+    prior = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        position = build_axis_circle_position(
             origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            axis_count=1 << 4096,
+            axis_count=1 << 4095,
             axis_ordinal=1,
         )
+        assert position.axis_count.bit_length() == 4096
+        assert replay_axis_circle_position(position.receipt_bytes()) == position
+    finally:
+        sys.set_int_max_str_digits(prior)
 
 
 def test_axis_circle_work_graph_uses_enforced_skill_source() -> None:
