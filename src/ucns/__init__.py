@@ -103,6 +103,12 @@
 #   then: the lift-selection builders, error, and controls runner are public with candidate standing
 #   class: correctness
 #   since: 2026-09-21
+#
+# id: geometry_public_surface_includes_recursive_carrier_candidate
+#   given: the active ucns package facade is imported
+#   then: the recursive carrier successor builder, replay, and error are public with candidate standing
+#   class: correctness
+#   since: 2026-10-04
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -245,6 +251,13 @@ from .epicyclic_graph import (
     replay_epicyclic_graph,
     run_epicyclic_graph_controls,
 )
+from .recursive_carrier import (
+    SCHEMA as RECURSIVE_CARRIER_SCHEMA,
+    VERSION as RECURSIVE_CARRIER_VERSION,
+    RecursiveCarrierError,
+    build_recursive_carrier,
+    replay_recursive_carrier,
+)
 from .lift_selection import (
     SCHEMA as LIFT_SELECTION_SCHEMA,
     VERSION as LIFT_SELECTION_VERSION,
@@ -330,6 +343,9 @@ __all__ = list(dict.fromkeys([
     "RADIUS_RECURSION_VERSION",
     "RadiusRecursionError",
     "RadiusRecursionRecord",
+    "RECURSIVE_CARRIER_SCHEMA",
+    "RECURSIVE_CARRIER_VERSION",
+    "RecursiveCarrierError",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
@@ -355,6 +371,7 @@ __all__ = list(dict.fromkeys([
     "build_placement_frame",
     "build_provenance_interval_lift",
     "build_radius_recursion",
+    "build_recursive_carrier",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
@@ -386,6 +403,7 @@ __all__ = list(dict.fromkeys([
     "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",
+    "replay_recursive_carrier",
     "replay_visible_displacement",
     "run_displacement_selection",
     "run_epicyclic_graph_controls",
