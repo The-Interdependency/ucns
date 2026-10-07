@@ -46,11 +46,39 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_axis_circle_large_integer_transport
+#   proves: axis_circle_position_is_exact, axis_circle_fails_closed
+#   call: self::test_axis_circle_large_integer_transport_ignores_process_digit_limit
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_axis_circle_receipt_size_bound
+#   proves: axis_circle_fails_closed
+#   call: self::test_axis_circle_replay_rejects_oversized_integer_before_conversion
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
+#
+# id: check_axis_circle_work_graph_skill_authority
+#   proves: axis_circle_work_graph_binds_enforced_skill_authority
+#   call: self::test_axis_circle_work_graph_uses_enforced_skill_source
+#   requires: python3
+#   timeout: 10
+#   mutates: filesystem_read
+#   cleanup: none
 # === END CHECKS ===
 
 from dataclasses import replace
 from fractions import Fraction
+from hashlib import sha256
 import json
+from pathlib import Path
+import re
+import sys
 
 import pytest
 
@@ -149,3 +177,45 @@ def test_axis_circle_replay_normalizes_json_recursion_failure() -> None:
     deeply_nested = b"[" * 2000 + b"0" + b"]" * 2000
     with pytest.raises(AxisCircleError):
         replay_axis_circle_position(deeply_nested)
+
+
+def test_axis_circle_large_integer_transport_ignores_process_digit_limit() -> None:
+    if not hasattr(sys, "set_int_max_str_digits"):
+        pytest.skip("interpreter has no integer conversion digit limit")
+    prior = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        position = build_axis_circle_position(
+            origin_sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            axis_count=1 << 4095,
+            axis_ordinal=1,
+        )
+        assert position.axis_count.bit_length() == 4096
+        assert replay_axis_circle_position(position.receipt_bytes()) == position
+    finally:
+        sys.set_int_max_str_digits(prior)
+
+
+def test_axis_circle_replay_rejects_oversized_integer_before_conversion() -> None:
+    payload = (
+        b'{"axis_count":' + b'9' * 4097
+        + b',"axis_ordinal":1,"origin_sha256":"' + b'a' * 64
+        + b'","schema":"ucns.axis-circle-position-candidate","version":"0.1.0"}'
+    )
+    with pytest.raises(AxisCircleError, match="4096-decimal-digit"):
+        replay_axis_circle_position(payload)
+
+
+def test_axis_circle_work_graph_uses_enforced_skill_source() -> None:
+    root = Path(__file__).resolve().parents[1]
+    graph = json.loads((root / "docs/work-graphs/polyglot-circle-identity-v0.json").read_text(encoding="utf-8"))
+    expected = sha256(json.dumps(
+        {key: graph[key] for key in ("repositories", "boundaries")},
+        sort_keys=True, separators=(",", ":"),
+    ).encode()).hexdigest()
+    assert graph["work_graph_sha256"] == expected
+    readme = (root / ".agents/skills/README.md").read_text(encoding="utf-8")
+    match = re.search(r"Source commit: `([0-9a-f]{40})`", readme)
+    assert match is not None
+    skill = next(row for row in graph["repositories"] if row["repository"] == "The-Interdependency/skill-lib")
+    assert skill["commit"] == match.group(1)

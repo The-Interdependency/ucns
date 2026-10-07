@@ -7,7 +7,7 @@
 #   public_surface: SCHEMA, VERSION, AxisCircleError, AxisCirclePosition, build_axis_circle_position, replay_axis_circle_position
 #   internal_surface: exact ordinal-to-turn mapping, origin receipt validation, deterministic identity and replay receipt
 #   auth_boundary: none
-#   storage_boundary: immutable records only
+#   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
@@ -43,6 +43,12 @@
 #   then: construction raises AxisCircleError rather than coercing or inventing a position
 #   class: safety
 #   since: 2026-10-05
+#
+# id: axis_circle_work_graph_binds_enforced_skill_authority
+#   given: the polyglot axis-circle work graph coordinates UCNS with external consumers
+#   then: its skill-lib participant matches the exact vendored skill authority enforced by this checkout and the graph digest recomputes
+#   class: provenance_contract
+#   since: 2026-10-05
 # === END CONTRACTS ===
 
 """Exact candidate identity for an axis as a position on its finite origin circle.
@@ -55,6 +61,12 @@ which ordered origin is being used; UCNS supplies only the geometry.
 Labels, words, language tags, dictionary senses, and other semantic names are
 intentionally absent. A consumer may attach any number of external labels to
 the resulting identity_sha256 without changing the UCNS object.
+
+Canonical JSON integer rendering and replay are implemented without Python's
+process-wide integer-to-decimal digit limit. The candidate receipt transport
+admits integers up to 4096 decimal digits and rejects larger values before
+bigint conversion. This is an explicit serialization/resource boundary, not a
+claim that finite UCNS origins cease beyond that size.
 """
 
 from __future__ import annotations
@@ -68,20 +80,82 @@ import re
 SCHEMA = "ucns.axis-circle-position-candidate"
 VERSION = "0.1.0"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_MAX_CANONICAL_INTEGER_DIGITS = 4096
+_MAX_CANONICAL_INTEGER = 10 ** _MAX_CANONICAL_INTEGER_DIGITS - 1
 
 
 class AxisCircleError(ValueError):
     """Raised when an axis-circle identity fails closed."""
 
 
+def _int_decimal(value: int) -> str:
+    """Render an integer without Python's process-wide int->str digit limit."""
+
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise AxisCircleError("canonical integer must be an int")
+    if value == 0:
+        return "0"
+    sign = "-" if value < 0 else ""
+    value = abs(value)
+    if value > _MAX_CANONICAL_INTEGER:
+        raise AxisCircleError("canonical integer exceeds the 4096-decimal-digit receipt bound")
+    chunks: list[int] = []
+    base = 1_000_000_000
+    while value:
+        value, chunk = divmod(value, base)
+        chunks.append(chunk)
+    head = str(chunks.pop())
+    tail = "".join(f"{chunk:09d}" for chunk in reversed(chunks))
+    return sign + head + tail
+
+
+def _parse_decimal_integer(text: str) -> int:
+    """Parse a JSON integer without Python's process-wide str->int digit limit."""
+
+    if not isinstance(text, str) or not text:
+        raise AxisCircleError("canonical JSON integer is malformed")
+    sign = -1 if text.startswith("-") else 1
+    digits = text[1:] if sign < 0 else text
+    if not digits or not digits.isascii() or not digits.isdigit():
+        raise AxisCircleError("canonical JSON integer is malformed")
+    if len(digits) > _MAX_CANONICAL_INTEGER_DIGITS:
+        raise AxisCircleError("canonical integer exceeds the 4096-decimal-digit receipt bound")
+    value = 0
+    first = len(digits) % 9 or 9
+    value = int(digits[:first])
+    for offset in range(first, len(digits), 9):
+        value = value * 1_000_000_000 + int(digits[offset:offset + 9])
+    return sign * value
+
+
+def _canonical_json(value: object) -> str:
+    if value is None:
+        return "null"
+    if value is True:
+        return "true"
+    if value is False:
+        return "false"
+    if isinstance(value, int):
+        return _int_decimal(value)
+    if isinstance(value, str):
+        return json.dumps(value, ensure_ascii=False)
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            raise AxisCircleError("canonical JSON object keys must be strings")
+        return "{" + ",".join(
+            json.dumps(key, ensure_ascii=False) + ":" + _canonical_json(value[key])
+            for key in sorted(value)
+        ) + "}"
+    if isinstance(value, (list, tuple)):
+        return "[" + ",".join(_canonical_json(item) for item in value) + "]"
+    raise AxisCircleError("axis-circle payload contains unsupported canonical JSON value")
+
+
 def _canonical(payload: dict[str, object]) -> bytes:
-    return json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        allow_nan=False,
-    ).encode("utf-8")
+    try:
+        return _canonical_json(payload).encode("utf-8")
+    except (ValueError, OverflowError, RecursionError) as exc:
+        raise AxisCircleError("axis-circle payload cannot be rendered canonically") from exc
 
 
 def _identity_payload(
@@ -176,7 +250,12 @@ def replay_axis_circle_position(data: bytes) -> AxisCirclePosition:
     if not isinstance(data, bytes):
         raise AxisCircleError("axis-circle receipt must be bytes")
     try:
-        obj = json.loads(data.decode("utf-8"))
+        obj = json.loads(
+            data.decode("utf-8"),
+            parse_int=_parse_decimal_integer,
+            parse_float=lambda _: (_ for _ in ()).throw(AxisCircleError("floating-point JSON is not canonical")),
+            parse_constant=lambda _: (_ for _ in ()).throw(AxisCircleError("non-finite JSON is not canonical")),
+        )
     except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         # json.loads may raise ValueError for interpreter-enforced integer
         # digit limits or RecursionError for excessive nesting. Normalize
