@@ -6,9 +6,9 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
-# id: check_recursive_carrier_preserves_structural_null_attachment
-#   proves: recursive_carrier_preserves_structural_null_attachment
-#   call: self::test_origin_attachment_is_preserved
+# id: check_recursive_carrier_leaves_unwitnessed_origin_unresolved
+#   proves: recursive_carrier_leaves_unwitnessed_origin_unresolved
+#   call: self::test_unwitnessed_origin_attachment_remains_unresolved
 #   requires: python3
 #   timeout: 30
 #   mutates: none
@@ -44,12 +44,12 @@
 # === END CHECKS ===
 
 import json
+from hashlib import sha256
 
 import pytest
 
 from ucns import (
     RecursiveCarrierError,
-    STRUCTURAL_NULL_ORIGIN,
     build_epicyclic_edge,
     build_recursive_carrier,
     replay_recursive_carrier,
@@ -84,19 +84,48 @@ def test_source_fails_closed() -> None:
     with pytest.raises(RecursiveCarrierError):
         build_recursive_carrier(tampered)
 
-    with pytest.raises(RecursiveCarrierError):
-        build_recursive_carrier(build_epicyclic_edge(0, 0, 0))
+    for ordinal in (0, 314, -314, 628, -628):
+        with pytest.raises(RecursiveCarrierError, match="identity connection"):
+            build_recursive_carrier(build_epicyclic_edge(ordinal, 0, 0))
+
+    # A visible return with a reversed frame is not a complete identity.
+    for ordinal in (157, -157):
+        record = build_recursive_carrier(build_epicyclic_edge(ordinal, 0, 0))
+        assert record["source_mobius"]["frame"] == "reversed-local-frame"
+        assert record["target_mobius"]["frame"] == "positive-local-frame"
+
+    # A nonzero deck displacement is not an identity even if phase/frame return.
+    shifted = build_recursive_carrier(build_epicyclic_edge(0, 314, 0))
+    assert shifted["source_edge"]["from_node"] != shifted["source_edge"]["to_node"]
 
     with pytest.raises(RecursiveCarrierError):
         build_recursive_carrier(edge, steps=0)
 
 
-def test_origin_attachment_is_preserved() -> None:
-    record = build_recursive_carrier(build_epicyclic_edge(7, 11, 13))
-    assert record["origin_attachment"] == {
-        "origin_id": STRUCTURAL_NULL_ORIGIN.origin_id,
-        "carrier_position": STRUCTURAL_NULL_ORIGIN.carrier_position,
-    }
+def test_unwitnessed_origin_attachment_remains_unresolved() -> None:
+    for ordinal in (7, 321, -307):
+        record = build_recursive_carrier(build_epicyclic_edge(ordinal, 11, 13))
+        assert record["origin_attachment"] is None
+        assert "Structural Null attachment witness" in record["hmmm"]
+        assert replay_recursive_carrier(_canonical(record)) == record
+
+        # Neither a forged source witness nor a rehashed output can turn an
+        # absent construction relation into inherited geometric evidence.
+        source = record["source_edge"].copy()
+        source["origin_attachment"] = {"origin_id": "structural-null"}
+        with pytest.raises(RecursiveCarrierError):
+            build_recursive_carrier(source)
+        tampered = record.copy()
+        tampered["origin_attachment"] = {"origin_id": "structural-null"}
+        tampered.pop("receipt_sha256")
+        tampered["receipt_sha256"] = sha256(_canonical(tampered)).hexdigest()
+        with pytest.raises(RecursiveCarrierError):
+            replay_recursive_carrier(_canonical(tampered))
+
+        old_version = record.copy()
+        old_version["version"] = "0.1.0"
+        with pytest.raises(RecursiveCarrierError, match="schema or version"):
+            replay_recursive_carrier(_canonical(old_version))
 
 
 def test_successor_is_deck_translation() -> None:

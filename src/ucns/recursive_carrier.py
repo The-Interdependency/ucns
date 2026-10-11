@@ -2,10 +2,10 @@
 # id: ucns_recursive_carrier_successor_candidate
 #   module_name: recursive_carrier
 #   module_kind: candidate
-#   summary: binds a validated non-identity epicyclic connection to successor carrier layers while preserving Structural Null attachment, canonical radius, and the native Mobius deck law
+#   summary: derives candidate successor layer and Mobius state from a validated non-identity epicyclic connection while leaving unwitnessed origin attachment unresolved
 #   owner: Erin Spencer
 #   public_surface: SCHEMA, VERSION, RecursiveCarrierError, build_recursive_carrier, replay_recursive_carrier
-#   internal_surface: exact epicyclic-edge replay, Structural Null attachment, native Mobius successor derivation, deterministic receipts
+#   internal_surface: exact epicyclic-edge replay, geometric identity rejection, explicit missing origin witness, native Mobius successor derivation, deterministic receipts
 #   auth_boundary: none
 #   storage_boundary: immutable records only
 #   network_boundary: none
@@ -16,19 +16,19 @@
 #   rollback: remove this module, facade exports, tests, and candidate documentation
 #   requires: ucns_epicyclic_graph_candidate, ucns_native_mobius_geometry, ucns_radius_recursion_candidate
 #   since: 2026-10-04
-#   unresolved: disk/sphere closure, distant-scale coupling, and full recursive carrier ratification
+#   unresolved: source Structural Null attachment witness, disk/sphere closure, distant-scale coupling, and full recursive carrier ratification
 # === END MODULE_BUILD ===
 
 # === CONTRACTS ===
 # id: recursive_carrier_source_fails_closed
 #   given: an epicyclic connection proposed as a recursion source
-#   then: it must replay exactly from its declared construction inputs; tampering or the zero identity connection is rejected
+#   then: it must replay exactly from its declared construction inputs; tampering or a reconstructed geometric identity connection is rejected
 #   class: safety
 #
-# id: recursive_carrier_preserves_structural_null_attachment
-#   given: any admitted successor transition
-#   then: every resulting carrier layer remains attached to the singular Structural Null origin
-#   class: correctness
+# id: recursive_carrier_leaves_unwitnessed_origin_unresolved
+#   given: the source epicyclic schema supplies no Structural Null attachment witness
+#   then: the successor receipt records no inherited origin attachment and explicitly keeps that relation unresolved
+#   class: safety
 #
 # id: recursive_carrier_uses_deck_translation_as_successor
 #   given: k positive successor layers
@@ -54,7 +54,9 @@ edge has replayed exactly from its declared construction inputs.
 The successor operation is deliberately minimal and already implied by UCNS
 primitives:
 
-* Structural Null remains the singular origin attachment.
+* The source schema supplies no Structural Null attachment witness. Attachment
+  remains unresolved; this candidate does not construct an origin-attached
+  recursive carrier merely by copying the global origin identifier.
 * Radius remains the canonical placement radius; recursion does not add depth
   to radius.
 * Each successor layer is one visible-lap deck translation.
@@ -74,7 +76,6 @@ from typing import Any
 
 from .direct_mobius import (
     NativeMobiusFrame,
-    STRUCTURAL_NULL_ORIGIN,
     native_mobius_state,
 )
 from .epicyclic_graph import (
@@ -85,7 +86,7 @@ from .epicyclic_graph import (
 )
 
 SCHEMA = "ucns.recursive-carrier-successor-candidate"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 class RecursiveCarrierError(ValueError):
@@ -144,9 +145,6 @@ def _validate_source_edge(edge: object) -> dict[str, Any]:
         or any(isinstance(v, bool) or not isinstance(v, int) for v in connection)
     ):
         raise RecursiveCarrierError("source connection must contain three exact integers")
-    if connection == [0, 0, 0]:
-        raise RecursiveCarrierError("identity connection has no spatial expansion to promote")
-
     try:
         rebuilt = build_epicyclic_edge(
             connection[0],
@@ -159,6 +157,14 @@ def _validate_source_edge(edge: object) -> dict[str, Any]:
 
     if _canonical(rebuilt) != _canonical(edge):
         raise RecursiveCarrierError("source edge does not replay exactly")
+    expansion = rebuilt["expansion"]
+    if (
+        rebuilt["from_node"] == rebuilt["to_node"]
+        and expansion["radius"] == 0
+        and expansion["layer"] == 0
+        and _source_state(rebuilt) == native_mobius_state()
+    ):
+        raise RecursiveCarrierError("identity connection has no spatial expansion to promote")
     return rebuilt
 
 
@@ -193,10 +199,7 @@ def build_recursive_carrier(edge: object, *, steps: int = 1) -> dict[str, Any]:
         "version": VERSION,
         "source_edge": source,
         "source_edge_receipt_sha256": source["receipt_sha256"],
-        "origin_attachment": {
-            "origin_id": STRUCTURAL_NULL_ORIGIN.origin_id,
-            "carrier_position": STRUCTURAL_NULL_ORIGIN.carrier_position,
-        },
+        "origin_attachment": None,
         "source_layer": source_layer,
         "target_layer": source_layer + steps,
         "steps": steps,
@@ -206,7 +209,8 @@ def build_recursive_carrier(edge: object, *, steps: int = 1) -> dict[str, Any]:
         "successor_law": "one successor layer = one visible-lap deck translation",
         "standing": "candidate",
         "hmmm": (
-            "disk/sphere identification, direct distant-scale coupling, and full "
+            "source Structural Null attachment witness, disk/sphere identification, "
+            "direct distant-scale coupling, and full "
             "circle-to-epicycle-to-disk-to-sphere recursive closure remain unresolved"
         ),
     }

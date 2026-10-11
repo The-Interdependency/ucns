@@ -32,6 +32,12 @@
 #   class: correctness
 #   since: 2026-09-05
 #
+# id: geometry_public_surface_includes_axis_circle_position_candidate
+#   given: the active ucns package facade is imported
+#   then: exact finite-origin axis-circle position identity, builder, and replay are public without labels or language semantics
+#   class: correctness
+#   since: 2026-10-05
+#
 # id: geometry_public_surface_includes_gonal_boundary_trace
 #   given: the active ucns package facade is imported
 #   then: exact visible-circle wave-mode traces, gonal boundary samples, continuum covering witnesses, and builders are public without downstream physical-selection semantics
@@ -114,6 +120,14 @@ Lexical semantics, corpora, morphology, definition recursion, evaluator
 frameworks, PTCNA state, and cross-stack adapters are not UCNS package content.
 """
 
+from .axis_circle import (
+    SCHEMA as AXIS_CIRCLE_SCHEMA,
+    VERSION as AXIS_CIRCLE_VERSION,
+    AxisCircleError,
+    AxisCirclePosition,
+    build_axis_circle_position,
+    replay_axis_circle_position,
+)
 from .carrier import (
     LIFTED_PERIOD,
     STRUCTURAL_NULL,
@@ -276,6 +290,10 @@ from .mobius_seed import __all__ as _mobius_seed_all
 from .mobius_seed import *  # noqa: F401,F403 - geometric public module
 
 __all__ = list(dict.fromkeys([
+    "AXIS_CIRCLE_SCHEMA",
+    "AXIS_CIRCLE_VERSION",
+    "AxisCircleError",
+    "AxisCirclePosition",
     "CircleWaveCoveringTrace",
     "CircleWaveModeTrace",
     "CircularResiduePosition",
@@ -337,6 +355,7 @@ __all__ = list(dict.fromkeys([
     "VisibleCarrierPoint",
     "VisibleDisplacementError",
     "VisibleDisplacementRecord",
+    "build_axis_circle_position",
     "build_circle_wave_mode_trace",
     "build_displacement",
     "EPICYCLIC_GRAPH_SCHEMA",
@@ -375,6 +394,7 @@ __all__ = list(dict.fromkeys([
     "public_gonol_sha256",
     "pullback_circle_wave_trace",
     "radius_from_breadth",
+    "replay_axis_circle_position",
     "replay_displacement",
     "replay_epicyclic_graph",
     "replay_displacement_selection",
