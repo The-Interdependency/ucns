@@ -4,17 +4,17 @@
 #   module_kind: facade
 #   summary: geometry-only UCNS public surface including the visible-circle displacement candidate
 #   owner: Erin Spencer
-#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate
+#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate, recursive carrier successor candidate
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement, tests.test_recursive_carrier
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
-#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate
+#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate, ucns_recursive_carrier_successor_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===

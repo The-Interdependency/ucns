@@ -34,6 +34,13 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+# id: check_recursive_carrier_public_surface
+#   proves: geometry_public_surface_includes_recursive_carrier_candidate
+#   call: self::test_recursive_carrier_public_surface
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import json
@@ -51,6 +58,23 @@ from ucns import (
 
 def _canonical(value: object) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def test_recursive_carrier_public_surface() -> None:
+    import ucns
+    from ucns import recursive_carrier
+
+    expected = {
+        "RECURSIVE_CARRIER_SCHEMA": recursive_carrier.SCHEMA,
+        "RECURSIVE_CARRIER_VERSION": recursive_carrier.VERSION,
+        "RecursiveCarrierError": recursive_carrier.RecursiveCarrierError,
+        "build_recursive_carrier": recursive_carrier.build_recursive_carrier,
+        "replay_recursive_carrier": recursive_carrier.replay_recursive_carrier,
+    }
+    assert expected.keys() <= set(ucns.__all__)
+    for name, implementation in expected.items():
+        assert getattr(ucns, name) is implementation
+    assert ucns.RECURSIVE_CARRIER_SCHEMA == "ucns.recursive-carrier-successor-candidate"
 
 
 def test_source_fails_closed() -> None:
