@@ -256,6 +256,10 @@ def replay_axis_circle_position(data: bytes) -> AxisCirclePosition:
             parse_float=lambda _: (_ for _ in ()).throw(AxisCircleError("floating-point JSON is not canonical")),
             parse_constant=lambda _: (_ for _ in ()).throw(AxisCircleError("non-finite JSON is not canonical")),
         )
+    except AxisCircleError:
+        # Parser callbacks already report the public fail-closed boundary.
+        # Preserve their resource-limit and canonical-value diagnostics.
+        raise
     except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         # json.loads may raise ValueError for interpreter-enforced integer
         # digit limits or RecursionError for excessive nesting. Normalize

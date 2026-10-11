@@ -197,13 +197,11 @@ def test_axis_circle_large_integer_transport_ignores_process_digit_limit() -> No
 
 
 def test_axis_circle_replay_rejects_oversized_integer_before_conversion() -> None:
-    payload = (
-        b'{"axis_count":' + b'9' * 4097
-        + b',"axis_ordinal":1,"origin_sha256":"' + b'a' * 64
-        + b'","schema":"ucns.axis-circle-position-candidate","version":"0.1.0"}'
-    )
-    with pytest.raises(AxisCircleError, match="4096-decimal-digit"):
-        replay_axis_circle_position(payload)
+    for sign in (b"", b"-"):
+        for suffix in (b"}", b",invalid JSON"):
+            payload = b'{"axis_count":' + sign + b"9" * 4097 + suffix
+            with pytest.raises(AxisCircleError, match="4096-decimal-digit"):
+                replay_axis_circle_position(payload)
 
 
 def test_axis_circle_work_graph_uses_enforced_skill_source() -> None:
