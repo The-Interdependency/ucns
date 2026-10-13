@@ -44,6 +44,11 @@
 #   given: endpoints rather than a path witness
 #   then: comparison records displacement modulo two only and supplies neither absolute winding nor cross-origin alignment
 #   class: evidence
+#
+# id: mobius_comparison_work_graph_preserves_provenance
+#   given: the comparison authority and historical-context graph
+#   then: the native-law input stays exact, Stack is historical context and a downstream consumer rather than a geometry dependency, unavailable retirement evidence remains explicit, and the graph digest agrees with its documentation
+#   class: provenance_contract
 # === END CONTRACTS ===
 
 """Comparison on the existing exact framed root loop, not a new wire law.

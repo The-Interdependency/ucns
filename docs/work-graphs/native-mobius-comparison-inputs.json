@@ -3,7 +3,8 @@
     "agent_scope": "cross-repository-work-graph",
     "authority_transfer": false,
     "hmmm": [
-      "Independent-origin alignment, absolute winding, and protocol transport are not supplied by complete-state comparison."
+      "Independent-origin alignment, absolute winding, and protocol transport are not supplied by complete-state comparison.",
+      "Retirement boundary recorded on 2026-09-28: the historical Stack codec is excluded as evidence for Erin Spencer's intended URPCS construction. The deciding conversation-history review's immutable transcript/artifact identity is unavailable (hmmm); the substitution finding is not independently reproducible from this manifest."
     ],
     "measurement_status_transfer": false,
     "proof_status_transfer": false,
@@ -29,13 +30,13 @@
       "repository": "The-Interdependency/ucns"
     },
     {
-      "authority": "URPCS experiment and sealed relational-audit evidence",
+      "authority": "historical codec snapshot; no authority over UCNS geometry or the intended URPCS construction",
       "commit": "4a03f68c1ea841da5767813c6a65c41620f561f6",
-      "relation": "problem evidence and prospective separately pinned consumer",
+      "relation": "historical problem evidence only; not an executable UCNS geometry dependency. The downstream Stack consumer at 99f77a670d813ee85b9b409c0608b7f7264e841f (PR #57) consumes the UCNS comparison delivered at ee3df862112811711b43afed4174592a241c373d. This historical snapshot is not evidence for the intended URPCS construction.",
       "repository": "The-Interdependency/stack"
     }
   ],
   "schema": "the-interdependency.stack-manifest",
   "version": "1.0.0",
-  "work_graph_sha256": "bd1059322ef8223d2a6531f84591e76970db67aa3982f1cbfd174d5039b5ecd5"
+  "work_graph_sha256": "cd60eabe8942cdec6494a348ba0b7c0b84649f814898b0472dd28ee5c89eb9af"
 }
