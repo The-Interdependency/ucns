@@ -1,6 +1,6 @@
 # === CHECKS ===
 # id: check_geometry_public_surface_exclusion
-#   proves: geometry_public_surface_excludes_nongeometric_domains, geometry_public_surface_includes_modular_orbit_geometry, geometry_public_surface_includes_gonal_boundary_trace
+#   proves: geometry_public_surface_excludes_nongeometric_domains, geometry_public_surface_includes_modular_orbit_geometry, geometry_public_surface_includes_axis_circle_position_candidate, geometry_public_surface_includes_gonal_boundary_trace
 #   call: self::test_geometry_public_surface_excludes_removed_domains
 #   requires: python3
 #   timeout: 10
@@ -33,6 +33,11 @@ def test_geometry_public_surface_excludes_removed_domains() -> None:
         "MobiusSeedOfLife",
         "MobiusBandSpec",
         "build_mobius_seed_of_life",
+        "AXIS_CIRCLE_SCHEMA",
+        "AxisCircleError",
+        "AxisCirclePosition",
+        "build_axis_circle_position",
+        "replay_axis_circle_position",
         "CircularResiduePosition",
         "ModularOrbitError",
         "ModularOrbitGeometry",

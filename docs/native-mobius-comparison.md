@@ -180,9 +180,30 @@ compose to identity; that tautology is not new evidence of path holonomy.
 ## Input work graph
 
 `docs/work-graphs/native-mobius-comparison-inputs.json` is the shared exact
-input-authority graph, not a claim about a future consumer deployment. Its digest
-is `5d3b887d6165f3a5154c32b37378cee7e385bcb83b833a5f85bf01ec6afa6ca1`. The output implementation is identified separately by
+authority and historical-context graph, not a claim about a future consumer deployment. Its digest
+is `cd60eabe8942cdec6494a348ba0b7c0b84649f814898b0472dd28ee5c89eb9af`. The output implementation is identified separately by
 the delivering commit and source hashes. Consumer receipts must additionally pin
 the delivered UCNS implementation; they must not mistake the native-law input
 commit in this graph for that later output. Certification and empirical status
 also do not transfer. This adds no participant to Stack and changes no global pin.
+
+
+### Historical Stack context and retirement boundary
+
+The pinned Stack snapshot `4a03f68c1ea841da5767813c6a65c41620f561f6`
+records historical problem evidence. It is not an executable input to UCNS
+geometry. The unchanged native-motion module identified above is the
+comparison's geometric dependency. The direction of consumption is UCNS →
+Stack: the [sealed Stack #57 consumer document](https://github.com/The-Interdependency/stack/blob/99f77a670d813ee85b9b409c0608b7f7264e841f/research/urpcs/docs/URPCS-frame-comparison-v1.md)
+pins UCNS's delivered comparison at
+`ee3df862112811711b43afed4174592a241c373d`. This graph correction does
+not rewrite that consumer's sealed receipt or its original input-graph identity.
+
+This graph retains the 2026-09-28 retirement boundary: the historical codec
+does not provide evidence for Erin Spencer's intended URPCS construction.
+`hmmm`: the deciding conversation-history review's immutable transcript or
+artifact identity is unavailable. The reported substitution cannot be
+independently reproduced from this manifest; neither the historical codec
+commit nor the downstream consumer is substituted for that missing evidence.
+The derived native comparison remains scoped to its own geometric proof and
+falsifiers. No codec, semantic, empirical, or certification authority transfers.

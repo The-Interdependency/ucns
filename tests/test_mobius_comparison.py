@@ -46,6 +46,14 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_mobius_comparison_work_graph_provenance
+#   proves: mobius_comparison_work_graph_preserves_provenance
+#   call: self::test_work_graph_preserves_provenance
+#   requires: python3
+#   timeout: 10
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 """Exact comparison witnesses. Usage: run the complete README geometry gate.
@@ -183,3 +191,36 @@ def test_one_turn_two_turn_and_winding_boundary() -> None:
         assert source.advance(2) == source
         assert compare_native_mobius(source, source.advance(1)) == compare_native_mobius(source, source.advance(3))
         assert compare_native_mobius(source, source.advance(-1)) == compare_native_mobius(source, source.advance(1))
+
+
+def test_work_graph_preserves_provenance() -> None:
+    from hashlib import sha256
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    graph = json.loads((root / "docs/work-graphs/native-mobius-comparison-inputs.json").read_text())
+    documentation = (root / "docs/native-mobius-comparison.md").read_text()
+    expected = sha256(json.dumps(
+        {key: graph[key] for key in ("repositories", "boundaries")},
+        sort_keys=True, separators=(",", ":"),
+    ).encode()).hexdigest()
+    assert graph["work_graph_sha256"] == expected
+    assert expected in documentation
+    participants = {row["repository"]: row for row in graph["repositories"]}
+    native = participants["The-Interdependency/ucns"]
+    assert native["commit"] == "5a042416ef62abd9b674523284c2a31193918d66"
+    assert native["relation"] == "unchanged native-law input to the derived comparison"
+    assert sha256((root / "src/ucns/direct_mobius.py").read_bytes()).hexdigest() == (
+        "d8d1360c753dac7431071e007c5105a21b5396dd9e2f7e5ba4089d99e056a5bf"
+    )
+    stack = participants["The-Interdependency/stack"]
+    assert stack["commit"] == "4a03f68c1ea841da5767813c6a65c41620f561f6"
+    assert "historical problem evidence only; not an executable UCNS geometry dependency" in stack["relation"]
+    assert "downstream Stack consumer" in stack["relation"]
+    for commit in ("99f77a670d813ee85b9b409c0608b7f7264e841f", "ee3df862112811711b43afed4174592a241c373d"):
+        assert commit in stack["relation"] and commit in documentation
+    assert any("immutable transcript/artifact identity is unavailable" in item for item in graph["boundaries"]["hmmm"])
+    assert "artifact identity is unavailable" in documentation
+    for field in ("authority_transfer", "proof_status_transfer", "measurement_status_transfer"):
+        assert graph["boundaries"][field] is False
