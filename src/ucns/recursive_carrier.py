@@ -157,6 +157,8 @@ def _validate_source_edge(edge: object) -> dict[str, Any]:
         )
     except EpicyclicGraphError as exc:
         raise RecursiveCarrierError(str(exc)) from exc
+    except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+        raise RecursiveCarrierError("source edge cannot be reconstructed canonically") from exc
 
     if _canonical(rebuilt) != _canonical(edge):
         raise RecursiveCarrierError("source edge does not replay exactly")

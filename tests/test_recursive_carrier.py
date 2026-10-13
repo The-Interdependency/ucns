@@ -55,6 +55,13 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+# id: check_recursive_carrier_reconstruction_limits_fail_closed
+#   proves: recursive_carrier_source_fails_closed
+#   call: self::test_reconstruction_limits_fail_closed
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import json
@@ -207,6 +214,47 @@ def test_replay_parser_limits_fail_closed() -> None:
 
     depth = 10_000
     deeply_nested = b"[" * depth + b"0" + b"]" * depth
-    for malformed in (deeply_nested, b"{", b"\xff"):
+    # Parser recursion limits differ across supported Python versions. The
+    # nested array must fail at either parsing or the public object boundary.
+    with pytest.raises(RecursiveCarrierError):
+        replay_recursive_carrier(deeply_nested)
+    for malformed in (b"{", b"\xff"):
         with pytest.raises(RecursiveCarrierError, match="not valid canonical JSON"):
             replay_recursive_carrier(malformed)
+
+    # Exercise normalization independently of a particular interpreter limit.
+    from unittest.mock import patch
+
+    with patch("ucns.recursive_carrier.json.loads", side_effect=RecursionError("parser limit")):
+        with pytest.raises(RecursiveCarrierError, match="not valid canonical JSON"):
+            replay_recursive_carrier(b"{}")
+
+
+def test_reconstruction_limits_fail_closed() -> None:
+    edge = build_epicyclic_edge(7, 11, 13)
+    prior = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        for index in range(3):
+            oversized = edge.copy()
+            oversized["connection"] = edge["connection"].copy()
+            oversized["connection"][index] = 10 ** 700
+            with pytest.raises(RecursiveCarrierError, match="cannot be reconstructed canonically"):
+                build_recursive_carrier(oversized)
+        oversized_covering = edge.copy()
+        oversized_covering["covering_degree"] = 10 ** 700
+        with pytest.raises(RecursiveCarrierError, match="cannot be reconstructed canonically"):
+            build_recursive_carrier(oversized_covering)
+        with pytest.raises(RecursiveCarrierError, match="not canonical JSON"):
+            build_recursive_carrier(edge, steps=10 ** 700)
+        assert replay_recursive_carrier(_canonical(build_recursive_carrier(edge)))
+    finally:
+        sys.set_int_max_str_digits(prior)
+
+    # Unexpected implementation faults remain visible, rather than being
+    # mislabeled as malformed user data.
+    from unittest.mock import patch
+
+    with patch("ucns.recursive_carrier.build_epicyclic_edge", side_effect=RuntimeError("fault")):
+        with pytest.raises(RuntimeError, match="fault"):
+            build_recursive_carrier(edge)
