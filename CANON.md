@@ -164,6 +164,25 @@ authority.
 continuum degree `d` from the class `d ≡ a (mod m)`. The visible trace does not
 yet carry the frame information required for 720° local return.
 
+## Recursive carrier successor candidate
+
+UCNS now carries an executable **candidate** binding from an exactly replayed,
+non-identity epicyclic connection to candidate successor layer and native state.
+The source placement radius is retained. Structural Null attachment has no
+witness in the source schema and remains explicitly unresolved; the candidate
+does not establish an origin-attached recursive carrier. Each successor layer
+is one visible-lap deck translation, so visible
+phase is preserved, one layer reverses the local Möbius frame, and two layers
+restore the complete Möbius state.
+
+This implements only the stated layer/state relation. It does not identify the
+successor carrier as a disk or sphere, establish exact direct coupling across
+distant scales, or ratify the full recursive construction.
+
+`hmmm`: the source Structural Null attachment witness and the geometric closure
+operation that makes a completed successor carrier specifically a disk and then
+a sphere remain unresolved.
+
 ## Retained research
 
 Active research may remain in UCNS only when it directly constructs, compares, certifies, or replays geometry or topology. This includes Möbius vesica/seed constructions, exact interval/certificate machinery used by them, candidate finite modular-action orbit/circle geometry, candidate exact visible-circle continuum/gonal boundary traces, and prime-indexed ribbon/link/topological geometry.
@@ -187,4 +206,4 @@ Those experiments remain recoverable from Git history but carry no current UCNS 
 
 A construction may close only relative to its declared geometric boundary. No executable convenience is promoted to the complete UCNS merely because it produces coordinates, hashes, scores, or labels.
 
-`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates; the full circle → epicycle → disk → sphere → recursive-scale transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.
+`hmmm`: ratification of the modular-orbit / continuum-boundary-trace candidates; the disk/sphere closure and full circle → epicycle → disk → sphere transition law; exact direct coupling across distant scales; the visible-circle trace → native Möbius complete-state lift; any law selecting one continuum lift from a finite modular congruence class; and the geometric operation of Public Gonol function positions not yet constructed.

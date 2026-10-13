@@ -4,17 +4,17 @@
 #   module_kind: facade
 #   summary: geometry-only UCNS public surface including the axis-circle identity and visible-circle displacement candidates
 #   owner: Erin Spencer
-#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact finite-origin axis-circle identity candidate, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate
+#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact finite-origin axis-circle identity candidate, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate, recursive carrier successor candidate
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_axis_circle, tests.test_gonal_boundary_trace, tests.test_visible_displacement
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_axis_circle, tests.test_gonal_boundary_trace, tests.test_visible_displacement, tests.test_recursive_carrier
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
-#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_axis_circle_position_candidate, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate
+#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_axis_circle_position_candidate, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate, ucns_recursive_carrier_successor_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===
@@ -103,6 +103,12 @@
 #   then: the lift-selection builders, error, and controls runner are public with candidate standing
 #   class: correctness
 #   since: 2026-09-21
+#
+# id: geometry_public_surface_includes_recursive_carrier_candidate
+#   given: the active ucns package facade is imported
+#   then: the recursive carrier successor builder, replay, and error are public with candidate standing
+#   class: correctness
+#   since: 2026-10-04
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -245,6 +251,13 @@ from .epicyclic_graph import (
     replay_epicyclic_graph,
     run_epicyclic_graph_controls,
 )
+from .recursive_carrier import (
+    SCHEMA as RECURSIVE_CARRIER_SCHEMA,
+    VERSION as RECURSIVE_CARRIER_VERSION,
+    RecursiveCarrierError,
+    build_recursive_carrier,
+    replay_recursive_carrier,
+)
 from .lift_selection import (
     SCHEMA as LIFT_SELECTION_SCHEMA,
     VERSION as LIFT_SELECTION_VERSION,
@@ -330,6 +343,9 @@ __all__ = list(dict.fromkeys([
     "RADIUS_RECURSION_VERSION",
     "RadiusRecursionError",
     "RadiusRecursionRecord",
+    "RECURSIVE_CARRIER_SCHEMA",
+    "RECURSIVE_CARRIER_VERSION",
+    "RecursiveCarrierError",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
@@ -355,6 +371,7 @@ __all__ = list(dict.fromkeys([
     "build_placement_frame",
     "build_provenance_interval_lift",
     "build_radius_recursion",
+    "build_recursive_carrier",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
@@ -386,6 +403,7 @@ __all__ = list(dict.fromkeys([
     "replay_motion",
     "replay_placement_frame",
     "replay_radius_recursion",
+    "replay_recursive_carrier",
     "replay_visible_displacement",
     "run_displacement_selection",
     "run_epicyclic_graph_controls",
