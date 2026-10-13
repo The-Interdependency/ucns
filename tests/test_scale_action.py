@@ -46,6 +46,38 @@
 #   timeout: 10
 #   mutates: none
 #   cleanup: none
+#
+# id: check_scale_action_invalid_public_inputs
+#   proves: scale_action_inputs_fail_closed
+#   call: self::test_scale_action_invalid_public_inputs
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: check_scale_action_canonical_record_types
+#   proves: scale_action_inputs_fail_closed
+#   call: self::test_scale_action_canonical_record_types
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: check_scale_action_encoding_limits
+#   proves: scale_action_inputs_fail_closed
+#   call: self::test_scale_action_encoding_limits
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
+#
+# id: check_scale_action_malformed_receipts
+#   proves: scale_action_inputs_fail_closed
+#   call: self::test_scale_action_malformed_receipts
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 from __future__ import annotations
@@ -163,3 +195,83 @@ def test_facade_exports_scale_action() -> None:
     assert hasattr(ucns, "build_scale_action")
     assert hasattr(ucns, "build_scale_action_record")
     assert hasattr(ucns, "replay_scale_action_record")
+
+
+def test_scale_action_invalid_public_inputs() -> None:
+    action = build_scale_action((1,), 2)
+    for value in (None, 1, True, 1.5):
+        for call in (
+            lambda: build_scale_action(value, 1),
+            lambda: action.apply(value),
+            lambda: action.monomial_weight(value),
+            lambda: monomial_value(value, (1,)),
+            lambda: monomial_value((1,), value),
+        ):
+            with pytest.raises(ScaleActionError):
+                call()
+    for value in (True, 1.5, "1", 0, -1):
+        with pytest.raises(ScaleActionError):
+            build_scale_action((1,), value)
+        with pytest.raises(ScaleActionError):
+            action.apply((value,))
+    for powers in ((True,), (1.5,), (), (1, 2)):
+        with pytest.raises(ScaleActionError):
+            action.monomial_weight(powers)
+    assert monomial_value((), ()) == 1
+    assert monomial_value(iter((2, 3)), iter((1, -1))) == Fraction(2, 3)
+    with pytest.raises(ScaleActionError):
+        action.compose(None)
+
+
+def test_scale_action_canonical_record_types() -> None:
+    from ucns import ScaleActionRecord
+
+    record = build_scale_action_record((1,), 2, (3,))
+    for source, target in (((3,), record.target), (record.source, (6,))):
+        with pytest.raises(ScaleActionError, match="canonical Fractions"):
+            ScaleActionRecord(record.action, source, target, record.receipt_sha256)
+    assert ScaleActionRecord(record.action, record.source, record.target, record.receipt_sha256) == record
+
+
+def test_scale_action_encoding_limits() -> None:
+    import sys
+    from unittest.mock import patch
+
+    prior = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        huge = 10 ** 700
+        for weights, factor, source in (((huge,), 1, (1,)), ((0,), huge, (1,)), ((0,), 1, (huge,)), ((1,), 10, (10 ** 639,))):
+            with pytest.raises(ScaleActionError):
+                build_scale_action_record(weights, factor, source)
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(b'{"weights":[' + b'9' * 641 + b']}')
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(b'{"action":{"weights":[0],"factor":"' + b'9' * 641 + b'"}}')
+    finally:
+        sys.set_int_max_str_digits(prior)
+    with patch("ucns.scale_action.json.loads", side_effect=RecursionError("parser limit")):
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(b"{}")
+    with patch("ucns.scale_action.json.dumps", side_effect=RuntimeError("fault")):
+        with pytest.raises(RuntimeError, match="fault"):
+            build_scale_action_record((1,), 2, (3,))
+
+
+def test_scale_action_malformed_receipts() -> None:
+    record = build_scale_action_record((1,), 2, (3,))
+    for data in (None, "{}", b"{", b"\xff", b"[]", b"[" * 10000 + b"0" + b"]" * 10000):
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(data)
+    for path, value in (("factor", "2/1"), ("factor", "2.0"), ("factor", "0"), ("factor", "1/0"), ("factor", "\ud800"), ("factor", True), ("weights", [True]), ("weights", [1.0]), ("weights", [])):
+        obj = record.as_dict()
+        obj["action"][path] = value
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(json.dumps(obj, sort_keys=True, separators=(",", ":")).encode())
+    for key, value in (("source", [True]), ("target", ["7"]), ("standing", "ratified"), ("receipt_sha256", None)):
+        obj = record.as_dict()
+        obj[key] = value
+        with pytest.raises(ScaleActionError):
+            replay_scale_action_record(json.dumps(obj, sort_keys=True, separators=(",", ":")).encode())
+    with pytest.raises(ScaleActionError):
+        replay_scale_action_record(record.receipt_bytes() + b"\n")

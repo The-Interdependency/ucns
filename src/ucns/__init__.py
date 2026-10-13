@@ -4,17 +4,17 @@
 #   module_kind: facade
 #   summary: geometry-only UCNS public surface including exact scale/representation candidates
 #   owner: Erin Spencer
-#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, modular orbit geometry, visible-circle gonal wave boundary trace, displacement/lift/motion candidates, exact multiplicative scale-action candidate
+#   public_surface: carrier geometry, framed Mobius root loop, exact Public Gonol carrier, Mobius vesica and seed geometry, exact modular orbit geometry, exact finite-origin axis-circle identity candidate, exact visible-circle gonal wave boundary trace, exact visible-circle displacement candidate, recursive carrier successor candidate, exact multiplicative scale-action candidate
 #   internal_surface: none
 #   auth_boundary: none
 #   storage_boundary: none
 #   network_boundary: none
 #   user_data_boundary: none
 #   admin_only: false
-#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_gonal_boundary_trace, tests.test_visible_displacement, tests.test_scale_action
+#   tests: tests.test_public_gonol, tests.test_geometry_public_surface, tests.test_carrier, tests.test_modular_orbit, tests.test_axis_circle, tests.test_gonal_boundary_trace, tests.test_visible_displacement, tests.test_recursive_carrier, tests.test_scale_action
 #   rollout: active geometry-only package facade
 #   rollback: restore prior facade from Git history
-#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate, ucns_multiplicative_scale_action_candidate
+#   requires: directed_carrier_floor, ucns_native_mobius_geometry, ucns_public_gonol_geometry, ucns_mobius_vesica_candidate, ucns_mobius_seed_of_life_candidate, ucns_modular_orbit_geometry, ucns_axis_circle_position_candidate, ucns_gonal_boundary_trace, ucns_visible_displacement_candidate, ucns_recursive_carrier_successor_candidate, ucns_multiplicative_scale_action_candidate
 #   since: 2026-08-20
 #   unresolved: canonical completion of the full UCNS geometric construction
 # === END MODULE_BUILD ===
@@ -31,6 +31,12 @@
 #   then: the exact modular orbit geometry record, error, circle-position record, and builder are public without downstream domain semantics
 #   class: correctness
 #   since: 2026-09-05
+#
+# id: geometry_public_surface_includes_axis_circle_position_candidate
+#   given: the active ucns package facade is imported
+#   then: exact finite-origin axis-circle position identity, builder, and replay are public without labels or language semantics
+#   class: correctness
+#   since: 2026-10-05
 #
 # id: geometry_public_surface_includes_gonal_boundary_trace
 #   given: the active ucns package facade is imported
@@ -103,6 +109,12 @@
 #   then: the exact domain-agnostic multiplicative scale action, application receipt, invariant helper, builders, and replay are public with candidate standing
 #   class: correctness
 #   since: 2026-09-23
+#
+# id: geometry_public_surface_includes_recursive_carrier_candidate
+#   given: the active ucns package facade is imported
+#   then: the recursive carrier successor builder, replay, and error are public with candidate standing
+#   class: correctness
+#   since: 2026-10-04
 # === END CONTRACTS ===
 
 """UCNS geometry.
@@ -114,6 +126,14 @@ Lexical semantics, corpora, morphology, definition recursion, evaluator
 frameworks, PTCNA state, and cross-stack adapters are not UCNS package content.
 """
 
+from .axis_circle import (
+    SCHEMA as AXIS_CIRCLE_SCHEMA,
+    VERSION as AXIS_CIRCLE_VERSION,
+    AxisCircleError,
+    AxisCirclePosition,
+    build_axis_circle_position,
+    replay_axis_circle_position,
+)
 from .carrier import (
     LIFTED_PERIOD,
     STRUCTURAL_NULL,
@@ -228,6 +248,22 @@ from .lifted_displacement import (
     build_lifted_displacement,
     replay_lifted_displacement,
 )
+from .epicyclic_graph import (
+    SCHEMA as EPICYCLIC_GRAPH_SCHEMA,
+    VERSION as EPICYCLIC_GRAPH_VERSION,
+    EpicyclicGraphError,
+    build_epicyclic_edge,
+    build_epicyclic_graph,
+    replay_epicyclic_graph,
+    run_epicyclic_graph_controls,
+)
+from .recursive_carrier import (
+    SCHEMA as RECURSIVE_CARRIER_SCHEMA,
+    VERSION as RECURSIVE_CARRIER_VERSION,
+    RecursiveCarrierError,
+    build_recursive_carrier,
+    replay_recursive_carrier,
+)
 from .lift_selection import (
     SCHEMA as LIFT_SELECTION_SCHEMA,
     VERSION as LIFT_SELECTION_VERSION,
@@ -271,6 +307,10 @@ from .mobius_seed import __all__ as _mobius_seed_all
 from .mobius_seed import *  # noqa: F401,F403 - geometric public module
 
 __all__ = list(dict.fromkeys([
+    "AXIS_CIRCLE_SCHEMA",
+    "AXIS_CIRCLE_VERSION",
+    "AxisCircleError",
+    "AxisCirclePosition",
     "CircleWaveCoveringTrace",
     "CircleWaveModeTrace",
     "CircularResiduePosition",
@@ -294,6 +334,7 @@ __all__ = list(dict.fromkeys([
     "DISPLACEMENT_SELECTION_SCHEMA",
     "DISPLACEMENT_SELECTION_VERSION",
     "DisplacementLawError",
+    "EpicyclicGraphError",
     "DisplacementSelectionError",
     "DisplacementRecord",
     "FALSIFIER_CONTROLS",
@@ -324,6 +365,9 @@ __all__ = list(dict.fromkeys([
     "ScaleActionError",
     "ScaleActionRecord",
     "MultiplicativeScaleAction",
+    "RECURSIVE_CARRIER_SCHEMA",
+    "RECURSIVE_CARRIER_VERSION",
+    "RecursiveCarrierError",
     "STRUCTURAL_NULL",
     "STRUCTURAL_NULL_ORIGIN",
     "StructuralNullIdentity",
@@ -333,8 +377,13 @@ __all__ = list(dict.fromkeys([
     "VisibleCarrierPoint",
     "VisibleDisplacementError",
     "VisibleDisplacementRecord",
+    "build_axis_circle_position",
     "build_circle_wave_mode_trace",
     "build_displacement",
+    "EPICYCLIC_GRAPH_SCHEMA",
+    "EPICYCLIC_GRAPH_VERSION",
+    "build_epicyclic_edge",
+    "build_epicyclic_graph",
     "build_canonical_witness_lift",
     "build_lattice_address",
     "build_lattice_carrier",
@@ -346,6 +395,7 @@ __all__ = list(dict.fromkeys([
     "build_radius_recursion",
     "build_scale_action",
     "build_scale_action_record",
+    "build_recursive_carrier",
     "build_visible_displacement",
     "carrier_from_breadth",
     "deck_translate",
@@ -369,7 +419,9 @@ __all__ = list(dict.fromkeys([
     "public_gonol_sha256",
     "pullback_circle_wave_trace",
     "radius_from_breadth",
+    "replay_axis_circle_position",
     "replay_displacement",
+    "replay_epicyclic_graph",
     "replay_displacement_selection",
     "replay_lattice_carrier",
     "replay_lifted_displacement",
@@ -377,8 +429,10 @@ __all__ = list(dict.fromkeys([
     "replay_placement_frame",
     "replay_radius_recursion",
     "replay_scale_action_record",
+    "replay_recursive_carrier",
     "replay_visible_displacement",
     "run_displacement_selection",
+    "run_epicyclic_graph_controls",
     "run_falsification",
     "run_lift_selection_controls",
     "run_lift_selection_gate",

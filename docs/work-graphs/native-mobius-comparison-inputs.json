@@ -1,0 +1,41 @@
+{
+  "boundaries": {
+    "agent_scope": "cross-repository-work-graph",
+    "authority_transfer": false,
+    "hmmm": [
+      "Independent-origin alignment, absolute winding, and protocol transport are not supplied by complete-state comparison."
+    ],
+    "measurement_status_transfer": false,
+    "proof_status_transfer": false,
+    "semantic_mapping": "external-provenance"
+  },
+  "repositories": [
+    {
+      "authority": "reusable build and evidence doctrine",
+      "commit": "b83fa99b4138ece8ecd9cf6a00c82dc9c8b0bcf3",
+      "relation": "operating doctrine; does not replace the repository-pinned validation snapshot",
+      "repository": "The-Interdependency/skill-lib"
+    },
+    {
+      "authority": "domain restraint and semantic boundaries",
+      "commit": "e4165b0cac9eca41daef9c2f941881028ca55d48",
+      "relation": "consultation only; no semantic interpretation is imported",
+      "repository": "The-Interdependency/metapat"
+    },
+    {
+      "authority": "exact native framed root-loop geometry",
+      "commit": "5a042416ef62abd9b674523284c2a31193918d66",
+      "relation": "unchanged native-law input to the derived comparison",
+      "repository": "The-Interdependency/ucns"
+    },
+    {
+      "authority": "URPCS experiment and sealed relational-audit evidence",
+      "commit": "4a03f68c1ea841da5767813c6a65c41620f561f6",
+      "relation": "problem evidence and prospective separately pinned consumer",
+      "repository": "The-Interdependency/stack"
+    }
+  ],
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "bd1059322ef8223d2a6531f84591e76970db67aa3982f1cbfd174d5039b5ecd5"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "work_graph_sha256": "14cceb57c0c4e2dce39c47469281dc4fc10f57f27f5ca9ac77dc76ca066437b0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "38c64332b840b2bbe1c07e53aeee8996644548e9",
+      "authority": "reusable build/evidence discipline",
+      "relation": "governing skill source"
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "1cdfb09dd00a451cee30eec2e78624df8c682662",
+      "authority": "semantic/domain-restraint authority",
+      "relation": "conceptual boundary check"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "380ce7b7ec6b8b45ffa53ea4210070f0b3129747",
+      "authority": "geometric axis-circle position identity",
+      "relation": "producer baseline"
+    },
+    {
+      "repository": "The-Interdependency/uchc",
+      "commit": "4ad94e92be10d2c4c875a848addfda46f3c7cfdb",
+      "authority": "language-hyperspace label attachments",
+      "relation": "consumer baseline"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "declared mapping",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "ratification of axis-circle position as universal UCNS object identity beyond the declared candidate scope"
+    ]
+  }
+}

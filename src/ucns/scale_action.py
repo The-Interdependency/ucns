@@ -49,6 +49,11 @@
 #   then: replay reconstructs the same action and target byte-identically while malformed or tampered receipts fail closed
 #   class: safety
 #   since: 2026-09-23
+#
+# id: scale_action_inputs_fail_closed
+#   given: malformed public inputs or values exceeding canonical JSON or fraction encoding limits
+#   then: the public boundary raises ScaleActionError while unexpected implementation faults remain visible
+#   class: safety
 # === END CONTRACTS ===
 
 """Exact multiplicative scale-action candidate.
@@ -152,7 +157,10 @@ def _fraction_power(value: Fraction, exponent: int) -> Fraction:
 
 
 def _fraction_text(value: Fraction) -> str:
-    return str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
+    try:
+        return str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
+    except ValueError as exc:
+        raise ScaleActionError("fraction exceeds canonical encoding limits") from exc
 
 
 def _fraction_from_text(name: str, value: object) -> Fraction:
@@ -175,10 +183,12 @@ def monomial_value(
 ) -> Fraction:
     """Evaluate one exact monomial on positive exact rational coordinates."""
 
-    raw_state = tuple(state)
-    raw_powers = tuple(powers)
+    try:
+        raw_state = tuple(state)
+    except TypeError as exc:
+        raise ScaleActionError("state must be an iterable of exact coordinates") from exc
     resolved_state = _coerce_state(raw_state, len(raw_state))
-    resolved_powers = _coerce_powers(raw_powers, len(resolved_state))
+    resolved_powers = _coerce_powers(powers, len(resolved_state))
     value = Fraction(1, 1)
     for coordinate, exponent in zip(resolved_state, resolved_powers, strict=True):
         value *= _fraction_power(coordinate, exponent)
@@ -285,6 +295,13 @@ def build_scale_action(
     )
 
 
+def _canonical_json(value: object) -> bytes:
+    try:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+        raise ScaleActionError("value exceeds canonical JSON encoding limits") from exc
+
+
 def _record_payload(
     action: MultiplicativeScaleAction,
     source: tuple[Fraction, ...],
@@ -316,16 +333,12 @@ class ScaleActionRecord:
             raise ScaleActionError("record source and target must be immutable tuples")
         resolved_source = _coerce_state(self.source, self.action.arity)
         resolved_target = _coerce_state(self.target, self.action.arity)
-        if resolved_source != self.source or resolved_target != self.target:
+        if any(not isinstance(value, Fraction) for value in (*self.source, *self.target)):
             raise ScaleActionError("record coordinates must be canonical Fractions")
         if self.action.apply(self.source) != self.target:
             raise ScaleActionError("record target does not equal exact action on source")
         expected = sha256(
-            json.dumps(
-                _record_payload(self.action, self.source, self.target),
-                sort_keys=True,
-                separators=(",", ":"),
-            ).encode("utf-8")
+            _canonical_json(_record_payload(self.action, self.source, self.target))
         ).hexdigest()
         if self.receipt_sha256 != expected:
             raise ScaleActionError("record receipt digest does not match its exact payload")
@@ -336,11 +349,7 @@ class ScaleActionRecord:
         return payload
 
     def receipt_bytes(self) -> bytes:
-        return json.dumps(
-            self.as_dict(),
-            sort_keys=True,
-            separators=(",", ":"),
-        ).encode("utf-8")
+        return _canonical_json(self.as_dict())
 
 
 def build_scale_action_record(
@@ -355,7 +364,7 @@ def build_scale_action_record(
     target = action.apply(resolved_source)
     payload = _record_payload(action, resolved_source, target)
     receipt = sha256(
-        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        _canonical_json(payload)
     ).hexdigest()
     return ScaleActionRecord(
         action=action,
@@ -372,7 +381,7 @@ def replay_scale_action_record(data: bytes) -> ScaleActionRecord:
         raise ScaleActionError("receipt must be bytes")
     try:
         obj = json.loads(data.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise ScaleActionError("receipt is not valid canonical JSON") from exc
     if not isinstance(obj, dict):
         raise ScaleActionError("receipt root must be an object")
