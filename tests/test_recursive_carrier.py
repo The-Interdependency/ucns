@@ -48,9 +48,17 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+# id: check_recursive_carrier_parser_limits_fail_closed
+#   proves: recursive_carrier_source_fails_closed
+#   call: self::test_replay_parser_limits_fail_closed
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import json
+import sys
 from hashlib import sha256
 
 import pytest
@@ -185,3 +193,20 @@ def test_source_serialization_fails_closed() -> None:
         record["source_edge"]["unexpected"] = value
         with pytest.raises(RecursiveCarrierError, match="not canonical JSON"):
             replay_recursive_carrier(_canonical(record))
+
+
+def test_replay_parser_limits_fail_closed() -> None:
+    prior = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        oversized_integer = b'{"steps":' + b"9" * 641 + b"}"
+        with pytest.raises(RecursiveCarrierError, match="not valid canonical JSON"):
+            replay_recursive_carrier(oversized_integer)
+    finally:
+        sys.set_int_max_str_digits(prior)
+
+    depth = 10_000
+    deeply_nested = b"[" * depth + b"0" + b"]" * depth
+    for malformed in (deeply_nested, b"{", b"\xff"):
+        with pytest.raises(RecursiveCarrierError, match="not valid canonical JSON"):
+            replay_recursive_carrier(malformed)

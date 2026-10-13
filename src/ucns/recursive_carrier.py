@@ -228,7 +228,7 @@ def replay_recursive_carrier(data: bytes) -> dict[str, Any]:
         raise RecursiveCarrierError("recursive carrier record must be bytes")
     try:
         obj = json.loads(data.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise RecursiveCarrierError("recursive carrier record is not valid canonical JSON") from exc
     if not isinstance(obj, dict):
         raise RecursiveCarrierError("recursive carrier record root must be an object")
