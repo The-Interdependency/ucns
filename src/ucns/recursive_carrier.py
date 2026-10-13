@@ -22,7 +22,7 @@
 # === CONTRACTS ===
 # id: recursive_carrier_source_fails_closed
 #   given: an epicyclic connection proposed as a recursion source
-#   then: it must replay exactly from its declared construction inputs; tampering or a reconstructed geometric identity connection is rejected
+#   then: it must replay exactly from its declared construction inputs; tampering, non-canonical serialization, or a reconstructed geometric identity connection is rejected through RecursiveCarrierError
 #   class: safety
 #
 # id: recursive_carrier_leaves_unwitnessed_origin_unresolved
@@ -94,13 +94,16 @@ class RecursiveCarrierError(ValueError):
 
 
 def _canonical(value: object) -> bytes:
-    return json.dumps(
-        value,
-        sort_keys=True,
-        ensure_ascii=False,
-        separators=(",", ":"),
-        allow_nan=False,
-    ).encode("utf-8")
+    try:
+        return json.dumps(
+            value,
+            sort_keys=True,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+        raise RecursiveCarrierError("recursive carrier value is not canonical JSON") from exc
 
 
 def _receipt(payload: dict[str, Any]) -> str:

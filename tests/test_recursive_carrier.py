@@ -41,6 +41,13 @@
 #   timeout: 30
 #   mutates: none
 #   cleanup: none
+# id: check_recursive_carrier_serialization_fails_closed
+#   proves: recursive_carrier_source_fails_closed
+#   call: self::test_source_serialization_fails_closed
+#   requires: python3
+#   timeout: 30
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 
 import json
@@ -156,3 +163,25 @@ def test_two_layers_restore_complete_state() -> None:
     tampered["target_layer"] += 1
     with pytest.raises(RecursiveCarrierError):
         replay_recursive_carrier(_canonical(tampered))
+
+
+def test_source_serialization_fails_closed() -> None:
+    edge = build_epicyclic_edge(7, 11, 13)
+    for value in (object(), float("nan"), float("inf"), float("-inf"), "\ud800"):
+        malformed = edge.copy()
+        malformed["unexpected"] = value
+        with pytest.raises(RecursiveCarrierError, match="not canonical JSON"):
+            build_recursive_carrier(malformed)
+
+    circular = edge.copy()
+    circular["unexpected"] = circular
+    with pytest.raises(RecursiveCarrierError, match="not canonical JSON"):
+        build_recursive_carrier(circular)
+
+    # Python's JSON decoder accepts non-finite literals. A tampered source
+    # must still fail through the same advertised domain exception on replay.
+    for value in (float("nan"), float("inf"), float("-inf")):
+        record = build_recursive_carrier(edge)
+        record["source_edge"]["unexpected"] = value
+        with pytest.raises(RecursiveCarrierError, match="not canonical JSON"):
+            replay_recursive_carrier(_canonical(record))
