@@ -1,17 +1,111 @@
 # === CHECKS ===
-# id: ordinal_placement_check
+# id: ordinal_independent_append_oracle_check
 #   proves: ordinal_exact_placement, ordinal_equidistant_initial_field
 #   call: self::test_independent_append_oracle
 #   requires: python3, pytest
+#   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: ordinal_recursive_check
+# id: ordinal_nested_recovery_check
 #   proves: ordinal_recursive_recovery
 #   call: self::test_nested_recovery
 #   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_deep_recursion_is_iterative_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_deep_recursion_is_iterative
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_large_exponent_does_not_underflow_in_storage_check
+#   proves: ordinal_exact_placement
+#   call: self::test_large_exponent_does_not_underflow_in_storage
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_initial_and_placed_metrics_are_not_conflated_check
+#   proves: ordinal_exact_placement
+#   call: self::test_initial_and_placed_metrics_are_not_conflated
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_exact_nonunit_radius_check
+#   proves: ordinal_exact_placement
+#   call: self::test_exact_nonunit_radius
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_carrier_revision_is_bound_check
+#   proves: ordinal_exact_placement
+#   call: self::test_carrier_revision_is_bound
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_identity_does_not_replace_geometry_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_identity_does_not_replace_geometry
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_invalid_carriers_fail_check
+#   proves: ordinal_exact_placement
+#   call: self::test_invalid_carriers_fail
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_inexact_or_invalid_radius_fails_check
+#   proves: ordinal_exact_placement
+#   call: self::test_inexact_or_invalid_radius_fails
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_bad_ordinals_fail_check
+#   proves: ordinal_exact_placement
+#   call: self::test_bad_ordinals_fail
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_empty_closure_refuses_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_empty_closure_refuses
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_unadmitted_identity_refuses_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_unadmitted_identity_refuses
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_mismatched_closed_identity_refuses_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_mismatched_closed_identity_refuses
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: ordinal_source_and_relation_affect_receipt_check
+#   proves: ordinal_recursive_recovery
+#   call: self::test_source_and_relation_affect_receipt
+#   requires: python3, pytest
+#   timeout: 60
 #   mutates: none
 #   cleanup: none
 # === END CHECKS ===
+
 """Usage: PYTHONPATH=src python -m pytest -q tests/test_ordinal_affixiation.py."""
 from fractions import Fraction
 from itertools import product
@@ -111,8 +205,10 @@ def test_invalid_carriers_fail(values):
         Carrier(values, 'fixture')
 
 
-@pytest.mark.parametrize('radius', [0, -1, True, 0.5, float('nan'), '1'])
+@pytest.mark.parametrize('radius', [0, -1, True, 0.5, 'nan', '1'])
 def test_inexact_or_invalid_radius_fails(radius):
+    if radius == 'nan':
+        radius = float('nan')
     with pytest.raises(ValueError):
         construct('A').placement(0).radius(radius)
 
