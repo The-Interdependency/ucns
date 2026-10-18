@@ -20,6 +20,28 @@ Its active scope is limited to constructions that directly represent or test geo
 
 Everything semantic is outside this repository's active domain: lexical corpora, definitions, morphology, NLP parsing, function-name semantics, EDCM measurement profiles, PTCNA state, evaluator laboratories, and cross-stack adapters.
 
+## Research abstract
+
+Description dated 2026-10-14; published 2026-10-18. This is a research description, not a new verification, release, or promotion of claim status.
+
+### UCNS: Geometric Representation and Transformation Across Scale
+
+**UCNS** is an experimental, domain-independent mathematical framework for constructing representations through geometric assignment and motion. Its defining proposal is to assign elements of an unknowable to completion within a declared geometric boundary; completion therefore concerns the construction, not exhaustive knowledge of what it represents. Ordered motion, orientation, nesting, and recursive scale are constitutive features. The central question is how identity and distinguishable structure persist, change, or disappear when a construction crosses a scale or representation boundary.
+
+The implemented foundation includes an exact **157-position Public Gonol** and native framed Möbius transport. Public Gonol positions are geometric function positions whose operations cannot be inferred from their linguistic labels. Möbius transport distinguishes visible recurrence from complete local-state recurrence: a **360°** traversal restores visible position while reversing the local frame; **720°** restores the complete local state. This construction provides an explicit case in which identical visible positions conceal a recoverable structural difference.
+
+Candidate extensions include finite modular orbits, continuum-to-finite wave traces, recursive carrier transitions, and exact multiplicative scale actions. The scale-action component constructs composition, inversion, and invariant detection over rational coordinates with declared integer weights. The wave-trace component demonstrates a complementary limitation: distinct continuum covering degrees can induce the same finite action while retaining different harmonic and temporal scaling. Consequently, a finite representation does not uniquely determine the richer construction from which it descends.
+
+Each proposed transformation must identify its source and target geometry, connecting operation, continuity witness, and retained or discarded distinctions. Composition must be constructed or tested rather than inferred from resemblance. These requirements make representation loss and continuity examinable properties instead of assumptions. Domain interpretation remains with consumers, cross-domain semantic authority with METAPAT, and measurement and evaluation with EDCM.
+
+UCNS’s proposed contribution is a reproducible geometric account of transformation that preserves the distinction between **constructed relations, information-losing projections, and domain interpretations**. Its present components support bounded mathematical investigations without yet constituting a unified recursive scale-transition formalism.
+
+**hmmm:** Unified circle–epicycle–disk–sphere closure, consistent Structural Null attachment, complete-state lifting of continuum traces, and composition across distant scales remain unresolved, as do geometric operations for Public Gonol positions not yet constructed.
+
+**Usage guidance:** Read this abstract for the research question and intended contribution. Use the scope, evidence, commands, and limitations in the rest of this README before relying on the work; retain the unresolved conditions above when quoting the description.
+
+Public repository context: [Geometry canon](https://github.com/The-Interdependency/ucns/blob/6ebbf970ad13a0d2e1c13bd65c496b671e740185/CANON.md) · [Scale-transformation jurisdiction](https://github.com/The-Interdependency/ucns/blob/6ebbf970ad13a0d2e1c13bd65c496b671e740185/docs/scale-transformation-jurisdiction.md).
+
 ## Scale-transformation jurisdiction
 
 UCNS supplies geometry for asking what survives, changes, or disappears when a construction is represented across a declared scale or representation boundary. A consumer supplies domain meaning; METAPAT constrains cross-domain semantic transfer; EDCM measures claimed observables. UCNS does not absorb those roles.
