@@ -194,6 +194,15 @@ assert s360.complete_key != s0.complete_key
 assert s720 == s0
 ```
 
+## Recursive attachment stack
+
+The [native attachment stack](docs/ATTACHMENT_STACK.md) implements disk-depth
+halving, inherited SPACE directions, origins at attachments, reversible common
+and attached views, compound transport and complete graph replay. The same stack
+accepts closed participants with retained interiors. Closed-bearing extraction
+has two explicit unselected candidates and no default; recursive stacking itself
+is specified. Use the linked examples and the complete validation gate below.
+
 ## Build
 
 ```bash

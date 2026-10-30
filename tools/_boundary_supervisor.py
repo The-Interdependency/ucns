@@ -1,4 +1,4 @@
-# ratios: loc_comments=79:32 imports_exports=8:1 calls_definitions=32:5
+# ratios: loc_comments=105:36 imports_exports=8:1 calls_definitions=48:5
 # === MODULE_BUILD ===
 # id: boundary_process_supervisor
 #   module_name: _boundary_supervisor
@@ -49,22 +49,53 @@ def _enable_descendant_reaping() -> None:
 
 
 def _owned_children(proc_root: Path = Path("/proc")) -> list[int]:
-    """Use the optional task list, falling back to ordinary procfs parent IDs."""
-    parent = os.getpid()
+    """Find owned children in procfs and translate them to caller-namespace IDs.
+
+    A procfs mount can describe an ancestor PID namespace. Its stat/children
+    numbers must never be compared to getpid or passed directly to kill/waitpid.
+    The synthetic proc_root used by fixtures may omit status for local-ID data.
+    """
+    local_parent = os.getpid()
     try:
-        return [int(pid) for pid in (proc_root / f"self/task/{parent}/children").read_text().split()]
+        fields = dict(line.split(":", 1) for line in (proc_root / "self/status").read_text().splitlines() if ":" in line)
     except FileNotFoundError:
-        children = []
+        if proc_root == Path("/proc"):
+            raise OSError("procfs cannot establish the supervisor PID namespace")
+        fields = {}  # Local-ID synthetic snapshot; never the live default.
+    parent = int(fields.get("Pid", local_parent))
+    namespace_pids = tuple(int(p) for p in fields.get("NSpid", str(parent)).split())
+    if not namespace_pids or namespace_pids[0] != parent or namespace_pids[-1] != local_parent:
+        raise OSError("procfs PID namespace does not resolve to this supervisor")
+    namespace_index = len(namespace_pids) - 1
+    try:
+        raw_children = {int(pid) for pid in (proc_root / f"self/task/{parent}/children").read_text().split()}
+    except FileNotFoundError:
+        raw_children = set()
         for process in proc_root.iterdir():
             if not process.name.isdecimal():
                 continue
             try:
                 state = (process / "stat").read_text().rpartition(")")[2].split()
                 if int(state[1]) == parent:
-                    children.append(int(process.name))
+                    raw_children.add(int(process.name))
             except (FileNotFoundError, ProcessLookupError, PermissionError):
                 continue  # Exited processes or unrelated users hidden by procfs.
-        return children
+    children = set()
+    for pid in raw_children:
+        try:
+            child_fields = dict(line.split(":", 1) for line in (proc_root / str(pid) / "status").read_text().splitlines() if ":" in line)
+        except (FileNotFoundError, ProcessLookupError):
+            if fields:
+                continue  # Exited before namespace translation.
+            child_fields = {}  # Synthetic local-ID fixture.
+        child_pids = tuple(int(p) for p in child_fields.get("NSpid", str(pid)).split())
+        if len(child_pids) <= namespace_index or child_pids[0] != pid:
+            raise OSError("owned child PID namespace cannot be resolved")
+        local_pid = child_pids[namespace_index]
+        if local_pid <= 0 or local_pid == local_parent:
+            raise OSError("invalid owned child PID mapping")
+        children.add(local_pid)
+    return sorted(children)
 
 
 def _reap_descendants() -> int:
@@ -125,4 +156,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=79:32 imports_exports=8:1 calls_definitions=32:5
+# ratios: loc_comments=105:36 imports_exports=8:1 calls_definitions=48:5
