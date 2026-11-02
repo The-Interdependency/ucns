@@ -1,4 +1,4 @@
-# ratios: loc_comments=195:410 imports_exports=23:18 calls_definitions=248:20
+# ratios: loc_comments=195:429 imports_exports=23:18 calls_definitions=264:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -584,6 +584,25 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
     task.mkdir(parents=True)
     (task / "children").write_text("101 104\n")
     assert _owned_children(proc) == [101, 104]
+    # procfs may be mounted in an ancestor namespace. Parent comparison uses
+    # procfs IDs; kill/wait targets must use this supervisor's namespace IDs.
+    (proc / 'self/status').write_text(f'Pid:\t70000\nNSpid:\t70000 {os.getpid()}\n')
+    (proc / '101/stat').write_text('101 (owned) S 70000 0 0 0\n')
+    mapped_one, mapped_two = os.getpid() + 101, os.getpid() + 104
+    (proc / '101/status').write_text(f'Pid:\t101\nNSpid:\t101 {mapped_one} 1\n')
+    assert _owned_children(proc) == [mapped_one]
+    ancestor_task = proc / 'self/task/70000'
+    ancestor_task.mkdir()
+    (ancestor_task / 'children').write_text('101 104\n')
+    (proc / '104').mkdir()
+    (proc / '104/status').write_text(f'Pid:\t104\nNSpid:\t104 {mapped_two}\n')
+    assert _owned_children(proc) == [mapped_one, mapped_two]
+    (proc / '104/status').write_text('Pid:\t104\nNSpid:\t104\n')
+    with pytest.raises(OSError, match='namespace'):
+        _owned_children(proc)
+    (proc / 'self/status').write_text('Pid:\t70000\nNSpid:\t70000 123456789\n')
+    with pytest.raises(OSError, match='namespace'):
+        _owned_children(proc)
     child = "import time; from pathlib import Path; time.sleep(30); Path('src/pkg/feature.py').write_text('late mutation')"
     body = f"import subprocess, sys\nfrom pathlib import Path\ndef test_probe():\n    p=subprocess.Popen([sys.executable, '-c', {child!r}], start_new_session=True)\n    Path('child.pid').write_text(str(p.pid))\n"
     root = _repo(tmp_path, body, [{"id": "check_probe", "function": "test_probe"}])
@@ -653,4 +672,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=195:410 imports_exports=23:18 calls_definitions=248:20
+# ratios: loc_comments=195:429 imports_exports=23:18 calls_definitions=264:20
