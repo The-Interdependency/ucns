@@ -203,6 +203,21 @@ accepts closed participants with retained interiors. Closed-bearing extraction
 has two explicit unselected candidates and no default; recursive stacking itself
 is specified. Use the linked examples and the complete validation gate below.
 
+### Bits at circumference locations
+
+`ucns.bit_circle.BitCircle` is an optional candidate that places an explicit 0 or
+1 at each admitted exact finite-circle address. `read_bit_circle` recovers the ordered
+state from unordered placed marks using the declared width, SPACE, and
+orientation and placement. `equal-v1` gives 29 occupied-angle sums for 256 byte
+states, or 8 modulo one turn. `binary-v1` gives 256 distinct sums; the exact sum
+and width recover all bits. Ordered concatenation scales the second group's
+angle by two to the negative first-group width.
+
+See [the construction, runnable example, and falsifiers](docs/bit-circumference-candidate.md).
+Use `.venv/bin/python -m pytest tests/test_bit_circle.py` for the focused census.
+The constructor retains native axis-circle identities; attaching its boundary
+to a recursive construction and interpreting code relationships remain `hmmm`.
+
 ## Build
 
 ```bash
