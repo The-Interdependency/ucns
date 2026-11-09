@@ -53,10 +53,49 @@ This establishes an exact algebraic candidate component, not the complete UCNS s
 
 ## Public Gonol carrier
 
+The exact 157-position Public Gonol arrangement is retained as a historical/public
+function carrier and geometric reference surface. It is **not** the active admission
+gate or angle registry for arbitrary Unicode text.
 
-The exact 157-position Public Gonol arrangement is retained as geometry. Every admitted glyph is a Public Gonol function position. No active UCNS rule divides these positions into letters, punctuation, symbols, digits, lexical glyphs, or other linguistic classes.
+Every position on that preserved carrier remains a Public Gonol function position.
+No UCNS rule divides those positions into letters, punctuation, symbols, digits,
+lexical glyphs, or other linguistic classes. The exact operation of a function
+position must be supplied by a geometric construction; Unicode names and dictionary
+definitions do not define Public Gonol function semantics.
 
-The exact operation of a function position must be supplied by a geometric construction. It may be identity-like ("carry on") where geometry supports that behavior. Unicode names and dictionary definitions do not define Public Gonol function semantics.
+## Unicode scalar gonol geometry
+
+For active text construction, one valid Unicode scalar is one glyph gonol. The
+scalar value determines one exact bearing from SPACE:
+
+```text
+turn(c) = ((ord(c) - 0x20) mod 0x110000) / 0x110000
+```
+
+SPACE `U+0020` is therefore exactly turn zero. The full Unicode scalar numeric
+range supplies the stable modulus; surrogate code points are holes and are refused,
+not compressed out of the circle. Assignment status is deliberately irrelevant, so
+a later Unicode version cannot move an existing scalar's bearing.
+
+Each glyph retains two simultaneous exact views:
+
+1. the Unicode scalar, which owns glyph identity and its SPACE-relative bearing;
+2. the exact UTF-8 byte sequence and bits, which own the glyph's byte anatomy.
+
+Neither view replaces the other. No Unicode normalization is permitted by the
+construction. A precomposed scalar and a canonically equivalent decomposed scalar
+sequence remain different constructions with different receipts.
+
+At the primitive text scale, sibling glyph occurrences share one exact radius while
+retaining their own scalar bearings and occurrence ordinals. Ordinal radius-halving
+is not the active text placement law.
+
+Closed constructions retain their interiors when promoted to a higher scale. Sibling
+closed words likewise begin at one equal parent radius before sentence affixiation,
+sentences before higher closure, and so on recursively. The exact affixiation
+transform and exact bearing assigned to a completed construction at its next scale
+remain `hmmm`; UCNS must not fill that boundary with a hash, terminal glyph,
+ordinal-halving rule, or unselected historical bearing candidate.
 
 ## Möbius origin and return
 
