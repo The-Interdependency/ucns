@@ -74,11 +74,38 @@ The core carries no domain axis names. Physics, chemistry, language, consciousne
 The poster above is a display certificate of those constructions. It is not an interpretation layer.
 
 
-## Public Gonol
+## Public Gonol and active Unicode text geometry
 
-The Public Gonol is the exact ordered 157-position carrier in `src/ucns/public_gonol.py`. Every glyph is a Public Gonol function position. UCNS does not divide glyphs into letters, punctuation, digits, or symbols for construction.
+The Public Gonol is the exact ordered 157-position carrier in
+`src/ucns/public_gonol.py`. It remains a preserved public/function carrier and
+geometric reference surface. It is not the active admission gate or angle registry
+for arbitrary Unicode text.
 
-A function's geometric operation is not inferred from Unicode names or dictionary definitions. Where an operation is not geometrically established, it remains `hmmm`.
+Active primitive text geometry is in `src/ucns/unicode_gonol.py`. One valid
+Unicode scalar is one glyph gonol. Its exact SPACE-relative bearing is
+
+```text
+((ord(c) - 0x20) mod 0x110000) / 0x110000 turns
+```
+
+so SPACE is exactly zero and existing bearings do not move when later Unicode
+versions assign additional characters. Surrogate code points are refused rather
+than removed from the numeric range.
+
+Every glyph simultaneously retains its scalar identity/bearing and its exact UTF-8
+byte/bit anatomy. No Unicode normalization occurs: precomposed and decomposed
+sequences remain distinct. Primitive sibling occurrences share one radius; ordinal
+radius-halving is not the active text placement law.
+
+A function's geometric operation is not inferred from Unicode names or dictionary
+definitions. Where an operation is not geometrically established, it remains
+`hmmm`.
+
+Closed words, sentences and higher constructions retain their interiors and begin
+as equal-radius siblings at the next scale. The exact next-scale bearing and
+affixiation transform remain `hmmm`; historical ordinal and recursive attachment
+profiles remain replayable evidence and must not be silently relabeled as this
+replacement.
 
 ## Möbius root loop
 
@@ -196,12 +223,18 @@ assert s720 == s0
 
 ## Recursive attachment stack
 
-The [native attachment stack](docs/ATTACHMENT_STACK.md) implements disk-depth
-halving, inherited SPACE directions, origins at attachments, reversible common
-and attached views, compound transport and complete graph replay. The same stack
-accepts closed participants with retained interiors. Closed-bearing extraction
-has two explicit unselected candidates and no default; recursive stacking itself
-is specified. Use the linked examples and the complete validation gate below.
+The [native attachment stack](docs/ATTACHMENT_STACK.md) is retained as a
+versioned historical/replay construction. Its disk-depth halving and closed-bearing
+candidates are no longer the active text geometry after the Unicode scalar gonol
+replacement. Consumers may replay its receipts, but new text construction must not
+treat its ordinal radius law as canon.
+
+The active primitive text layer uses `unicode_gonol.py`: exact scalar bearings,
+exact UTF-8 anatomy, no normalization and equal-radius sibling occurrences. Closed
+participants still retain their interiors across recursive scales; the exact
+higher-scale affixiation transform and completed-object bearing remain `hmmm`.
+
+Use the linked historical examples only when replaying that profile and the complete validation gate below.
 
 ### Bits at circumference locations
 
