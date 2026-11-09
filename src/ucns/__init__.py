@@ -178,6 +178,16 @@ from .public_gonol import (
     public_gonol_position,
     public_gonol_sha256,
 )
+from .unicode_gonol import (
+    SPACE_SCALAR as UNICODE_SPACE_SCALAR,
+    UNICODE_SCALAR_MODULUS,
+    UnicodeGlyphGonol,
+    UnicodeScalarFrame,
+    UnicodeScalarPlacement,
+    build_unicode_scalar_frame,
+    unicode_glyph_gonol,
+    unicode_scalar_turn,
+)
 from .visible_displacement import (
     SCHEMA as VISIBLE_DISPLACEMENT_SCHEMA,
     VERSION as VISIBLE_DISPLACEMENT_VERSION,
@@ -326,6 +336,11 @@ __all__ = list(dict.fromkeys([
     "PUBLIC_GONOL_157",
     "PUBLIC_GONOL_SHA256",
     "PublicGonolPosition",
+    "UNICODE_SCALAR_MODULUS",
+    "UNICODE_SPACE_SCALAR",
+    "UnicodeGlyphGonol",
+    "UnicodeScalarFrame",
+    "UnicodeScalarPlacement",
     "DISPLACEMENT_FALSIFICATION_SCHEMA",
     "DISPLACEMENT_FALSIFICATION_VERSION",
     "DISPLACEMENT_LAW_CANDIDATES",
@@ -417,6 +432,9 @@ __all__ = list(dict.fromkeys([
     "public_gonol_function",
     "public_gonol_position",
     "public_gonol_sha256",
+    "build_unicode_scalar_frame",
+    "unicode_glyph_gonol",
+    "unicode_scalar_turn",
     "pullback_circle_wave_trace",
     "radius_from_breadth",
     "replay_axis_circle_position",
