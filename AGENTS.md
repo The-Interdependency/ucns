@@ -9,7 +9,9 @@
 - Do not introduce lexical, NLP, dictionary, morphology, definition, semantic-graph, EDCM-measurement, PTCNA-state, generic evaluator/laboratory, or cross-stack adapter machinery into UCNS.
 - Every Public Gonol glyph is a function position. Do not create letter/punctuation/digit/symbol subclasses as UCNS architecture.
 - Do not infer Public Gonol function behavior from Unicode names or dictionary definitions.
-- Preserve the exact 157-position Public Gonol arrangement and its digest.
+- Preserve the exact 157-position Public Gonol arrangement and its digest as a historical/public function carrier; do not use it as the active admission gate or angular registry for arbitrary Unicode text.
+- For active text geometry, use exact Unicode scalar identity with SPACE-relative scalar bearing and exact UTF-8 byte/bit anatomy; never normalize canonically equivalent scalar sequences.
+- Primitive text siblings share one exact radius. Do not use ordinal radius-halving as the active text placement law. Closed constructions retain interiors across scales; unresolved next-scale bearing/affixiation remains hmmm rather than being filled from historical candidates.
 - Preserve the native Möbius distinction: 360° visible return; 720° complete local return.
 - Geometry candidates remain candidates until their own declared falsifiers, replay, and ratification justify stronger standing.
 - Preserve exact arithmetic where exactness is load-bearing; lossy renderings remain explicitly secondary.
