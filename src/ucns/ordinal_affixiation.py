@@ -2,7 +2,7 @@
 # id: ordinal_affixiation_geometry
 #   module_name: ordinal_affixiation
 #   module_kind: engine
-#   summary: equidistant initial identities, exact carrier angles and recursive ordinal contraction
+#   summary: historical/replay carrier-angle and ordinal-contraction geometry superseded for active Unicode text
 #   owner: Erin Spencer
 #   public_surface: Carrier, Participant, Placement, Construction, affixiate
 #   internal_surface: canonical receipts and validated exact inputs
@@ -12,7 +12,7 @@
 #   user_data_boundary: caller-supplied identities and provenance remain in memory
 #   admin_only: false
 #   tests: tests/test_ordinal_affixiation.py
-#   rollout: explicit operator-requested replacement candidate; no legacy carrier mutation
+#   rollout: replay-only for text after unicode_gonol replacement; receipts remain valid historical evidence
 #   rollback: remove candidate import and restore prior explicitly selected profile
 #   unresolved: native Mobius lift and global transport between nested local frames
 # === END MODULE_BUILD ===
@@ -27,7 +27,13 @@
 #   given: distinct identities on one declared carrier before angular placement
 #   then: every initial pair has exact distance R without claiming that circle placement is isometric
 # === END CONTRACTS ===
-"""Exact local-frame ordinal affixiation, independent of language.
+"""Historical exact local-frame ordinal affixiation, independent of language.
+
+This module remains replayable for existing receipts and non-text experiments that
+explicitly select it. It is superseded for active Unicode text geometry by
+``ucns.unicode_gonol``. New text construction must not infer canon from the
+radius-halving law here.
+
 
 Usage:
     carrier = Carrier(('A', 'B'), 'example-v1')

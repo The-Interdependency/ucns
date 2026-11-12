@@ -2,6 +2,8 @@
 
 GPT generated; context, prompt Erin Spencer.
 
+> **Standing:** historical/replay geometry for text after the Unicode scalar gonol replacement. Existing receipts remain valid evidence of this profile; new Unicode text construction must use `ucns.unicode_gonol` and must not treat ordinal radius-halving or the closed-bearing candidates below as active canon.
+
 This version implements the operator-specified planar attachment and halving
 construction. Each halving is one disk depth. The same operation accepts a
 primitive or an already closed construction. It does not require a physical
