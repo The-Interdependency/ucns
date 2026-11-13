@@ -1,3 +1,4 @@
+# ratios: loc_comments=126:93 imports_exports=3:13 calls_definitions=68:13
 # === CHECKS ===
 # id: unicode_space_relative_bearing_check
 #   proves: unicode_scalar_has_one_space_relative_bearing
@@ -48,43 +49,43 @@
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_ascii_anatomy_check
-#   proves: unicode_scalar_and_utf8_views_are_both_retained, unicode_gonol_fixed_bit_radius
+# id: unicode_ascii_utf8_identity_check
+#   proves: unicode_scalar_and_utf8_views_are_both_retained
 #   call: self::test_ascii_scalar_value_equals_single_utf8_byte
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_occurrence_order_check
-#   proves: unicode_scalar_frame_is_equal_radius
+# id: unicode_repeated_occurrences_check
+#   proves: unicode_scalar_and_utf8_views_are_both_retained
 #   call: self::test_repeated_occurrences_remain_separate
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_surrogate_rejection_check
-#   proves: unicode_scalar_has_one_space_relative_bearing
+# id: unicode_surrogate_refusal_check
+#   proves: unicode_scalar_frame_rejects_invalid_text
 #   call: self::test_surrogates_refuse
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_frame_input_rejection_check
-#   proves: unicode_scalar_frame_is_equal_radius
+# id: unicode_invalid_text_refusal_check
+#   proves: unicode_scalar_frame_rejects_invalid_text
 #   call: self::test_empty_or_nontext_refuses
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_frame_exact_radius_check
-#   proves: unicode_scalar_frame_is_equal_radius
+# id: unicode_inexact_radius_refusal_check
+#   proves: unicode_scalar_frame_rejects_inexact_radius
 #   call: self::test_nonexact_radius_refuses
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
 #   cleanup: none
-# id: unicode_record_boundary_check
-#   proves: unicode_scalar_sequence_is_not_normalized
+# id: unicode_unresolved_bearing_record_check
+#   proves: unicode_scalar_frame_preserves_unresolved_bearing
 #   call: self::test_records_state_no_normalization_and_unresolved_next_scale_bearing
 #   requires: python3, pytest
 #   timeout: 60
@@ -246,3 +247,4 @@ def test_bit_radius_does_not_change_placement_or_truncate_text():
     assert record["glyph_bit_radius"] == 16
     assert record["glyph_bit_diameter"] == 32
     assert bytes.fromhex(record["utf32_be_hex"]).decode("utf-32-be") == text
+# ratios: loc_comments=126:93 imports_exports=3:13 calls_definitions=68:13

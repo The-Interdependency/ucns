@@ -1,4 +1,4 @@
-# ratios: loc_comments=195:429 imports_exports=23:18 calls_definitions=264:20
+# ratios: loc_comments=195:431 imports_exports=23:18 calls_definitions=266:20
 # === CHECKS ===
 # id: check_boundary_runner_audit_gate
 #   proves: boundary_runner_audits_before_execution
@@ -572,32 +572,34 @@ def test_background_descendants_block_acceptance(tmp_path: Path) -> None:
     import os
     import pytest
     from tools._boundary_supervisor import _owned_children
+    child_one, child_two = os.getpid() + 101, os.getpid() + 104
+    unowned, exited = os.getpid() + 102, os.getpid() + 103
     proc = tmp_path / "proc"
     proc.mkdir()
-    for pid, parent in ((101, os.getpid()), (102, 1)):
+    for pid, parent in ((child_one, os.getpid()), (unowned, -1)):
         process = proc / str(pid)
         process.mkdir()
         (process / "stat").write_text(f"{pid} (name with ) spaces) S {parent} 0 0 0\n")
-    (proc / "103").mkdir()  # Exited between directory enumeration and stat read.
-    assert _owned_children(proc) == [101]
+    (proc / str(exited)).mkdir()  # Exited between directory enumeration and stat read.
+    assert _owned_children(proc) == [child_one]
     task = proc / f"self/task/{os.getpid()}"
     task.mkdir(parents=True)
-    (task / "children").write_text("101 104\n")
-    assert _owned_children(proc) == [101, 104]
+    (task / "children").write_text(f"{child_one} {child_two}\n")
+    assert _owned_children(proc) == [child_one, child_two]
     # procfs may be mounted in an ancestor namespace. Parent comparison uses
     # procfs IDs; kill/wait targets must use this supervisor's namespace IDs.
     (proc / 'self/status').write_text(f'Pid:\t70000\nNSpid:\t70000 {os.getpid()}\n')
-    (proc / '101/stat').write_text('101 (owned) S 70000 0 0 0\n')
+    (proc / str(child_one) / 'stat').write_text(f'{child_one} (owned) S 70000 0 0 0\n')
     mapped_one, mapped_two = os.getpid() + 101, os.getpid() + 104
-    (proc / '101/status').write_text(f'Pid:\t101\nNSpid:\t101 {mapped_one} 1\n')
+    (proc / str(child_one) / 'status').write_text(f'Pid:\t{child_one}\nNSpid:\t{child_one} {mapped_one} 1\n')
     assert _owned_children(proc) == [mapped_one]
     ancestor_task = proc / 'self/task/70000'
     ancestor_task.mkdir()
-    (ancestor_task / 'children').write_text('101 104\n')
-    (proc / '104').mkdir()
-    (proc / '104/status').write_text(f'Pid:\t104\nNSpid:\t104 {mapped_two}\n')
+    (ancestor_task / 'children').write_text(f'{child_one} {child_two}\n')
+    (proc / str(child_two)).mkdir()
+    (proc / str(child_two) / 'status').write_text(f'Pid:\t{child_two}\nNSpid:\t{child_two} {mapped_two}\n')
     assert _owned_children(proc) == [mapped_one, mapped_two]
-    (proc / '104/status').write_text('Pid:\t104\nNSpid:\t104\n')
+    (proc / str(child_two) / 'status').write_text(f'Pid:\t{child_two}\nNSpid:\t{child_two}\n')
     with pytest.raises(OSError, match='namespace'):
         _owned_children(proc)
     (proc / 'self/status').write_text('Pid:\t70000\nNSpid:\t70000 123456789\n')
@@ -672,4 +674,4 @@ def test_node24_capability_runs_typescript_witness(tmp_path: Path) -> None:
     assert receipt["outcomes"][0]["status"] == "ERROR", receipt
     with pytest.raises(ProcessLookupError):
         os.kill(int(pid_path.read_text()), 0)
-# ratios: loc_comments=195:429 imports_exports=23:18 calls_definitions=264:20
+# ratios: loc_comments=195:431 imports_exports=23:18 calls_definitions=266:20

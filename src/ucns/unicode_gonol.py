@@ -1,3 +1,4 @@
+# ratios: loc_comments=186:91 imports_exports=5:7 calls_definitions=68:24
 # === MODULE_BUILD ===
 # id: unicode_gonol_geometry
 #   module_name: unicode_gonol
@@ -40,6 +41,15 @@
 # id: unicode_bit_radius_is_independent_of_placement
 #   given: a scalar frame with any admissible geometric placement radius
 #   then: every glyph keeps 16-bit radius and its complete 32-bit representation while the frame preserves every occurrence
+# id: unicode_scalar_frame_rejects_invalid_text
+#   given: empty or non-string text, or a sequence containing a surrogate
+#   then: construction refuses the input rather than emitting a Unicode scalar frame
+# id: unicode_scalar_frame_rejects_inexact_radius
+#   given: a radius that is not an exact integer or Fraction
+#   then: construction refuses the radius rather than rounding it
+# id: unicode_scalar_frame_preserves_unresolved_bearing
+#   given: a primitive Unicode frame is serialized
+#   then: its record declares no normalization and preserves next-scale bearing as hmmm
 # === END CONTRACTS ===
 """Exact Unicode scalar geometry with UTF-8 anatomy.
 
@@ -314,3 +324,4 @@ __all__ = [
     "unicode_glyph_gonol",
     "build_unicode_scalar_frame",
 ]
+# ratios: loc_comments=186:91 imports_exports=5:7 calls_definitions=68:24
