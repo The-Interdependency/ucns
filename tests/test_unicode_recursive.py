@@ -1,4 +1,4 @@
-# ratios: loc_comments=133:44 imports_exports=7:6 calls_definitions=68:6
+# ratios: loc_comments=148:51 imports_exports=7:7 calls_definitions=79:7
 # === CHECKS ===
 # id: unicode_recursive_reentry_check
 #   proves: unicode_closed_objects_reenter, unicode_recursive_equal_radius, unicode_recursive_source_identity
@@ -38,6 +38,13 @@
 # id: unicode_recursive_native_integrity_check
 #   proves: unicode_recursive_object_integrity
 #   call: self::test_forged_native_objects_and_cycles_refuse
+#   requires: pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_recursive_placement_interior_check
+#   proves: unicode_recursive_object_integrity
+#   call: self::test_placements_cannot_substitute_separate_forged_interiors
 #   requires: pytest
 #   timeout: 60
 #   mutates: none
@@ -190,4 +197,21 @@ def test_forged_native_objects_and_cycles_refuse():
     object.__setattr__(root, 'participants', (root,))
     with pytest.raises(ValueError, match='CYCLIC'):
         validate_unicode(root)
-# ratios: loc_comments=133:44 imports_exports=7:6 calls_definitions=68:6
+
+
+@pytest.mark.parametrize('kind', ('closed', 'scalar'))
+def test_placements_cannot_substitute_separate_forged_interiors(kind):
+    good = unicode_glyph_gonol('A')
+    forged = unicode_glyph_gonol('A')
+    object.__setattr__(forged, 'utf32_be', b'bad')
+    if kind == 'closed':
+        root = close_unicode((good,), relation='ordered', source='fixture')
+        object.__setattr__(root.placements[0], 'interior', forged)
+    else:
+        root = build_unicode_scalar_frame('A')
+        object.__setattr__(root.placements[0], 'glyph', forged)
+    for operation in (validate_unicode, export_unicode_graph,
+                      lambda obj: close_unicode((obj,), bearings=(0,), relation='parent', source='fixture')):
+        with pytest.raises(ValueError, match='PLACEMENT_INTERIOR_MISMATCH'):
+            operation(root)
+# ratios: loc_comments=148:51 imports_exports=7:7 calls_definitions=79:7

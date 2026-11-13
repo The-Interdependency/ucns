@@ -1,4 +1,4 @@
-# ratios: loc_comments=207:60 imports_exports=5:6 calls_definitions=117:22
+# ratios: loc_comments=217:60 imports_exports=5:6 calls_definitions=127:22
 # === MODULE_BUILD ===
 # id: unicode_recursive_geometry
 #   module_name: unicode_recursive
@@ -58,7 +58,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from fractions import Fraction
 from .attachment_stack import Direction, Point
-from .unicode_gonol import UnicodeGlyphGonol, UnicodeScalarFrame, _digest
+from .unicode_gonol import UnicodeGlyphGonol, UnicodeScalarFrame, UnicodeScalarPlacement, _digest
 
 
 def _exact(value, *, positive=False):
@@ -221,8 +221,18 @@ def validate_unicode(root):
         if type(obj) is UnicodeGlyphGonol:
             expected = UnicodeGlyphGonol(obj.character)
         elif type(obj) is UnicodeScalarFrame:
+            if (not isinstance(obj.placements, tuple) or not isinstance(obj.glyphs, tuple)
+                    or len(obj.placements) != len(obj.glyphs)
+                    or any(type(p) is not UnicodeScalarPlacement or type(glyph) is not UnicodeGlyphGonol
+                           or p.glyph is not glyph for p, glyph in zip(obj.placements, obj.glyphs))):
+                raise ValueError('UNICODE_PLACEMENT_INTERIOR_MISMATCH')
             expected = UnicodeScalarFrame(obj.text, obj.radius)
         else:
+            if (not isinstance(obj.placements, tuple)
+                    or len(obj.placements) != len(obj.participants)
+                    or any(type(p) is not UnicodeObjectPlacement or p.interior is not child
+                           for p, child in zip(obj.placements, obj.participants))):
+                raise ValueError('UNICODE_PLACEMENT_INTERIOR_MISMATCH')
             expected = UnicodeClosedFrame(obj.participants, obj.bearings, obj.relation,
                                           obj.source, obj.radius, obj.rotations)
         if (_digest(obj.record()) != _digest(expected.record())
@@ -303,4 +313,4 @@ def replay_unicode_graph(record):
         return root
     except (KeyError, TypeError, AttributeError, UnicodeError) as exc:
         raise ValueError('INVALID_UNICODE_OBJECT_GRAPH') from exc
-# ratios: loc_comments=207:60 imports_exports=5:6 calls_definitions=117:22
+# ratios: loc_comments=217:60 imports_exports=5:6 calls_definitions=127:22
