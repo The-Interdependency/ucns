@@ -1,3 +1,4 @@
+# ratios: loc_comments=75:72 imports_exports=3:10 calls_definitions=35:10
 # === CHECKS ===
 # id: unicode_space_relative_bearing_check
 #   proves: unicode_scalar_has_one_space_relative_bearing
@@ -23,6 +24,48 @@
 # id: unicode_equal_radius_check
 #   proves: unicode_scalar_frame_is_equal_radius
 #   call: self::test_every_occurrence_uses_the_same_radius
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_ascii_utf8_identity_check
+#   proves: unicode_scalar_and_utf8_views_are_both_retained
+#   call: self::test_ascii_scalar_value_equals_single_utf8_byte
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_repeated_occurrences_check
+#   proves: unicode_scalar_and_utf8_views_are_both_retained
+#   call: self::test_repeated_occurrences_remain_separate
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_surrogate_refusal_check
+#   proves: unicode_scalar_frame_rejects_invalid_text
+#   call: self::test_surrogates_refuse
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_invalid_text_refusal_check
+#   proves: unicode_scalar_frame_rejects_invalid_text
+#   call: self::test_empty_or_nontext_refuses
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_inexact_radius_refusal_check
+#   proves: unicode_scalar_frame_rejects_inexact_radius
+#   call: self::test_nonexact_radius_refuses
+#   requires: python3, pytest
+#   timeout: 60
+#   mutates: none
+#   cleanup: none
+# id: unicode_unresolved_bearing_record_check
+#   proves: unicode_scalar_frame_preserves_unresolved_bearing
+#   call: self::test_records_state_no_normalization_and_unresolved_next_scale_bearing
 #   requires: python3, pytest
 #   timeout: 60
 #   mutates: none
@@ -126,3 +169,4 @@ def test_records_state_no_normalization_and_unresolved_next_scale_bearing():
     record = build_unicode_scalar_frame("A").record()
     assert record["normalization"] == "none"
     assert record["next_scale_bearing"] == "hmmm"
+# ratios: loc_comments=75:72 imports_exports=3:10 calls_definitions=35:10
