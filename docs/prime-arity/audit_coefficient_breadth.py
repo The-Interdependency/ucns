@@ -1,9 +1,62 @@
 #!/usr/bin/env python3
+# ratios: loc_comments=233:79 imports_exports=7:10 calls_definitions=74:10
+# === MODULE_BUILD ===
+# id: coefficient_breadth_audit
+#   module_name: audit_coefficient_breadth
+#   module_kind: experiment
+#   summary: replays the exact coefficient ledger and restricted scalar-breadth counterexample without admitting factors as UCNS roles
+#   owner: Erin Spencer
+#   public_surface: coefficient_layers, update_coefficients, evaluated_size, exact_radius, retained_record, build_audit, command-line audit
+#   internal_surface: is_prime, canonical_json_bytes, replay_canonical_json
+#   auth_boundary: none
+#   storage_boundary: none
+#   network_boundary: none
+#   user_data_boundary: none
+#   admin_only: false
+#   tests: tests/test_coefficient_breadth_audit.py
+#   rollout: non-canonical docs experiment exercised by the existing geometry CI
+#   rollback: remove the experiment, its checks, and its documentation discovery together
+#   unresolved: successor selection, role-admission evidence, full retained-structure breadth
+# === END MODULE_BUILD ===
+
+# === CONTRACTS ===
+# id: coefficient_audit_exact_ledger
+#   given: supplied prime factors, including repetitions and a supplied successor q
+#   then: coefficient layers equal the elementary-symmetric subset products and updating multiplies by (1+q*t) without discovering q
+#   class: correctness
+# id: coefficient_audit_restricted_breadth
+#   given: finite prime-factor multisets
+#   then: scalar collisions remain distinct from null-faithfulness on the restricted empty versus nonempty multiset domain
+#   class: evidence
+# id: coefficient_audit_retains_factors_without_role_admission
+#   given: supplied factors and source provenance with no relation witness
+#   then: records retain their input order and provenance but declare UCNS arity unknown and role admission unresolved
+#   class: doctrine
+# id: coefficient_audit_fails_closed
+#   given: optimized Python or a failed audit falsifier
+#   then: no successful audit artifact is emitted
+#   class: safety
+# id: coefficient_audit_emits_replayed_bytes
+#   given: a successful audit run
+#   then: stdout is exactly the canonical JSON representation replayed by the audit and repeats byte-identically
+#   class: evidence
+# id: coefficient_audit_rejects_invalid_inputs
+#   given: non-prime factors, inexact coefficients, or missing source provenance
+#   then: the arithmetic or retained-record entry point raises rather than emitting unsupported evidence
+#   class: safety
+# === END CONTRACTS ===
+
 """Replay the elementary-symmetric arity and restricted-breadth candidate.
 
 The full polynomial is tested separately from its scalar evaluation at t=1.
 This is an incubating arithmetic experiment, not a selected UCNS breadth
 evaluator or successor constructor.
+
+Usage: ``python docs/prime-arity/audit_coefficient_breadth.py > /tmp/coefficient.json``.
+Run ``pytest tests/test_coefficient_breadth_audit.py`` for independent subset-product,
+negative, and exact-stdout replay checks. Optimized Python is refused. The output
+is compact canonical JSON without a trailing newline; pretty-print only a separate
+display copy. Supplied factors carry no evidence of mutually-constraining roles.
 """
 
 from __future__ import annotations
@@ -13,9 +66,10 @@ from fractions import Fraction
 from itertools import combinations_with_replacement, permutations
 import json
 from math import isqrt, prod
+import sys
 
 
-ROLE_SETS = {
+FACTOR_SETS = {
     "157": (157,),
     "2881": (43, 67),
     "54837698421": (3, 11, 1_661_748_437),
@@ -35,8 +89,12 @@ def is_prime(value: int) -> bool:
 def update_coefficients(coefficients: tuple[int, ...], successor: int) -> tuple[int, ...]:
     """Apply e'_j=e_j+q*e_(j-1) for a caller-supplied prime q."""
 
-    if not coefficients or coefficients[0] != 1:
-        raise ValueError("coefficient vector must begin with the empty baseline one")
+    if (
+        not coefficients
+        or coefficients[0] != 1
+        or any(type(value) is not int or value <= 0 for value in coefficients)
+    ):
+        raise ValueError("coefficient vector must contain positive exact integers and begin with one")
     if not is_prime(successor):
         raise ValueError("supplied successor must be prime")
     return tuple(
@@ -60,6 +118,8 @@ def coefficient_layers(roles: tuple[int, ...]) -> tuple[int, ...]:
 def evaluated_size(roles: tuple[int, ...]) -> int:
     """C_k(1), kept exact rather than converted through logarithms."""
 
+    if any(not is_prime(role) for role in roles):
+        raise ValueError("factors must be integer primes greater than one")
     return prod(1 + role for role in roles)
 
 
@@ -68,19 +128,23 @@ def exact_radius(roles: tuple[int, ...]) -> Fraction:
     return Fraction(size - 1, size)
 
 
-def retained_record(roles: tuple[int, ...], provenance: str) -> dict[str, object]:
-    """Retain the polynomial together with relations and provenance."""
+def retained_record(factors: tuple[int, ...], provenance: str) -> dict[str, object]:
+    """Retain factors without inventing a relation or UCNS role-admission witness."""
 
+    if not isinstance(provenance, str) or not provenance.strip():
+        raise ValueError("source provenance must be a nonempty string")
     return {
-        "coefficient_vector": list(coefficient_layers(roles)),
+        "coefficient_vector": list(coefficient_layers(factors)),
         "relations": {
-            "role_semantics": "mutually-constraining roles supplied by caller",
-            "layer_semantics": "e_j sums every j-role multiplicative interaction",
+            "factor_semantics": "supplied prime factors, not admitted UCNS roles",
+            "role_admission": "UNRESOLVED",
+            "ucns_arity": None,
+            "layer_semantics": "e_j sums every j-factor multiplicative interaction",
             "order_semantics": "coefficient vector is permutation-invariant",
         },
         "provenance": {
             "source": provenance,
-            "supplied_roles": list(roles),
+            "supplied_factors": list(factors),
             "successor_discovery": "not performed",
         },
     }
@@ -99,8 +163,13 @@ def replay_canonical_json(data: bytes) -> object:
     return value
 
 
-def main() -> None:
-    layers = {name: coefficient_layers(roles) for name, roles in ROLE_SETS.items()}
+def build_audit() -> dict[str, object]:
+    """Run the falsifiers before returning evidence; never run with assertions disabled."""
+
+    if not __debug__ or sys.flags.optimize:
+        raise RuntimeError("optimized Python cannot produce coefficient audit evidence")
+
+    layers = {name: coefficient_layers(roles) for name, roles in FACTOR_SETS.items()}
     assert layers == {
         "157": (1, 157),
         "2881": (1, 110, 2_881),
@@ -113,14 +182,14 @@ def main() -> None:
     }
     assert all(coefficients[-1] == int(name) for name, coefficients in layers.items())
 
-    sizes = {name: evaluated_size(roles) for name, roles in ROLE_SETS.items()}
+    sizes = {name: evaluated_size(roles) for name, roles in FACTOR_SETS.items()}
     assert sizes == {
         "157": 158,
         "2881": 2_992,
         "54837698421": 79_763_925_024,
     }
 
-    radii = {name: exact_radius(roles) for name, roles in ROLE_SETS.items()}
+    radii = {name: exact_radius(roles) for name, roles in FACTOR_SETS.items()}
     assert radii == {
         "157": Fraction(157, 158),
         "2881": Fraction(2_991, 2_992),
@@ -165,7 +234,7 @@ def main() -> None:
 
     # The observed anchors are not nested role sets, so that exact update law
     # does not transform one observed anchor factorization into the next.
-    role_sets = tuple(ROLE_SETS.values())
+    role_sets = tuple(FACTOR_SETS.values())
     nested_transitions = []
     for left, right in zip(role_sets, role_sets[1:]):
         left_counts = Counter(left)
@@ -181,7 +250,7 @@ def main() -> None:
     # order.  Any order or provenance claim therefore needs separate structure.
     assert all(
         coefficient_layers(ordering) == layers["54837698421"]
-        for ordering in permutations(ROLE_SETS["54837698421"])
+        for ordering in permutations(FACTOR_SETS["54837698421"])
     )
 
     # Matched arity-two control: different coefficient structures collapse to
@@ -200,7 +269,7 @@ def main() -> None:
     # otherwise retained UCNS objects.
     assert evaluated_size(()) == 1
     assert exact_radius(()) == 0
-    assert all(exact_radius(roles) > 0 for roles in ROLE_SETS.values())
+    assert all(exact_radius(roles) > 0 for roles in FACTOR_SETS.values())
     null_faithfulness_cases = tuple(
         roles
         for arity in range(5)
@@ -213,7 +282,7 @@ def main() -> None:
     # Preserve the object rather than identifying it with its lossy radius.
     retained_records = {
         name: retained_record(roles, f"observed-anchor:{name}")
-        for name, roles in ROLE_SETS.items()
+        for name, roles in FACTOR_SETS.items()
     }
     record_replays = {}
     for name, record in retained_records.items():
@@ -229,13 +298,13 @@ def main() -> None:
         "retained_object": "R=(C_k(t), relations, provenance)",
         "anchors": {
             name: {
-                "roles": list(ROLE_SETS[name]),
+                "factors": list(FACTOR_SETS[name]),
                 "coefficients": list(layers[name]),
                 "C_at_1": sizes[name],
                 "radius": f"{radii[name].numerator}/{radii[name].denominator}",
                 "retained_record": retained_records[name],
             }
-            for name in ROLE_SETS
+            for name in FACTOR_SETS
         },
         "tests": {
             "coefficient_update_law": "PROVEN",
@@ -279,8 +348,16 @@ def main() -> None:
     result_bytes = canonical_json_bytes(result)
     assert replay_canonical_json(result_bytes) == result
     assert canonical_json_bytes(replay_canonical_json(result_bytes)) == result_bytes
-    print(json.dumps(result, indent=2, sort_keys=True))
+    return result
+
+
+def main() -> None:
+    """Emit exactly the artifact that the canonical-byte replay accepts."""
+
+    result_bytes = canonical_json_bytes(build_audit())
+    sys.stdout.buffer.write(result_bytes)
 
 
 if __name__ == "__main__":
     main()
+# ratios: loc_comments=233:79 imports_exports=7:10 calls_definitions=74:10

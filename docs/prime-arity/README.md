@@ -58,7 +58,41 @@ THIRTEEN_RECURSION_LAYERS.json      machine-readable thirteen-layer map
 METAPAT_RELATIONS.json              typed relation map
 UCNS_OBJECTS.jsonl                  minimal UCNS object records
 METRICS.json                        determined convergence metrics and controls
+audit_coefficient_breadth.py         exact coefficient-ledger and scalar-breadth audit
 ```
+
+## Coefficient-breadth audit usage
+
+From the repository root:
+
+```bash
+uv sync --locked --extra test --extra build
+.venv/bin/python docs/prime-arity/audit_coefficient_breadth.py > /tmp/coefficient-audit.json
+.venv/bin/python docs/prime-arity/audit_coefficient_breadth.py > /tmp/coefficient-audit-replay.json
+cmp /tmp/coefficient-audit.json /tmp/coefficient-audit-replay.json
+.venv/bin/python -m pytest tests/test_coefficient_breadth_audit.py
+.venv/bin/python tools/verify_skill_lib_contracts.py .
+```
+
+The artifact is compact canonical JSON without a trailing newline. The script
+replays that same representation before emitting it. Optimized Python (`-O`,
+`-OO`, or `PYTHONOPTIMIZE`) refuses to publish evidence. The existing geometry
+CI discovers its test-owned checks, and the no-exec contract audit includes this
+experiment directory without moving its code into the core package.
+
+The coefficient identity follows by multiplying `C_k(t)` by `(1+q*t)`;
+unique factorization of these normalized linear factors preserves the unordered
+prime multiset. Tests independently compare all 126 multisets over
+`{2,3,5,7,11}` through degree four against subset-product sums. They also retain
+the scalar collision `(3,11)` versus `(5,7)`, the supplied-successor boundary,
+the restricted empty/nonempty null-faithfulness result, and negative/replay cases.
+Finite test success is implementation evidence, not the mathematical proof.
+
+Supplied factors are **not admitted UCNS roles**: their occurrence order and source
+provenance are retained separately, while role admission and UCNS arity remain
+unresolved. No relation witness is synthesized from factor count. The scalar
+candidate is not a complete retained-structure evaluator, and no successor is
+discovered here. These limitations remain part of every audit record.
 
 ## Load-bearing claim under test
 
