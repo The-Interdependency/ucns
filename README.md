@@ -266,6 +266,15 @@ Use `.venv/bin/python -m pytest tests/test_bit_circle.py` for the focused census
 The constructor retains native axis-circle identities; attaching its boundary
 to a recursive construction and interpreting code relationships remain `hmmm`.
 
+## Recursive Unicode completion
+
+[`unicode_recursive`](docs/unicode-recursion.md) closes glyphs, scalar frames and
+already completed frames under the same native object contract. Child interiors,
+occurrence order and provenance remain recoverable at every depth. Parent origins
+share one exact radius; declared bearings and rotations give reversible native
+local-frame placement. Completed objects require explicit bearings; automatic
+bearing selection remains unresolved. Primitive 16 b rad receipts stay unchanged.
+
 ## Build
 
 ```bash

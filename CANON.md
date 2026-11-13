@@ -125,6 +125,17 @@ transform and exact bearing assigned to a completed construction at its next sca
 remain `hmmm`; UCNS must not fill that boundary with a hash, terminal glyph,
 ordinal-halving rule, or unselected historical bearing candidate.
 
+### Declared recursive frame completion
+
+The native `unicode_recursive` constructor closes ordered glyphs, scalar frames,
+and already closed frames using one equal-radius object contract. It retains
+complete interiors and explicit source/relation provenance. Completed children
+require caller-declared parent bearings; they are not rebuilt from labels.
+Existing native exact point/rotation arithmetic supplies reversible rigid local
+placement. This implements declared frame closure and composition; it neither
+selects the unresolved automatic next-scale bearing nor ratifies a general
+affixiation law. See [the contract and falsifiers](docs/unicode-recursion.md).
+
 ## Möbius origin and return
 
 Structural Null is singular, anchors the native Möbius construction as its
