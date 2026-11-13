@@ -1,4 +1,4 @@
-# ratios: loc_comments=595:54 imports_exports=12:4 calls_definitions=323:23
+# ratios: loc_comments=596:54 imports_exports=12:4 calls_definitions=324:23
 # === MODULE_BUILD ===
 # id: skill_lib_contract_audit
 #   module_name: verify_skill_lib_contracts
@@ -28,7 +28,7 @@
 #
 # id: contract_audit_reports_graph_gaps
 #   given: a contract, check target, or self call is missing or unknown
-#   then: the audit reports the gap and exits nonzero, including empty input, malformed syntax/fences, and unsupported class-based tests
+#   then: the audit reports the gap and exits nonzero, including undocumented prime-arity experiment code, empty input, malformed syntax/fences, and unsupported class-based tests
 #   class: evidence
 #   since: 2026-07-21
 #
@@ -112,7 +112,7 @@ def _source_files(root: Path) -> Iterable[Path]:
         parser = root / ".agents/skills/msdmd/parsers" / name
         if parser.is_file():
             yield parser
-    for base in (root / "src", root / "tools", root / "tests"):
+    for base in (root / "src", root / "tools", root / "tests", root / "docs/prime-arity"):
         if base.exists():
             yield from (path for path in sorted(base.rglob("*")) if path.suffix in {".py", ".sh"} and path.is_file() and "__pycache__" not in path.parts)
 
@@ -546,6 +546,7 @@ def audit_repository(root: Path) -> Tuple[bool, List[str]]:
 
         entries.extend(path_entries)
         if (path.is_relative_to(root / "src") or path.is_relative_to(root / "tools")
+                or path.is_relative_to(root / "docs/prime-arity")
                 or path.is_relative_to(root / ".agents/skills/msdmd/parsers")):
             declared = {entry.block for entry in path_entries}
             for required_block in ("MODULE_BUILD", "CONTRACTS"):
@@ -703,4 +704,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-# ratios: loc_comments=595:54 imports_exports=12:4 calls_definitions=323:23
+# ratios: loc_comments=596:54 imports_exports=12:4 calls_definitions=324:23
