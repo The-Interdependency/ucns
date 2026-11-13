@@ -2,7 +2,7 @@
 # id: unicode_gonol_geometry
 #   module_name: unicode_gonol
 #   module_kind: geometry
-#   summary: exact Unicode-scalar gonol bearings with exact UTF-8 anatomy and equal-radius scalar frames
+#   summary: exact Unicode-scalar gonols with 16-bit radius, 32-bit big-endian diameter, retained UTF-8 anatomy and equal placement radius
 #   owner: Erin Spencer
 #   public_surface: UnicodeGlyphGonol, UnicodeScalarFrame, unicode_scalar_turn, unicode_glyph_gonol, build_unicode_scalar_frame
 #   internal_surface: exact scalar/UTF-8 receipts
@@ -31,6 +31,15 @@
 # id: unicode_scalar_sequence_is_not_normalized
 #   given: canonically equivalent but byte-distinct Unicode sequences
 #   then: their scalar sequences, UTF-8 bytes and receipts remain distinct
+# id: unicode_gonol_fixed_bit_radius
+#   given: any valid Unicode scalar including ASCII and supplementary-plane scalars
+#   then: bit radius is 16 and diameter is 32 bits stored as exactly four big-endian bytes without a byte-order marker; ASCII has three leading zero bytes
+# id: unicode_gonol_big_endian_round_trip
+#   given: an exact four-byte big-endian scalar representation
+#   then: recover the same scalar or reject invalid width and nonscalar values without truncation or normalization
+# id: unicode_bit_radius_is_independent_of_placement
+#   given: a scalar frame with any admissible geometric placement radius
+#   then: every glyph keeps 16-bit radius and its complete 32-bit representation while the frame preserves every occurrence
 # === END CONTRACTS ===
 """Exact Unicode scalar geometry with UTF-8 anatomy.
 
@@ -40,6 +49,17 @@ One Unicode scalar is one glyph gonol. Its scalar value determines one exact
 bearing from SPACE. The exact UTF-8 bytes and bits are retained as a second,
 internal representation of that same scalar; they do not replace scalar
 identity.
+
+UCHC's bit radius ("b rad") is fixed at 16; the bit diameter is 32. Each
+scalar occupies four big-endian bytes (UTF-32BE, without a BOM). ASCII therefore
+has three leading zero bytes. These are encoding widths, independent of the
+geometric placement ``radius``. A text frame retains one complete diameter per
+scalar; the width is never a limit on the frame's text length.
+
+Usage: ``unicode_glyph_gonol("A").utf32_be == bytes.fromhex("00 00 00 41")``.
+``UnicodeGlyphGonol.from_utf32_be`` validates and recovers one diameter.
+Version 2 receipts include the width and byte-order contract; version 1 receipts
+remain bound to their historical producer and are not reinterpreted.
 
 No Unicode normalization is performed. Precomposed and decomposed sequences
 remain distinct constructions.
@@ -62,8 +82,10 @@ import json
 
 UNICODE_SCALAR_MODULUS = 0x110000
 SPACE_SCALAR = 0x20
-SCHEMA = "ucns.unicode-gonol.v1"
-VERSION = "1"
+GONOL_BIT_RADIUS = 16
+GONOL_BIT_DIAMETER = 2 * GONOL_BIT_RADIUS
+SCHEMA = "ucns.unicode-gonol.v2"
+VERSION = "2"
 
 
 def _digest(value: object) -> str:
@@ -96,12 +118,13 @@ def unicode_scalar_turn(character: str) -> Fraction:
 
 @dataclass(frozen=True, slots=True)
 class UnicodeGlyphGonol:
-    """One Unicode scalar with exact scalar and UTF-8 views."""
+    """One scalar with a 16-bit radius and exact UTF-32BE/UTF-8 views."""
 
     character: str
     scalar: int = field(init=False)
     turn: Fraction = field(init=False)
     utf8: bytes = field(init=False, repr=False)
+    utf32_be: bytes = field(init=False, repr=False)
     receipt: str = field(init=False)
 
     def __post_init__(self) -> None:
@@ -111,7 +134,29 @@ class UnicodeGlyphGonol:
         object.__setattr__(self, "scalar", value)
         object.__setattr__(self, "turn", turn)
         object.__setattr__(self, "utf8", encoded)
+        object.__setattr__(self, "utf32_be", value.to_bytes(GONOL_BIT_DIAMETER // 8, "big"))
         object.__setattr__(self, "receipt", _digest(self.record(include_receipt=False)))
+
+    @classmethod
+    def from_utf32_be(cls, data: bytes) -> UnicodeGlyphGonol:
+        """Recover exactly one four-byte diameter; refuse padding/truncation."""
+        if not isinstance(data, bytes):
+            raise TypeError("gonol diameter must be immutable bytes")
+        if len(data) != GONOL_BIT_DIAMETER // 8:
+            raise ValueError("gonol diameter must contain exactly four bytes")
+        return cls(data.decode("utf-32-be", errors="strict"))
+
+    @property
+    def bit_radius(self) -> int:
+        return GONOL_BIT_RADIUS
+
+    @property
+    def bit_diameter(self) -> int:
+        return GONOL_BIT_DIAMETER
+
+    @property
+    def diameter_bits(self) -> str:
+        return "".join(f"{byte:08b}" for byte in self.utf32_be)
 
     @property
     def codepoint(self) -> str:
@@ -131,6 +176,12 @@ class UnicodeGlyphGonol:
             "space_scalar": SPACE_SCALAR,
             "scalar_modulus": UNICODE_SCALAR_MODULUS,
             "turn": [self.turn.numerator, self.turn.denominator],
+            "bit_radius": self.bit_radius,
+            "bit_diameter": self.bit_diameter,
+            "diameter_encoding": "UTF-32BE",
+            "utf32_be_bytes": list(self.utf32_be),
+            "utf32_be_hex": self.utf32_be.hex().upper(),
+            "diameter_bits": self.diameter_bits,
             "utf8_bytes": list(self.utf8),
             "utf8_hex": self.utf8.hex().upper(),
             "utf8_bits": list(self.utf8_bits),
@@ -208,13 +259,22 @@ class UnicodeScalarFrame:
     def scalar_sequence(self) -> tuple[int, ...]:
         return tuple(glyph.scalar for glyph in self.glyphs)
 
+    @property
+    def utf32_be(self) -> bytes:
+        """Ordered full diameters; four bytes per scalar, with no stream BOM."""
+        return b"".join(glyph.utf32_be for glyph in self.glyphs)
+
     def record(self, *, include_receipt: bool = True) -> dict:
         record = {
-            "schema": "ucns.unicode-scalar-frame.v1",
+            "schema": "ucns.unicode-scalar-frame.v2",
             "text": self.text,
             "scalar_sequence": list(self.scalar_sequence),
             "utf8_bytes": list(self.utf8),
             "utf8_hex": self.utf8.hex().upper(),
+            "glyph_bit_radius": GONOL_BIT_RADIUS,
+            "glyph_bit_diameter": GONOL_BIT_DIAMETER,
+            "diameter_encoding": "UTF-32BE",
+            "utf32_be_hex": self.utf32_be.hex().upper(),
             "radius": [self.radius.numerator, self.radius.denominator],
             "glyphs": [glyph.record() for glyph in self.glyphs],
             "placements": [placement.record() for placement in self.placements],
@@ -245,6 +305,8 @@ __all__ = [
     "VERSION",
     "UNICODE_SCALAR_MODULUS",
     "SPACE_SCALAR",
+    "GONOL_BIT_RADIUS",
+    "GONOL_BIT_DIAMETER",
     "UnicodeGlyphGonol",
     "UnicodeScalarPlacement",
     "UnicodeScalarFrame",

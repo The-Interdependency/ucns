@@ -86,6 +86,34 @@ Neither view replaces the other. No Unicode normalization is permitted by the
 construction. A precomposed scalar and a canonically equivalent decomposed scalar
 sequence remain different constructions with different receipts.
 
+### UCHC bit radius
+
+The UCHC representation policy fixes **bit radius (b rad) = 16** and
+**bit diameter = 32**, in bits. Each scalar is represented by four big-endian
+bytes, equivalent to UTF-32BE without an inserted byte-order marker. ASCII has
+three leading zero bytes: `A` is `00 00 00 41`. `ë` is `00 00 00 EB`, while its
+retained UTF-8 anatomy is `C3 AB`. A source `U+FEFF` remains an ordinary retained
+scalar and is not stripped.
+
+Domain claim: `uchc.gonol.bit_radius` is UCHC's ratified encoding-width policy,
+implemented by the UCNS Unicode representation. Its scope is each Unicode glyph
+gonol; it does not claim a 32-bit encoding of an arbitrary closed word or sentence.
+The neighboring geometric placement `radius` remains a separate exact quantity.
+This explicit distinction resolves the shared word without identifying bit width
+with spatial distance, recursive depth, breadth, or the count of child gonols.
+
+Authority: Erin Spencer's 2026-11-13 instructions, "uchc gonols radial bits set
+to 16" and "big endian - ASCII gets three empty bytes", following the explicit
+bit-radius/diameter distinction. This is a chosen representation contract, not
+an inferred geometric law. Version 2 glyph/frame receipts bind the bit width,
+byte order and full scalar bytes. Historical version 1 receipts keep their exact
+producer identity.
+
+Usage: `unicode_glyph_gonol("A").utf32_be`; recover one diameter with
+`UnicodeGlyphGonol.from_utf32_be(bytes.fromhex("00000041"))`. A frame concatenates
+one four-byte diameter per scalar, retaining occurrence order and all interiors.
+No encoding-width rule supplies the unresolved higher-scale bearing.
+
 At the primitive text scale, sibling glyph occurrences share one exact radius while
 retaining their own scalar bearings and occurrence ordinals. Ordinal radius-halving
 is not the active text placement law.

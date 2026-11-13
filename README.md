@@ -97,6 +97,21 @@ byte/bit anatomy. No Unicode normalization occurs: precomposed and decomposed
 sequences remain distinct. Primitive sibling occurrences share one radius; ordinal
 radius-halving is not the active text placement law.
 
+UCHC's **bit radius is 16 b rad**, giving a **32-bit diameter** per Unicode glyph
+gonol. Its four-byte representation is big-endian (UTF-32BE, no inserted BOM):
+ASCII `A` is `00 00 00 41`. The bit radius is independent of geometric placement
+radius. Version 2 records bind the fixed width and byte order while retaining the
+exact UTF-8 view.
+
+```python
+from ucns import UnicodeGlyphGonol, unicode_glyph_gonol
+
+glyph = unicode_glyph_gonol("A")
+assert (glyph.bit_radius, glyph.bit_diameter) == (16, 32)
+assert glyph.utf32_be == bytes.fromhex("00 00 00 41")
+assert UnicodeGlyphGonol.from_utf32_be(glyph.utf32_be) == glyph
+```
+
 A function's geometric operation is not inferred from Unicode names or dictionary
 definitions. Where an operation is not geometrically established, it remains
 `hmmm`.
