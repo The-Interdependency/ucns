@@ -166,7 +166,7 @@ def replay_canonical_json(data: bytes) -> object:
 def build_audit() -> dict[str, object]:
     """Run the falsifiers before returning evidence; never run with assertions disabled."""
 
-    if sys.flags.optimize:
+    if not __debug__ or sys.flags.optimize:
         raise RuntimeError("optimized Python cannot produce coefficient audit evidence")
 
     layers = {name: coefficient_layers(roles) for name, roles in FACTOR_SETS.items()}

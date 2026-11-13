@@ -1,4 +1,4 @@
-# ratios: loc_comments=167:80 imports_exports=13:10 calls_definitions=48:12
+# ratios: loc_comments=173:82 imports_exports=13:10 calls_definitions=50:12
 # === CHECKS ===
 # id: check_coefficient_audit_exact_ledger
 #   proves: coefficient_audit_exact_ledger
@@ -180,6 +180,14 @@ def test_optimized_execution_cannot_emit_evidence():
         assert rejected.returncode != 0
         assert rejected.stdout == b""
         assert b"optimized Python cannot produce coefficient audit evidence" in rejected.stderr
+    # A loader may optimize code without changing this process's sys.flags.
+    # Inspect the function's actual compilation mode, not runtime flags alone.
+    for level in (1, 2):
+        namespace = {"__name__": "coefficient_optimized_probe"}
+        exec(compile(AUDIT.read_bytes(), str(AUDIT), "exec", optimize=level), namespace)
+        namespace["FACTOR_SETS"]["157"] = (151,)
+        with pytest.raises(RuntimeError, match="optimized Python"):
+            namespace["build_audit"]()
 
 
 def test_exact_stdout_replays_and_preserves_taxonomy(coefficient_audit):
@@ -278,4 +286,4 @@ def test_docs_experiment_gaps_are_detected_without_execution(tmp_path):
     assert not ok
     assert any(str(probe) in problem and "missing MODULE_BUILD" in problem for problem in problems)
     assert any("orphan_experiment has no CHECKS" in problem for problem in problems)
-# ratios: loc_comments=167:80 imports_exports=13:10 calls_definitions=48:12
+# ratios: loc_comments=173:82 imports_exports=13:10 calls_definitions=50:12
