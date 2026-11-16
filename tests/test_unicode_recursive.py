@@ -15,8 +15,8 @@
 #   mutates: none
 #   cleanup: none
 # id: unicode_recursive_boundary_check
-#   proves: unicode_recursive_bearing_is_explicit
-#   call: self::test_missing_or_inexact_placement_refuses
+#   proves: unicode_recursive_declared_placement_exact
+#   call: self::test_inexact_placement_refuses
 #   requires: pytest
 #   timeout: 60
 #   mutates: none
@@ -83,7 +83,7 @@ def test_complete_objects_reenter_with_interiors_and_exact_text():
     assert leaf.record() == leaf_record
     assert all(g.bit_radius == 16 and len(g.utf32_be) == 4 for g in leaf.glyphs)
     glyphs = tuple(unicode_glyph_gonol(c) for c in 'eëe\u0308')
-    closed = close_unicode(glyphs, relation='ordered', source='fixture:scalars')
+    closed = close_unicode(glyphs, bearings=tuple(g.turn for g in glyphs), relation='ordered', source='fixture:scalars')
     assert closed.bearings == tuple(g.turn for g in glyphs)
     assert closed.recover() == 'eëe\u0308'
     changed_source = close_unicode(first.participants, bearings=first.bearings,
@@ -113,12 +113,12 @@ def test_placement_composition_and_inverse():
 
 
 @pytest.mark.parametrize('kwargs', [
-    {}, {'bearings': (0.5,)}, {'bearings': (True,)}, {'bearings': ()},
+    {'bearings': (0.5,)}, {'bearings': (True,)}, {'bearings': ()},
     {'bearings': [0]}, {'bearings': (0,), 'radius': 0},
     {'bearings': (0,), 'radius': 1.5}, {'bearings': (0,), 'radius': True},
     {'bearings': (0,), 'rotations': (0.5,)}, {'bearings': (0,), 'rotations': ()},
 ])
-def test_missing_or_inexact_placement_refuses(kwargs):
+def test_inexact_placement_refuses(kwargs):
     with pytest.raises(ValueError):
         close_unicode((build_unicode_scalar_frame('A'),), relation='ordered', source='fixture', **kwargs)
     with pytest.raises(ValueError, match='UNICODE_SCALAR_BEARING_MISMATCH'):
@@ -205,7 +205,7 @@ def test_placements_cannot_substitute_separate_forged_interiors(kind):
     forged = unicode_glyph_gonol('A')
     object.__setattr__(forged, 'utf32_be', b'bad')
     if kind == 'closed':
-        root = close_unicode((good,), relation='ordered', source='fixture')
+        root = close_unicode((good,), bearings=(good.turn,), relation='ordered', source='fixture')
         object.__setattr__(root.placements[0], 'interior', forged)
     else:
         root = build_unicode_scalar_frame('A')

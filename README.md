@@ -272,8 +272,11 @@ to a recursive construction and interpreting code relationships remain `hmmm`.
 already completed frames under the same native object contract. Child interiors,
 occurrence order and provenance remain recoverable at every depth. Parent origins
 share one exact radius; declared bearings and rotations give reversible native
-local-frame placement. Completed objects require explicit bearings; automatic
-bearing selection remains unresolved. Primitive 16 b rad receipts stay unchanged.
+local-frame placement. The default recursive operation now adds the complete
+native geometric results without new bearings; `unicode_resultant` exposes the
+exact vector, including zero. Explicit bearings retain declared-placement replay.
+Primitive 16 b rad receipts stay unchanged. See
+[recursive addition and its falsifiers](docs/unicode-recursion.md).
 
 ## Build
 

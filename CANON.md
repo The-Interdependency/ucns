@@ -112,29 +112,40 @@ producer identity.
 Usage: `unicode_glyph_gonol("A").utf32_be`; recover one diameter with
 `UnicodeGlyphGonol.from_utf32_be(bytes.fromhex("00000041"))`. A frame concatenates
 one four-byte diameter per scalar, retaining occurrence order and all interiors.
-No encoding-width rule supplies the unresolved higher-scale bearing.
+Encoding width does not define geometric addition or spatial radius.
 
 At the primitive text scale, sibling glyph occurrences share one exact radius while
 retaining their own scalar bearings and occurrence ordinals. Ordinal radius-halving
 is not the active text placement law.
 
-Closed constructions retain their interiors when promoted to a higher scale. Sibling
-closed words likewise begin at one equal parent radius before sentence affixiation,
-sentences before higher closure, and so on recursively. The exact affixiation
-transform and exact bearing assigned to a completed construction at its next scale
-remain `hmmm`; UCNS must not fill that boundary with a hash, terminal glyph,
-ordinal-halving rule, or unselected historical bearing candidate.
+Closed constructions retain their interiors when promoted to a higher scale.
+For recursive Unicode addition, the actual geometric sum participates in the
+next addition. No hash, terminal glyph, ordinal halving or independent parent
+bearing replaces that result. The exact result is a native vector expression;
+its radius and direction are carried together. A zero result remains a complete
+construction, without an invented direction or identification with Structural Null.
 
 ### Declared recursive frame completion
 
-The native `unicode_recursive` constructor closes ordered glyphs, scalar frames,
-and already closed frames using one equal-radius object contract. It retains
-complete interiors and explicit source/relation provenance. Completed children
-require caller-declared parent bearings; they are not rebuilt from labels.
-Existing native exact point/rotation arithmetic supplies reversible rigid local
-placement. This implements declared frame closure and composition; it neither
-selects the unresolved automatic next-scale bearing nor ratifies a general
-affixiation law. See [the contract and falsifiers](docs/unicode-recursion.md).
+The native `unicode_recursive` constructor adds ordered glyphs, scalar frames,
+and completed objects using exact planar vector addition. A glyph contributes
+its native scalar-direction vector; a scalar frame contributes the sum at its
+retained radius; a completed sum contributes its complete resultant. The same
+operation repeats at each consuming scale, retaining complete interiors,
+occurrence order, multiplicity and source/relation provenance.
+
+The optional common scale and per-operand rotations are explicit linear
+transforms of those vectors, defaulting to identity. They never normalize a
+result onto a unit circle. The full object graph distinguishes constructions
+whose resultant happens to agree.
+
+Supplying `bearings` selects the existing declared rigid-placement API and its
+unchanged historical receipts. Its replay role does not impose an extra angle
+on addition. Historical v2 primitive records keep their original fields and
+receipts; their `next_scale_bearing` marker no longer blocks additive use.
+This realizes the operator's recursive-addition requirement, not the complete
+UCNS scale-transition or physical sheet-lift law. See
+[the contract and falsifiers](docs/unicode-recursion.md).
 
 ## Möbius origin and return
 

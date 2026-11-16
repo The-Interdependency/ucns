@@ -1,22 +1,22 @@
-# ratios: loc_comments=217:60 imports_exports=5:6 calls_definitions=127:22
+# ratios: loc_comments=301:69 imports_exports=5:9 calls_definitions=177:33
 # === MODULE_BUILD ===
 # id: unicode_recursive_geometry
 #   module_name: unicode_recursive
 #   module_kind: engine
-#   summary: equal-radius recursive Unicode closure with retained interiors and explicit reversible local-frame placement
+#   summary: recursive exact vector addition with retained interiors and replay of declared local-frame placement
 #   owner: Erin Spencer
-#   public_surface: UnicodeClosedFrame, UnicodeObjectPlacement, close_unicode, validate_unicode, export_unicode_graph, replay_unicode_graph
+#   public_surface: UnicodeSum, add_unicode, unicode_resultant, UnicodeClosedFrame, UnicodeObjectPlacement, close_unicode, validate_unicode, export_unicode_graph, replay_unicode_graph
 #   internal_surface: iterative object validation and topological graph replay
 #   auth_boundary: exact native objects and data integrity; no producer authentication
 #   storage_boundary: immutable in-memory objects; caller owns serialization
 #   network_boundary: none
 #   user_data_boundary: caller text and provenance remain in returned objects
 #   admin_only: false
-#   tests: tests/test_unicode_recursive.py
-#   rollout: explicit equal-radius closure alongside unchanged v2 primitive receipts
+#   tests: tests/test_unicode_recursive.py, tests/test_unicode_addition.py
+#   rollout: recursive addition by default; explicit placement and v2 primitive receipts retain their identities
 #   rollback: select the pinned prior producer; never reinterpret stored receipts
 #   requires: unicode_gonol_geometry, ucns_attachment_stack
-#   unresolved: automatic closed-object bearing selection and affixiation beyond caller-declared rigid placement
+#   unresolved: physical sheet lift and general scale-transition laws beyond the declared addition
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
 # id: unicode_closed_objects_reenter
@@ -28,9 +28,15 @@
 # id: unicode_recursive_placement_inverse
 #   given: a declared parent bearing and local-frame rotation
 #   then: exact native translation and rotation place local points and invert without loss
-# id: unicode_recursive_bearing_is_explicit
-#   given: a closed frame without supplied parent bearings or an inexact geometric input
-#   then: construction refuses rather than choosing a historical policy or interpreting bit width as distance
+# id: unicode_recursive_declared_placement_exact
+#   given: caller-declared placement with an inexact geometric input
+#   then: construction refuses rather than interpreting bit width as distance
+# id: unicode_recursive_addition
+#   given: ordered glyphs, scalar frames or completed objects without new placement bearings
+#   then: exact planar vector addition carries their complete result into the next addition without normalization or an independent angle
+# id: unicode_recursive_addition_retains_zero
+#   given: a zero resultant or distinct groupings with the same resultant
+#   then: complete operands, order, multiplicity and provenance remain addressable and the completed result participates again
 # id: unicode_recursive_source_identity
 #   given: ordered participants, relation and source provenance
 #   then: receipts bind those inputs, all occurrences remain recoverable and distinct boundaries remain distinct
@@ -41,17 +47,17 @@
 #   given: a forged native object or unsupported object type
 #   then: validation refuses before admitting it to a new closed construction
 # === END CONTRACTS ===
-"""Recursive closure at a declared equal-radius boundary.
+"""Recursive addition retains whole operands and carries the exact sum forward.
 
 GPT generated; context, prompt Erin Spencer.
 
-``close_unicode((frame, frame), bearings=(0, Fraction(1, 2)),
-relation='ordered', source='example')`` retains both complete interiors. Repeat
-the same operation at any declared scale. A bearing here is caller-supplied
-placement, not a derived property of the child. The rigid local-frame map is
-``parent = radius * exp(2*pi*i*bearing) + rotation * local``. Existing native
-Point/Direction arithmetic supplies this map; no dyadic stack is constructed.
-No next-scale selector, physical sheet lift or general affixiation law follows.
+Usage: ``close_unicode((frame, frame), relation='addition', source='example')``
+adds complete native operands; the resulting object can enter the same call
+again. ``unicode_resultant(result)`` returns its exact native Point. A zero sum
+needs no angle. The ordered object graph remains distinct from that projection.
+
+Explicit ``bearings=...`` replays the existing declared rigid-placement contract.
+Its historical receipts remain unchanged. Bit width is not a placement radius.
 """
 from __future__ import annotations
 
@@ -82,8 +88,89 @@ def _pair(value):
 
 
 def _supported(obj):
-    if type(obj) not in (UnicodeGlyphGonol, UnicodeScalarFrame, UnicodeClosedFrame):
+    if type(obj) not in (UnicodeGlyphGonol, UnicodeScalarFrame, UnicodeClosedFrame, UnicodeSum):
         raise TypeError('NATIVE_UNICODE_OBJECT_REQUIRED')
+
+
+def _add_points(points):
+    """Use native vector addition, reducing exact antipodes without a direction choice."""
+    terms = []
+    for point in points:
+        for direction, coefficient in point.terms:
+            if direction.turn >= Fraction(1, 2):
+                direction = Direction(direction.turn - Fraction(1, 2), direction.endpoints)
+                coefficient = -coefficient
+            terms.append((direction, coefficient))
+    return Point(tuple(terms))
+
+
+def _resultant(root):
+    if type(root) is UnicodeSum:
+        return root.resultant
+    values = {}
+    for obj in _ordered_objects(root):
+        if type(obj) is UnicodeGlyphGonol:
+            point = Point(((Direction(obj.turn), Fraction(1)),))
+        elif type(obj) is UnicodeScalarFrame:
+            point = _add_points(Point(((Direction(p.turn), p.radius),)) for p in obj.placements)
+        elif type(obj) is UnicodeSum:
+            point = obj.resultant
+        else:
+            point = _add_points(p.origin if type(p.interior) is UnicodeGlyphGonol else
+                                p.to_parent(values[id(p.interior)]) for p in obj.placements)
+        values[id(obj)] = _add_points((point,))
+    return values[id(root)]
+
+
+@dataclass(frozen=True, slots=True, eq=False)
+class UnicodeSum:
+    """An ordered whole whose exact vector sum participates without a new angle."""
+    participants: tuple
+    relation: str
+    source: str
+    radius: Fraction = Fraction(1)
+    rotations: tuple | None = None
+    resultant: Point = field(init=False)
+    receipt: str = field(init=False)
+
+    def __post_init__(self):
+        _text(self.relation)
+        _text(self.source)
+        if not isinstance(self.participants, tuple) or not self.participants:
+            raise ValueError('NONEMPTY_IMMUTABLE_PARTICIPANTS_REQUIRED')
+        for child in self.participants:
+            _supported(child)
+        radius = _exact(self.radius, positive=True)
+        rotations = (Fraction(0),) * len(self.participants) if self.rotations is None else self.rotations
+        if not isinstance(rotations, tuple) or len(rotations) != len(self.participants):
+            raise ValueError('ONE_ROTATION_PER_PARTICIPANT_REQUIRED')
+        rotations = tuple(_exact(turn) % 1 for turn in rotations)
+        point = _add_points(_resultant(child).rotated(Direction(turn)).scaled(radius)
+                            for child, turn in zip(self.participants, rotations))
+        object.__setattr__(self, 'radius', radius)
+        object.__setattr__(self, 'rotations', rotations)
+        object.__setattr__(self, 'resultant', point)
+        object.__setattr__(self, 'receipt', _digest(self.record(include_receipt=False)))
+
+    def record(self, *, include_receipt=True):
+        result = {'schema': 'ucns.unicode-sum.v1', 'operation': 'exact-planar-vector-addition',
+                  'participants': [p.receipt for p in self.participants],
+                  'relation': self.relation, 'source': self.source, 'radius': _pair(self.radius),
+                  'rotations': [_pair(t) for t in self.rotations], 'resultant': self.resultant.record()}
+        if include_receipt and hasattr(self, 'receipt'):
+            result['receipt'] = self.receipt
+        return result
+
+    def recover(self):
+        return _recover(self)
+
+    @property
+    def utf8(self):
+        return self.recover().encode('utf-8')
+
+    @property
+    def utf32_be(self):
+        return self.recover().encode('utf-32-be')
 
 
 @dataclass(frozen=True, slots=True, eq=False)
@@ -173,16 +260,7 @@ class UnicodeClosedFrame:
 
     def recover(self):
         """Expand occurrences, not the deduplicated storage graph."""
-        chunks, pending = [], [self]
-        while pending:
-            obj = pending.pop()
-            if type(obj) is UnicodeClosedFrame:
-                pending.extend(reversed(obj.participants))
-            elif type(obj) is UnicodeScalarFrame:
-                chunks.append(obj.recover())
-            else:
-                chunks.append(obj.character)
-        return ''.join(chunks)
+        return _recover(self)
 
     @property
     def utf8(self):
@@ -191,6 +269,19 @@ class UnicodeClosedFrame:
     @property
     def utf32_be(self):
         return self.recover().encode('utf-32-be')
+
+
+def _recover(root):
+    chunks, pending = [], [root]
+    while pending:
+        obj = pending.pop()
+        if type(obj) in (UnicodeClosedFrame, UnicodeSum):
+            pending.extend(reversed(obj.participants))
+        elif type(obj) is UnicodeScalarFrame:
+            chunks.append(obj.recover())
+        else:
+            chunks.append(obj.character)
+    return ''.join(chunks)
 
 
 def _ordered_objects(root):
@@ -211,7 +302,7 @@ def _ordered_objects(root):
                 raise ValueError('CYCLIC_UNICODE_OBJECT')
             active.add(key)
             pending.append((obj, True))
-            if type(obj) is UnicodeClosedFrame:
+            if type(obj) in (UnicodeClosedFrame, UnicodeSum):
                 pending.extend((child, False) for child in reversed(obj.participants))
 
 
@@ -227,6 +318,8 @@ def validate_unicode(root):
                            or p.glyph is not glyph for p, glyph in zip(obj.placements, obj.glyphs))):
                 raise ValueError('UNICODE_PLACEMENT_INTERIOR_MISMATCH')
             expected = UnicodeScalarFrame(obj.text, obj.radius)
+        elif type(obj) is UnicodeSum:
+            expected = UnicodeSum(obj.participants, obj.relation, obj.source, obj.radius, obj.rotations)
         else:
             if (not isinstance(obj.placements, tuple)
                     or len(obj.placements) != len(obj.participants)
@@ -241,13 +334,25 @@ def validate_unicode(root):
     return root
 
 
+def add_unicode(participants, *, relation, source, radius=1, rotations=None):
+    """Add complete operands, retaining the exact sum rather than normalizing it."""
+    if not isinstance(participants, tuple) or not participants:
+        raise ValueError('NONEMPTY_IMMUTABLE_PARTICIPANTS_REQUIRED')
+    for child in participants:
+        validate_unicode(child)
+    return UnicodeSum(participants, relation, source, radius, rotations)
+
+
+def unicode_resultant(obj):
+    """Return a verified exact native vector; a zero result has no forced bearing."""
+    validate_unicode(obj)
+    return _resultant(obj)
+
+
 def close_unicode(participants, *, bearings=None, relation, source, radius=1, rotations=None):
-    """Close the same object contract at every explicitly placed scale."""
+    """Add at every scale by default; explicit bearings select declared placement."""
     if bearings is None:
-        if (not isinstance(participants, tuple) or not participants
-                or any(type(p) is not UnicodeGlyphGonol for p in participants)):
-            raise ValueError('CLOSED_OBJECT_BEARINGS_REQUIRED')
-        bearings = tuple(p.turn for p in participants)
+        return add_unicode(participants, relation=relation, source=source, radius=radius, rotations=rotations)
     return validate_unicode(UnicodeClosedFrame(participants, bearings, relation,
                                                source, radius, rotations))
 
@@ -301,6 +406,12 @@ def replay_unicode_graph(record):
                                           tuple(_rational(t) for t in data['bearings']),
                                           data['relation'], data['source'], _rational(data['radius']),
                                           tuple(_rational(t) for t in data['rotations']))
+            elif schema == 'ucns.unicode-sum.v1':
+                if any(not isinstance(data[k], list) for k in ('participants', 'rotations')):
+                    raise ValueError('NODE_ARRAYS_REQUIRED')
+                obj = UnicodeSum(tuple(nodes[key] for key in data['participants']), data['relation'],
+                                 data['source'], _rational(data['radius']),
+                                 tuple(_rational(t) for t in data['rotations']))
             else:
                 raise ValueError('UNKNOWN_UNICODE_OBJECT_SCHEMA')
             if (obj.receipt != row['receipt'] or obj.receipt in nodes
@@ -313,4 +424,4 @@ def replay_unicode_graph(record):
         return root
     except (KeyError, TypeError, AttributeError, UnicodeError) as exc:
         raise ValueError('INVALID_UNICODE_OBJECT_GRAPH') from exc
-# ratios: loc_comments=217:60 imports_exports=5:6 calls_definitions=127:22
+# ratios: loc_comments=301:69 imports_exports=5:9 calls_definitions=177:33
