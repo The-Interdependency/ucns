@@ -1,8 +1,9 @@
+# ratios: loc_comments=145:52 imports_exports=8:5 calls_definitions=73:25
 # === MODULE_BUILD ===
 # id: ordinal_affixiation_geometry
 #   module_name: ordinal_affixiation
 #   module_kind: engine
-#   summary: historical/replay carrier-angle and ordinal-contraction geometry superseded for active Unicode text
+#   summary: exact ordinal contraction on an explicit ordered carrier
 #   owner: Erin Spencer
 #   public_surface: Carrier, Participant, Placement, Construction, affixiate
 #   internal_surface: canonical receipts and validated exact inputs
@@ -12,7 +13,7 @@
 #   user_data_boundary: caller-supplied identities and provenance remain in memory
 #   admin_only: false
 #   tests: tests/test_ordinal_affixiation.py
-#   rollout: replay-only for text after unicode_gonol replacement; receipts remain valid historical evidence
+#   rollout: explicit-carrier profile; the recursive attachment stack applies ordinal halving to scalar bearings
 #   rollback: remove candidate import and restore prior explicitly selected profile
 #   unresolved: native Mobius lift and global transport between nested local frames
 # === END MODULE_BUILD ===
@@ -29,11 +30,8 @@
 # === END CONTRACTS ===
 """Historical exact local-frame ordinal affixiation, independent of language.
 
-This module remains replayable for existing receipts and non-text experiments that
-explicitly select it. It is superseded for active Unicode text geometry by
-``ucns.unicode_gonol``. New text construction must not infer canon from the
-radius-halving law here.
-
+This profile retains its registered angular carriers. UCHC also consumes the
+same dyadic placement rule through the native recursive attachment stack.
 
 Usage:
     carrier = Carrier(('A', 'B'), 'example-v1')
@@ -235,3 +233,4 @@ def affixiate(identity: str, participants: tuple[Participant, ...], *,
               origin: str, relation: str, source: str) -> Construction:
     """Close the declared ordered participation using the operator's halving law."""
     return Construction(identity, participants, origin, relation, source)
+# ratios: loc_comments=145:52 imports_exports=8:5 calls_definitions=73:25

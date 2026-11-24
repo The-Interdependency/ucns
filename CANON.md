@@ -86,16 +86,16 @@ Neither view replaces the other. No Unicode normalization is permitted by the
 construction. A precomposed scalar and a canonically equivalent decomposed scalar
 sequence remain different constructions with different receipts.
 
-### UCHC bit radius
+### Stack bit-radius research
 
-The UCHC representation policy fixes **bit radius (b rad) = 16** and
+The Stack Unicode research profile fixes **bit radius (b rad) = 16** and
 **bit diameter = 32**, in bits. Each scalar is represented by four big-endian
 bytes, equivalent to UTF-32BE without an inserted byte-order marker. ASCII has
 three leading zero bytes: `A` is `00 00 00 41`. `ë` is `00 00 00 EB`, while its
 retained UTF-8 anatomy is `C3 AB`. A source `U+FEFF` remains an ordinary retained
 scalar and is not stripped.
 
-Domain claim: `uchc.gonol.bit_radius` is UCHC's ratified encoding-width policy,
+Domain claim: `uchc.gonol.bit_radius` identifies the Stack research profile’s encoding-width policy,
 implemented by the UCNS Unicode representation. Its scope is each Unicode glyph
 gonol; it does not claim a 32-bit encoding of an arbitrary closed word or sentence.
 The neighboring geometric placement `radius` remains a separate exact quantity.
@@ -114,9 +114,14 @@ Usage: `unicode_glyph_gonol("A").utf32_be`; recover one diameter with
 one four-byte diameter per scalar, retaining occurrence order and all interiors.
 Encoding width does not define geometric addition or spatial radius.
 
-At the primitive text scale, sibling glyph occurrences share one exact radius while
-retaining their own scalar bearings and occurrence ordinals. Ordinal radius-halving
-is not the active text placement law.
+Erin Spencer clarified the scope on 2026-11-24. The 16 b rad experiment stays in
+Stack. UCHC uses ordinal radius-halving for affixiation. Unaffixiated scalar
+bearings share the initial radius. In a closed stack of length `n`, occurrence
+`i` (zero-based) has parent-frame radius `R / 2**(n-i)`. The same operation
+stacks closed participants while preserving their local interiors. Run
+`stack('AB', (Scalar('A'), Scalar('B')), relation='word', source='example')`
+from `ucns.attachment_stack`. The equal-radius scalar frame and the following
+vector-sum operation reproduce the separately scoped Stack research profile.
 
 Closed constructions retain their interiors when promoted to a higher scale.
 For recursive Unicode addition, the actual geometric sum participates in the

@@ -11,8 +11,8 @@
 - Do not infer Public Gonol function behavior from Unicode names or dictionary definitions.
 - Preserve the exact 157-position Public Gonol arrangement and its digest as a historical/public function carrier; do not use it as the active admission gate or angular registry for arbitrary Unicode text.
 - For active text geometry, use exact Unicode scalar identity with SPACE-relative scalar bearing and exact UTF-8 byte/bit anatomy; never normalize canonically equivalent scalar sequences.
-- UCHC Unicode gonols use fixed 16-bit radius (b rad), 32-bit diameter and four-byte big-endian scalar representation (UTF-32BE, no inserted BOM). ASCII has three leading zero bytes. Bit width and geometric placement radius are separate quantities.
-- Primitive text siblings share one exact radius. Do not use ordinal radius-halving as the active text placement law. Recursive Unicode addition retains complete operands and carries their exact vector result into the next addition without a new bearing. Explicit bearings select declared-placement replay; they are not required for addition. Keep broader scale-transition and physical-lift questions scoped separately.
+- UCHC affixiation consumes the native ordinal disc stack. Each append halves earlier parent-local occurrence radii and places the newest at half the frame radius. Closed children retain their own interior geometry.
+- Stack owns the separate 16 b rad encoding experiment. Keep its exact four-byte big-endian diameter, original UTF-8 anatomy, equal-radius research frame and recursive-sum replay intact. Fixed scalar bit width is independent of ordinal spatial radius.
 - Preserve the native Möbius distinction: 360° visible return; 720° complete local return.
 - Geometry candidates remain candidates until their own declared falsifiers, replay, and ratification justify stronger standing.
 - Preserve exact arithmetic where exactness is load-bearing; lossy renderings remain explicitly secondary.
