@@ -81,7 +81,7 @@ The Public Gonol is the exact ordered 157-position carrier in
 geometric reference surface. It is not the active admission gate or angle registry
 for arbitrary Unicode text.
 
-Active primitive text geometry is in `src/ucns/unicode_gonol.py`. One valid
+Unicode scalar bearings are defined in `src/ucns/unicode_gonol.py`. One valid
 Unicode scalar is one glyph gonol. Its exact SPACE-relative bearing is
 
 ```text
@@ -94,10 +94,10 @@ than removed from the numeric range.
 
 Every glyph simultaneously retains its scalar identity/bearing and its exact UTF-8
 byte/bit anatomy. No Unicode normalization occurs: precomposed and decomposed
-sequences remain distinct. Primitive sibling occurrences share one radius; ordinal
-radius-halving is not the active text placement law.
+sequences remain distinct. Unaffixiated glyphs share an initial radius. UCHC affixiates their occurrences
+by ordinal halving at every nesting level.
 
-UCHC's **bit radius is 16 b rad**, giving a **32-bit diameter** per Unicode glyph
+The Stack encoding experiment uses **16 b rad**, giving a **32-bit diameter** per Unicode glyph
 gonol. Its four-byte representation is big-endian (UTF-32BE, no inserted BOM):
 ASCII `A` is `00 00 00 41`. The bit radius is independent of geometric placement
 radius. Version 2 records bind the fixed width and byte order while retaining the
@@ -116,11 +116,8 @@ A function's geometric operation is not inferred from Unicode names or dictionar
 definitions. Where an operation is not geometrically established, it remains
 `hmmm`.
 
-Closed words, sentences and higher constructions retain their interiors and begin
-as equal-radius siblings at the next scale. The exact next-scale bearing and
-affixiation transform remain `hmmm`; historical ordinal and recursive attachment
-profiles remain replayable evidence and must not be silently relabeled as this
-replacement.
+Closed words retain their interiors as participants in another dyadic stack.
+See [recursive attachment](#recursive-attachment-stack).
 
 ## Möbius root loop
 
@@ -238,18 +235,11 @@ assert s720 == s0
 
 ## Recursive attachment stack
 
-The [native attachment stack](docs/ATTACHMENT_STACK.md) is retained as a
-versioned historical/replay construction. Its disk-depth halving and closed-bearing
-candidates are no longer the active text geometry after the Unicode scalar gonol
-replacement. Consumers may replay its receipts, but new text construction must not
-treat its ordinal radius law as canon.
-
-The active primitive text layer uses `unicode_gonol.py`: exact scalar bearings,
-exact UTF-8 anatomy, no normalization and equal-radius sibling occurrences. Closed
-participants still retain their interiors across recursive scales; the exact
-higher-scale affixiation transform and completed-object bearing remain `hmmm`.
-
-Use the linked historical examples only when replaying that profile and the complete validation gate below.
+The [native attachment stack](docs/ATTACHMENT_STACK.md) supplies ordinal halving
+for UCHC. Pass `Scalar(c)` for a primitive with a SPACE-relative Unicode bearing.
+Appending a participant halves the prior parent-frame radii and places the new
+one at half the frame radius. `Closed` retains the child's own geometry. Stack
+continues the separate fixed-width Unicode encoding and equal-radius frame work.
 
 ### Bits at circumference locations
 

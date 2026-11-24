@@ -1,4 +1,4 @@
-# ratios: loc_comments=138:34 imports_exports=3:4 calls_definitions=87:8
+# ratios: loc_comments=141:34 imports_exports=3:4 calls_definitions=90:8
 # === MODULE_BUILD ===
 # id: ucns_attachment_codec
 #   module_name: attachment_codec
@@ -35,7 +35,7 @@ not a claim that unrelated coordinate expressions have different values.
 from fractions import Fraction
 
 from .ordinal_affixiation import Carrier, Participant, _digest
-from .attachment_stack import Closed, Direction, Point, AttachmentJoin, stack, join, common_view, attached_view
+from .attachment_stack import Scalar, Closed, Direction, Point, AttachmentJoin, stack, join, common_view, attached_view
 
 
 def _shape(value, keys):
@@ -67,7 +67,7 @@ def export_graph(root):
             todo.extend((child, False) for child in children)
             continue
         for part in (() if isinstance(obj, AttachmentJoin) else obj.participants):
-            if not isinstance(part, Closed):
+            if isinstance(part, Participant):
                 c = part.carrier
                 carriers[c.receipt] = {'receipt': c.receipt, 'identities': list(c.identities), 'source': c.source}
         nodes.append({'receipt': obj.receipt, 'construction': obj.record()})
@@ -119,6 +119,9 @@ def _replay_graph(record):
                 if part['carrier'] not in carriers:
                     raise ValueError('CARRIER_NOT_INCLUDED')
                 participants.append(Participant.atom(carriers[part['carrier']], part['identity']))
+            elif part.get('kind') == 'scalar':
+                _shape(part, ('kind', 'identity'))
+                participants.append(Scalar(part['identity']))
             elif part.get('kind') == 'closed':
                 _shape(part, ('kind', 'interior', 'bearing'))
                 if part['interior'] not in nodes:
@@ -187,4 +190,4 @@ def replay_view(record):
     if _digest(export_view(root, kind=record['kind'], space=space, origin=origin)) != _digest(record):
         raise ValueError('VIEW_REPLAY_MISMATCH')
     return root, space, origin
-# ratios: loc_comments=138:34 imports_exports=3:4 calls_definitions=87:8
+# ratios: loc_comments=141:34 imports_exports=3:4 calls_definitions=90:8

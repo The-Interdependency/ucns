@@ -1,4 +1,4 @@
-# ratios: loc_comments=229:75 imports_exports=11:11 calls_definitions=160:11
+# ratios: loc_comments=250:75 imports_exports=14:12 calls_definitions=171:12
 # === CHECKS ===
 # id: check_public_pair_census
 #   proves: attachment_stack_recurrence, attachment_stack_views
@@ -328,4 +328,28 @@ def test_invalid_inputs_and_chain_mutants():
         recover_common((rows[0], (Point(), rows[1][1])))
     reset = (word.rays[0], Ray(word.rays[1].radius, word.rays[0].heading))
     assert attached_view(reset) != rows
-# ratios: loc_comments=229:75 imports_exports=11:11 calls_definitions=160:11
+
+
+def test_unicode_scalar_disc_depth_and_graph_replay():
+    from ucns.attachment_stack import Scalar, stack, Closed
+    from ucns.attachment_codec import export_graph, replay_graph
+    from ucns.unicode_gonol import unicode_scalar_turn
+
+    text = 'ëe\u0308\U00010348'
+    word = stack('word', tuple(map(Scalar, text)), relation='word', source='fixture')
+    assert [p.turn for p in word.participants] == list(map(unicode_scalar_turn, text))
+    assert [ray.radius for ray in word.rays] == [F(1, n) for n in (16, 8, 4, 2)]
+    parent = stack('pair', (Closed(word, 'root-endpoint-v1'),) * 2,
+                   relation='sequence', source='fixture')
+    packet = export_graph(parent)
+    assert packet['carriers'] == []
+    restored = replay_graph(packet)
+    assert restored.participants[0].interior is restored.participants[1].interior
+    assert ''.join(restored.recover()) == text * 2
+    assert restored.receipt == parent.receipt
+    packet['nodes'][0]['construction']['participants'][0]['identity'] = 'e'
+    with pytest.raises(ValueError):
+        replay_graph(packet)
+    with pytest.raises(ValueError):
+        Scalar('\ud800')
+# ratios: loc_comments=250:75 imports_exports=14:12 calls_definitions=171:12

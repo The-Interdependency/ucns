@@ -13,7 +13,7 @@
 #   user_data_boundary: caller-supplied Unicode text remains in memory
 #   admin_only: false
 #   tests: tests/test_unicode_gonol.py
-#   rollout: replaces Public-Gonol-157 admission and ordinal radius-halving as active text glyph geometry
+#   rollout: equal-radius frames for the Stack encoding profile; scalar bearings also serve UCHC affixiation
 #   rollback: explicit historical profiles remain replayable; do not reinterpret their receipts
 #   requires: none
 #   since: 2026-11-08
@@ -53,14 +53,14 @@
 # === END CONTRACTS ===
 """Exact Unicode scalar geometry with UTF-8 anatomy.
 
-This is the active primitive text-glyph geometry.
+This module supplies the scalar bearing and the Stack fixed-width frame.
 
 One Unicode scalar is one glyph gonol. Its scalar value determines one exact
 bearing from SPACE. The exact UTF-8 bytes and bits are retained as a second,
 internal representation of that same scalar; they do not replace scalar
 identity.
 
-UCHC's bit radius ("b rad") is fixed at 16; the bit diameter is 32. Each
+The Stack profile’s bit radius ("b rad") is fixed at 16; the bit diameter is 32. Each
 scalar occupies four big-endian bytes (UTF-32BE, without a BOM). ASCII therefore
 has three leading zero bytes. These are encoding widths, independent of the
 geometric placement ``radius``. A text frame retains one complete diameter per

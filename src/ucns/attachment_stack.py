@@ -1,11 +1,11 @@
-# ratios: loc_comments=291:80 imports_exports=6:13 calls_definitions=150:49
+# ratios: loc_comments=302:82 imports_exports=7:14 calls_definitions=157:51
 # === MODULE_BUILD ===
 # id: ucns_attachment_stack
 #   module_name: attachment_stack
 #   module_kind: engine
 #   summary: exact expression geometry for recursive dyadic stacks and attachment views
 #   owner: Erin Spencer
-#   public_surface: Direction, Point, Ray, Closed, DiskStack, AttachmentJoin, stack, join, common_view, attached_view, recover_common, attach, display
+#   public_surface: Scalar, Direction, Point, Ray, Closed, DiskStack, AttachmentJoin, stack, join, common_view, attached_view, recover_common, attach, display
 #   internal_surface: canonical rational expression arithmetic and construction receipts
 #   auth_boundary: none
 #   storage_boundary: immutable in-memory constructions; graph codec is separate
@@ -181,6 +181,18 @@ class Ray:
 
 
 @dataclass(frozen=True, slots=True)
+class Scalar:
+    """A scalar-bearing primitive for a dyadic stack. Use Scalar('ë')."""
+    identity: str
+    turn: Fraction = field(init=False)
+
+    def __post_init__(self):
+        # Deferred so existing pinned Public Gonol closures need no Unicode adapter.
+        from .unicode_gonol import unicode_scalar_turn
+        object.__setattr__(self, 'turn', unicode_scalar_turn(self.identity))
+
+
+@dataclass(frozen=True, slots=True)
 class Closed:
     """An atomic participant retaining its interior and explicit candidate binding."""
     interior: DiskStack | AttachmentJoin
@@ -222,6 +234,8 @@ class DiskStack:
         for i, part in enumerate(self.participants):
             if isinstance(part, Participant) and part.interior is None:
                 direction = Direction(part.carrier.turn(part.identity))
+            elif isinstance(part, Scalar):
+                direction = Direction(part.turn)
             elif isinstance(part, Closed):
                 direction = part.direction
             else:
@@ -261,6 +275,8 @@ class DiskStack:
         for part in self.participants:
             if isinstance(part, Closed):
                 parts.append({'kind': 'closed', 'interior': part.interior.receipt, 'bearing': part.bearing})
+            elif isinstance(part, Scalar):
+                parts.append({'kind': 'scalar', 'identity': part.identity})
             else:
                 parts.append({'kind': 'primitive', 'carrier': part.carrier.receipt, 'identity': part.identity})
         return {'schema': 'ucns.attachment-stack.v1', 'identity': self.identity,
@@ -445,4 +461,4 @@ def display(point):
                 raise ArithmeticError('DISPLAY_ZERO_DIRECTION; exact endpoint is nonzero')
             cache[child.receipt] = value / abs(value)
     return evaluate(point)
-# ratios: loc_comments=291:80 imports_exports=6:13 calls_definitions=150:49
+# ratios: loc_comments=302:82 imports_exports=7:14 calls_definitions=157:51
