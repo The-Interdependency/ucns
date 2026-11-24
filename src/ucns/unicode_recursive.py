@@ -1,4 +1,4 @@
-# ratios: loc_comments=301:69 imports_exports=5:9 calls_definitions=177:33
+# ratios: loc_comments=292:68 imports_exports=5:9 calls_definitions=173:32
 # === MODULE_BUILD ===
 # id: unicode_recursive_geometry
 #   module_name: unicode_recursive
@@ -63,7 +63,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from fractions import Fraction
-from .attachment_stack import Direction, Point
+from .attachment_stack import Direction, Point, _add_points
 from .unicode_gonol import UnicodeGlyphGonol, UnicodeScalarFrame, UnicodeScalarPlacement, _digest
 
 
@@ -90,18 +90,6 @@ def _pair(value):
 def _supported(obj):
     if type(obj) not in (UnicodeGlyphGonol, UnicodeScalarFrame, UnicodeClosedFrame, UnicodeSum):
         raise TypeError('NATIVE_UNICODE_OBJECT_REQUIRED')
-
-
-def _add_points(points):
-    """Use native vector addition, reducing exact antipodes without a direction choice."""
-    terms = []
-    for point in points:
-        for direction, coefficient in point.terms:
-            if direction.turn >= Fraction(1, 2):
-                direction = Direction(direction.turn - Fraction(1, 2), direction.endpoints)
-                coefficient = -coefficient
-            terms.append((direction, coefficient))
-    return Point(tuple(terms))
 
 
 def _resultant(root):
@@ -424,4 +412,4 @@ def replay_unicode_graph(record):
         return root
     except (KeyError, TypeError, AttributeError, UnicodeError) as exc:
         raise ValueError('INVALID_UNICODE_OBJECT_GRAPH') from exc
-# ratios: loc_comments=301:69 imports_exports=5:9 calls_definitions=177:33
+# ratios: loc_comments=292:68 imports_exports=5:9 calls_definitions=173:32

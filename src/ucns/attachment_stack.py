@@ -1,4 +1,4 @@
-# ratios: loc_comments=302:81 imports_exports=7:14 calls_definitions=157:51
+# ratios: loc_comments=323:86 imports_exports=7:14 calls_definitions=168:53
 # === MODULE_BUILD ===
 # id: ucns_attachment_stack
 #   module_name: attachment_stack
@@ -28,6 +28,9 @@
 # id: attachment_stack_closure
 #   given: closed participants including repeated interiors
 #   then: parent stacking retains each occurrence and unchanged child-local geometry; no closed bearing is chosen implicitly
+# id: scalar_disc_stack_addition
+#   given: a disc stack of Unicode scalar occurrences and closed scalar stacks
+#   then: the same construction carries ordinal rays and the frame-scaled sum of its operands' complete vectors, including zero and repeated children
 # id: attachment_stack_transport
 #   given: an explicit attachment occurrence and incoming closed stack
 #   then: rigid transport preserves incoming local radii and recoverable interiors without another halving
@@ -163,6 +166,18 @@ class Point:
         return [{'direction': d.record(), 'coefficient': _pair(q)} for d, q in self.terms]
 
 
+def _add_points(points):
+    """Add complete vectors and reduce exact antipodes in the same direction basis."""
+    terms = []
+    for point in points:
+        for direction, coefficient in point.terms:
+            if direction.turn >= Fraction(1, 2):
+                direction = Direction(direction.turn - Fraction(1, 2), direction.endpoints)
+                coefficient = -coefficient
+            terms.append((direction, coefficient))
+    return Point(tuple(terms))
+
+
 @dataclass(frozen=True, slots=True)
 class Ray:
     radius: Fraction
@@ -221,6 +236,7 @@ class DiskStack:
     radius: Fraction = Fraction(1)
     receipt: str = field(init=False)
     rays: tuple = field(init=False, repr=False)
+    _scalar_sum: Point | None = field(init=False, repr=False)
 
     def __post_init__(self):
         for name in ('identity', 'relation', 'source'):
@@ -229,19 +245,25 @@ class DiskStack:
         if not isinstance(self.participants, tuple) or not self.participants:
             raise ValueError('nonempty immutable participants required')
         heading, rays = Direction(), []
+        addends = []
         n = len(self.participants)
         for i, part in enumerate(self.participants):
             if isinstance(part, Participant) and part.interior is None:
                 direction = Direction(part.carrier.turn(part.identity))
             elif isinstance(part, Scalar):
                 direction = Direction(part.turn)
+                addends.append(Point(((direction, 1),)))
             elif isinstance(part, Closed):
                 direction = part.direction
+                if isinstance(part.interior, DiskStack) and part.interior._scalar_sum is not None:
+                    addends.append(part.interior._scalar_sum)
             else:
                 raise TypeError('declared primitive or explicitly bound closed stack required')
             heading = heading.compose(direction)
             rays.append(Ray(self.radius / (1 << (n - i)), heading))
         object.__setattr__(self, 'rays', tuple(rays))
+        scalar_sum = _add_points(addends).scaled(self.radius) if len(addends) == n else None
+        object.__setattr__(self, '_scalar_sum', scalar_sum)
         object.__setattr__(self, 'receipt', _digest(self.record()))
 
     @property
@@ -251,6 +273,13 @@ class DiskStack:
     @property
     def endpoint(self):
         return sum((ray.vector for ray in self.rays), Point())
+
+    @property
+    def additive_resultant(self):
+        """For scalar stacks, R times the sum of unit scalar vectors and whole child sums."""
+        if self._scalar_sum is None:
+            raise ValueError('SCALAR_STACK_ADDITION_REQUIRED')
+        return self._scalar_sum
 
     def depth(self, ordinal):
         _integer(ordinal, 'ordinal')
@@ -460,4 +489,4 @@ def display(point):
                 raise ArithmeticError('DISPLAY_ZERO_DIRECTION; exact endpoint is nonzero')
             cache[child.receipt] = value / abs(value)
     return evaluate(point)
-# ratios: loc_comments=302:81 imports_exports=7:14 calls_definitions=157:51
+# ratios: loc_comments=323:86 imports_exports=7:14 calls_definitions=168:53

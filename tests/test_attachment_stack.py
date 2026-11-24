@@ -1,4 +1,4 @@
-# ratios: loc_comments=250:82 imports_exports=14:12 calls_definitions=171:12
+# ratios: loc_comments=277:91 imports_exports=14:13 calls_definitions=188:15
 # === CHECKS ===
 # id: check_public_pair_census
 #   proves: attachment_stack_recurrence, attachment_stack_views
@@ -70,6 +70,13 @@
 #   timeout: hmmm
 #   mutates: none
 #   cleanup: none
+# id: check_scalar_stack_additive_result
+#   proves: scalar_disc_stack_addition
+#   call: self::test_scalar_stack_keeps_ordinal_rays_and_carries_whole_sums
+#   requires: python3, pytest
+#   timeout: hmmm
+#   mutates: none
+#   cleanup: none
 # === END CHECKS ===
 """Native geometry falsifiers. Run: python -m pytest tests/test_attachment_stack.py.
 
@@ -90,7 +97,7 @@ import pytest
 from ucns.ordinal_affixiation import Carrier, Participant
 from ucns.public_gonol import PUBLIC_GONOL_157, PUBLIC_GONOL_SHA256
 from ucns.attachment_stack import (
-    POLICIES, Closed, Direction, Point, Ray, stack, join, attached_view,
+    POLICIES, Closed, Direction, Point, Ray, Scalar, stack, join, attached_view,
     recover_common, common_view, attach, display,
 )
 from ucns.attachment_codec import export_graph, replay_graph, export_view, replay_view
@@ -110,6 +117,41 @@ def coefficients(point):
         assert index.denominator == 1
         values[index.numerator] += q
     return tuple(v - values[-1] for v in values[:-1])
+
+
+def test_scalar_stack_keeps_ordinal_rays_and_carries_whole_sums():
+    def word(text, radius=1):
+        return stack(text, tuple(map(Scalar, text)), radius=radius, relation='word', source='fixture')
+
+    def parent(parts, radius=1, bearing='root-endpoint-v1'):
+        return stack('sequence', tuple(Closed(p, bearing) for p in parts), radius=radius,
+                     relation='sequence', source='fixture')
+
+    left = parent((word('AB'), word('C')))
+    right = parent((word('A'), word('BC')))
+    assert left.additive_resultant == right.additive_resultant == word('ABC').additive_resultant
+    radii_ab_c = [[r.radius for r in p.interior.rays] for p in left.participants]
+    radii_a_bc = [[r.radius for r in p.interior.rays] for p in right.participants]
+    assert radii_ab_c == [[F(1, 4), F(1, 2)], [F(1, 2)]]
+    assert radii_a_bc == [[F(1, 2)], [F(1, 4), F(1, 2)]]
+
+    # Independent cardinal vectors: SPACE points east, and half a scalar turn points west.
+    zero = word(' ' + chr(0x88020))
+    assert zero.additive_resultant == Point()
+    assert zero.endpoint == Point(((Direction(), F(1, 4)), (Direction(F(1, 2)), F(1, 2))))
+    east = word(' ', radius=3)
+    for policy in POLICIES:
+        combined = parent((zero, east, east), radius=5, bearing=policy)
+        expected = Point(((Direction(), 30),))
+        assert combined.additive_resultant == expected
+        rebuilt = replay_graph(export_graph(combined))
+        assert rebuilt.additive_resultant == expected and rebuilt.rays == combined.rays
+        assert rebuilt.participants[1].interior is rebuilt.participants[2].interior
+        assert parent((rebuilt, rebuilt)).additive_resultant == expected.scaled(2)
+
+    # The new projection is specifically defined for scalar trees.
+    with pytest.raises(ValueError, match='SCALAR_STACK_ADDITION_REQUIRED'):
+        _ = make('AB').additive_resultant
 
 
 def test_public_pair_census():
@@ -359,4 +401,4 @@ def test_unicode_scalar_disc_depth_and_graph_replay():
         replay_graph(packet)
     with pytest.raises(ValueError):
         Scalar('\ud800')
-# ratios: loc_comments=250:82 imports_exports=14:12 calls_definitions=171:12
+# ratios: loc_comments=277:91 imports_exports=14:13 calls_definitions=188:15

@@ -120,8 +120,17 @@ bearings share the initial radius. In a closed stack of length `n`, occurrence
 `i` (zero-based) has parent-frame radius `R / 2**(n-i)`. The same operation
 stacks closed participants while preserving their local interiors. Run
 `stack('AB', (Scalar('A'), Scalar('B')), relation='word', source='example')`
-from `ucns.attachment_stack`. The equal-radius scalar frame and the following
-vector-sum operation reproduce the separately scoped Stack research profile.
+from `ucns.attachment_stack`. A Unicode scalar disc stack exposes both its
+ordinal geometry and its recursive additive resultant. A scalar contributes
+its unit vector at its SPACE-relative bearing. A closed child contributes its
+whole additive resultant. Each frame multiplies the sum by its declared
+radius. The ordered rays still give the placed endpoint. These quantities can
+differ, including when the additive resultant cancels exactly. The same
+retained operands determine both on construction and replay.
+
+The equal-radius scalar frame and its encoding remain available to the Stack
+research profile. The scalar disc stack uses the shared native vector addition
+independently of that encoding.
 
 Closed constructions retain their interiors when promoted to a higher scale.
 For recursive Unicode addition, the actual geometric sum participates in the
