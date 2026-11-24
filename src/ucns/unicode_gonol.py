@@ -1,4 +1,4 @@
-# ratios: loc_comments=186:91 imports_exports=5:7 calls_definitions=68:24
+# ratios: loc_comments=174:83 imports_exports=6:6 calls_definitions=62:22
 # === MODULE_BUILD ===
 # id: unicode_gonol_geometry
 #   module_name: unicode_gonol
@@ -15,14 +15,11 @@
 #   tests: tests/test_unicode_gonol.py
 #   rollout: equal-radius frames for the Stack encoding profile; scalar bearings also serve UCHC affixiation
 #   rollback: explicit historical profiles remain replayable; do not reinterpret their receipts
-#   requires: none
+#   requires: unicode_scalar_bearing
 #   since: 2026-11-08
 #   unresolved: exact affixiation transform and bearing of a completed construction at the next recursive scale
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
-# id: unicode_scalar_has_one_space_relative_bearing
-#   given: one valid Unicode scalar
-#   then: its exact turn is ((scalar-SPACE) mod 0x110000)/0x110000 with SPACE at turn zero
 # id: unicode_scalar_and_utf8_views_are_both_retained
 #   given: one valid Unicode scalar or exact scalar sequence
 #   then: scalar identity/bearing and exact UTF-8 byte/bit anatomy are both recoverable without normalization
@@ -90,8 +87,8 @@ from fractions import Fraction
 from hashlib import sha256
 import json
 
-UNICODE_SCALAR_MODULUS = 0x110000
-SPACE_SCALAR = 0x20
+from .scalar_bearing import SPACE_SCALAR, UNICODE_SCALAR_MODULUS, scalar_value, unicode_scalar_turn
+
 GONOL_BIT_RADIUS = 16
 GONOL_BIT_DIAMETER = 2 * GONOL_BIT_RADIUS
 SCHEMA = "ucns.unicode-gonol.v2"
@@ -103,27 +100,6 @@ def _digest(value: object) -> str:
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
         allow_nan=False,
     ).encode("utf-8")).hexdigest()
-
-
-def _scalar(character: str) -> int:
-    if not isinstance(character, str) or len(character) != 1:
-        raise TypeError("glyph must be exactly one Unicode scalar")
-    value = ord(character)
-    if 0xD800 <= value <= 0xDFFF:
-        raise ValueError("surrogate code points are not Unicode scalars")
-    return value
-
-
-def unicode_scalar_turn(character: str) -> Fraction:
-    """Exact SPACE-relative turn for one Unicode scalar.
-
-    The full scalar numeric range is the stable modulus. Assignment status is
-    deliberately irrelevant, so future Unicode versions cannot move existing
-    bearings. Surrogate values are holes, not compressed-away positions.
-    """
-    value = _scalar(character)
-    return Fraction((value - SPACE_SCALAR) % UNICODE_SCALAR_MODULUS,
-                    UNICODE_SCALAR_MODULUS)
 
 
 @dataclass(frozen=True, slots=True)
@@ -138,7 +114,7 @@ class UnicodeGlyphGonol:
     receipt: str = field(init=False)
 
     def __post_init__(self) -> None:
-        value = _scalar(self.character)
+        value = scalar_value(self.character)
         encoded = self.character.encode("utf-8", errors="strict")
         turn = unicode_scalar_turn(self.character)
         object.__setattr__(self, "scalar", value)
@@ -324,4 +300,4 @@ __all__ = [
     "unicode_glyph_gonol",
     "build_unicode_scalar_frame",
 ]
-# ratios: loc_comments=186:91 imports_exports=5:7 calls_definitions=68:24
+# ratios: loc_comments=174:83 imports_exports=6:6 calls_definitions=62:22

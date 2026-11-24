@@ -1,4 +1,4 @@
-# ratios: loc_comments=302:82 imports_exports=7:14 calls_definitions=157:51
+# ratios: loc_comments=302:81 imports_exports=7:14 calls_definitions=157:51
 # === MODULE_BUILD ===
 # id: ucns_attachment_stack
 #   module_name: attachment_stack
@@ -15,7 +15,7 @@
 #   tests: tests/test_attachment_stack.py
 #   rollout: explicit versioned planar construction; closed-bearing candidates require a named choice
 #   rollback: select the historical ordinal profile explicitly; never rewrite old receipts
-#   requires: ordinal_affixiation_geometry
+#   requires: ordinal_affixiation_geometry, unicode_scalar_bearing
 #   unresolved: closed-construction bearing selection and native Mobius lift
 # === END MODULE_BUILD ===
 # === CONTRACTS ===
@@ -61,6 +61,7 @@ from dataclasses import dataclass, field
 from fractions import Fraction
 import math
 
+from .scalar_bearing import unicode_scalar_turn
 from .ordinal_affixiation import Participant, _digest, _integer, _positive, _text
 
 POLICIES = ('root-endpoint-v1', 'exit-heading-v1')
@@ -187,8 +188,6 @@ class Scalar:
     turn: Fraction = field(init=False)
 
     def __post_init__(self):
-        # Deferred so existing pinned Public Gonol closures need no Unicode adapter.
-        from .unicode_gonol import unicode_scalar_turn
         object.__setattr__(self, 'turn', unicode_scalar_turn(self.identity))
 
 
@@ -461,4 +460,4 @@ def display(point):
                 raise ArithmeticError('DISPLAY_ZERO_DIRECTION; exact endpoint is nonzero')
             cache[child.receipt] = value / abs(value)
     return evaluate(point)
-# ratios: loc_comments=302:82 imports_exports=7:14 calls_definitions=157:51
+# ratios: loc_comments=302:81 imports_exports=7:14 calls_definitions=157:51
