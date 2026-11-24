@@ -24,6 +24,14 @@ Exact antipodal terms cancel. A zero result remains a closed object with its
 whole source construction; it has no forced direction and is not Structural Null.
 The resultant is a projection: equal sums do not identify distinct object graphs.
 
+For a Unicode scalar `DiskStack`, use `word.rays` for the ordered local
+placements, `word.endpoint` for their placed endpoint and
+`word.additive_resultant` for the recursive sum. Each frame radius multiplies
+the sum of the unit scalar vectors and complete additive results of its
+children. At unit frame radii, `AB | C` and `A | BC` agree in this sum while
+their glyph-scale radius sequences distinguish the word boundaries. The
+native attachment graph replays all three quantities from one set of operands.
+
 ```python
 from ucns.unicode_gonol import build_unicode_scalar_frame
 from ucns.unicode_recursive import (
