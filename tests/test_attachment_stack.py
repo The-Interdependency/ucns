@@ -1,4 +1,4 @@
-# ratios: loc_comments=250:75 imports_exports=14:12 calls_definitions=171:12
+# ratios: loc_comments=250:82 imports_exports=14:12 calls_definitions=171:12
 # === CHECKS ===
 # id: check_public_pair_census
 #   proves: attachment_stack_recurrence, attachment_stack_views
@@ -59,6 +59,13 @@
 # id: check_invalid_inputs_and_chain_mutants
 #   proves: attachment_stack_recurrence, attachment_stack_views
 #   call: self::test_invalid_inputs_and_chain_mutants
+#   requires: python3, pytest
+#   timeout: hmmm
+#   mutates: none
+#   cleanup: none
+# id: unicode_scalar_disc_depth_replay_check
+#   proves: attachment_stack_recurrence, attachment_complete_replay
+#   call: self::test_unicode_scalar_disc_depth_and_graph_replay
 #   requires: python3, pytest
 #   timeout: hmmm
 #   mutates: none
@@ -352,4 +359,4 @@ def test_unicode_scalar_disc_depth_and_graph_replay():
         replay_graph(packet)
     with pytest.raises(ValueError):
         Scalar('\ud800')
-# ratios: loc_comments=250:75 imports_exports=14:12 calls_definitions=171:12
+# ratios: loc_comments=250:82 imports_exports=14:12 calls_definitions=171:12
